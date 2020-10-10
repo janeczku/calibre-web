@@ -287,7 +287,7 @@ class _ConfigSQL(object):
                 db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in self.config_upload_formats.split(',')]
+        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
         logfile = logger.setup(self.config_logfile, self.config_log_level)
         if logfile != self.config_logfile:
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)

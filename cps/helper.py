@@ -32,13 +32,14 @@ from tempfile import gettempdir
 import requests
 from babel.dates import format_datetime
 from babel.units import format_unit
-from flask import send_from_directory, make_response, redirect, abort
+from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from . import calibre_db
+from .tasks.convert import TaskConvert
 
 try:
     from urllib.parse import quote
@@ -58,12 +59,12 @@ try:
 except ImportError:
     use_PIL = False
 
-from . import logger, config, get_locale, db, ub, worker
+from . import logger, config, get_locale, db, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
-from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
-from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .tasks.mail import TaskEmail
 
 
 log = logger.create()
@@ -73,46 +74,42 @@ log = logger.create()
 def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
+    file_path = os.path.join(calibrepath, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
         return error_message
     if config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
-        if df:
-            datafile = os.path.join(calibrepath, book.path, data.name + u"." + old_book_format.lower())
-            if not os.path.exists(os.path.join(calibrepath, book.path)):
-                os.makedirs(os.path.join(calibrepath, book.path))
-            df.GetContentFile(datafile)
-        else:
+        if not gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower()):
             error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
                               format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
-    file_path = os.path.join(calibrepath, book.path, data.name)
-    if os.path.exists(file_path + "." + old_book_format.lower()):
-        # read settings and append converter task to queue
-        if kindle_mail:
-            settings = config.get_mail_settings()
-            settings['subject'] = _('Send to Kindle')  # pretranslate Subject for e-mail
-            settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
-            # text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
-        else:
-            settings = dict()
-        txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
-        settings['old_book_format'] = old_book_format
-        settings['new_book_format'] = new_book_format
-        worker.add_convert(file_path, book.id, user_id, txt, settings, kindle_mail)
-        return None
     else:
-        error_message = _(u"%(format)s not found: %(fn)s",
-                          format=old_book_format, fn=data.name + "." + old_book_format.lower())
-        return error_message
+        if not os.path.exists(file_path + "." + old_book_format.lower()):
+            error_message = _(u"%(format)s not found: %(fn)s",
+                              format=old_book_format, fn=data.name + "." + old_book_format.lower())
+            return error_message
+    # read settings and append converter task to queue
+    if kindle_mail:
+        settings = config.get_mail_settings()
+        settings['subject'] = _('Send to Kindle')  # pretranslate Subject for e-mail
+        settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
+    else:
+        settings = dict()
+    txt = (u"%s -> %s: %s" % (
+           old_book_format,
+           new_book_format,
+           "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + book.title + "</a>"))
+    settings['old_book_format'] = old_book_format
+    settings['new_book_format'] = new_book_format
+    WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
+    return None
 
 
 def send_test_mail(kindle_mail, user_name):
-    worker.add_email(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, user_name,
-                     _(u"Test e-mail"), _(u'This e-mail has been sent via Calibre-Web.'))
+    WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
+                     config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
+                               _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
@@ -127,9 +124,16 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    worker.add_email(_(u'Get Started with Calibre-Web'), None, None,
-                     config.get_mail_settings(), e_mail, None,
-                     _(u"Registration e-mail for user: %(name)s", name=user_name), text)
+    WorkerThread.add(None, TaskEmail(
+        subject=_(u'Get Started with Calibre-Web'),
+        filepath=None,
+        attachment=None,
+        settings=config.get_mail_settings(),
+        recipient=e_mail,
+        taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
+        text=text
+    ))
+
     return
 
 
@@ -221,9 +225,9 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
-            worker.add_email(_(u"Send to Kindle"), book.path, converted_file_name,
-                             config.get_mail_settings(), kindle_mail, user_id,
-                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.'))
+            WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
+                             config.get_mail_settings(), kindle_mail,
+                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
@@ -343,65 +347,68 @@ def delete_book_file(book, calibrepath, book_format=None):
                                path=book.path)
 
 
-def update_dir_structure_file(book_id, calibrepath, first_author):
+# Moves files in file storage during author/title rename, or from temp dir to file storage
+def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename):
+    # get book database entry from id, if original path overwrite source with original_filepath
     localbook = calibre_db.get_book(book_id)
-    path = os.path.join(calibrepath, localbook.path)
+    if orignal_filepath:
+        path = orignal_filepath
+    else:
+        path = os.path.join(calibrepath, localbook.path)
 
+    # Create (current) authordir and titledir from database
     authordir = localbook.path.split('/')[0]
+    titledir = localbook.path.split('/')[1]
+
+    # Create new_authordir from parameter or from database
+    # Create new titledir from database and add id
     if first_author:
         new_authordir = get_valid_filename(first_author)
     else:
         new_authordir = get_valid_filename(localbook.authors[0].name)
-
-    titledir = localbook.path.split('/')[1]
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
 
-    if titledir != new_titledir:
-        new_title_path = os.path.join(os.path.dirname(path), new_titledir)
+    if titledir != new_titledir or authordir != new_authordir or orignal_filepath:
+        new_path = os.path.join(calibrepath, new_authordir, new_titledir)
+        new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
         try:
-            if not os.path.exists(new_title_path):
-                os.renames(os.path.normcase(path), os.path.normcase(new_title_path))
-            else:
-                log.info("Copying title: %s into existing: %s", path, new_title_path)
+            if orignal_filepath:
+                os.renames(os.path.normcase(path),
+                           os.path.normcase(os.path.join(new_path, db_filename)))
+                log.debug("Moving title: %s to %s/%s", path, new_path, new_name)
+            # Check new path is not valid path
+            elif not os.path.exists(new_path):
+                # move original path to new path
+                os.renames(os.path.normcase(path), os.path.normcase(new_path))
+                log.debug("Moving title: %s to %s", path, new_path)
+            else: # path is valid copy only files to new location (merge)
+                log.info("Moving title: %s into existing: %s", path, new_path)
+                # Take all files and subfolder from old path (strange command)
                 for dir_name, __, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.normcase(os.path.join(dir_name, file)),
-                                   os.path.normcase(os.path.join(new_title_path + dir_name[len(path):], file)))
-            path = new_title_path
-            localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
+                                   os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
+            # change location in database to new author/title path
+            localbook.path = os.path.join(new_authordir, new_titledir)
         except OSError as ex:
-            log.error("Rename title from: %s to %s: %s", path, new_title_path, ex)
+            log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                     src=path, dest=new_title_path, error=str(ex))
-    if authordir != new_authordir:
-        new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
+                     src=path, dest=new_path, error=str(ex))
+
+        # Rename all files from old names to new names
         try:
-            os.renames(os.path.normcase(path), os.path.normcase(new_author_path))
-            localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
-        except OSError as ex:
-            log.error("Rename author from: %s to %s: %s", path, new_author_path, ex)
-            log.debug(ex, exc_info=True)
-            return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                     src=path, dest=new_author_path, error=str(ex))
-    # Rename all files from old names to new names
-    if authordir != new_authordir or titledir != new_titledir:
-        new_name = ""
-        try:
-            new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
-            path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             for file_format in localbook.data:
                 os.renames(os.path.normcase(
-                    os.path.join(path_name, file_format.name + '.' + file_format.format.lower())),
-                           os.path.normcase(os.path.join(path_name, new_name + '.' + file_format.format.lower())))
+                    os.path.join(new_path, file_format.name + '.' + file_format.format.lower())),
+                           os.path.normcase(os.path.join(new_path, new_name + '.' + file_format.format.lower())))
                 file_format.name = new_name
         except OSError as ex:
-            log.error("Rename file in path %s to %s: %s", path, new_name, ex)
+            log.error("Rename file in path %s to %s: %s", new_path, new_name, ex)
             log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                     src=path, dest=new_name, error=str(ex))
+                     src=new_path, dest=new_name, error=str(ex))
     return False
-
 
 def update_dir_structure_gdrive(book_id, first_author):
     error = False
@@ -505,11 +512,11 @@ def uniq(inpt):
 # ################################# External interface #################################
 
 
-def update_dir_stucture(book_id, calibrepath, first_author=None):
+def update_dir_stucture(book_id, calibrepath, first_author=None, orignal_filepath=None, db_filename=None):
     if config.config_use_google_drive:
         return update_dir_structure_gdrive(book_id, first_author)
     else:
-        return update_dir_structure_file(book_id, calibrepath, first_author)
+        return update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename)
 
 
 def delete_book(book, calibrepath, book_format):
@@ -722,47 +729,30 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for task in tasklist:
-        if task['user'] == current_user.nickname or current_user.role_admin():
-            if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-            # task2['formStarttime'] = ""
-            else:
-                if 'starttime' not in task:
-                    task['starttime'] = ""
-
-            if 'formRuntime' not in task:
-                task['runtime'] = ""
-            else:
-                task['runtime'] = format_runtime(task['formRuntime'])
+    for num, user, added, task in tasklist:
+        if user == current_user.nickname or current_user.role_admin():
+            ret = {}
+            if task.start_time:
+                ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
+                ret['runtime'] = format_runtime(task.runtime)
 
             # localize the task status
-            if isinstance(task['stat'], int):
-                if task['stat'] == STAT_WAITING:
-                    task['status'] = _(u'Waiting')
-                elif task['stat'] == STAT_FAIL:
-                    task['status'] = _(u'Failed')
-                elif task['stat'] == STAT_STARTED:
-                    task['status'] = _(u'Started')
-                elif task['stat'] == STAT_FINISH_SUCCESS:
-                    task['status'] = _(u'Finished')
+            if isinstance(task.stat, int):
+                if task.stat == STAT_WAITING:
+                    ret['status'] = _(u'Waiting')
+                elif task.stat == STAT_FAIL:
+                    ret['status'] = _(u'Failed')
+                elif task.stat == STAT_STARTED:
+                    ret['status'] = _(u'Started')
+                elif task.stat == STAT_FINISH_SUCCESS:
+                    ret['status'] = _(u'Finished')
                 else:
-                    task['status'] = _(u'Unknown Status')
+                    ret['status'] = _(u'Unknown Status')
 
-            # localize the task type
-            if isinstance(task['taskType'], int):
-                if task['taskType'] == TASK_EMAIL:
-                    task['taskMessage'] = _(u'E-mail: ') + task['taskMess']
-                elif task['taskType'] == TASK_CONVERT:
-                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
-                elif task['taskType'] == TASK_UPLOAD:
-                    task['taskMessage'] = _(u'Upload: ') + task['taskMess']
-                elif task['taskType'] == TASK_CONVERT_ANY:
-                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
-                else:
-                    task['taskMessage'] = _(u'Unknown Task: ') + task['taskMess']
-
-            renderedtasklist.append(task)
+            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
+            ret['progress'] = "{} %".format(int(task.progress * 100))
+            ret['user'] = user
+            renderedtasklist.append(ret)
 
     return renderedtasklist
 
