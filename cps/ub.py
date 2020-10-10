@@ -23,11 +23,12 @@ import sys
 import datetime
 import itertools
 import uuid
+from flask import session as flask_session
 from binascii import hexlify
 
 from flask import g
 from flask_babel import gettext as _
-from flask_login import AnonymousUserMixin
+from flask_login import AnonymousUserMixin, current_user
 from werkzeug.local import LocalProxy
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -41,8 +42,9 @@ except ImportError:
         oauth_support = False
 from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session
 from werkzeug.security import generate_password_hash
 
@@ -52,6 +54,7 @@ from . import constants
 session = None
 app_DB_path = None
 Base = declarative_base()
+searched_ids = {}
 
 
 def get_sidebar_config(kwargs=None):
@@ -68,13 +71,17 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
                     "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
                     "show_text": _('Show Hot Books'), "config_show": True})
+    sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
+                    "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not g.user.is_anonymous),
+                    "page": "download", "show_text": _('Show Downloaded Books'),
+                    "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
          "show_text": _('Show Top Rated Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
-                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
-                    "show_text": _('Show read and unread'), "config_show": content})
+                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous),
+                    "page": "read", "show_text": _('Show read and unread'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
          "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
@@ -109,12 +116,19 @@ def get_sidebar_config(kwargs=None):
         {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
          "show_text": _('Show archived books'), "config_show": content})
-    '''sidebar.append(
-        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_list', "id": "list",
+    sidebar.append(
+        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
          "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
-         "show_text": _('Show Books List'), "config_show": content})'''
+         "show_text": _('Show Books List'), "config_show": content})
 
     return sidebar
+
+
+def store_ids(result):
+    ids = list()
+    for element in result:
+        ids.append(element.id)
+    searched_ids[current_user.id] = ids
 
 
 class UserBase:
@@ -191,6 +205,25 @@ class UserBase:
         mct = self.allowed_column_value or ""
         return [t.strip() for t in mct.split(",")]
 
+    def get_view_property(self, page, property):
+        if not self.view_settings.get(page):
+            return None
+        return self.view_settings[page].get(property)
+
+    def set_view_property(self, page, property, value):
+        if not self.view_settings.get(page):
+            self.view_settings[page] = dict()
+        self.view_settings[page][property] = value
+        try:
+            flag_modified(self, "view_settings")
+        except AttributeError:
+            pass
+        try:
+            session.commit()
+        except (exc.OperationalError, exc.InvalidRequestError):
+            session.rollback()
+            # ToDo: Error message
+
     def __repr__(self):
         return '<User %r>' % self.nickname
 
@@ -218,7 +251,8 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
-    series_view = Column(String(10), default="list")
+    view_settings = Column(JSON, default={})
+
 
 
 if oauth_support:
@@ -259,7 +293,11 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
-        self.series_view = data.series_view
+        self.view_settings = data.view_settings
+        # Initialize flask_session once
+        if 'view' not in flask_session:
+            flask_session['view']={}
+
 
     def role_admin(self):
         return False
@@ -275,6 +313,16 @@ class Anonymous(AnonymousUserMixin, UserBase):
     @property
     def is_authenticated(self):
         return False
+
+    def get_view_property(self, page, prop):
+        if not flask_session['view'].get(page):
+            return None
+        return flask_session['view'][page].get(prop)
+
+    def set_view_property(self, page, prop, value):
+        if not flask_session['view'].get(page):
+            flask_session['view'][page] = dict()
+        flask_session['view'][page][prop] = value
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
@@ -567,10 +615,11 @@ def migrate_Database(session):
             conn.execute("ALTER TABLE user ADD column `allowed_column_value` String DEFAULT ''")
         session.commit()
     try:
-        session.query(exists().where(User.series_view)).scalar()
+        session.query(exists().where(User.view_settings)).scalar()
     except exc.OperationalError:
         with engine.connect() as conn:
-            conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+            conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
+        session.commit()
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
@@ -591,14 +640,15 @@ def migrate_Database(session):
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
-                     "series_view VARCHAR(10),"
+                     # "series_view VARCHAR(10),"
+                     "view_settings VARCHAR,"                     
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
             conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, series_view) "
+                     "sidebar_view, default_language, view_settings) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language FROM user")
-        # delete old user table and rename new user_id table to user:
+            # delete old user table and rename new user_id table to user:
             conn.execute("DROP TABLE user")
             conn.execute("ALTER TABLE user_id RENAME TO user")
         session.commit()

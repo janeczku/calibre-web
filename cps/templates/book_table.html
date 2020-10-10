@@ -1,59 +1,99 @@
 {% extends "layout.html" %}
+{% macro text_table_row(parameter, edit_text, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+    data-visible = "{{visiblility.get(parameter)}}"
+    {% if g.user.role_edit() %}
+        data-editable-type="text"
+        data-editable-url="{{ url_for('editbook.edit_list_book', param=parameter)}}"
+        data-editable-title="{{ edit_text }}"
+        data-edit="true"
+        {% if validate %}data-edit-validate="{{ _('This Field is Required') }}" {% endif %}
+    {% endif %}
+>{{ show_text }}</th>
+{%- endmacro %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
-<h1 class="{{page}}">{{_(title)}}</h1>
-
-    <div class="filterheader hidden-xs hidden-sm">
-      {% if entries.__len__() %}
-       {% if data == 'author' %}
-        <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
-       {% endif %}
-      {% endif %}
-      <button id="desc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
-      <button id="asc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
-      {% if charlist|length %}
-      <button id="all" class="btn btn-primary">{{_('All')}}</button>
-      {% endif %}
-      <div class="btn-group character" role="group">
-        {% for char in charlist%}
-        <button class="btn btn-primary char">{{char.char}}</button>
-        {% endfor %}
-      </div>
-
-      {% if title == "Series" %}
-      <button class="update-view btn btn-primary" href="#" data-target="series_view" data-view="grid">Grid</button>
-      {% endif %}
-    </div>
-  <div class="container">
-    <div id="list" class="col-xs-12 col-sm-6">
-    {% for entry in entries %}
-      {% if loop.index0 == (loop.length/2+loop.length%2)|int and loop.length > 20 %}
+<h2 class="{{page}}">{{_(title)}}</h2>
+      <div class="col-xs-12 col-sm-6">
+        <div class="row">
+          <div class="btn btn-default disabled" id="merge_books" data-toggle="modal" data-target="#mergeModal" aria-disabled="true">{{_('Merge selected books')}}</div>
+          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
         </div>
-        <div id="second" class="col-xs-12 col-sm-6">
-      {% endif %}
-      <div class="row" {% if entry[0].sort %}data-name="{{entry[0].name}}"{% endif %} data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{% if entry.name %}{{entry.name}}{% else %}{{entry[0].name}}{% endif %}{% endif %}">
-        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{entry.count}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{% if entry.format %}{{url_for('web.books_list', data=data, sort='new', book_id=entry.format )}}{% else %}{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].id )}}{% endif %}">
-          {% if entry.name %}
-          <div class="rating">
-          {% for number in range(entry.name) %}
-            <span class="glyphicon glyphicon-star good"></span>
-            {% if loop.last and loop.index < 5 %}
-              {% for numer in range(5 - loop.index) %}
-                <span class="glyphicon glyphicon-star"></span>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-          </div>
-          {% else %}
-          {% if entry.format %}
-            {{entry.format}}
-          {% else %}
-            {{entry[0].name}}{% endif %}{% endif %}</a></div>
       </div>
-    {% endfor %}
+     <div class="col-xs-12 col-sm-6">
+      <div class="row">
+        <input type="checkbox" id="autoupdate_titlesort" name="autoupdate_titlesort" checked>
+        <label for="autoupdate_titlesort">{{_('Update Title Sort automatically')}}</label>
+      </div>
+      <div class="row">
+        <input type="checkbox" id="autoupdate_autorsort" name="autoupdate_autorsort" checked>
+        <label for="autoupdate_autorsort">{{_('Update Author Sort automatically')}}</label>
+      </div>
+    </div>
+
+    <table id="books-table" class="table table-no-bordered table-striped"
+           data-url="{{url_for('web.list_books')}}">
+      <thead>
+        <tr>
+          {% if g.user.role_edit() %}
+            <th data-field="state" data-checkbox="true" data-sortable="true"></th>
+          {% endif %}
+            <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+            {{ text_table_row('title', _('Enter Title'),_('Title'), true) }}
+            {{ text_table_row('sort', _('Enter Title Sort'),_('Title Sort'), false) }}
+            {{ text_table_row('author_sort', _('Enter Author Sort'),_('Author Sort'), false) }}
+            {{ text_table_row('authors', _('Enter Authors'),_('Authors'), true) }}
+            {{ text_table_row('tags', _('Enter Categories'),_('Categories'), false) }}
+            {{ text_table_row('series', _('Enter Series'),_('Series'), false) }}
+            <th data-field="series_index" id="series_index" data-visible="{{visiblility.get('series_index')}}" data-edit-validate="{{ _('This Field is Required') }}" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('editbook.edit_list_book', param='series_index')}}" data-edit="true" data-editable-title="{{_('Enter title')}}"{% endif %}>{{_('Series Index')}}</th>
+            {{ text_table_row('languages', _('Enter Languages'),_('Languages'), false) }}
+            <!--th data-field="pubdate" data-type="date" data-visible="{{visiblility.get('pubdate')}}" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">{{_('Publishing Date')}}</th-->
+            {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers'), false) }}
+          {% if g.user.role_edit() %}
+            <th data-align="right" data-formatter="EbookActions" data-switchable="false">{{_('Delete')}}</th>
+          {% endif %}
+        </tr>
+      </thead>
+    </table>
+{% endblock %}
+{% block modal %}
+{{ delete_book(0) }}
+{% if g.user.role_edit() %}
+<div class="modal fade" id="mergeModal" role="dialog" aria-labelledby="metaMergeLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+        <div class="modal-body">
+          <p></p>
+            <div class="text-left">{{_('Books with Title will be merged from:')}}</div>
+          <p></p>
+            <div class=text-left" id="merge_from"></div>
+          <p></p>
+            <div class="text-left">{{_('Into Book with Title:')}}</div>
+          <p></p>
+            <div class=text-left" id="merge_to"></div>
+        </div>
+      <div class="modal-footer">
+        <input type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" id="merge_confirm" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
     </div>
   </div>
+</div>
+{% endif %}
+
 {% endblock %}
 {% block js %}
-<script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script>
+</script>
 {% endblock %}

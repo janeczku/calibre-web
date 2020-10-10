@@ -227,6 +227,7 @@ class Updater(threading.Thread):
             os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
             os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
+            os.sep + '.calibre-web.log.swp'
         )
         additional_path = self.is_venv()
         if additional_path:
