@@ -604,7 +604,7 @@ def _configuration_ldap_helper(to_save, gdriveError):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
-    if config.config_ldap_cert_path and not os.path.isdir(config.config_ldap_cert_path):
+    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
         return reboot_required, _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
                                      gdriveError)
     return reboot_required, None
