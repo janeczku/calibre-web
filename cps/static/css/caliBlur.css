@@ -2174,7 +2174,7 @@ body.langlist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e034"
 }
 
-body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
     top: 60px;
     font-size: 24px;
     color: #eee;
@@ -2244,10 +2244,14 @@ body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before
     content: "Languages"
 }
 
-body.advsearch > div.container-fluid > div > div.col-sm-10:before {
-    content: "Advanced Search";
-    margin-left: 20%;
-    left: 0
+body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
+    padding: 15px 10px 15px 40px;
+} 
+
+@media screen and (max-width: 992px) {
+    body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
+        padding-left: 20px;
+    }
 }
 
 body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {

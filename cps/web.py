@@ -951,7 +951,7 @@ def render_prepare_search_form(cc):
     else:
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series, title=_(u"search"), cc=cc, page="advsearch")
+                                 series=series, title=_(u"Advanced Search"), cc=cc, page="advsearch")
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
@@ -1392,7 +1392,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  pagination=pagination,
                                  entries=q[offset:limit_all],
                                  result_count=result_count,
-                                 title=_(u"search"), page="advsearch")
+                                 title=_(u"Advanced Search"), page="advsearch")
 
 
 
