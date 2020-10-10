@@ -73,7 +73,6 @@ ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
 
-searched_ids = {}
 web_server = WebServer()
 
 babel = Babel()

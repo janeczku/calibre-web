@@ -28,7 +28,7 @@ from binascii import hexlify
 
 from flask import g
 from flask_babel import gettext as _
-from flask_login import AnonymousUserMixin
+from flask_login import AnonymousUserMixin, current_user
 from werkzeug.local import LocalProxy
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -54,6 +54,7 @@ from . import constants
 session = None
 app_DB_path = None
 Base = declarative_base()
+searched_ids = {}
 
 
 def get_sidebar_config(kwargs=None):
@@ -121,6 +122,13 @@ def get_sidebar_config(kwargs=None):
          "show_text": _('Show Books List'), "config_show": content})
 
     return sidebar
+
+
+def store_ids(result):
+    ids = list()
+    for element in result:
+        ids.append(element.id)
+    searched_ids[current_user.id] = ids
 
 
 class UserBase:
