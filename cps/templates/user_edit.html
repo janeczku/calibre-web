@@ -140,20 +140,8 @@
     {% endif %}
     </div>
   </form>
-
-  {% if downloads %}
-    <div class="col-sm-12">
-    <h2>{{_('Recent Downloads')}}</h2>
-    {% for entry in downloads %}
-      <div class="col-sm-2">
-        <a class="pull-left" href="{{ url_for('web.show_book', book_id=entry.id) }}">
-          <img class="media-object cover-small" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="...">
-        </a>
-      </div>
-    {% endfor %}
-    </div>
-  {% endif %}
 </div>
+
     <div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
