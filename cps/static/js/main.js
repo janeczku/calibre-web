@@ -195,7 +195,7 @@ $(function() {
                     $(this)[0].scrollHeight
                 ) {
                     $loadMore.infiniteScroll("loadNextPage");
-                    window.history.replaceState({}, null, $loadMore.infiniteScroll('getAbsolutePath')+1)
+                    window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
                 }
             });
         }
