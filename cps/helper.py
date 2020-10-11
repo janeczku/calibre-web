@@ -389,7 +389,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                         os.renames(os.path.normcase(os.path.join(dir_name, file)),
                                    os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
             # change location in database to new author/title path
-            localbook.path = os.path.join(new_authordir, new_titledir)
+            localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
         except OSError as ex:
             log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
