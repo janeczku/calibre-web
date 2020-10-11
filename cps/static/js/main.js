@@ -172,7 +172,7 @@ $(function() {
         layoutMode : "fitColumns"
     });
 
-    if ($('.next').length) {
+    if ($(".load-more").length && $(".next").length) {
         var $loadMore = $(".load-more .row").infiniteScroll({
             debug: false,
             // selector for the paged navigation (it will be hidden)
