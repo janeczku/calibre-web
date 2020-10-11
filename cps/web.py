@@ -1258,7 +1258,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     order = order or [db.Books.sort]
     pagination = None
 
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = get_cc_columns()
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
 
@@ -1412,7 +1412,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 @login_required_if_no_ano
 def advanced_search_form():
     # Build custom columns names
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = get_cc_columns()
     return render_prepare_search_form(cc)
 
 
