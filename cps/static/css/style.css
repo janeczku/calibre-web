@@ -123,12 +123,19 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   position: relative;
 }
 
-.container-fluid .book .cover img {
+.container-fluid .book .cover span.img {
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+}
+
+.container-fluid .book .cover span img {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
   border: 1px solid #fff;
   box-sizing: border-box;
-  height: 100%;
-  bottom: 0;
-  position: absolute;
   -webkit-box-shadow: 0 5px 8px -6px #777;
   -moz-box-shadow: 0 5px 8px -6px #777;
   box-shadow: 0 5px 8px -6px #777;
@@ -202,6 +209,14 @@ span.glyphicon.glyphicon-tags {
    top: 2px;
    left: 2px;
    background-color: #777;
+}
+.cover .read{
+  left: auto;
+  right: 2px;
+  width: 17px;
+  height: 17px;
+  display: inline-block;
+  padding: 2px;
 }
 .cover-height { max-height: 100px;}
 
