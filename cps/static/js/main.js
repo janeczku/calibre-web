@@ -183,7 +183,9 @@ $(function() {
             //extraScrollPx: 300
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
-            $(".pagination").addClass("hidden");
+            if ($("body").hasClass("blur")) {
+                $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+            }
             $(".load-more .row").isotope( "appended", $(data), null );
         });
     
