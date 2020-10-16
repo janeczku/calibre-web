@@ -1461,7 +1461,8 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .35);
     box-shadow: 0 0 2px rgba(0, 0, 0, .35);
     position: relative;
-    z-index: -9
+    z-index: -9;
+    width: 150px !important;
 }
 
 #books > .cover > a, #books_rand > .cover > a, .book.isotope-item > .cover > a, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a {
