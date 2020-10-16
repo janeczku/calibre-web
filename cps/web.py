@@ -1231,7 +1231,9 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        return render_search_results(term, 0, None, config.config_books_per_page)
+        # flask_session['query'] = json.dumps(request.form)
+        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
+        # return render_search_results(term, 0, None, config.config_books_per_page)
     else:
         return render_title_template('search.html',
                                      searchterm="",
@@ -1243,8 +1245,9 @@ def search():
 @web.route("/advanced_search", methods=['POST'])
 @login_required_if_no_ano
 def advanced_search():
-    term = request.form
-    return render_adv_search_results(term, 0, None, config.config_books_per_page)
+    flask_session['query'] = json.dumps(request.form)
+    return redirect(url_for('web.books_list', data="advsearch", sort_param='stored', query=""))
+
 
 def render_adv_search_results(term, offset=None, order=None, limit=None):
     order = order or [db.Books.sort]
@@ -1379,18 +1382,18 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
-        q = q.order_by(*order).all()
-        flask_session['query'] = json.dumps(term)
-        ub.store_ids(q)
-        # entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
-        result_count = len(q)
-        if offset != None and limit != None:
-            offset = int(offset)
-            limit_all = offset + int(limit)
-            pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
-        else:
-            offset = 0
-            limit_all = result_count
+    q = q.order_by(*order).all()
+    flask_session['query'] = json.dumps(term)
+    ub.store_ids(q)
+    # entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
+    result_count = len(q)
+    if offset != None and limit != None:
+        offset = int(offset)
+        limit_all = offset + int(limit)
+        pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+    else:
+        offset = 0
+        limit_all = result_count
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
