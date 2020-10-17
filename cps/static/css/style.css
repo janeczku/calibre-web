@@ -111,6 +111,7 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   display: block;
   max-width: 100%;
   height: auto;
+  max-height: 100%;
 }
 
 .container-fluid .discover{ margin-bottom: 50px; }
