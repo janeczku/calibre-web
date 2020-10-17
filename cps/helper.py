@@ -819,3 +819,18 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def get_readbooks_ids():
+    if not config.config_read_column:
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+            .filter(ub.ReadBook.is_read == True).all()
+        return frozenset([x.book_id for x in readBooks])
+    else:
+        try:
+            readBooks = calibre_db.session.query(db.cc_classes[config.config_read_column])\
+                .filter(db.cc_classes[config.config_read_column].value == True).all()
+            return frozenset([x.book for x in readBooks])
+        except KeyError:
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return []
