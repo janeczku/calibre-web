@@ -59,7 +59,8 @@ from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
-    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
+    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, \
+    get_readbooks_ids
 from .pagination import Pagination
 from .redirect import redirect_back
 
@@ -602,7 +603,7 @@ def get_matching_tags():
 def render_title_template(*args, **kwargs):
     sidebar = ub.get_sidebar_config(kwargs)
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
-                           accept=constants.EXTENSIONS_UPLOAD,
+                           accept=constants.EXTENSIONS_UPLOAD, read_book_ids=get_readbooks_ids(),
                            *args, **kwargs)
 
 
