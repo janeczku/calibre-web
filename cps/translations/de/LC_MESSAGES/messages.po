@@ -305,7 +305,7 @@ msgstr "Buch Format erfolgreich gelöscht"
 
 #: cps/editbooks.py:282 cps/editbooks.py:284
 msgid "Book Successfully Deleted"
-msgstr "Buch erfolgreich geschlöscht"
+msgstr "Buch erfolgreich gelöscht"
 
 #: cps/editbooks.py:293 cps/editbooks.py:596 cps/web.py:1812 cps/web.py:1853
 #: cps/web.py:1915
