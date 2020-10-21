@@ -150,7 +150,7 @@ class WebServer(object):
                 def my_wrap_socket(*args, **kwargs):
                     try:
                         return wrap_socket(*args, **kwargs)
-                    except (ssl.SSLError) as ex:
+                    except (ssl.SSLError, OSError) as ex:
                         log.warning('Gevent SSL Error: %s', ex)
                         raise GreenletExit
 
