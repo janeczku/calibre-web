@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-10-10 11:32+0200\n"
+"POT-Creation-Date: 2020-10-20 17:11+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -122,7 +122,7 @@ msgstr ""
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:700 cps/admin.py:799 cps/admin.py:891 cps/admin.py:940
+#: cps/admin.py:700 cps/admin.py:799 cps/admin.py:889 cps/admin.py:938
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
@@ -140,15 +140,15 @@ msgstr ""
 msgid "Basic Configuration"
 msgstr "ការកំណត់សាមញ្ញ"
 
-#: cps/admin.py:762 cps/web.py:1493
+#: cps/admin.py:762 cps/web.py:1505
 msgid "Please fill out all fields!"
 msgstr "សូមបំពេញចន្លោះទាំងអស់!"
 
-#: cps/admin.py:765 cps/admin.py:777 cps/admin.py:783 cps/admin.py:909
+#: cps/admin.py:765 cps/admin.py:777 cps/admin.py:783 cps/admin.py:907
 msgid "Add new user"
 msgstr "បន្ថែមអ្នកប្រើប្រាស់ថ្មី"
 
-#: cps/admin.py:774 cps/web.py:1739
+#: cps/admin.py:774 cps/web.py:1751
 msgid "E-mail is not from valid domain"
 msgstr ""
 
@@ -174,121 +174,121 @@ msgstr ""
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
-#: cps/admin.py:853 cps/web.py:1781
+#: cps/admin.py:853 cps/web.py:1793
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/admin.py:863 cps/admin.py:878 cps/admin.py:989 cps/web.py:1757
+#: cps/admin.py:862 cps/admin.py:876 cps/admin.py:979 cps/web.py:1769
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "កែប្រែអ្នកប្រើប្រាស់ %(nick)s"
 
-#: cps/admin.py:869 cps/web.py:1750
+#: cps/admin.py:868 cps/web.py:1762
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:885
+#: cps/admin.py:883
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានកែប្រែ"
 
-#: cps/admin.py:888
+#: cps/admin.py:886
 msgid "An unknown error occured."
 msgstr "បញ្ហាដែលមិនដឹងបានកើតឡើង។"
 
-#: cps/admin.py:918 cps/templates/admin.html:71
+#: cps/admin.py:916 cps/templates/admin.html:71
 msgid "Edit E-mail Server Settings"
 msgstr "ប្តូរការកំណត់ SMTP"
 
-#: cps/admin.py:947
+#: cps/admin.py:945
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/admin.py:950
+#: cps/admin.py:948
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:952
+#: cps/admin.py:950
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:954
+#: cps/admin.py:952
 msgid "E-mail server settings updated"
 msgstr ""
 
-#: cps/admin.py:965
+#: cps/admin.py:963
 msgid "User not found"
 msgstr ""
 
-#: cps/admin.py:1000
+#: cps/admin.py:990
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:1003 cps/web.py:1517 cps/web.py:1581
+#: cps/admin.py:993 cps/web.py:1529 cps/web.py:1593
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
-#: cps/admin.py:1006 cps/web.py:1455
+#: cps/admin.py:996 cps/web.py:1467
 msgid "Please configure the SMTP mail settings first..."
 msgstr "សូមកំណត់អ៊ីមែល SMTP ជាមុនសិន"
 
-#: cps/admin.py:1018
+#: cps/admin.py:1008
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:1057
+#: cps/admin.py:1047
 msgid "Requesting update package"
 msgstr "កំពុងស្នើសុំឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:1058
+#: cps/admin.py:1048
 msgid "Downloading update package"
 msgstr "កំពុងទាញយកឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:1059
+#: cps/admin.py:1049
 msgid "Unzipping update package"
 msgstr "កំពុងពន្លាឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:1060
+#: cps/admin.py:1050
 msgid "Replacing files"
 msgstr ""
 
-#: cps/admin.py:1061
+#: cps/admin.py:1051
 msgid "Database connections are closed"
 msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្នន័យត្រូវបានផ្តាច់"
 
-#: cps/admin.py:1062
+#: cps/admin.py:1052
 msgid "Stopping server"
 msgstr ""
 
-#: cps/admin.py:1063
+#: cps/admin.py:1053
 msgid "Update finished, please press okay and reload page"
 msgstr "ការធ្វើបច្ចុប្បន្នភាពបានបញ្ចប់ សូមចុច okay រួចបើកទំព័រជាថ្មី"
 
-#: cps/admin.py:1064 cps/admin.py:1065 cps/admin.py:1066 cps/admin.py:1067
-#: cps/admin.py:1068
+#: cps/admin.py:1054 cps/admin.py:1055 cps/admin.py:1056 cps/admin.py:1057
+#: cps/admin.py:1058
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:1064 cps/updater.py:320 cps/updater.py:521 cps/updater.py:523
+#: cps/admin.py:1054 cps/updater.py:320 cps/updater.py:521 cps/updater.py:523
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:1065 cps/updater.py:322 cps/updater.py:525
+#: cps/admin.py:1055 cps/updater.py:322 cps/updater.py:525
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:1066 cps/updater.py:324 cps/updater.py:527
+#: cps/admin.py:1056 cps/updater.py:324 cps/updater.py:527
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:1067 cps/updater.py:326 cps/updater.py:529
+#: cps/admin.py:1057 cps/updater.py:326 cps/updater.py:529
 msgid "General error"
 msgstr ""
 
-#: cps/admin.py:1068
+#: cps/admin.py:1058
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
@@ -308,8 +308,8 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:293 cps/editbooks.py:596 cps/web.py:1812 cps/web.py:1853
-#: cps/web.py:1915
+#: cps/editbooks.py:293 cps/editbooks.py:596 cps/web.py:1824 cps/web.py:1865
+#: cps/web.py:1927
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "មានបញ្ហាពេលបើកឯកសារ eBook ។ ពុំមានឯកសារ ឬឯកសារនេះមិនអាចបើកបាន"
 
@@ -581,7 +581,7 @@ msgstr ""
 msgid "Failed to fetch user info from Google."
 msgstr ""
 
-#: cps/oauth_bb.py:225 cps/web.py:1553 cps/web.py:1695
+#: cps/oauth_bb.py:225 cps/web.py:1565 cps/web.py:1707
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ឥឡូវអ្នកបានចូលដោយមានឈ្មោះថា៖ ‘%(nickname)s’"
@@ -741,7 +741,7 @@ msgstr ""
 msgid "Show Downloaded Books"
 msgstr ""
 
-#: cps/templates/index.xml:24 cps/ub.py:79 cps/web.py:635
+#: cps/templates/index.xml:24 cps/ub.py:79 cps/web.py:639
 msgid "Top Rated Books"
 msgstr "សៀវភៅដែលមានការវាយតម្លៃល្អជាងគេ"
 
@@ -750,7 +750,7 @@ msgid "Show Top Rated Books"
 msgstr "បង្ហាញសៀវភៅដែលមានការវាយតម្លៃល្អជាងគេ"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:82
-#: cps/web.py:896
+#: cps/web.py:900
 msgid "Read Books"
 msgstr "សៀវភៅដែលបានអានរួច"
 
@@ -759,7 +759,7 @@ msgid "Show read and unread"
 msgstr "បង្ហាញអានរួច និងមិនទាន់អាន"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:86
-#: cps/web.py:899
+#: cps/web.py:903
 msgid "Unread Books"
 msgstr "សៀវភៅដែលមិនទាន់បានអាន"
 
@@ -776,7 +776,7 @@ msgid "Show random books"
 msgstr "បង្ហាញសៀវភៅចៃដន្យ"
 
 #: cps/templates/book_table.html:50 cps/templates/index.xml:75 cps/ub.py:92
-#: cps/web.py:1200
+#: cps/web.py:1204
 msgid "Categories"
 msgstr "ប្រភេទនានា"
 
@@ -785,8 +785,8 @@ msgid "Show category selection"
 msgstr "បង្ហាញជម្រើសប្រភេទ"
 
 #: cps/templates/book_edit.html:84 cps/templates/book_table.html:51
-#: cps/templates/index.xml:82 cps/templates/search_form.html:53 cps/ub.py:95
-#: cps/web.py:1104 cps/web.py:1114
+#: cps/templates/index.xml:82 cps/templates/search_form.html:54 cps/ub.py:95
+#: cps/web.py:1108 cps/web.py:1118
 msgid "Series"
 msgstr "ស៊េរី"
 
@@ -803,7 +803,7 @@ msgid "Show author selection"
 msgstr "បង្ហាញជម្រើសអ្នកនិពន្ធ"
 
 #: cps/templates/book_table.html:55 cps/templates/index.xml:68 cps/ub.py:102
-#: cps/web.py:1083
+#: cps/web.py:1087
 msgid "Publishers"
 msgstr ""
 
@@ -812,7 +812,7 @@ msgid "Show publisher selection"
 msgstr ""
 
 #: cps/templates/book_table.html:53 cps/templates/index.xml:89
-#: cps/templates/search_form.html:74 cps/ub.py:105 cps/web.py:1179
+#: cps/templates/search_form.html:75 cps/ub.py:105 cps/web.py:1183
 msgid "Languages"
 msgstr "ភាសានានា"
 
@@ -836,7 +836,7 @@ msgstr ""
 msgid "Show file formats selection"
 msgstr ""
 
-#: cps/ub.py:116 cps/web.py:923
+#: cps/ub.py:116 cps/web.py:927
 msgid "Archived Books"
 msgstr ""
 
@@ -902,204 +902,204 @@ msgstr ""
 msgid "User Successfully Imported"
 msgstr ""
 
-#: cps/templates/index.html:5 cps/web.py:643
+#: cps/templates/index.html:5 cps/web.py:647
 msgid "Discover (Random Books)"
 msgstr "ស្រាវជ្រាវ (សៀវភៅចៃដន្យ)"
 
-#: cps/web.py:682
+#: cps/web.py:686
 msgid "Books"
 msgstr ""
 
-#: cps/web.py:709
+#: cps/web.py:713
 msgid "Hot Books (Most Downloaded)"
 msgstr "សៀវភៅដែលត្រូវបានទាញយកច្រើនជាងគេ"
 
-#: cps/web.py:744
+#: cps/web.py:748
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr ""
 
-#: cps/web.py:758
+#: cps/web.py:762
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr ""
 
-#: cps/web.py:772
+#: cps/web.py:776
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:786
+#: cps/web.py:790
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr ""
 
-#: cps/web.py:799
+#: cps/web.py:803
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "ស៊េរី៖ %(serie)s"
 
-#: cps/web.py:812
+#: cps/web.py:816
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:825
+#: cps/web.py:829
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:839
+#: cps/web.py:843
 #, python-format
 msgid "Category: %(name)s"
 msgstr "ប្រភេទ៖ %(name)s"
 
-#: cps/web.py:858
+#: cps/web.py:862
 #, python-format
 msgid "Language: %(name)s"
 msgstr "ភាសា៖ %(name)s"
 
-#: cps/web.py:887
+#: cps/web.py:891
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr ""
 
-#: cps/web.py:954 cps/web.py:1395
-msgid "search"
-msgstr "ស្វែងរក"
+#: cps/templates/layout.html:56 cps/web.py:958 cps/web.py:1407
+msgid "Advanced Search"
+msgstr "ស្វែងរកកម្រិតខ្ពស់"
 
 #: cps/templates/book_edit.html:213 cps/templates/feed.xml:33
 #: cps/templates/layout.html:45 cps/templates/layout.html:48
-#: cps/templates/search_form.html:174 cps/web.py:966 cps/web.py:1235
+#: cps/templates/search_form.html:175 cps/web.py:970 cps/web.py:1241
 msgid "Search"
 msgstr "ស្វែងរក"
 
-#: cps/web.py:994
+#: cps/web.py:998
 msgid "Books list"
 msgstr ""
 
-#: cps/web.py:1132
+#: cps/web.py:1136
 msgid "Ratings list"
 msgstr ""
 
-#: cps/web.py:1151
+#: cps/web.py:1155
 msgid "File formats list"
 msgstr ""
 
-#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:1214
+#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:1218
 msgid "Tasks"
 msgstr "កិច្ចការនានា"
 
-#: cps/web.py:1292
+#: cps/web.py:1303
 msgid "Published after "
 msgstr "បានបោះពុម្ភក្រោយ  "
 
-#: cps/web.py:1299
+#: cps/web.py:1310
 msgid "Published before "
 msgstr "បានបោះពុម្ភមុន  "
 
-#: cps/web.py:1313
+#: cps/web.py:1325
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "ការវាយតម្លៃ <= %(rating)s"
 
-#: cps/web.py:1315
+#: cps/web.py:1327
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "ការវាយតម្លៃ >= %(rating)s"
 
-#: cps/web.py:1460
+#: cps/web.py:1472
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(kindlemail)s ដោយជោគជ័យ"
 
-#: cps/web.py:1464
+#: cps/web.py:1476
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "មានបញ្ហានៅពេលផ្ញើសៀវភៅនេះ៖ %(res)s"
 
-#: cps/web.py:1466
+#: cps/web.py:1478
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr ""
 
-#: cps/web.py:1483
+#: cps/web.py:1495
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/web.py:1484 cps/web.py:1494 cps/web.py:1518 cps/web.py:1522
-#: cps/web.py:1527 cps/web.py:1531
+#: cps/web.py:1496 cps/web.py:1506 cps/web.py:1530 cps/web.py:1534
+#: cps/web.py:1539 cps/web.py:1543
 msgid "register"
 msgstr "ចុះឈ្មោះ"
 
-#: cps/web.py:1520
+#: cps/web.py:1532
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:1523
+#: cps/web.py:1535
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:1526
+#: cps/web.py:1538
 msgid "This username or e-mail address is already in use."
 msgstr ""
 
-#: cps/web.py:1543
+#: cps/web.py:1555
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1560
+#: cps/web.py:1572
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1566
+#: cps/web.py:1578
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1570 cps/web.py:1594
+#: cps/web.py:1582 cps/web.py:1606
 msgid "Wrong Username or Password"
 msgstr "ខុសឈ្មោះអ្នកប្រើប្រាស់ ឬលេខសម្ងាត់"
 
-#: cps/web.py:1577
+#: cps/web.py:1589
 msgid "New Password was send to your email address"
 msgstr ""
 
-#: cps/web.py:1583
+#: cps/web.py:1595
 msgid "Please enter valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1589
+#: cps/web.py:1601
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1600 cps/web.py:1627
+#: cps/web.py:1612 cps/web.py:1639
 msgid "login"
 msgstr "ចូលប្រើ"
 
-#: cps/web.py:1639 cps/web.py:1673
+#: cps/web.py:1651 cps/web.py:1685
 msgid "Token not found"
 msgstr "រកមិនឃើញវត្ថុតាង"
 
-#: cps/web.py:1648 cps/web.py:1681
+#: cps/web.py:1660 cps/web.py:1693
 msgid "Token has expired"
 msgstr "វត្ថុតាងហួសពេលកំណត់"
 
-#: cps/web.py:1657
+#: cps/web.py:1669
 msgid "Success! Please return to your device"
 msgstr "ជោគជ័យ! សូមវិលមកឧបករណ៍អ្នកវិញ"
 
-#: cps/web.py:1741 cps/web.py:1797
+#: cps/web.py:1753 cps/web.py:1809
 #, python-format
 msgid "%(name)s's profile"
 msgstr "ព័ត៌មានសង្ខេបរបស់ %(name)s"
 
-#: cps/web.py:1777
+#: cps/web.py:1789
 msgid "Profile updated"
 msgstr "ព័ត៌មានសង្ខេបបានកែប្រែ"
 
-#: cps/web.py:1824 cps/web.py:1827 cps/web.py:1830 cps/web.py:1837
-#: cps/web.py:1842
+#: cps/web.py:1836 cps/web.py:1839 cps/web.py:1842 cps/web.py:1849
+#: cps/web.py:1854
 msgid "Read a Book"
 msgstr "អានសៀវភៅ"
 
@@ -1175,7 +1175,7 @@ msgstr "អាប់ឡូដ"
 
 #: cps/templates/admin.html:19 cps/templates/detail.html:18
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
-#: cps/templates/shelfdown.html:62
+#: cps/templates/shelfdown.html:70
 msgid "Download"
 msgstr "ទាញយក"
 
@@ -1335,7 +1335,7 @@ msgid "Are you sure you want to restart?"
 msgstr ""
 
 #: cps/templates/admin.html:182 cps/templates/admin.html:196
-#: cps/templates/admin.html:216 cps/templates/shelf.html:72
+#: cps/templates/admin.html:216 cps/templates/shelf.html:80
 msgid "OK"
 msgstr "បាទ/ចាស"
 
@@ -1343,7 +1343,7 @@ msgstr "បាទ/ចាស"
 #: cps/templates/book_edit.html:192 cps/templates/book_table.html:84
 #: cps/templates/config_edit.html:391 cps/templates/config_view_edit.html:151
 #: cps/templates/email_edit.html:47 cps/templates/email_edit.html:101
-#: cps/templates/modal_dialogs.html:64 cps/templates/shelf.html:73
+#: cps/templates/modal_dialogs.html:64 cps/templates/shelf.html:81
 #: cps/templates/shelf_edit.html:19 cps/templates/user_edit.html:139
 msgid "Cancel"
 msgstr ""
@@ -1369,14 +1369,14 @@ msgstr "នៅក្នុងបណ្ណាល័យ"
 msgid "All"
 msgstr ""
 
-#: cps/templates/author.html:58 cps/templates/author.html:110
+#: cps/templates/author.html:58 cps/templates/author.html:118
 #: cps/templates/discover.html:27 cps/templates/index.html:26
-#: cps/templates/index.html:89 cps/templates/search.html:60
+#: cps/templates/index.html:97 cps/templates/search.html:60
 #: cps/templates/shelf.html:36
 msgid "reduce"
 msgstr ""
 
-#: cps/templates/author.html:94
+#: cps/templates/author.html:102
 msgid "More by"
 msgstr "បន្ថែមទៀតដោយ"
 
@@ -1408,17 +1408,17 @@ msgstr ""
 msgid "Convert book"
 msgstr ""
 
-#: cps/templates/book_edit.html:53 cps/templates/search_form.html:6
+#: cps/templates/book_edit.html:53 cps/templates/search_form.html:7
 msgid "Book Title"
 msgstr "ចំណងជើងសៀវភៅ"
 
 #: cps/templates/book_edit.html:57 cps/templates/book_edit.html:257
-#: cps/templates/book_edit.html:275 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:11
 msgid "Author"
 msgstr "អ្នកនិពន្ធ"
 
 #: cps/templates/book_edit.html:61 cps/templates/book_edit.html:262
-#: cps/templates/book_edit.html:277 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:277 cps/templates/search_form.html:127
 msgid "Description"
 msgstr "ពិពណ៌នា"
 
@@ -1442,7 +1442,7 @@ msgstr ""
 msgid "Add Identifier"
 msgstr ""
 
-#: cps/templates/book_edit.html:80 cps/templates/search_form.html:33
+#: cps/templates/book_edit.html:80 cps/templates/search_form.html:34
 msgid "Tags"
 msgstr "Tag"
 
@@ -1468,7 +1468,7 @@ msgstr "ថ្ងៃបោះពុម្ភ"
 
 #: cps/templates/book_edit.html:116 cps/templates/book_edit.html:259
 #: cps/templates/book_edit.html:276 cps/templates/detail.html:156
-#: cps/templates/search_form.html:14
+#: cps/templates/search_form.html:15
 msgid "Publisher"
 msgstr "អ្នកបោះពុម្ភ"
 
@@ -1477,11 +1477,11 @@ msgstr "អ្នកបោះពុម្ភ"
 msgid "Language"
 msgstr "ភាសា"
 
-#: cps/templates/book_edit.html:130 cps/templates/search_form.html:137
+#: cps/templates/book_edit.html:130 cps/templates/search_form.html:138
 msgid "Yes"
 msgstr "បាទ/ចាស"
 
-#: cps/templates/book_edit.html:131 cps/templates/search_form.html:138
+#: cps/templates/book_edit.html:131 cps/templates/search_form.html:139
 msgid "No"
 msgstr "ទេ"
 
@@ -2129,7 +2129,7 @@ msgstr ""
 msgid "Return to Home"
 msgstr ""
 
-#: cps/templates/index.html:64
+#: cps/templates/index.html:72
 msgid "Group by series"
 msgstr ""
 
@@ -2213,10 +2213,6 @@ msgstr "បិទ/បើកការរុករក"
 #: cps/templates/layout.html:46
 msgid "Search Library"
 msgstr ""
-
-#: cps/templates/layout.html:56
-msgid "Advanced Search"
-msgstr "ស្វែងរកកម្រិតខ្ពស់"
 
 #: cps/templates/layout.html:77 cps/templates/read.html:71
 #: cps/templates/readcbr.html:88 cps/templates/readcbr.html:112
@@ -2491,39 +2487,39 @@ msgstr ""
 msgid "Results for:"
 msgstr "លទ្ធផលសម្រាប់៖"
 
-#: cps/templates/search_form.html:19
+#: cps/templates/search_form.html:20
 msgid "Published Date From"
 msgstr "ថ្ងៃបោះពុម្ភចាប់ពី"
 
-#: cps/templates/search_form.html:26
+#: cps/templates/search_form.html:27
 msgid "Published Date To"
 msgstr "ថ្ងៃបោះពុម្ភរហូតដល់"
 
-#: cps/templates/search_form.html:43
+#: cps/templates/search_form.html:44
 msgid "Exclude Tags"
 msgstr "លើកលែង tag"
 
-#: cps/templates/search_form.html:63
+#: cps/templates/search_form.html:64
 msgid "Exclude Series"
 msgstr "លើកលែងស៊េរី"
 
-#: cps/templates/search_form.html:84
+#: cps/templates/search_form.html:85
 msgid "Exclude Languages"
 msgstr "លើកលែងភាសា"
 
-#: cps/templates/search_form.html:95
+#: cps/templates/search_form.html:96
 msgid "Extensions"
 msgstr ""
 
-#: cps/templates/search_form.html:105
+#: cps/templates/search_form.html:106
 msgid "Exclude Extensions"
 msgstr ""
 
-#: cps/templates/search_form.html:117
+#: cps/templates/search_form.html:118
 msgid "Rating Above"
 msgstr "ការវាយតម្លៃលើសពី"
 
-#: cps/templates/search_form.html:121
+#: cps/templates/search_form.html:122
 msgid "Rating Below"
 msgstr "ការវាយតម្លៃតិចជាង"
 
@@ -2539,11 +2535,11 @@ msgstr ""
 msgid "Change order"
 msgstr "ប្តូរលំដាប់"
 
-#: cps/templates/shelf.html:67
+#: cps/templates/shelf.html:75
 msgid "Are you sure you want to delete this shelf?"
 msgstr "តើអ្នកពិតជាចង់លុបធ្នើនេះមែនទេ?"
 
-#: cps/templates/shelf.html:70
+#: cps/templates/shelf.html:78
 msgid "Shelf will be deleted for all users"
 msgstr "ធ្នើនេះនឹងបាត់បង់ជាអចិន្ត្រៃយ៍សម្រាប់គ្រប់គ្នា!"
 
