@@ -307,6 +307,7 @@ def before_request():
 
 
 @app.route('/import_ldap_users')
+@login_required
 def import_ldap_users():
     showtext = {}
     try:
