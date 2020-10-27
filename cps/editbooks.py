@@ -27,7 +27,6 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
-from babel import Locale as LC
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required

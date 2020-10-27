@@ -39,7 +39,7 @@ from flask import (
     redirect,
     abort
 )
-from flask_login import current_user, login_required
+from flask_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_

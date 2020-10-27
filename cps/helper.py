@@ -35,7 +35,7 @@ from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text, func
+from sqlalchemy.sql.expression import true, false, and_, text
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from . import calibre_db
