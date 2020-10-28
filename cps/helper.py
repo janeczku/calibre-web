@@ -373,21 +373,24 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
         new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
         try:
             if orignal_filepath:
-                os.renames(os.path.normcase(path),
-                           os.path.normcase(os.path.join(new_path, db_filename)))
+                if not os.path.isdir(new_path):
+                    os.makedirs(new_path)
+                shutil.move(os.path.normcase(path), os.path.normcase(os.path.join(new_path, db_filename)))
                 log.debug("Moving title: %s to %s/%s", path, new_path, new_name)
-            # Check new path is not valid path
-            elif not os.path.exists(new_path):
-                # move original path to new path
-                os.renames(os.path.normcase(path), os.path.normcase(new_path))
-                log.debug("Moving title: %s to %s", path, new_path)
-            else: # path is valid copy only files to new location (merge)
-                log.info("Moving title: %s into existing: %s", path, new_path)
-                # Take all files and subfolder from old path (strange command)
-                for dir_name, __, file_list in os.walk(path):
-                    for file in file_list:
-                        os.renames(os.path.normcase(os.path.join(dir_name, file)),
-                                   os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
+                # Check new path is not valid path
+            else:
+                if not os.path.exists(new_path):
+                    # move original path to new path
+                    log.debug("Moving title: %s to %s", path, new_path)
+                    shutil.move(os.path.normcase(path), os.path.normcase(new_path))
+                else: # path is valid copy only files to new location (merge)
+                    log.info("Moving title: %s into existing: %s", path, new_path)
+                    # Take all files and subfolder from old path (strange command)
+                    for dir_name, __, file_list in os.walk(path):
+                        for file in file_list:
+                            shutil.move(os.path.normcase(os.path.join(dir_name, file)),
+                                            os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
+                            # os.unlink(os.path.normcase(os.path.join(dir_name, file)))
             # change location in database to new author/title path
             localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
         except OSError as ex:
@@ -399,10 +402,12 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
         # Rename all files from old names to new names
         try:
             for file_format in localbook.data:
-                os.renames(os.path.normcase(
+                shutil.move(os.path.normcase(
                     os.path.join(new_path, file_format.name + '.' + file_format.format.lower())),
-                           os.path.normcase(os.path.join(new_path, new_name + '.' + file_format.format.lower())))
+                    os.path.normcase(os.path.join(new_path, new_name + '.' + file_format.format.lower())))
                 file_format.name = new_name
+            if not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
+                shutil.rmtree(os.path.dirname(path))
         except OSError as ex:
             log.error("Rename file in path %s to %s: %s", new_path, new_name, ex)
             log.debug(ex, exc_info=True)
