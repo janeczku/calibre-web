@@ -930,6 +930,7 @@ def convert_bookformat(book_id):
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
+@edit_required
 def edit_list_book(param):
     vals = request.form.to_dict()
     # calibre_db.update_title_sort(config)
