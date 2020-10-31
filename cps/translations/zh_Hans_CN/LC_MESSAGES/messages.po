@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-10-20 17:11+0200\n"
+"POT-Creation-Date: 2020-10-31 19:17+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_CN\n"
@@ -479,75 +479,75 @@ msgstr "删除书籍 %(id)s失败：%(message)s"
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr "删除书籍 %(id)s失败，书籍路径无效：%(path)s"
 
-#: cps/helper.py:397
+#: cps/helper.py:400
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将标题从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:410
+#: cps/helper.py:415
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "从“%(src)s”重命名为“%(dest)s”失败，出错信息：%(error)s"
 
-#: cps/helper.py:435 cps/helper.py:445 cps/helper.py:453
+#: cps/helper.py:440 cps/helper.py:450 cps/helper.py:458
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive上找不到文件 %(file)s"
 
-#: cps/helper.py:474
+#: cps/helper.py:479
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:583
+#: cps/helper.py:588
 msgid "Error Downloading Cover"
 msgstr "下载封面时出错"
 
-#: cps/helper.py:586
+#: cps/helper.py:591
 msgid "Cover Format Error"
 msgstr "封面格式出错"
 
-#: cps/helper.py:601
+#: cps/helper.py:606
 msgid "Failed to create path for cover"
 msgstr "创建封面路径失败"
 
-#: cps/helper.py:606
+#: cps/helper.py:611
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的图片文件，或者无法存储"
 
-#: cps/helper.py:617
+#: cps/helper.py:622
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "仅将jpg、jpeg、png、webp文件作为封面文件"
 
-#: cps/helper.py:631
+#: cps/helper.py:636
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将jpg、jpeg文件作为封面文件"
 
-#: cps/helper.py:679
+#: cps/helper.py:684
 msgid "Unrar binary file not found"
 msgstr "找不到Unrar执行文件"
 
-#: cps/helper.py:693
+#: cps/helper.py:698
 msgid "Error excecuting UnRar"
 msgstr "执行UnRar时出错"
 
-#: cps/helper.py:742
+#: cps/helper.py:747
 msgid "Waiting"
 msgstr "等待中"
 
-#: cps/helper.py:744
+#: cps/helper.py:749
 msgid "Failed"
 msgstr "失败"
 
-#: cps/helper.py:746
+#: cps/helper.py:751
 msgid "Started"
 msgstr "已开始"
 
-#: cps/helper.py:748
+#: cps/helper.py:753
 msgid "Finished"
 msgstr "已完成"
 
-#: cps/helper.py:750
+#: cps/helper.py:755
 msgid "Unknown Status"
 msgstr "未知状态"
 

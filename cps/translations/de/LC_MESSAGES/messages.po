@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-10-20 17:11+0200\n"
+"POT-Creation-Date: 2020-10-31 19:17+0100\n"
 "PO-Revision-Date: 2020-09-26 16:18+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -479,75 +479,75 @@ msgstr "Löschen von Buch %(id)s fehlgeschlagen: %(message)s"
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr "Lösche Buch %(id)s, Pfad zum Buch nicht gültig: %(path)s"
 
-#: cps/helper.py:397
+#: cps/helper.py:400
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Umbenennen des Titels '%(src)s' zu '%(dest)s' schlug fehl: %(error)s"
 
-#: cps/helper.py:410
+#: cps/helper.py:415
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Umbenennen der Datei im Pfad '%(src)s' nach '%(dest)s' ist fehlgeschlagen: %(error)s"
 
-#: cps/helper.py:435 cps/helper.py:445 cps/helper.py:453
+#: cps/helper.py:440 cps/helper.py:450 cps/helper.py:458
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Datei %(file)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:474
+#: cps/helper.py:479
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Buchpfad %(path)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:583
+#: cps/helper.py:588
 msgid "Error Downloading Cover"
 msgstr "Fehler beim Herunterladen des Covers"
 
-#: cps/helper.py:586
+#: cps/helper.py:591
 msgid "Cover Format Error"
 msgstr "Coverdatei fehlerhaft"
 
-#: cps/helper.py:601
+#: cps/helper.py:606
 msgid "Failed to create path for cover"
 msgstr "Fehler beim Erzeugen des Ordners für die Coverdatei"
 
-#: cps/helper.py:606
+#: cps/helper.py:611
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Cover Datei ist keine gültige Bilddatei, kann nicht gespeichert werden"
 
-#: cps/helper.py:617
+#: cps/helper.py:622
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Es werden nur jpg/jpeg/png/webp Dateien als Cover untertützt"
 
-#: cps/helper.py:631
+#: cps/helper.py:636
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Es werden nur jpg/jpeg Dateien als Cover untertützt"
 
-#: cps/helper.py:679
+#: cps/helper.py:684
 msgid "Unrar binary file not found"
 msgstr "UnRar Programm nicht gefunden"
 
-#: cps/helper.py:693
+#: cps/helper.py:698
 msgid "Error excecuting UnRar"
 msgstr "Fehler beim ausführen von UnRar"
 
-#: cps/helper.py:742
+#: cps/helper.py:747
 msgid "Waiting"
 msgstr "Wartend"
 
-#: cps/helper.py:744
+#: cps/helper.py:749
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: cps/helper.py:746
+#: cps/helper.py:751
 msgid "Started"
 msgstr "Gestartet"
 
-#: cps/helper.py:748
+#: cps/helper.py:753
 msgid "Finished"
 msgstr "Beendet"
 
-#: cps/helper.py:750
+#: cps/helper.py:755
 msgid "Unknown Status"
 msgstr "Unbekannter Status"
 
