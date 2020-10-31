@@ -929,6 +929,7 @@ def convert_bookformat(book_id):
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
+@edit_required
 def edit_list_book(param):
     vals = request.form.to_dict()
     # calibre_db.update_title_sort(config)
@@ -988,6 +989,7 @@ def get_sorted_entry(field, bookid):
 
 @editbook.route("/ajax/simulatemerge", methods=['POST'])
 @login_required
+@edit_required
 def simulate_merge_list_book():
     vals = request.get_json().get('Merge_books')
     if vals:
@@ -1003,6 +1005,7 @@ def simulate_merge_list_book():
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required
+@edit_required
 def merge_list_book():
     vals = request.get_json().get('Merge_books')
     to_file = list()
