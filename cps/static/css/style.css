@@ -143,6 +143,12 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   color: #444;
 }
 
+.container-fluid .book .meta .series {
+  font-weight: 400;
+  font-size: 12px;
+  color: #444;
+}
+
 .container-fluid .book .meta .author {
   font-size: 12px;
   color: #999;

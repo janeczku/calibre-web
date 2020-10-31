@@ -831,7 +831,10 @@ body:not(.read-frame) {
     font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: 400;
     overflow: hidden;
-    margin: 0
+    margin: 0;
+    /* scroll bar fix for firefox  */
+    scrollbar-color: hsla(0, 0%, 100%, .2) transparent; 
+    scrollbar-width: thin;
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > div {
@@ -2174,7 +2177,7 @@ body.langlist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e034"
 }
 
-body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
     top: 60px;
     font-size: 24px;
     color: #eee;
@@ -2244,10 +2247,14 @@ body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before
     content: "Languages"
 }
 
-body.advsearch > div.container-fluid > div > div.col-sm-10:before {
-    content: "Advanced Search";
-    margin-left: 20%;
-    left: 0
+body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
+    padding: 15px 10px 15px 40px;
+} 
+
+@media screen and (max-width: 992px) {
+    body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
+        padding-left: 20px;
+    }
 }
 
 body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
@@ -3500,6 +3507,20 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     padding-right: 25px !important
+}
+
+body.shelf-down > .discover > h2 {
+    color: inherit;
+    margin-bottom: 20px;
+}
+
+body.shelf-down > .discover > .row > .book.col-sm-3.col-lg-2.col-xs-6 {
+    max-width: 225px !important;
+    width: 225px !important;
+}
+
+body.shelf-down .btn-group button#btnGroupDrop1 {
+    height: 50px;
 }
 
 .author > .container-fluid > .row-fluid > .col-sm-10 > h2:before, .plexBack > a {

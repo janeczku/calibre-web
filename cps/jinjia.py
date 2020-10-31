@@ -25,7 +25,6 @@
 from __future__ import division, print_function, unicode_literals
 import datetime
 import mimetypes
-import re
 
 from babel.dates import format_date
 from flask import Blueprint, request, url_for
@@ -110,9 +109,21 @@ def timestamptodate(date, fmt=None):
 def yesno(value, yes, no):
     return yes if value else no
 
+
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
     formatedstring = '%d' % value
     if (value % 1) != 0:
         formatedstring = ('%s.%d' % (formatedstring, (value % 1) * 10**decimals)).rstrip('0')
     return formatedstring
+
+
+@jinjia.app_template_filter('formatseriesindex')
+def formatseriesindex_filter(series_index):
+    if series_index:
+        if int(series_index) - series_index == 0:
+            return int(series_index)
+        else:
+            return series_index
+    return 0
+

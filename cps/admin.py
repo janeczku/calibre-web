@@ -799,7 +799,7 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
         flash(_(u"Settings DB is not Writeable"), category="error")
 
 
-def _handle_edit_user(to_save, content,languages, translations, kobo_support, downloads):
+def _handle_edit_user(to_save, content,languages, translations, kobo_support):
     if "delete" in to_save:
         if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
@@ -858,7 +858,6 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support, do
                                              kobo_support=kobo_support,
                                              new_user=0,
                                              content=content,
-                                             downloads=downloads,
                                              registered_oauth=oauth_check,
                                              title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
         if "nickname" in to_save and to_save["nickname"] != content.nickname:
@@ -872,7 +871,6 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support, do
                                              languages=languages,
                                              mail_configured=config.get_mail_server_configured(),
                                              new_user=0, content=content,
-                                             downloads=downloads,
                                              registered_oauth=oauth_check,
                                              kobo_support=kobo_support,
                                              title=_(u"Edit User %(nick)s", nick=content.nickname),
@@ -961,28 +959,20 @@ def update_mailsettings():
 @admin_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
-    if not content:
+    if not content or (not config.config_anonbrowse and content.nickname == "Guest"):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
-    downloads = list()
     languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    for book in content.downloads:
-        downloadbook = calibre_db.get_book(book.book_id)
-        if downloadbook:
-            downloads.append(downloadbook)
-        else:
-            ub.delete_download(book.book_id)
     if request.method == "POST":
         to_save = request.form.to_dict()
-        _handle_edit_user(to_save, content, languages, translations, kobo_support, downloads)
+        _handle_edit_user(to_save, content, languages, translations, kobo_support)
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  languages=languages,
                                  new_user=0,
                                  content=content,
-                                 downloads=downloads,
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
@@ -1039,7 +1029,8 @@ def send_logfile(logtype):
 
 
 @admi.route("/get_update_status", methods=['GET'])
-@login_required_if_no_ano
+@login_required
+@admin_required
 def get_update_status():
     log.info(u"Update status requested")
     return updater_thread.get_available_updates(request.method, locale=get_locale())
