@@ -147,7 +147,7 @@ class Identifiers(Base):
         elif format_type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
-            return u" https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
+            return u"https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
             return u"https://www.litres.ru/{0}".format(self.val)
         elif format_type == "issn":
@@ -687,9 +687,7 @@ class CalibreDB():
             limit_all = result_count
 
         ub.store_ids(result)
-
-
-        return result[offset:limit_all], result_count, pagination,
+        return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None):

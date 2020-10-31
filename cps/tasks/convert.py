@@ -8,7 +8,7 @@ from shutil import copyfile
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
+from cps.services.worker import CalibreTask
 from cps import calibre_db, db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
