@@ -25,7 +25,6 @@
 from __future__ import division, print_function, unicode_literals
 import datetime
 import mimetypes
-import re
 
 from babel.dates import format_date
 from flask import Blueprint, request, url_for
