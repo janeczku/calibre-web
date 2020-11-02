@@ -41,7 +41,7 @@ from flask_login import login_user, logout_user, login_required, current_user, c
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
-from werkzeug.exceptions import default_exceptions, InternalServerError
+from werkzeug.exceptions import default_exceptions
 from sqlalchemy.sql.functions import coalesce
 
 from .services.worker import WorkerThread
@@ -307,12 +307,14 @@ def before_request():
 
 
 @app.route('/import_ldap_users')
+@login_required
+@admin_required
 def import_ldap_users():
     showtext = {}
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
     except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.debug(e)
+        log.exception(e)
         showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
         return json.dumps(showtext)
     if not new_users:

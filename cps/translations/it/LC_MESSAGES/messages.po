@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-10-20 17:11+0200\n"
+"POT-Creation-Date: 2020-10-31 19:17+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -351,7 +351,7 @@ msgstr "Ho aggiunto il formato %(ext)s al libro %(book)s"
 
 #: cps/editbooks.py:673
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr ""
+msgstr "Gli identificatori non tengono conto delle lettere maiuscole o minuscole, sovrascrivo l'identificatore precedente"
 
 #: cps/editbooks.py:710
 msgid "Metadata successfully updated"
@@ -478,75 +478,75 @@ msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr "Eliminazione del libro %(id)s. Il percorso del libro non è valido: %(path)s"
 
-#: cps/helper.py:397
+#: cps/helper.py:400
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:410
+#: cps/helper.py:415
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del file nella cartella da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:435 cps/helper.py:445 cps/helper.py:453
+#: cps/helper.py:440 cps/helper.py:450 cps/helper.py:458
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "File %(file)s non trovato su Google Drive"
 
-#: cps/helper.py:474
+#: cps/helper.py:479
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
-#: cps/helper.py:583
+#: cps/helper.py:588
 msgid "Error Downloading Cover"
 msgstr "Errore nello scaricare la copertina"
 
-#: cps/helper.py:586
+#: cps/helper.py:591
 msgid "Cover Format Error"
 msgstr "Errore di formato della copertina"
 
-#: cps/helper.py:601
+#: cps/helper.py:606
 msgid "Failed to create path for cover"
 msgstr "Errore nel creare la cartella per la copertina"
 
-#: cps/helper.py:606
+#: cps/helper.py:611
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
 
-#: cps/helper.py:617
+#: cps/helper.py:622
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg/png/webp sono supportati per le copertine"
 
-#: cps/helper.py:631
+#: cps/helper.py:636
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
-#: cps/helper.py:679
+#: cps/helper.py:684
 msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
-#: cps/helper.py:693
+#: cps/helper.py:698
 msgid "Error excecuting UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:742
+#: cps/helper.py:747
 msgid "Waiting"
 msgstr "Attendi"
 
-#: cps/helper.py:744
+#: cps/helper.py:749
 msgid "Failed"
 msgstr "Non riuscito"
 
-#: cps/helper.py:746
+#: cps/helper.py:751
 msgid "Started"
 msgstr "Avviato"
 
-#: cps/helper.py:748
+#: cps/helper.py:753
 msgid "Finished"
 msgstr "Terminato"
 
-#: cps/helper.py:750
+#: cps/helper.py:755
 msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
@@ -733,11 +733,11 @@ msgstr "Mostra l'opzione per la selezione dei libri più popolari"
 
 #: cps/ub.py:74
 msgid "Downloaded Books"
-msgstr ""
+msgstr "Libri scaricati"
 
 #: cps/ub.py:76
 msgid "Show Downloaded Books"
-msgstr ""
+msgstr "Mostra l'opzione per la visualizzazione dei libri scaricati"
 
 #: cps/templates/index.xml:24 cps/ub.py:79 cps/web.py:639
 msgid "Top Rated Books"
@@ -844,11 +844,11 @@ msgstr "Mostra l'opzione per la selezione dei libri archiviati"
 
 #: cps/ub.py:120
 msgid "Books List"
-msgstr ""
+msgstr "Elenco libri"
 
 #: cps/ub.py:122
 msgid "Show Books List"
-msgstr ""
+msgstr "Mostra l'opzione per visualizzare i libri sottoforma di elenco"
 
 #: cps/updater.py:295 cps/updater.py:306 cps/updater.py:407 cps/updater.py:421
 msgid "Unexpected data while reading update information"
@@ -915,7 +915,7 @@ msgstr "I libri più richiesti"
 #: cps/web.py:748
 #, python-format
 msgid "Downloaded books by %(user)s"
-msgstr ""
+msgstr "Libri scaricati da %(user)s"
 
 #: cps/web.py:762
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
@@ -973,7 +973,7 @@ msgstr "Cerca"
 
 #: cps/web.py:998
 msgid "Books list"
-msgstr ""
+msgstr "Elenco dei libri"
 
 #: cps/web.py:1136
 msgid "Ratings list"
@@ -1109,11 +1109,11 @@ msgstr "Non ho trovato il convertitore %(tool)s di libri di Calibre"
 #: cps/tasks/convert.py:127
 #, python-format
 msgid "%(format)s format not found on disk"
-msgstr ""
+msgstr "Non ho trovato il formato %(format)s nel disco"
 
 #: cps/tasks/convert.py:130
 msgid "Ebook converter failed with unknown error"
-msgstr ""
+msgstr "La conversione del libro è terminata con un errore sconosciuto"
 
 #: cps/tasks/convert.py:140
 #, python-format
@@ -1123,7 +1123,7 @@ msgstr "Si è verificato un errore con il convertitore Kepubify: %(error)s"
 #: cps/tasks/convert.py:164
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Non ho trovato il file convertito o più di un file nella cartella %(folder)s"
+msgstr "Non ho trovato il file convertito o ci sono più di un file nella cartella %(folder)s"
 
 #: cps/tasks/convert.py:187
 #, python-format
@@ -1133,7 +1133,7 @@ msgstr "Errore nel convertitore: %(error)s"
 #: cps/tasks/convert.py:212
 #, python-format
 msgid "Calibre failed with error: %(error)s"
-msgstr ""
+msgstr "Si è verificato un errore con Calibre: %(error)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1537,27 +1537,27 @@ msgstr "Nessun risultato! Prova con un altro criterio di ricerca."
 
 #: cps/templates/book_table.html:10 cps/templates/book_table.html:52
 msgid "This Field is Required"
-msgstr ""
+msgstr "Questo campo è obbligatorio"
 
 #: cps/templates/book_table.html:23
 msgid "Merge selected books"
-msgstr ""
+msgstr "Unisci i libri selezionati"
 
 #: cps/templates/book_table.html:24
 msgid "Remove Selections"
-msgstr ""
+msgstr "Rimuovi le selezioni"
 
 #: cps/templates/book_table.html:30
 msgid "Update Title Sort automatically"
-msgstr ""
+msgstr "Aggiorna l'ordinamento dei titoli automaticamente"
 
 #: cps/templates/book_table.html:34
 msgid "Update Author Sort automatically"
-msgstr ""
+msgstr "Aggiorna l'ordinamento degli autori automaticamente"
 
 #: cps/templates/book_table.html:46
 msgid "Enter Title"
-msgstr ""
+msgstr "Indica il titolo"
 
 #: cps/templates/book_table.html:46 cps/templates/config_view_edit.html:23
 #: cps/templates/shelf_edit.html:7
@@ -1566,51 +1566,51 @@ msgstr "Titolo"
 
 #: cps/templates/book_table.html:47
 msgid "Enter Title Sort"
-msgstr ""
+msgstr "Indica l'ordinamento del titolo"
 
 #: cps/templates/book_table.html:47
 msgid "Title Sort"
-msgstr ""
+msgstr "Ordinamento del titolo"
 
 #: cps/templates/book_table.html:48
 msgid "Enter Author Sort"
-msgstr ""
+msgstr "Indica l'ordinamento dell'autore"
 
 #: cps/templates/book_table.html:48
 msgid "Author Sort"
-msgstr ""
+msgstr "Ordinamento dell'autore"
 
 #: cps/templates/book_table.html:49
 msgid "Enter Authors"
-msgstr ""
+msgstr "Indica gli autori"
 
 #: cps/templates/book_table.html:50
 msgid "Enter Categories"
-msgstr ""
+msgstr "Indica le categorie"
 
 #: cps/templates/book_table.html:51
 msgid "Enter Series"
-msgstr ""
+msgstr "Indica le serie"
 
 #: cps/templates/book_table.html:52
 msgid "Enter title"
-msgstr ""
+msgstr "Indica il titolo"
 
 #: cps/templates/book_table.html:52
 msgid "Series Index"
-msgstr ""
+msgstr "Indice delle serie"
 
 #: cps/templates/book_table.html:53
 msgid "Enter Languages"
-msgstr ""
+msgstr "Indica le lingue"
 
 #: cps/templates/book_table.html:54
 msgid "Publishing Date"
-msgstr ""
+msgstr "Data di pubblicazione"
 
 #: cps/templates/book_table.html:55
 msgid "Enter Publishers"
-msgstr ""
+msgstr "Indica gli editori"
 
 #: cps/templates/book_table.html:70 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
@@ -1618,15 +1618,15 @@ msgstr "Sei davvero sicuro?"
 
 #: cps/templates/book_table.html:74
 msgid "Books with Title will be merged from:"
-msgstr ""
+msgstr "I libri con il titolo vengono uniti da:"
 
 #: cps/templates/book_table.html:78
 msgid "Into Book with Title:"
-msgstr ""
+msgstr "Nel libro con il titolo:"
 
 #: cps/templates/book_table.html:83
 msgid "Merge"
-msgstr ""
+msgstr "Unisci"
 
 #: cps/templates/config_edit.html:12
 msgid "Library Configuration"
@@ -1638,7 +1638,7 @@ msgstr "Posizione del database di Calibre"
 
 #: cps/templates/config_edit.html:28
 msgid "Use Google Drive?"
-msgstr "Utilizzo Google Drive?"
+msgstr "Utilizza Google Drive"
 
 #: cps/templates/config_edit.html:34
 msgid "Google Drive config problem"
@@ -1718,7 +1718,7 @@ msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:165
 msgid "Enable Uploads"
-msgstr "Abilita il caricamento"
+msgstr "Abilita l'upload /il caricamento"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
@@ -2307,7 +2307,7 @@ msgstr "Seleziona i valori personali consentiti/negati per le colonne dell'utent
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
-msgstr "Digita categorie"
+msgstr "Indica le categorie"
 
 #: cps/templates/modal_dialogs.html:24
 msgid "Add View Restriction"
@@ -2315,7 +2315,7 @@ msgstr "Aggiungi restrizioni di visualizzazione"
 
 #: cps/templates/modal_dialogs.html:50
 msgid "This book format will be permanently erased from database"
-msgstr ""
+msgstr "Questo formato di libro viene rimosso definitivamente dal database"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
@@ -2475,7 +2475,7 @@ msgstr "Il link scadrà tra 10 minuti."
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr "Nessun risultato"
+msgstr "Nessun risultato trovato"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"

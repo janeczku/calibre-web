@@ -19,7 +19,6 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
-import json
 import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
