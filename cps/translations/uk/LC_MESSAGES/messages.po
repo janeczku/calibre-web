@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2020-10-20 17:11+0200\n"
+"POT-Creation-Date: 2020-10-31 19:17+0100\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -478,75 +478,75 @@ msgstr ""
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:397
+#: cps/helper.py:400
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:410
+#: cps/helper.py:415
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:435 cps/helper.py:445 cps/helper.py:453
+#: cps/helper.py:440 cps/helper.py:450 cps/helper.py:458
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:474
+#: cps/helper.py:479
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:583
+#: cps/helper.py:588
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:586
+#: cps/helper.py:591
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:601
+#: cps/helper.py:606
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:606
+#: cps/helper.py:611
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:617
+#: cps/helper.py:622
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:631
+#: cps/helper.py:636
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:679
+#: cps/helper.py:684
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:693
+#: cps/helper.py:698
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:742
+#: cps/helper.py:747
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:744
+#: cps/helper.py:749
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:746
+#: cps/helper.py:751
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:748
+#: cps/helper.py:753
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:750
+#: cps/helper.py:755
 msgid "Unknown Status"
 msgstr ""
 
