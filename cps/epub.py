@@ -66,11 +66,11 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
             if s == 'creator':
-                epub_metadata[s] = ' & '.join(split_authors(p.xpath('dc:%s/text()' % s, namespaces=ns)))
+                epub_metadata[s] = ' & '.join(split_authors(tmp))
             elif s == 'subject':
-                epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+                epub_metadata[s] = ', '.join(tmp)
             else:
-                epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
+                epub_metadata[s] = tmp[0]
         else:
             epub_metadata[s] = u'Unknown'
 
