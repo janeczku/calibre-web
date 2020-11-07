@@ -119,7 +119,11 @@ def redirect_or_proxy_request():
 
 
 def convert_to_kobo_timestamp_string(timestamp):
-    return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except AttributeError as exc:
+        log.debug("Timestamp not valid: {}".format(exc))
+        return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @kobo.route("/v1/library/sync")
