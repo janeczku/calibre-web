@@ -405,7 +405,7 @@ def edit_book_languages(languages, book, upload=False):
         # the book it's language is set to the filter language
         if input_l[0] != current_user.filter_language() and current_user.filter_language() != "all":
             input_l[0] = calibre_db.session.query(db.Languages). \
-                filter(db.Languages.lang_code == current_user.filter_language()).first()
+                filter(db.Languages.lang_code == current_user.filter_language()).first().lang_code
     # Remove duplicates
     input_l = helper.uniq(input_l)
     return modify_database_object(input_l, book.languages, db.Languages, calibre_db.session, 'languages')

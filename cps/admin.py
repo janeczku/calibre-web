@@ -131,8 +131,9 @@ def admin():
 
     allUser = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
-                                 feature_support=feature_support,
+                                 feature_support=feature_support, kobo_support=kobo_support,
                                  title=_(u"Admin page"), page="admin")
 
 

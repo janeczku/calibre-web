@@ -88,7 +88,7 @@
             <div class="col-xs-6 col-sm-6">{{_('Port')}}</div>
             <div class="col-xs-6 col-sm-6">{{config.config_port}}</div>
         </div>
-        {% if feature_support['kobo'] and config.config_port != config.config_external_port %}
+        {% if kobo_support and config.config_port != config.config_external_port %}
         <div class="row">
           <div class="col-xs-6 col-sm-6">{{_('External Port')}}</div>
           <div class="col-xs-6 col-sm-6">{{config.config_external_port}}</div>
