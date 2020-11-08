@@ -172,20 +172,36 @@ $(function() {
         layoutMode : "fitColumns"
     });
 
-
-    var $loadMore = $(".load-more .row").infiniteScroll({
-        debug: false,
-        // selector for the paged navigation (it will be hidden)
-        path : ".next",
-        // selector for the NEXT link (to page 2)
-        append : ".load-more .book"
-        //animate      : true, # ToDo: Reenable function
-        //extraScrollPx: 300
-    });
-    $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
-        $(".pagination").addClass("hidden");
-        $(".load-more .row").isotope( "appended", $(data), null );
-    });
+    if ($(".load-more").length && $(".next").length) {
+        var $loadMore = $(".load-more .row").infiniteScroll({
+            debug: false,
+            // selector for the paged navigation (it will be hidden)
+            path : ".next",
+            // selector for the NEXT link (to page 2)
+            append : ".load-more .book"
+            //animate      : true, # ToDo: Reenable function
+            //extraScrollPx: 300
+        });
+        $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
+            if ($("body").hasClass("blur")) {
+                $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+            }
+            $(".load-more .row").isotope( "appended", $(data), null );
+        });
+    
+        // fix for infinite scroll on CaliBlur Theme (#981)
+        if ($("body").hasClass("blur")) {
+            $(".col-sm-10").bind("scroll", function () {
+                if (
+                    $(this).scrollTop() + $(this).innerHeight() >=
+                    $(this)[0].scrollHeight
+                ) {
+                    $loadMore.infiniteScroll("loadNextPage");
+                    window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
+                }
+            });
+        }
+    }
 
     $("#restart").click(function() {
         $.ajax({
