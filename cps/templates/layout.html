@@ -166,7 +166,7 @@
               {% endif %}
             {% endfor %}
             {% if pagination.has_next %}
-              <li class="page-item page-next"><a class="page-link" aria-label="next page" href="{{ (pagination.page + 1)|url_for_other_page
+              <li class="page-item page-next"><a class="page-link next" aria-label="next page" href="{{ (pagination.page + 1)|url_for_other_page
                 }}">{{_('Next')}} &raquo;</a></li>
             {% endif %}
             </div>
