@@ -1233,7 +1233,7 @@ msgstr "Port du serveur SMTP"
 
 #: cps/templates/admin.html:59 cps/templates/email_edit.html:19
 msgid "Encryption"
-msgstr "Cryptage"
+msgstr "Chiffrement"
 
 #: cps/templates/admin.html:60 cps/templates/email_edit.html:27
 msgid "SMTP Login"
@@ -1817,7 +1817,7 @@ msgstr "Port du serveur LDAP"
 
 #: cps/templates/config_edit.html:259
 msgid "LDAP Encryption"
-msgstr "Cryptage LDAP"
+msgstr "Chiffrement LDAP"
 
 #: cps/templates/config_edit.html:261 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
