@@ -1874,7 +1874,7 @@ msgstr "Est-ce que le serveur LDAP est OpenLDAP?"
 
 #: cps/templates/config_edit.html:304
 msgid "Following Settings are Needed For User Import"
-msgstr "Les paramètres suivant sont nécessaire pour importer un utilisateur"
+msgstr "Les paramètres suivant sont nécessaires pour importer un utilisateur"
 
 #: cps/templates/config_edit.html:306
 msgid "LDAP Group Object Filter"
