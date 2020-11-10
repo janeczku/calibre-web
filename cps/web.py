@@ -293,6 +293,7 @@ def edit_required(f):
 def before_request():
     if current_user.is_authenticated:
         confirm_login()
+    g.constants = constants
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
