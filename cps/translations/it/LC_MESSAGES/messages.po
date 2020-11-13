@@ -174,7 +174,7 @@ msgstr "Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruol
 
 #: cps/admin.py:853 cps/web.py:1793
 msgid "Found an existing account for this e-mail address."
-msgstr "Ho trovato un account creato in precedenza con questo e-mail."
+msgstr "Ho trovato un account creato in precedenza con questa e-mail."
 
 #: cps/admin.py:862 cps/admin.py:876 cps/admin.py:979 cps/web.py:1769
 #, python-format
@@ -313,7 +313,7 @@ msgstr "Errore durante l'apertura del libro. Il file non esiste o il file non è
 
 #: cps/editbooks.py:327
 msgid "edit metadata"
-msgstr "Modifica i metadati"
+msgstr "modifica i metadati"
 
 #: cps/editbooks.py:402
 #, python-format
@@ -610,11 +610,11 @@ msgstr "Non collegato a %(oauth)s"
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
-msgstr "GitHub errore Oauth, per favore riprova più tardi."
+msgstr "GitHub, errore Oauth: per favore riprova più tardi."
 
 #: cps/oauth_bb.py:337
 msgid "Google Oauth error, please retry later."
-msgstr "Google errore Oauth, per favore riprova più tardi."
+msgstr "Google, errore Oauth: per favore riprova più tardi."
 
 #: cps/shelf.py:67 cps/shelf.py:120
 msgid "Invalid shelf specified"
@@ -1047,7 +1047,7 @@ msgstr "Non posso attivare l'autenticazione LDAP"
 #: cps/web.py:1572
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Login come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
+msgstr "Fallback login come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
 
 #: cps/web.py:1578
 #, python-format
@@ -1218,7 +1218,7 @@ msgstr "Porta SMTP"
 
 #: cps/templates/admin.html:59 cps/templates/email_edit.html:19
 msgid "Encryption"
-msgstr "SSL"
+msgstr "Crittografia"
 
 #: cps/templates/admin.html:60 cps/templates/email_edit.html:27
 msgid "SMTP Login"
@@ -1294,7 +1294,7 @@ msgstr "Visualizza Logfile"
 
 #: cps/templates/admin.html:139
 msgid "Reconnect Calibre Database"
-msgstr "Ricollega al database di Calibre"
+msgstr "Ricollega il database di Calibre"
 
 #: cps/templates/admin.html:140
 msgid "Restart"
@@ -1454,7 +1454,7 @@ msgstr "Valutazione"
 
 #: cps/templates/book_edit.html:98
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Carica la copertina da URL (jpg, l'immagine della copertina viene caricata e salvata nel database)"
+msgstr "Carica la copertina da URL (jpg, l'immagine della copertina viene scaricata e salvata nel database)"
 
 #: cps/templates/book_edit.html:102
 msgid "Upload Cover from Local Disk"
@@ -1489,7 +1489,7 @@ msgstr "Carica formato"
 
 #: cps/templates/book_edit.html:187
 msgid "View Book on Save"
-msgstr "visualizza il libro dopo la modifica"
+msgstr "Visualizza il libro dopo la modifica"
 
 #: cps/templates/book_edit.html:190 cps/templates/book_edit.html:207
 msgid "Fetch Metadata"
@@ -1511,7 +1511,7 @@ msgstr " ricerca parola chiave "
 
 #: cps/templates/book_edit.html:217
 msgid "Click the cover to load metadata to the form"
-msgstr "Fai clic sulla copertina per caricare i metadati presenti nel modulo"
+msgstr "Fai clic sulla copertina per caricare i metadati nel modulo"
 
 #: cps/templates/book_edit.html:232 cps/templates/book_edit.html:272
 msgid "Loading..."
@@ -1549,11 +1549,11 @@ msgstr "Rimuovi le selezioni"
 
 #: cps/templates/book_table.html:30
 msgid "Update Title Sort automatically"
-msgstr "Aggiorna l'ordinamento dei titoli automaticamente"
+msgstr "Aggiorna automaticamente l'ordinamento dei titoli"
 
 #: cps/templates/book_table.html:34
 msgid "Update Author Sort automatically"
-msgstr "Aggiorna l'ordinamento degli autori automaticamente"
+msgstr "Aggiorna automaticamente l'ordinamento degli autori"
 
 #: cps/templates/book_table.html:46
 msgid "Enter Title"
@@ -1718,7 +1718,7 @@ msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:165
 msgid "Enable Uploads"
-msgstr "Abilita l'upload /il caricamento"
+msgstr "Abilita l'upload/il caricamento"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
@@ -1802,7 +1802,7 @@ msgstr "Porta del server LDAP"
 
 #: cps/templates/config_edit.html:259
 msgid "LDAP Encryption"
-msgstr "Cifratura LDAP"
+msgstr "Crittografia LDAP"
 
 #: cps/templates/config_edit.html:261 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
@@ -2327,7 +2327,7 @@ msgstr "e dal disco rigido"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Oservazione importante riguardo Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
+msgstr "Oservazione importante riguardo a Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
@@ -2355,7 +2355,7 @@ msgstr "Pagina successiva"
 
 #: cps/templates/readcbr.html:98
 msgid "Scale to Best"
-msgstr "Adatta al migliore"
+msgstr "Adatta al meglio"
 
 #: cps/templates/readcbr.html:99
 msgid "Scale to Width"
@@ -2367,7 +2367,7 @@ msgstr "Adatta all'altezza"
 
 #: cps/templates/readcbr.html:101
 msgid "Scale to Native"
-msgstr "Dimensione originale"
+msgstr "Scala alla dimensione originale"
 
 #: cps/templates/readcbr.html:102
 msgid "Rotate Right"
@@ -2483,7 +2483,7 @@ msgstr "Termine di ricerca:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
-msgstr "risultati per:"
+msgstr "Risultati per:"
 
 #: cps/templates/search_form.html:20
 msgid "Published Date From"
@@ -2539,7 +2539,7 @@ msgstr "Vuoi davvero eliminare questo scaffale?"
 
 #: cps/templates/shelf.html:78
 msgid "Shelf will be deleted for all users"
-msgstr "Lo scaffale sarà perso per tutti e per sempre!"
+msgstr "Lo scaffale verrà eliminato per tutti gli utenti"
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
