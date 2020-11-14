@@ -62,14 +62,12 @@ def _cover_processing(tmp_file_name, img, extension):
             im.save(tmp_bytesio, format='JPEG')
             img = tmp_bytesio.getvalue()
 
-    prefix = os.path.dirname(tmp_file_name)
-    if img:
-        tmp_cover_name = prefix + '/cover.jpg'
-        image = open(tmp_cover_name, 'wb')
-        image.write(img)
-        image.close()
-    else:
-        tmp_cover_name = None
+    if not img:
+        return None
+
+    tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
+    with open(tmp_cover_name, 'wb') as f:
+        f.write(img)
     return tmp_cover_name
 
 
