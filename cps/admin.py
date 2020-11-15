@@ -646,7 +646,9 @@ def _configuration_update_helper():
             return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
         _config_checkbox_int(to_save, "config_uploading")
-        _config_checkbox_int(to_save, "config_anonbrowse")
+        # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
+        reboot_required |=  (_config_checkbox_int(to_save, "config_anonbrowse")
+                             and config.config_login_type == constants.LOGIN_LDAP)
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
