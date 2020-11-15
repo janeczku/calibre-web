@@ -5,12 +5,12 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<link type="text/css" rel="stylesheet" href="Djvu_html5.css">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='js/libs/djvu_html5/Djvu_html5.css') }}">
 
 <title>Djvu HTML5 browser demo</title>
 
 <script type="text/javascript" language="javascript"
-	src="djvu_html5/djvu_html5.nocache.js"></script>
+	src="{{ url_for('static', filename='js/libs/djvu_html5/djvu_html5/djvu_html5.nocache.js') }}"></script>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
 			application to display correctly.</div>
 	</noscript>
 
-	<div id="djvuContainer" file="sample/DjVu_Tech_Primer.djvu"></div>
+	<div id="djvuContainer" file="{{ url_for('web.serve_book', book_id=djvufile,book_format='djvu') }}"></div>
 	<script type="text/javascript">
 	var DJVU_CONTEXT = {
 			background: "#666",
