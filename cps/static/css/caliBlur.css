@@ -637,18 +637,18 @@ div[aria-label="Edit/Delete book"] > .btn > span:hover {
     color: var(--color-primary)
 }
 
-.book {
+/* .book {
     width: 225px;
     max-width: 225px;
     position: relative !important;
-    left: auto !important;
+    left: auto !important; 
     top: auto !important;
     -webkit-transform: none !important;
     -ms-transform: none !important;
     transform: none !important;
     min-width: 225px;
     display: block
-}
+} */
 
 #infscr-loading img, body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope:after, body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope:before {
     display: none

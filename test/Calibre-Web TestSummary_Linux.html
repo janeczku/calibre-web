@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-10-10 07:47:35</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-10-31 14:09:56</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-10-10 09:47:24</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-10-31 16:09:08</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 37 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>1h 36 min</p>
         </div>
       </div>
       </div>
@@ -102,12 +102,12 @@
     </tr>
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestAnonymous</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c1', 13)">Detail</a>
@@ -215,31 +215,11 @@
     
     
     
-        <tr id="et1.12" class="none bg-info">
+        <tr id='pt1.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestAnonymous - test_guest_restricted_settings_visibility</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et1.12')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et1.12" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et1.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_anonymous.py", line 312, in test_guest_restricted_settings_visibility
-    self.assertIsNone(rights['show_65536'])
-KeyError: 'show_65536'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1107,7 +1087,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
 
     <tr id="su" class="passClass">
-        <td>TestEditBooks</td>
+        <td>TestEditBooksList</td>
         <td class="text-center">3</td>
         <td class="text-center">3</td>
         <td class="text-center">0</td>
@@ -1122,7 +1102,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
         <tr id='pt9.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooks - test_edit_books_list</div>
+                <div class='testcase'>TestEditBooksList - test_edit_books_list</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1131,7 +1111,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
         <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooks - test_list_visibility</div>
+                <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1140,7 +1120,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
         <tr id='pt9.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooks - test_merge_book</div>
+                <div class='testcase'>TestEditBooksList - test_merge_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1341,7 +1321,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 719, in test_upload_cover_hdd
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 721, in test_upload_cover_hdd
     self.assertTrue(False, "Browser-Cache Problem: Old Cover is displayed instead of New Cover")
 AssertionError: False is not true : Browser-Cache Problem: Old Cover is displayed instead of New Cover</pre>
                     </div>
@@ -1523,165 +1503,6 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
 
     <tr id="su" class="passClass">
-        <td>TestCalibreHelper</td>
-        <td class="text-center">16</td>
-        <td class="text-center">16</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c15', 16)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt15.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_author_sort</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.11' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.12' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_high23</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.13' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.14' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_random_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_split_authors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt15.16' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">8</td>
         <td class="text-center">8</td>
@@ -1689,13 +1510,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 8)">Detail</a>
+            <a onclick="showClassDetail('c15', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -1704,7 +1525,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -1713,7 +1534,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt15.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -1722,7 +1543,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.4' class='hiddenRow bg-success'>
+        <tr id='pt15.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -1731,7 +1552,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.5' class='hiddenRow bg-success'>
+        <tr id='pt15.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -1740,7 +1561,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.6' class='hiddenRow bg-success'>
+        <tr id='pt15.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -1749,7 +1570,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.7' class='hiddenRow bg-success'>
+        <tr id='pt15.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -1758,7 +1579,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt16.8' class='hiddenRow bg-success'>
+        <tr id='pt15.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -1776,13 +1597,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 11)">Detail</a>
+            <a onclick="showClassDetail('c16', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -1791,19 +1612,19 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id="st17.2" class="none bg-warning">
+        <tr id="st16.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st17.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st16.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st17.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st16.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st17.2').style.display='none'"><span
+                                onclick='document.getElementById('div_st16.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1817,7 +1638,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -1826,7 +1647,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -1835,7 +1656,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -1844,7 +1665,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -1853,7 +1674,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt16.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -1862,7 +1683,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt16.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -1871,7 +1692,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt16.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -1880,7 +1701,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.10' class='hiddenRow bg-success'>
+        <tr id='pt16.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -1889,7 +1710,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt17.11' class='hiddenRow bg-success'>
+        <tr id='pt16.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -1907,13 +1728,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 7)">Detail</a>
+            <a onclick="showClassDetail('c17', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -1922,7 +1743,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -1931,7 +1752,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -1940,19 +1761,19 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id="st18.4" class="none bg-warning">
+        <tr id="st17.4" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.4')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st17.4')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st18.4" class="popup_window test_output" style="display:none;">
+                <div id="div_st17.4" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st18.4').style.display='none'"><span
+                                onclick='document.getElementById('div_st17.4').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1966,7 +1787,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt17.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -1975,7 +1796,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt17.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -1984,7 +1805,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt18.7' class='hiddenRow bg-success'>
+        <tr id='pt17.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -2002,13 +1823,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 12)">Detail</a>
+            <a onclick="showClassDetail('c18', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -2017,7 +1838,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -2026,7 +1847,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -2035,7 +1856,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.4' class='hiddenRow bg-success'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -2044,7 +1865,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -2053,7 +1874,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -2062,7 +1883,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -2071,7 +1892,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.8' class='hiddenRow bg-success'>
+        <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -2080,7 +1901,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.9' class='hiddenRow bg-success'>
+        <tr id='pt18.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -2089,7 +1910,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.10' class='hiddenRow bg-success'>
+        <tr id='pt18.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -2098,7 +1919,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.11' class='hiddenRow bg-success'>
+        <tr id='pt18.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -2107,7 +1928,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt19.12' class='hiddenRow bg-success'>
+        <tr id='pt18.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2125,13 +1946,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 2)">Detail</a>
+            <a onclick="showClassDetail('c19', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -2140,7 +1961,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -2150,21 +1971,21 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
         <td class="text-center">20</td>
-        <td class="text-center">19</td>
-        <td class="text-center">1</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 20)">Detail</a>
+            <a onclick="showClassDetail('c20', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -2173,7 +1994,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -2182,7 +2003,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.3' class='hiddenRow bg-success'>
+        <tr id='pt20.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -2191,7 +2012,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.4' class='hiddenRow bg-success'>
+        <tr id='pt20.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -2200,7 +2021,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.5' class='hiddenRow bg-success'>
+        <tr id='pt20.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -2209,7 +2030,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.6' class='hiddenRow bg-success'>
+        <tr id='pt20.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -2218,7 +2039,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.7' class='hiddenRow bg-success'>
+        <tr id='pt20.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -2227,7 +2048,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.8' class='hiddenRow bg-success'>
+        <tr id='pt20.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -2236,7 +2057,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.9' class='hiddenRow bg-success'>
+        <tr id='pt20.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -2245,7 +2066,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.10' class='hiddenRow bg-success'>
+        <tr id='pt20.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -2254,7 +2075,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.11' class='hiddenRow bg-success'>
+        <tr id='pt20.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -2263,7 +2084,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.12' class='hiddenRow bg-success'>
+        <tr id='pt20.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -2272,7 +2093,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.13' class='hiddenRow bg-success'>
+        <tr id='pt20.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -2281,7 +2102,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt21.14' class='hiddenRow bg-success'>
+        <tr id='pt20.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -2290,36 +2111,16 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id="ft21.15" class="none bg-danger">
+        <tr id='pt20.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.15')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.15" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft21.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_opds_feed.py", line 442, in test_opds_search
-    self.assertEqual(200, r.status_code)
-AssertionError: 200 != 500</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt21.16' class='hiddenRow bg-success'>
+        <tr id='pt20.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -2328,7 +2129,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt21.17' class='hiddenRow bg-success'>
+        <tr id='pt20.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -2337,7 +2138,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt21.18' class='hiddenRow bg-success'>
+        <tr id='pt20.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -2346,7 +2147,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt21.19' class='hiddenRow bg-success'>
+        <tr id='pt20.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -2355,7 +2156,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt21.20' class='hiddenRow bg-success'>
+        <tr id='pt20.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -2373,13 +2174,13 @@ AssertionError: 200 != 500</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 5)">Detail</a>
+            <a onclick="showClassDetail('c21', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -2388,7 +2189,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -2397,7 +2198,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -2406,7 +2207,7 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -2415,19 +2216,19 @@ AssertionError: 200 != 500</pre>
     
     
     
-        <tr id="ft22.5" class="none bg-danger">
+        <tr id="ft21.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.5')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.5')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft22.5" class="popup_window test_output" style="display:none;">
+                <div id="div_ft21.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft22.5').style.display='none'"><span
+                                onclick='document.getElementById('div_ft21.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2453,13 +2254,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 7)">Detail</a>
+            <a onclick="showClassDetail('c22', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -2468,7 +2269,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -2477,7 +2278,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -2486,7 +2287,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -2495,7 +2296,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -2504,7 +2305,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.6' class='hiddenRow bg-success'>
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -2513,7 +2314,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt23.7' class='hiddenRow bg-success'>
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -2531,13 +2332,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 11)">Detail</a>
+            <a onclick="showClassDetail('c23', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -2546,7 +2347,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -2555,7 +2356,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -2564,7 +2365,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -2573,7 +2374,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -2582,7 +2383,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -2591,7 +2392,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.7' class='hiddenRow bg-success'>
+        <tr id='pt23.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -2600,7 +2401,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.8' class='hiddenRow bg-success'>
+        <tr id='pt23.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -2609,7 +2410,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.9' class='hiddenRow bg-success'>
+        <tr id='pt23.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -2618,19 +2419,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st24.10" class="none bg-warning">
+        <tr id="st23.10" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st24.10')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st23.10')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st24.10" class="popup_window test_output" style="display:none;">
+                <div id="div_st23.10" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st24.10').style.display='none'"><span
+                                onclick='document.getElementById('div_st23.10').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2644,7 +2445,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.11' class='hiddenRow bg-success'>
+        <tr id='pt23.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -2662,13 +2463,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 8)">Detail</a>
+            <a onclick="showClassDetail('c24', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -2677,7 +2478,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -2686,7 +2487,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -2695,7 +2496,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -2704,7 +2505,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.5' class='hiddenRow bg-success'>
+        <tr id='pt24.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -2713,7 +2514,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.6' class='hiddenRow bg-success'>
+        <tr id='pt24.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -2722,19 +2523,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st25.7" class="none bg-warning">
+        <tr id="st24.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st24.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st25.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st24.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st25.7').style.display='none'"><span
+                                onclick='document.getElementById('div_st24.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2748,7 +2549,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.8' class='hiddenRow bg-success'>
+        <tr id='pt24.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -2766,13 +2567,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 21)">Detail</a>
+            <a onclick="showClassDetail('c25', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -2781,7 +2582,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.2' class='hiddenRow bg-success'>
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -2790,7 +2591,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.3' class='hiddenRow bg-success'>
+        <tr id='pt25.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -2799,7 +2600,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.4' class='hiddenRow bg-success'>
+        <tr id='pt25.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -2808,7 +2609,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.5' class='hiddenRow bg-success'>
+        <tr id='pt25.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -2817,7 +2618,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.6' class='hiddenRow bg-success'>
+        <tr id='pt25.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -2826,7 +2627,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.7' class='hiddenRow bg-success'>
+        <tr id='pt25.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -2835,7 +2636,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.8' class='hiddenRow bg-success'>
+        <tr id='pt25.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -2844,7 +2645,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.9' class='hiddenRow bg-success'>
+        <tr id='pt25.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -2853,7 +2654,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.10' class='hiddenRow bg-success'>
+        <tr id='pt25.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -2862,7 +2663,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.11' class='hiddenRow bg-success'>
+        <tr id='pt25.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -2871,7 +2672,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.12' class='hiddenRow bg-success'>
+        <tr id='pt25.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -2880,7 +2681,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.13' class='hiddenRow bg-success'>
+        <tr id='pt25.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -2889,7 +2690,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.14' class='hiddenRow bg-success'>
+        <tr id='pt25.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -2898,7 +2699,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.15' class='hiddenRow bg-success'>
+        <tr id='pt25.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -2907,7 +2708,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.16' class='hiddenRow bg-success'>
+        <tr id='pt25.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -2916,7 +2717,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.17' class='hiddenRow bg-success'>
+        <tr id='pt25.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -2925,7 +2726,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.18' class='hiddenRow bg-success'>
+        <tr id='pt25.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -2934,7 +2735,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.19' class='hiddenRow bg-success'>
+        <tr id='pt25.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -2943,7 +2744,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.20' class='hiddenRow bg-success'>
+        <tr id='pt25.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -2952,7 +2753,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt26.21' class='hiddenRow bg-success'>
+        <tr id='pt25.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -2962,21 +2763,21 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">37</td>
-        <td class="text-center">32</td>
-        <td class="text-center">0</td>
+        <td class="text-center">31</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">5</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 37)">Detail</a>
+            <a onclick="showClassDetail('c26', 37)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -2985,7 +2786,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -2994,7 +2795,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id='pt26.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -3003,7 +2804,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.4' class='hiddenRow bg-success'>
+        <tr id='pt26.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -3012,7 +2813,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.5' class='hiddenRow bg-success'>
+        <tr id='pt26.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -3021,7 +2822,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.6' class='hiddenRow bg-success'>
+        <tr id='pt26.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -3030,7 +2831,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.7' class='hiddenRow bg-success'>
+        <tr id='pt26.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -3039,7 +2840,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.8' class='hiddenRow bg-success'>
+        <tr id='pt26.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -3048,7 +2849,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.9' class='hiddenRow bg-success'>
+        <tr id='pt26.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -3057,7 +2858,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.10' class='hiddenRow bg-success'>
+        <tr id='pt26.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -3066,7 +2867,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.11' class='hiddenRow bg-success'>
+        <tr id='pt26.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -3075,7 +2876,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.12' class='hiddenRow bg-success'>
+        <tr id='pt26.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -3084,7 +2885,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.13' class='hiddenRow bg-success'>
+        <tr id='pt26.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -3093,7 +2894,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.14' class='hiddenRow bg-success'>
+        <tr id='pt26.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -3102,7 +2903,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.15' class='hiddenRow bg-success'>
+        <tr id='pt26.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -3111,7 +2912,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.16' class='hiddenRow bg-success'>
+        <tr id='pt26.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -3120,7 +2921,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.17' class='hiddenRow bg-success'>
+        <tr id='pt26.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -3129,7 +2930,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.18' class='hiddenRow bg-success'>
+        <tr id='pt26.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -3138,7 +2939,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.19' class='hiddenRow bg-success'>
+        <tr id='pt26.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -3147,7 +2948,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.20' class='hiddenRow bg-success'>
+        <tr id='pt26.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -3156,7 +2957,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.21' class='hiddenRow bg-success'>
+        <tr id='pt26.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -3165,7 +2966,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.22' class='hiddenRow bg-success'>
+        <tr id='pt26.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -3174,7 +2975,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.23' class='hiddenRow bg-success'>
+        <tr id='pt26.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -3183,7 +2984,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.24' class='hiddenRow bg-success'>
+        <tr id='pt26.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -3192,7 +2993,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.25' class='hiddenRow bg-success'>
+        <tr id='pt26.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -3201,7 +3002,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.26' class='hiddenRow bg-success'>
+        <tr id='pt26.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -3210,7 +3011,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.27' class='hiddenRow bg-success'>
+        <tr id='pt26.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -3219,19 +3020,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st27.28" class="none bg-warning">
+        <tr id="st26.28" class="none bg-warning">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_authors</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.28')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.28')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.28" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.28" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.28').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.28').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3245,19 +3046,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st27.29" class="none bg-warning">
+        <tr id="st26.29" class="none bg-warning">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_formats</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.29')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.29')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.29" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.29" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.29').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.29').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3271,19 +3072,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st27.30" class="none bg-warning">
+        <tr id="st26.30" class="none bg-warning">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_lang</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.30')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.30')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.30" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.30" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.30').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.30').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3297,7 +3098,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.31' class='hiddenRow bg-success'>
+        <tr id='pt26.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -3306,19 +3107,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st27.32" class="none bg-warning">
+        <tr id="st26.32" class="none bg-warning">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_series</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.32')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.32')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.32" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.32" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.32').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.32').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3332,19 +3133,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st27.33" class="none bg-warning">
+        <tr id="st26.33" class="none bg-warning">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_unread</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.33')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.33')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.33" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.33" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.33').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.33').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3358,16 +3159,36 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.34' class='hiddenRow bg-success'>
+        <tr id="ft26.34" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft26.34')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft26.34" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft26.34').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 389, in test_search_functions
+    self.assertEqual(200, resp.status_code)
+AssertionError: 200 != 404</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt27.35' class='hiddenRow bg-success'>
+        <tr id='pt26.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -3376,7 +3197,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.36' class='hiddenRow bg-success'>
+        <tr id='pt26.36' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -3385,9 +3206,168 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.37' class='hiddenRow bg-success'>
+        <tr id='pt26.37' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestCalibreHelper</td>
+        <td class="text-center">16</td>
+        <td class="text-center">16</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c27', 16)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt27.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_high23</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_random_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_split_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3397,9 +3377,9 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>283</td>
-        <td>264</td>
+        <td>265</td>
         <td>5</td>
-        <td>1</td>
+        <td>0</td>
         <td>13</td>
         <td>&nbsp;</td>
     </tr>
@@ -3428,7 +3408,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.4.0-48-generic #52-Ubuntu SMP Thu Sep 10 10:58:49 UTC 2020 x86_64 x86_64</td>
+              <td>Linux 5.4.0-52-generic #57-Ubuntu SMP Thu Oct 15 10:57:00 UTC 2020 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3518,7 +3498,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.19</td>
+              <td>1.3.20</td>
               <td>Basic</td>
             </tr>
           
@@ -3548,13 +3528,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>Pillow</th>
-              <td>7.2.0</td>
+              <td>8.0.1</td>
               <td>TestCoverEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>1.12.3</td>
+              <td>1.12.5</td>
               <td>TestEbookConvertGDrive</td>
             </tr>
           
@@ -3566,7 +3546,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>lxml</th>
-              <td>4.5.2</td>
+              <td>4.6.1</td>
               <td>TestEbookConvertGDrive</td>
             </tr>
           
@@ -3578,7 +3558,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>Pillow</th>
-              <td>7.2.0</td>
+              <td>8.0.1</td>
               <td>TestEbookConvertGDrive</td>
             </tr>
           
@@ -3602,13 +3582,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>lxml</th>
-              <td>4.5.2</td>
+              <td>4.6.1</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>Pillow</th>
-              <td>7.2.0</td>
+              <td>8.0.1</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -3620,19 +3600,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>lxml</th>
-              <td>4.5.2</td>
+              <td>4.6.1</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>Pillow</th>
-              <td>7.2.0</td>
+              <td>8.0.1</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>1.12.3</td>
+              <td>1.12.5</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3644,7 +3624,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>lxml</th>
-              <td>4.5.2</td>
+              <td>4.6.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3656,7 +3636,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>Pillow</th>
-              <td>7.2.0</td>
+              <td>8.0.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3674,7 +3654,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>google-api-python-client</th>
-              <td>1.12.3</td>
+              <td>1.12.5</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3734,7 +3714,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
           
             <tr>
               <th>Flask-Dance</th>
-              <td>3.0.0</td>
+              <td>3.1.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -3752,7 +3732,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
 </div>
 
 <script>
-    drawCircle(264, 5, 1, 13);
+    drawCircle(265, 5, 0, 13);
 </script>
 
 </div>
