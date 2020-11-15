@@ -51,7 +51,7 @@ def requires_basic_auth_if_no_ano(f):
             if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and config.config_anonbrowse != 1:
         return services.ldap.basic_auth_required(f)
     return decorated
 
