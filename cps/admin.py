@@ -41,7 +41,8 @@ from . import constants, logger, helper, services
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
-from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
+from .web import admin_required, render_title_template, before_request, unconfigured
+from . import debug_info
 
 log = logger.create()
 
@@ -131,8 +132,9 @@ def admin():
 
     allUser = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
-                                 feature_support=feature_support,
+                                 feature_support=feature_support, kobo_support=kobo_support,
                                  title=_(u"Admin page"), page="admin")
 
 
@@ -217,7 +219,8 @@ def edit_domain(allow):
 @admin_required
 def add_domain(allow):
     domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
-    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).filter(ub.Registration.allow == allow).first()
+    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name)\
+        .filter(ub.Registration.allow == allow).first()
     if not check:
         new_domain = ub.Registration(domain=domain_name, allow=allow)
         ub.session.add(new_domain)
@@ -547,12 +550,14 @@ def _configuration_logfile_helper(to_save, gdriveError):
     reboot_required |= _config_int(to_save, "config_log_level")
     reboot_required |= _config_string(to_save, "config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
-        return reboot_required, _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+        return reboot_required, \
+               _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     reboot_required |= _config_checkbox_int(to_save, "config_access_log")
     reboot_required |= _config_string(to_save, "config_access_logfile")
     if not logger.is_valid_logfile(config.config_access_logfile):
-        return reboot_required, _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+        return reboot_required, \
+               _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
     return reboot_required, None
 
 def _configuration_ldap_helper(to_save, gdriveError):
@@ -584,28 +589,32 @@ def _configuration_ldap_helper(to_save, gdriveError):
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
             if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
-                return reboot_required, _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
+                return reboot_required, _configuration_result('Please Enter a LDAP Service Account and Password',
+                                                              gdriveError)
         else:
             if not config.config_ldap_serv_username:
                 return reboot_required, _configuration_result('Please Enter a LDAP Service Account', gdriveError)
 
     if config.config_ldap_group_object_filter:
         if config.config_ldap_group_object_filter.count("%s") != 1:
-            return reboot_required, _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
+            return reboot_required, \
+                   _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
                                          gdriveError)
         if config.config_ldap_group_object_filter.count("(") != config.config_ldap_group_object_filter.count(")"):
             return reboot_required, _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
                                          gdriveError)
 
     if config.config_ldap_user_object.count("%s") != 1:
-        return reboot_required, _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
+        return reboot_required, \
+               _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
                                      gdriveError)
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
     if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-        return reboot_required, _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
+        return reboot_required, \
+               _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
                                      gdriveError)
     return reboot_required, None
 
@@ -616,7 +625,10 @@ def _configuration_update_helper():
     to_save = request.form.to_dict()
     gdriveError = None
 
-    to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
+    to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$',
+                                           '',
+                                           to_save['config_calibre_dir'],
+                                           flags=re.IGNORECASE)
     try:
         db_change |= _config_string(to_save, "config_calibre_dir")
 
@@ -1026,6 +1038,27 @@ def send_logfile(logtype):
                                    os.path.basename(logfile))
     else:
         return ""
+
+@admi.route("/admin/logdownload/<int:logtype>")
+@login_required
+@admin_required
+def download_log(logtype):
+    if logtype == 0:
+        file_name = logger.get_logfile(config.config_logfile)
+    elif logtype == 1:
+        file_name = logger.get_accesslogfile(config.config_access_logfile)
+    else:
+        abort(404)
+    if logger.is_valid_logfile(file_name):
+        return debug_info.assemble_logfiles(file_name)
+    abort(404)
+
+
+@admi.route("/admin/debug")
+@login_required
+@admin_required
+def download_debug():
+    return debug_info.send_debug()
 
 
 @admi.route("/get_update_status", methods=['GET'])

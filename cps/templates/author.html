@@ -65,7 +65,7 @@
             {% endif %}
           {% endfor %}
           {% for format in entry.data %}
-            {% if format.format|lower == 'mp3' %}
+            {% if format.format|lower in g.constants.EXTENSIONS_AUDIO %}
             <span class="glyphicon glyphicon-music"></span>
             {% endif %}
           {% endfor %}
