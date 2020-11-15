@@ -12,7 +12,18 @@
       <label for="log0">{{_('Show Access Log: ')}}</label>{{logfiles[1]}}</div>
      {% endif %}
    </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-7">
+      {% if log_enable %}
+      <div class="btn btn-default"><a id="log_file" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a></div>
+      {% endif %}
+      {% if accesslog_enable %}
+      <div class="btn btn-default"><a id="log_file" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a></div>
+      {% endif %}
+    </div>
+  </div>
    <div id="renderer" class="log"></div>
+
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/logviewer.js') }}"></script>
