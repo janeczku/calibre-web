@@ -70,6 +70,9 @@
                   </li>
                 {% endif %}
               {% endif %}
+              
+              <li id="nav_request"> <a href="http://10.0.0.54:35299/home" title="Request Book in LazyLibrarian">Request</a></li>
+
               {% if not g.user.is_anonymous %}
                 <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
               {% endif %}
