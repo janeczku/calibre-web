@@ -652,12 +652,15 @@ def edit_book(book_id):
                 if to_save["cover_url"]:
                     if not current_user.role_upload():
                         return "", (403)
-                    result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
-                    if result is True:
-                        book.has_cover = 1
-                        modif_date = True
+                    if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
+                        book.has_cover = 0
                     else:
-                        flash(error, category="error")
+                        result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
+                        if result is True:
+                            book.has_cover = 1
+                            modif_date = True
+                        else:
+                            flash(error, category="error")
 
             # Add default series_index to book
             modif_date |= edit_book_series_index(to_save["series_index"], book)
