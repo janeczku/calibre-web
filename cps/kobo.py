@@ -47,9 +47,10 @@ from sqlalchemy.exc import StatementError
 import requests
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub
+from .helper import get_download_link
 from .services import SyncToken as SyncToken
 from .web import download_required
-from .kobo_auth import requires_kobo_auth
+from .kobo_auth import requires_kobo_auth, get_auth_token
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
@@ -274,10 +275,11 @@ def get_download_url_for_book(book, book_format):
         else:
             host = request.host
 
-        return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
+        return "{url_scheme}://{url_base}:{url_port}/kobo/{auth_token}/download/{book_id}/{book_format}".format(
             url_scheme=request.scheme,
             url_base=host,
             url_port=config.config_external_port,
+            auth_token=get_auth_token(),
             book_id=book.id,
             book_format=book_format.lower()
         )
@@ -978,6 +980,14 @@ def HandleInitRequest():
     response.headers["x-kobo-apitoken"] = "e30="
 
     return response
+
+
+@kobo.route("/download/<book_id>/<book_format>")
+@requires_kobo_auth
+@download_required
+def download_book(book_id, book_format):
+
+    return get_download_link(book_id, book_format, "kobo")
 
 
 def NATIVE_KOBO_RESOURCES():
