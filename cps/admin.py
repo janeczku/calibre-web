@@ -572,7 +572,9 @@ def _configuration_ldap_helper(to_save, gdriveError):
     reboot_required |= _config_string(to_save, "config_ldap_group_members_field")
     reboot_required |= _config_checkbox(to_save, "config_ldap_openldap")
     reboot_required |= _config_int(to_save, "config_ldap_encryption")
+    reboot_required |= _config_string(to_save, "config_ldap_cacert_path")
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
+    reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
     if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"] != "":
         reboot_required |= 1
@@ -612,9 +614,11 @@ def _configuration_ldap_helper(to_save, gdriveError):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
-    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
+    if config.config_ldap_cacert_path and not (os.path.isfile(config.config_ldap_cacert_path)
+                                               or os.path.isfile(config.config_ldap_cacert_path)
+                                               or os.path.isfile(config.config_ldap_key_path)):
         return reboot_required, \
-               _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
+               _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
                                      gdriveError)
     return reboot_required, None
 

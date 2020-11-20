@@ -15,8 +15,8 @@
     </div>
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
+       <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
        <div class="form-group required input-group">
-        <label for="config_calibre_dir" class="sr-only">{{_('Location of Calibre Database')}}</label>
         <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
         <span class="input-group-btn">
           <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
@@ -264,9 +264,26 @@
             </select>
         </div>
         <div data-related="ldap-cert-settings">
-          <div class="form-group">
-            <label for="config_ldap_cert_path">{{_('LDAP Certificate Path')}}</label>
+          <label for="config_ldap_cacert_path" >{{_('LDAP CACertificate Path')}}</label>
+          <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+          <label for="config_ldap_cert_path">{{_('LDAP Certificate Path')}}</label>
+          <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+          <label for="config_ldap_key_path">{{_('LDAP Keyfile Path')}}</label>
+          <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
           </div>
         </div>
         <div class="form-group">
