@@ -42,5 +42,6 @@ def find_version(*file_paths):
 setup(
     packages=find_packages("./"),
     package_dir = {'': './'},
-    version=find_version("cps", "constants.py")
+    version=find_version("cps", "constants.py"),
+    scripts=['cps.py']
 )
