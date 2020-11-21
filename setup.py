@@ -40,7 +40,7 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 setup(
-    packages=find_packages("src"),
-    package_dir = {'': 'src'},
-    version=find_version("src", "calibreweb", "cps", "constants.py")
+    packages=find_packages("./"),
+    package_dir = {'': './'},
+    version=find_version("cps", "constants.py")
 )
