@@ -107,6 +107,11 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   text-decoration: none;
 }
 
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .container-fluid img {
   display: block;
   max-width: 100%;
@@ -116,7 +121,11 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
 .container-fluid .discover{ margin-bottom: 50px; }
 .container-fluid .new-books { border-top: 1px solid #ccc; }
 .container-fluid .new-books h2 { margin: 50px 0 0 0; }
-.container-fluid .book { margin-top: 20px; }
+.container-fluid .book {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
 
 .container-fluid .book .cover {
   height: 225px;

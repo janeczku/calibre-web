@@ -12,7 +12,7 @@
       <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Change order') }} </a>
     {% endif %}
   {% endif %}
-  <div class="row">
+  <div class="row display-flex">
 
     {% for entry in entries %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
