@@ -284,7 +284,7 @@ def delete_book(book_id, book_format, jsonResponse):
             return redirect(url_for('web.index'))
 
 
-def render_edit_book(book_id):
+def render_edit_book(book_id, cover_edited):
     calibre_db.update_title_sort(config)
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = calibre_db.get_filtered_book(book_id)
@@ -307,7 +307,7 @@ def render_edit_book(book_id):
     kepub_possible=None
     if config.config_converterpath:
         for file in book.data:
-            if file.format.lower() in constants.EXTENSIONS_CONVERT:
+            if file.format.lower() in constants.EXTENSIONS_CONVERT_FROM:
                 valid_source_formats.append(file.format.lower())
     if config.config_kepubifypath and 'epub' in [file.format.lower() for file in book.data]:
         kepub_possible = True
@@ -316,7 +316,7 @@ def render_edit_book(book_id):
 
     # Determine what formats don't already exist
     if config.config_converterpath:
-        allowed_conversion_formats = constants.EXTENSIONS_CONVERT[:]
+        allowed_conversion_formats = constants.EXTENSIONS_CONVERT_TO[:]
         for file in book.data:
             if file.format.lower() in allowed_conversion_formats:
                 allowed_conversion_formats.remove(file.format.lower())
@@ -325,7 +325,7 @@ def render_edit_book(book_id):
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
                                  conversion_formats=allowed_conversion_formats,
-                                 config=config,
+                                 config=config, cover_edit=cover_edited,
                                  source_formats=valid_source_formats)
 
 
@@ -582,9 +582,10 @@ def upload_cover(request, book):
 @edit_required
 def edit_book(book_id):
     modif_date = False
+    cover_edited = 0
     # Show form
     if request.method != 'POST':
-        return render_edit_book(book_id)
+        return render_edit_book(book_id, cover_edited)
 
     # create the function for sorting...
     calibre_db.update_title_sort(config)
@@ -599,6 +600,7 @@ def edit_book(book_id):
     if upload_cover(request, book) is True:
         book.has_cover = 1
         modif_date = True
+        cover_edited = uuid4()
     try:
         to_save = request.form.to_dict()
         merge_metadata(to_save, meta)
@@ -659,6 +661,7 @@ def edit_book(book_id):
                         if result is True:
                             book.has_cover = 1
                             modif_date = True
+                            cover_edited = uuid4()
                         else:
                             flash(error, category="error")
 
@@ -710,11 +713,11 @@ def edit_book(book_id):
                 return redirect(url_for('web.show_book', book_id=book.id))
             else:
                 flash(_("Metadata successfully updated"), category="success")
-                return render_edit_book(book_id)
+                return render_edit_book(book_id, cover_edited)
         else:
             calibre_db.session.rollback()
             flash(error, category="error")
-            return render_edit_book(book_id)
+            return render_edit_book(book_id, cover_edited)
     except Exception as e:
         log.exception(e)
         calibre_db.session.rollback()
