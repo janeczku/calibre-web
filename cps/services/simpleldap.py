@@ -38,7 +38,7 @@ def init_app(app, config):
 
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
-    app.config['LDAP_CUSTOM_OPTIONS'] = {pyLDAP.OPT_REFERRALS, 0}
+    app.config['LDAP_CUSTOM_OPTIONS'] = {pyLDAP.OPT_REFERRALS: 0}
     if config.config_ldap_encryption == 2:
         app.config['LDAP_SCHEMA'] = 'ldaps'
     else:
