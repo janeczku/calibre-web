@@ -307,7 +307,7 @@ def render_edit_book(book_id):
     kepub_possible=None
     if config.config_converterpath:
         for file in book.data:
-            if file.format.lower() in constants.EXTENSIONS_CONVERT:
+            if file.format.lower() in constants.EXTENSIONS_CONVERT_FROM:
                 valid_source_formats.append(file.format.lower())
     if config.config_kepubifypath and 'epub' in [file.format.lower() for file in book.data]:
         kepub_possible = True
@@ -316,7 +316,7 @@ def render_edit_book(book_id):
 
     # Determine what formats don't already exist
     if config.config_converterpath:
-        allowed_conversion_formats = constants.EXTENSIONS_CONVERT[:]
+        allowed_conversion_formats = constants.EXTENSIONS_CONVERT_TO[:]
         for file in book.data:
             if file.format.lower() in allowed_conversion_formats:
                 allowed_conversion_formats.remove(file.format.lower())
