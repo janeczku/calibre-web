@@ -108,7 +108,7 @@ $(function () {
                         tags: result.volumeInfo.categories || [],
                         rating: result.volumeInfo.averageRating || 0,
                         cover: result.volumeInfo.imageLinks ?
-                            result.volumeInfo.imageLinks.thumbnail : "/static/generic_cover.jpg",
+                            result.volumeInfo.imageLinks.thumbnail : location + "/../../../static/generic_cover.jpg",
                         url: "https://books.google.com/books?id=" + result.id,
                         source: {
                             id: "google",
