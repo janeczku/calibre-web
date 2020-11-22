@@ -614,12 +614,13 @@ def _configuration_ldap_helper(to_save, gdriveError):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
-    if config.config_ldap_cacert_path and not (os.path.isfile(config.config_ldap_cacert_path)
-                                               or os.path.isfile(config.config_ldap_cacert_path)
-                                               or os.path.isfile(config.config_ldap_key_path)):
-        return reboot_required, \
-               _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
-                                     gdriveError)
+    if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
+        if not (os.path.isfile(config.config_ldap_cacert_path) and
+                os.path.isfile(config.config_ldap_cert_path) and
+                os.path.isfile(config.config_ldap_key_path)):
+            return reboot_required, \
+                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError)
     return reboot_required, None
 
 
