@@ -25,6 +25,7 @@
 from __future__ import division, print_function, unicode_literals
 import datetime
 import mimetypes
+from uuid import uuid4
 
 from babel.dates import format_date
 from flask import Blueprint, request, url_for
@@ -126,4 +127,9 @@ def formatseriesindex_filter(series_index):
         else:
             return series_index
     return 0
+
+@jinjia.app_template_filter('uuidfilter')
+def uuidfilter(var):
+    return uuid4()
+
 
