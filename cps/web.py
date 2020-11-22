@@ -1922,9 +1922,18 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 audioentries.append(media_format.format.lower())
 
-        return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
-                                     is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest', title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, is_archived=is_archived, kindle_list=kindle_list, reader_list=reader_list, page="book")
+        return render_title_template('detail.html',
+                                     entry=entries,
+                                     audioentries=audioentries,
+                                     cc=cc,
+                                     is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest',
+                                     title=entries.title,
+                                     books_shelfs=book_in_shelfs,
+                                     have_read=have_read,
+                                     is_archived=is_archived,
+                                     kindle_list=kindle_list,
+                                     reader_list=reader_list,
+                                     page="book")
     else:
         log.debug(u"Error opening eBook. File does not exist or file is not accessible")
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
