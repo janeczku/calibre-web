@@ -157,12 +157,12 @@ msgstr "Trovato un account esistente con questo e-mail o nome di utente"
 #: cps/admin.py:793
 #, python-format
 msgid "User '%(user)s' created"
-msgstr "Creato l'utente '%(user)s'"
+msgstr "L'utente '%(user)s' è stato creato"
 
 #: cps/admin.py:809
 #, python-format
 msgid "User '%(nick)s' deleted"
-msgstr "Utente '%(nick)s' eliminato"
+msgstr "L'utente '%(nick)s' è stato eliminato"
 
 #: cps/admin.py:812
 msgid "No admin user remaining, can't delete user"
@@ -188,7 +188,7 @@ msgstr "Questo nome di utente è già utilizzato"
 #: cps/admin.py:884
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "Utente '%(nick)s' aggiornato"
+msgstr "L'utente '%(nick)s' è stato aggiornato"
 
 #: cps/admin.py:887
 msgid "An unknown error occured."
@@ -915,7 +915,7 @@ msgstr "I libri più richiesti"
 #: cps/web.py:750
 #, python-format
 msgid "Downloaded books by %(user)s"
-msgstr "Libri scaricati da %(user)s"
+msgstr "I libri scaricati da %(user)s"
 
 #: cps/web.py:764
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
@@ -989,11 +989,11 @@ msgstr "Compito"
 
 #: cps/web.py:1305
 msgid "Published after "
-msgstr "Pubblicato dopo "
+msgstr "Pubblicato dopo il "
 
 #: cps/web.py:1312
 msgid "Published before "
-msgstr "Pubblicato prima "
+msgstr "Pubblicato prima del "
 
 #: cps/web.py:1327
 #, python-format
@@ -1034,7 +1034,7 @@ msgstr "Il tuo e-mail non è autorizzato alla registrazione"
 
 #: cps/web.py:1537
 msgid "Confirmation e-mail was send to your e-mail account."
-msgstr "Un e-mail di conferma è stato inviato al tuo indirizzo."
+msgstr "Un messaggio di conferma è stato inviato al tuo recapito e-mail."
 
 #: cps/web.py:1540
 msgid "This username or e-mail address is already in use."
@@ -1160,7 +1160,7 @@ msgstr "Downloads"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:77
 msgid "Admin"
-msgstr "Admin"
+msgstr "Amministratore"
 
 #: cps/templates/admin.html:17 cps/templates/login.html:12
 #: cps/templates/login.html:13 cps/templates/user_edit.html:22
@@ -1454,7 +1454,7 @@ msgstr "Valutazione"
 
 #: cps/templates/book_edit.html:98
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Carica la copertina da URL (jpg, l'immagine della copertina viene scaricata e salvata nel database)"
+msgstr "Carica la copertina da URL (jpg - L'immagine della copertina viene scaricata e salvata nel database)"
 
 #: cps/templates/book_edit.html:102
 msgid "Upload Cover from Local Disk"
@@ -1529,7 +1529,7 @@ msgstr "Fonte"
 
 #: cps/templates/book_edit.html:273
 msgid "Search error!"
-msgstr "Errore di ricerca!"
+msgstr "Errore nella ricerca!"
 
 #: cps/templates/book_edit.html:274
 msgid "No Result(s) found! Please try another keyword."
@@ -1678,11 +1678,11 @@ msgstr "Porta del server"
 
 #: cps/templates/config_edit.html:93
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Percorso del Certfile SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr "Percorso del file di certificato SSL (lascia vuoto per una configurazione del server senza SSL)"
 
 #: cps/templates/config_edit.html:100
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "Percorso del Keyfile SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr "Percorso del file della chiave SSL (lascia vuoto per una configurazione del server senza SSL)"
 
 #: cps/templates/config_edit.html:108
 msgid "Update Channel"
@@ -1718,7 +1718,7 @@ msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:165
 msgid "Enable Uploads"
-msgstr "Abilita l'upload/il caricamento"
+msgstr "Abilita il caricamento"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
@@ -1855,7 +1855,7 @@ msgstr "LDAP User object filter"
 
 #: cps/templates/config_edit.html:302
 msgid "LDAP Server is OpenLDAP?"
-msgstr "Il server LDAP è un server OpenLDAP?"
+msgstr "Il server LDAP è un server OpenLDAP."
 
 #: cps/templates/config_edit.html:304
 msgid "Following Settings are Needed For User Import"
@@ -2047,7 +2047,7 @@ msgstr "Aggiungi all'archivio"
 
 #: cps/templates/detail.html:218
 msgid "Archived"
-msgstr "da archiviare"
+msgstr "Archiviato"
 
 #: cps/templates/detail.html:229
 msgid "Description:"
@@ -2527,7 +2527,7 @@ msgstr "Cancella questo scaffale"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf"
-msgstr "Modifica scaffale"
+msgstr "Modifica lo scaffale"
 
 #: cps/templates/shelf.html:12 cps/templates/shelf_order.html:31
 msgid "Change order"
