@@ -55,7 +55,7 @@ feature_support = {
 try:
     import rarfile
     feature_support['rar'] = True
-except ImportError:
+except (ImportError, SyntaxError):
     feature_support['rar'] = False
 
 try:
