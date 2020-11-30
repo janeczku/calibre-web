@@ -38,7 +38,7 @@ try:
     use_comic_meta = True
     try:
         from comicapi import __version__ as comic_version
-    except (ImportError):
+    except ImportError:
         comic_version = ''
 except (ImportError, LookupError) as e:
     log.debug('Cannot import comicapi, extracting comic metadata will not work: %s', e)
@@ -47,7 +47,7 @@ except (ImportError, LookupError) as e:
     try:
         import rarfile
         use_rarfile = True
-    except ImportError as e:
+    except (ImportError, SyntaxError) as e:
         log.debug('Cannot import rarfile, extracting cover files from rar files will not work: %s', e)
         use_rarfile = False
     use_comic_meta = False
