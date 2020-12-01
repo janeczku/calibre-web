@@ -58,6 +58,59 @@ $(document).on("change", "select[data-controlall]", function() {
     }
 });
 
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind("dragenter dragover", function () {
+    if($("#btn-upload").length && !$('body').hasClass('shelforder')) {
+        $(this).css('background', '#e6e6e6');
+    }
+    return false;
+});
+
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind("dragleave", function () {
+    if($("#btn-upload").length && !$('body').hasClass('shelforder')) {
+        $(this).css('background', '');
+    }
+    return false;
+});
+
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind('drop', function (e) {
+    e.preventDefault()
+    e.stopPropagation();
+    if($("#btn-upload").length) {
+        var files = e.originalEvent.dataTransfer.files;
+        var test = $("#btn-upload")[0].accept;
+        $(this).css('background', '');
+        // var final = [];
+        const dt = new DataTransfer()
+        jQuery.each(files, function (index, item) {
+            if (test.indexOf(item.name.substr(item.name.lastIndexOf('.'))) !== -1) {
+                dt.items.add(item);
+            }
+        });
+        if (dt.files.length) {
+            $("#btn-upload")[0].files = dt.files;
+            $("#form-upload").submit();
+        }
+    }
+});
+
+$("#btn-upload").change(function() {
+    $("#form-upload").submit();
+});
+
+$(document).ready(function() {
+  var inp = $('#query').first()
+  if (inp.length) {
+    var val = inp.val()
+    if (val.length) {
+      inp.val('').blur().focus().val(val)
+    }
+  }
+});
+
+
 $("#delete_confirm").click(function() {
     //get data-id attribute of the clicked element
     var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
@@ -188,7 +241,7 @@ $(function() {
             }
             $(".load-more .row").isotope( "appended", $(data), null );
         });
-    
+
         // fix for infinite scroll on CaliBlur Theme (#981)
         if ($("body").hasClass("blur")) {
             $(".col-sm-10").bind("scroll", function () {
