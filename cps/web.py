@@ -998,7 +998,7 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    return render_title_template('book_table.html', title=_(u"Books list"), page="book_table",
+    return render_title_template('book_table.html', title=_(u"Books List"), page="book_table",
                                  visiblility=visibility)
 
 @web.route("/ajax/listbooks")
