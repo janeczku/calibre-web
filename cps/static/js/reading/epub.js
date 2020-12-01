@@ -42,4 +42,22 @@ var reader;
             alert(error);
         });
     }
+
+    // Dark mode logic
+    $("#colorMode").on( "click", function() {
+      if ($("#colorMode").prop("checked")) {
+        $("#main").css("background", "#343233");
+        $("#titlebar").css("color", "#ccc")
+        $("iframe").contents().find("body").css('background-color', '#4b4b4b');
+        $("iframe").contents().find("body").css('color', '#ccc');
+        $("iframe").contents().find("a:link").css('color', '#fe8019');
+      } else {
+        $("#main").css("background", "#fff");
+        $("#titlebar").css("color", "#4f4f4f")
+        $("iframe").contents().find("body").css('background-color', 'white');
+        $("iframe").contents().find("body").css('color', 'black');
+        $("iframe").contents().find("a:link").css('color', '#00f');
+      }
+    })
+
 })();
