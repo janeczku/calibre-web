@@ -631,6 +631,10 @@ def render_books_list(data, sort, book_id, page):
         order = [db.Books.author_sort.asc()]
     if sort == 'authza':
         order = [db.Books.author_sort.desc()]
+    if sort == 'seriesasc':
+        order = [db.Books.series_index.asc()]
+    if sort == 'seriesdesc':
+        order = [db.Books.series_index.desc()]
 
     if data == "rated":
         if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
@@ -813,7 +817,7 @@ def render_ratings_books(page, book_id, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.ratings.any(db.Ratings.id == book_id),
-                                                            [db.Books.timestamp.desc(), order[0]])
+                                                            [order[0]])
     if name and name.rating <= 10:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings")
@@ -827,7 +831,7 @@ def render_formats_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.data.any(db.Data.format == book_id.upper()),
-                                                                [db.Books.timestamp.desc(), order[0]])
+                                                                [order[0]])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
@@ -860,7 +864,7 @@ def render_language_books(page, name, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
-                                                            [db.Books.timestamp.desc(), order[0]])
+                                                            [order[0]])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
