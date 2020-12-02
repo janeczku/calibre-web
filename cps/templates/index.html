@@ -74,9 +74,6 @@
       <a data-toggle="tooltip" title="{{_('Sort ascending according to series index')}}" id="series_asc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='seriesasc')}}"><span class="glyphicon glyphicon-sort-by-order"></span></a>
       <a data-toggle="tooltip" title="{{_('Sort descending according to series index')}}" id="series_desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='seriesdesc')}}"><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
       {% endif %}
-      <!--div class="btn-group character">
-        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='pubold')}}"><span class="glyphicon glyphicon-list"></span> <b>{{_('Group by series')}}</b></a>
-      </div-->
     </div>
 
   <div class="row display-flex">

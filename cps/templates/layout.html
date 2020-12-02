@@ -217,18 +217,6 @@
               modalFooter: "{{_('Close')}}",
               modalTitleFailed: "{{_('Error')}}"
             });
-            $("#btn-upload").change(function() {
-                $("#form-upload").submit();
-            });
-            $(document).ready(function() {
-              var inp = $('#query').first()
-              if (inp.length) {
-                var val = inp.val()
-                if (val.length) {
-                  inp.val('').blur().focus().val(val)
-                }
-              }
-            });
         });
     </script>
     {% block js %}{% endblock %}

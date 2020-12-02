@@ -2122,7 +2122,7 @@ msgstr "Öffne ddie .kobo/Kobo eReader.conf Datei in einem Texteditor und füge 
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
-msgstr "Issue erzeuge"
+msgstr "Issue erzeugen"
 
 #: cps/templates/http_error.html:45
 msgid "Return to Home"
