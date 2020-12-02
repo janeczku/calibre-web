@@ -20,7 +20,7 @@ from __future__ import division, print_function, unicode_literals
 import base64
 
 from flask_simpleldap import LDAP, LDAPException
-
+from flask_simpleldap import ldap as pyLDAP
 from .. import constants, logger
 
 try:
@@ -38,6 +38,7 @@ def init_app(app, config):
 
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
+    app.config['LDAP_CUSTOM_OPTIONS'] = {pyLDAP.OPT_REFERRALS: 0}
     if config.config_ldap_encryption == 2:
         app.config['LDAP_SCHEMA'] = 'ldaps'
     else:
@@ -54,8 +55,14 @@ def init_app(app, config):
         app.config['LDAP_USERNAME'] = ""
         app.config['LDAP_PASSWORD'] = base64.b64decode("")
     if bool(config.config_ldap_cert_path):
-        app.config['LDAP_REQUIRE_CERT'] = True
-        app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
+        app.config['LDAP_CUSTOM_OPTIONS'].update({
+            pyLDAP.OPT_X_TLS_REQUIRE_CERT: pyLDAP.OPT_X_TLS_DEMAND,
+            pyLDAP.OPT_X_TLS_CACERTFILE: config.config_ldap_cacert_path,
+            pyLDAP.OPT_X_TLS_CERTFILE: config.config_ldap_cert_path,
+            pyLDAP.OPT_X_TLS_KEYFILE: config.config_ldap_key_path,
+            pyLDAP.OPT_X_TLS_NEWCTX: 0
+            })
+
     app.config['LDAP_BASE_DN'] = config.config_ldap_dn
     app.config['LDAP_USER_OBJECT_FILTER'] = config.config_ldap_user_object
 
@@ -67,6 +74,13 @@ def init_app(app, config):
 
     try:
         _ldap.init_app(app)
+    except ValueError:
+        if bool(config.config_ldap_cert_path):
+            app.config['LDAP_CUSTOM_OPTIONS'].pop(pyLDAP.OPT_X_TLS_NEWCTX)
+        try:
+            _ldap.init_app(app)
+        except RuntimeError as e:
+            log.error(e)
     except RuntimeError as e:
         log.error(e)
 

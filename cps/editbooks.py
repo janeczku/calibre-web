@@ -935,8 +935,6 @@ def convert_bookformat(book_id):
 @edit_required
 def edit_list_book(param):
     vals = request.form.to_dict()
-    # calibre_db.update_title_sort(config)
-    #calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     book = calibre_db.get_book(vals['pk'])
     if param =='series_index':
         edit_book_series_index(vals['value'], book)

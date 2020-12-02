@@ -4,13 +4,13 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+          <img src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          {% if g.user.role_download() %}
+          {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
@@ -278,7 +278,7 @@
       {% endif %}
 
       {% endif %}
-      {% if g.user.role_edit() %}
+      {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
           <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>

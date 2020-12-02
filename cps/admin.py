@@ -164,7 +164,6 @@ def view_configuration():
 @login_required
 @admin_required
 def update_view_configuration():
-    reboot_required = False
     to_save = request.form.to_dict()
 
     _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
@@ -172,7 +171,8 @@ def update_view_configuration():
 
     _config_string("config_calibre_web_title")
     _config_string("config_columns_to_ignore")
-    reboot_required |= _config_string("config_title_regex")
+    if _config_string("config_title_regex"):
+        calibre_db.update_title_sort(config)
 
     _config_int("config_read_column")
     _config_int("config_theme")
@@ -191,10 +191,6 @@ def update_view_configuration():
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
     before_request()
-    if reboot_required:
-        db.dispose()
-        ub.dispose()
-        web_server.stop(True)
 
     return view_configuration()
 
@@ -572,7 +568,9 @@ def _configuration_ldap_helper(to_save, gdriveError):
     reboot_required |= _config_string(to_save, "config_ldap_group_members_field")
     reboot_required |= _config_checkbox(to_save, "config_ldap_openldap")
     reboot_required |= _config_int(to_save, "config_ldap_encryption")
+    reboot_required |= _config_string(to_save, "config_ldap_cacert_path")
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
+    reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
     if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"] != "":
         reboot_required |= 1
@@ -612,10 +610,13 @@ def _configuration_ldap_helper(to_save, gdriveError):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
-    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-        return reboot_required, \
-               _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
-                                     gdriveError)
+    if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
+        if not (os.path.isfile(config.config_ldap_cacert_path) and
+                os.path.isfile(config.config_ldap_cert_path) and
+                os.path.isfile(config.config_ldap_key_path)):
+            return reboot_required, \
+                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError)
     return reboot_required, None
 
 
@@ -646,7 +647,9 @@ def _configuration_update_helper():
             return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
         _config_checkbox_int(to_save, "config_uploading")
-        _config_checkbox_int(to_save, "config_anonbrowse")
+        # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
+        reboot_required |=  (_config_checkbox_int(to_save, "config_anonbrowse")
+                             and config.config_login_type == constants.LOGIN_LDAP)
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
