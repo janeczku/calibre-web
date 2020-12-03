@@ -332,7 +332,7 @@
             <input type="text" class="form-control" id="config_ldap_group_members_field" name="config_ldap_group_members_field" value="{% if config.config_ldap_group_members_field != None %}{{ config.config_ldap_group_members_field }}{% endif %}" autocomplete="off">
           </div>
           <div class="form-group">
-            <label for="ldap_import_user_filter">{{_('LDAP User Member User Filter Detection')}}</label>
+            <label for="ldap_import_user_filter">{{_('LDAP Member User Filter Detection')}}</label>
               <select name="ldap_import_user_filter" id="ldap_import_user_filter" class="form-control" data-control="ldap_member_user_object">
                   <option value="0" {% if config.config_ldap_member_user_object == "" %}selected{% endif %}>{{ _('Autodetect') }}</option>
                   <option value="1" {% if config.config_ldap_member_user_object %}selected{% endif %}>{{ _('Custom Filter') }}</option>
