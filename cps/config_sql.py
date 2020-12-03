@@ -113,6 +113,7 @@ class _Settings(_Base):
     config_ldap_key_path = Column(String, default="")
     config_ldap_dn = Column(String, default='dc=example,dc=org')
     config_ldap_user_object = Column(String, default='uid=%s')
+    config_ldap_member_user_object = Column(String, default='') #
     config_ldap_openldap = Column(Boolean, default=True)
     config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
     config_ldap_group_members_field = Column(String, default='memberUid')
