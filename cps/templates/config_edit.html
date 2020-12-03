@@ -331,6 +331,20 @@
             <label for="config_ldap_group_members_field">{{_('LDAP Group Members Field')}}</label>
             <input type="text" class="form-control" id="config_ldap_group_members_field" name="config_ldap_group_members_field" value="{% if config.config_ldap_group_members_field != None %}{{ config.config_ldap_group_members_field }}{% endif %}" autocomplete="off">
           </div>
+          <div class="form-group">
+            <label for="ldap_import_user_filter">{{_('LDAP Authentication')}}</label>
+              <select name="ldap_import_user_filter" id="ldap_import_user_filter" class="form-control" data-control="ldap_member_user_object">
+                  <option value="0" {% if config.config_ldap_member_user_object == "" %}selected{% endif %}>{{ _('Autodetect') }}</option>
+                  <option value="1" {% if config.config_ldap_member_user_object %}selected{% endif %}>{{ _('Custom Filter') }}</option>
+              </select>
+          </div>
+        <div data-related="ldap_member_user_object-1">
+          <div class="form-group">
+              <label for="config_ldap_member_user_object">{{_('LDAP Member User Filter')}}</label>
+              <input type="text" class="form-control" id="config_ldap_member_user_object" name="config_ldap_member_user_object" value="{% if config.config_ldap_member_user_object != None %}{{ config.config_ldap_member_user_object }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+
       </div>
       {% endif %}
       {% if feature_support['oauth'] %}

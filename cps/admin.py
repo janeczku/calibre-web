@@ -566,6 +566,7 @@ def _configuration_ldap_helper(to_save, gdriveError):
     reboot_required |= _config_string(to_save, "config_ldap_user_object")
     reboot_required |= _config_string(to_save, "config_ldap_group_object_filter")
     reboot_required |= _config_string(to_save, "config_ldap_group_members_field")
+    reboot_required |= _config_string(to_save, "config_ldap_member_user_object")
     reboot_required |= _config_checkbox(to_save, "config_ldap_openldap")
     reboot_required |= _config_int(to_save, "config_ldap_encryption")
     reboot_required |= _config_string(to_save, "config_ldap_cacert_path")
@@ -608,14 +609,26 @@ def _configuration_ldap_helper(to_save, gdriveError):
                                      gdriveError)
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
-                                     gdriveError)
+                                                      gdriveError)
+
+    if to_save["ldap_import_user_filter"] == '0':
+        config.config_ldap_member_user_object = ""
+    else:
+        if config.config_ldap_member_user_object.count("%s") != 1:
+            return reboot_required, \
+                   _configuration_result(_('LDAP Member User Filter needs to Have One "%s" Format Identifier'),
+                   gdriveError)
+        if config.config_ldap_member_user_object.count("(") != config.config_ldap_member_user_object.count(")"):
+            return reboot_required, _configuration_result(_('LDAP Member User Filter Has Unmatched Parenthesis'),
+                                                          gdriveError)
 
     if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
         if not (os.path.isfile(config.config_ldap_cacert_path) and
                 os.path.isfile(config.config_ldap_cert_path) and
                 os.path.isfile(config.config_ldap_key_path)):
             return reboot_required, \
-                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
+                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, '
+                                           'Please Enter Correct Path'),
                                          gdriveError)
     return reboot_required, None
 
