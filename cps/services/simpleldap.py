@@ -117,7 +117,7 @@ def bind_user(username, password):
         return None, error
     except LDAPException as ex:
         if ex.message == 'Invalid credentials':
-            error = ("LDAP admin login failed")
+            error = "LDAP admin login failed"
             return None, error
         if ex.message == "Can't contact LDAP server":
             # log.warning('LDAP Server down: %s', ex)
