@@ -386,7 +386,7 @@ def extract_user_data_from_field(user, field):
     if match:
         return match.group(1)
     else:
-        raise Exception("Could Not Parse LDAP User: %s", user)
+        raise Exception("Could Not Parse LDAP User: {}".format(user))
 
 # CN=Firstname LastName,OU=Laba,OU=...,DC=...,DC=...
 # CN=user displayname,OU=ouname1,OU=ouname2,OU=ouname3,DC=domain,DC=domain
@@ -395,7 +395,7 @@ def extract_user_identifier(user, filter):
     if match:
         dynamic_field = match.group(1)
     else:
-        raise Exception("Could Not Parse LDAP User: %s", user)
+        raise Exception("Could Not Parse LDAP User: {}".format(user))
     return extract_user_data_from_field(user, dynamic_field)
 
 
