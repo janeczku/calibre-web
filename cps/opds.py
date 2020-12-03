@@ -386,7 +386,9 @@ def feed_shelf(book_id):
 def opds_download_link(book_id, book_format):
     # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
     # workaround, loading the user from the request and checking it's download rights here
-    if not load_user_from_request(request).role_download():
+    # in case of anonymous browsing user is None
+    user = load_user_from_request(request)
+    if not user or not user.role_download():
         return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
