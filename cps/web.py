@@ -343,10 +343,7 @@ def import_ldap_users():
         if ub.session.query(ub.User).filter(ub.User.nickname == user_identifier.lower()).first():
             log.warning("LDAP User: %s Already in Database", user_identifier)
             continue
-        user_data = services.ldap.get_object_details(user=user_identifier,
-                                                     group=None,
-                                                     query_filter=None,
-                                                     dn_only=False)
+        user_data = services.ldap.get_object_details(user=user_identifier)
         if user_data:
             content = ub.User()
             # user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
