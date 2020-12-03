@@ -164,7 +164,6 @@ def view_configuration():
 @login_required
 @admin_required
 def update_view_configuration():
-    reboot_required = False
     to_save = request.form.to_dict()
 
     _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
@@ -172,7 +171,8 @@ def update_view_configuration():
 
     _config_string("config_calibre_web_title")
     _config_string("config_columns_to_ignore")
-    reboot_required |= _config_string("config_title_regex")
+    if _config_string("config_title_regex"):
+        calibre_db.update_title_sort(config)
 
     _config_int("config_read_column")
     _config_int("config_theme")
@@ -191,10 +191,6 @@ def update_view_configuration():
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
     before_request()
-    if reboot_required:
-        db.dispose()
-        ub.dispose()
-        web_server.stop(True)
 
     return view_configuration()
 
@@ -612,14 +608,26 @@ def _configuration_ldap_helper(to_save, gdriveError):
                                      gdriveError)
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
-                                     gdriveError)
+                                                      gdriveError)
+
+    if to_save["ldap_import_user_filter"] == '0':
+        config.config_ldap_member_user_object = ""
+    else:
+        if config.config_ldap_member_user_object.count("%s") != 1:
+            return reboot_required, \
+                   _configuration_result(_('LDAP Member User Filter needs to Have One "%s" Format Identifier'),
+                   gdriveError)
+        if config.config_ldap_member_user_object.count("(") != config.config_ldap_member_user_object.count(")"):
+            return reboot_required, _configuration_result(_('LDAP Member User Filter Has Unmatched Parenthesis'),
+                                                          gdriveError)
 
     if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
         if not (os.path.isfile(config.config_ldap_cacert_path) and
                 os.path.isfile(config.config_ldap_cert_path) and
                 os.path.isfile(config.config_ldap_key_path)):
             return reboot_required, \
-                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path'),
+                   _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, '
+                                           'Please Enter Correct Path'),
                                          gdriveError)
     return reboot_required, None
 

@@ -323,31 +323,34 @@ def import_ldap_users():
         showtext['text'] = _(u'Error: No user returned in response of LDAP server')
         return json.dumps(showtext)
 
+    imported = 0
     for username in new_users:
         user = username.decode('utf-8')
         if '=' in user:
-            match = re.search("([a-zA-Z0-9-]+)=%s", config.config_ldap_user_object, re.IGNORECASE | re.UNICODE)
-            if match:
-                match_filter = match.group(1)
-                match = re.search(match_filter + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
-                if match:
-                    user = match.group(1)
+            # if member object field is empty take user object as filter
+            try:
+                if config.config_ldap_member_user_object:
+                    user_identifier = extract_user_identifier(user, config.config_ldap_member_user_object)
                 else:
-                    log.warning("Could Not Parse LDAP User: %s", user)
-                    continue
-            else:
-                log.warning("Could Not Parse LDAP User: %s", user)
+                    user_identifier = extract_user_identifier(user, config.config_ldap_user_object)
+
+            except Exception as e:
+                log.warning(e)
                 continue
-        if ub.session.query(ub.User).filter(ub.User.nickname == user.lower()).first():
-            log.warning("LDAP User: %s Already in Database", user)
+        else:
+            user_identifier = user
+
+        if ub.session.query(ub.User).filter(ub.User.nickname == user_identifier.lower()).first():
+            log.warning("LDAP User: %s Already in Database", user_identifier)
             continue
-        user_data = services.ldap.get_object_details(user=user,
+        user_data = services.ldap.get_object_details(user=user_identifier,
                                                      group=None,
                                                      query_filter=None,
                                                      dn_only=False)
         if user_data:
             content = ub.User()
-            content.nickname = user
+            # user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
+            content.nickname = user_identifier # user_data[user_login_field][0].decode('utf-8')
             content.password = ''  # dummy password which will be replaced by ldap one
             if 'mail' in user_data:
                 content.email = user_data['mail'][0].decode('utf-8')
@@ -365,6 +368,7 @@ def import_ldap_users():
             ub.session.add(content)
             try:
                 ub.session.commit()
+                imported +=1
             except Exception as e:
                 log.warning("Failed to create LDAP user: %s - %s", user, e)
                 ub.session.rollback()
@@ -373,8 +377,26 @@ def import_ldap_users():
             log.warning("LDAP User: %s Not Found", user)
             showtext['text'] = _(u'At Least One LDAP User Not Found in Database')
     if not showtext:
-        showtext['text'] = _(u'User Successfully Imported')
+        showtext['text'] = _(u'{} User Successfully Imported'.format(imported))
     return json.dumps(showtext)
+
+
+def extract_user_data_from_field(user, field):
+    match = re.search(field + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    if match:
+        return match.group(1)
+    else:
+        raise Exception("Could Not Parse LDAP User: %s", user)
+
+# CN=Firstname LastName,OU=Laba,OU=...,DC=...,DC=...
+# CN=user displayname,OU=ouname1,OU=ouname2,OU=ouname3,DC=domain,DC=domain
+def extract_user_identifier(user, filter):
+    match = re.search("([a-zA-Z0-9-]+)=%s", filter, re.IGNORECASE | re.UNICODE)
+    if match:
+        dynamic_field = match.group(1)
+    else:
+        raise Exception("Could Not Parse LDAP User: %s", user)
+    return extract_user_data_from_field(user, dynamic_field)
 
 
 # ################################### data provider functions #########################################################
@@ -631,6 +653,10 @@ def render_books_list(data, sort, book_id, page):
         order = [db.Books.author_sort.asc()]
     if sort == 'authza':
         order = [db.Books.author_sort.desc()]
+    if sort == 'seriesasc':
+        order = [db.Books.series_index.asc()]
+    if sort == 'seriesdesc':
+        order = [db.Books.series_index.desc()]
 
     if data == "rated":
         if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
@@ -813,7 +839,7 @@ def render_ratings_books(page, book_id, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.ratings.any(db.Ratings.id == book_id),
-                                                            [db.Books.timestamp.desc(), order[0]])
+                                                            [order[0]])
     if name and name.rating <= 10:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings")
@@ -827,7 +853,7 @@ def render_formats_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.data.any(db.Data.format == book_id.upper()),
-                                                                [db.Books.timestamp.desc(), order[0]])
+                                                                [order[0]])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
@@ -860,7 +886,7 @@ def render_language_books(page, name, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
-                                                            [db.Books.timestamp.desc(), order[0]])
+                                                            [order[0]])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
@@ -998,7 +1024,7 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    return render_title_template('book_table.html', title=_(u"Books list"), page="book_table",
+    return render_title_template('book_table.html', title=_(u"Books List"), page="book_table",
                                  visiblility=visibility)
 
 @web.route("/ajax/listbooks")

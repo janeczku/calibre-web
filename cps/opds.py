@@ -25,7 +25,7 @@ import sys
 import datetime
 from functools import wraps
 
-from flask import Blueprint, request, render_template, Response, g, make_response
+from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
@@ -33,7 +33,7 @@ from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
-from .web import render_read_books, download_required
+from .web import render_read_books, download_required, load_user_from_request
 from flask_babel import gettext as _
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
@@ -383,8 +383,13 @@ def feed_shelf(book_id):
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
-@download_required
 def opds_download_link(book_id, book_format):
+    # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
+    # workaround, loading the user from the request and checking it's download rights here
+    # in case of anonymous browsing user is None
+    user = load_user_from_request(request) or current_user
+    if not user.role_download():
+        return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
     else:
@@ -418,7 +423,10 @@ def feed_search(term):
 
 def check_auth(username, password):
     if sys.version_info.major == 3:
-        username = username.encode('windows-1252')
+        try:
+            username = username.encode('windows-1252')
+        except UnicodeEncodeError:
+            username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()
     return bool(user and check_password_hash(str(user.password), password))
