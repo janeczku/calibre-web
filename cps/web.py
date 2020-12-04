@@ -340,27 +340,39 @@ def import_ldap_users():
         else:
             user_identifier = user
             query_filter = None
-
-        if ub.session.query(ub.User).filter(ub.User.nickname == user_identifier.lower()).first():
-            log.warning("LDAP User: %s Already in Database", user_identifier)
-            continue
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
         except AttributeError:
             log.exception(e)
             continue
         if user_data:
-            content = ub.User()
             user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
-            content.nickname = user_data[user_login_field][0].decode('utf-8')
-            content.password = ''  # dummy password which will be replaced by ldap one
+
+            username = user_data[user_login_field][0].decode('utf-8')
+            # check for duplicate username
+            if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
+                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
+                log.warning("LDAP User  %s Already in Database", user_data)
+                continue
+
+            kindlemail = ''
             if 'mail' in user_data:
-                content.email = user_data['mail'][0].decode('utf-8')
+                useremail = user_data['mail'][0].decode('utf-8')
                 if (len(user_data['mail']) > 1):
-                    content.kindle_mail = user_data['mail'][1].decode('utf-8')
+                    kindlemail = user_data['mail'][1].decode('utf-8')
+
             else:
                 log.debug('No Mail Field Found in LDAP Response')
-                content.email = content.nickname + '@email.com'
+                useremail = username + '@email.com'
+            # check for duplicate email
+            if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
+                log.warning("LDAP Email %s Already in Database", user_data)
+                continue
+            content = ub.User()
+            content.nickname = username
+            content.password = ''  # dummy password which will be replaced by ldap one
+            content.email = useremail
+            content.kindle_mail = kindlemail
             content.role = config.config_default_role
             content.sidebar_view = config.config_default_show
             content.allowed_tags = config.config_allowed_tags
