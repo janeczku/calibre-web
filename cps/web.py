@@ -342,7 +342,7 @@ def import_ldap_users():
             query_filter = None
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
-        except AttributeError:
+        except AttributeError as e:
             log.exception(e)
             continue
         if user_data:
