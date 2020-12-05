@@ -52,7 +52,7 @@ from .services import SyncToken as SyncToken
 from .web import download_required
 from .kobo_auth import requires_kobo_auth, get_auth_token
 
-KOBO_FORMATS = {"KEPUB": ["KEPUB", "EPUB3"], "EPUB": ["EPUB"]}
+KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
 
@@ -350,7 +350,9 @@ def get_seriesindex(book):
 
 def get_metadata(book):
     download_urls = []
-    for book_data in book.data:
+    kepub = [data for data in book.data if data.format == 'KEPUB']
+
+    for book_data in kepub if len(kepub) > 0 else book.data:
         if book_data.format not in KOBO_FORMATS:
             continue
         for kobo_format in KOBO_FORMATS[book_data.format]:
