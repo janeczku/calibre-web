@@ -328,37 +328,51 @@ def import_ldap_users():
         user = username.decode('utf-8')
         if '=' in user:
             # if member object field is empty take user object as filter
+            if config.config_ldap_member_user_object:
+                query_filter = config.config_ldap_member_user_object
+            else:
+                query_filter = config.config_ldap_user_object
             try:
-                if config.config_ldap_member_user_object:
-                    user_identifier = extract_user_identifier(user, config.config_ldap_member_user_object)
-                else:
-                    user_identifier = extract_user_identifier(user, config.config_ldap_user_object)
-
+                user_identifier = extract_user_identifier(user, query_filter)
             except Exception as e:
                 log.warning(e)
                 continue
         else:
             user_identifier = user
-
-        if ub.session.query(ub.User).filter(ub.User.nickname == user_identifier.lower()).first():
-            log.warning("LDAP User: %s Already in Database", user_identifier)
+            query_filter = None
+        try:
+            user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
+        except AttributeError as e:
+            log.exception(e)
             continue
-        user_data = services.ldap.get_object_details(user=user_identifier,
-                                                     group=None,
-                                                     query_filter=None,
-                                                     dn_only=False)
         if user_data:
-            content = ub.User()
-            # user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
-            content.nickname = user_identifier # user_data[user_login_field][0].decode('utf-8')
-            content.password = ''  # dummy password which will be replaced by ldap one
+            user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
+
+            username = user_data[user_login_field][0].decode('utf-8')
+            # check for duplicate username
+            if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
+                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
+                log.warning("LDAP User  %s Already in Database", user_data)
+                continue
+
+            kindlemail = ''
             if 'mail' in user_data:
-                content.email = user_data['mail'][0].decode('utf-8')
+                useremail = user_data['mail'][0].decode('utf-8')
                 if (len(user_data['mail']) > 1):
-                    content.kindle_mail = user_data['mail'][1].decode('utf-8')
+                    kindlemail = user_data['mail'][1].decode('utf-8')
+
             else:
                 log.debug('No Mail Field Found in LDAP Response')
-                content.email = user + '@email.com'
+                useremail = username + '@email.com'
+            # check for duplicate email
+            if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
+                log.warning("LDAP Email %s Already in Database", user_data)
+                continue
+            content = ub.User()
+            content.nickname = username
+            content.password = ''  # dummy password which will be replaced by ldap one
+            content.email = useremail
+            content.kindle_mail = kindlemail
             content.role = config.config_default_role
             content.sidebar_view = config.config_default_show
             content.allowed_tags = config.config_allowed_tags
@@ -386,16 +400,17 @@ def extract_user_data_from_field(user, field):
     if match:
         return match.group(1)
     else:
-        raise Exception("Could Not Parse LDAP User: %s", user)
+        raise Exception("Could Not Parse LDAP User: {}".format(user))
 
-# CN=Firstname LastName,OU=Laba,OU=...,DC=...,DC=...
-# CN=user displayname,OU=ouname1,OU=ouname2,OU=ouname3,DC=domain,DC=domain
-def extract_user_identifier(user, filter):
+def extract_dynamic_field_from_filter(user, filter):
     match = re.search("([a-zA-Z0-9-]+)=%s", filter, re.IGNORECASE | re.UNICODE)
     if match:
-        dynamic_field = match.group(1)
+        return match.group(1)
     else:
-        raise Exception("Could Not Parse LDAP User: %s", user)
+        raise Exception("Could Not Parse LDAP Userfield: {}", user)
+
+def extract_user_identifier(user, filter):
+    dynamic_field = extract_dynamic_field_from_filter(user, filter)
     return extract_user_data_from_field(user, dynamic_field)
 
 

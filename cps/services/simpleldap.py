@@ -85,8 +85,8 @@ def init_app(app, config):
         log.error(e)
 
 
-def get_object_details(user=None, group=None, query_filter=None, dn_only=False):
-    return _ldap.get_object_details(user, group, query_filter, dn_only)
+def get_object_details(user=None,query_filter=None):
+    return _ldap.get_object_details(user, query_filter=query_filter)
 
 
 def bind():
