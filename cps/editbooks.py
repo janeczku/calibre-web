@@ -588,7 +588,7 @@ def edit_book(book_id):
 
     # create the function for sorting...
     calibre_db.update_title_sort(config)
-    book = calibre_db.get_filtered_book(book_id)
+    book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
 
     # Book not found
     if not book:
