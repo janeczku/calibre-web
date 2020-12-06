@@ -43,6 +43,7 @@ from flask_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
+from sqlalchemy.orm import load_only
 from sqlalchemy.exc import StatementError
 import requests
 
@@ -55,6 +56,8 @@ from .kobo_auth import requires_kobo_auth, get_auth_token
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
+
+SYNC_ITEM_LIMIT = 5
 
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
@@ -142,68 +145,70 @@ def HandleSyncRequest():
     new_books_last_modified = sync_token.books_last_modified
     new_books_last_created = sync_token.books_last_created
     new_reading_state_last_modified = sync_token.reading_state_last_modified
+    new_archived_last_modified = datetime.datetime.min
     sync_results = []
 
     # We reload the book database so that the user get's a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
 
-    archived_books = (
-        ub.session.query(ub.ArchivedBook)
-        .filter(ub.ArchivedBook.user_id == int(current_user.id))
-        .all()
-    )
-
-    # We join-in books that have had their Archived bit recently modified in order to either:
-    #   * Restore them to the user's device.
-    #   * Delete them from the user's device.
-    # (Ideally we would use a join for this logic, however cross-database joins don't look trivial in SqlAlchemy.)
-    recently_restored_or_archived_books = []
-    archived_book_ids = {}
-    new_archived_last_modified = datetime.datetime.min
-    for archived_book in archived_books:
-        if archived_book.last_modified > sync_token.archive_last_modified:
-            recently_restored_or_archived_books.append(archived_book.book_id)
-        if archived_book.is_archived:
-            archived_book_ids[archived_book.book_id] = True
-        new_archived_last_modified = max(
-            new_archived_last_modified, archived_book.last_modified)
-
-    # sqlite gives unexpected results when performing the last_modified comparison without the datetime cast.
-    # It looks like it's treating the db.Books.last_modified field as a string and may fail
-    # the comparison because of the +00:00 suffix.
     changed_entries = (
-        calibre_db.session.query(db.Books)
-        .join(db.Data)
-        .filter(or_(func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
-                    db.Books.id.in_(recently_restored_or_archived_books)))
+        calibre_db.session.query(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
+        .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
+        .filter(db.Books.last_modified >= sync_token.books_last_modified)
+        .filter(db.Books.id>sync_token.books_last_id)
         .filter(db.Data.format.in_(KOBO_FORMATS))
-        .all()
+        # .filter(ub.ArchivedBook.is_archived == 0)
+        .order_by(db.Books.last_modified)
+        .order_by(db.Books.id)
+        .limit(SYNC_ITEM_LIMIT)
     )
 
     reading_states_in_new_entitlements = []
     for book in changed_entries:
-        kobo_reading_state = get_or_create_reading_state(book.id)
+        kobo_reading_state = get_or_create_reading_state(book.Books.id)
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book, archived=(book.id in archived_book_ids)),
-            "BookMetadata": get_metadata(book),
+            "BookEntitlement": create_book_entitlement(book.Books, archived=(book.is_archived == True)),
+            "BookMetadata": get_metadata(book.Books),
         }
 
         if kobo_reading_state.last_modified > sync_token.reading_state_last_modified:
-            entitlement["ReadingState"] = get_kobo_reading_state_response(book, kobo_reading_state)
+            entitlement["ReadingState"] = get_kobo_reading_state_response(book.Books, kobo_reading_state)
             new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
-            reading_states_in_new_entitlements.append(book.id)
+            reading_states_in_new_entitlements.append(book.Books.id)
 
-        if book.timestamp > sync_token.books_last_created:
+        if book.Books.timestamp > sync_token.books_last_created:
             sync_results.append({"NewEntitlement": entitlement})
         else:
             sync_results.append({"ChangedEntitlement": entitlement})
 
         new_books_last_modified = max(
-            book.last_modified, new_books_last_modified
+            book.Books.last_modified, new_books_last_modified
         )
-        new_books_last_created = max(book.timestamp, new_books_last_created)
+        new_books_last_created = max(book.Books.timestamp, new_books_last_created)
 
+    max_change = (changed_entries
+        .from_self()
+        .filter(ub.ArchivedBook.is_archived)
+        .order_by(func.datetime(ub.ArchivedBook.last_modified).desc())
+        .first()
+    )
+    if max_change:
+        max_change = max_change.last_modified
+    else:
+        max_change = new_archived_last_modified
+    new_archived_last_modified = max(new_archived_last_modified, max_change)
+
+    # no. of books returned
+    book_count = changed_entries.count()
+
+    # last entry:
+    if book_count:
+        books_last_id = changed_entries.all()[-1].Books.id or -1
+    else:
+        books_last_id = -1
+
+    # generate reading state data
     changed_reading_states = (
         ub.session.query(ub.KoboReadingState)
         .filter(and_(func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
@@ -225,11 +230,12 @@ def HandleSyncRequest():
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified
+    sync_token.books_last_id = books_last_id
 
-    return generate_sync_response(sync_token, sync_results)
+    return generate_sync_response(sync_token, sync_results, book_count)
 
 
-def generate_sync_response(sync_token, sync_results):
+def generate_sync_response(sync_token, sync_results, set_cont=False):
     extra_headers = {}
     if config.config_kobo_proxy:
         # Merge in sync results from the official Kobo store.
@@ -245,6 +251,8 @@ def generate_sync_response(sync_token, sync_results):
 
         except Exception as e:
             log.error("Failed to receive or parse response from Kobo's sync endpoint: " + str(e))
+    if set_cont:
+        extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
 
     response = make_response(jsonify(sync_results), extra_headers)
