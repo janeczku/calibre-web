@@ -71,7 +71,7 @@ lm.session_protection = 'strong'
 
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
-config = config_sql.load_configuration(ub.session)
+config = config_sql.load_configuration(ub.Scoped_Session)
 
 web_server = WebServer()
 
@@ -94,12 +94,13 @@ def create_app():
         app.root_path = app.root_path.decode('utf-8')
         app.instance_path = app.instance_path.decode('utf-8')
 
+    #if os.environ.get('FLASK_DEBUG'):
     cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
-    app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
+    app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.Scoped_Session))
 
     web_server.init_app(app, config)
 

@@ -24,7 +24,7 @@ from __future__ import division, print_function, unicode_literals
 import json
 from functools import wraps
 
-from flask import session, request, make_response, abort
+from flask import session, request, make_response, abort, g
 from flask import Blueprint, flash, redirect, url_for
 from flask_babel import gettext as _
 from flask_dance.consumer import oauth_authorized, oauth_error
@@ -74,7 +74,7 @@ def register_user_with_oauth(user=None):
     else:
         for oauth_key in all_oauth.keys():
             # Find this OAuth token in the database, or create it
-            query = ub.session.query(ub.OAuth).filter_by(
+            query = g.ubsession.query(ub.OAuth).filter_by(
                 provider=oauth_key,
                 provider_user_id=session[str(oauth_key) + "_oauth_user_id"],
             )
@@ -85,10 +85,10 @@ def register_user_with_oauth(user=None):
                 # no found, return error
                 return
             try:
-                ub.session.commit()
+                g.ubsession.commit()
             except Exception as e:
                 log.exception(e)
-                ub.session.rollback()
+                g.ubsession.rollback()
 
 
 def logout_oauth_user():
@@ -99,19 +99,19 @@ def logout_oauth_user():
 
 if ub.oauth_support:
     oauthblueprints = []
-    if not ub.session.query(ub.OAuthProvider).count():
+    if not g.ubsession.query(ub.OAuthProvider).count():
         oauthProvider = ub.OAuthProvider()
         oauthProvider.provider_name = "github"
         oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        ub.session.commit()
+        g.ubsession.add(oauthProvider)
+        g.ubsession.commit()
         oauthProvider = ub.OAuthProvider()
         oauthProvider.provider_name = "google"
         oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        ub.session.commit()
+        g.ubsession.add(oauthProvider)
+        g.ubsession.commit()
 
-    oauth_ids = ub.session.query(ub.OAuthProvider).all()
+    oauth_ids = g.ubsession.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',
                 id=oauth_ids[0].id,
                 active=oauth_ids[0].active,
@@ -141,7 +141,7 @@ if ub.oauth_support:
             scope=element['scope']
         )
         element['blueprint'] = blueprint
-        element['blueprint'].backend = OAuthBackend(ub.OAuth, ub.session, str(element['id']),
+        element['blueprint'].backend = OAuthBackend(ub.OAuth, g.ubsession, str(element['id']),
                                                     user=current_user, user_required=True)
         app.register_blueprint(blueprint, url_prefix="/login")
         if element['active']:
@@ -185,7 +185,7 @@ if ub.oauth_support:
         session[provider_id + "_oauth_token"] = token
 
         # Find this OAuth token in the database, or create it
-        query = ub.session.query(ub.OAuth).filter_by(
+        query = g.ubsession.query(ub.OAuth).filter_by(
             provider=provider_id,
             provider_user_id=provider_user_id,
         )
@@ -200,11 +200,11 @@ if ub.oauth_support:
                 token=token,
             )
         try:
-            ub.session.add(oauth_entry)
-            ub.session.commit()
+            g.ubsession.add(oauth_entry)
+            g.ubsession.commit()
         except Exception as e:
             log.exception(e)
-            ub.session.rollback()
+            g.ubsession.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
         # Value differrs depending on flask-dance version
@@ -212,7 +212,7 @@ if ub.oauth_support:
 
 
     def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider_name):
-        query = ub.session.query(ub.OAuth).filter_by(
+        query = g.ubsession.query(ub.OAuth).filter_by(
             provider=provider_id,
             provider_user_id=provider_user_id,
         )
@@ -230,13 +230,13 @@ if ub.oauth_support:
                 if current_user and current_user.is_authenticated:
                     oauth_entry.user = current_user
                     try:
-                        ub.session.add(oauth_entry)
-                        ub.session.commit()
+                        g.ubsession.add(oauth_entry)
+                        g.ubsession.commit()
                         flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
                         return redirect(url_for('web.profile'))
                     except Exception as e:
                         log.exception(e)
-                        ub.session.rollback()
+                        g.ubsession.rollback()
                 else:
                     flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
                 log.info('Login failed, No User Linked With OAuth Account')
@@ -253,7 +253,7 @@ if ub.oauth_support:
 
     def get_oauth_status():
         status = []
-        query = ub.session.query(ub.OAuth).filter_by(
+        query = g.ubsession.query(ub.OAuth).filter_by(
             user_id=current_user.id,
         )
         try:
@@ -268,7 +268,7 @@ if ub.oauth_support:
     def unlink_oauth(provider):
         if request.host_url + 'me' != request.referrer:
             pass
-        query = ub.session.query(ub.OAuth).filter_by(
+        query = g.ubsession.query(ub.OAuth).filter_by(
             provider=provider,
             user_id=current_user.id,
         )
@@ -277,13 +277,13 @@ if ub.oauth_support:
             if current_user and current_user.is_authenticated:
                 oauth_entry.user = current_user
                 try:
-                    ub.session.delete(oauth_entry)
-                    ub.session.commit()
+                    g.ubsession.delete(oauth_entry)
+                    g.ubsession.commit()
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
                     log.exception(e)
-                    ub.session.rollback()
+                    g.ubsession.rollback()
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
             log.warning("oauth %s for user %d not found", provider, current_user.id)

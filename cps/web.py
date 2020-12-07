@@ -139,6 +139,7 @@ def add_security_headers(resp):
     resp.headers['X-XSS-Protection'] = '1; mode=block'
     resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     # log.debug(request.full_path)
+    g.ubsession.close()
     return resp
 
 web = Blueprint('web', __name__)
@@ -147,12 +148,13 @@ log = logger.create()
 
 # ################################### Login logic and rights management ###############################################
 def _fetch_user_by_name(username):
-    return ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+    return g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
 
 
 @lm.user_loader
 def load_user(user_id):
-    return ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
+    g.ubsession = ub.Scoped_Session()
+    return g.ubsession.query(ub.User).filter(ub.User.id == int(user_id)).first()
 
 
 @lm.request_loader
@@ -291,6 +293,7 @@ def edit_required(f):
 
 @web.before_app_request
 def before_request():
+    g.ubsession = ub.Scoped_Session()
     if current_user.is_authenticated:
         confirm_login()
     g.constants = constants
@@ -300,7 +303,7 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    g.shelves_access = ub.session.query(ub.Shelf).filter(
+    g.shelves_access = g.ubsession.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in (
         'admin.basic_configuration', 'login') and '/static/' not in request.path:
@@ -350,8 +353,7 @@ def import_ldap_users():
 
             username = user_data[user_login_field][0].decode('utf-8')
             # check for duplicate username
-            if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
-                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
+            if g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
                 log.warning("LDAP User  %s Already in Database", user_data)
                 continue
 
@@ -365,7 +367,7 @@ def import_ldap_users():
                 log.debug('No Mail Field Found in LDAP Response')
                 useremail = username + '@email.com'
             # check for duplicate email
-            if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
+            if g.ubsession.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
                 log.warning("LDAP Email %s Already in Database", user_data)
                 continue
             content = ub.User()
@@ -379,13 +381,13 @@ def import_ldap_users():
             content.denied_tags = config.config_denied_tags
             content.allowed_column_value = config.config_allowed_column_value
             content.denied_column_value = config.config_denied_column_value
-            ub.session.add(content)
+            g.ubsession.add(content)
             try:
-                ub.session.commit()
+                g.ubsession.commit()
                 imported +=1
             except Exception as e:
                 log.warning("Failed to create LDAP user: %s - %s", user, e)
-                ub.session.rollback()
+                g.ubsession.rollback()
                 showtext['text'] = _(u'Failed to Create at Least One LDAP User')
         else:
             log.warning("LDAP User: %s Not Found", user)
@@ -428,19 +430,19 @@ def get_email_status_json():
 @login_required
 def bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
-    ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
+    g.ubsession.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                               ub.Bookmark.book_id == book_id,
                                               ub.Bookmark.format == book_format)).delete()
     if not bookmark_key:
-        ub.session.commit()
+        g.ubsession.commit()
         return "", 204
 
     lbookmark = ub.Bookmark(user_id=current_user.id,
                             book_id=book_id,
                             format=book_format,
                             bookmark_key=bookmark_key)
-    ub.session.merge(lbookmark)
-    ub.session.commit()
+    g.ubsession.merge(lbookmark)
+    g.ubsession.commit()
     return "", 201
 
 
@@ -448,7 +450,7 @@ def bookmark(book_id, book_format):
 @login_required
 def toggle_read(book_id):
     if not config.config_read_column:
-        book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
+        book = g.ubsession.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
                                                          ub.ReadBook.book_id == book_id)).first()
         if book:
             if book.read_status == ub.ReadBook.STATUS_FINISHED:
@@ -464,8 +466,8 @@ def toggle_read(book_id):
             kobo_reading_state.current_bookmark = ub.KoboBookmark()
             kobo_reading_state.statistics = ub.KoboStatistics()
             book.kobo_reading_state = kobo_reading_state
-        ub.session.merge(book)
-        ub.session.commit()
+        g.ubsession.merge(book)
+        g.ubsession.commit()
     else:
         try:
             calibre_db.update_title_sort(config)
@@ -490,7 +492,7 @@ def toggle_read(book_id):
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_archived(book_id):
-    archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
+    archived_book = g.ubsession.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
                                                                   ub.ArchivedBook.book_id == book_id)).first()
     if archived_book:
         archived_book.is_archived = not archived_book.is_archived
@@ -498,8 +500,8 @@ def toggle_archived(book_id):
     else:
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
         archived_book.is_archived = True
-    ub.session.merge(archived_book)
-    ub.session.commit()
+    g.ubsession.merge(archived_book)
+    g.ubsession.commit()
     return ""
 
 
@@ -738,7 +740,7 @@ def render_hot_books(page):
         else:
             random = false()
         off = int(int(config.config_books_per_page) * (page - 1))
-        all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
+        all_books = g.ubsession.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
             func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
         hot_books = all_books.offset(off).limit(config.config_books_per_page)
         entries = list()
@@ -749,8 +751,6 @@ def render_hot_books(page):
                 entries.append(downloadBook)
             else:
                 ub.delete_download(book.Downloads.book_id)
-                # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-                # ub.session.commit()
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -953,7 +953,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
 def render_archived_books(page, order):
     order = order or []
     archived_books = (
-        ub.session.query(ub.ArchivedBook)
+        g.ubsession.query(ub.ArchivedBook)
         .filter(ub.ArchivedBook.user_id == int(current_user.id))
         .filter(ub.ArchivedBook.is_archived == True)
         .all()
@@ -1085,7 +1085,7 @@ def update_table_settings():
             flag_modified(current_user, "view_settings")
         except AttributeError:
             pass
-        ub.session.commit()
+        g.ubsession.commit()
     except InvalidRequestError:
         log.error("Invalid request received: %r ", request, )
         return "Invalid request", 400
@@ -1550,9 +1550,9 @@ def register():
             return render_title_template('register.html', title=_(u"register"), page="register")
 
 
-        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == nickname
+        existing_user = g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) == nickname
                                                          .lower()).first()
-        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
+        existing_email = g.ubsession.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
         if not existing_user and not existing_email:
             content = ub.User()
             if check_valid_domain(to_save["email"]):
@@ -1563,13 +1563,13 @@ def register():
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
                 try:
-                    ub.session.add(content)
-                    ub.session.commit()
+                    g.ubsession.add(content)
+                    g.ubsession.commit()
                     if feature_support['oauth']:
                         register_user_with_oauth(content)
                     send_registration_mail(to_save["email"], nickname, password)
                 except Exception:
-                    ub.session.rollback()
+                    g.ubsession.rollback()
                     flash(_(u"An unknown error occurred. Please try again later."), category="error")
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
@@ -1599,7 +1599,7 @@ def login():
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()) \
+        user = g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()) \
             .first()
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
@@ -1675,8 +1675,8 @@ def logout():
 @remote_login_required
 def remote_login():
     auth_token = ub.RemoteAuthToken()
-    ub.session.add(auth_token)
-    ub.session.commit()
+    g.ubsession.add(auth_token)
+    g.ubsession.commit()
 
     verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
@@ -1688,7 +1688,7 @@ def remote_login():
 @remote_login_required
 @login_required
 def verify_token(token):
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+    auth_token = g.ubsession.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
 
     # Token not found
     if auth_token is None:
@@ -1698,8 +1698,8 @@ def verify_token(token):
 
     # Token expired
     if datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
-        ub.session.commit()
+        g.ubsession.delete(auth_token)
+        g.ubsession.commit()
 
         flash(_(u"Token has expired"), category="error")
         log.error(u"Remote Login token expired")
@@ -1708,7 +1708,7 @@ def verify_token(token):
     # Update token with user information
     auth_token.user_id = current_user.id
     auth_token.verified = True
-    ub.session.commit()
+    g.ubsession.commit()
 
     flash(_(u"Success! Please return to your device"), category="success")
     log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
@@ -1719,7 +1719,7 @@ def verify_token(token):
 @remote_login_required
 def token_verified():
     token = request.form['token']
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+    auth_token = g.ubsession.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
 
     data = {}
 
@@ -1730,8 +1730,8 @@ def token_verified():
 
     # Token expired
     elif datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
-        ub.session.commit()
+        g.ubsession.delete(auth_token)
+        g.ubsession.commit()
 
         data['status'] = 'error'
         data['message'] = _(u"Token has expired")
@@ -1740,11 +1740,11 @@ def token_verified():
         data['status'] = 'not_verified'
 
     else:
-        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
+        user = g.ubsession.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
         login_user(user)
 
-        ub.session.delete(auth_token)
-        ub.session.commit()
+        g.ubsession.delete(auth_token)
+        g.ubsession.commit()
 
         data['status'] = 'success'
         log.debug(u"Remote Login for userid %s succeded", user.id)
@@ -1800,7 +1800,7 @@ def profile():
             current_user.email = to_save["email"]
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
-            if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+            if not g.ubsession.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
                 current_user.nickname = to_save["nickname"]
             else:
                 flash(_(u"This username is already taken"), category="error")
@@ -1829,11 +1829,11 @@ def profile():
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
         try:
-            ub.session.commit()
+            g.ubsession.commit()
             flash(_(u"Profile updated"), category="success")
             log.debug(u"Profile updated")
         except IntegrityError:
-            ub.session.rollback()
+            g.ubsession.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
             '''return render_title_template("user_edit.html",
@@ -1872,7 +1872,7 @@ def read_book(book_id, book_format):
     # check if book has bookmark
     bookmark = None
     if current_user.is_authenticated:
-        bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
+        bookmark = g.ubsession.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
@@ -1924,13 +1924,13 @@ def show_book(book_id):
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
-        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
+        shelfs = g.ubsession.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for entry in shelfs:
             book_in_shelfs.append(entry.shelf)
 
         if not current_user.is_anonymous:
             if not config.config_read_column:
-                matching_have_read_book = ub.session.query(ub.ReadBook). \
+                matching_have_read_book = g.ubsession.query(ub.ReadBook). \
                     filter(and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
                 have_read = len(
                     matching_have_read_book) > 0 and matching_have_read_book[0].read_status == ub.ReadBook.STATUS_FINISHED
@@ -1942,7 +1942,7 @@ def show_book(book_id):
                     log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
                     have_read = None
 
-            archived_book = ub.session.query(ub.ArchivedBook).\
+            archived_book = g.ubsession.query(ub.ArchivedBook).\
                 filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
                             ub.ArchivedBook.book_id == book_id)).first()
             is_archived = archived_book and archived_book.is_archived

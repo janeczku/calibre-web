@@ -27,7 +27,7 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
-from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
+from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response, g
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
@@ -212,10 +212,10 @@ def delete_book(book_id, book_format, jsonResponse):
                         flash(error, category="warning")
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
-                    ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
-                    ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+                    g.ubsession.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
+                    g.ubsession.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
                     ub.delete_download(book_id)
-                    ub.session.commit()
+                    g.ubsession.commit()
 
                     # check if only this book links to:
                     # author, language, series, tags, custom columns
