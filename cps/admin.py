@@ -30,7 +30,7 @@ from datetime import datetime, timedelta
 
 from babel import Locale as LC
 from babel.dates import format_datetime
-from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory
+from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g
 from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from sqlalchemy import and_
@@ -88,7 +88,7 @@ def shutdown():
     if task in (0, 1):  # valid commandos received
         # close all database connections
         calibre_db.dispose()
-        ub.dispose()
+        # ub.dispose()
 
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
@@ -130,7 +130,7 @@ def admin():
         else:
             commit = version['version']
 
-    allUser = ub.session.query(ub.User).all()
+    allUser = g.ubsession.query(ub.User).all()
     email_settings = config.get_mail_settings()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
@@ -204,9 +204,9 @@ def edit_domain(allow):
     # pk:    1            //primary key (record id)
     # value: 'superuser!' //new value
     vals = request.form.to_dict()
-    answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
+    answer = g.ubsession.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
     answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
-    ub.session.commit()
+    g.ubsession.commit()
     return ""
 
 
@@ -215,12 +215,12 @@ def edit_domain(allow):
 @admin_required
 def add_domain(allow):
     domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
-    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name)\
+    check = g.ubsession.query(ub.Registration).filter(ub.Registration.domain == domain_name)\
         .filter(ub.Registration.allow == allow).first()
     if not check:
         new_domain = ub.Registration(domain=domain_name, allow=allow)
-        ub.session.add(new_domain)
-        ub.session.commit()
+        g.ubsession.add(new_domain)
+        g.ubsession.commit()
     return ""
 
 
@@ -229,13 +229,13 @@ def add_domain(allow):
 @admin_required
 def delete_domain():
     domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
-    ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
-    ub.session.commit()
+    g.ubsession.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
+    g.ubsession.commit()
     # If last domain was deleted, add all domains by default
-    if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
+    if not g.ubsession.query(ub.Registration).filter(ub.Registration.allow==1).count():
         new_domain = ub.Registration(domain="%.%",allow=1)
-        ub.session.add(new_domain)
-        ub.session.commit()
+        g.ubsession.add(new_domain)
+        g.ubsession.commit()
     return ""
 
 
@@ -243,7 +243,7 @@ def delete_domain():
 @login_required
 @admin_required
 def list_domain(allow):
-    answer = ub.session.query(ub.Registration).filter(ub.Registration.allow == allow).all()
+    answer = g.ubsession.query(ub.Registration).filter(ub.Registration.allow == allow).all()
     json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
     js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
     response = make_response(js.replace("'", '"'))
@@ -269,23 +269,23 @@ def edit_restriction(res_type):
         if res_type == 2:  # Tags per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
-                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+                usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_allowed_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.allowed_tags = ','.join(elementlist)
-            ub.session.commit()
+            g.ubsession.commit()
         if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
-                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+                usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_allowed_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.allowed_column_value = ','.join(elementlist)
-            ub.session.commit()
+            g.ubsession.commit()
     if element['id'].startswith('d'):
         if res_type == 0:  # Tags as template
             elementlist = config.list_denied_tags()
@@ -300,23 +300,23 @@ def edit_restriction(res_type):
         if res_type == 2:  # Tags per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
-                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+                usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.denied_tags = ','.join(elementlist)
-            ub.session.commit()
+            g.ubsession.commit()
         if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
-                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+                usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.denied_column_value = ','.join(elementlist)
-            ub.session.commit()
+            g.ubsession.commit()
     return ""
 
 def restriction_addition(element, list_func):
@@ -357,27 +357,27 @@ def add_restriction(res_type):
     if res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
-            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
         else:
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
-            ub.session.commit()
+            g.ubsession.commit()
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
-            ub.session.commit()
+            g.ubsession.commit()
     if res_type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
-            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
         else:
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
-            ub.session.commit()
+            g.ubsession.commit()
         elif 'submit_deny' in element:
             usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
-            ub.session.commit()
+            g.ubsession.commit()
     return ""
 
 @admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
@@ -402,27 +402,27 @@ def delete_restriction(res_type):
     elif res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
-            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
         else:
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            ub.session.commit()
+            g.ubsession.commit()
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            ub.session.commit()
+            g.ubsession.commit()
     elif res_type == 3:  # Columns per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:    # select current user if admins are editing their own rights
-            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id == int(usr_id)).first()
         else:
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
-            ub.session.commit()
+            g.ubsession.commit()
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
-            ub.session.commit()
+            g.ubsession.commit()
     return ""
 
 
@@ -445,7 +445,7 @@ def list_restriction(res_type):
     elif res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
-            usr = ub.session.query(ub.User).filter(ub.User.id == usr_id).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id == usr_id).first()
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
@@ -456,7 +456,7 @@ def list_restriction(res_type):
     elif res_type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
-            usr = ub.session.query(ub.User).filter(ub.User.id==usr_id).first()
+            usr = g.ubsession.query(ub.User).filter(ub.User.id==usr_id).first()
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
@@ -535,7 +535,7 @@ def _configuration_oauth_helper(to_save):
             element["active"] = 1
         else:
             element["active"] = 0
-        ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+        g.ubsession.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
             {"oauth_client_id": to_save["config_" + str(element['id']) + "_oauth_client_id"],
              "oauth_client_secret": to_save["config_" + str(element['id']) + "_oauth_client_secret"],
              "active": element["active"]})
@@ -691,7 +691,7 @@ def _configuration_update_helper():
 
         _config_checkbox(to_save, "config_remote_login")
         if not config.config_remote_login:
-            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
+            g.ubsession.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
 
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
@@ -723,7 +723,7 @@ def _configuration_update_helper():
             if unrar_status:
                 return _configuration_result(unrar_status, gdriveError)
     except (OperationalError, InvalidRequestError):
-        ub.session.rollback()
+        g.ubsession.rollback()
         _configuration_result(_(u"Settings DB is not Writeable"), gdriveError)
 
     try:
@@ -791,9 +791,9 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
                                      registered_oauth=oauth_check, kobo_support=kobo_support,
                                      title=_(u"Add new user"))
     content.password = generate_password_hash(to_save["password"])
-    existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()) \
+    existing_user = g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()) \
         .first()
-    existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
+    existing_email = g.ubsession.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
         .first()
     if not existing_user and not existing_email:
         content.nickname = to_save["nickname"]
@@ -814,31 +814,31 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
-        ub.session.add(content)
-        ub.session.commit()
+        g.ubsession.add(content)
+        g.ubsession.commit()
         flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
         return redirect(url_for('admin.admin'))
     except IntegrityError:
-        ub.session.rollback()
+        g.ubsession.rollback()
         flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
     except OperationalError:
-        ub.session.rollback()
+        g.ubsession.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
 
 
 def _handle_edit_user(to_save, content,languages, translations, kobo_support):
     if "delete" in to_save:
-        if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+        if g.ubsession.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
-            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
-            ub.session.commit()
+            g.ubsession.query(ub.User).filter(ub.User.id == content.id).delete()
+            g.ubsession.commit()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin.admin'))
         else:
             flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
             return redirect(url_for('admin.admin'))
     else:
-        if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+        if not g.ubsession.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                                 ub.User.id != content.id).count() and \
             not 'admin_role' in to_save:
             flash(_(u"No admin user remaining, can't remove admin role", nick=content.nickname), category="error")
@@ -872,7 +872,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
         if "locale" in to_save and to_save["locale"]:
             content.locale = to_save["locale"]
         if to_save["email"] and to_save["email"] != content.email:
-            existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
+            existing_email = g.ubsession.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
                 .first()
             if not existing_email:
                 content.email = to_save["email"]
@@ -889,7 +889,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
                                              title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
         if "nickname" in to_save and to_save["nickname"] != content.nickname:
             # Query User nickname, if not existing, change
-            if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+            if not g.ubsession.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
                 content.nickname = to_save["nickname"]
             else:
                 flash(_(u"This username is already taken"), category="error")
@@ -906,13 +906,13 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
     try:
-        ub.session.commit()
+        g.ubsession.commit()
         flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
     except IntegrityError:
-        ub.session.rollback()
+        g.ubsession.rollback()
         flash(_(u"An unknown error occured."), category="error")
     except OperationalError:
-        ub.session.rollback()
+        g.ubsession.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
 
 
@@ -961,7 +961,7 @@ def update_mailsettings():
     try:
         config.save()
     except (OperationalError, InvalidRequestError):
-        ub.session.rollback()
+        g.ubsession.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
         return edit_mailsettings()
 
@@ -985,7 +985,7 @@ def update_mailsettings():
 @login_required
 @admin_required
 def edit_user(user_id):
-    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
+    content = g.ubsession.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
     if not content or (not config.config_anonbrowse and content.nickname == "Guest"):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))

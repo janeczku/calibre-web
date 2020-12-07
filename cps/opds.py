@@ -33,7 +33,7 @@ from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
-from .web import render_read_books, download_required, load_user_from_request
+from .web import render_read_books, load_user_from_request
 from flask_babel import gettext as _
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
@@ -128,7 +128,7 @@ def feed_best_rated():
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("offset") or 0
-    all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
+    all_books = g.ubsession.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
         func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
@@ -361,17 +361,17 @@ def feed_shelfindex():
 def feed_shelf(book_id):
     off = request.args.get("offset") or 0
     if current_user.is_anonymous:
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1,
+        shelf = g.ubsession.query(ub.Shelf).filter(ub.Shelf.is_public == 1,
                                                   ub.Shelf.id == book_id).first()
     else:
-        shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
+        shelf = g.ubsession.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
                                                            ub.Shelf.id == book_id),
                                                       and_(ub.Shelf.is_public == 1,
                                                            ub.Shelf.id == book_id))).first()
     result = list()
     # user is allowed to access shelf
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == book_id).order_by(
+        books_in_shelf = g.ubsession.query(ub.BookShelf).filter(ub.BookShelf.shelf == book_id).order_by(
             ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = calibre_db.get_book(book.book_id)
@@ -427,7 +427,7 @@ def check_auth(username, password):
             username = username.encode('windows-1252')
         except UnicodeEncodeError:
             username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
+    user = g.ubsession.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()
     return bool(user and check_password_hash(str(user.password), password))
 

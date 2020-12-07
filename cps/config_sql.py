@@ -395,7 +395,8 @@ def _migrate_database(session):
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(session):
+def load_configuration(Session):
+    session = Session()
     _migrate_database(session)
 
     if not session.query(_Settings).count():
@@ -409,12 +410,15 @@ def load_configuration(session):
         session.query(ub.User).filter(ub.User.mature_content != True). \
             update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
         session.commit()
+    session.close()
     return conf
 
-def get_flask_session_key(session):
+def get_flask_session_key(Session):
+    session = Session()
     flask_settings = session.query(_Flask_Settings).one_or_none()
     if flask_settings == None:
         flask_settings = _Flask_Settings(os.urandom(32))
         session.add(flask_settings)
         session.commit()
+    session.close()
     return flask_settings.flask_session_key

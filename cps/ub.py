@@ -46,12 +46,13 @@ from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session
+from sqlalchemy.orm import relationship, scoped_session
 from werkzeug.security import generate_password_hash
 
 from . import constants
 
 
-session = None
+Scoped_Session = None
 app_DB_path = None
 Base = declarative_base()
 searched_ids = {}
@@ -219,9 +220,9 @@ class UserBase:
         except AttributeError:
             pass
         try:
-            session.commit()
+            g.ubsession.commit()
         except (exc.OperationalError, exc.InvalidRequestError):
-            session.rollback()
+            g.ubsession.rollback()
             # ToDo: Error message
 
     def __repr__(self):
@@ -279,6 +280,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
+        session = Scoped_Session()
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\
             .first()  # type: User
         self.nickname = data.nickname
@@ -297,6 +299,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         # Initialize flask_session once
         if 'view' not in flask_session:
             flask_session['view']={}
+        session.close()
 
 
     def role_admin(self):
@@ -673,18 +676,18 @@ def clean_database(session):
 
 # Save downloaded books per user in calibre-web's own database
 def update_download(book_id, user_id):
-    check = session.query(Downloads).filter(Downloads.user_id == user_id).filter(Downloads.book_id == book_id).first()
+    check = g.ubsession.query(Downloads).filter(Downloads.user_id == user_id).filter(Downloads.book_id == book_id).first()
 
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
-        session.add(new_download)
-        session.commit()
+        g.ubsession.add(new_download)
+        g.ubsession.commit()
 
 
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
-    session.query(Downloads).filter(book_id == Downloads.book_id).delete()
-    session.commit()
+    g.ubsession.query(Downloads).filter(book_id == Downloads.book_id).delete()
+    g.ubsession.commit()
 
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
@@ -716,18 +719,21 @@ def create_admin_user(session):
     except Exception:
         session.rollback()
 
+def create_session():
+    pass
 
 def init_db(app_db_path):
     # Open session for database connection
-    global session
+    global Scoped_Session
     global app_DB_path
+    global engine
 
     app_DB_path = app_db_path
     engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
 
-    Session = sessionmaker()
-    Session.configure(bind=engine)
-    session = Session()
+    Scoped_Session = scoped_session(sessionmaker()) # sessionmaker()
+    Scoped_Session.configure(bind=engine)
+    session = Scoped_Session()
 
     if os.path.exists(app_db_path):
         Base.metadata.create_all(engine)
@@ -737,6 +743,7 @@ def init_db(app_db_path):
         Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
+    session.close()
 
 
 def dispose():

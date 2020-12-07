@@ -37,7 +37,8 @@ from flask import (
     current_app,
     url_for,
     redirect,
-    abort
+    abort,
+    g
 )
 from flask_login import current_user
 from werkzeug.datastructures import Headers
@@ -210,7 +211,7 @@ def HandleSyncRequest():
 
     # generate reading state data
     changed_reading_states = (
-        ub.session.query(ub.KoboReadingState)
+        g.ubsession.query(ub.KoboReadingState)
         .filter(and_(func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
                      ub.KoboReadingState.user_id == current_user.id,
                      ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements))))
@@ -439,19 +440,19 @@ def HandleTagCreate():
         log.debug("Received malformed v1/library/tags request.")
         abort(400, description="Malformed tags POST request. Data has empty 'Name', missing 'Name' or 'Items' field")
 
-    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
+    shelf = g.ubsession.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
                                               current_user.id).one_or_none()
     if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
         abort(401, description="User is unauthaurized to create shelf.")
 
     if not shelf:
         shelf = ub.Shelf(user_id=current_user.id, name=name, uuid=str(uuid.uuid4()))
-        ub.session.add(shelf)
+        g.ubsession.add(shelf)
 
     items_unknown_to_calibre = add_items_to_shelf(items, shelf)
     if items_unknown_to_calibre:
         log.debug("Received request to add unknown books to a collection. Silently ignoring items.")
-    ub.session.commit()
+    g.ubsession.commit()
 
     return make_response(jsonify(str(shelf.uuid)), 201)
 
@@ -459,7 +460,7 @@ def HandleTagCreate():
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
 @requires_kobo_auth
 def HandleTagUpdate(tag_id):
-    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+    shelf = g.ubsession.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
         log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb")
@@ -483,8 +484,8 @@ def HandleTagUpdate(tag_id):
             abort(400, description="Malformed tags POST request. Data is missing 'Name' field")
 
         shelf.name = name
-        ub.session.merge(shelf)
-        ub.session.commit()
+        g.ubsession.merge(shelf)
+        g.ubsession.commit()
     return make_response(' ', 200)
 
 
@@ -522,7 +523,7 @@ def HandleTagAddItem(tag_id):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
-    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+    shelf = g.ubsession.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
         log.debug("Received Kobo request on a collection unknown to CalibreWeb")
@@ -535,8 +536,8 @@ def HandleTagAddItem(tag_id):
     if items_unknown_to_calibre:
         log.debug("Received request to add an unknown book to a collection. Silently ignoring item.")
 
-    ub.session.merge(shelf)
-    ub.session.commit()
+    g.ubsession.merge(shelf)
+    g.ubsession.commit()
 
     return make_response('', 201)
 
@@ -552,7 +553,7 @@ def HandleTagRemoveItem(tag_id):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
-    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+    shelf = g.ubsession.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
         log.debug(
@@ -577,7 +578,7 @@ def HandleTagRemoveItem(tag_id):
             shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
         except KeyError:
             items_unknown_to_calibre.append(item)
-    ub.session.commit()
+    g.ubsession.commit()
 
     if items_unknown_to_calibre:
         log.debug("Received request to remove an unknown book to a collecition. Silently ignoring item.")
@@ -590,7 +591,7 @@ def HandleTagRemoveItem(tag_id):
 def sync_shelves(sync_token, sync_results):
     new_tags_last_modified = sync_token.tags_last_modified
 
-    for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
+    for shelf in g.ubsession.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
                                                           ub.ShelfArchive.user_id == current_user.id):
         new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
 
@@ -603,7 +604,7 @@ def sync_shelves(sync_token, sync_results):
             }
         })
 
-    for shelf in ub.session.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
+    for shelf in g.ubsession.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
                                                    ub.Shelf.user_id == current_user.id):
         if not shelf_lib.check_shelf_view_permissions(shelf):
             continue
@@ -623,7 +624,7 @@ def sync_shelves(sync_token, sync_results):
                 "ChangedTag": tag
             })
     sync_token.tags_last_modified = new_tags_last_modified
-    ub.session.commit()
+    g.ubsession.commit()
 
 
 # Creates a Kobo "Tag" object from a ub.Shelf object
@@ -700,11 +701,11 @@ def HandleStateRequest(book_uuid):
                 update_results_response["StatusInfoResult"] = {"Result": "Success"}
         except (KeyError, TypeError, ValueError, StatementError):
             log.debug("Received malformed v1/library/<book_uuid>/state request.")
-            ub.session.rollback()
+            g.ubsession.rollback()
             abort(400, description="Malformed request data is missing 'ReadingStates' key")
 
-        ub.session.merge(kobo_reading_state)
-        ub.session.commit()
+        g.ubsession.merge(kobo_reading_state)
+        g.ubsession.commit()
         return jsonify({
             "RequestResult": "Success",
             "UpdateResults": [update_results_response],
@@ -732,7 +733,7 @@ def get_ub_read_status(kobo_read_status):
 
 
 def get_or_create_reading_state(book_id):
-    book_read = ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id,
+    book_read = g.ubsession.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id,
                                                           ub.ReadBook.user_id == current_user.id).one_or_none()
     if not book_read:
         book_read = ub.ReadBook(user_id=current_user.id, book_id=book_id)
@@ -741,8 +742,8 @@ def get_or_create_reading_state(book_id):
         kobo_reading_state.current_bookmark = ub.KoboBookmark()
         kobo_reading_state.statistics = ub.KoboStatistics()
         book_read.kobo_reading_state = kobo_reading_state
-    ub.session.add(book_read)
-    ub.session.commit()
+    g.ubsession.add(book_read)
+    g.ubsession.commit()
     return book_read.kobo_reading_state
 
 
@@ -835,7 +836,7 @@ def HandleBookDeletionRequest(book_uuid):
 
     book_id = book.id
     archived_book = (
-        ub.session.query(ub.ArchivedBook)
+        g.ubsession.query(ub.ArchivedBook)
         .filter(ub.ArchivedBook.book_id == book_id)
         .first()
     )
@@ -844,8 +845,8 @@ def HandleBookDeletionRequest(book_uuid):
     archived_book.is_archived = True
     archived_book.last_modified = datetime.datetime.utcnow()
 
-    ub.session.merge(archived_book)
-    ub.session.commit()
+    g.ubsession.merge(archived_book)
+    g.ubsession.commit()
 
     return ("", 204)
 

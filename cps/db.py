@@ -32,9 +32,10 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.pool import StaticPool
-from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
+from flask_login import current_user
+from flask import g
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
@@ -564,7 +565,7 @@ class CalibreDB():
     def common_filters(self, allow_show_archived=False):
         if not allow_show_archived:
             archived_books = (
-                ub.session.query(ub.ArchivedBook)
+                g.ubsession.query(ub.ArchivedBook)
                     .filter(ub.ArchivedBook.user_id == int(current_user.id))
                     .filter(ub.ArchivedBook.is_archived == True)
                     .all()

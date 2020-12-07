@@ -24,10 +24,7 @@ import io
 import mimetypes
 import re
 import shutil
-import glob
 import time
-import zipfile
-import json
 import unicodedata
 from datetime import datetime, timedelta
 from tempfile import gettempdir
@@ -35,7 +32,7 @@ from tempfile import gettempdir
 import requests
 from babel.dates import format_datetime
 from babel.units import format_unit
-from flask import send_from_directory, make_response, redirect, abort, url_for, send_file
+from flask import send_from_directory, make_response, redirect, abort, url_for, g
 from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text
@@ -485,7 +482,7 @@ def delete_book_gdrive(book, book_format):
 
 
 def reset_password(user_id):
-    existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
+    existing_user = g.ubsession.query(ub.User).filter(ub.User.id == user_id).first()
     if not existing_user:
         return 0, None
     if not config.get_mail_server_configured():
@@ -493,11 +490,11 @@ def reset_password(user_id):
     try:
         password = generate_random_password()
         existing_user.password = generate_password_hash(password)
-        ub.session.commit()
+        g.ubsession.commit()
         send_registration_mail(existing_user.email, existing_user.nickname, password, True)
         return 1, existing_user.nickname
     except Exception:
-        ub.session.rollback()
+        g.ubsession.rollback()
         return 0, None
 
 
@@ -779,11 +776,11 @@ def tags_filters():
 def check_valid_domain(domain_text):
     # domain_text = domain_text.split('@', 1)[-1].lower()
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    result = g.ubsession.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     if not len(result):
         return False
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 0);"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    result = g.ubsession.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     return not len(result)
 
 
