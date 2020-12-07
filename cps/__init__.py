@@ -71,7 +71,7 @@ lm.session_protection = 'strong'
 
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
-config = config_sql.load_configuration(ub.Scoped_Session)
+config = config_sql.load_configuration()
 
 web_server = WebServer()
 
@@ -100,7 +100,7 @@ def create_app():
     log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
-    app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.Scoped_Session))
+    app.secret_key = os.getenv('SECRET_KEY', config.get_flask_session_key())
 
     web_server.init_app(app, config)
 
@@ -114,7 +114,6 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-
     return app
 
 @babel.localeselector
