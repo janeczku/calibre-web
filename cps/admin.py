@@ -206,7 +206,10 @@ def edit_domain(allow):
     vals = request.form.to_dict()
     answer = g.ubsession.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
     answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
     return ""
 
 
@@ -220,7 +223,10 @@ def add_domain(allow):
     if not check:
         new_domain = ub.Registration(domain=domain_name, allow=allow)
         g.ubsession.add(new_domain)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
     return ""
 
 
@@ -230,12 +236,18 @@ def add_domain(allow):
 def delete_domain():
     domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
     g.ubsession.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
     # If last domain was deleted, add all domains by default
     if not g.ubsession.query(ub.Registration).filter(ub.Registration.allow==1).count():
         new_domain = ub.Registration(domain="%.%",allow=1)
         g.ubsession.add(new_domain)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
     return ""
 
 
@@ -275,7 +287,10 @@ def edit_restriction(res_type):
             elementlist = usr.list_allowed_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.allowed_tags = ','.join(elementlist)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
@@ -285,7 +300,10 @@ def edit_restriction(res_type):
             elementlist = usr.list_allowed_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.allowed_column_value = ','.join(elementlist)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     if element['id'].startswith('d'):
         if res_type == 0:  # Tags as template
             elementlist = config.list_denied_tags()
@@ -306,7 +324,10 @@ def edit_restriction(res_type):
             elementlist = usr.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.denied_tags = ','.join(elementlist)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
@@ -316,7 +337,10 @@ def edit_restriction(res_type):
             elementlist = usr.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             usr.denied_column_value = ','.join(elementlist)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     return ""
 
 def restriction_addition(element, list_func):
@@ -362,10 +386,16 @@ def add_restriction(res_type):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     if res_type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
@@ -374,10 +404,16 @@ def add_restriction(res_type):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         elif 'submit_deny' in element:
             usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     return ""
 
 @admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
@@ -407,10 +443,16 @@ def delete_restriction(res_type):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     elif res_type == 3:  # Columns per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:    # select current user if admins are editing their own rights
@@ -419,10 +461,16 @@ def delete_restriction(res_type):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
     return ""
 
 
@@ -815,7 +863,10 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
         g.ubsession.add(content)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
         flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
         return redirect(url_for('admin.admin'))
     except IntegrityError:
@@ -831,7 +882,10 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
         if g.ubsession.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
             g.ubsession.query(ub.User).filter(ub.User.id == content.id).delete()
-            g.ubsession.commit()
+            try:
+                g.ubsession.commit()
+            except OperationalError:
+                g.ubsession.rollback()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin.admin'))
         else:
@@ -906,7 +960,10 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
     try:
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
         flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
     except IntegrityError:
         g.ubsession.rollback()

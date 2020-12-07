@@ -22,8 +22,8 @@ import os
 import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
-
 from . import constants, cli, logger, ub
 
 
@@ -247,7 +247,10 @@ class _ConfigSQL(object):
         if flask_settings == None:
             flask_settings = _Flask_Settings(os.urandom(32))
             self._session.add(flask_settings)
-            self._session.commit()
+            try:
+                self._session.commit()
+            except OperationalError:
+                self._session.rollback()
         return flask_settings.flask_session_key
 
 
@@ -308,7 +311,11 @@ class _ConfigSQL(object):
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
             self._session.merge(s)
-            self._session.commit()
+            try:
+                self._session.commit()
+            except OperationalError as e:
+                log.error('Database error: %s', e)
+                self._session.rollback()
 
     def save(self):
         '''Apply all configuration values to the underlying storage.'''
@@ -322,7 +329,11 @@ class _ConfigSQL(object):
 
         log.debug("_ConfigSQL updating storage")
         self._session.merge(s)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except OperationalError as e:
+            log.error('Database error: %s', e)
+            self._session.rollback()
         self.load()
 
     def invalidate(self, error=None):
@@ -363,7 +374,10 @@ def _migrate_table(session, orm_class):
                 changed = True
 
     if changed:
-        session.commit()
+        try:
+            session.commit()
+        except OperationalError:
+            session.rollback()
 
 
 def autodetect_calibre_binary():
@@ -414,7 +428,10 @@ def load_configuration():
 
     if not session.query(_Settings).count():
         session.add(_Settings())
-        session.commit()
+        try:
+            session.commit()
+        except OperationalError:
+            session.rollback()
     conf = _ConfigSQL(session)
     # Migrate from global restrictions to user based restrictions
     if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
@@ -422,5 +439,8 @@ def load_configuration():
         conf.save()
         session.query(ub.User).filter(ub.User.mature_content != True). \
             update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
-        session.commit()
+        try:
+            session.commit()
+        except OperationalError:
+            session.rollback()
     return conf

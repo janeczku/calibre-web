@@ -322,8 +322,11 @@ def delete_shelf_helper(cur_shelf):
     g.ubsession.delete(cur_shelf)
     g.ubsession.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
     g.ubsession.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
-    g.ubsession.commit()
-    log.info("successfully deleted %s", cur_shelf)
+    try:
+        g.ubsession.commit()
+        log.info("successfully deleted %s", cur_shelf)
+    except OperationalError:
+        g.ubsession.rollback()
 
 
 

@@ -681,13 +681,19 @@ def update_download(book_id, user_id):
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
         g.ubsession.add(new_download)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except exc.OperationalError:
+            g.ubsession.rollback()
 
 
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
     g.ubsession.query(Downloads).filter(book_id == Downloads.book_id).delete()
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except exc.OperationalError:
+        g.ubsession.rollback()
 
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
@@ -746,7 +752,7 @@ def init_db(app_db_path):
     session.close()
 
 
-def dispose():
+'''def dispose():
     global session
 
     old_session = session
@@ -760,4 +766,4 @@ def dispose():
             try:
                 old_session.bind.dispose()
             except Exception:
-                pass
+                pass'''
