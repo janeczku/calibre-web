@@ -44,6 +44,7 @@ from flask_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import load_only
 from sqlalchemy.exc import StatementError
 import requests
@@ -452,8 +453,10 @@ def HandleTagCreate():
     items_unknown_to_calibre = add_items_to_shelf(items, shelf)
     if items_unknown_to_calibre:
         log.debug("Received request to add unknown books to a collection. Silently ignoring items.")
-    g.ubsession.commit()
-
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
     return make_response(jsonify(str(shelf.uuid)), 201)
 
 
@@ -485,7 +488,10 @@ def HandleTagUpdate(tag_id):
 
         shelf.name = name
         g.ubsession.merge(shelf)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
     return make_response(' ', 200)
 
 
@@ -537,7 +543,10 @@ def HandleTagAddItem(tag_id):
         log.debug("Received request to add an unknown book to a collection. Silently ignoring item.")
 
     g.ubsession.merge(shelf)
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
 
     return make_response('', 201)
 
@@ -578,7 +587,10 @@ def HandleTagRemoveItem(tag_id):
             shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
         except KeyError:
             items_unknown_to_calibre.append(item)
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
 
     if items_unknown_to_calibre:
         log.debug("Received request to remove an unknown book to a collecition. Silently ignoring item.")
@@ -624,7 +636,10 @@ def sync_shelves(sync_token, sync_results):
                 "ChangedTag": tag
             })
     sync_token.tags_last_modified = new_tags_last_modified
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
 
 
 # Creates a Kobo "Tag" object from a ub.Shelf object
@@ -705,7 +720,10 @@ def HandleStateRequest(book_uuid):
             abort(400, description="Malformed request data is missing 'ReadingStates' key")
 
         g.ubsession.merge(kobo_reading_state)
-        g.ubsession.commit()
+        try:
+            g.ubsession.commit()
+        except OperationalError:
+            g.ubsession.rollback()
         return jsonify({
             "RequestResult": "Success",
             "UpdateResults": [update_results_response],
@@ -743,7 +761,10 @@ def get_or_create_reading_state(book_id):
         kobo_reading_state.statistics = ub.KoboStatistics()
         book_read.kobo_reading_state = kobo_reading_state
     g.ubsession.add(book_read)
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
     return book_read.kobo_reading_state
 
 
@@ -846,7 +867,10 @@ def HandleBookDeletionRequest(book_uuid):
     archived_book.last_modified = datetime.datetime.utcnow()
 
     g.ubsession.merge(archived_book)
-    g.ubsession.commit()
+    try:
+        g.ubsession.commit()
+    except OperationalError:
+        g.ubsession.rollback()
 
     return ("", 204)
 
