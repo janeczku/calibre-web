@@ -139,6 +139,7 @@ class _ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self, session):
         self._session = session
+        self._session.expire_on_commit = False
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
@@ -241,6 +242,14 @@ class _ConfigSQL(object):
     def get_mail_server_configured(self):
         return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
 
+    def get_flask_session_key(self):
+        flask_settings = self._session.query(_Flask_Settings).one_or_none()
+        if flask_settings == None:
+            flask_settings = _Flask_Settings(os.urandom(32))
+            self._session.add(flask_settings)
+            self._session.commit()
+        return flask_settings.flask_session_key
+
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         '''Possibly updates a field of this object.
@@ -273,6 +282,10 @@ class _ConfigSQL(object):
 
     def load(self):
         '''Load all configuration values from the underlying storage.'''
+        #own = False
+        #if not self._session:
+        #    self._session = ub.Scoped_Session()
+        #    own = True
         s = self._read_from_storage()  # type: _Settings
         for k, v in s.__dict__.items():
             if k[0] != '_':
@@ -395,8 +408,8 @@ def _migrate_database(session):
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(Session):
-    session = Session()
+def load_configuration():
+    session = ub.Scoped_Session()
     _migrate_database(session)
 
     if not session.query(_Settings).count():
@@ -410,15 +423,4 @@ def load_configuration(Session):
         session.query(ub.User).filter(ub.User.mature_content != True). \
             update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
         session.commit()
-    session.close()
     return conf
-
-def get_flask_session_key(Session):
-    session = Session()
-    flask_settings = session.query(_Flask_Settings).one_or_none()
-    if flask_settings == None:
-        flask_settings = _Flask_Settings(os.urandom(32))
-        session.add(flask_settings)
-        session.commit()
-    session.close()
-    return flask_settings.flask_session_key
