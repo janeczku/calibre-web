@@ -426,18 +426,19 @@ class CalibreDB():
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self):
+    def __init__(self, expire_on_commit=False):
         """ Initialize a new CalibreDB session
         """
         self.session = None
         if self._init:
-            self.initSession()
+            self.initSession(expire_on_commit)
 
         self.instances.add(self)
 
 
-    def initSession(self):
+    def initSession(self, expire_on_commit):
         self.session = self.session_factory()
+        self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
 
     @classmethod
