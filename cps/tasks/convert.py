@@ -112,7 +112,6 @@ class TaskConvert(CalibreTask):
         if check == 0:
             cur_book = local_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
-                # check if format is already there and replace it if so, problem with gdrive kepub upload (why?)
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))

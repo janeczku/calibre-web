@@ -614,6 +614,7 @@ def _configuration_ldap_helper(to_save, gdriveError):
     reboot_required |= _config_string(to_save, "config_ldap_user_object")
     reboot_required |= _config_string(to_save, "config_ldap_group_object_filter")
     reboot_required |= _config_string(to_save, "config_ldap_group_members_field")
+    reboot_required |= _config_string(to_save, "config_ldap_member_user_object")
     reboot_required |= _config_checkbox(to_save, "config_ldap_openldap")
     reboot_required |= _config_int(to_save, "config_ldap_encryption")
     reboot_required |= _config_string(to_save, "config_ldap_cacert_path")
