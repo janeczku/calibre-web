@@ -89,7 +89,7 @@ class Singleton:
         except AttributeError:
             self._instance = self._decorated()
             return self._instance
-        except ImportError as e:
+        except (ImportError, NameError) as e:
             log.debug(e)
             return None
 
