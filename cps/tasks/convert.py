@@ -33,10 +33,9 @@ class TaskConvert(CalibreTask):
     def run(self, worker_thread):
         self.worker_thread = worker_thread
         if config.config_use_google_drive:
-            worker_db = db.CalibreDB()
+            worker_db = db.CalibreDB(expire_on_commit=False)
             cur_book = worker_db.get_book(self.bookid)
             data = worker_db.get_book_format(self.bookid, self.settings['old_book_format'])
-            worker_db.session.close()
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             if df:
@@ -46,10 +45,12 @@ class TaskConvert(CalibreTask):
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
+                worker_db.session.close()
             else:
                 error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
+                worker_db.session.close()
                 return error_message
 
         filename = self._convert_ebook_format()
@@ -73,7 +74,7 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
-        local_db = db.CalibreDB()
+        local_db = db.CalibreDB(expire_on_commit=False)
         file_path = self.file_path
         book_id = self.bookid
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
