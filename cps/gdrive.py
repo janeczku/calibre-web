@@ -84,6 +84,7 @@ def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
         with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             filedata = json.load(settings)
+        # ToDo: Easier: rstrip('/')
         if filedata['web']['redirect_uris'][0].endswith('/'):
             filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-((len('/gdrive/callback')+1))]
         else:
@@ -123,6 +124,8 @@ def revoke_watch_gdrive():
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
+    if not config.config_google_drive_watch_changes_response:
+        return ''
     if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
             or request.headers.get('X-Goog-Resource-State') != 'change' \
             or not request.data:

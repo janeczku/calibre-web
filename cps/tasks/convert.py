@@ -80,10 +80,11 @@ class TaskConvert(CalibreTask):
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
         format_new_ext = u'.' + self.settings['new_book_format'].lower()
 
-        # check to see if destination format already exists -
+        # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
-        if os.path.isfile(file_path + format_new_ext):
+        if os.path.isfile(file_path + format_new_ext) or\
+            local_db.get_book_format(self.bookid, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
             cur_book = local_db.get_book(book_id)
             self.results['path'] = file_path
@@ -111,7 +112,7 @@ class TaskConvert(CalibreTask):
         if check == 0:
             cur_book = local_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
-                # self.db_queue.join()
+                # check if format is already there and replace it if so, problem with gdrive kepub upload (why?)
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
@@ -119,7 +120,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.merge(new_format)
                     local_db.session.commit()
                 except SQLAlchemyError as e:
-                    local_db.rollback()
+                    local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
                     return
