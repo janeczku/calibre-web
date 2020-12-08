@@ -66,6 +66,7 @@ from os import urandom
 from flask import g, Blueprint, url_for, abort, request
 from flask_login import login_user, login_required
 from flask_babel import gettext as _
+from sqlalchemy.exc import OperationalError
 
 from . import logger, ub, lm
 from .web import render_title_template
@@ -147,7 +148,10 @@ def generate_auth_token(user_id):
             auth_token.token_type = 1
 
             ub.session.add(auth_token)
-            ub.session.commit()
+            try:
+                ub.session.commit()
+            except OperationalError:
+                ub.session.rollback()
         return render_title_template(
             "generate_kobo_auth_url.html",
             title=_(u"Kobo Setup"),
@@ -164,5 +168,8 @@ def delete_auth_token(user_id):
     # Invalidate any prevously generated Kobo Auth token for this user.
     ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\
         .filter(ub.RemoteAuthToken.token_type==1).delete()
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
     return ""

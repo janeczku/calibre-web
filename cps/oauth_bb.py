@@ -32,6 +32,7 @@ from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
 from flask_login import login_user, current_user
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import OperationalError
 
 from . import constants, logger, config, app, ub
 from .web import login_required
@@ -109,7 +110,10 @@ if ub.oauth_support:
         oauthProvider.provider_name = "google"
         oauthProvider.active = False
         ub.session.add(oauthProvider)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
 
     oauth_ids = ub.session.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',

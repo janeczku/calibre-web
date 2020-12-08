@@ -351,7 +351,6 @@ def import_ldap_users():
             username = user_data[user_login_field][0].decode('utf-8')
             # check for duplicate username
             if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
-                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
                 log.warning("LDAP User  %s Already in Database", user_data)
                 continue
 
@@ -432,7 +431,10 @@ def bookmark(book_id, book_format):
                                               ub.Bookmark.book_id == book_id,
                                               ub.Bookmark.format == book_format)).delete()
     if not bookmark_key:
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
         return "", 204
 
     lbookmark = ub.Bookmark(user_id=current_user.id,
@@ -440,7 +442,10 @@ def bookmark(book_id, book_format):
                             format=book_format,
                             bookmark_key=bookmark_key)
     ub.session.merge(lbookmark)
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
     return "", 201
 
 
@@ -465,7 +470,10 @@ def toggle_read(book_id):
             kobo_reading_state.statistics = ub.KoboStatistics()
             book.kobo_reading_state = kobo_reading_state
         ub.session.merge(book)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
     else:
         try:
             calibre_db.update_title_sort(config)
@@ -499,7 +507,10 @@ def toggle_archived(book_id):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
         archived_book.is_archived = True
     ub.session.merge(archived_book)
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
     return ""
 
 
@@ -749,8 +760,6 @@ def render_hot_books(page):
                 entries.append(downloadBook)
             else:
                 ub.delete_download(book.Downloads.book_id)
-                # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-                # ub.session.commit()
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1086,10 +1095,11 @@ def update_table_settings():
         except AttributeError:
             pass
         ub.session.commit()
-    except InvalidRequestError:
+    except (InvalidRequestError, OperationalError):
         log.error("Invalid request received: %r ", request, )
         return "Invalid request", 400
     return ""
+
 
 @web.route("/author")
 @login_required_if_no_ano
@@ -1676,7 +1686,10 @@ def logout():
 def remote_login():
     auth_token = ub.RemoteAuthToken()
     ub.session.add(auth_token)
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
 
     verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
@@ -1708,7 +1721,10 @@ def verify_token(token):
     # Update token with user information
     auth_token.user_id = current_user.id
     auth_token.verified = True
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
 
     flash(_(u"Success! Please return to your device"), category="success")
     log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
@@ -1731,7 +1747,10 @@ def token_verified():
     # Token expired
     elif datetime.now() > auth_token.expiration:
         ub.session.delete(auth_token)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
 
         data['status'] = 'error'
         data['message'] = _(u"Token has expired")
@@ -1744,7 +1763,10 @@ def token_verified():
         login_user(user)
 
         ub.session.delete(auth_token)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
 
         data['status'] = 'success'
         log.debug(u"Remote Login for userid %s succeded", user.id)
@@ -1836,14 +1858,11 @@ def profile():
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
-            '''return render_title_template("user_edit.html",
-                                         content=current_user,
-                                         translations=translations,
-                                         kobo_support=kobo_support,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname),
-                                         page="me",
-                                         registered_oauth=local_oauth_check,
-                                         oauth_status=oauth_status)'''
+        except OperationalError as e:
+            ub.session.rollback()
+            log.error("Database error: %s", e)
+            flash(_(u"Database error: %(error)s.", error=e), category="error")
+
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  profile=1,

@@ -45,7 +45,7 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy.orm import backref, relationship, sessionmaker, Session
+from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
 from . import constants
@@ -677,14 +677,20 @@ def update_download(book_id, user_id):
 
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
-        session.add(new_download)
-        session.commit()
+        ub.session.add(new_download)
+        try:
+            ub.session.commit()
+        except exc.OperationalError:
+            ub.session.rollback()
 
 
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
-    session.query(Downloads).filter(book_id == Downloads.book_id).delete()
-    session.commit()
+    ub.session.query(Downloads).filter(book_id == Downloads.book_id).delete()
+    try:
+        ub.session.commit()
+    except exc.OperationalError:
+        ub.session.rollback()
 
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
@@ -725,7 +731,7 @@ def init_db(app_db_path):
     app_DB_path = app_db_path
     engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
 
-    Session = sessionmaker()
+    Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
     session = Session()
 

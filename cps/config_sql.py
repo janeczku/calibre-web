@@ -22,6 +22,7 @@ import os
 import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, cli, logger, ub
@@ -139,6 +140,7 @@ class _ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self, session):
         self._session = session
+        self._session.expire_on_commit = False
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
@@ -295,7 +297,11 @@ class _ConfigSQL(object):
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
             self._session.merge(s)
-            self._session.commit()
+            try:
+                self._session.commit()
+            except OperationalError as e:
+                log.error('Database error: %s', e)
+                self._session.rollback()
 
     def save(self):
         '''Apply all configuration values to the underlying storage.'''
@@ -309,7 +315,11 @@ class _ConfigSQL(object):
 
         log.debug("_ConfigSQL updating storage")
         self._session.merge(s)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except OperationalError as e:
+            log.error('Database error: %s', e)
+            self._session.rollback()
         self.load()
 
     def invalidate(self, error=None):
@@ -350,7 +360,10 @@ def _migrate_table(session, orm_class):
                 changed = True
 
     if changed:
-        session.commit()
+        try:
+            session.commit()
+        except OperationalError:
+            session.rollback()
 
 
 def autodetect_calibre_binary():
