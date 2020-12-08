@@ -677,20 +677,20 @@ def update_download(book_id, user_id):
 
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
-        ub.session.add(new_download)
+        session.add(new_download)
         try:
-            ub.session.commit()
+            session.commit()
         except exc.OperationalError:
-            ub.session.rollback()
+            session.rollback()
 
 
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
-    ub.session.query(Downloads).filter(book_id == Downloads.book_id).delete()
+    session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     try:
-        ub.session.commit()
+        session.commit()
     except exc.OperationalError:
-        ub.session.rollback()
+        session.rollback()
 
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
