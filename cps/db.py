@@ -426,7 +426,7 @@ class CalibreDB():
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self, expire_on_commit=False):
+    def __init__(self, expire_on_commit=True):
         """ Initialize a new CalibreDB session
         """
         self.session = None
