@@ -32,9 +32,9 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.pool import StaticPool
-from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
+from flask_login import current_user
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
@@ -425,18 +425,19 @@ class CalibreDB():
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self):
+    def __init__(self, expire_on_commit=True):
         """ Initialize a new CalibreDB session
         """
         self.session = None
         if self._init:
-            self.initSession()
+            self.initSession(expire_on_commit)
 
         self.instances.add(self)
 
 
-    def initSession(self):
+    def initSession(self, expire_on_commit=True):
         self.session = self.session_factory()
+        self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
 
     @classmethod
