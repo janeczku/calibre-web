@@ -100,25 +100,26 @@ def logout_oauth_user():
 
 if ub.oauth_support:
     oauthblueprints = []
-    if not g.ubsession.query(ub.OAuthProvider).count():
+    oauth_session = ub.Scoped_Session()
+    if not oauth_session.query(ub.OAuthProvider).count():
         oauthProvider = ub.OAuthProvider()
         oauthProvider.provider_name = "github"
         oauthProvider.active = False
-        g.ubsession.add(oauthProvider)
+        oauth_session.add(oauthProvider)
         try:
-            g.ubsession.commit()
+            oauth_session.commit()
         except OperationalError:
-            g.ubsession.rollback()
+            oauth_session.rollback()
         oauthProvider = ub.OAuthProvider()
         oauthProvider.provider_name = "google"
         oauthProvider.active = False
-        g.ubsession.add(oauthProvider)
+        oauth_session.add(oauthProvider)
         try:
-            g.ubsession.commit()
+            oauth_session.commit()
         except OperationalError:
-            g.ubsession.rollback()
+            oauth_session.rollback()
 
-    oauth_ids = g.ubsession.query(ub.OAuthProvider).all()
+    oauth_ids = oauth_session.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',
                 id=oauth_ids[0].id,
                 active=oauth_ids[0].active,
@@ -148,7 +149,7 @@ if ub.oauth_support:
             scope=element['scope']
         )
         element['blueprint'] = blueprint
-        element['blueprint'].backend = OAuthBackend(ub.OAuth, g.ubsession, str(element['id']),
+        element['blueprint'].backend = OAuthBackend(ub.OAuth, oauth_session, str(element['id']),
                                                     user=current_user, user_required=True)
         app.register_blueprint(blueprint, url_prefix="/login")
         if element['active']:
@@ -192,7 +193,7 @@ if ub.oauth_support:
         session[provider_id + "_oauth_token"] = token
 
         # Find this OAuth token in the database, or create it
-        query = g.ubsession.query(ub.OAuth).filter_by(
+        query = oauth_session.query(ub.OAuth).filter_by(
             provider=provider_id,
             provider_user_id=provider_user_id,
         )
@@ -207,11 +208,11 @@ if ub.oauth_support:
                 token=token,
             )
         try:
-            g.ubsession.add(oauth_entry)
-            g.ubsession.commit()
+            oauth_session.add(oauth_entry)
+            oauth_session.commit()
         except Exception as e:
             log.exception(e)
-            g.ubsession.rollback()
+            oauth_session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
         # Value differrs depending on flask-dance version
