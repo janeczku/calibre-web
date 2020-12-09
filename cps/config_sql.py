@@ -140,7 +140,6 @@ class _ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self, session):
         self._session = session
-        self._session.expire_on_commit = False
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
