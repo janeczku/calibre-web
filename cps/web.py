@@ -29,13 +29,14 @@ import mimetypes
 import traceback
 import binascii
 import re
+import chardet  # dependency of requests
 
 from babel.dates import format_date
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask import Blueprint, jsonify
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
-from flask import session as flask_session
+from flask import session as flask_session, send_file
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user, confirm_login
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -1495,8 +1496,14 @@ def serve_book(book_id, book_format, anyname):
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers)
+        return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
     else:
+        if book_format.upper() == 'TXT':
+            rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                           "rb").read()
+            result = chardet.detect(rawdata)
+            return make_response(
+                rawdata.decode(result['encoding']).encode('utf-8'))
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 

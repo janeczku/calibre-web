@@ -20,6 +20,7 @@ from __future__ import division, print_function, unicode_literals
 import os
 import json
 import shutil
+import chardet
 
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
@@ -30,16 +31,25 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 try:
-    from pydrive.auth import GoogleAuth
-    from pydrive.drive import GoogleDrive
-    from pydrive.auth import RefreshError
     from apiclient import errors
     from httplib2 import ServerNotFoundError
-    gdrive_support = True
     importError = None
-except ImportError as err:
-    importError = err
+    gdrive_support = True
+except ImportError as e:
+    importError = e
     gdrive_support = False
+try:
+    from pydrive2.auth import GoogleAuth
+    from pydrive2.drive import GoogleDrive
+    from pydrive2.auth import RefreshError
+except ImportError as err:
+    try:
+        from pydrive.auth import GoogleAuth
+        from pydrive.drive import GoogleDrive
+        from pydrive.auth import RefreshError
+    except ImportError as err:
+        importError = err
+        gdrive_support = False
 
 from . import logger, cli, config
 from .constants import CONFIG_DIR as _CONFIG_DIR
@@ -545,21 +555,24 @@ def partial(total_byte_len, part_size_limit):
     return s
 
 # downloads files in chunks from gdrive
-def do_gdrive_download(df, headers):
+def do_gdrive_download(df, headers, convert_encoding=False):
     total_size = int(df.metadata.get('fileSize'))
     download_url = df.metadata.get('downloadUrl')
     s = partial(total_size, 1024 * 1024)  # I'm downloading BIG files, so 100M chunk size is fine for me
 
-    def stream():
+    def stream(convert_encoding):
         for byte in s:
             headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
             resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
             if resp.status == 206:
+                if convert_encoding:
+                    result = chardet.detect(content)
+                    content = content.decode(result['encoding']).encode('utf-8')
                 yield content
             else:
                 log.warning('An error occurred: %s', resp)
                 return
-    return Response(stream_with_context(stream()), headers=headers)
+    return Response(stream_with_context(stream(convert_encoding)), headers=headers)
 
 
 _SETTINGS_YAML_TEMPLATE = """
