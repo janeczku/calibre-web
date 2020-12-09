@@ -21,6 +21,7 @@ import os
 import json
 import shutil
 import chardet
+import ssl
 
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
@@ -216,7 +217,7 @@ def listRootFolders():
         drive = getDrive(Gdrive.Instance().drive)
         folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
         fileList = drive.ListFile({'q': folder}).GetList()
-    except ServerNotFoundError as e:
+    except (ServerNotFoundError, ssl.SSLError) as e:
         log.info("GDrive Error %s" % e)
         fileList = []
     return fileList
