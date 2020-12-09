@@ -63,6 +63,7 @@ log = logger.create()
 
 try:
     from wand.image import Image
+    from wand.exceptions import MissingDelegateError
     use_IM = True
 except (ImportError, RuntimeError) as e:
     log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
@@ -585,9 +586,9 @@ def save_cover_from_url(url, book_path):
             requests.exceptions.Timeout) as ex:
         log.info(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
-#    except UnidentifiedImageError as ex:
-#        log.info(u'File Format Error %s', ex)
-#        return False, _("Cover Format Error")
+    except MissingDelegateError as ex:
+        log.info(u'File Format Error %s', ex)
+        return False, _("Cover Format Error")
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
