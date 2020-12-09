@@ -66,14 +66,6 @@ except ImportError as e:
     log.debug('Cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
-try:
-    from PIL import Image as PILImage
-    from PIL import __version__ as PILversion
-    use_PIL = True
-except ImportError as e:
-    log.debug('Cannot import Pillow, using png and webp images as cover will not work: %s', e)
-    use_PIL = False
-
 
 def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
     meta = None
@@ -179,10 +171,6 @@ def get_versions():
         XVersion = 'v'+'.'.join(map(str, lxmlversion))
     else:
         XVersion = u'not installed'
-    if use_PIL:
-        PILVersion = 'v' + PILversion
-    else:
-        PILVersion = u'not installed'
     if comic.use_comic_meta:
         ComicVersion = comic.comic_version or u'installed'
     else:
@@ -191,7 +179,7 @@ def get_versions():
             'PyPdf': PVersion,
             'lxml':XVersion,
             'Wand': WVersion,
-            'Pillow': PILVersion,
+            # 'Pillow': PILVersion,
             'Comic_API': ComicVersion}
 
 

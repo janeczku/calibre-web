@@ -50,13 +50,6 @@ try:
 except ImportError:
     use_unidecode = False
 
-try:
-    from PIL import Image as PILImage
-    from PIL import UnidentifiedImageError
-    use_PIL = True
-except ImportError:
-    use_PIL = False
-
 from . import calibre_db
 from .tasks.convert import TaskConvert
 from . import logger, config, get_locale, db, ub
@@ -66,8 +59,14 @@ from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.mail import TaskEmail
 
-
 log = logger.create()
+
+try:
+    from wand.image import Image
+    use_IM = True
+except (ImportError, RuntimeError) as e:
+    log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
+    use_IM = False
 
 
 # Convert existing book entry to new format
@@ -109,21 +108,21 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 def send_test_mail(kindle_mail, user_name):
     WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
                      config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
-                               _(u'This e-mail has been sent via Calibre-Web.')))
+                                          _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
 # Send registration email or password reset email, depending on parameter resend (False means welcome email)
 def send_registration_mail(e_mail, user_name, default_password, resend=False):
-    text = "Hello %s!\r\n" % user_name
+    txt = "Hello %s!\r\n" % user_name
     if not resend:
-        text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    text += "Please log in to your account using the following informations:\r\n"
-    text += "User name: %s\r\n" % user_name
-    text += "Password: %s\r\n" % default_password
-    text += "Don't forget to change your password after first login.\r\n"
-    text += "Sincerely\r\n\r\n"
-    text += "Your Calibre-Web team"
+        txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
+    txt += "Please log in to your account using the following informations:\r\n"
+    txt += "User name: %s\r\n" % user_name
+    txt += "Password: %s\r\n" % default_password
+    txt += "Don't forget to change your password after first login.\r\n"
+    txt += "Sincerely\r\n\r\n"
+    txt += "Your Calibre-Web team"
     WorkerThread.add(None, TaskEmail(
         subject=_(u'Get Started with Calibre-Web'),
         filepath=None,
@@ -131,7 +130,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         settings=config.get_mail_settings(),
         recipient=e_mail,
         taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
-        text=text
+        text=txt
     ))
 
     return
@@ -177,7 +176,7 @@ def check_send_to_kindle(entry):
                                     'convert': 0,
                                     'text': _('Send %(format)s to Kindle', format='Pdf')})
             if config.config_converterpath:
-                if 'EPUB' in formats and not 'MOBI' in formats:
+                if 'EPUB' in formats and 'MOBI' not in formats:
                     bookformats.append({'format': 'Mobi',
                                         'convert':1,
                                         'text': _('Convert %(orig)s to %(format)s and send to Kindle',
@@ -586,16 +585,15 @@ def save_cover_from_url(url, book_path):
             requests.exceptions.Timeout) as ex:
         log.info(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
-    except UnidentifiedImageError as ex:
-        log.info(u'File Format Error %s', ex)
-        return False, _("Cover Format Error")
+#    except UnidentifiedImageError as ex:
+#        log.info(u'File Format Error %s', ex)
+#        return False, _("Cover Format Error")
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
-    if hasattr(img, '_content'):
-        f = open(os.path.join(filepath, saved_filename), "wb")
-        f.write(img._content)
-        f.close()
+    if hasattr(img,"metadata"):
+        img.save(filename=os.path.join(filepath, saved_filename))
+        img.close()
     else:
         # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
         if not os.path.exists(filepath):
@@ -616,20 +614,19 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
 def save_cover(img, book_path):
     content_type = img.headers.get('content-type')
 
-    if use_PIL:
-        if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
-            log.error("Only jpg/jpeg/png/webp files are supported as coverfile")
-            return False, _("Only jpg/jpeg/png/webp files are supported as coverfile")
+    if use_IM:
+        if content_type not in ('image/jpeg', 'image/png', 'image/webp', 'image/bmp'):
+            log.error("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
+            return False, _("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
-        if content_type in ('image/png', 'image/webp'):
+        if content_type != 'image/jpg':
             if hasattr(img, 'stream'):
-                imgc = PILImage.open(img.stream)
+                imgc = Image(blob=img.stream)
             else:
-                imgc = PILImage.open(io.BytesIO(img.content))
-            im = imgc.convert('RGB')
-            tmp_bytesio = io.BytesIO()
-            im.save(tmp_bytesio, format='JPEG')
-            img._content = tmp_bytesio.getvalue()
+                imgc = Image(blob=io.BytesIO(img.content))
+            imgc.format = 'jpeg'
+            imgc.transform_colorspace("rgb")
+            img = imgc
     else:
         if content_type not in 'image/jpeg':
             log.error("Only jpg/jpeg files are supported as coverfile")
