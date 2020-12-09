@@ -287,7 +287,7 @@ def delete_book(book_id, book_format, jsonResponse):
 def render_edit_book(book_id):
     calibre_db.update_title_sort(config)
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = calibre_db.get_filtered_book(book_id)
+    book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
