@@ -26,7 +26,6 @@ SQLAlchemy-Utils>=0.33.5,<0.37.0
 
 # extracting metadata
 lxml>=3.8.0,<4.6.0
-Pillow>=4.0.0,<7.2.0
 rarfile>=2.7
 
 # other
