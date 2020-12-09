@@ -52,17 +52,14 @@ except (ImportError, LookupError) as e:
         use_rarfile = False
     use_comic_meta = False
 
-COVER_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.bmp']
-
+NO_JPEG_EXTENSIONS = ['.png', '.webp', '.bmp']
+COVER_EXTENSIONS = ['.png', '.webp', '.bmp', '.jpg', '.jpeg']
 
 def _cover_processing(tmp_file_name, img, extension):
     tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
     if use_IM:
         # convert to jpg because calibre only supports jpg
-        cover_ext = COVER_EXTENSIONS
-        cover_ext.remove('.jpeg')
-        cover_ext.remove('.jpg')
-        if extension in cover_ext:
+        if extension in NO_JPEG_EXTENSIONS:
             with Image(filename=tmp_file_name) as imgc:
                 imgc.format = 'jpeg'
                 imgc.transform_colorspace('rgb')
