@@ -153,17 +153,27 @@ def HandleSyncRequest():
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
 
-    changed_entries = (
-        calibre_db.session.query(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
-        .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
-        .filter(db.Books.last_modified >= sync_token.books_last_modified)
-        .filter(db.Books.id>sync_token.books_last_id)
-        .filter(db.Data.format.in_(KOBO_FORMATS))
-        # .filter(ub.ArchivedBook.is_archived == 0)
-        .order_by(db.Books.last_modified)
-        .order_by(db.Books.id)
-        .limit(SYNC_ITEM_LIMIT)
-    )
+    if sync_token.books_last_id > -1:
+        changed_entries = (
+            calibre_db.session.query(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
+            .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
+            .filter(db.Books.last_modified >= sync_token.books_last_modified)
+            .filter(db.Books.id>sync_token.books_last_id)
+            .filter(db.Data.format.in_(KOBO_FORMATS))
+            .order_by(db.Books.last_modified)
+            .order_by(db.Books.id)
+            .limit(SYNC_ITEM_LIMIT)
+        )
+    else:
+        changed_entries = (
+            calibre_db.session.query(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
+            .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
+            .filter(db.Books.last_modified > sync_token.books_last_modified)
+            .filter(db.Data.format.in_(KOBO_FORMATS))
+            .order_by(db.Books.last_modified)
+            .order_by(db.Books.id)
+            .limit(SYNC_ITEM_LIMIT)
+        )
 
     reading_states_in_new_entitlements = []
     for book in changed_entries:
