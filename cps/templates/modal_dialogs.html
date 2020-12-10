@@ -68,3 +68,36 @@
 </div>
 {% endif %}
 {% endmacro %}
+{% macro filechooser_modal() %}
+<div class="modal fade" id="fileModal" role="dialog" aria-labelledby="metafileLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-center">
+          <span>{{_('Choose File Location')}}</span>
+      </div>
+        <div class="modal-body">
+         <table id="file_table" class="table table-striped">
+            <thead>
+              <tr>
+                  <th>{{_('type')}}</th>
+                  <th>{{_('name')}}</th>
+                  <th>{{_('size')}}</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
+                <td><span class="glyphicon glyphicon-folder-close"></span></td>
+                <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <div class="modal-footer">
+        <input type="button" class="btn btn-primary" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
