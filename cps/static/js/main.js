@@ -213,6 +213,45 @@ $(function() {
         });
     }
 
+    function fillFileTable(path, type) {
+        if (type === "dir") {
+            var request_path = "/../../ajax/pathchooser/";
+        } else {
+            var request_path = "/../../ajax/filechooser/";
+        }
+        $.ajax({
+            dataType: "json",
+            data: {
+                path: path,
+            },
+            url: window.location.pathname + request_path,
+            success: function success(data) {
+                $("#file_table > tbody > tr").each(function () {
+                    if ($(this).attr("id") !== "parent") {
+                        $(this).closest("tr").remove();
+                    }
+                });
+                if (data.parentdir !== "") {
+                    $("#parent").removeClass('hidden')
+                } else {
+                    $("#parent").addClass('hidden')
+                }
+                // console.log(data);
+                data.files.forEach(function(entry) {
+                    if(entry.type === "dir") {
+                        var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
+                } else {
+                    var type = "";
+                }
+                    $("<tr class=\"tr-clickable\" data-type=\"" + entry.type + "\" data-path=\"" +
+                        entry.fullpath + "\"><td>" + type + "</td><td>" + entry.name + "</td><td>" +
+                        entry.size + "</td></tr>").appendTo($("#file_table"));
+                });
+            },
+            timeout: 2000
+        });
+    }
+
     $(".discover .row").isotope({
         // options
         itemSelector : ".book",
@@ -401,6 +440,81 @@ $(function() {
             $(this).find(".modal-body").html("...");
             $("#config_delete_kobo_token").show();
         });
+
+
+
+    $("#fileModal").on("show.bs.modal", function(e) {
+        //get data-id attribute of the clicked element and store in button
+        //var submit = true;
+        //var cwd = "{{oldfile|default(cwd, True)|abspath|replace('\\', '\\\\')}}";
+        //var isabsolute = true;
+        fillFileTable("","dir");
+    });
+
+    //(".tr-clickable").on("click",
+    $(document).on("click", ".tr-clickable", function() {
+        var path = this.attributes['data-path'].value;
+        var type = this.attributes['data-type'].value;
+        fillFileTable(path, type);
+    });
+
+
+        /*{% if type == 'folder' %} {# browsing for folder #}
+          var abspath = "{{url_for('app.pathchooser') + '?path=' + cwd|abspath|quote_plus}}";
+          var relpath = "{{url_for('app.pathchooser') + '?path=' + cwd|relpath|quote_plus}}";
+        {% else %} {# browsing for file #}
+          var abspath = "{{url_for('app.filechooser') + '?path=' + oldfile|default(cwd, True)|abspath|quote_plus}}";
+          var relpath = "{{url_for('app.filechooser') + '?path=' + oldfile|default(cwd, True)|relpath|quote_plus}}";
+        {% endif %}*/
+        /*document.addEventListener("readystatechange", function(event) {
+          if (this.readyState === "complete") {
+            document.getElementById("tbody").style.height = (window.innerHeight - 25) + "px";
+            window.onresize = function (event) {
+              document.getElementById("tbody").style.height = (window.innerHeight - 25) + "px";
+            };
+            var clickables = document.getElementsByClassName("tr-clickable");
+            for (var i = 0; i < clickables.length; i++) {
+              clickables[i].onclick = (function () {
+                var onclick = clickables[i].onclick;
+                return function (e) {
+                  if (onclick != null && !onclick()) {
+                      return false
+                  }
+                  if (this.dataset.href !== undefined && this.dataset.href !== "#") {
+                      window.location.href = this.dataset.href;
+                      return false
+                  } else {
+                      return true;
+                  }
+                }
+              })();
+            }
+          }
+        });
+        function updateParent()
+        {
+            if (window.top.SettingsUI !== undefined) {
+                window.top.SettingsUI.prototype.pathchooserChanged(this);
+            }
+        }
+        function setInvalid() {
+            submit = false;
+            cwd = "";
+            updateParent();
+        }
+        function setValid() {
+            submit = true;
+            updateParent();
+        }
+        function setFile(fullpath, name)
+        {
+            cwd = fullpath;
+            /*{*% if type == "file" %} {# browsing for file #}
+              abspath = "{{url_for('app.filechooser')}}?path={{cwd|abspath|quote_plus}}" + encodeURIComponent(name);
+              relpath = "{{url_for('app.filechooser')}}?path={{cwd|relpath|quote_plus}}" + encodeURIComponent(name);
+            {% endif %}*/
+            /*setValid();
+        }*/
 
     $("#btndeletetoken").click(function() {
         //get data-id attribute of the clicked element

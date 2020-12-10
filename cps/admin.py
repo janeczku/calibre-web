@@ -5,7 +5,7 @@
 #                            andy29485, idalin, Kyosfonica, wuqi, Kennyl, lemmsh,
 #                            falgh1, grunjol, csitko, ytils, xybydy, trasba, vrabe,
 #                            ruben-herold, marblepebble, JackED42, SiphonSquirrel,
-#                            apetresc, nanu-c, mutschler
+#                            apetresc, nanu-c, mutschler, GammaC0de, vuolter
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import re
 import base64
 import json
 import time
+import operator
 from datetime import datetime, timedelta
 
 from babel import Locale as LC
@@ -518,6 +519,89 @@ def list_restriction(res_type):
     response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
+
+@admi.route("/ajax/pathchooser/", endpoint="pathchooser")
+@admi.route("/ajax/filechooser/", endpoint="filechooser")
+@login_required
+@admin_required
+def pathchooser():
+    browse_for = "folder" if request.endpoint == "admin.pathchooser" else "file"
+    path = os.path.normpath(request.args.get('path', ""))
+
+    if os.path.isfile(path):
+        oldfile = path
+        path = os.path.dirname(path)
+    else:
+        oldfile = ""
+
+    abs = False
+
+    if os.path.isdir(path):
+        if os.path.isabs(path):
+            cwd = os.path.realpath(path)
+            abs = True
+        else:
+            cwd = os.path.relpath(path)
+    else:
+        cwd = os.getcwd()
+
+    cwd = os.path.normpath(os.path.realpath(cwd))
+    parentdir = os.path.dirname(cwd)
+    if not abs:
+        if os.path.realpath(cwd) == os.path.realpath("/"):
+            cwd = os.path.relpath(cwd)
+        else:
+            cwd = os.path.relpath(cwd) + os.path.sep
+        parentdir = os.path.relpath(parentdir) + os.path.sep
+
+    if os.path.realpath(cwd) == os.path.realpath("/"):
+        parentdir = ""
+
+    try:
+        folders = os.listdir(cwd)
+    except Exception:
+        folders = []
+
+    files = []
+    locale = get_locale()
+    for f in folders:
+        try:
+            data = {"name": f, "fullpath": os.path.join(cwd, f)}
+            data["sort"] = data["fullpath"].lower()
+            data["modified"] = format_datetime(datetime.fromtimestamp(int(os.path.getmtime(os.path.join(cwd, f)))),
+                                                                      format='short', locale=locale)
+            data["ext"] = os.path.splitext(f)[1]
+        except Exception:
+            continue
+
+        if os.path.isfile(os.path.join(cwd, f)):
+            data["type"] = "file"
+            data["size"] = os.path.getsize(os.path.join(cwd, f))
+
+            power = 0
+            while (data["size"] >> 10) > 0.3:
+                power += 1
+                data["size"] >>= 10
+            units = ("", "K", "M", "G", "T")
+            data["size"] = str(data["size"]) + " " + units[power] + "Byte"
+        else:
+            data["type"] = "dir"
+            data["size"] = ""
+
+        files.append(data)
+
+    files = sorted(files, key=operator.itemgetter("type", "sort"))
+
+    context = {
+        "cwd": cwd,
+        "files": files,
+        "parentdir": parentdir,
+        "type": browse_for,
+        "oldfile": oldfile,
+        "absolute": abs,
+    }
+    return json.dumps(context)
 
 
 @admi.route("/config", methods=["GET", "POST"])
