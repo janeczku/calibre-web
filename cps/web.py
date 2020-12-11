@@ -304,7 +304,7 @@ def before_request():
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in (
-        'admin.basic_configuration', 'login') and '/static/' not in request.path:
+        'admin.basic_configuration', 'login', "admin.config_pathchooser") and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
 
 
