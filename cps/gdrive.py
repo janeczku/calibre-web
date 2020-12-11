@@ -123,10 +123,12 @@ def revoke_watch_gdrive():
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
+    if not config.config_google_drive_watch_changes_response:
+        return ''
     if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
             or request.headers.get('X-Goog-Resource-State') != 'change' \
             or not request.data:
-        return redirect(url_for('admin.configuration'))
+        return '' # redirect(url_for('admin.configuration'))
 
     log.debug('%r', request.headers)
     log.debug('%r', request.data)

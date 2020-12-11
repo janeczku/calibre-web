@@ -20,6 +20,8 @@ from __future__ import division, print_function, unicode_literals
 import os
 import json
 import shutil
+import chardet
+import ssl
 
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
