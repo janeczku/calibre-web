@@ -259,7 +259,10 @@ def delete_book(book_id, book_format, jsonResponse):
                         filter(db.Data.format == book_format).delete()
                 calibre_db.session.commit()
             except Exception as e:
-                log.exception(e)
+                if config.config_log_level == logger.logging.DEBUG:
+                    log.exception(e)
+                else:
+                    log.error(e)
                 calibre_db.session.rollback()
         else:
             # book not found

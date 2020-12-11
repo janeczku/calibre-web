@@ -88,7 +88,10 @@ def register_user_with_oauth(user=None):
             try:
                 ub.session.commit()
             except Exception as e:
-                log.exception(e)
+                if config.config_log_level == logger.logging.DEBUG:
+                    log.exception(e)
+                else:
+                    log.error(e)
                 ub.session.rollback()
 
 
@@ -207,7 +210,10 @@ if ub.oauth_support:
             ub.session.add(oauth_entry)
             ub.session.commit()
         except Exception as e:
-            log.exception(e)
+            if config.config_log_level == logger.logging.DEBUG:
+                log.exception(e)
+            else:
+                log.error(e)
             ub.session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
@@ -239,7 +245,10 @@ if ub.oauth_support:
                         flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
                         return redirect(url_for('web.profile'))
                     except Exception as e:
-                        log.exception(e)
+                        if config.config_log_level == logger.logging.DEBUG:
+                            log.exception(e)
+                        else:
+                            log.error(e)
                         ub.session.rollback()
                 else:
                     flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
@@ -286,7 +295,10 @@ if ub.oauth_support:
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
-                    log.exception(e)
+                    if config.config_log_level == logger.logging.DEBUG:
+                        log.exception(e)
+                    else:
+                        log.error(e)
                     ub.session.rollback()
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:

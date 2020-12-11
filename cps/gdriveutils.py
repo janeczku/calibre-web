@@ -199,7 +199,10 @@ def getDrive(drive=None, gauth=None):
             except RefreshError as e:
                 log.error("Google Drive error: %s", e)
             except Exception as e:
-                log.exception(e)
+                if config.config_log_level == logger.logging.DEBUG:
+                    log.exception(e)
+                else:
+                    log.error(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
