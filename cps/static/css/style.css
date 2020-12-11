@@ -318,6 +318,7 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 .editable-submit { margin-bottom: 0px !important; }
 .filterheader { margin-bottom: 20px; }
 .errorlink { margin-top: 20px; }
+.emailconfig { margin-top: 10px; }
 
 .modal-body .comments {
   max-height: 300px;
