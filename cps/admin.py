@@ -780,7 +780,7 @@ def _configuration_update_helper():
     to_save = request.form.to_dict()
     gdriveError = None
 
-    to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$',
+    to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
                                            '',
                                            to_save['config_calibre_dir'],
                                            flags=re.IGNORECASE)
