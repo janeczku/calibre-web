@@ -31,7 +31,7 @@ else:
     sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
-from cps import create_app
+from cps import create_app, config
 from cps import web_server
 from cps.opds import opds
 from cps.web import web
@@ -64,7 +64,8 @@ def main():
     app.register_blueprint(about)
     app.register_blueprint(shelf)
     app.register_blueprint(admi)
-    app.register_blueprint(gdrive)
+    if config.config_use_google_drive:
+        app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
     if kobo_available:
         app.register_blueprint(kobo)
