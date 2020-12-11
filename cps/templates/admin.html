@@ -51,23 +51,31 @@
   <div class="row">
     <div class="col">
       <h2>{{_('E-mail Server Settings')}}</h2>
-      <table class="table table-striped" id="table_email">
-        <tr>
-          <th>{{_('SMTP Hostname')}}</th>
-          <th>{{_('SMTP Port')}}</th>
-          <th>{{_('Encryption')}}</th>
-          <th>{{_('SMTP Login')}}</th>
-          <th class="hidden-xs">{{_('From E-mail')}}</th>
-        </tr>
-        <tr>
-          <td>{{email.mail_server}}</td>
-          <td>{{email.mail_port}}</td>
-          <td>{% if email.mail_use_ssl %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-          <td>{{email.mail_login}}</td>
-          <td class="hidden-xs">{{email.mail_from}}</td>
-        </tr>
-      </table>
-      <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a></div>
+      {% if config.get_mail_server_configured() %}
+      <div class="col-xs-12 col-sm-12">
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Hostname')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_server}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Port')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_port}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Encryption')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(email.mail_use_ssl) }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('SMTP Login')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_login}}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('From E-mail')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_from}}</div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="btn btn-default emailconfig"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a></div>
     </div>
   </div>
 
@@ -140,7 +148,6 @@
       <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
       <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
       <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
-
   </div>
 
   <div class="row">
