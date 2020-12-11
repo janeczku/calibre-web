@@ -1251,7 +1251,7 @@ msgstr "Bücher pro Seite"
 
 #: cps/templates/admin.html:104
 msgid "Uploads"
-msgstr "Lade hoch"
+msgstr "Hochladen"
 
 #: cps/templates/admin.html:108
 msgid "Anonymous Browsing"
