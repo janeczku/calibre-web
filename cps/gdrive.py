@@ -125,7 +125,7 @@ def on_received_watch_confirmation():
     if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
             or request.headers.get('X-Goog-Resource-State') != 'change' \
             or not request.data:
-        return '' # redirect(url_for('admin.configuration'))
+        return ''
 
     log.debug('%r', request.headers)
     log.debug('%r', request.data)
@@ -143,14 +143,17 @@ def on_received_watch_confirmation():
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
             if not response['deleted'] and response['file']['title'] == 'metadata.db' \
                 and response['file']['md5Checksum'] != hashlib.md5(dbpath):
-                tmpDir = tempfile.gettempdir()
+                tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
+                if not os.path.isdir(tmp_dir):
+                    os.mkdir(tmp_dir)
+
                 log.info('Database file updated')
-                copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
+                copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))
                 log.info('Backing up existing and downloading updated metadata.db')
-                gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
+                gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmp_dir, "tmp_metadata.db"))
                 log.info('Setting up new DB')
-                # prevent error on windows, as os.rename does on exisiting files
-                move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
+                # prevent error on windows, as os.rename does on existing files, also allow cross hdd move
+                move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                 calibre_db.reconnect_db(config, ub.app_DB_path)
     except Exception as e:
         log.exception(e)
