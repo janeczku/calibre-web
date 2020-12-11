@@ -634,11 +634,14 @@ def save_cover(img, book_path):
             return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
-        tmpDir = gettempdir()
-        ret, message = save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img)
+        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+        ret, message = save_cover_from_filestorage(tmp_dir, "uploaded_cover.jpg", img)
         if ret is True:
-            gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
-                                        os.path.join(tmpDir, "uploaded_cover.jpg"))
+            gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg').replace("\\","/"),
+                                        os.path.join(tmp_dir, "uploaded_cover.jpg"))
             log.info("Cover is saved on Google Drive")
             return True, None
         else:
