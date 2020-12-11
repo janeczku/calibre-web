@@ -213,22 +213,33 @@ $(function() {
         });
     }
 
-    function fillFileTable(path, type) {
-        if (type === "dir") {
-            var request_path = "/../../ajax/pathchooser/";
+    function fillFileTable(path, type, folder, filt) {
+        if (window.location.pathname.endsWith("/basicconfig")) {
+            var request_path = "/../basicconfig/pathchooser/";
         } else {
-            var request_path = "/../../ajax/filechooser/";
+            var request_path = "/../../ajax/pathchooser/";
         }
         $.ajax({
             dataType: "json",
             data: {
                 path: path,
+                folder: folder,
+                filter: filt
             },
             url: window.location.pathname + request_path,
             success: function success(data) {
+                if ($("#element_selected").text() ==="") {
+                    $("#element_selected").text(data.cwd);
+                }
                 $("#file_table > tbody > tr").each(function () {
                     if ($(this).attr("id") !== "parent") {
                         $(this).closest("tr").remove();
+                    } else {
+                        if(data.absolute && data.parentdir !== "") {
+                           $(this)[0].attributes['data-path'].value  = data.parentdir;
+                        } else {
+                            $(this)[0].attributes['data-path'].value  = "..";
+                        }
                     }
                 });
                 if (data.parentdir !== "") {
@@ -444,83 +455,42 @@ $(function() {
 
 
     $("#fileModal").on("show.bs.modal", function(e) {
-        //get data-id attribute of the clicked element and store in button
-        //var submit = true;
-        //var cwd = "{{oldfile|default(cwd, True)|abspath|replace('\\', '\\\\')}}";
-        //var isabsolute = true;
-        fillFileTable("","dir");
+        var target = $(e.relatedTarget);
+        var path = $("#" + target.data("link"))[0].value;
+        var folder = target.data("folderonly");
+        var filter = target.data("filefilter");
+        $("#element_selected").text(path);
+        $("#file_confirm")[0].attributes["data-link"].value = target.data("link");
+        $("#file_confirm")[0].attributes["data-folderonly"].value = (typeof folder === 'undefined') ? false : true;
+        $("#file_confirm")[0].attributes["data-filefilter"].value = (typeof filter === 'undefined') ? "" : filter;
+        $("#file_confirm")[0].attributes["data-newfile"].value = target.data("newfile");
+        fillFileTable(path,"dir", folder, filter);
     });
 
-    //(".tr-clickable").on("click",
+    $("#file_confirm").click(function() {
+        $("#" + $(this).data("link"))[0].value = $("#element_selected").text()
+    });
+
     $(document).on("click", ".tr-clickable", function() {
-        var path = this.attributes['data-path'].value;
-        var type = this.attributes['data-type'].value;
-        fillFileTable(path, type);
+        var path = this.attributes["data-path"].value;
+        var type = this.attributes["data-type"].value;
+        var folder = $(file_confirm).data("folderonly");
+        var filter = $(file_confirm).data("filefilter");
+        var newfile = $(file_confirm).data("newfile");
+        if (newfile !== 'undefined') {
+            $("#element_selected").text(path + $("#new_file".text()));
+        } else {
+            $("#element_selected").text(path);
+        }
+        if(type === "dir") {
+            fillFileTable(path, type, folder, filter);
+        }
     });
-
-
-        /*{% if type == 'folder' %} {# browsing for folder #}
-          var abspath = "{{url_for('app.pathchooser') + '?path=' + cwd|abspath|quote_plus}}";
-          var relpath = "{{url_for('app.pathchooser') + '?path=' + cwd|relpath|quote_plus}}";
-        {% else %} {# browsing for file #}
-          var abspath = "{{url_for('app.filechooser') + '?path=' + oldfile|default(cwd, True)|abspath|quote_plus}}";
-          var relpath = "{{url_for('app.filechooser') + '?path=' + oldfile|default(cwd, True)|relpath|quote_plus}}";
-        {% endif %}*/
-        /*document.addEventListener("readystatechange", function(event) {
-          if (this.readyState === "complete") {
-            document.getElementById("tbody").style.height = (window.innerHeight - 25) + "px";
-            window.onresize = function (event) {
-              document.getElementById("tbody").style.height = (window.innerHeight - 25) + "px";
-            };
-            var clickables = document.getElementsByClassName("tr-clickable");
-            for (var i = 0; i < clickables.length; i++) {
-              clickables[i].onclick = (function () {
-                var onclick = clickables[i].onclick;
-                return function (e) {
-                  if (onclick != null && !onclick()) {
-                      return false
-                  }
-                  if (this.dataset.href !== undefined && this.dataset.href !== "#") {
-                      window.location.href = this.dataset.href;
-                      return false
-                  } else {
-                      return true;
-                  }
-                }
-              })();
-            }
-          }
-        });
-        function updateParent()
-        {
-            if (window.top.SettingsUI !== undefined) {
-                window.top.SettingsUI.prototype.pathchooserChanged(this);
-            }
-        }
-        function setInvalid() {
-            submit = false;
-            cwd = "";
-            updateParent();
-        }
-        function setValid() {
-            submit = true;
-            updateParent();
-        }
-        function setFile(fullpath, name)
-        {
-            cwd = fullpath;
-            /*{*% if type == "file" %} {# browsing for file #}
-              abspath = "{{url_for('app.filechooser')}}?path={{cwd|abspath|quote_plus}}" + encodeURIComponent(name);
-              relpath = "{{url_for('app.filechooser')}}?path={{cwd|relpath|quote_plus}}" + encodeURIComponent(name);
-            {% endif %}*/
-            /*setValid();
-        }*/
 
     $("#btndeletetoken").click(function() {
         //get data-id attribute of the clicked element
         var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
         var path = src.substring(0, src.lastIndexOf("/"));
-        // var domainId = $(this).value("domainId");
         $.ajax({
             method:"get",
             url: path + "/../../kobo_auth/deleteauthtoken/" + this.value,

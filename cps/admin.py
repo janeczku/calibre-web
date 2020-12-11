@@ -520,13 +520,21 @@ def list_restriction(res_type):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+@admi.route("/basicconfig/pathchooser/")
+@unconfigured
+def config_pathchooser():
+    return pathchooser()
 
-@admi.route("/ajax/pathchooser/", endpoint="pathchooser")
-@admi.route("/ajax/filechooser/", endpoint="filechooser")
+@admi.route("/ajax/pathchooser/")
 @login_required
 @admin_required
+def ajax_pathchooser():
+    return pathchooser()
+
 def pathchooser():
-    browse_for = "folder" if request.endpoint == "admin.pathchooser" else "file"
+    browse_for = "folder" #  if request.endpoint == "admin.pathchooser" else "file"
+    folder_only = request.args.get('folder', False) == "true"
+    file_filter = request.args.get('filter', "")
     path = os.path.normpath(request.args.get('path', ""))
 
     if os.path.isfile(path):
@@ -538,11 +546,11 @@ def pathchooser():
     abs = False
 
     if os.path.isdir(path):
-        if os.path.isabs(path):
-            cwd = os.path.realpath(path)
-            abs = True
-        else:
-            cwd = os.path.relpath(path)
+        #if os.path.isabs(path):
+        cwd = os.path.realpath(path)
+        abs = True
+        #else:
+        #    cwd = os.path.relpath(path)
     else:
         cwd = os.getcwd()
 
@@ -564,18 +572,19 @@ def pathchooser():
         folders = []
 
     files = []
-    locale = get_locale()
+    # locale = get_locale()
     for f in folders:
         try:
             data = {"name": f, "fullpath": os.path.join(cwd, f)}
             data["sort"] = data["fullpath"].lower()
-            data["modified"] = format_datetime(datetime.fromtimestamp(int(os.path.getmtime(os.path.join(cwd, f)))),
-                                                                      format='short', locale=locale)
-            data["ext"] = os.path.splitext(f)[1]
         except Exception:
             continue
 
         if os.path.isfile(os.path.join(cwd, f)):
+            if folder_only:
+                continue
+            if file_filter != "" and file_filter != f:
+                continue
             data["type"] = "file"
             data["size"] = os.path.getsize(os.path.join(cwd, f))
 
@@ -604,7 +613,7 @@ def pathchooser():
     return json.dumps(context)
 
 
-@admi.route("/config", methods=["GET", "POST"])
+@admi.route("/basicconfig", methods=["GET", "POST"])
 @unconfigured
 def basic_configuration():
     logout_user()
