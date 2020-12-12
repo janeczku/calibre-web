@@ -42,7 +42,7 @@ from . import constants, logger, helper, services
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
-from .render_template import render_title_template
+from .render_template import render_title_template, get_sidebar_config
 from . import debug_info
 
 try:
@@ -1050,7 +1050,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
             content.role &= ~constants.ROLE_ANONYMOUS
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
-        sidebar = ub.get_sidebar_config()
+        sidebar = get_sidebar_config()
         for element in sidebar:
             value = element['visibility']
             if value in val and not content.check_visibility(value):
