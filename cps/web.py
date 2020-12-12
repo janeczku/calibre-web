@@ -1496,7 +1496,9 @@ def get_robots():
 def serve_book(book_id, book_format, anyname):
     book_format = book_format.split(".")[0]
     book = calibre_db.get_book(book_id)
-    data = calibre_db.get_book_format(book.id, book_format.upper())
+    data = calibre_db.get_book_format(book_id, book_format.upper())
+    if not data:
+        abort(404)
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
@@ -1511,6 +1513,7 @@ def serve_book(book_id, book_format, anyname):
             return make_response(
                 rawdata.decode(result['encoding']).encode('utf-8'))
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
+
 
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
