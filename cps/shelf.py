@@ -30,7 +30,8 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 from . import logger, ub, calibre_db
-from .web import login_required_if_no_ano, render_title_template
+from .render_template import render_title_template
+from .usermanagement import login_required_if_no_ano
 
 
 shelf = Blueprint('shelf', __name__)

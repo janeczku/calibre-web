@@ -30,12 +30,12 @@ from flask_babel import gettext as _
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import OperationalError
 
 from . import constants, logger, config, app, ub
-from .web import login_required
+
 from .oauth import OAuthBackend, backend_resultcode
 
 

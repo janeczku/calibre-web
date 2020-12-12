@@ -28,12 +28,13 @@ from functools import wraps
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
-from werkzeug.security import check_password_hash
+
 
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
-from .web import render_read_books, load_user_from_request
+from .web import render_read_books
+from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
