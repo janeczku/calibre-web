@@ -272,6 +272,14 @@ class _ConfigSQL(object):
         setattr(self, field, new_value)
         return True
 
+    def toDict(self):
+        storage = {}
+        for k, v in self.__dict__.items():
+            if k[0] != '_' or k.endswith("password"):
+                storage[k] = v
+        return storage
+
+
     def load(self):
         '''Load all configuration values from the underlying storage.'''
         s = self._read_from_storage()  # type: _Settings
