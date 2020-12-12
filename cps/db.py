@@ -765,5 +765,5 @@ def lcase(s):
         return unidecode.unidecode(s.lower())
     except Exception as e:
         log = logger.create()
-        log.exception(e)
+        log.debug_or_exception(e)
         return s.lower()
