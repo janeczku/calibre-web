@@ -69,7 +69,7 @@ from flask_babel import gettext as _
 from sqlalchemy.exc import OperationalError
 
 from . import logger, ub, lm
-from .web import render_title_template
+from .render_template import render_title_template
 
 try:
     from functools import wraps

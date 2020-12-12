@@ -37,11 +37,36 @@ from . import config, get_locale, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
-from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
+from .render_template import render_title_template
+from .usermanagement import login_required_if_no_ano
+
+try:
+    from functools import wraps
+except ImportError:
+    pass  # We're not using Python 3
 
 
 editbook = Blueprint('editbook', __name__)
 log = logger.create()
+
+
+def upload_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_upload() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
+
+def edit_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_edit() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
 
 
 # Modifies different Database objects, first check if elements have to be added to database, than check

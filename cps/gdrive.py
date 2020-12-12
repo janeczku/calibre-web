@@ -35,7 +35,7 @@ from flask_babel import gettext as _
 from flask_login import login_required
 
 from . import logger, gdriveutils, config, ub, calibre_db
-from .web import admin_required
+from .admin import admin_required
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
 log = logger.create()
