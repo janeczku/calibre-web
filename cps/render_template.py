@@ -25,7 +25,7 @@ from . import config, constants
 from .ub import User
 
 
-def _get_sidebar_config(kwargs=None):
+def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
     if 'content' in kwargs:
         content = kwargs['content']
@@ -93,7 +93,7 @@ def _get_sidebar_config(kwargs=None):
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar = _get_sidebar_config(kwargs)
+    sidebar = get_sidebar_config(kwargs)
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
                            accept=constants.EXTENSIONS_UPLOAD,
                            *args, **kwargs)
