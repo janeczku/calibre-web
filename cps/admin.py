@@ -1327,7 +1327,7 @@ def import_ldap_users():
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
     except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.exception(e)
+        log.debug_or_exception(e)
         showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
         return json.dumps(showtext)
     if not new_users:
@@ -1355,7 +1355,7 @@ def import_ldap_users():
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
         except AttributeError as e:
-            log.exception(e)
+            log.debug_or_exception(e)
             continue
         if user_data:
             user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)

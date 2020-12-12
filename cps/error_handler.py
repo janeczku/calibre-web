@@ -48,20 +48,21 @@ def internal_error(error):
                            instance=config.config_calibre_web_title
                            ), 500
 
-# http error handling
-for ex in default_exceptions:
-    if ex < 500:
-        app.register_error_handler(ex, error_http)
-    elif ex == 500:
-        app.register_error_handler(ex, internal_error)
+def init_errorhandler():
+    # http error handling
+    for ex in default_exceptions:
+        if ex < 500:
+            app.register_error_handler(ex, error_http)
+        elif ex == 500:
+            app.register_error_handler(ex, internal_error)
 
 
-if services.ldap:
-    # Only way of catching the LDAPException upon logging in with LDAP server down
-    @app.errorhandler(services.ldap.LDAPException)
-    def handle_exception(e):
-        log.debug('LDAP server not accessible while trying to login to opds feed')
-        return error_http(FailedDependency())
+    if services.ldap:
+        # Only way of catching the LDAPException upon logging in with LDAP server down
+        @app.errorhandler(services.ldap.LDAPException)
+        def handle_exception(e):
+            log.debug('LDAP server not accessible while trying to login to opds feed')
+            return error_http(FailedDependency())
 
 
 # @app.errorhandler(InvalidRequestError)
