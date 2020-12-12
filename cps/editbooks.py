@@ -259,10 +259,7 @@ def delete_book(book_id, book_format, jsonResponse):
                         filter(db.Data.format == book_format).delete()
                 calibre_db.session.commit()
             except Exception as e:
-                if config.config_log_level == logger.logging.DEBUG:
-                    log.exception(e)
-                else:
-                    log.error(e)
+                log.debug_or_exception(e)
                 calibre_db.session.rollback()
         else:
             # book not found
@@ -719,7 +716,7 @@ def edit_book(book_id):
             flash(error, category="error")
             return render_edit_book(book_id)
     except Exception as e:
-        log.exception(e)
+        log.debug_or_exception(e)
         calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))

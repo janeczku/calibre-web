@@ -156,8 +156,5 @@ def on_received_watch_confirmation():
                 move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                 calibre_db.reconnect_db(config, ub.app_DB_path)
     except Exception as e:
-        if config.config_log_level == logger.logging.DEBUG:
-            log.exception(e)
-        else:
-            log.error(e)
+        log.debug_or_exception(e)
     return ''

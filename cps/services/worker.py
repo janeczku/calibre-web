@@ -161,8 +161,7 @@ class CalibreTask:
             self.run(*args)
         except Exception as e:
             self._handleError(str(e))
-            if logger.is_debug_enabled():
-                log.exception(e)
+            log.debug_or_exception(e)
 
         self.end_time = datetime.now()
 
@@ -211,7 +210,6 @@ class CalibreTask:
         self._progress = x
 
     def _handleError(self, error_message):
-        log.error(error_message)
         self.stat = STAT_FAIL
         self.progress = 1
         self.error = error_message
