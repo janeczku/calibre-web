@@ -421,7 +421,7 @@ def render_books_list(data, sort, book_id, page):
     elif data == "language":
         return render_language_books(page, book_id, order)
     elif data == "archived":
-        return render_archived_books(page, order)
+        return render_archived_books(page, book_id, order)
     elif data == "search":
         term = (request.args.get('query') or '')
         offset = int(int(config.config_books_per_page) * (page - 1))
@@ -430,8 +430,6 @@ def render_books_list(data, sort, book_id, page):
         term = json.loads(flask_session['query'])
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_adv_search_results(term, offset, order, config.config_books_per_page)
-    elif data == "shelf":
-        return shelf.show_shelf(1, book_id)
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order)
