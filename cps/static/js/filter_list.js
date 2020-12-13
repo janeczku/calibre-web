@@ -19,16 +19,9 @@ var direction = 0;  // Descending order
 var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {
-    var class_name = $("h1").attr('Class') + "_sort_name";
+    var className = $("h1").attr("Class") + "_sort_name";
     var obj = {};
-    obj[class_name] = sort;
-    /*$.ajax({
-        method:"post",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
-        data: JSON.stringify({obj}),
-    });*/
+    obj[className] = sort;
 
     var count = 0;
     var index = 0;
