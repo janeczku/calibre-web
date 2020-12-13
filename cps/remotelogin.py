@@ -26,6 +26,7 @@ from datetime import datetime
 from flask import Blueprint, request, make_response, abort, url_for, flash, redirect
 from flask_login import login_required, current_user, login_user
 from flask_babel import gettext as _
+from sqlalchemy.sql.expression import true
 
 from . import config, logger, ub
 from .render_template import render_title_template
@@ -60,7 +61,7 @@ def remote_login():
     ub.session.add(auth_token)
     ub.session.commit()
 
-    verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
+    verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
     return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")

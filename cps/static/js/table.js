@@ -45,14 +45,13 @@ $(function() {
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
-            }
-            else{
+            } else {
                 $("#delete_selection").removeClass("disabled");
                 $("#delete_selection").attr("aria-disabled", false);
             }
         });
     $("#delete_selection").click(function() {
-        $("#books-table").bootstrapTable('uncheckAll');
+        $("#books-table").bootstrapTable("uncheckAll");
     });
 
     $("#merge_confirm").click(function() {
@@ -63,8 +62,8 @@ $(function() {
             url: window.location.pathname + "/../../ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
-                $('#books-table').bootstrapTable('refresh');
-                $("#books-table").bootstrapTable('uncheckAll');
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
@@ -76,11 +75,11 @@ $(function() {
             dataType: "json",
             url: window.location.pathname + "/../../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
-            success: function success(book_titles) {
-                $.each(book_titles.from, function(i, item) {
+            success: function success(booTitles) {
+                $.each(booTitles.from, function(i, item) {
                     $("<span>- " + item + "</span>").appendTo("#merge_from");
                 });
-                $('#merge_to').text("- " + book_titles.to);
+                $("#merge_to").text("- " + booTitles.to);
 
             }
         });
@@ -126,34 +125,35 @@ $(function() {
         formatNoMatches: function () {
             return "";
         },
+        // eslint-disable-next-line no-unused-vars
         onEditableSave: function (field, row, oldvalue, $el) {
-        if (field === 'title' || field === 'authors') {
-            $.ajax({
-                method:"get",
-                dataType: "json",
-                url: window.location.pathname + "/../../ajax/sort_value/" + field + '/' + row.id,
-                success: function success(data) {
-                    var key = Object.keys(data)[0]
-                    $("#books-table").bootstrapTable('updateCellByUniqueId', {
-                        id: row.id,
-                        field: key,
-                        value: data[key]
-                    });
-                    console.log(data);
-                }
-            });
-         }
+            if (field === "title" || field === "authors") {
+                $.ajax({
+                    method:"get",
+                    dataType: "json",
+                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
+                    success: function success(data) {
+                        var key = Object.keys(data)[0];
+                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
+                            id: row.id,
+                            field: key,
+                            value: data[key]
+                        });
+                        // console.log(data);
+                    }
+                });
+            }
         },
+        // eslint-disable-next-line no-unused-vars
         onColumnSwitch: function (field, checked) {
-            var visible = $("#books-table").bootstrapTable('getVisibleColumns');
-            var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
-            var visibility =[]
-             var st = ""
+            var visible = $("#books-table").bootstrapTable("getVisibleColumns");
+            var hidden  = $("#books-table").bootstrapTable("getHiddenColumns");
+            var st = "";
             visible.forEach(function(item) {
-                st += "\""+ item.field + "\":\"" +"true"+ "\","
+                st += "\"" + item.field + "\":\"" + "true" + "\",";
             });
             hidden.forEach(function(item) {
-                st += "\""+ item.field + "\":\"" +"false"+ "\","
+                st += "\"" + item.field + "\":\"" + "false" + "\",";
             });
             st = st.slice(0, -1);
             $.ajax({
