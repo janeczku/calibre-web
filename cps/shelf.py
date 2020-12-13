@@ -22,6 +22,7 @@
 
 from __future__ import division, print_function, unicode_literals
 from datetime import datetime
+import sys
 
 from flask import Blueprint, request, flash, redirect, url_for
 from flask_babel import gettext as _
@@ -338,15 +339,17 @@ def delete_shelf(shelf_id):
         flash(_(u"Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
 
-
-@shelf.route("/shelf/<int:shelf_id>", defaults={'shelf_type': 1})
-@shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
+@shelf.route("/simpleshelf/<int:shelf_id>")
 @login_required_if_no_ano
-def show_shelf(shelf_type, shelf_id):
-    page_no = 0
-    offset = 0
-    order = None
-    return render_show_shelf(shelf_type, shelf_id, page_no, offset, order)
+def show_simpleshelf(shelf_id):
+    return render_show_shelf(2, shelf_id, 1, None)
+
+@shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "order", 'page': 1})
+@shelf.route("/shelf/<int:shelf_id>/<sort_param>", defaults={'page': 1})
+@shelf.route("/shelf/<int:shelf_id>/<sort_param>/<int:page>")
+@login_required_if_no_ano
+def show_shelf(shelf_id, sort_param, page):
+    return render_show_shelf(1, shelf_id, page, sort_param)
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -379,21 +382,30 @@ def order_shelf(shelf_id):
                                  shelf=shelf, page="shelforder")
 
 
-def render_show_shelf(shelf_id, shelf_type, page_no, offset, order):
+def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
 
     # check user is allowed to access shelf
     if shelf and check_shelf_view_permissions(shelf):
-        page = "shelf.html" if shelf_type == 1 else 'shelfdown.html'
-        result, __, pagination = calibre_db.fill_indexpage(page_no, 0,
+        if shelf_type == 1:
+            page = "shelf.html"
+            pagesize = 0
+            order = [ub.BookShelf.order.asc()]
+        else:
+            pagesize = sys.maxsize
+            page = 'shelfdown.html'
+            order = [ub.BookShelf.order.asc()]
+
+        result, __, pagination = calibre_db.fill_indexpage(page_no, pagesize,
                                                             db.Books,
                                                             ub.BookShelf.shelf == shelf_id,
-                                                            [ub.BookShelf.order.asc()],
+                                                            order,
                                                             ub.BookShelf,ub.BookShelf.book_id == db.Books.id)
 
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
-        wrong_entries = calibre_db.session.query(ub.BookShelf).join(db.Books, ub.BookShelf.book_id == db.Books.id,
-                                                         isouter=True).filter(db.Books.id == None).all()
+        wrong_entries = calibre_db.session.query(ub.BookShelf)\
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True)\
+            .filter(db.Books.id == None).all()
         for entry in wrong_entries:
             log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
             try:
@@ -403,8 +415,12 @@ def render_show_shelf(shelf_id, shelf_type, page_no, offset, order):
                 ub.session.rollback()
                 flash(_(u"Settings DB is not Writeable"), category="error")
 
-        return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
-                                     shelf=shelf, page="shelf")
+        return render_title_template(page,
+                                     entries=result,
+                                     pagination=pagination,
+                                     title=_(u"Shelf: '%(name)s'", name=shelf.name),
+                                     shelf=shelf,
+                                     page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
