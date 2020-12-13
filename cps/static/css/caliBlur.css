@@ -4687,7 +4687,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     left: 0;
     opacity: 0;
     background: -webkit-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
-    background: -o-radial-gradient(farthest-corner 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -o-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
     background: radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%)
 }
 
@@ -5967,7 +5967,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     .home-btn {
         height: 48px;
-        line-height: 28.29px;
+        line-height: 28px;
         right: 10px;
         left: auto
     }
@@ -5979,7 +5979,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     .plexBack {
         height: 48px;
-        line-height: 28.29px;
+        line-height: 28px;
         left: 48px;
         display: none
     }
@@ -6281,7 +6281,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     #top_admin, #top_tasks {
-        padding: 11.5px 15px;
+        padding: 12px 15px;
         font-size: 13px;
         line-height: 1.71428571;
         overflow: hidden

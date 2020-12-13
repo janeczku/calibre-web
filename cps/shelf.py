@@ -29,7 +29,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import logger, ub, calibre_db
+from . import logger, ub, calibre_db, db
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 
@@ -139,18 +139,14 @@ def search_to_shelf(shelf_id):
             books_for_shelf = ub.searched_ids[current_user.id]
 
         if not books_for_shelf:
-            log.error("Books are already part of %s", shelf)
+            log.error("Books are already part of %s", shelf.name)
             flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('web.index'))
 
-        maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
-        if maxOrder[0] is None:
-            maxOrder = 0
-        else:
-            maxOrder = maxOrder[0]
+        maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()[0] or 0
 
         for book in books_for_shelf:
-            maxOrder = maxOrder + 1
+            maxOrder += 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
         shelf.last_modified = datetime.utcnow()
         try:
@@ -337,7 +333,7 @@ def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     try:
         delete_shelf_helper(cur_shelf)
-    except (OperationalError, InvalidRequestError):
+    except InvalidRequestError:
         ub.session.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
@@ -347,34 +343,10 @@ def delete_shelf(shelf_id):
 @shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
 @login_required_if_no_ano
 def show_shelf(shelf_type, shelf_id):
-    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-
-    result = list()
-    # user is allowed to access shelf
-    if shelf and check_shelf_view_permissions(shelf):
-        page = "shelf.html" if shelf_type == 1 else 'shelfdown.html'
-
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id)\
-            .order_by(ub.BookShelf.order.asc()).all()
-        for book in books_in_shelf:
-            cur_book = calibre_db.get_filtered_book(book.book_id)
-            if cur_book:
-                result.append(cur_book)
-            else:
-                cur_book = calibre_db.get_book(book.book_id)
-                if not cur_book:
-                    log.info('Not existing book %s in %s deleted', book.book_id, shelf)
-                    try:
-                        ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
-                        ub.session.commit()
-                    except (OperationalError, InvalidRequestError):
-                        ub.session.rollback()
-                        flash(_(u"Settings DB is not Writeable"), category="error")
-        return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
-                                     shelf=shelf, page="shelf")
-    else:
-        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
-        return redirect(url_for("web.index"))
+    page_no = 0
+    offset = 0
+    order = None
+    return render_show_shelf(shelf_type, shelf_id, page_no, offset, order)
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -398,22 +370,41 @@ def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
     if shelf and check_shelf_view_permissions(shelf):
-        books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
-            .order_by(ub.BookShelf.order.asc()).all()
-        for book in books_in_shelf2:
-            cur_book = calibre_db.get_filtered_book(book.book_id)
-            if cur_book:
-                result.append({'title': cur_book.title,
-                               'id': cur_book.id,
-                               'author': cur_book.authors,
-                               'series': cur_book.series,
-                               'series_index': cur_book.series_index})
-            else:
-                cur_book = calibre_db.get_book(book.book_id)
-                result.append({'title': _('Hidden Book'),
-                               'id': cur_book.id,
-                               'author': [],
-                               'series': []})
+        result = calibre_db.session.query(db.Books)\
+            .join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id , isouter=True) \
+            .add_columns(calibre_db.common_filters().label("visible")) \
+            .filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")
+
+
+def render_show_shelf(shelf_id, shelf_type, page_no, offset, order):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+
+    # check user is allowed to access shelf
+    if shelf and check_shelf_view_permissions(shelf):
+        page = "shelf.html" if shelf_type == 1 else 'shelfdown.html'
+        result, __, pagination = calibre_db.fill_indexpage(page_no, 0,
+                                                            db.Books,
+                                                            ub.BookShelf.shelf == shelf_id,
+                                                            [ub.BookShelf.order.asc()],
+                                                            ub.BookShelf,ub.BookShelf.book_id == db.Books.id)
+
+        # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        wrong_entries = calibre_db.session.query(ub.BookShelf).join(db.Books, ub.BookShelf.book_id == db.Books.id,
+                                                         isouter=True).filter(db.Books.id == None).all()
+        for entry in wrong_entries:
+            log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
+            try:
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == entry.book_id).delete()
+                ub.session.commit()
+            except (OperationalError, InvalidRequestError):
+                ub.session.rollback()
+                flash(_(u"Settings DB is not Writeable"), category="error")
+
+        return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
+                                     shelf=shelf, page="shelf")
+    else:
+        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
+        return redirect(url_for("web.index"))

@@ -612,7 +612,8 @@ def render_language_books(page, name, order):
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
-def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
+
+def render_read_books(page, are_read, as_xml=False, order=None):
     order = order or []
     if not config.config_read_column:
         if are_read:
