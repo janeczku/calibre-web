@@ -813,6 +813,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.home-btn > a:hove
 }
 
 body:not(.read-frame) {
+    background-image: url(images/caliblur/blur-noise.png), url(images/caliblur/blur-light.png) !important;
     background-repeat: repeat, no-repeat !important;
     background-attachment: fixed, fixed !important;
     background-position: center center, center center !important;
@@ -821,6 +822,7 @@ body:not(.read-frame) {
     -moz-background-size: auto, cover !important;
     -o-background-size: auto, cover !important;
     line-height: 1.71428571;
+    background: url(images/caliblur/blur-noise.png), var(--color-background);
     color: hsla(0, 0%, 100%, .45);
     font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: 400;
