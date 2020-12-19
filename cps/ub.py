@@ -40,13 +40,14 @@ except ImportError:
         oauth_support = False
 from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON, Numeric
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants
+from . import cli, constants
 
 
 session = None
@@ -434,6 +435,28 @@ class RemoteAuthToken(Base):
         return '<Token %r>' % self.id
 
 
+class Thumbnail(Base):
+    __tablename__ = 'thumbnail'
+
+    id = Column(Integer, primary_key=True)
+    book_id = Column(Integer)
+    uuid = Column(String, default=lambda: str(uuid.uuid4()), unique=True)
+    format = Column(String, default='jpeg')
+    resolution = Column(Numeric(precision=2, scale=1, asdecimal=False), default=1.0)
+    expiration = Column(DateTime, default=lambda: datetime.datetime.utcnow() + datetime.timedelta(days=30))
+
+    @hybrid_property
+    def extension(self):
+        if self.format == 'jpeg':
+            return 'jpg'
+        else:
+            return self.format
+
+    @hybrid_property
+    def filename(self):
+        return self.uuid + '.' + self.extension
+
+
 # Migrate database to current version, has to be updated after every database change. Currently migration from
 # everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
 # rows with SQL commands
@@ -451,6 +474,8 @@ def migrate_Database(session):
         KoboStatistics.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "thumbnail"):
+        Thumbnail.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
         ReadBook.__table__.create(bind=engine)
         with engine.connect() as conn:
@@ -674,6 +699,13 @@ def init_db(app_db_path):
         Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
+
+
+def get_new_session_instance():
+    new_engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
+    new_session = scoped_session(sessionmaker())
+    new_session.configure(bind=new_engine)
+    return new_session
 
 
 def dispose():
