@@ -19,7 +19,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 
-from cps import config, db, gdriveutils, logger, ub
+from cps import db, logger, ub
 from cps.constants import CACHE_DIR as _CACHE_DIR
 from cps.services.worker import CalibreTask
 from datetime import datetime, timedelta
@@ -36,8 +36,9 @@ THUMBNAIL_RESOLUTION_2X = 2.0
 
 
 class TaskThumbnail(CalibreTask):
-    def __init__(self, limit=100, task_message=u'Generating cover thumbnails'):
+    def __init__(self, config, limit=100, task_message=u'Generating cover thumbnails'):
         super(TaskThumbnail, self).__init__(task_message)
+        self.config = config
         self.limit = limit
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
@@ -47,9 +48,6 @@ class TaskThumbnail(CalibreTask):
         if self.worker_db.session and use_IM:
             thumbnails = self.get_thumbnail_book_ids()
             thumbnail_book_ids = list(map(lambda t: t.book_id, thumbnails))
-            self.log.info(','.join([str(elem) for elem in thumbnail_book_ids]))
-            self.log.info(len(thumbnail_book_ids))
-
             books_without_thumbnails = self.get_books_without_thumbnails(thumbnail_book_ids)
 
             count = len(books_without_thumbnails)
@@ -116,10 +114,10 @@ class TaskThumbnail(CalibreTask):
 
     def generate_book_thumbnail(self, book, thumbnail):
         if book and thumbnail:
-            if config.config_use_google_drive:
+            if self.config.config_use_google_drive:
                 self.log.info('google drive thumbnail')
             else:
-                book_cover_filepath = os.path.join(config.config_calibre_dir, book.path, 'cover.jpg')
+                book_cover_filepath = os.path.join(self.config.config_calibre_dir, book.path, 'cover.jpg')
                 if os.path.isfile(book_cover_filepath):
                     with Image(filename=book_cover_filepath) as img:
                         height = self.get_thumbnail_height(thumbnail)
