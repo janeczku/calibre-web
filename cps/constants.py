@@ -33,6 +33,7 @@ else:
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
+CACHE_DIR           = os.path.join(BASE_DIR, 'cps', 'cache')
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")

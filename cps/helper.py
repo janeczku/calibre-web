@@ -551,6 +551,11 @@ def get_book_cover_with_uuid(book_uuid,
 
 def get_book_cover_internal(book, use_generic_cover_on_failure):
     if book and book.has_cover:
+        # if thumbnails.cover_thumbnail_exists_for_book(book):
+        #     thumbnail = ub.session.query(ub.Thumbnail).filter(ub.Thumbnail.book_id == book.id).first()
+        #     return send_from_directory(thumbnails.get_thumbnail_cache_dir(), thumbnail.filename)
+        # else:
+            # WorkerThread.add(None, TaskThumbnail(book, _(u'Generating cover thumbnail for: ' + book.title)))
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
@@ -561,8 +566,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
                     return get_cover_on_failure(use_generic_cover_on_failure)
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
