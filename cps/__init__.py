@@ -36,6 +36,8 @@ from flask_principal import Principal
 from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
+from .services.background_scheduler import BackgroundScheduler
+from .tasks.thumbnail import TaskThumbnail
 
 
 mimetypes.init()
@@ -95,7 +97,7 @@ def create_app():
         app.instance_path = app.instance_path.decode('utf-8')
 
     if os.environ.get('FLASK_DEBUG'):
-    	cache_buster.init_cache_busting(app)
+        cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
     Principal(app)
@@ -115,7 +117,12 @@ def create_app():
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
 
+    scheduler = BackgroundScheduler()
+    # Generate 100 book cover thumbnails every 5 minutes
+    scheduler.add_task(user=None, task=lambda: TaskThumbnail(config=config, limit=100), trigger='interval', minutes=5)
+
     return app
+
 
 @babel.localeselector
 def get_locale():

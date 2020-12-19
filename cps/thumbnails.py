@@ -57,7 +57,3 @@ def cover_thumbnail_exists_for_book(book):
             return thumbnail_path and os.path.isfile(thumbnail_path)
 
     return False
-
-
-def generate_thumbnails():
-    WorkerThread.add(None, TaskThumbnail())
