@@ -21,13 +21,11 @@ import os
 
 from . import logger, ub
 from .constants import CACHE_DIR as _CACHE_DIR
-from .services.worker import WorkerThread
-from .tasks.thumbnail import TaskThumbnail
 
 from datetime import datetime
 
-THUMBNAIL_RESOLUTION_1X = 1.0
-THUMBNAIL_RESOLUTION_2X = 2.0
+THUMBNAIL_RESOLUTION_1X = 1
+THUMBNAIL_RESOLUTION_2X = 2
 
 log = logger.create()
 
@@ -35,17 +33,14 @@ log = logger.create()
 def get_thumbnail_cache_dir():
     if not os.path.isdir(_CACHE_DIR):
         os.makedirs(_CACHE_DIR)
-
     if not os.path.isdir(os.path.join(_CACHE_DIR, 'thumbnails')):
         os.makedirs(os.path.join(_CACHE_DIR, 'thumbnails'))
-
     return os.path.join(_CACHE_DIR, 'thumbnails')
 
 
 def get_thumbnail_cache_path(thumbnail):
     if thumbnail:
         return os.path.join(get_thumbnail_cache_dir(), thumbnail.filename)
-
     return None
 
 

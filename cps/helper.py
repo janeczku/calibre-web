@@ -52,7 +52,7 @@ except ImportError:
 
 from . import calibre_db
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub
+from . import logger, config, get_locale, db, thumbnails, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
@@ -538,24 +538,27 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 
-def get_book_cover(book_id):
+def get_book_cover(book_id, resolution=1):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-def get_book_cover_with_uuid(book_uuid,
-                             use_generic_cover_on_failure=True):
+def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
     book = calibre_db.get_book_by_uuid(book_uuid)
     return get_book_cover_internal(book, use_generic_cover_on_failure)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure):
+def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=1, disable_thumbnail=False):
     if book and book.has_cover:
-        # if thumbnails.cover_thumbnail_exists_for_book(book):
-        #     thumbnail = ub.session.query(ub.Thumbnail).filter(ub.Thumbnail.book_id == book.id).first()
-        #     return send_from_directory(thumbnails.get_thumbnail_cache_dir(), thumbnail.filename)
-        # else:
-            # WorkerThread.add(None, TaskThumbnail(book, _(u'Generating cover thumbnail for: ' + book.title)))
+
+        # Send the book cover thumbnail if it exists in cache
+        if not disable_thumbnail:
+            thumbnail = get_book_cover_thumbnail(book, resolution)
+            if thumbnail:
+                if os.path.isfile(thumbnails.get_thumbnail_cache_path(thumbnail)):
+                    return send_from_directory(thumbnails.get_thumbnail_cache_dir(), thumbnail.filename)
+
+        # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
@@ -569,6 +572,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
             except Exception as ex:
                 log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
+
+        # Send the book cover from the Calibre directory
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
@@ -577,6 +582,16 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 return get_cover_on_failure(use_generic_cover_on_failure)
     else:
         return get_cover_on_failure(use_generic_cover_on_failure)
+
+
+def get_book_cover_thumbnail(book, resolution=1):
+    if book and book.has_cover:
+        return ub.session\
+            .query(ub.Thumbnail)\
+            .filter(ub.Thumbnail.book_id == book.id)\
+            .filter(ub.Thumbnail.resolution == resolution)\
+            .filter(ub.Thumbnail.expiration > datetime.utcnow())\
+            .first()
 
 
 # saves book cover from url
