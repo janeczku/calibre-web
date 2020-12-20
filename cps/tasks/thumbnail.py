@@ -19,11 +19,13 @@
 from __future__ import division, print_function, unicode_literals
 import os
 
-from cps import db, logger, ub
+from cps import config, db, gdriveutils, logger, ub
 from cps.constants import CACHE_DIR as _CACHE_DIR
 from cps.services.worker import CalibreTask
+from cps.thumbnails import THUMBNAIL_RESOLUTION_1X, THUMBNAIL_RESOLUTION_2X
 from datetime import datetime, timedelta
 from sqlalchemy import func
+from urllib.request import urlopen
 
 try:
     from wand.image import Image
@@ -31,14 +33,10 @@ try:
 except (ImportError, RuntimeError) as e:
     use_IM = False
 
-THUMBNAIL_RESOLUTION_1X = 1.0
-THUMBNAIL_RESOLUTION_2X = 2.0
-
 
 class TaskThumbnail(CalibreTask):
-    def __init__(self, config, limit=100, task_message=u'Generating cover thumbnails'):
+    def __init__(self, limit=100, task_message=u'Generating cover thumbnails'):
         super(TaskThumbnail, self).__init__(task_message)
-        self.config = config
         self.limit = limit
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
@@ -114,17 +112,39 @@ class TaskThumbnail(CalibreTask):
 
     def generate_book_thumbnail(self, book, thumbnail):
         if book and thumbnail:
-            if self.config.config_use_google_drive:
-                self.log.info('google drive thumbnail')
-            else:
-                book_cover_filepath = os.path.join(self.config.config_calibre_dir, book.path, 'cover.jpg')
-                if os.path.isfile(book_cover_filepath):
-                    with Image(filename=book_cover_filepath) as img:
+            if config.config_use_google_drive:
+                if not gdriveutils.is_gdrive_ready():
+                    raise Exception('Google Drive is configured but not ready')
+
+                web_content_link = gdriveutils.get_cover_via_gdrive(book.path)
+                if not web_content_link:
+                    raise Exception('Google Drive cover url not found')
+
+                stream = None
+                try:
+                    stream = urlopen(web_content_link)
+                    with Image(file=stream) as img:
                         height = self.get_thumbnail_height(thumbnail)
                         if img.height > height:
                             width = self.get_thumbnail_width(height, img)
                             img.resize(width=width, height=height, filter='lanczos')
                             img.save(filename=self.get_thumbnail_cache_path(thumbnail))
+                except Exception as ex:
+                    # Bubble exception to calling function
+                    raise ex
+                finally:
+                    stream.close()
+            else:
+                book_cover_filepath = os.path.join(config.config_calibre_dir, book.path, 'cover.jpg')
+                if not os.path.isfile(book_cover_filepath):
+                    raise Exception('Book cover file not found')
+
+                with Image(filename=book_cover_filepath) as img:
+                    height = self.get_thumbnail_height(thumbnail)
+                    if img.height > height:
+                        width = self.get_thumbnail_width(height, img)
+                        img.resize(width=width, height=height, filter='lanczos')
+                        img.save(filename=self.get_thumbnail_cache_path(thumbnail))
 
     def get_thumbnail_height(self, thumbnail):
         return int(225 * thumbnail.resolution)

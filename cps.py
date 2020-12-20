@@ -43,6 +43,7 @@ from cps.gdrive import gdrive
 from cps.editbooks import editbook
 from cps.remotelogin import remotelogin
 from cps.error_handler import init_errorhandler
+from cps.schedule import register_jobs
 
 try:
     from cps.kobo import kobo, get_kobo_activated
@@ -78,6 +79,10 @@ def main():
         app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
+
+    # Register scheduled jobs
+    register_jobs()
+
     success = web_server.start()
     sys.exit(0 if success else 1)
 

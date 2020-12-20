@@ -36,8 +36,6 @@ from flask_principal import Principal
 from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
-from .services.background_scheduler import BackgroundScheduler
-from .tasks.thumbnail import TaskThumbnail
 
 
 mimetypes.init()
@@ -116,10 +114,6 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-
-    scheduler = BackgroundScheduler()
-    # Generate 100 book cover thumbnails every 5 minutes
-    scheduler.add_task(user=None, task=lambda: TaskThumbnail(config=config, limit=100), trigger='interval', minutes=5)
 
     return app
 

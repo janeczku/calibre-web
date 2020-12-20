@@ -1171,13 +1171,16 @@ def advanced_search_form():
 
 
 @web.route("/cover/<int:book_id>")
+@web.route("/cover/<int:book_id>/<int:resolution>")
 @login_required_if_no_ano
-def get_cover(book_id):
-    return get_book_cover(book_id)
+def get_cover(book_id, resolution=1):
+    return get_book_cover(book_id, resolution)
+
 
 @web.route("/robots.txt")
 def get_robots():
     return send_from_directory(constants.STATIC_DIR, "robots.txt")
+
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/show/<int:book_id>/<book_format>/<anyname>")
@@ -1203,7 +1206,6 @@ def serve_book(book_id, book_format, anyname):
             return make_response(
                 rawdata.decode(result['encoding']).encode('utf-8'))
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
-
 
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
@@ -1385,9 +1387,6 @@ def logout():
             logout_oauth_user()
     log.debug(u"User logged out")
     return redirect(url_for('web.login'))
-
-
-
 
 
 # ################################### Users own configuration #########################################################

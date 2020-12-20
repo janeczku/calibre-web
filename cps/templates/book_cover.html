@@ -1,0 +1,8 @@
+{% macro book_cover_image(book_id, book_title) -%}
+    <img
+        srcset="{{ url_for('web.get_cover', book_id=book_id, resolution=1) }} 1x,
+                {{ url_for('web.get_cover', book_id=book_id, resolution=2) }} 2x"
+        src="{{ url_for('web.get_cover', book_id=book_id) }}"
+        alt="{{ book_title }}"
+    />
+{%- endmacro %}
