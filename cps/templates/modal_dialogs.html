@@ -37,7 +37,7 @@
   </div>
 </div>
 {% endmacro %}
-{% macro delete_book(bookid) %}
+{% macro delete_book() %}
 {% if g.user.role_delete_books() %}
 <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
   <div class="modal-dialog">
@@ -101,4 +101,23 @@
     </div>
   </div>
 </div>
+{% endmacro %}
+
+{% macro delete_confirm_modal() %}
+<div id="GeneralDeleteModal" class="modal fade" role="Dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+      <span id="header"></span>
+      </div>
+      <div class="modal-body text-center">
+        <span id="text"></span>
+          <p></p>
+        <button id="btnConfirmYes" type="button" class="btn btn btn-danger">{{_('Delete')}}</button>
+        <button id="btnConfirmNo" type="button" class="btn btn-default">{{_('Cancel')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endmacro %}
