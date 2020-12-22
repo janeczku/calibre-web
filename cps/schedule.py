@@ -18,9 +18,9 @@
 
 from __future__ import division, print_function, unicode_literals
 
-from . import logger
+from . import config, db, logger, ub
 from .services.background_scheduler import BackgroundScheduler
-from .tasks.thumbnail import TaskThumbnail
+from .tasks.thumbnail import TaskCleanupCoverThumbnailCache, TaskGenerateCoverThumbnails
 
 log = logger.create()
 
@@ -29,6 +29,16 @@ def register_jobs():
     scheduler = BackgroundScheduler()
 
     # Generate 100 book cover thumbnails every 5 minutes
-    scheduler.add_task(user=None, task=lambda: TaskThumbnail(limit=100), trigger='interval', minutes=5)
+    scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=100), trigger='interval', minutes=5)
 
-    # TODO: validate thumbnail scheduled task
+    # Cleanup book cover cache every day at 4am
+    scheduler.add_task(user=None, task=lambda: TaskCleanupCoverThumbnailCache(), trigger='cron', hour=4)
+
+    # Reconnect metadata.db every 4 hours
+    scheduler.add(func=reconnect_db_job, trigger='interval', hours=4)
+
+
+def reconnect_db_job():
+    log.info('Running background task: reconnect to calibre database')
+    calibre_db = db.CalibreDB()
+    calibre_db.reconnect_db(config, ub.app_DB_path)

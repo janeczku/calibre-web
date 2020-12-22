@@ -35,7 +35,6 @@ def _get_main_thread():
     raise Exception("main thread not found?!")
 
 
-
 class ImprovedQueue(queue.Queue):
     def to_list(self):
         """
@@ -45,7 +44,8 @@ class ImprovedQueue(queue.Queue):
         with self.mutex:
             return list(self.queue)
 
-#Class for all worker tasks in the background
+
+# Class for all worker tasks in the background
 class WorkerThread(threading.Thread):
     _instance = None
 
@@ -127,6 +127,10 @@ class WorkerThread(threading.Thread):
                 # CalibreTask.start() should wrap all exceptions in it's own error handling
                 item.task.start(self)
 
+            # remove self_cleanup tasks from list
+            if item.task.self_cleanup:
+                self.dequeued.remove(item)
+
             self.queue.task_done()
 
 
@@ -141,6 +145,7 @@ class CalibreTask:
         self.end_time = None
         self.message = message
         self.id = uuid.uuid4()
+        self.self_cleanup = False
 
     @abc.abstractmethod
     def run(self, worker_thread):
@@ -208,6 +213,14 @@ class CalibreTask:
     def progress(self, x):
         # todo: throw error if outside of [0,1]
         self._progress = x
+
+    @property
+    def self_cleanup(self):
+        return self._self_cleanup
+
+    @self_cleanup.setter
+    def self_cleanup(self, is_self_cleanup):
+        self._self_cleanup = is_self_cleanup
 
     def _handleError(self, error_message):
         self.stat = STAT_FAIL

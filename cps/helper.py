@@ -52,7 +52,7 @@ except ImportError:
 
 from . import calibre_db
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, thumbnails, ub
+from . import logger, config, get_locale, db, fs, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
@@ -555,8 +555,9 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=1, di
         if not disable_thumbnail:
             thumbnail = get_book_cover_thumbnail(book, resolution)
             if thumbnail:
-                if os.path.isfile(thumbnails.get_thumbnail_cache_path(thumbnail)):
-                    return send_from_directory(thumbnails.get_thumbnail_cache_dir(), thumbnail.filename)
+                cache = fs.FileSystem()
+                if cache.get_cache_file_path(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
+                    return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
 
         # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:

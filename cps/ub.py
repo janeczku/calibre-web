@@ -18,6 +18,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
+import atexit
 import os
 import sys
 import datetime
@@ -42,12 +43,11 @@ from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import cli, constants
+from . import cli, constants, logger
 
 
 session = None
@@ -435,6 +435,14 @@ class RemoteAuthToken(Base):
         return '<Token %r>' % self.id
 
 
+def filename(context):
+    file_format = context.get_current_parameters()['format']
+    if file_format == 'jpeg':
+        return context.get_current_parameters()['uuid'] + '.jpg'
+    else:
+        return context.get_current_parameters()['uuid'] + '.' + file_format
+
+
 class Thumbnail(Base):
     __tablename__ = 'thumbnail'
 
@@ -443,18 +451,9 @@ class Thumbnail(Base):
     uuid = Column(String, default=lambda: str(uuid.uuid4()), unique=True)
     format = Column(String, default='jpeg')
     resolution = Column(SmallInteger, default=1)
+    filename = Column(String, default=filename)
+    generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
     expiration = Column(DateTime, default=lambda: datetime.datetime.utcnow() + datetime.timedelta(days=30))
-
-    @hybrid_property
-    def extension(self):
-        if self.format == 'jpeg':
-            return 'jpg'
-        else:
-            return self.format
-
-    @hybrid_property
-    def filename(self):
-        return self.uuid + '.' + self.extension
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
@@ -705,6 +704,9 @@ def get_new_session_instance():
     new_engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
     new_session = scoped_session(sessionmaker())
     new_session.configure(bind=new_engine)
+
+    atexit.register(lambda: new_session.remove() if new_session else True)
+
     return new_session
 
 
