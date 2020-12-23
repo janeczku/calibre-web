@@ -51,12 +51,14 @@ def url_for_other_page(page):
 
 # shortentitles to at longest nchar, shorten longer words if necessary
 @jinjia.app_template_filter('shortentitle')
-def shortentitle_filter(s, nchar=20):
+def shortentitle_filter(s, nchar=20, truncate_title=True):
     text = s.split()
     res = ""  # result
     suml = 0  # overall length
     for line in text:
-        if suml >= 60:
+        # truncate title if more than 60 characters and we don't want to show
+        # the entire title
+        if suml >= 60 and truncate_title:
             res += '...'
             break
         # if word longer than 20 chars truncate line and append '...', otherwise add whole word to result
