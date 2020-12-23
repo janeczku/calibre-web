@@ -18,11 +18,9 @@
 
 from __future__ import division, print_function, unicode_literals
 
-from . import config, db, logger, ub
 from .services.background_scheduler import BackgroundScheduler
+from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskCleanupCoverThumbnailCache, TaskGenerateCoverThumbnails
-
-log = logger.create()
 
 
 def register_jobs():
@@ -35,10 +33,4 @@ def register_jobs():
     scheduler.add_task(user=None, task=lambda: TaskCleanupCoverThumbnailCache(), trigger='cron', hour=4)
 
     # Reconnect metadata.db every 4 hours
-    scheduler.add(func=reconnect_db_job, trigger='interval', hours=4)
-
-
-def reconnect_db_job():
-    log.info('Running background task: reconnect to calibre database')
-    calibre_db = db.CalibreDB()
-    calibre_db.reconnect_db(config, ub.app_DB_path)
+    scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='interval', hours=4)

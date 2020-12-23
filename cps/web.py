@@ -50,7 +50,7 @@ from . import babel, db, ub, config, get_locale, app
 from . import calibre_db, shelf
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
-    get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
+    get_cc_columns, get_book_cover, get_cached_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
 from .pagination import Pagination
 from .redirect import redirect_back
@@ -1175,6 +1175,12 @@ def advanced_search_form():
 @login_required_if_no_ano
 def get_cover(book_id, resolution=1):
     return get_book_cover(book_id, resolution)
+
+
+@web.route("/cached-cover/<string:cache_id>")
+@login_required_if_no_ano
+def get_cached_cover(cache_id):
+    return get_cached_book_cover(cache_id)
 
 
 @web.route("/robots.txt")

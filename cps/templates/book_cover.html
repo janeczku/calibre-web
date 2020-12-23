@@ -1,8 +1,8 @@
-{% macro book_cover_image(book_id, book_title) -%}
+{% macro book_cover_image(book, book_title) -%}
     <img
-        srcset="{{ url_for('web.get_cover', book_id=book_id, resolution=1) }} 1x,
-                {{ url_for('web.get_cover', book_id=book_id, resolution=2) }} 2x"
-        src="{{ url_for('web.get_cover', book_id=book_id) }}"
+        srcset="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id(1)) }} 1x,
+                {{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id(2)) }} 2x"
+        src="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id) }}"
         alt="{{ book_title }}"
     />
 {%- endmacro %}
