@@ -58,6 +58,7 @@ from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.mail import TaskEmail
+from .tasks.thumbnail import TaskClearCoverThumbnailCache
 
 log = logger.create()
 
@@ -525,6 +526,7 @@ def update_dir_stucture(book_id, calibrepath, first_author=None, orignal_filepat
 
 
 def delete_book(book, calibrepath, book_format):
+    clear_cover_thumbnail_cache(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
@@ -538,9 +540,9 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 
-def get_book_cover(book_id, resolution=1):
+def get_book_cover(book_id):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 
 def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
@@ -548,11 +550,19 @@ def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
     return get_book_cover_internal(book, use_generic_cover_on_failure)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=1, disable_thumbnail=False):
+def get_cached_book_cover(cache_id):
+    parts = cache_id.split('_')
+    book_uuid = parts[0] if len(parts) else None
+    resolution = parts[2] if len(parts) > 2 else None
+    book = calibre_db.get_book_by_uuid(book_uuid) if book_uuid else None
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+
+
+def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
     if book and book.has_cover:
 
         # Send the book cover thumbnail if it exists in cache
-        if not disable_thumbnail:
+        if resolution:
             thumbnail = get_book_cover_thumbnail(book, resolution)
             if thumbnail:
                 cache = fs.FileSystem()
@@ -585,7 +595,7 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=1, di
         return get_cover_on_failure(use_generic_cover_on_failure)
 
 
-def get_book_cover_thumbnail(book, resolution=1):
+def get_book_cover_thumbnail(book, resolution):
     if book and book.has_cover:
         return ub.session\
             .query(ub.Thumbnail)\
@@ -846,3 +856,6 @@ def get_download_link(book_id, book_format, client):
     else:
         abort(404)
 
+
+def clear_cover_thumbnail_cache(book_id=None):
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))

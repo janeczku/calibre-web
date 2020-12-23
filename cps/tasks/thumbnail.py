@@ -42,7 +42,6 @@ THUMBNAIL_RESOLUTION_2X = 2
 class TaskGenerateCoverThumbnails(CalibreTask):
     def __init__(self, limit=100, task_message=u'Generating cover thumbnails'):
         super(TaskGenerateCoverThumbnails, self).__init__(task_message)
-        self.self_cleanup = True
         self.limit = limit
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
@@ -186,7 +185,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
 
 class TaskCleanupCoverThumbnailCache(CalibreTask):
-    def __init__(self, task_message=u'Validating cover thumbnail cache'):
+    def __init__(self, task_message=u'Cleaning up cover thumbnail cache'):
         super(TaskCleanupCoverThumbnailCache, self).__init__(task_message)
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
@@ -265,3 +264,58 @@ class TaskCleanupCoverThumbnailCache(CalibreTask):
     @property
     def name(self):
         return "CleanupCoverThumbnailCache"
+
+
+class TaskClearCoverThumbnailCache(CalibreTask):
+    def __init__(self, book_id=None, task_message=u'Clearing cover thumbnail cache'):
+        super(TaskClearCoverThumbnailCache, self).__init__(task_message)
+        self.log = logger.create()
+        self.book_id = book_id
+        self.app_db_session = ub.get_new_session_instance()
+        self.cache = fs.FileSystem()
+
+    def run(self, worker_thread):
+        if self.app_db_session:
+            if self.book_id:
+                thumbnails = self.get_thumbnails_for_book(self.book_id)
+                for thumbnail in thumbnails:
+                    self.expire_and_delete_thumbnail(thumbnail)
+            else:
+                self.expire_and_delete_all_thumbnails()
+
+        self._handleSuccess()
+        self.app_db_session.remove()
+
+    def get_thumbnails_for_book(self, book_id):
+        return self.app_db_session\
+            .query(ub.Thumbnail)\
+            .filter(ub.Thumbnail.book_id == book_id)\
+            .all()
+
+    def expire_and_delete_thumbnail(self, thumbnail):
+        thumbnail.expiration = datetime.utcnow()
+
+        try:
+            self.app_db_session.commit()
+            self.cache.delete_cache_file(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS)
+        except Exception as ex:
+            self.log.info(u'Error expiring book thumbnail: ' + str(ex))
+            self._handleError(u'Error expiring book thumbnail: ' + str(ex))
+            self.app_db_session.rollback()
+
+    def expire_and_delete_all_thumbnails(self):
+        self.app_db_session\
+            .query(ub.Thumbnail)\
+            .update({'expiration': datetime.utcnow()})
+
+        try:
+            self.app_db_session.commit()
+            self.cache.delete_cache_dir(fs.CACHE_TYPE_THUMBNAILS)
+        except Exception as ex:
+            self.log.info(u'Error expiring book thumbnails: ' + str(ex))
+            self._handleError(u'Error expiring book thumbnails: ' + str(ex))
+            self.app_db_session.rollback()
+
+    @property
+    def name(self):
+        return "ClearCoverThumbnailCache"

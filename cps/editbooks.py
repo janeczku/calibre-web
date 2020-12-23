@@ -595,6 +595,7 @@ def upload_cover(request, book):
                 abort(403)
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
+                helper.clear_cover_thumbnail_cache(book.id)
                 return True
             else:
                 flash(message, category="error")
@@ -684,6 +685,7 @@ def edit_book(book_id):
                         if result is True:
                             book.has_cover = 1
                             modif_date = True
+                            helper.clear_cover_thumbnail_cache(book.id)
                         else:
                             flash(error, category="error")
 
