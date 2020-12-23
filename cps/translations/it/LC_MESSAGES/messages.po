@@ -111,15 +111,15 @@ msgstr "LDAP User Object Filter contiene una parentesi senza la corrispettiva"
 #: cps/admin.py:619
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP Member User Filter deve avere un \"%s\" Format Identifier"
 
 #: cps/admin.py:622
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP Member User Filter contiene una parentesi senza la corrispettiva"
 
 #: cps/admin.py:630
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "LDAP CACertificate, il certificato o la posizione della chiave non sono corretti, per favore indica il percorso corretto"
 
 #: cps/admin.py:656
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
@@ -205,7 +205,7 @@ msgstr "Si è verificato un errore imprevisto."
 
 #: cps/admin.py:944
 msgid "Edit E-mail Server Settings"
-msgstr "Modifica le impostazioni SMTP"
+msgstr "Modifica le impostazioni del server e-mail"
 
 #: cps/admin.py:973
 #, python-format
@@ -560,7 +560,7 @@ msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
 #: cps/kobo_auth.py:130
-msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
+msgid "Please access calibre-web from non localhost to get valid api_endpoint for kobo device"
 msgstr "Per favore, per ottenere un valido api-endpoint per Kobo, accedi a Calibre-web non da localhost"
 
 #: cps/kobo_auth.py:133 cps/kobo_auth.py:153
@@ -907,7 +907,7 @@ msgstr "Almeno un utente LDAP non è stato trovato nel database"
 
 #: cps/web.py:394
 msgid "{} User Successfully Imported"
-msgstr ""
+msgstr "{} utente importato con successo"
 
 #: cps/templates/index.html:5 cps/web.py:691
 msgid "Discover (Random Books)"
@@ -1165,7 +1165,7 @@ msgstr "Downloads"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:77
 msgid "Admin"
-msgstr "Amministratore"
+msgstr "Amministrazione"
 
 #: cps/templates/admin.html:17 cps/templates/login.html:12
 #: cps/templates/login.html:13 cps/templates/user_edit.html:22
@@ -1211,7 +1211,7 @@ msgstr "Importa gli utenti LDAP"
 
 #: cps/templates/admin.html:53
 msgid "E-mail Server Settings"
-msgstr "Configurazione server SMTP"
+msgstr "Configurazione server e-mail"
 
 #: cps/templates/admin.html:57 cps/templates/email_edit.html:11
 msgid "SMTP Hostname"
@@ -1295,7 +1295,7 @@ msgstr "Amministrazione"
 
 #: cps/templates/admin.html:144
 msgid "Download Debug Package"
-msgstr ""
+msgstr "Scarica Debug Package"
 
 #: cps/templates/admin.html:145
 msgid "View Logs"
@@ -1374,32 +1374,32 @@ msgstr "Nella libreria"
 #: cps/templates/author.html:26 cps/templates/index.html:65
 #: cps/templates/search.html:29
 msgid "Sort according to book date, newest first"
-msgstr ""
+msgstr "Ordina secondo la data dei libri, prima i più recenti"
 
 #: cps/templates/author.html:27 cps/templates/index.html:66
 #: cps/templates/search.html:30
 msgid "Sort according to book date, oldest first"
-msgstr ""
+msgstr "Ordina secondo la data dei libri, prima i più vecchi"
 
 #: cps/templates/author.html:28 cps/templates/index.html:67
 #: cps/templates/search.html:31
 msgid "Sort title in alphabetical order"
-msgstr ""
+msgstr "Ordina i titoli in ordine alfabetico"
 
 #: cps/templates/author.html:29 cps/templates/index.html:68
 #: cps/templates/search.html:32
 msgid "Sort title in reverse alphabetical order"
-msgstr ""
+msgstr "Ordina i titoli in ordine alfabetico inverso"
 
 #: cps/templates/author.html:30 cps/templates/index.html:71
 #: cps/templates/search.html:35
 msgid "Sort according to publishing date, newest first"
-msgstr ""
+msgstr "Ordina secondo la data di pubblicazione, prima i più recenti"
 
 #: cps/templates/author.html:31 cps/templates/index.html:72
 #: cps/templates/search.html:36
 msgid "Sort according to publishing date, oldest first"
-msgstr ""
+msgstr "Ordina secondo la data di pubblicazione, prima i più vecchi"
 
 #: cps/templates/author.html:54 cps/templates/author.html:114
 #: cps/templates/discover.html:27 cps/templates/index.html:26
@@ -1648,7 +1648,7 @@ msgstr "Indica gli editori"
 
 #: cps/templates/book_table.html:70 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
-msgstr "Sei davvero sicuro?"
+msgstr "Sei veramente sicuro?"
 
 #: cps/templates/book_table.html:74
 msgid "Books with Title will be merged from:"
@@ -1712,7 +1712,7 @@ msgstr "Porta del server"
 
 #: cps/templates/config_edit.html:93
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Percorso del file di certificato SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr "Percorso del file del certificato SSL (lascia vuoto per una configurazione del server senza SSL)"
 
 #: cps/templates/config_edit.html:100
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
@@ -1853,15 +1853,15 @@ msgstr "SSL"
 
 #: cps/templates/config_edit.html:267
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Percorso del CACertificate LDAP (necessario unicamente in caso di Client Certificate Authentication)"
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Percorso del certificato LDAP (necessario unicamente in caso di Client Certificate Authentication)"
 
 #: cps/templates/config_edit.html:281
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Percorso della chiave LDAP (necessario unicamente in caso di Client Certificate Authentication)"
 
 #: cps/templates/config_edit.html:290
 msgid "LDAP Authentication"
@@ -1893,7 +1893,7 @@ msgstr "LDAP Distinguished Name (DN)"
 
 #: cps/templates/config_edit.html:314
 msgid "LDAP User Object Filter"
-msgstr "LDAP User object filter"
+msgstr "LDAP User Object Filter"
 
 #: cps/templates/config_edit.html:319
 msgid "LDAP Server is OpenLDAP?"
@@ -1917,19 +1917,19 @@ msgstr "LDAP Group Members Field"
 
 #: cps/templates/config_edit.html:335
 msgid "LDAP Member User Filter Detection"
-msgstr ""
+msgstr "LDAP Member User Filter Detection"
 
 #: cps/templates/config_edit.html:337
 msgid "Autodetect"
-msgstr ""
+msgstr "Autodetect"
 
 #: cps/templates/config_edit.html:338
 msgid "Custom Filter"
-msgstr ""
+msgstr "Filtro personalizzato"
 
 #: cps/templates/config_edit.html:343
 msgid "LDAP Member User Filter"
-msgstr ""
+msgstr "LDAP Member User Filter"
 
 #: cps/templates/config_edit.html:354
 #, python-format
@@ -2191,19 +2191,19 @@ msgstr "Ritorna alla pagina principale"
 
 #: cps/templates/index.html:69 cps/templates/search.html:33
 msgid "Sort authors in alphabetical order"
-msgstr ""
+msgstr "Ordina gli autori in ordine alfabetico"
 
 #: cps/templates/index.html:70 cps/templates/search.html:34
 msgid "Sort authors in reverse alphabetical order"
-msgstr ""
+msgstr "Ordina gli autori in ordine alfabetico inverso"
 
 #: cps/templates/index.html:74
 msgid "Sort ascending according to series index"
-msgstr ""
+msgstr "Ordina in ordine ascendente secondo l'indice della serie"
 
 #: cps/templates/index.html:75
 msgid "Sort descending according to series index"
-msgstr ""
+msgstr "Ordina in ordine discendente secondo l'indice della serie"
 
 #: cps/templates/index.xml:6
 msgid "Start"
@@ -2365,11 +2365,11 @@ msgstr "Mostra il log di accesso: "
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr ""
+msgstr "Scarica il log di Calibre-Web"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
-msgstr ""
+msgstr "Scarica il log di accesso"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
@@ -2653,7 +2653,7 @@ msgstr "Serie in questa libreria"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr ""
+msgstr "Statistiche del sistema"
 
 #: cps/templates/stats.html:33
 msgid "Program Library"
