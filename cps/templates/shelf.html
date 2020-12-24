@@ -8,7 +8,7 @@
       {% endif %}
   {% if g.user.is_authenticated %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
-      <div id="delete_shelf" data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
+      <div class="btn btn-danger" id="delete_shelf" data-value="{{ shelf.id }}">{{ _('Delete this Shelf') }}</div>
       <a id="edit_shelf" href="{{ url_for('shelf.edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf') }} </a>
       {% if entries.__len__() %}
         <div class="filterheader hidden-xs hidden-sm">
@@ -81,7 +81,7 @@
     {% endfor %}
   </div>
 </div>
-<div id="DeleteShelfDialog" class="modal fade" role="dialog">
+<!--div id="DeleteShelfDialog" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
@@ -95,6 +95,9 @@
       </div>
     </div>
   </div>
-</div>
+</div-->
 
+{% endblock %}
+{% block modal %}
+{{ delete_confirm_modal() }}
 {% endblock %}

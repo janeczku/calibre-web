@@ -424,7 +424,7 @@ def render_books_list(data, sort, book_id, page):
     elif data == "language":
         return render_language_books(page, book_id, order)
     elif data == "archived":
-        return render_archived_books(page, book_id, order)
+        return render_archived_books(page, order)
     elif data == "search":
         term = (request.args.get('query') or '')
         offset = int(int(config.config_books_per_page) * (page - 1))

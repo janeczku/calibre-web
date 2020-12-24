@@ -208,15 +208,13 @@ $(function() {
         },
         striped: false
     });
-    $("#btndeletedomain").click(function() {
-        //get data-id attribute of the clicked element
-        var domainId = $(this).data("domainId");
+
+    function domain_handle(domainId) {
         $.ajax({
             method:"post",
             url: window.location.pathname + "/../../ajax/deletedomain",
             data: {"domainid":domainId}
         });
-        $("#DeleteDomain").modal("hide");
         $.ajax({
             method:"get",
             url: window.location.pathname + "/../../ajax/domainlist/1",
@@ -235,12 +233,16 @@ $(function() {
                 $("#domain-deny-table").bootstrapTable("load", data);
             }
         });
+    }
+    $("#domain-allow-table").on("click-cell.bs.table", function (field, value, row, $element) {
+        if (value === 2) {
+            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+        }
     });
-    //triggered when modal is about to be shown
-    $("#DeleteDomain").on("show.bs.modal", function(e) {
-        //get data-id attribute of the clicked element and store in button
-        var domainId = $(e.relatedTarget).data("domain-id");
-        $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
+    $("#domain-deny-table").on("click-cell.bs.table", function (field, value, row, $element) {
+        if (value === 2) {
+            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+        }
     });
 
     $("#restrictModal").on("hidden.bs.modal", function () {
@@ -347,7 +349,7 @@ $(function() {
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
-        "<a class=\"danger remove\" data-toggle=\"modal\" data-target=\"#DeleteDomain\" data-domain-id=\"" + row.id
+        "<a class=\"danger remove\"  data-value=\"" + row.id
         + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</a>"
