@@ -1,8 +1,13 @@
-{% macro book_cover_image(book, book_title) -%}
-    <img
-        srcset="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id(1)) }} 1x,
-                {{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id(2)) }} 2x"
-        src="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id) }}"
-        alt="{{ book_title }}"
-    />
+{% macro book_cover_image(book, thumbnails) -%}
+    {%- set book_title = book.title if book.title else book.name -%}
+    {% set srcset = thumbnails|get_book_thumbnail_srcset if thumbnails|length else '' %}
+    {%- if srcset|length -%}
+        <img
+            srcset="{{ srcset }}"
+            src="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id) }}"
+            alt="{{ book_title }}"
+        />
+    {%- else -%}
+        <img src="{{ url_for('web.get_cached_cover', cache_id=book|book_cover_cache_id) }}" alt="{{ book_title }}" />
+    {%- endif -%}
 {%- endmacro %}

@@ -609,7 +609,8 @@ class CalibreDB():
             randm = self.session.query(Books) \
                 .filter(self.common_filters(allow_show_archived)) \
                 .order_by(func.random()) \
-                .limit(self.config.config_random_books)
+                .limit(self.config.config_random_books) \
+                .all()
         else:
             randm = false()
         off = int(int(pagesize) * (page - 1))
