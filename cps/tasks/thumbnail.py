@@ -59,6 +59,10 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             books_without_thumbnails = self.get_books_without_thumbnails(thumbnail_book_ids)
 
             count = len(books_without_thumbnails)
+            if count == 0:
+                # Do not display this task on the frontend if there are no covers to update
+                self.self_cleanup = True
+
             for i, book in enumerate(books_without_thumbnails):
                 for resolution in self.resolutions:
                     expired_thumbnail = self.get_expired_thumbnail_for_book_and_resolution(
@@ -71,6 +75,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                     else:
                         self.create_book_thumbnail(book, resolution)
 
+                self.message(u'Generating cover thumbnail {0} of {1}'.format(i, count))
                 self.progress = (1.0 / count) * i
 
         self._handleSuccess()
@@ -181,12 +186,12 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     @property
     def name(self):
-        return "GenerateCoverThumbnails"
+        return "ThumbnailsGenerate"
 
 
-class TaskCleanupCoverThumbnailCache(CalibreTask):
-    def __init__(self, task_message=u'Cleaning up cover thumbnail cache'):
-        super(TaskCleanupCoverThumbnailCache, self).__init__(task_message)
+class TaskSyncCoverThumbnailCache(CalibreTask):
+    def __init__(self, task_message=u'Syncing cover thumbnail cache'):
+        super(TaskSyncCoverThumbnailCache, self).__init__(task_message)
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
         self.calibre_db = db.CalibreDB(expire_on_commit=False)
@@ -199,14 +204,23 @@ class TaskCleanupCoverThumbnailCache(CalibreTask):
         # This case will happen if a user deletes the cache dir or cached files
         if self.app_db_session:
             self.expire_missing_thumbnails(cached_thumbnail_files)
-            self.progress = 0.33
+            self.progress = 0.25
 
         # Delete thumbnails in the database if the book has been removed
         # This case will happen if a book is removed in Calibre and the metadata.db file is updated in the filesystem
         if self.app_db_session and self.calibre_db:
             book_ids = self.get_book_ids()
             self.delete_thumbnails_for_missing_books(book_ids)
-            self.progress = 0.66
+            self.progress = 0.50
+
+        # Expire thumbnails in the database if their corresponding book has been updated since they were generated
+        # This case will happen if the book was updated externally
+        if self.app_db_session and self.cache:
+            books = self.get_books_updated_in_the_last_day()
+            book_ids = list(map(lambda b: b.id, books))
+            thumbnails = self.get_thumbnails_for_updated_books(book_ids)
+            self.expire_thumbnails_for_updated_book(books, thumbnails)
+            self.progress = 0.75
 
         # Delete extraneous cached thumbnail files
         # This case will happen if a book was deleted and the thumbnail OR the metadata.db file was changed externally
@@ -261,9 +275,40 @@ class TaskCleanupCoverThumbnailCache(CalibreTask):
         for file in extraneous_files:
             self.cache.delete_cache_file(file, fs.CACHE_TYPE_THUMBNAILS)
 
+    def get_books_updated_in_the_last_day(self):
+        return self.calibre_db.session\
+            .query(db.Books)\
+            .filter(db.Books.has_cover == 1)\
+            .filter(db.Books.last_modified > datetime.utcnow() - timedelta(days=1, hours=1))\
+            .all()
+
+    def get_thumbnails_for_updated_books(self, book_ids):
+        return self.app_db_session\
+            .query(ub.Thumbnail)\
+            .filter(ub.Thumbnail.book_id.in_(book_ids))\
+            .all()
+
+    def expire_thumbnails_for_updated_book(self, books, thumbnails):
+        thumbnail_ids = list()
+        for book in books:
+            for thumbnail in thumbnails:
+                if thumbnail.book_id == book.id and thumbnail.generated_at < book.last_modified:
+                    thumbnail_ids.append(thumbnail.id)
+
+        try:
+            self.app_db_session\
+                .query(ub.Thumbnail)\
+                .filter(ub.Thumbnail.id.in_(thumbnail_ids)) \
+                .update({"expiration": datetime.utcnow()}, synchronize_session=False)
+            self.app_db_session.commit()
+        except Exception as ex:
+            self.log.info(u'Error expiring thumbnails for updated books: ' + str(ex))
+            self._handleError(u'Error expiring thumbnails for updated books: ' + str(ex))
+            self.app_db_session.rollback()
+
     @property
     def name(self):
-        return "CleanupCoverThumbnailCache"
+        return "ThumbnailsSync"
 
 
 class TaskClearCoverThumbnailCache(CalibreTask):
@@ -318,4 +363,4 @@ class TaskClearCoverThumbnailCache(CalibreTask):
 
     @property
     def name(self):
-        return "ClearCoverThumbnailCache"
+        return "ThumbnailsClear"

@@ -20,17 +20,17 @@ from __future__ import division, print_function, unicode_literals
 
 from .services.background_scheduler import BackgroundScheduler
 from .tasks.database import TaskReconnectDatabase
-from .tasks.thumbnail import TaskCleanupCoverThumbnailCache, TaskGenerateCoverThumbnails
+from .tasks.thumbnail import TaskSyncCoverThumbnailCache, TaskGenerateCoverThumbnails
 
 
 def register_jobs():
     scheduler = BackgroundScheduler()
 
     # Generate 100 book cover thumbnails every 5 minutes
-    scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=100), trigger='interval', minutes=5)
+    scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=100), trigger='cron', minute='*/5')
 
-    # Cleanup book cover cache every day at 4am
-    scheduler.add_task(user=None, task=lambda: TaskCleanupCoverThumbnailCache(), trigger='cron', hour=4)
+    # Cleanup book cover cache every 6 hours
+    scheduler.add_task(user=None, task=lambda: TaskSyncCoverThumbnailCache(), trigger='cron', minute='15', hour='*/6')
 
     # Reconnect metadata.db every 4 hours
-    scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='interval', hours=4)
+    scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', minute='5', hour='*/4')
