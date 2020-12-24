@@ -110,6 +110,34 @@ $(document).ready(function() {
   }
 });
 
+function ConfirmDialog(id, dataValue, yesFn, noFn) {
+    var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+    var path = src.substring(0, src.lastIndexOf("/"));
+    var $confirm = $("#GeneralDeleteModal");
+    // var dataValue= e.data('value'); // target.data('value');
+    $confirm.modal('show');
+    $.ajax({
+        method:"get",
+        dataType: "json",
+        url: path + "/../../ajax/loaddialogtexts/" + id,
+        success: function success(data) {
+            $("#header").html(data.header);
+            $("#text").html(data.main);
+        }
+    });
+
+
+    $("#btnConfirmYes").off('click').click(function () {
+        yesFn(dataValue);
+        $confirm.modal("hide");
+    });
+    $("#btnConfirmNo").off('click').click(function () {
+        if (typeof noFn !== 'undefined') {
+            noFn(dataValue);
+        }
+        $confirm.modal("hide");
+    });
+}
 
 $("#delete_confirm").click(function() {
     //get data-id attribute of the clicked element
@@ -464,6 +492,52 @@ $(function() {
             $("#config_delete_kobo_token").show();
         });
 
+    $("#config_delete_kobo_token").click(function() {
+        ConfirmDialog(
+            $(this).attr('id'),
+            $(this).data('value'),
+            function (value) {
+                var pathname = document.getElementsByTagName("script");
+                var src = pathname[pathname.length - 1].src;
+                var path = src.substring(0, src.lastIndexOf("/"));
+                $.ajax({
+                    method: "get",
+                    url: path + "/../../kobo_auth/deleteauthtoken/" + value,
+                });
+                $("#config_delete_kobo_token").hide();
+            }
+        );
+    });
+
+
+    $("#btndeluser").click(function() {
+        ConfirmDialog(
+            $(this).attr('id'),
+            $(this).data('value'),
+            function(value){
+                var subform = $('#user_submit').closest("form");
+                subform.submit(function(eventObj) {
+                    $(this).append('<input type="hidden" name="delete" value="True" />');
+                    return true;
+                });
+                subform.submit();
+            }
+        );
+    });
+    $("#user_submit").click(function() {
+        this.closest("form").submit();
+    });
+
+    $("#delete_shelf").click(function() {
+        ConfirmDialog(
+            $(this).attr('id'),
+            $(this).data('value'),
+            function(value){
+                window.location.href = window.location.pathname + "/../../shelf/delete/" + value
+            }
+        );
+
+    });
 
 
     $("#fileModal").on("show.bs.modal", function(e) {
@@ -497,19 +571,6 @@ $(function() {
         if(type === "dir") {
             fillFileTable(path, type, folder, filter);
         }
-    });
-
-    $("#btndeletetoken").click(function() {
-        //get data-id attribute of the clicked element
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
-        var path = src.substring(0, src.lastIndexOf("/"));
-        $.ajax({
-            method:"get",
-            url: path + "/../../kobo_auth/deleteauthtoken/" + this.value,
-        });
-        $("#modalDeleteToken").modal("hide");
-        $("#config_delete_kobo_token").hide();
-
     });
 
     $(window).resize(function() {

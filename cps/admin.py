@@ -261,6 +261,21 @@ def update_view_configuration():
     return view_configuration()
 
 
+@admi.route("/ajax/loaddialogtexts/<element_id>")
+@login_required
+def load_dialogtexts(element_id):
+    texts = { "header": "", "main": "" }
+    if element_id == "config_delete_kobo_token":
+        texts["main"] = _('Do you really want to delete the Kobo Token?')
+    elif element_id == "btndeletedomain":
+        texts["main"] = _('Do you really want to delete this domain?')
+    elif element_id == "btndeluser":
+        texts["main"] = _('Do you really want to delete this user?')
+    elif element_id == "delete_shelf":
+        texts["main"] = _('Are you sure you want to delete this shelf?')
+    return json.dumps(texts)
+
+
 @admi.route("/ajax/editdomain/<int:allow>", methods=['POST'])
 @login_required
 @admin_required
@@ -300,20 +315,23 @@ def add_domain(allow):
 @login_required
 @admin_required
 def delete_domain():
-    domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
-    ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
     try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
-    # If last domain was deleted, add all domains by default
-    if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
-        new_domain = ub.Registration(domain="%.%",allow=1)
-        ub.session.add(new_domain)
+        domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
+        ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
         try:
             ub.session.commit()
         except OperationalError:
             ub.session.rollback()
+        # If last domain was deleted, add all domains by default
+        if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
+            new_domain = ub.Registration(domain="%.%",allow=1)
+            ub.session.add(new_domain)
+            try:
+                ub.session.commit()
+            except OperationalError:
+                ub.session.rollback()
+    except KeyError:
+        pass
     return ""
 
 
@@ -586,7 +604,8 @@ def list_restriction(res_type):
     return response
 
 @admi.route("/basicconfig/pathchooser/")
-@unconfigured
+# @unconfigured
+@login_required
 def config_pathchooser():
     return pathchooser()
 
