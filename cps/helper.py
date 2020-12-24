@@ -536,9 +536,13 @@ def delete_book(book, calibrepath, book_format):
 def get_thumbnails_for_books(books):
     books_with_covers = list(filter(lambda b: b.has_cover, books))
     book_ids = list(map(lambda b: b.id, books_with_covers))
+    cache = fs.FileSystem()
+    thumbnail_files = cache.list_cache_files(fs.CACHE_TYPE_THUMBNAILS)
+
     return ub.session\
         .query(ub.Thumbnail)\
         .filter(ub.Thumbnail.book_id.in_(book_ids))\
+        .filter(ub.Thumbnail.filename.in_(thumbnail_files))\
         .filter(ub.Thumbnail.expiration > datetime.utcnow())\
         .all()
 

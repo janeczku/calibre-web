@@ -75,7 +75,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                     else:
                         self.create_book_thumbnail(book, resolution)
 
-                self.message(u'Generating cover thumbnail {0} of {1}'.format(i, count))
+                self.message = u'Generating cover thumbnail {0} of {1}'.format(i + 1, count)
                 self.progress = (1.0 / count) * i
 
         self._handleSuccess()
