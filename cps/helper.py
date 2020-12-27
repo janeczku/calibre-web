@@ -824,4 +824,3 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
-
