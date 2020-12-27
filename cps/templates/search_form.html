@@ -31,6 +31,14 @@
           </div>
         </div>
     </div>
+    <div class="form-group">
+      <label for="read_status">{{_('Read Status')}}</label>
+      <select name="read_status" id="read_status" class="form-control">
+        <option value="" selected></option>
+        <option value="True" >{{_('Yes')}}</option>
+        <option value="False" >{{_('No')}}</option>
+      </select>
+    </div>    
     <label for="include_tag">{{_('Tags')}}</label>
     <div class="form-group" id="tag">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
