@@ -452,7 +452,7 @@ def migrate_Database(session):
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
-        ReadBook.__table__.create(bind=engine)
+        Registration.__table__.create(bind=engine)
         with engine.connect() as conn:
             conn.execute("insert into registration (domain, allow) values('%.%',1)")
         session.commit()
@@ -501,12 +501,16 @@ def migrate_Database(session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
-    # Handle table exists, but no content
-    cnt = session.query(Registration).count()
-    if not cnt:
-        with engine.connect() as conn:
-            conn.execute("insert into registration (domain, allow) values('%.%',1)")
-        session.commit()
+    try:
+        # Handle table exists, but no content
+        cnt = session.query(Registration).count()
+        if not cnt:
+            with engine.connect() as conn:
+                conn.execute("insert into registration (domain, allow) values('%.%',1)")
+            session.commit()
+    except exc.OperationalError:  # Database is not writeable
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
     try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
@@ -591,7 +595,7 @@ def migrate_Database(session):
         session.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
-        sys.exit(1)
+        sys.exit(2)
 
 
 def clean_database(session):

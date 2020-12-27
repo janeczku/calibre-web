@@ -445,6 +445,8 @@ class CalibreDB():
         cls.config = config
         cls.dispose()
 
+        # toDo: if db changed -> delete shelfs, delete download books, delete read boks, kobo sync??
+
         if not config.config_calibre_dir:
             config.invalidate()
             return False

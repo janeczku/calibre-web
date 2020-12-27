@@ -55,27 +55,14 @@
       </div>
 
 	  <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          {% if g.user.role_download() %}
+          {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
-                {% if entry.data|length < 2 %}
-
-                  {% for format in entry.data %}
-                  <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}" id="btnGroupDrop1{{format.format|lower}}" class="btn btn-primary" role="button">
-                    <span class="glyphicon glyphicon-download"></span>{{format.format}} ({{ format.uncompressed_size|filesizeformat }})
-                  </a>
-                  {% endfor %}
-                {% else %}
-                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
-                    <span class="caret"></span>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  {% for format in entry.data %}
-                    <li><a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}">{{format.format}} ({{ format.uncompressed_size|filesizeformat }})</a></li>
-                  {% endfor %}
-                  </ul>
-                {% endif %}
+                {% for format in entry.data %}
+                <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}" id="btnGroupDrop{{entry.id}}{{format.format|lower}}" class="btn btn-primary" role="button">
+                  <span class="glyphicon glyphicon-download"></span>{{format.format}} ({{ format.uncompressed_size|filesizeformat }})
+                </a>
+                {% endfor %}
             </div>
             {% endif %}
           {% endif %}
