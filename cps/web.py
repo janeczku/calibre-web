@@ -335,8 +335,6 @@ def get_matching_tags():
     title_input = request.args.get('book_title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
     exclude_tag_inputs = request.args.getlist('exclude_tag') or ''
-    # include_extension_inputs = request.args.getlist('include_extension') or ''
-    # exclude_extension_inputs = request.args.getlist('exclude_extension') or ''
     q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
                  func.lower(db.Books.title).ilike("%" + title_input + "%"))
     if len(include_tag_inputs) > 0:
@@ -1067,7 +1065,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 pub_start = u""
         tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
         searchterm.extend(tag.name for tag in tag_names)
+        tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
+        searchterm.extend(tag.name for tag in tag_names)
         serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
+        searchterm.extend(serie.name for serie in serie_names)
+        serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
         searchterm.extend(serie.name for serie in serie_names)
         language_names = calibre_db.session.query(db.Languages).\
             filter(db.Languages.id.in_(include_languages_inputs)).all()

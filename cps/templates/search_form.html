@@ -42,17 +42,17 @@
     <div class="row">
       <div class="form-group col-sm-6" id="tag">
         <div><label for="include_tag">{{_('Tags')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_tag" id="include_tag" data-live-search="true" data-style="btn-primary" multiple>
           {% for tag in tags %}
-            <option value="{{tag.id}}">{{tag.name}}</option>
+            <option class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_tag">{{_('Exclude Tags')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_tag" id="exclude_tag" data-live-search="true" data-style="btn-danger" multiple>
           {% for tag in tags %}
-            <option value="{{tag.id}}">{{tag.name}}</option>
+            <option  class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
           {% endfor %}
         </select>
       </div>
@@ -60,7 +60,7 @@
     <div class="row">
       <div class="form-group col-sm-6">
         <div><label for="include_serie">{{_('Series')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_serie" id="include_serie" data-live-search="true" data-style="btn-primary" multiple>
           {% for serie in series %}
             <option value="{{serie.id}}">{{serie.name}}</option>
           {% endfor %}
@@ -68,7 +68,7 @@
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_serie">{{_('Exclude Series')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_serie" id="exclude_serie" data-live-search="true" data-style="btn-danger" multiple>
           {% for serie in series %}
             <option value="{{serie.id}}">{{serie.name}}</option>
           {% endfor %}
@@ -79,7 +79,7 @@
     <div class="row">
       <div class="form-group col-sm-6">
         <div><label for="include_language">{{_('Languages')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_language" id="include_language" data-live-search="true" data-style="btn-primary" multiple>
           {% for language in languages %}
             <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
@@ -87,7 +87,7 @@
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_language">{{_('Exclude Languages')}}</label></div>
-        <select class="selectpicker" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_language" id="exclude_language" data-live-search="true" data-style="btn-danger" multiple>
           {% for language in languages %}
             <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
@@ -98,7 +98,7 @@
     <div class="row">
         <div class="form-group col-sm-6">
         <div><label for="include_extension">{{_('Extensions')}}</label></div>
-        <select id="include_extension" class="selectpicker" data-live-search="true" data-style="btn-primary" multiple>
+        <select id="include_extension" class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" multiple>
         {% for extension in extensions %}
             <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
@@ -106,7 +106,7 @@
         </div>
         <div class="form-group col-sm-6">
         <div><label for="exclude_extension">{{_('Exclude Extensions')}}</label></div>
-        <select id="exclude_extension" class="selectpicker" data-live-search="true" data-style="btn-danger" multiple>
+        <select id="exclude_extension" class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" multiple>
         {% for extension in extensions %}
             <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
