@@ -249,18 +249,26 @@ promisePublishers.done(function() {
     );
 });
 
-$("#search").on("change input.typeahead:selected", function() {
+$("#search").on("change input.typeahead:selected", function(event) {
+    if (event.target.type == "search" && event.target.tagName == "INPUT") {
+        return;
+    }
     var form = $("form").serialize();
     $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
         $(".tags_click").each(function() {
-            if ($.inArray(parseInt($(this).children("input").first().val(), 10), data.tags) === -1 ) {
-                if (!($(this).hasClass("active"))) {
-                    $(this).addClass("disabled");
+            if ($.inArray(parseInt($(this).val(), 10), data.tags) === -1) {
+                if(!$(this).prop("selected")) {
+                    $(this).prop("disabled", true);
                 }
             } else {
-                $(this).removeClass("disabled");
+                $(this).prop("disabled", false);
             }
         });
+        $("#include_tag option:selected").each(function () {
+            $("#exclude_tag").find("[value="+$(this).val()+"]").prop("disabled", true);
+        });
+        $('#include_tag').selectpicker("refresh");
+        $('#exclude_tag').selectpicker("refresh");
     });
 });
 
