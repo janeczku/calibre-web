@@ -36,7 +36,10 @@
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
-            {{ book_cover_image(entry, entry.id|get_book_thumbnails(thumbnails)) }}
+            <span class="img">
+              { book_cover_image(entry, entry.id|get_book_thumbnails(thumbnails)) }}
+              {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+            </span>
         </a>
       </div>
       <div class="meta">

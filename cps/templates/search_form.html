@@ -31,87 +31,87 @@
           </div>
         </div>
     </div>
-    <label for="include_tag">{{_('Tags')}}</label>
-    <div class="form-group" id="tag">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
-        {% for tag in tags %}
-          <label id="tag_{{tag.id}}" class="btn btn-primary tags_click">
-            <input type="checkbox" autocomplete="off" name="include_tag" id="include_tag" value="{{tag.id}}">{{tag.name}}</input>
-          </label>
-        {% endfor %}
+    <div class="form-group">
+      <label for="read_status">{{_('Read Status')}}</label>
+      <select name="read_status" id="read_status" class="form-control">
+        <option value="" selected></option>
+        <option value="True" >{{_('Yes')}}</option>
+        <option value="False" >{{_('No')}}</option>
+      </select>
+    </div>
+    <div class="row">
+      <div class="form-group col-sm-6" id="tag">
+        <div><label for="include_tag">{{_('Tags')}}</label></div>
+        <select class="selectpicker" name="include_tag" id="include_tag" data-live-search="true" data-style="btn-primary" multiple>
+          {% for tag in tags %}
+            <option class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-sm-6">
+        <div><label for="exclude_tag">{{_('Exclude Tags')}}</label></div>
+        <select class="selectpicker" name="exclude_tag" id="exclude_tag" data-live-search="true" data-style="btn-danger" multiple>
+          {% for tag in tags %}
+            <option  class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
-    <label for="exclude_tag">{{_('Exclude Tags')}}</label>
-    <div class="form-group">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
-        {% for tag in tags %}
-          <label id="exclude_tag_{{tag.id}}" class="btn btn-danger tags_click">
-            <input type="checkbox" autocomplete="off" name="exclude_tag" id="exclude_tag" value="{{tag.id}}">{{tag.name}}</input>
-          </label>
-        {% endfor %}
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <div><label for="include_serie">{{_('Series')}}</label></div>
+        <select class="selectpicker" name="include_serie" id="include_serie" data-live-search="true" data-style="btn-primary" multiple>
+          {% for serie in series %}
+            <option value="{{serie.id}}">{{serie.name}}</option>
+          {% endfor %}
+        </select>
       </div>
-    </div>
-    <label for="include_serie">{{_('Series')}}</label>
-    <div class="form-group">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
-        {% for serie in series %}
-          <label id="serie_{{serie.id}}" class="btn btn-primary serie_click">
-            <input type="checkbox" autocomplete="off" name="include_serie" id="include_serie" value="{{serie.id}}">{{serie.name}}</input>
-          </label>
-        {% endfor %}
-      </div>
-    </div>
-    <label for="exclude_serie">{{_('Exclude Series')}}</label>
-    <div class="form-group">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
-        {% for serie in series %}
-          <label id="exclude_serie_{{serie.id}}" class="btn btn-danger serie_click">
-            <input type="checkbox" autocomplete="off" name="exclude_serie" id="exclude_serie" value="{{serie.id}}">{{serie.name}}</input>
-          </label>
-        {% endfor %}
+      <div class="form-group col-sm-6">
+        <div><label for="exclude_serie">{{_('Exclude Series')}}</label></div>
+        <select class="selectpicker" name="exclude_serie" id="exclude_serie" data-live-search="true" data-style="btn-danger" multiple>
+          {% for serie in series %}
+            <option value="{{serie.id}}">{{serie.name}}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
     {% if languages %}
-      <label for="include_language">{{_('Languages')}}</label>
-      <div class="form-group">
-        <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <div><label for="include_language">{{_('Languages')}}</label></div>
+        <select class="selectpicker" name="include_language" id="include_language" data-live-search="true" data-style="btn-primary" multiple>
           {% for language in languages %}
-            <label id="language_{{language.id}}" class="btn btn-primary serie_click">
-              <input type="checkbox" autocomplete="off" name="include_language" id="include_language" value="{{language.id}}">{{language.name}}</input>
-            </label>
+            <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
-        </div>
+        </select>
       </div>
-      <label for="exclude_language">{{_('Exclude Languages')}}</label>
-      <div class="form-group">
-        <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+      <div class="form-group col-sm-6">
+        <div><label for="exclude_language">{{_('Exclude Languages')}}</label></div>
+        <select class="selectpicker" name="exclude_language" id="exclude_language" data-live-search="true" data-style="btn-danger" multiple>
           {% for language in languages %}
-            <label id="exclude_language_{{language.id}}" class="btn btn-danger language_click">
-              <input type="checkbox" autocomplete="off" name="exclude_language" id="exclude_language" value="{{language.id}}">{{language.name}}</input>
-            </label>
+            <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
-        </div>
-      </div>
-    {% endif%}
-    <label for="include_extension">{{_('Extensions')}}</label>
-    <div class="form-group" id="extension">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
-        {% for extension in extensions %}
-          <label id="extension_{{extension.format}}" class="btn btn-primary extension_click">
-            <input type="checkbox" autocomplete="off" name="include_extension" id="include_extension" value="{{extension.format}}">{{extension.format}}</input>
-          </label>
-        {% endfor %}
+        </select>
       </div>
     </div>
-    <label for="exclude_extension">{{_('Exclude Extensions')}}</label>
-    <div class="form-group">
-      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+    {% endif%}
+    <div class="row">
+        <div class="form-group col-sm-6">
+        <div><label for="include_extension">{{_('Extensions')}}</label></div>
+        <select id="include_extension" class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" multiple>
         {% for extension in extensions %}
-          <label id="exclude_extension_{{extension.format}}" class="btn btn-danger extension_click">
-            <input type="checkbox" autocomplete="off" name="exclude_extension" id="exclude_extension" value="{{extension.format}}">{{extension.format}}</input>
-          </label>
-        {% endfor %}
-      </div>
+            <option value="{{extension.format}}">{{extension.format}}</option>
+          {% endfor %}
+        </select>
+        </div>
+        <div class="form-group col-sm-6">
+        <div><label for="exclude_extension">{{_('Exclude Extensions')}}</label></div>
+        <select id="exclude_extension" class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" multiple>
+        {% for extension in extensions %}
+            <option value="{{extension.format}}">{{extension.format}}</option>
+          {% endfor %}
+        </select>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-sm-6">
@@ -189,10 +189,13 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
-<script>
-</script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
+{% if not g.user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-datepicker3.min.css') }}" rel="stylesheet" media="screen">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
 {% endblock %}

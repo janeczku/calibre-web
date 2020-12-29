@@ -381,27 +381,53 @@ def order_shelf(shelf_id):
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")
 
+def change_shelf_order(shelf_id, order):
+    result = calibre_db.session.query(db.Books).join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id)\
+        .filter(ub.BookShelf.shelf == shelf_id).order_by(*order).all()
+    for index, entry in enumerate(result):
+        book = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
+            .filter(ub.BookShelf.book_id == entry.id).first()
+        book.order = index
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
 
 def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
 
     # check user is allowed to access shelf
     if shelf and check_shelf_view_permissions(shelf):
+
         if shelf_type == 1:
+            # order = [ub.BookShelf.order.asc()]
+            if sort_param == 'pubnew':
+                change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
+            if sort_param == 'pubold':
+                change_shelf_order(shelf_id, [db.Books.pubdate])
+            if sort_param == 'abc':
+                change_shelf_order(shelf_id, [db.Books.sort])
+            if sort_param == 'zyx':
+                change_shelf_order(shelf_id, [db.Books.sort.desc()])
+            if sort_param == 'new':
+                change_shelf_order(shelf_id, [db.Books.timestamp.desc()])
+            if sort_param == 'old':
+                change_shelf_order(shelf_id, [db.Books.timestamp])
+            if sort_param == 'authaz':
+                change_shelf_order(shelf_id, [db.Books.author_sort.asc()])
+            if sort_param == 'authza':
+                change_shelf_order(shelf_id, [db.Books.author_sort.desc()])
             page = "shelf.html"
             pagesize = 0
-            order = [ub.BookShelf.order.asc()]
         else:
             pagesize = sys.maxsize
             page = 'shelfdown.html'
-            order = [ub.BookShelf.order.asc()]
 
         result, __, pagination = calibre_db.fill_indexpage(page_no, pagesize,
                                                             db.Books,
                                                             ub.BookShelf.shelf == shelf_id,
-                                                            order,
+                                                            [ub.BookShelf.order.asc()],
                                                             ub.BookShelf,ub.BookShelf.book_id == db.Books.id)
-
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
         wrong_entries = calibre_db.session.query(ub.BookShelf)\
             .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True)\

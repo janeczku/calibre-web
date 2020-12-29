@@ -336,8 +336,6 @@ def get_matching_tags():
     title_input = request.args.get('book_title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
     exclude_tag_inputs = request.args.getlist('exclude_tag') or ''
-    # include_extension_inputs = request.args.getlist('include_extension') or ''
-    # exclude_extension_inputs = request.args.getlist('exclude_extension') or ''
     q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
                  func.lower(db.Books.title).ilike("%" + title_input + "%"))
     if len(include_tag_inputs) > 0:
@@ -637,7 +635,8 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
                              ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
         else:
-            db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
+            db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
+                             coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db_filter,
@@ -1059,6 +1058,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
     description = term.get("comment")
+    read_status = term.get("read_status")
     if author_name:
         author_name = author_name.strip().lower().replace(',', '|')
     if book_title:
@@ -1076,7 +1076,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
             include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
             publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
-            include_extension_inputs or exclude_extension_inputs:
+            include_extension_inputs or exclude_extension_inputs or read_status:
         searchterm.extend((author_name.replace('|', ','), book_title, publisher))
         if pub_start:
             try:
@@ -1094,7 +1094,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 pub_start = u""
         tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
         searchterm.extend(tag.name for tag in tag_names)
+        tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
+        searchterm.extend(tag.name for tag in tag_names)
         serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
+        searchterm.extend(serie.name for serie in serie_names)
+        serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
         searchterm.extend(serie.name for serie in serie_names)
         language_names = calibre_db.session.query(db.Languages).\
             filter(db.Languages.id.in_(include_languages_inputs)).all()
@@ -1105,6 +1109,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
         if rating_low:
             searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
+        if read_status:
+            searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
         searchterm.extend(ext for ext in include_extension_inputs)
         searchterm.extend(ext for ext in exclude_extension_inputs)
         # handle custom columns
@@ -1121,6 +1127,23 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.pubdate >= pub_start)
         if pub_end:
             q = q.filter(db.Books.pubdate <= pub_end)
+        if read_status:
+            if config.config_read_column:
+                if read_status=="True":
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(db.cc_classes[config.config_read_column].value == True)
+                else:
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            else:
+                if read_status == "True":
+                    q = q.join(ub.ReadBook, db.Books.id==ub.ReadBook.book_id, isouter=True)\
+                        .filter(ub.ReadBook.user_id == int(current_user.id),
+                                ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
+                else:
+                    q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
+                        .filter(ub.ReadBook.user_id == int(current_user.id),
+                                coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         for tag in include_tag_inputs:
