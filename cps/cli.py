@@ -34,7 +34,7 @@ def version_info():
 
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
-                    ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
+                                 ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
 parser.add_argument('-p', metavar='path', help='path and name to settings db, e.g. /opt/cw.db')
 parser.add_argument('-g', metavar='path', help='path and name to gdrive db, e.g. /opt/gd.db')
 parser.add_argument('-c', metavar='path',
@@ -43,7 +43,7 @@ parser.add_argument('-k', metavar='path',
                     help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
 parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-web',
                     version=version_info())
-parser.add_argument('-i', metavar='ip-adress', help='Server IP-Adress to listen')
+parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 args = parser.parse_args()
 

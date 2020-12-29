@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -23,7 +22,7 @@ import os
 import subprocess
 
 
-def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subprocess.PIPE):
+def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subprocess.PIPE, newlines=True):
     # Linux py2.7 encode as list without quotes no empty element for parameters
     # linux py3.x no encode and as list without quotes no empty element for parameters
     # windows py2.7 encode as string with quotes empty element for parameters is okay
@@ -42,14 +41,15 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
         else:
             exc_command = [x for x in command]
 
-    return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=True, env=env)
+    return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=newlines, env=env)
 
 
 def process_wait(command, serr=subprocess.PIPE):
-    '''Run command, wait for process to terminate, and return an iterator over lines of its output.'''
-    p = process_open(command, serr=serr)
+    # Run command, wait for process to terminate, and return an iterator over lines of its output.
+    newlines = os.name != 'nt'
+    p = process_open(command, serr=serr, newlines=newlines)
     p.wait()
-    for l in p.stdout.readlines():
-        if isinstance(l, bytes):
-            l = l.decode('utf-8')
-        yield l
+    for line in p.stdout.readlines():
+        if isinstance(line, bytes):
+            line = line.decode('utf-8')
+        yield line

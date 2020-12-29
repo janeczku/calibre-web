@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="well">
-  <h2 style="margin-top: 0">{{_('Remote login')}}</h2>
+  <h2 style="margin-top: 0">{{_('Magic Link - Authorise New Device')}}</h2>
   <p>
-    {{_('Use your other device, login and visit ')}} <a href="{{verify_url}}">{{verify_url}}</a>.
+    {{_('On another device, login and visit:')}}
+  <h4><a href="{{verify_url}}">{{verify_url}}</a></b>
+  </h4>
+  <p>
+    {{_('Once verified, you will automatically be logged in on this device.')}}
   </p>
   <p>
-    {{_('Once you do so, you will automatically get logged in on this device.')}}
-  </p>
-  <p>
-    {{_('The link will expire after 10 minutes.')}}
+    {{_('This verification link will expire in 10 minutes.')}}
   </p>
 </div>
 {% endblock %}

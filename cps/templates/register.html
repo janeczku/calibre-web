@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="well col-sm-6 col-sm-offset-2">
-  <h2 style="margin-top: 0">{{_('Register a new account')}}</h2>
+  <h2 style="margin-top: 0">{{_('Register New Account')}}</h2>
   <form method="POST" role="form">
+    {% if not config.config_register_email %}
     <div class="form-group required">
       <label for="nickname">{{_('Username')}}</label>
       <input type="text" class="form-control" id="nickname" name="nickname" placeholder="{{_('Choose a username')}}" required>
     </div>
+    {% endif %}
     <div class="form-group required">
-      <label for="email">{{_('E-mail address')}}</label>
+      <label for="email">{{_('E-mail Address')}}</label>
       <input type="email" class="form-control" id="email" name="email" placeholder="{{_('Your email address')}}" required>
     </div>
     <button type="submit" id="submit" class="btn btn-primary">{{_('Register')}}</button>

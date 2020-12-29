@@ -2,11 +2,11 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
    <LongName>{{instance}}</LongName>
    <ShortName>{{instance}}</ShortName>
-   <Description>{{_('Calibre-Web ebook catalog')}}</Description>
+   <Description>{{_('Calibre-Web eBook Catalog')}}</Description>
    <Developer>Janeczku</Developer>
    <Contact>https://github.com/janeczku/calibre-web</Contact>
    <Url type="text/html"
-        template="{{url_for('opds.feed_cc_search')}}{searchTerms}"/>
+        template="{{url_for('opds.feed_cc_search')}}/{searchTerms}"/>
    <Url type="application/atom+xml"
         template="{{url_for('opds.feed_normal_search')}}?query={searchTerms}"/>
    <SyndicationRight>open</SyndicationRight>

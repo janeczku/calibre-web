@@ -4,13 +4,13 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+          <img src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          {% if g.user.role_download() %}
+          {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
@@ -56,7 +56,7 @@
           {% if reader_list and g.user.role_viewer() %}
               <div class="btn-group" role="group">
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
+                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -66,10 +66,10 @@
                     </ul>
               </div>
             {% endif %}
-            {% if audioentries|length > 0 %}
+            {% if audioentries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}
+                  <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -81,7 +81,7 @@
 
               {% for format in entry.data %}
                   {% if format.format|lower in audioentries %}
-                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
@@ -92,7 +92,7 @@
       <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -105,7 +105,7 @@
             <span class="glyphicon glyphicon-star good"></span>
             {% if loop.last and loop.index < 5 %}
               {% for numer in range(5 - loop.index) %}
-                <span class="glyphicon glyphicon-star"></span>
+                <span class="glyphicon glyphicon-star-empty"></span>
               {% endfor %}
             {% endif %}
           {% endfor %}
@@ -114,13 +114,13 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series',sort='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}
@@ -143,7 +143,7 @@
         <span class="glyphicon glyphicon-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.books_list', data='category', sort='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort_param='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
@@ -154,15 +154,15 @@
       <div class="publishers">
         <p>
           <span>{{_('Publisher')}}:
-              <a href="{{url_for('web.books_list', data='publisher', sort='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
           </span>
         </p>
       </div>
       {% endif %}
 
-      {% if entry.pubdate[:10] != '0101-01-01' %}
+      {% if (entry.pubdate|string)[:10] != '0101-01-01' %}
       <div class="publishing-date">
-        <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
+        <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
       </div>
       {% endif %}
       {% if cc|length > 0 %}
@@ -174,7 +174,7 @@
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
-                {{ '%d' % (column.value / 2) }}
+                {{ (column.value / 2)|formatfloat }}
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
@@ -183,7 +183,15 @@
                     <span class="glyphicon glyphicon-remove"></span>
                   {% endif %}
                 {% else %}
+                {% if c.datatype == 'float' %}
+                  {{ column.value|formatfloat(2) }}
+                {% else %}
+                {% if c.datatype == 'series' %}
+                  {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                {% else %}
                   {{ column.value }}
+                {% endif %}
+                {% endif %}
                 {% endif %}
               {% endif %}
             {% endfor %}
@@ -202,6 +210,16 @@
             </label>
           </form>
           </p>
+          {% if g.user.check_visibility(32768) %}
+          <p>
+            <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
+              <label class="block-label">
+                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if is_archived %}checked{% endif %} >
+                <span>{{_('Archived')}}</span>
+              </label>
+            </form>
+          </p>
+          {% endif %}
         </div>
       {% endif %}
 
@@ -217,7 +235,7 @@
       <div class="more-stuff">
 
       {% if g.user.is_authenticated %}
-      {% if g.user.shelf.all() or g.public_shelfes %}
+      {% if g.user.shelf.all() or g.shelves_access %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
           <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -225,26 +243,14 @@
             <span class="caret"></span>
           </button>
           <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
-            {% for shelf in g.user.shelf %}
-              {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
+            {% for shelf in g.shelves_access %}
+              {% if not shelf.id in books_shelfs and ( not shelf.is_public or g.user.role_edit_shelfs() ) %}
                 <li>
                   <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-shelf-action="add"
                   >
-                    {{shelf.name}}
-                  </a>
-                </li>
-              {% endif %}
-            {%endfor%}
-            {% for shelf in g.public_shelfes %}
-              {% if not shelf.id in books_shelfs %}
-                <li>
-                  <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                     data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                     data-shelf-action="add"
-                  >
-                    {{shelf.name}}
+                    {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                   </a>
                 </li>
               {% endif %}
@@ -253,23 +259,15 @@
         </div>
         <div id="remove-from-shelves" class="btn-group" role="group" aria-label="Remove from shelves">
           {% if books_shelfs %}
-            {% for shelf in g.user.shelf %}
-              {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
-                <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
-                >
-                  <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
-                </a>
-              {% endif %}
-            {%endfor%}
-            {% for shelf in g.public_shelfes %}
+            {% for shelf in g.shelves_access %}
               {% if shelf.id in books_shelfs %}
                 <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
                 >
-                  <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                  <span {% if not shelf.is_public or g.user.role_edit_shelfs() %}
+                        class="glyphicon glyphicon-remove"
+                        {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                 </a>
               {% endif %}
             {%endfor%}
@@ -280,10 +278,10 @@
       {% endif %}
 
       {% endif %}
-      {% if g.user.role_edit() %}
+      {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
+          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
         </div>
       </div>
       {% endif %}

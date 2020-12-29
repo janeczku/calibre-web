@@ -1,8 +1,12 @@
 {% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  <form role="form" method="POST" autocomplete="off">
+  <form role="form" method="POST" autocomplete="off" class="col-md-10 col-lg-6">
 <div class="panel-group">
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -20,15 +24,15 @@
           <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if conf.config_calibre_web_title != None %}{{ conf.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
         </div>
         <div class="form-group">
-          <label for="config_books_per_page">{{_('Books per page')}}</label>
+          <label for="config_books_per_page">{{_('Books per Page')}}</label>
           <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if conf.config_books_per_page != None %}{{ conf.config_books_per_page }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
-          <label for="config_random_books">{{_('No. of random books to show')}}</label>
+          <label for="config_random_books">{{_('No. of Random Books to Display')}}</label>
           <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if conf.config_random_books != None %}{{ conf.config_random_books }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
-          <label for="config_authors_max">{{_('No. of authors to show before hiding (0=disable hiding)')}}</label>
+          <label for="config_authors_max">{{_('No. of Authors to Display Before Hiding (0=Disable Hiding)')}}</label>
           <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if conf.config_authors_max != None %}{{ conf.config_authors_max }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
@@ -39,11 +43,11 @@
             </select>
         </div>
         <div class="form-group">
-          <label for="config_columns_to_ignore">{{_('Regular expression for ignoring columns')}}</label>
+          <label for="config_columns_to_ignore">{{_('Regular Expression for Ignoring Columns')}}</label>
           <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if conf.config_columns_to_ignore != None %}{{ conf.config_columns_to_ignore }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
-          <label for="config_read_column">{{_('Link read/unread status to Calibre column')}}</label>
+          <label for="config_read_column">{{_('Link Read/Unread Status to Calibre Column')}}</label>
               <select name="config_read_column" id="config_read_column" class="form-control">
                 <option value="0" {% if conf.config_read_column == 0 %}selected{% endif %}></option>
                 {%  for readColumn in readColumns %}
@@ -52,15 +56,18 @@
               </select>
         </div>
         <div class="form-group">
-          <label for="config_title_regex">{{_('Regular expression for title sorting')}}</label>
-          <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if conf.config_title_regex != None %}{{ conf.config_title_regex }}{% endif %}" autocomplete="off">
+          <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
+              <select name="config_restricted_column" id="config_restricted_column" class="form-control">
+                <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>
+                {%  for restrictColumn in restrictColumns %}
+                <option value="{{ restrictColumn.id }}" {% if restrictColumn.id == conf.config_restricted_column %}selected{% endif %}>{{ restrictColumn.name }}</option>
+                {% endfor %}
+              </select>
         </div>
         <div class="form-group">
-          <label for="config_mature_content_tags">{{_('Tags for Mature Content')}}</label>
-          <input type="text" class="form-control" name="config_mature_content_tags" id="config_mature_content_tags"
-                 value="{% if conf.config_mature_content_tags != None%}{{ conf.config_mature_content_tags }}{% endif %}"
-                 autocomplete="off"
-          >
+          <label for="config_title_regex">{{_('Regular Expression for Title Sorting')}}</label>
+          <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if conf.config_title_regex != None %}{{ conf.config_title_regex }}{% endif %}" autocomplete="off">
+        </div>
         </div>
       </div>
     </div>
@@ -70,7 +77,7 @@
       <h4 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
           <span class="glyphicon glyphicon-plus"></span>
-          {{_('Default settings for new users')}}
+          {{_('Default Settings for New Users')}}
         </a>
       </h4>
     </div>
@@ -78,7 +85,7 @@
       <div class="panel-body">
         <div class="form-group">
           <input type="checkbox" name="admin_role" id="admin_role" {% if conf.role_admin() %}checked{% endif %}>
-          <label for="admin_role">{{_('Admin user')}}</label>
+          <label for="admin_role">{{_('Admin User')}}</label>
         </div>
         <div class="form-group">
           <input type="checkbox" name="download_role" id="download_role" {% if conf.role_download() %}checked{% endif %}>
@@ -86,7 +93,7 @@
         </div>
         <div class="form-group">
           <input type="checkbox" name="viewer_role" id="viewer_role" {% if conf.role_viewer() %}checked{% endif %}>
-          <label for="viewer_role">{{_('Allow book viewer')}}</label>
+          <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
         </div>
         <div class="form-group">
           <input type="checkbox" name="upload_role" id="upload_role" {% if conf.role_upload() %}checked{% endif %}>
@@ -98,7 +105,7 @@
         </div>
         <div class="form-group">
           <input type="checkbox" name="delete_role" id="delete_role" {% if conf.role_delete_books() %}checked{% endif %}>
-          <label for="delete_role">{{_('Allow Delete books')}}</label>
+          <label for="delete_role">{{_('Allow Delete Books')}}</label>
         </div>
         <div class="form-group">
           <input type="checkbox" name="passwd_role" id="passwd_role" {% if conf.role_passwd() %}checked{% endif %}>
@@ -106,7 +113,7 @@
         </div>
         <div class="form-group">
           <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if conf.role_edit_shelfs() %}checked{% endif %}>
-          <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
+          <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
         </div>
       </div>
     </div>
@@ -116,7 +123,7 @@
       <h4 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" href="#collapseseven">
           <span class="glyphicon glyphicon-plus"></span>
-          {{_('Default visibilities for new users')}}
+          {{_('Default Visibilities for New Users')}}
         </a>
       </h4>
     </div>
@@ -132,22 +139,22 @@
         {% endfor %}
         <div class="form-group">
             <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if conf.show_detail_random() %}checked{% endif %}>
-            <label for="Show_detail_random">{{_('Show random books in detail view')}}</label>
+            <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
         </div>
-        <div class="form-group">
-            <input type="checkbox" name="Show_mature_content" id="Show_mature_content" {% if conf.show_mature_content() %}checked{% endif %}>
-            <label for="Show_mature_content">{{_('Show mature content')}}</label>
-        </div>
+        <a href="#" id="get_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+        <a href="#" id="get_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied custom column values')}}</a>
       </div>
     </div>
   </div>
-</div>
     <div class="col-sm-12">
-    <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
-    <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Back')}}</a>
+    <button type="submit" name="submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Cancel')}}</a>
     </div>
   </form>
 </div>
+{% endblock %}
+{% block modal %}
+{{ restrict_modal() }}
 {% endblock %}
 {% block js %}
 <script type="text/javascript">
@@ -157,4 +164,8 @@
         $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
         });
 </script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

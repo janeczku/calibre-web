@@ -1,20 +1,26 @@
 {% extends "layout.html" %}
+{% macro display_bool_setting(setting_value) -%}
+  {% if setting_value %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+{%- endmacro %}
 {% block body %}
 <div class="container-fluid">
   <div class="row">
     <div class="col">
-      <h2>{{_('User list')}}</h2>
+      <h2>{{_('Users')}}</h2>
       <table class="table table-striped" id="table_user">
         <tr>
-            <th>{{_('Nickname')}}</th>
-            <th>{{_('E-mail')}}</th>
-            <th>{{_('Kindle')}}</th>
-            <th>{{_('DLS')}}</th>
-            <th class="hidden-xs">{{_('Admin')}}</th>
-            <th class="hidden-xs">{{_('Download')}}</th>
-            <th class="hidden-xs">{{_('View Ebooks')}}</th>
-            <th class="hidden-xs">{{_('Upload')}}</th>
-            <th class="hidden-xs">{{_('Edit')}}</th>
+            <th>{{_('Username')}}</th>
+            <th>{{_('E-mail Address')}}</th>
+            <th>{{_('Send to Kindle E-mail Address')}}</th>
+            <th>{{_('Downloads')}}</th>
+            <th class="hidden-xs ">{{_('Admin')}}</th>
+            <th class="hidden-xs hidden-sm">{{_('Password')}}</th>
+            <th class="hidden-xs hidden-sm">{{_('Upload')}}</th>
+            <th class="hidden-xs hidden-sm">{{_('Download')}}</th>
+            <th class="hidden-xs hidden-sm hidden-md">{{_('View Books')}}</th>
+            <th class="hidden-xs hidden-sm hidden-md">{{_('Edit')}}</th>
+            <th class="hidden-xs hidden-sm hidden-md">{{_('Delete')}}</th>
+            <th class="hidden-xs hidden-sm hidden-md">{{_('Public Shelf')}}</th>
         </tr>
         {% for user in allUser %}
           {% if not user.role_anonymous() or config.config_anonbrowse %}
@@ -23,39 +29,53 @@
             <td>{{user.email}}</td>
             <td>{{user.kindle_mail}}</td>
             <td>{{user.downloads.count()}}</td>
-            <td class="hidden-xs">{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_viewer() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_admin()) }}</td>
+            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_passwd()) }}</td>
+            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_upload()) }}</td>
+            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_download()) }}</td>
+            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_viewer()) }}</td>
+            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_edit()) }}</td>
+            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_delete_books()) }}</td>
+            <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_edit_shelfs()) }}</td>
           </tr>
           {% endif %}
         {% endfor %}
       </table>
-      <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add new user')}}</a></div>
+        <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
+      {% if (config.config_login_type == 1) %}
+        <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
+      {% endif %}
     </div>
   </div>
 
   <div class="row">
     <div class="col">
-      <h2>{{_('SMTP e-mail server settings')}}</h2>
-      <table class="table table-striped" id="table_email">
-        <tr>
-          <th>{{_('SMTP hostname')}}</th>
-          <th>{{_('SMTP port')}}</th>
-          <th>{{_('SSL')}}</th>
-          <th>{{_('SMTP login')}}</th>
-          <th class="hidden-xs">{{_('From mail')}}</th>
-        </tr>
-        <tr>
-          <td>{{email.mail_server}}</td>
-          <td>{{email.mail_port}}</td>
-          <td>{% if email.mail_use_ssl %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-          <td>{{email.mail_login}}</td>
-          <td class="hidden-xs">{{email.mail_from}}</td>
-        </tr>
-      </table>
-      <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
+      <h2>{{_('E-mail Server Settings')}}</h2>
+      {% if config.get_mail_server_configured() %}
+      <div class="col-xs-12 col-sm-12">
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Hostname')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_server}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Port')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_port}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Encryption')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(email.mail_use_ssl) }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('SMTP Login')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_login}}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('From E-mail')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_from}}</div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="btn btn-default emailconfig" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a></div>
     </div>
   </div>
 
@@ -64,53 +84,70 @@
       <h2>{{_('Configuration')}}</h2>
       <div class="col-xs-12 col-sm-6">
         <div class="row">
-            <div class="col-xs-6 col-sm-6">{{_('Calibre DB dir')}}</div>
+            <div class="col-xs-6 col-sm-6">{{_('Calibre Database Directory')}}</div>
             <div class="col-xs-6 col-sm-6">{{config.config_calibre_dir}}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-6">{{_('Log level')}}</div>
+            <div class="col-xs-6 col-sm-6">{{_('Log Level')}}</div>
             <div class="col-xs-6 col-sm-6">{{config.get_log_level()}}</div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-6">{{_('Port')}}</div>
             <div class="col-xs-6 col-sm-6">{{config.config_port}}</div>
         </div>
+        {% if kobo_support and config.config_port != config.config_external_port %}
+        <div class="row">
+          <div class="col-xs-6 col-sm-6">{{_('External Port')}}</div>
+          <div class="col-xs-6 col-sm-6">{{config.config_external_port}}</div>
+        </div>
+        {% endif %}
       </div>
       <div class="col-xs-12 col-sm-6">
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Books per page')}}</div>
+            <div class="col-xs-6 col-sm-7">{{_('Books per Page')}}</div>
             <div class="col-xs-6 col-sm-5">{{config.config_books_per_page}}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Uploading')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_uploading %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-7">{{_('Uploads')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_uploading) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Anonymous browsing')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-7">{{_('Anonymous Browsing')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_anonbrowse) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Public registration')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_public_reg %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-7">{{_('Public Registration')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_public_reg) }}</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-sm-7">{{_('Remote login')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-7">{{_('Magic Link Remote Login')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
         </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Login')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
+        </div>
+        {% if config.config_allow_reverse_proxy_header_login %}
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy header name')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
+        </div>
+        {% endif %}
       </div>
-      <div class="btn btn-default"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Basic Configuration')}}</a></div>
-      <div class="btn btn-default"><a id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('UI Configuration')}}</a></div>
+      <div class="btn btn-default"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a></div>
+      <div class="btn btn-default"><a id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a></div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <h2>{{_('Administration')}}</h2>
-      <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logfiles')}}</a></div>
-      <div class="btn btn-default" id="restart_database">{{_('Reconnect to Calibre DB')}}</div>
-      <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-Web')}}</div>
-      <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-Web')}}</div>
+    <div class="row form-group">
+    <h2>{{_('Administration')}}</h2>
+      <div class="btn btn-default"><a id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a></div>
+      <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
     </div>
+    <div class="row form-group">
+      <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
+      <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
+      <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
   </div>
 
   <div class="row">
@@ -132,8 +169,8 @@
       </table>
 
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
-      <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</div>
-      <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
+      <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
+      <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
     </div>
   </div>
 </div>
@@ -145,13 +182,13 @@
     <div class="modal-content">
       <div class="modal-header bg-info"></div>
       <div class="modal-body text-center">
-        <p>{{_('Do you really want to restart Calibre-Web?')}}</p>
+        <p>{{_('Are you sure you want to restart?')}}</p>
           <div id="spinner" class="spinner"  style="display:none;">
                 <img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/>
           </div>
           <p></p>
-        <button type="button" class="btn btn-default" id="restart" >{{_('Ok')}}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+        <button type="button" class="btn btn-default" id="restart" >{{_('OK')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -163,28 +200,28 @@
       <div class="modal-header bg-info">
       </div>
       <div class="modal-body text-center">
-        <p>{{_('Do you really want to stop Calibre-Web?')}}</p>
-        <button type="button" class="btn btn-default" id="shutdown" data-dismiss="modal">{{_('Ok')}}</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+        <p>{{_('Are you sure you want to shutdown?')}}</p>
+        <button type="button" class="btn btn-default" id="shutdown" data-dismiss="modal">{{_('OK')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
 </div>
-<div id="UpdateprogressDialog" class="modal fade" role="dialog">
+<div id="StatusDialog" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header bg-info text-center">
-      <span>{{_('Updating, please do not reload page')}}</span>
+      <span id="DialogHeader">{{_('Updating, please do not reload this page')}}</span>
       </div>
       <div class="modal-body text-center">
           <div id="spinner2" class="spinner2"  style="display:none;">
                 <img id="img-spinner2" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/>
           </div>
           <p></p>
-         <div id="Updatecontent"></div>
+         <div id="DialogContent"></div>
           <p></p>
-        <button type="button" class="btn btn-default hidden" id="updateFinished" data-dismiss="modal">{{_('Ok')}}</button>
+        <button type="button" class="btn btn-default hidden" id="DialogFinished" data-dismiss="modal">{{_('OK')}}</button>
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
+    <div class="col-md-10 col-lg-8">
     {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
       <label for="nickname">{{_('Username')}}</label>
@@ -10,43 +11,43 @@
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="email">{{_('E-mail address')}}</label>
+      <label for="email">{{_('E-mail Address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
-        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
-      {% else %}
+      {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
+        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+      {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
           <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
         </div>
     {% endif %}
-    {% endif %}
     <div class="form-group">
-      <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
+      <label for="kindle_mail">{{_('Send to Kindle E-mail Address')}}</label>
       <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
+    {% if not content.role_anonymous() %}
     <div class="form-group">
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
+    {% endif %}
 
     <div class="form-group">
-      <label for="default_language">{{_('Show books with language')}}</label>
+      <label for="default_language">{{_('Language of Books')}}</label>
         <select name="default_language" id="default_language" class="form-control">
-            <option value="all" {% if new_user == 1 %}selected{% endif %}>{{ _('Show all') }}</option>
+            <option value="all" {% if new_user == 1 %}selected{% endif %}>{{ _('Show All') }}</option>
             {%  for language in languages %}
             <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.name }}</option>
             {% endfor %}
         </select>
     </div>
-
-    {% if registered_oauth.keys()| length > 0 %}
+    {% if registered_oauth.keys()| length > 0 and not new_user %}
       {% for id, name in registered_oauth.items() %}
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>
@@ -57,9 +58,15 @@
         {% endif %}
       {% endfor %}
     </div>
-
     {% endif %}
-
+    {% if kobo_support and not new_user %}
+    <label>{{ _('Kobo Sync Token')}}</label>
+    <div class="form-group col">
+      <a class="btn btn-default" id="config_create_kobo_token" data-toggle="modal" data-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>
+      <div class="btn btn-danger" id="config_delete_kobo_token" data-toggle="modal" data-target="#modalDeleteToken" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
+    </div>
+    {% endif %}
+    </div>
     <div class="col-sm-6">
         {% for element in sidebar %}
           {% if element['config_show'] %}
@@ -72,28 +79,28 @@
 
       <div class="form-group">
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
-          <label for="Show_detail_random">{{_('Show random books in detail view')}}</label>
+          <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
+      {% if ( g.user and g.user.role_admin() and not new_user ) %}
+      <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+      <a href="#" id="get_user_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
+      {% endif %}
     </div>
       <div class="col-sm-6">
     {% if g.user and g.user.role_admin() and not profile %}
     {% if not content.role_anonymous() %}
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
-      <label for="admin_role">{{_('Admin user')}}</label>
+      <label for="admin_role">{{_('Admin User')}}</label>
     </div>
     {% endif %}
-    <div class="form-group">
-        <input type="checkbox" name="Show_mature_content" id="Show_mature_content" {% if content.mature_content %}checked{% endif %}>
-        <label for="Show_mature_content">{{_('Show mature content')}}</label>
-    </div>
     <div class="form-group">
       <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
       <label for="download_role">{{_('Allow Downloads')}}</label>
     </div>
     <div class="form-group">
       <input type="checkbox" name="viewer_role" id="viewer_role" {% if content.role_viewer() %}checked{% endif %}>
-      <label for="viewer_role">{{_('Allow book viewer')}}</label>
+      <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
     </div>
     <div class="form-group">
       <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
@@ -105,7 +112,7 @@
     </div>
     <div class="form-group">
       <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
-      <label for="delete_role">{{_('Allow Delete books')}}</label>
+      <label for="delete_role">{{_('Allow Delete Books')}}</label>
     </div>
       {% if not content.role_anonymous() %}
         <div class="form-group">
@@ -114,37 +121,63 @@
         </div>
         <div class="form-group">
           <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
-          <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
+          <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
         </div>
       {% endif %}
     {% endif %}
     {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
       <div class="checkbox">
         <label>
-          <input type="checkbox" id="delete" name="delete"> {{_('Delete this user')}}
+          <input type="checkbox" id="delete" name="delete"> {{_('Delete User')}}
         </label>
       </div>
     {% endif %}
     </div>
       <div class="col-sm-12">
-    <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
     {% if not profile %}
-      <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
+      <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Cancel')}}</a>
     {% endif %}
     </div>
   </form>
-
-  {% if downloads %}
-    <div class="col-sm-12">
-    <h2>{{_('Recent Downloads')}}</h2>
-    {% for entry in downloads %}
-      <div class="col-sm-2">
-        <a class="pull-left" href="{{ url_for('web.show_book', book_id=entry.id) }}">
-          <img class="media-object" width="100" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="...">
-        </a>
-      </div>
-    {% endfor %}
-    </div>
-  {% endif %}
 </div>
+
+    <div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="kobo_tokenModalLabel">{{_('Generate Kobo Auth URL')}}</h4>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button type="button" id="kobo_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="modalDeleteToken" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+      </div>
+      <div class="modal-body text-center">
+        <p>{{_('Do you really want to delete the Kobo Token?')}}</p>
+        <button type="button" class="btn btn-danger" id="btndeletetoken" value="{{content.id}}">{{_('Delete')}}</button>
+        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Back')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block modal %}
+{{ restrict_modal() }}
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

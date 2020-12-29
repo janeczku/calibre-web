@@ -1,12 +1,14 @@
 /* global $, calibre, EPUBJS, ePubReader */
 
+var reader;
+
 (function() {
     "use strict";
 
     EPUBJS.filePath = calibre.filePath;
     EPUBJS.cssPath = calibre.cssPath;
 
-    var reader = ePubReader(calibre.bookUrl, {
+    reader = ePubReader(calibre.bookUrl, {
         restore: true,
         bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });

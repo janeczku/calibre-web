@@ -29,7 +29,7 @@ function sendData(path) {
     var maxElements;
     var tmp = [];
 
-    elements = Sortable.utils.find(sortTrue, "div");
+    elements = $(".list-group-item");
     maxElements = elements.length;
 
     var form = document.createElement("form");

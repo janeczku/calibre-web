@@ -1,21 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-
-
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-        <img src="{{ url_for('web.get_cover', book_id=book.id) }}" alt="{{ book.title }}"/>
+        <img src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/>
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
-      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
+      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
         <div class="form-group">
-          <a href="{{ url_for('editbook.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
+          <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
         </div>
       {% endfor %}
       </div>
@@ -63,6 +61,21 @@
       <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
     </div>
+
+    <div class="form-group">
+      <label>{{_('Identifiers')}}</label>
+      <table class="table" id="identifier-table">
+	{% for identifier in book.identifiers %}
+	<tr>
+      <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
+	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
+	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
+	</tr>
+	{% endfor %}
+      </table>
+      <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
+    </div>
+
     <div class="form-group">
       <label for="tags">{{_('Tags')}}</label>
       <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
@@ -72,24 +85,28 @@
       <input type="text" class="form-control typeahead" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
     </div>
     <div class="form-group">
-      <label for="series_index">{{_('Series id')}}</label>
-      <input type="number" step="0.01" min="0" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
+      <label for="series_index">{{_('Series ID')}}</label>
+      <input type="number" step="0.01" min="0" placeholder="1" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
     </div>
     <div class="form-group">
       <label for="rating">{{_('Rating')}}</label>
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
+    {% if g.user.role_upload() or g.user.role_admin()%}
+      {% if g.allow_upload %}
     <div class="form-group">
-      <label for="cover_url">{{_('Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)')}}</label>
+      <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
-    <div class="form-group" aria-label="Upload cover from local drive">
-        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from local drive') }}</label>
+      <div class="form-group" aria-label="Upload cover from local drive">
+        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
         <div class="upload-cover-input-text" id="upload-cover"></div>
         <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
-    </div>
+      </div>
+      {% endif %}
+    {% endif %}
     <div class="form-group">
-      <label for="pubdate">{{_('Publishing date')}}</label>
+      <label for="pubdate">{{_('Published Date')}}</label>
       <div style="position: relative">
         <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
         <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
@@ -115,22 +132,23 @@
               </select>
             {% endif %}
 
-            {% if c.datatype == 'int' %}
-              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
+            {% if c.datatype == 'int' or c.datatype == 'float' %}
+	    <input type="number" step="{% if c.datatype == 'float' %}0.01{% else %}1{% endif %}" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
             {% endif %}
 
-            {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
-              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-              {% if book['custom_column_' ~ c.id]|length > 0 %}
-                value="{{ book['custom_column_' ~ c.id][0].value }}"
-              {% endif %}>
-            {% endif %}
-
-            {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+            {% if c.datatype == 'text' %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
               value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
             {% endif %}
+
+            {% if c.datatype == 'series' %}
+              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              {% if book['custom_column_' ~ c.id]|length > 0 %}
+                value="{% for column in book['custom_column_' ~ c.id] %} {{ '%s [%s]' % (book['custom_column_' ~ c.id][0].value, book['custom_column_' ~ c.id][0].extra|formatfloat(2)) }}{% if not loop.last %}, {% endif %}{% endfor %}"
+              {% endif %}>
+            {% endif %}
+
 
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
@@ -146,9 +164,9 @@
             {% endif %}
 
             {% if c.datatype == 'rating' %}
-              <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              <input type="number" min="1" max="5" step="0.5" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                 {% if book['custom_column_' ~ c.id]|length > 0 %}
-                    value="{{ '%d' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
+                    value="{{ '%.1f' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
                 {% endif %}>
             {% endif %}
           </div>
@@ -157,7 +175,7 @@
       {% if g.user.role_upload() or g.user.role_admin()%}
         {% if g.allow_upload %}
           <div role="group" aria-label="Upload new book format">
-            <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload format') }}</label>
+            <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
             <div class="upload-format-input-text" id="upload-format"></div>
             <input id="btn-upload-format" name="btn-upload-format" type="file">
           </div>
@@ -166,12 +184,12 @@
 
     <div class="checkbox">
       <label>
-        <input name="detail_view" type="checkbox" checked> {{_('view book after edit')}}
+        <input name="detail_view" type="checkbox" checked> {{_('View Book on Save')}}
       </label>
     </div>
-    <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Get metadata')}}</a>
-    <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
-    <a href="{{ url_for('web.show_book', book_id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
+    <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Fetch Metadata')}}</a>
+    <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-default">{{_('Cancel')}}</a>
   </div>
 </form>
 
@@ -179,39 +197,20 @@
 {% endblock %}
 
 {% block modal %}
-{% if g.user.role_delete_books() %}
-<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-center">
-          <span>{{_('Are you really sure?')}}</span>
-      </div>
-        <div class="modal-body text-center">
-          <span>{{_('Book will be deleted from Calibre database')}}</span>
-          <span>{{_('and from hard disk')}}</span>
-        </div>
-
-      <div class="modal-footer">
-        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
+{{ delete_book(book.id) }}
 
 <div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="metaModalLabel">{{_('Get metadata')}}</h4>
+        <h4 class="modal-title" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
         <form class="padded-bottom" id="meta-search">
           <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
             <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_(" Search keyword ")}}">
             <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary" id="do-search">{{_("Go!")}}</button>
+              <button type="submit" class="btn btn-primary" id="do-search">{{_("Search")}}</button>
             </span>
           </div>
         </form>
@@ -219,11 +218,14 @@
       </div>
       <div class="modal-body">
         <div class="text-center padded-bottom">
-          <!--input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
-          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label-->
+          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
+          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
 
           <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
           <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
+
+          <input type="checkbox" id="show-comics" class="pill" data-control="comicvine" checked>
+          <label for="show-comics">ComicVine <span class="glyphicon glyphicon-ok"></span></label>
         </div>
 
         <div id="meta-info">
@@ -269,13 +271,28 @@
   var i18nMsg = {
     'loading': {{_('Loading...')|safe|tojson}},
     'search_error': {{_('Search error!')|safe|tojson}},
-    'no_result': {{_('No Result(s) found! Please try aonther keyword.')|safe|tojson}},
+    'no_result': {{_('No Result(s) found! Please try another keyword.')|safe|tojson}},
     'author': {{_('Author')|safe|tojson}},
     'publisher': {{_('Publisher')|safe|tojson}},
     'description': {{_('Description')|safe|tojson}},
     'source': {{_('Source')|safe|tojson}},
   };
   var language = '{{ g.user.locale }}';
+
+  $("#add-identifier-line").click(function() {
+    // create a random identifier type to have a valid name in form. This will not be used when dealing with the form
+    var rand_id = Math.floor(Math.random() * 1000000).toString();
+    var line = '<tr>';
+    line += '<td><input type="text" class="form-control" name="identifier-type-'+ rand_id +'" required="required" placeholder={{_('Identifier Type')|safe|tojson}}></td>';
+    line += '<td><input type="text" class="form-control" name="identifier-val-'+ rand_id +'" required="required" placeholder={{_('Identifier Value')|safe|tojson}}></td>';
+    line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>';
+    line += '</tr>';
+    $("#identifier-table").append(line);
+  });
+  function removeIdentifierLine(el) {
+    $(el).parent().parent().remove();
+  }
+
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
@@ -288,6 +305,7 @@
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 {% endblock %}
 {% block header %}
+<meta name="referrer" content="never">
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-datepicker3.min.css') }}" rel="stylesheet" media="screen">
 {% endblock %}

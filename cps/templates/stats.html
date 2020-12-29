@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h3>{{_('About')}}</h3>
+  <h3>{{_('About')}} {{instance}}</h3>
 <p>{{instance}} powered by
 <a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre-Web</a>.
 </p>
-  <h3>{{_('Calibre library statistics')}}</h3>
+  <h3>{{_('Library Statistics')}}</h3>
 <table id="stats" class="table">
   <tbody>
     <tr>
@@ -25,21 +25,25 @@
     </tr>
   </tbody>
 </table>
-  <h3>{{_('Linked libraries')}}</h3>
+{% if g.user.role_admin() %}
+  <h3>{{_('System Statistics')}}</h3>
 <table id="libs" class="table">
   <thead>
     <tr>
-      <th>{{_('Program library')}}</th>
+      <th>{{_('Program Library')}}</th>
       <th>{{_('Installed Version')}}</th>
     </tr>
   </thead>
   <tbody>
   {% for library,version in versions.items() %}
+  {% if version %}
     <tr>
       <th>{{library}}</th>
       <td>{{_(version)}}</td>
     </tr>
+  {% endif %}
   {% endfor %}
   </tbody>
 </table>
+{% endif %}
 {% endblock %}

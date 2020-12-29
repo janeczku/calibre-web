@@ -20,9 +20,13 @@ from __future__ import division, print_function, unicode_literals
 import base64
 
 from flask_simpleldap import LDAP, LDAPException
-
+from flask_simpleldap import ldap as pyLDAP
 from .. import constants, logger
 
+try:
+    from ldap.pkginfo import __version__ as ldapVersion
+except ImportError:
+    pass
 
 log = logger.create()
 _ldap = LDAP()
@@ -34,21 +38,63 @@ def init_app(app, config):
 
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
-    app.config['LDAP_SCHEMA'] = config.config_ldap_schema
-    app.config['LDAP_USERNAME'] = config.config_ldap_user_object.replace('%s', config.config_ldap_serv_username)\
-                                  + ',' + config.config_ldap_dn
-    app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
-    app.config['LDAP_REQUIRE_CERT'] = bool(config.config_ldap_require_cert)
-    if config.config_ldap_require_cert:
-        app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
+    app.config['LDAP_CUSTOM_OPTIONS'] = {pyLDAP.OPT_REFERRALS: 0}
+    if config.config_ldap_encryption == 2:
+        app.config['LDAP_SCHEMA'] = 'ldaps'
+    else:
+        app.config['LDAP_SCHEMA'] = 'ldap'
+    if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
+        if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
+            if config.config_ldap_serv_password is None:
+                config.config_ldap_serv_password = ''
+            app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
+        else:
+            app.config['LDAP_PASSWORD'] = base64.b64decode("")
+        app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
+    else:
+        app.config['LDAP_USERNAME'] = ""
+        app.config['LDAP_PASSWORD'] = base64.b64decode("")
+    if bool(config.config_ldap_cert_path):
+        app.config['LDAP_CUSTOM_OPTIONS'].update({
+            pyLDAP.OPT_X_TLS_REQUIRE_CERT: pyLDAP.OPT_X_TLS_DEMAND,
+            pyLDAP.OPT_X_TLS_CACERTFILE: config.config_ldap_cacert_path,
+            pyLDAP.OPT_X_TLS_CERTFILE: config.config_ldap_cert_path,
+            pyLDAP.OPT_X_TLS_KEYFILE: config.config_ldap_key_path,
+            pyLDAP.OPT_X_TLS_NEWCTX: 0
+            })
+
     app.config['LDAP_BASE_DN'] = config.config_ldap_dn
     app.config['LDAP_USER_OBJECT_FILTER'] = config.config_ldap_user_object
-    app.config['LDAP_USE_SSL'] = bool(config.config_ldap_use_ssl)
-    app.config['LDAP_USE_TLS'] = bool(config.config_ldap_use_tls)
+
+    app.config['LDAP_USE_TLS'] = bool(config.config_ldap_encryption == 1)
+    app.config['LDAP_USE_SSL'] = bool(config.config_ldap_encryption == 2)
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
+    app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
+    app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
 
-    _ldap.init_app(app)
+    try:
+        _ldap.init_app(app)
+    except ValueError:
+        if bool(config.config_ldap_cert_path):
+            app.config['LDAP_CUSTOM_OPTIONS'].pop(pyLDAP.OPT_X_TLS_NEWCTX)
+        try:
+            _ldap.init_app(app)
+        except RuntimeError as e:
+            log.error(e)
+    except RuntimeError as e:
+        log.error(e)
 
+
+def get_object_details(user=None,query_filter=None):
+    return _ldap.get_object_details(user, query_filter=query_filter)
+
+
+def bind():
+    return _ldap.bind()
+
+
+def get_group_members(group):
+    return _ldap.get_group_members(group)
 
 
 def basic_auth_required(func):
@@ -56,22 +102,27 @@ def basic_auth_required(func):
 
 
 def bind_user(username, password):
-    # ulf= _ldap.get_object_details('admin')
     '''Attempts a LDAP login.
 
     :returns: True if login succeeded, False if login failed, None if server unavailable.
     '''
     try:
-        result = _ldap.bind_user(username, password)
-        log.debug("LDAP login '%s': %r", username, result)
-        return result is not None
+        if _ldap.get_object_details(username):
+            result = _ldap.bind_user(username, password)
+            log.debug("LDAP login '%s': %r", username, result)
+            return result is not None, None
+        return None, None       # User not found
+    except (TypeError, AttributeError, KeyError) as ex:
+        error = ("LDAP bind_user: %s" % ex)
+        return None, error
     except LDAPException as ex:
         if ex.message == 'Invalid credentials':
-            log.info("LDAP login '%s' failed: %s", username, ex)
-            return False
+            error = "LDAP admin login failed"
+            return None, error
         if ex.message == "Can't contact LDAP server":
-            log.warning('LDAP Server down: %s', ex)
-            return None
+            # log.warning('LDAP Server down: %s', ex)
+            error = ('LDAP Server down: %s' % ex)
+            return None,  error
         else:
-            log.warning('LDAP Server error: %s', ex.message)
-            return None
+            error = ('LDAP Server error: %s' % ex.message)
+            return None, error
