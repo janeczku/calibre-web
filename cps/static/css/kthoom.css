@@ -4,7 +4,7 @@ body {
   overflow-y: auto;
   color: white;
   font-family: sans-serif;
-  margin: 0px;
+  margin: 0;
 }
 
 #main {
@@ -13,7 +13,7 @@ body {
 }
 
 .view {
-  padding-top:0px;
+  padding-top: 0;
 }
 
 #sidebar a,
@@ -34,18 +34,18 @@ body {
   cursor: pointer;
   padding: 4px;
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
 #sidebar a:hover,
 #sidebar a:focus {
   outline: none;
-  box-shadow: 0px 2px 8px 1px black;
+  box-shadow: 0 2px 8px 1px black;
 }
 
 #sidebar a.active,
 #sidebar a.active img + span {
-  background-color:  #45B29D;
+  background-color: #45B29D;
 }
 
 #sidebar li img {
@@ -79,7 +79,6 @@ body {
   font-size: 10px;
   line-height: 10px;
   text-align: right;
-
   transition: min-height 150ms ease-in-out;
 }
 
@@ -92,18 +91,17 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-
   transition: width 150ms ease-in-out;
 }
 
 #progress .bar-load {
   color: #000;
-  background-color: #CCC;
+  background-color: #ccc;
 }
 
 #progress .bar-read  {
-  color: #FFF;
-  background-color: #45B29D;
+  color: #fff;
+  background-color: #45b29d;
 }
 
 #progress .text {
@@ -152,40 +150,8 @@ body {
   max-width: 70%;
 }
 
-#left {
-  left: 40px;
-}
-
-#right {
-  right: 40px;
-}
-
-.arrow {
-  position: absolute;
-  top: 50%;
-  margin-top: -32px;
-  font-size: 64px;
-  color: #E2E2E2;
-  font-family: arial, sans-serif;
-  font-weight: bold;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.arrow:hover {
-  color: #777;
-}
-
-.arrow:active,
-.arrow.active {
-  color: #000;
-}
-
-th, td {
+th,
+td {
   padding: 5px;
 }
 
@@ -239,18 +205,17 @@ th {
 }
 
 .dark-theme #titlebar {
-  color: #DDD;
+  color: #ddd;
 }
 
 .dark-theme #titlebar a:active {
-  color: #FFF;
+  color: #fff;
 }
 
 .dark-theme #progress .bar-read {
   background-color: red;
 }
 
-
 .dark-theme .overlay {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }

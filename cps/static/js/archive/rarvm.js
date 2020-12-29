@@ -9,10 +9,18 @@
 /**
  * CRC Implementation.
  */
-/* global Uint8Array, Uint32Array, bitjs, DataView */
+/* global Uint8Array, Uint32Array, bitjs, DataView, mem */
 /* exported MAXWINMASK, UnpackFilter */
 
-var CRCTab = new Array(256).fill(0);
+function emptyArr(n, v) {
+    var arr = [];
+    for (var i = 0; i < n; i += 1) {
+        arr[i] = v;
+    }
+    return arr;
+}
+
+var CRCTab = emptyArr(256, 0);
 
 function initCRC() {
     for (var i = 0; i < 256; ++i) {

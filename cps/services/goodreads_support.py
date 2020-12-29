@@ -20,7 +20,10 @@ from __future__ import division, print_function, unicode_literals
 import time
 from functools import reduce
 
-from goodreads.client import GoodreadsClient
+try:
+    from goodreads.client import GoodreadsClient
+except ImportError:
+    from betterreads.client import GoodreadsClient
 
 try: import Levenshtein
 except ImportError: Levenshtein = False
@@ -69,7 +72,7 @@ def get_author_info(author_name):
         author_info = _client.find_author(author_name=author_name)
     except Exception as ex:
         # Skip goodreads, if site is down/inaccessible
-        log.warning('Goodreads website is down/inaccessible? %s', ex)
+        log.warning('Goodreads website is down/inaccessible? %s', ex.__str__())
         return
 
     if author_info:
@@ -95,8 +98,12 @@ def get_other_books(author_info, library_books=None):
     for book in author_info.books:
         if book.isbn in identifiers:
             continue
-        if book.gid["#text"] in identifiers:
-            continue
+        if isinstance(book.gid, int):
+            if book.gid in identifiers:
+                continue
+        else:
+            if book.gid["#text"] in identifiers:
+                continue
 
         if Levenshtein and library_titles:
             goodreads_title = book._book_dict['title_without_series']

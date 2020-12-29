@@ -1,14 +1,29 @@
 {% extends "layout.html" %}
 {% block body %}
    <div id="log_group" class="inputs">
+     {% if log_enable %}
       <div><input type="radio" name="log_radio" id="log1" value="0" checked>
-      <label for="log0">{{_('Show Calibre-Web log')}}</label> {{logfiles[0]}}</div>
+      <label for="log1">{{_('Show Calibre-Web Log: ')}}</label>{{logfiles[0]}}</div>
+     {% else %}
+     <div><label for="log1">{{_('Calibre-Web Log: ')}}</label> {{_("Stream output, can't be displayed")}}</div>
+     {% endif %}
      {% if accesslog_enable %}
-      <div><input type="radio" name="log_radio" id="log0" value="1">
-      <label for="log1">{{_('Show access log')}}</label> {{logfiles[1]}}</div>
+      <div><input type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
+      <label for="log0">{{_('Show Access Log: ')}}</label>{{logfiles[1]}}</div>
      {% endif %}
    </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-7">
+      {% if log_enable %}
+      <div class="btn btn-default"><a id="log_file" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a></div>
+      {% endif %}
+      {% if accesslog_enable %}
+      <div class="btn btn-default"><a id="log_file" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a></div>
+      {% endif %}
+    </div>
+  </div>
    <div id="renderer" class="log"></div>
+
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/logviewer.js') }}"></script>

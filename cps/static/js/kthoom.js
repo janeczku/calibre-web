@@ -162,10 +162,15 @@ function initProgressClick() {
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
+    unrar5(ab);
     var pathToBitJS = "../../static/js/archive/";
     var lastCompletion = 0;
-    if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
-        unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
+    /*if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
+        if (h[7] === 0x01) {
+            unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
+        } else {
+            unarchiver = new bitjs.archive.Unrarrer5(ab, pathToBitJS);
+        }
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
     } else if (h[0] === 255 && h[1] === 216) { // JPEG
@@ -229,7 +234,7 @@ function loadFromArrayBuffer(ab) {
         unarchiver.start();
     } else {
         alert("Some error");
-    }
+    }*/
 }
 
 function scrollTocToActive() {

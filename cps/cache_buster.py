@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
 #     Copyright (C) 2016-2019 jkrehm andy29485 OzzieIsaacs
 #

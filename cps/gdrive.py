@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -23,6 +22,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import sys
 import hashlib
 import json
 import tempfile
@@ -34,17 +34,16 @@ from flask import Blueprint, flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
 from flask_login import login_required
 
-try:
-    from googleapiclient.errors import HttpError
-except ImportError:
-    pass
-
-from . import logger, gdriveutils, config, db
+from . import logger, gdriveutils, config, ub, calibre_db
 from .web import admin_required
-
 
 gdrive = Blueprint('gdrive', __name__)
 log = logger.create()
+
+try:
+    from googleapiclient.errors import HttpError
+except ImportError as err:
+    log.debug("Cannot import googleapiclient, using GDrive will not work: %s", err)
 
 current_milli_time = lambda: int(round(time() * 1000))
 
@@ -73,7 +72,7 @@ def google_drive_callback():
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
         with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
-    except ValueError as error:
+    except (ValueError, AttributeError) as error:
         log.error(error)
     return redirect(url_for('admin.configuration'))
 
@@ -94,8 +93,7 @@ def watch_gdrive():
         try:
             result = gdriveutils.watchChange(gdriveutils.Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
-            config.config_google_drive_watch_changes_response = json.dumps(result)
-            # after save(), config_google_drive_watch_changes_response will be a json object, not string
+            config.config_google_drive_watch_changes_response = result
             config.save()
         except HttpError as e:
             reason=json.loads(e.content)['error']['errors'][0]
@@ -118,41 +116,45 @@ def revoke_watch_gdrive():
                                     last_watch_response['resourceId'])
         except HttpError:
             pass
-        config.config_google_drive_watch_changes_response = None
+        config.config_google_drive_watch_changes_response = {}
         config.save()
     return redirect(url_for('admin.configuration'))
 
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
+    if not config.config_google_drive_watch_changes_response:
+        return ''
+    if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
+            or request.headers.get('X-Goog-Resource-State') != 'change' \
+            or not request.data:
+        return '' # redirect(url_for('admin.configuration'))
+
     log.debug('%r', request.headers)
-    if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
-            and request.headers.get('X-Goog-Resource-State') == 'change' \
-            and request.data:
+    log.debug('%r', request.data)
+    log.info('Change received from gdrive')
 
-        data = request.data
-
-        def updateMetaData():
-            log.info('Change received from gdrive')
-            log.debug('%r', data)
-            try:
-                j = json.loads(data)
-                log.info('Getting change details')
-                response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
-                log.debug('%r', response)
-                if response:
-                    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
-                        tmpDir = tempfile.gettempdir()
-                        log.info('Database file updated')
-                        copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
-                        log.info('Backing up existing and downloading updated metadata.db')
-                        gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
-                        log.info('Setting up new DB')
-                        # prevent error on windows, as os.rename does on exisiting files
-                        move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        db.setup_db(config)
-            except Exception as e:
-                log.exception(e)
-        updateMetaData()
+    try:
+        j = json.loads(request.data)
+        log.info('Getting change details')
+        response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
+        log.debug('%r', response)
+        if response:
+            if sys.version_info < (3, 0):
+                dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+            else:
+                dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
+            if not response['deleted'] and response['file']['title'] == 'metadata.db' \
+                and response['file']['md5Checksum'] != hashlib.md5(dbpath):
+                tmpDir = tempfile.gettempdir()
+                log.info('Database file updated')
+                copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
+                log.info('Backing up existing and downloading updated metadata.db')
+                gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
+                log.info('Setting up new DB')
+                # prevent error on windows, as os.rename does on exisiting files
+                move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
+                calibre_db.reconnect_db(config, ub.app_DB_path)
+    except Exception as e:
+        log.exception(e)
     return ''

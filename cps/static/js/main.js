@@ -29,7 +29,6 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
-
 // Generic control/related handler to show/hide fields based on a select' value
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
@@ -39,12 +38,132 @@ $(document).on("change", "select[data-control]", function() {
     for (var i = 0; i < $(this)[0].length; i++) {
         var element = parseInt($(this)[0][i].value);
         if (element === showOrHide) {
-            $("[data-related=" + name + "-" + element + "]").show();
+            $("[data-related^=" + name + "][data-related*=-" + element + "]").show();
         } else {
-            $("[data-related=" + name + "-" + element + "]").hide();
+            $("[data-related^=" + name + "][data-related*=-" + element + "]").hide();
         }
     }
 });
+
+// Generic control/related handler to show/hide fields based on a select' value
+// this one is made to show all values if select value is not 0
+$(document).on("change", "select[data-controlall]", function() {
+    var $this = $(this);
+    var name = $this.data("controlall");
+    var showOrHide = parseInt($this.val());
+    if (showOrHide) {
+        $("[data-related=" + name + "]").show();
+    } else {
+        $("[data-related=" + name + "]").hide();
+    }
+});
+
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind("dragenter dragover", function () {
+    if($("#btn-upload").length && !$('body').hasClass('shelforder')) {
+        $(this).css('background', '#e6e6e6');
+    }
+    return false;
+});
+
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind("dragleave", function () {
+    if($("#btn-upload").length && !$('body').hasClass('shelforder')) {
+        $(this).css('background', '');
+    }
+    return false;
+});
+
+// Syntax has to be bind not on, otherwise problems with firefox
+$(".container-fluid").bind('drop', function (e) {
+    e.preventDefault()
+    e.stopPropagation();
+    if($("#btn-upload").length) {
+        var files = e.originalEvent.dataTransfer.files;
+        var test = $("#btn-upload")[0].accept;
+        $(this).css('background', '');
+        // var final = [];
+        const dt = new DataTransfer()
+        jQuery.each(files, function (index, item) {
+            if (test.indexOf(item.name.substr(item.name.lastIndexOf('.'))) !== -1) {
+                dt.items.add(item);
+            }
+        });
+        if (dt.files.length) {
+            $("#btn-upload")[0].files = dt.files;
+            $("#form-upload").submit();
+        }
+    }
+});
+
+$("#btn-upload").change(function() {
+    $("#form-upload").submit();
+});
+
+$(document).ready(function() {
+  var inp = $('#query').first()
+  if (inp.length) {
+    var val = inp.val()
+    if (val.length) {
+      inp.val('').blur().focus().val(val)
+    }
+  }
+});
+
+
+$("#delete_confirm").click(function() {
+    //get data-id attribute of the clicked element
+    var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+    var path = src.substring(0, src.lastIndexOf("/"));
+    var deleteId = $(this).data("delete-id");
+    var bookFormat = $(this).data("delete-format");
+    if (bookFormat) {
+        window.location.href = path + "/../../delete/" + deleteId + "/" + bookFormat;
+    } else {
+        if ($(this).data("delete-format")) {
+            path = path + "/../../ajax/delete/" + deleteId;
+            $.ajax({
+                method:"get",
+                url: path,
+                timeout: 900,
+                success:function(data) {
+                    data.forEach(function(item) {
+                        if (!jQuery.isEmptyObject(item)) {
+                            if (item.format != "") {
+                                $("button[data-delete-format='"+item.format+"']").addClass('hidden');
+                            }
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                                '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
+                                '</div>');
+
+                        }
+                    });
+                }
+            });
+        } else {
+            window.location.href = path + "/../../delete/" + deleteId;
+
+        }
+    }
+
+});
+
+//triggered when modal is about to be shown
+$("#deleteModal").on("show.bs.modal", function(e) {
+    //get data-id attribute of the clicked element and store in button
+    var bookId = $(e.relatedTarget).data("delete-id");
+    var bookfomat = $(e.relatedTarget).data("delete-format");
+    if (bookfomat) {
+        $("#book_format").removeClass('hidden');
+        $("#book_complete").addClass('hidden');
+    } else {
+        $("#book_complete").removeClass('hidden');
+        $("#book_format").addClass('hidden');
+    }
+    $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
+    $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
+});
+
 
 
 $(function() {
@@ -61,29 +180,34 @@ $(function() {
         $("#RestartDialog").modal("hide");
     }
 
+    function cleanUp() {
+        clearInterval(updateTimerID);
+        $("#spinner2").hide();
+        $("#DialogFinished").removeClass("hidden");
+        $("#check_for_update").removeClass("hidden");
+        $("#perform_update").addClass("hidden");
+        $("#message").alert("close");
+        $("#update_table > tbody > tr").each(function () {
+            if ($(this).attr("id") !== "current_version") {
+                $(this).closest("tr").remove();
+            }
+        });
+    }
+
     function updateTimer() {
         $.ajax({
             dataType: "json",
             url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
                 // console.log(data.status);
-                $("#Updatecontent").html(updateText[data.status]);
+                $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
-                    clearInterval(updateTimerID);
-                    $("#spinner2").hide();
-                    $("#updateFinished").removeClass("hidden");
-                    $("#check_for_update").removeClass("hidden");
-                    $("#perform_update").addClass("hidden");
+                    cleanUp();
                 }
             },
             error: function error() {
-                // console.log('Done');
-                clearInterval(updateTimerID);
-                $("#spinner2").hide();
-                $("#Updatecontent").html(updateText[7]);
-                $("#updateFinished").removeClass("hidden");
-                $("#check_for_update").removeClass("hidden");
-                $("#perform_update").addClass("hidden");
+                $("#DialogContent").html(updateText[7]);
+                cleanUp();
             },
             timeout: 2000
         });
@@ -101,20 +225,36 @@ $(function() {
         layoutMode : "fitColumns"
     });
 
+    if ($(".load-more").length && $(".next").length) {
+        var $loadMore = $(".load-more .row").infiniteScroll({
+            debug: false,
+            // selector for the paged navigation (it will be hidden)
+            path : ".next",
+            // selector for the NEXT link (to page 2)
+            append : ".load-more .book"
+            //animate      : true, # ToDo: Reenable function
+            //extraScrollPx: 300
+        });
+        $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
+            if ($("body").hasClass("blur")) {
+                $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+            }
+            $(".load-more .row").isotope( "appended", $(data), null );
+        });
 
-    var $loadMore = $(".load-more .row").infiniteScroll({
-        debug: false,
-        // selector for the paged navigation (it will be hidden)
-        path : ".next",
-        // selector for the NEXT link (to page 2)
-        append : ".load-more .book"
-        //animate      : true, # ToDo: Reenable function
-        //extraScrollPx: 300
-    });
-    $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
-        $(".pagination").addClass("hidden");
-        $(".load-more .row").isotope( "appended", $(data), null );
-    });
+        // fix for infinite scroll on CaliBlur Theme (#981)
+        if ($("body").hasClass("blur")) {
+            $(".col-sm-10").bind("scroll", function () {
+                if (
+                    $(this).scrollTop() + $(this).innerHeight() >=
+                    $(this)[0].scrollHeight
+                ) {
+                    $loadMore.infiniteScroll("loadNextPage");
+                    window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
+                }
+            });
+        }
+    }
 
     $("#restart").click(function() {
         $.ajax({
@@ -141,6 +281,8 @@ $(function() {
         var $this = $(this);
         var buttonText = $this.html();
         $this.html("...");
+        $("#DialogContent").html("");
+        $("#DialogFinished").addClass("hidden");
         $("#update_error").addClass("hidden");
         if ($("#message").length) {
             $("#message").alert("close");
@@ -182,13 +324,23 @@ $(function() {
         });
     });
     $("#restart_database").click(function() {
+        $("#DialogHeader").addClass("hidden");
+        $("#DialogFinished").addClass("hidden");
+        $("#DialogContent").html("");
+        $("#spinner2").show();
         $.ajax({
             dataType: "json",
             url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":2}
+            data: {"parameter":2},
+            success: function success(data) {
+                $("#spinner2").hide();
+                $("#DialogContent").html(data.text);
+                $("#DialogFinished").removeClass("hidden");
+            }
         });
     });
     $("#perform_update").click(function() {
+        $("#DialogHeader").removeClass("hidden");
         $("#spinner2").show();
         $.ajax({
             type: "POST",
@@ -197,7 +349,7 @@ $(function() {
             url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
                 updateText = data.text;
-                $("#Updatecontent").html(updateText[data.status]);
+                $("#DialogContent").html(updateText[data.status]);
                 // console.log(data.status);
                 updateTimerID = setInterval(updateTimer, 2000);
             }
@@ -207,6 +359,7 @@ $(function() {
     // Init all data control handlers to default
     $("input[data-control]").trigger("change");
     $("select[data-control]").trigger("change");
+    $("select[data-controlall]").trigger("change");
 
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
@@ -228,8 +381,62 @@ $(function() {
             $(this).find(".modal-body").html("...");
         });
 
+    $("#modal_kobo_token")
+        .on("show.bs.modal", function(e) {
+            var $modalBody = $(this).find(".modal-body");
+
+            // Prevent static assets from loading multiple times
+            var useCache = function(options) {
+                options.async = true;
+                options.cache = true;
+            };
+            preFilters.add(useCache);
+
+            $.get(e.relatedTarget.href).done(function(content) {
+                $modalBody.html(content);
+                preFilters.remove(useCache);
+            });
+        })
+        .on("hidden.bs.modal", function() {
+            $(this).find(".modal-body").html("...");
+            $("#config_delete_kobo_token").show();
+        });
+
+    $("#btndeletetoken").click(function() {
+        //get data-id attribute of the clicked element
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+        var path = src.substring(0, src.lastIndexOf("/"));
+        // var domainId = $(this).value("domainId");
+        $.ajax({
+            method:"get",
+            url: path + "/../../kobo_auth/deleteauthtoken/" + this.value,
+        });
+        $("#modalDeleteToken").modal("hide");
+        $("#config_delete_kobo_token").hide();
+
+    });
+
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
+    });
+
+    $("#import_ldap_users").click(function() {
+        $("#DialogHeader").addClass("hidden");
+        $("#DialogFinished").addClass("hidden");
+        $("#DialogContent").html("");
+        $("#spinner2").show();
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+        var path = src.substring(0, src.lastIndexOf("/"));
+        $.ajax({
+            method:"get",
+            dataType: "json",
+            url: path + "/../../import_ldap_users",
+            success: function success(data) {
+                $("#spinner2").hide();
+                $("#DialogContent").html(data.text);
+                $("#DialogFinished").removeClass("hidden");
+            }
+        });
     });
 
     $(".author-expand").click(function() {
@@ -239,4 +446,20 @@ $(function() {
         $(".discover .row").isotope("layout");
     });
 
+    $(".update-view").click(function(e) {
+        var view = $(this).data("view");
+
+        e.preventDefault();
+        e.stopPropagation();
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/view",
+            data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
+            success: function success() {
+                location.reload();
+            }
+        });
+    });
 });

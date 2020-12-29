@@ -27,6 +27,8 @@ try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
+    from greenlet import GreenletExit
+    import ssl
     VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
@@ -41,7 +43,6 @@ from . import logger
 
 
 log = logger.create()
-
 
 
 def _readable_listen_address(address, port):
@@ -73,7 +74,11 @@ class WebServer(object):
         if config.config_access_log:
             log_name = "gevent.access" if _GEVENT else "tornado.access"
             formatter = logger.ACCESS_FORMATTER_GEVENT if _GEVENT else logger.ACCESS_FORMATTER_TORNADO
-            self.access_logger = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+            self.access_logger, logfile = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+            if logfile != config.config_access_logfile:
+                log.warning("Accesslog path %s not valid, falling back to default", config.config_access_logfile)
+                config.config_access_logfile = logfile
+                config.save()
         else:
             if not _GEVENT:
                 logger.get('tornado.access').disabled = True
@@ -84,7 +89,8 @@ class WebServer(object):
             if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                 self.ssl_args = dict(certfile=certfile_path, keyfile=keyfile_path)
             else:
-                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. '
+                            'Ignoring ssl.')
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 
@@ -139,6 +145,16 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
+            if ssl_args:
+                wrap_socket = self.wsgiserver.wrap_socket
+                def my_wrap_socket(*args, **kwargs):
+                    try:
+                        return wrap_socket(*args, **kwargs)
+                    except (ssl.SSLError, OSError) as ex:
+                        log.warning('Gevent SSL Error: %s', ex)
+                        raise GreenletExit
+
+                self.wsgiserver.wrap_socket = my_wrap_socket
             self.wsgiserver.serve_forever()
         finally:
             if self.unix_socket_file:
@@ -146,7 +162,7 @@ class WebServer(object):
                 self.unix_socket_file = None
 
     def _start_tornado(self):
-        if os.name == 'nt':
+        if os.name == 'nt' and sys.version_info > (3, 7):
             import asyncio
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))
@@ -156,7 +172,7 @@ class WebServer(object):
                                  max_buffer_size=209700000,
                                  ssl_options=self.ssl_args)
         http_server.listen(self.listen_port, self.listen_address)
-        self.wsgiserver = IOLoop.instance()
+        self.wsgiserver = IOLoop.current()
         self.wsgiserver.start()
         # wait for stop signal
         self.wsgiserver.close(True)
@@ -171,12 +187,15 @@ class WebServer(object):
         except Exception as ex:
             log.error("Error starting server: %s", ex)
             print("Error starting server: %s" % ex)
+            self.stop()
             return False
         finally:
             self.wsgiserver = None
 
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
+            # prevent irritiating log of pending tasks message from asyncio
+            logger.get('asyncio').setLevel(logger.logging.CRITICAL)
             return True
 
         log.info("Performing restart of Calibre-Web")
@@ -187,14 +206,17 @@ class WebServer(object):
         os.execv(sys.executable, arguments)
         return True
 
-    def _killServer(self, ignored_signum, ignored_frame):
+    def _killServer(self, __, ___):
         self.stop()
 
     def stop(self, restart=False):
+        from . import updater_thread
+        updater_thread.stop()
+
         log.info("webserver stop (restart=%s)", restart)
         self.restart = restart
         if self.wsgiserver:
             if _GEVENT:
                 self.wsgiserver.close()
             else:
-                self.wsgiserver.add_callback(self.wsgiserver.stop)
+                self.wsgiserver.add_callback_from_signal(self.wsgiserver.stop)

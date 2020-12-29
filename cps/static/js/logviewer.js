@@ -17,7 +17,10 @@
 
 // Upon loading load the logfile for the first option (event log)
 $(function() {
-    init(0);
+    if ($("#log_group input").length) {
+        var element = $("#log_group input[type='radio']:checked").val();
+        init(element);
+    }
 });
 
 // After change the radio option load the corresponding log file

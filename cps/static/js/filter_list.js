@@ -19,6 +19,17 @@ var direction = 0;  // Descending order
 var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {
+    var class_name = $("h1").attr('Class') + "_sort_name";
+    var obj = {};
+    obj[class_name] = sort;
+    /*$.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: JSON.stringify({obj}),
+    });*/
+
     var count = 0;
     var index = 0;
     var store;
@@ -40,12 +51,10 @@ $("#sort_name").click(function() {
             count++;
         }
     });
-    /*listItems.sort(function(a,b){
-        return $(a).children()[1].innerText.localeCompare($(b).children()[1].innerText)
-    });*/
+
     // Find count of middle element
     if (count > 20) {
-        var middle = parseInt(count / 2) + (count % 2);
+        var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
         $(".row").each(function() {
             index++;
@@ -66,6 +75,14 @@ $("#desc").click(function() {
     if (direction === 0) {
         return;
     }
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
+    });
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -102,9 +119,18 @@ $("#desc").click(function() {
 
 
 $("#asc").click(function() {
+
     if (direction === 1) {
         return;
     }
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
+    });
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -131,7 +157,6 @@ $("#asc").click(function() {
         });
 
         // middle = parseInt(elementLength / 2) + (elementLength % 2);
-
         list.append(reversed.slice(0, index));
         second.append(reversed.slice(index, elementLength));
     } else {
@@ -146,7 +171,7 @@ $("#all").click(function() {
     // Find count of middle element
     var listItems = $("#list").children(".row");
     var listlength = listItems.length;
-    var middle = parseInt(listlength / 2) + (listlength % 2);
+    var middle = parseInt(listlength / 2, 10) + (listlength % 2);
     // go through all elements and make them visible
     listItems.each(function() {
         $(this).show();
@@ -178,7 +203,7 @@ $(".char").click(function() {
     });
     if (count > 20) {
         // Find count of middle element
-        var middle = parseInt(count / 2) + (count % 2);
+        var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
         $(".row").each(function() {
             index++;

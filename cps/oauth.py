@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -24,13 +23,24 @@ from flask import session
 try:
     from flask_dance.consumer.backend.sqla import SQLAlchemyBackend, first, _get_real_user
     from sqlalchemy.orm.exc import NoResultFound
+    backend_resultcode = False       # prevent storing values with this resultcode
+except ImportError:
+    # fails on flask-dance >1.3, due to renaming
+    try:
+        from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
+        from flask_dance.consumer.storage.sqla import first, _get_real_user
+        from sqlalchemy.orm.exc import NoResultFound
+        backend_resultcode = True  # prevent storing values with this resultcode
+    except ImportError:
+        pass
 
+try:
     class OAuthBackend(SQLAlchemyBackend):
         """
         Stores and retrieves OAuth tokens using a relational database through
         the `SQLAlchemy`_ ORM.
 
-        .. _SQLAlchemy: http://www.sqlalchemy.org/
+        .. _SQLAlchemy: https://www.sqlalchemy.org/
         """
         def __init__(self, model, session, provider_id,
                      user=None, user_id=None, user_required=None, anon_user=None,
@@ -40,7 +50,7 @@ try:
 
         def get(self, blueprint, user=None, user_id=None):
             if self.provider_id + '_oauth_token' in session and session[self.provider_id + '_oauth_token'] != '':
-                return session[blueprint.name + '_oauth_token']
+                return session[self.provider_id + '_oauth_token']
             # check cache
             cache_key = self.make_cache_key(blueprint=blueprint, user=user, user_id=user_id)
             token = self.cache.get(cache_key)
@@ -62,7 +72,7 @@ try:
                 use_provider_user_id = True
 
             if self.user_required and not u and not uid and not use_provider_user_id:
-                #raise ValueError("Cannot get OAuth token without an associated user")
+                # raise ValueError("Cannot get OAuth token without an associated user")
                 return None
             # check for user ID
             if hasattr(self.model, "user_id") and uid:
@@ -87,7 +97,7 @@ try:
         def set(self, blueprint, token, user=None, user_id=None):
             uid = first([user_id, self.user_id, blueprint.config.get("user_id")])
             u = first(_get_real_user(ref, self.anon_user)
-                          for ref in (user, self.user, blueprint.config.get("user")))
+                      for ref in (user, self.user, blueprint.config.get("user")))
 
             if self.user_required and not u and not uid:
                 raise ValueError("Cannot set OAuth token without an associated user")
@@ -153,5 +163,5 @@ try:
                 blueprint=blueprint, user=user, user_id=user_id,
             ))
 
-except ImportError:
+except Exception:
     pass

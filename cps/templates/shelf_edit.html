@@ -10,13 +10,13 @@
     {% if g.user.role_edit_shelfs() %}
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="is_public" {% if shelf.is_public == 1 %}checked{% endif %}> {{_('should the shelf be public?')}}
+          <input type="checkbox" name="is_public" {% if shelf.is_public == 1 %}checked{% endif %}> {{_('Share with Everyone')}}
         </label>
       </div>
     {% endif %}
-    <button type="submit" class="btn btn-default" id="submit">{{_('Submit')}}</button>
+    <button type="submit" class="btn btn-default" id="submit">{{_('Save')}}</button>
     {% if shelf.id != None %}
-      <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Back')}}</a>
+      <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
     {% endif %}
   </form>
 </div>

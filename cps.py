@@ -31,7 +31,7 @@ else:
     sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
-from cps import create_app
+from cps import create_app, config
 from cps import web_server
 from cps.opds import opds
 from cps.web import web
@@ -41,6 +41,14 @@ from cps.shelf import shelf
 from cps.admin import admi
 from cps.gdrive import gdrive
 from cps.editbooks import editbook
+
+try:
+    from cps.kobo import kobo, get_kobo_activated
+    from cps.kobo_auth import kobo_auth
+    kobo_available = get_kobo_activated()
+except ImportError:
+    kobo_available = False
+
 try:
     from cps.oauth_bb import oauth
     oauth_available = True
@@ -56,8 +64,12 @@ def main():
     app.register_blueprint(about)
     app.register_blueprint(shelf)
     app.register_blueprint(admi)
-    app.register_blueprint(gdrive)
+    if config.config_use_google_drive:
+        app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
+    if kobo_available:
+        app.register_blueprint(kobo)
+        app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
     success = web_server.start()
