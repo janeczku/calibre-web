@@ -20,10 +20,13 @@ from flask import render_template
 from flask_babel import gettext as _
 from flask import g
 from werkzeug.local import LocalProxy
+from flask_login import current_user
 
-from . import config, constants
+from . import config, constants, ub, logger, db, calibre_db
 from .ub import User
 
+
+log = logger.create()
 
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
@@ -91,9 +94,23 @@ def get_sidebar_config(kwargs=None):
 
     return sidebar
 
+def get_readbooks_ids():
+    if not config.config_read_column:
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+            .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
+        return frozenset([x.book_id for x in readBooks])
+    else:
+        try:
+            readBooks = calibre_db.session.query(db.cc_classes[config.config_read_column])\
+                .filter(db.cc_classes[config.config_read_column].value == True).all()
+            return frozenset([x.book for x in readBooks])
+        except KeyError:
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return []
+
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar = get_sidebar_config(kwargs)
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
-                           accept=constants.EXTENSIONS_UPLOAD,
+                           accept=constants.EXTENSIONS_UPLOAD, read_book_ids=get_readbooks_ids(),
                            *args, **kwargs)

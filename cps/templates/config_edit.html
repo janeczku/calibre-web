@@ -16,12 +16,19 @@
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
        <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
-       <div class="form-group required input-group">
+       <div class="form-group required{% if filepicker %} input-group{% endif %}">
         <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
+       {% if filepicker %}
         <span class="input-group-btn">
           <button type="button" data-toggle="modal" id="converter_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-target="#fileModal" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
         </span>
+       {% endif %}
       </div>
+      {% if not filepicker %}
+       <div class="form-group">
+        <label id="filepicker-hint">{{_('To activate serverside filepicker start Calibre-Web with -f optionn')}}</label>
+      </div>
+      {% endif %}
     {% if feature_support['gdrive']  %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >

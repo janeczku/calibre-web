@@ -39,6 +39,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
 from . import constants, logger, helper, services, fs
+from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
@@ -118,7 +119,7 @@ def before_request():
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in (
-        'admin.basic_configuration', 'login') and '/static/' not in request.path:
+        'admin.basic_configuration', 'login', 'admin.config_pathchooser') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
 
 
@@ -209,7 +210,7 @@ def admin():
 @admin_required
 def configuration():
     if request.method == "POST":
-        return _configuration_update_helper()
+        return _configuration_update_helper(True)
     return _configuration_result()
 
 
@@ -604,10 +605,11 @@ def list_restriction(res_type):
     return response
 
 @admi.route("/basicconfig/pathchooser/")
-# @unconfigured
-@login_required
+@unconfigured
 def config_pathchooser():
-    return pathchooser()
+    if filepicker:
+        return pathchooser()
+    abort(403)
 
 @admi.route("/ajax/pathchooser/")
 @login_required
@@ -616,7 +618,7 @@ def ajax_pathchooser():
     return pathchooser()
 
 def pathchooser():
-    browse_for = "folder" #  if request.endpoint == "admin.pathchooser" else "file"
+    browse_for = "folder"
     folder_only = request.args.get('folder', False) == "true"
     file_filter = request.args.get('filter', "")
     path = os.path.normpath(request.args.get('path', ""))
@@ -702,8 +704,8 @@ def pathchooser():
 def basic_configuration():
     logout_user()
     if request.method == "POST":
-        return _configuration_update_helper()
-    return _configuration_result()
+        return _configuration_update_helper(configured=filepicker)
+    return _configuration_result(configured=filepicker)
 
 
 def _config_int(to_save, x, func=int):
@@ -858,7 +860,7 @@ def _configuration_ldap_helper(to_save, gdriveError):
     return reboot_required, None
 
 
-def _configuration_update_helper():
+def _configuration_update_helper(configured):
     reboot_required = False
     db_change = False
     to_save = request.form.to_dict()
@@ -878,11 +880,15 @@ def _configuration_update_helper():
 
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
-            return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+            return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError,
+                                         configured)
 
         reboot_required |= _config_string(to_save, "config_certfile")
         if config.config_certfile and not os.path.isfile(config.config_certfile):
-            return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+            return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError,
+                                         configured)
 
         _config_checkbox_int(to_save, "config_uploading")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
@@ -947,10 +953,10 @@ def _configuration_update_helper():
         if "config_rarfile_location" in to_save:
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
-                return _configuration_result(unrar_status, gdriveError)
+                return _configuration_result(unrar_status, gdriveError, configured)
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
-        _configuration_result(_(u"Settings DB is not Writeable"), gdriveError)
+        _configuration_result(_(u"Settings DB is not Writeable"), gdriveError, configured)
 
     try:
         metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
@@ -958,11 +964,13 @@ def _configuration_update_helper():
             gdriveutils.downloadFile(None, "metadata.db", metadata_db)
             db_change = True
     except Exception as e:
-        return _configuration_result('%s' % e, gdriveError)
+        return _configuration_result('%s' % e, gdriveError, configured)
 
     if db_change:
         if not calibre_db.setup_db(config, ub.app_DB_path):
-            return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
+            return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError,
+                                         configured)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
 
@@ -971,10 +979,10 @@ def _configuration_update_helper():
     if reboot_required:
         web_server.stop(True)
 
-    return _configuration_result(None, gdriveError)
+    return _configuration_result(None, gdriveError, configured)
 
 
-def _configuration_result(error_flash=None, gdriveError=None):
+def _configuration_result(error_flash=None, gdriveError=None, configured=True):
     gdrive_authenticate = not is_gdrive_ready()
     gdrivefolders = []
     if gdriveError is None:
@@ -995,7 +1003,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
 
     return render_title_template("config_edit.html", config=config, provider=oauthblueprints,
                                  show_back_button=show_back_button, show_login_button=show_login_button,
-                                 show_authenticate_google_drive=gdrive_authenticate,
+                                 show_authenticate_google_drive=gdrive_authenticate, filepicker=configured,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
                                  title=_(u"Basic Configuration"), page="config")
 
