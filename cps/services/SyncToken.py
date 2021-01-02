@@ -85,6 +85,7 @@ class SyncToken:
             "archive_last_modified": {"type": "string"},
             "reading_state_last_modified": {"type": "string"},
             "tags_last_modified": {"type": "string"},
+            "books_last_id": {"type": "integer", "optional": True}
         },
     }
 
@@ -96,6 +97,7 @@ class SyncToken:
         archive_last_modified=datetime.min,
         reading_state_last_modified=datetime.min,
         tags_last_modified=datetime.min,
+        books_last_id=-1
     ):
         self.raw_kobo_store_token = raw_kobo_store_token
         self.books_last_created = books_last_created
@@ -103,6 +105,7 @@ class SyncToken:
         self.archive_last_modified = archive_last_modified
         self.reading_state_last_modified = reading_state_last_modified
         self.tags_last_modified = tags_last_modified
+        self.books_last_id = books_last_id
 
     @staticmethod
     def from_headers(headers):
@@ -137,9 +140,12 @@ class SyncToken:
             archive_last_modified = get_datetime_from_json(data_json, "archive_last_modified")
             reading_state_last_modified = get_datetime_from_json(data_json, "reading_state_last_modified")
             tags_last_modified = get_datetime_from_json(data_json, "tags_last_modified")
+            books_last_id = data_json["books_last_id"]
         except TypeError:
             log.error("SyncToken timestamps don't parse to a datetime.")
             return SyncToken(raw_kobo_store_token=raw_kobo_store_token)
+        except KeyError:
+            books_last_id = -1
 
         return SyncToken(
             raw_kobo_store_token=raw_kobo_store_token,
@@ -147,7 +153,8 @@ class SyncToken:
             books_last_modified=books_last_modified,
             archive_last_modified=archive_last_modified,
             reading_state_last_modified=reading_state_last_modified,
-            tags_last_modified=tags_last_modified
+            tags_last_modified=tags_last_modified,
+            books_last_id=books_last_id
         )
 
     def set_kobo_store_header(self, store_headers):
@@ -170,7 +177,8 @@ class SyncToken:
                 "books_last_created": to_epoch_timestamp(self.books_last_created),
                 "archive_last_modified": to_epoch_timestamp(self.archive_last_modified),
                 "reading_state_last_modified": to_epoch_timestamp(self.reading_state_last_modified),
-                "tags_last_modified": to_epoch_timestamp(self.tags_last_modified)
+                "tags_last_modified": to_epoch_timestamp(self.tags_last_modified),
+                "books_last_id":self.books_last_id
             },
         }
         return b64encode_json(token)

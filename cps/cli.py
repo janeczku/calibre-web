@@ -45,6 +45,7 @@ parser.add_argument('-v', '--version', action='version', help='Shows version num
                     version=version_info())
 parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
+parser.add_argument('-f', action='store_true', help='Enables filepicker in unconfigured mode')
 args = parser.parse_args()
 
 if sys.version_info < (3, 0):
@@ -110,3 +111,6 @@ if ipadress:
 
 # handle and check user password argument
 user_password = args.s or None
+
+# Handles enableing of filepicker
+filepicker = args.f or None

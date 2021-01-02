@@ -2,23 +2,38 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  {% if g.user.role_download() %}
- <a id="shelf_down" href="{{ url_for('shelf.show_shelf', shelf_type=2, shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Download') }} </a>
+  {% if g.user.role_download() %}
+  <a id="shelf_down" href="{{ url_for('shelf.show_simpleshelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Download') }} </a>
       {% endif %}
   {% if g.user.is_authenticated %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
-      <div id="delete_shelf" data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
-      <a id="edit_shelf" href="{{ url_for('shelf.edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf') }} </a>
-      <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Change order') }} </a>
+      <div class="btn btn-danger" id="delete_shelf" data-value="{{ shelf.id }}">{{ _('Delete this Shelf') }}</div>
+      <a id="edit_shelf" href="{{ url_for('shelf.edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf Properties') }} </a>
+      {% if entries.__len__() %}
+      <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Arrange books manually') }} </a>
+      <button id="toggle_order_shelf" type="button" data-alt-text="{{ _('Disable Change order') }}" class="btn btn-primary">{{ _('Enable Change order') }}</button>
+        <div class="filterheader hidden-xs hidden-sm">
+          <a data-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort title in alphabetical order')}}" id="asc" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort title in reverse alphabetical order')}}" id="desc" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort authors in alphabetical order')}}" id="auth_az" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='authaz')}}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort authors in reverse alphabetical order')}}" id="auth_za" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='authza')}}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort according to publishing date, newest first')}}" id="pub_new" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort according to publishing date, oldest first')}}" id="pub_old" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+        </div>
+      {% endif %}
     {% endif %}
   {% endif %}
   <div class="row display-flex">
-
     {% for entry in entries %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
             <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+              <span class="img">
+                <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+                {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+              </span>
             </a>
       </div>
       <div class="meta">
@@ -68,7 +83,7 @@
     {% endfor %}
   </div>
 </div>
-<div id="DeleteShelfDialog" class="modal fade" role="dialog">
+<!--div id="DeleteShelfDialog" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
@@ -82,6 +97,9 @@
       </div>
     </div>
   </div>
-</div>
+</div-->
 
+{% endblock %}
+{% block modal %}
+{{ delete_confirm_modal() }}
 {% endblock %}

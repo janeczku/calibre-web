@@ -240,7 +240,7 @@ body.blur .row-fluid .col-sm-10 {
 
 .col-sm-10 .book-meta > div.btn-toolbar:after {
     content: '';
-    direction: block;
+    direction: ltr;
     position: fixed;
     top: 120px;
     right: 0;
@@ -398,20 +398,17 @@ body.blur .row-fluid .col-sm-10 {
 
 .shelforder #sortTrue > div:hover {
     background-color: hsla(0, 0%, 100%, .06) !important;
-    cursor: move;
     cursor: grab;
-    cursor: -webkit-grab;
     color: #eee
 }
 
 .shelforder #sortTrue > div:active {
     cursor: grabbing;
-    cursor: -webkit-grabbing
 }
 
 .shelforder #sortTrue > div:before {
     content: "\EA53";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     margin-right: 30px;
     margin-left: 15px;
     vertical-align: bottom;
@@ -446,7 +443,7 @@ body.blur .row-fluid .col-sm-10 {
 
 body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     content: "\e155";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -494,7 +491,7 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 }
 
 #have_read_cb + label:before, #have_read_cb:checked + label:before {
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-size: 16px;
     height: 40px;
     width: 60px;
@@ -550,13 +547,12 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     height: 60px;
     width: 50px;
     cursor: pointer;
-    margin: 0;
     display: inline-block;
-    margin-top: -4px;
+    margin: -4px 0 0;
 }
 
 #archived_cb + label:before, #archived_cb:checked + label:before {
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-size: 16px;
     height: 40px;
     width: 60px;
@@ -618,7 +614,7 @@ div[aria-label="Edit/Delete book"] > .btn > span {
 
 div[aria-label="Edit/Delete book"] > .btn > span:before {
     content: "\EA5d";
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     font-size: 20px;
     padding: 16px 15px;
     display: inline-block;
@@ -641,7 +637,7 @@ div[aria-label="Edit/Delete book"] > .btn > span:hover {
     width: 225px;
     max-width: 225px;
     position: relative !important;
-    left: auto !important; 
+    left: auto !important;
     top: auto !important;
     -webkit-transform: none !important;
     -ms-transform: none !important;
@@ -760,7 +756,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
 
 .home-btn {
     color: hsla(0, 0%, 100%, .7);
-    line-height: 34.29px;
+    line-height: 34px;
     margin: 0;
     padding: 0;
     position: absolute;
@@ -770,7 +766,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
 
 .home-btn > a {
     color: rgba(255, 255, 255, .7);
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     line-height: 60px;
     position: relative;
     text-align: center;
@@ -800,7 +796,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.home-btn > a:hove
 
 .glyphicon-search:before {
     content: "\EA4F";
-    font-family: plex-icons
+    font-family: plex-icons, serif
 }
 
 #nav_about:after, .profileDrop > span:after, .profileDrop > span:before {
@@ -833,7 +829,7 @@ body:not(.read-frame) {
     overflow: hidden;
     margin: 0;
     /* scroll bar fix for firefox  */
-    scrollbar-color: hsla(0, 0%, 100%, .2) transparent; 
+    scrollbar-color: hsla(0, 0%, 100%, .2) transparent;
     scrollbar-width: thin;
 }
 
@@ -966,7 +962,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
 
 #form-upload .form-group .btn:before {
     content: "\e043";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -991,7 +987,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
 #form-upload .form-group .btn:after {
     content: "\EA13";
     position: absolute;
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 8px;
     background: #3c444a;
     color: hsla(0, 0%, 100%, .7);
@@ -1019,7 +1015,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     text-transform: none;
     font-weight: 400;
     font-style: normal;
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1;
@@ -1075,7 +1071,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button:before {
     content: "\EA32";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     color: #eee;
     background: #555;
     font-size: 10px;
@@ -1097,7 +1093,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > b
 body > div.navbar.navbar-default.navbar-static-top > div > form:before {
     content: "\EA4F";
     display: block;
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     position: absolute;
     color: #eee;
     font-weight: 400;
@@ -1120,7 +1116,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form:before {
 body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > span.input-group-btn:before {
     content: "\EA4F";
     display: block;
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     position: absolute;
     left: -298px;
     top: 8px;
@@ -1193,7 +1189,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
 
 body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
     content: "\EA31";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 20px
 }
 
@@ -1272,7 +1268,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     user-select: none
 }
 
-.navigation li, .navigation li:not(ul>li) {
+.navigation li, .navigation li:not(ul > li) {
     border-radius: 0 4px 4px 0
 }
 
@@ -1352,32 +1348,32 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
 
 #nav_hot .glyphicon-fire::before {
     content: "\1F525";
-    font-family: glyphicons regular
+    font-family: glyphicons regular, serif
 }
 
 .glyphicon-star:before {
     content: "\EA10";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #nav_rand .glyphicon-random::before {
     content: "\EA44";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 .glyphicon-list::before {
     content: "\EA4D";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #nav_about .glyphicon-info-sign::before {
     content: "\EA26";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #nav_cat .glyphicon-inbox::before, .glyphicon-tags::before {
     content: "\E067";
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     margin-left: 2px
 }
 
@@ -1423,7 +1419,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
 
 .navigation .create-shelf a:before {
     content: "\EA13";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 100%;
     padding-right: 10px;
     vertical-align: middle
@@ -1473,7 +1469,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
 
 #books > .cover > a:before, #books_rand > .cover > a:before, .book.isotope-item > .cover > a:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a:before {
     content: "\e352";
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     background: var(--color-secondary);
     border-radius: 50%;
     font-weight: 400;
@@ -1521,8 +1517,8 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     top: 0;
     left: 0;
     opacity: 0;
-    background: -webkit-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
-    background: -o-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -webkit-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -o-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
     background: radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
     z-index: -9
 }
@@ -1562,8 +1558,8 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     top: 0;
     left: 0;
     opacity: 0;
-    background: -webkit-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
-    background: -o-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -webkit-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -o-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
     background: radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%)
 }
 
@@ -1739,7 +1735,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 {
 
 body.me > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     content: '';
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 6vw;
@@ -1947,7 +1943,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.pagination .page-next > a
 body > div.container-fluid > div > div.col-sm-10 > div.pagination .page-previous > a
 {
     top: 0;
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 100;
     -webkit-font-smoothing: antialiased;
     line-height: 60px;
@@ -2026,7 +2022,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container > di
 
 body.serieslist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e044";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -2131,7 +2127,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container 
 
 body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     content: "\E067";
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -2151,7 +2147,7 @@ body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 
 
 body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before {
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -2250,7 +2246,7 @@ body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before
 
 body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
     padding: 15px 10px 15px 40px;
-} 
+}
 
 @media screen and (max-width: 992px) {
     body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
@@ -2492,7 +2488,6 @@ body > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn.bt
 }
 
 textarea {
-    resize: none;
     resize: vertical
 }
 
@@ -2838,7 +2833,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form
 
 body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before {
     content: "\EA4F";
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -3195,7 +3190,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
 
 #add-to-shelf > span.glyphicon.glyphicon-list:before {
     content: "\EA59";
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     font-size: 18px
 }
 
@@ -3207,7 +3202,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
 
 #read-in-browser > span.glyphicon-eye-open:before, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.glyphicon-eye-open:before {
     content: "\e352";
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-size: 18px;
     padding-right: 5px
 }
@@ -3219,7 +3214,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
 #btnGroupDrop1 > span.glyphicon-download:before {
     font-size: 20px;
     content: "\ea66";
-    font-family: plex-icons
+    font-family: plex-icons, serif
 }
 
 .col-sm-10 .book-meta > div.btn-toolbar {
@@ -3323,7 +3318,6 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
     box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
     -o-transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
-    transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
     transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4), -webkit-transform .15s cubic-bezier(.6, .4, .2, 1.4);
     -webkit-transform-origin: center top;
     -ms-transform-origin: center top;
@@ -3441,7 +3435,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > .btn-primary:l
 
 .book-meta > div.more-stuff > .btn-toolbar > .btn-group[aria-label="Remove from shelves"] > a > .glyphicon-remove:before {
     content: "\ea64";
-    font-family: plex-icons
+    font-family: plex-icons, serif
 }
 
 body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > .col-sm-6 {
@@ -3555,7 +3549,7 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-b
 
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:before {
     content: "\EA6D";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     position: absolute;
     color: hsla(0, 0%, 100%, .7);
     font-size: 20px;
@@ -3585,7 +3579,7 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-b
 
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before {
     content: "\EA5d";
-    font-family: plex-icons;
+    font-family: plex-icons, serif;
     position: absolute;
     color: hsla(0, 0%, 100%, .7);
     font-size: 20px;
@@ -3615,7 +3609,7 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-b
 
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
     content: "\E409";
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     position: absolute;
     color: hsla(0, 0%, 100%, .7);
     font-size: 20px;
@@ -3752,7 +3746,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
 
 .plexBack > a {
     color: rgba(255, 255, 255, .7);
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     -webkit-font-variant-ligatures: normal;
     font-variant-ligatures: normal;
     line-height: 60px;
@@ -3864,11 +3858,9 @@ body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.l
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    border-style: solid;
     vertical-align: middle;
     -webkit-transition: border .2s, -webkit-transform .4s;
     -o-transition: border .2s, transform .4s;
-    transition: border .2s, transform .4s;
     transition: border .2s, transform .4s, -webkit-transform .4s;
     margin: 9px 6px
 }
@@ -3887,11 +3879,9 @@ body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.l
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    border-style: solid;
     vertical-align: middle;
     -webkit-transition: border .2s, -webkit-transform .4s;
     -o-transition: border .2s, transform .4s;
-    transition: border .2s, transform .4s;
     transition: border .2s, transform .4s, -webkit-transform .4s;
     margin: 12px 6px
 }
@@ -3971,7 +3961,7 @@ body.author img.bg-blur[src=undefined] {
 
 body.author:not(.authorlist) .undefined-img:before {
     content: "\e008";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -4120,7 +4110,7 @@ body.shelf.modal-open > .container-fluid {
     font-size: 18px;
     color: #999;
     display: inline-block;
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-style: normal;
     font-weight: 400
 }
@@ -4221,7 +4211,7 @@ body.shelf.modal-open > .container-fluid {
 
 #remove-from-shelves > .btn > span:before {
     content: "\EA52";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     color: transparent;
     padding-left: 5px
 }
@@ -4233,7 +4223,7 @@ body.shelf.modal-open > .container-fluid {
 
 #remove-from-shelves > a:first-of-type:before {
     content: "\EA4D";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     position: absolute;
     color: hsla(0, 0%, 100%, .45);
     font-style: normal;
@@ -4273,7 +4263,7 @@ body.shelf.modal-open > .container-fluid {
     content: "\E208";
     padding-right: 10px;
     display: block;
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-style: normal;
     font-weight: 400;
     position: absolute;
@@ -4284,7 +4274,6 @@ body.shelf.modal-open > .container-fluid {
     opacity: .5;
     -webkit-transition: -webkit-transform .3s ease-out;
     -o-transition: transform .3s ease-out;
-    transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
     -ms-transform: translate(0, -60px);
@@ -4344,7 +4333,7 @@ body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 
 
 .glyphicon-remove:before {
     content: "\EA52";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 400
 }
 
@@ -4430,7 +4419,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
 
     body:not(.blur) #nav_new:before {
         content: "\EA4F";
-        font-family: plex-icons;
+        font-family: plex-icons, serif;
         font-style: normal;
         font-weight: 400;
         line-height: 1;
@@ -4456,7 +4445,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
         color: hsla(0, 0%, 100%, .7);
         cursor: pointer;
         display: block;
-        font-family: plex-icons-new;
+        font-family: plex-icons-new, serif;
         font-size: 20px;
         font-stretch: 100%;
         font-style: normal;
@@ -4552,12 +4541,12 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
 }
 
 body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col .table > tbody > tr > td, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col .table > tbody > tr > th, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > .table > tbody > tr > td, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > .table > tbody > tr > th {
-    border: collapse
+    border: collapse;
 }
 
 body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10::before {
     content: '';
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 6vw;
@@ -4661,7 +4650,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     content: "\e352";
     display: inline-block;
     position: absolute;
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     background: var(--color-secondary);
     color: #fff;
     border-radius: 50%;
@@ -4699,8 +4688,8 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     top: 0;
     left: 0;
     opacity: 0;
-    background: -webkit-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
-    background: -o-radial-gradient(50% 50%, farthest-corner, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -webkit-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
+    background: -o-radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%);
     background: radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%)
 }
 
@@ -4752,7 +4741,7 @@ body.admin td > a:hover {
 
 .glyphicon-ok::before {
     content: "\EA55";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 400
 }
 
@@ -4821,7 +4810,7 @@ body:not(.blur):not(.login):not(.me):not(.author):not(.editbook):not(.upload):no
     background-position: center center, center center, center center !important;
     background-size: auto, auto, cover !important;
     -webkit-background-size: auto, auto, cover !important;
-    -moz-background-size: autom, auto, cover !important;
+    -moz-background-size: auto, auto, cover !important;
     -o-background-size: auto, auto, cover !important;
     width: 100%;
     height: 60px;
@@ -4887,7 +4876,6 @@ body.read:not(.blur) a[href*=readbooks] {
 .tooltip.in {
     opacity: 1;
     -o-transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
-    transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
     transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4), -webkit-transform .15s cubic-bezier(.6, .4, .2, 1.4);
     -webkit-transform: translate(0) scale(1);
     -ms-transform: translate(0) scale(1);
@@ -4987,7 +4975,7 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div
 
 body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before {
     content: "\EA6D";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 18px;
     color: hsla(0, 0%, 100%, .7)
 }
@@ -5072,7 +5060,7 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
 
 body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > thead > tr > th > .th-inner.asc:after {
     content: "\EA58";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 400;
     right: 20px;
     position: absolute
@@ -5080,7 +5068,7 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
 
 body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > thead > tr > th > .th-inner.desc:after {
     content: "\EA57";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 400;
     right: 20px;
     position: absolute
@@ -5143,7 +5131,7 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
 
 .epub-back:before {
     content: "\EA1C";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-weight: 400;
     color: #4f4f4f;
     position: absolute;
@@ -5306,7 +5294,7 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
 
 body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before {
     content: "\EA6D";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 18px;
     color: hsla(0, 0%, 100%, .7);
     vertical-align: super
@@ -5466,7 +5454,7 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
 
 #main-nav + #scnd-nav .create-shelf a:before {
     content: "\EA13";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     font-size: 100%;
     padding-right: 10px;
     vertical-align: middle
@@ -5511,7 +5499,7 @@ body.admin.modal-open .navbar {
     content: "\E208";
     padding-right: 10px;
     display: block;
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-style: normal;
     font-weight: 400;
     position: absolute;
@@ -5522,7 +5510,6 @@ body.admin.modal-open .navbar {
     opacity: .5;
     -webkit-transition: -webkit-transform .3s ease-out;
     -o-transition: transform .3s ease-out;
-    transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
     -ms-transform: translate(0, -60px);
@@ -5576,22 +5563,22 @@ body.admin.modal-open .navbar {
 
 #RestartDialog > .modal-dialog > .modal-content > .modal-header:before {
     content: "\EA4F";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #ShutdownDialog > .modal-dialog > .modal-content > .modal-header:before {
     content: "\E064";
-    font-family: glyphicons regular
+    font-family: glyphicons regular, serif
 }
 
 #StatusDialog > .modal-dialog > .modal-content > .modal-header:before {
     content: "\EA15";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #deleteModal > .modal-dialog > .modal-content > .modal-header:before {
     content: "\EA6D";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #RestartDialog > .modal-dialog > .modal-content > .modal-header:after {
@@ -5982,7 +5969,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     .home-btn {
         height: 48px;
-        line-height: 28.29px;
+        line-height: 28px;
         right: 10px;
         left: auto
     }
@@ -5994,7 +5981,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     .plexBack {
         height: 48px;
-        line-height: 28.29px;
+        line-height: 28px;
         left: 48px;
         display: none
     }
@@ -6073,7 +6060,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > span.input-group-btn:before {
         content: "\EA33";
         display: block;
-        font-family: plex-icons-new;
+        font-family: plex-icons-new, serif;
         position: fixed;
         left: 0;
         top: 0;
@@ -6225,7 +6212,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     #form-upload .form-group .btn:before {
         content: "\e043";
-        font-family: 'Glyphicons Halflings';
+        font-family: 'Glyphicons Halflings', serif;
         line-height: 1;
         -webkit-font-smoothing: antialiased;
         color: #fff;
@@ -6243,7 +6230,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     #form-upload .form-group .btn:after {
         content: "\EA13";
         position: absolute;
-        font-family: plex-icons-new;
+        font-family: plex-icons-new, serif;
         font-size: 8px;
         background: #3c444a;
         color: #fff;
@@ -6296,7 +6283,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     #top_admin, #top_tasks {
-        padding: 11.5px 15px;
+        padding: 12px 15px;
         font-size: 13px;
         line-height: 1.71428571;
         overflow: hidden
@@ -6305,7 +6292,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     #top_admin > .glyphicon, #top_tasks > .glyphicon-tasks {
         position: relative;
         top: 0;
-        font-family: 'Glyphicons Halflings';
+        font-family: 'Glyphicons Halflings', serif;
         line-height: 1;
         border-radius: 0;
         background: 0 0;
@@ -6324,7 +6311,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     #top_tasks > .glyphicon-tasks::before, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
         text-transform: none;
-        font-family: plex-icons-new;
+        font-family: plex-icons-new, serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
@@ -6649,7 +6636,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     .author > .container-fluid > .row-fluid > .col-sm-10 > h2:after {
         content: "\e008";
-        font-family: 'Glyphicons Halflings';
+        font-family: 'Glyphicons Halflings', serif;
         font-style: normal;
         font-weight: 400;
         line-height: 1;
@@ -6854,7 +6841,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         color: hsla(0, 0%, 100%, .7);
         cursor: pointer;
         display: block;
-        font-family: plex-icons-new;
+        font-family: plex-icons-new, serif;
         font-size: 20px;
         font-stretch: 100%;
         font-style: normal;
@@ -7025,11 +7012,9 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
-        border-style: solid;
         vertical-align: middle;
         -webkit-transition: border .2s, -webkit-transform .4s;
         -o-transition: border .2s, transform .4s;
-        transition: border .2s, transform .4s;
         transition: border .2s, transform .4s, -webkit-transform .4s;
         margin: 12px 6px
     }
@@ -7048,18 +7033,16 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
         transform: translateY(-50%);
-        border-style: solid;
         vertical-align: middle;
         -webkit-transition: border .2s, -webkit-transform .4s;
         -o-transition: border .2s, transform .4s;
-        transition: border .2s, transform .4s;
         transition: border .2s, transform .4s, -webkit-transform .4s;
         margin: 9px 6px
     }
 
     body.author:not(.authorlist) .blur-wrapper:before, body.author > .container-fluid > .row-fluid > .col-sm-10 > h2:after {
         content: "\e008";
-        font-family: 'Glyphicons Halflings';
+        font-family: 'Glyphicons Halflings', serif;
         font-weight: 400;
         z-index: 9;
         line-height: 1;
@@ -7390,7 +7373,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         transform: translate3d(0, 0, 0);
         -webkit-transition: -webkit-transform .5s;
         -o-transition: transform .5s;
-        transition: transform .5s;
         transition: transform .5s, -webkit-transform .5s;
         z-index: 99
     }
@@ -7405,7 +7387,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         transform: translate3d(-240px, 0, 0);
         -webkit-transition: -webkit-transform .5s;
         -o-transition: transform .5s;
-        transition: transform .5s;
         transition: transform .5s, -webkit-transform .5s;
         top: 0;
         margin: 0;
@@ -7444,7 +7425,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         text-align: center;
         min-width: 40px;
         pointer-events: none;
-        color: #
+        // color: #
     }
 
     .col-xs-12 > .row > .col-xs-10 {
@@ -7555,7 +7536,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
 body.publisherlist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e241";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -7575,7 +7556,7 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10:before {
 
 body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e007";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -7601,7 +7582,7 @@ body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
 
 body.formatslist > div.container-fluid > div > div.col-sm-10:before {
     content: "\e022";
-    font-family: 'Glyphicons Halflings';
+    font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -7776,7 +7757,7 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editabl
 
 body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphicon-trash:before {
     content: "\EA6D";
-    font-family: plex-icons-new
+    font-family: plex-icons-new, serif
 }
 
 #DeleteDomain {
@@ -7799,7 +7780,7 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     content: "\E208";
     padding-right: 10px;
     display: block;
-    font-family: Glyphicons Regular;
+    font-family: Glyphicons Regular, serif;
     font-style: normal;
     font-weight: 400;
     position: absolute;
@@ -7810,7 +7791,6 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     opacity: .5;
     -webkit-transition: -webkit-transform .3s ease-out;
     -o-transition: transform .3s ease-out;
-    transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
     -ms-transform: translate(0, -60px);
@@ -7849,7 +7829,7 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
 
 #DeleteDomain > .modal-dialog > .modal-content > .modal-header:before {
     content: "\EA6D";
-    font-family: plex-icons-new;
+    font-family: plex-icons-new, serif;
     padding-right: 10px;
     font-size: 18px;
     color: #999;

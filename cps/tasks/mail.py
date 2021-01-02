@@ -167,7 +167,7 @@ class TaskEmail(CalibreTask):
                 smtplib.stderr = org_smtpstderr
 
         except (MemoryError) as e:
-            log.exception(e)
+            log.debug_or_exception(e)
             self._handleError(u'MemoryError sending email: ' + str(e))
             # return None
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
@@ -178,7 +178,7 @@ class TaskEmail(CalibreTask):
             elif hasattr(e, "args"):
                 text = '\n'.join(e.args)
             else:
-                log.exception(e)
+                log.debug_or_exception(e)
                 text = ''
             self._handleError(u'Smtplib Error sending email: ' + text)
             # return None
@@ -225,7 +225,7 @@ class TaskEmail(CalibreTask):
                 data = file_.read()
                 file_.close()
             except IOError as e:
-                log.exception(e)
+                log.debug_or_exception(e)
                 log.error(u'The requested file could not be read. Maybe wrong permissions?')
                 return None
 

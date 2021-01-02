@@ -45,14 +45,13 @@ $(function() {
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
-            }
-            else{
+            } else {
                 $("#delete_selection").removeClass("disabled");
                 $("#delete_selection").attr("aria-disabled", false);
             }
         });
     $("#delete_selection").click(function() {
-        $("#books-table").bootstrapTable('uncheckAll');
+        $("#books-table").bootstrapTable("uncheckAll");
     });
 
     $("#merge_confirm").click(function() {
@@ -63,8 +62,8 @@ $(function() {
             url: window.location.pathname + "/../../ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
-                $('#books-table').bootstrapTable('refresh');
-                $("#books-table").bootstrapTable('uncheckAll');
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
@@ -76,11 +75,11 @@ $(function() {
             dataType: "json",
             url: window.location.pathname + "/../../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
-            success: function success(book_titles) {
-                $.each(book_titles.from, function(i, item) {
+            success: function success(booTitles) {
+                $.each(booTitles.from, function(i, item) {
                     $("<span>- " + item + "</span>").appendTo("#merge_from");
                 });
-                $('#merge_to').text("- " + book_titles.to);
+                $("#merge_to").text("- " + booTitles.to);
 
             }
         });
@@ -126,34 +125,35 @@ $(function() {
         formatNoMatches: function () {
             return "";
         },
+        // eslint-disable-next-line no-unused-vars
         onEditableSave: function (field, row, oldvalue, $el) {
-        if (field === 'title' || field === 'authors') {
-            $.ajax({
-                method:"get",
-                dataType: "json",
-                url: window.location.pathname + "/../../ajax/sort_value/" + field + '/' + row.id,
-                success: function success(data) {
-                    var key = Object.keys(data)[0]
-                    $("#books-table").bootstrapTable('updateCellByUniqueId', {
-                        id: row.id,
-                        field: key,
-                        value: data[key]
-                    });
-                    console.log(data);
-                }
-            });
-         }
+            if (field === "title" || field === "authors") {
+                $.ajax({
+                    method:"get",
+                    dataType: "json",
+                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
+                    success: function success(data) {
+                        var key = Object.keys(data)[0];
+                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
+                            id: row.id,
+                            field: key,
+                            value: data[key]
+                        });
+                        // console.log(data);
+                    }
+                });
+            }
         },
+        // eslint-disable-next-line no-unused-vars
         onColumnSwitch: function (field, checked) {
-            var visible = $("#books-table").bootstrapTable('getVisibleColumns');
-            var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
-            var visibility =[]
-             var st = ""
+            var visible = $("#books-table").bootstrapTable("getVisibleColumns");
+            var hidden  = $("#books-table").bootstrapTable("getHiddenColumns");
+            var st = "";
             visible.forEach(function(item) {
-                st += "\""+ item.field + "\":\"" +"true"+ "\","
+                st += "\"" + item.field + "\":\"" + "true" + "\",";
             });
             hidden.forEach(function(item) {
-                st += "\""+ item.field + "\":\"" +"false"+ "\","
+                st += "\"" + item.field + "\":\"" + "false" + "\",";
             });
             st = st.slice(0, -1);
             $.ajax({
@@ -208,15 +208,13 @@ $(function() {
         },
         striped: false
     });
-    $("#btndeletedomain").click(function() {
-        //get data-id attribute of the clicked element
-        var domainId = $(this).data("domainId");
+
+    function domain_handle(domainId) {
         $.ajax({
             method:"post",
             url: window.location.pathname + "/../../ajax/deletedomain",
             data: {"domainid":domainId}
         });
-        $("#DeleteDomain").modal("hide");
         $.ajax({
             method:"get",
             url: window.location.pathname + "/../../ajax/domainlist/1",
@@ -235,12 +233,16 @@ $(function() {
                 $("#domain-deny-table").bootstrapTable("load", data);
             }
         });
+    }
+    $("#domain-allow-table").on("click-cell.bs.table", function (field, value, row, $element) {
+        if (value === 2) {
+            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+        }
     });
-    //triggered when modal is about to be shown
-    $("#DeleteDomain").on("show.bs.modal", function(e) {
-        //get data-id attribute of the clicked element and store in button
-        var domainId = $(e.relatedTarget).data("domain-id");
-        $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
+    $("#domain-deny-table").on("click-cell.bs.table", function (field, value, row, $element) {
+        if (value === 2) {
+            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+        }
     });
 
     $("#restrictModal").on("hidden.bs.modal", function () {
@@ -253,14 +255,14 @@ $(function() {
         $("#h3").addClass("hidden");
         $("#h4").addClass("hidden");
     });
-    function startTable(type) {
+    function startTable(type, user_id) {
         var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
         var path = src.substring(0, src.lastIndexOf("/"));
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
             },
-            url: path + "/../../ajax/listrestriction/" + type,
+            url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
             rowStyle: function(row) {
                 // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
@@ -274,13 +276,13 @@ $(function() {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),
-                        url: path + "/../../ajax/deleterestriction/" + type,
+                        url: path + "/../../ajax/deleterestriction/" + type + "/" + user_id,
                         async: true,
                         timeout: 900,
                         success:function() {
                             $.ajax({
                                 method:"get",
-                                url: path + "/../../ajax/listrestriction/" + type,
+                                url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
                                 async: true,
                                 timeout: 900,
                                 success:function(data) {
@@ -296,7 +298,7 @@ $(function() {
         $("#restrict-elements-table").removeClass("table-hover");
         $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row) {
             $.ajax({
-                url: path + "/../../ajax/editrestriction/" + type,
+                url: path + "/../../ajax/editrestriction/" + type + "/" + user_id,
                 type: "Post",
                 data: row
             });
@@ -304,13 +306,13 @@ $(function() {
         $("[id^=submit_]").click(function() {
             $(this)[0].blur();
             $.ajax({
-                url: path + "/../../ajax/addrestriction/" + type,
+                url: path + "/../../ajax/addrestriction/" + type + "/" + user_id,
                 type: "Post",
                 data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
                 success: function () {
                     $.ajax ({
                         method:"get",
-                        url: path + "/../../ajax/listrestriction/" + type,
+                        url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
                         async: true,
                         timeout: 900,
                         success:function(data) {
@@ -323,21 +325,21 @@ $(function() {
         });
     }
     $("#get_column_values").on("click", function() {
-        startTable(1);
+        startTable(1, 0);
         $("#h2").removeClass("hidden");
     });
 
     $("#get_tags").on("click", function() {
-        startTable(0);
+        startTable(0, 0);
         $("#h1").removeClass("hidden");
     });
     $("#get_user_column_values").on("click", function() {
-        startTable(3);
+        startTable(3, $(this).data('id'));
         $("#h4").removeClass("hidden");
     });
 
     $("#get_user_tags").on("click", function() {
-        startTable(2);
+        startTable(2,  $(this).data('id'));
         $(this)[0].blur();
         $("#h3").removeClass("hidden");
     });
@@ -347,7 +349,7 @@ $(function() {
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
-        "<a class=\"danger remove\" data-toggle=\"modal\" data-target=\"#DeleteDomain\" data-domain-id=\"" + row.id
+        "<a class=\"danger remove\"  data-value=\"" + row.id
         + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</a>"

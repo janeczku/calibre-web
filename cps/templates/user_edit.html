@@ -63,7 +63,7 @@
     <label>{{ _('Kobo Sync Token')}}</label>
     <div class="form-group col">
       <a class="btn btn-default" id="config_create_kobo_token" data-toggle="modal" data-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>
-      <div class="btn btn-danger" id="config_delete_kobo_token" data-toggle="modal" data-target="#modalDeleteToken" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
+      <div class="btn btn-danger" id="config_delete_kobo_token" data-value="{{ content.id }}" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
     </div>
     {% endif %}
     </div>
@@ -82,8 +82,8 @@
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
       {% if ( g.user and g.user.role_admin() and not new_user ) %}
-      <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
-      <a href="#" id="get_user_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
+      <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+      <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
       {% endif %}
     </div>
       <div class="col-sm-6">
@@ -125,18 +125,14 @@
         </div>
       {% endif %}
     {% endif %}
-    {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="delete" name="delete"> {{_('Delete User')}}
-        </label>
-      </div>
-    {% endif %}
     </div>
       <div class="col-sm-12">
-    <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
+    <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
     {% if not profile %}
       <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Cancel')}}</a>
+    {% endif %}
+    {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
+      <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
     {% endif %}
     </div>
   </form>
@@ -157,23 +153,10 @@
       </div>
     </div>
 
-<div id="modalDeleteToken" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-      </div>
-      <div class="modal-body text-center">
-        <p>{{_('Do you really want to delete the Kobo Token?')}}</p>
-        <button type="button" class="btn btn-danger" id="btndeletetoken" value="{{content.id}}">{{_('Delete')}}</button>
-        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Back')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% endblock %}
 {% block modal %}
 {{ restrict_modal() }}
+{{ delete_confirm_modal() }}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>

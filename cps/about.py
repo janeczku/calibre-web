@@ -31,7 +31,7 @@ import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
-from .web import render_title_template
+from .render_template import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:

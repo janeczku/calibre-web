@@ -30,11 +30,12 @@ from flask_babel import gettext as _
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import OperationalError
 
 from . import constants, logger, config, app, ub
-from .web import login_required
+
 from .oauth import OAuthBackend, backend_resultcode
 
 
@@ -87,7 +88,7 @@ def register_user_with_oauth(user=None):
             try:
                 ub.session.commit()
             except Exception as e:
-                log.exception(e)
+                log.debug_or_exception(e)
                 ub.session.rollback()
 
 
@@ -109,7 +110,10 @@ if ub.oauth_support:
         oauthProvider.provider_name = "google"
         oauthProvider.active = False
         ub.session.add(oauthProvider)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
 
     oauth_ids = ub.session.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',
@@ -203,7 +207,7 @@ if ub.oauth_support:
             ub.session.add(oauth_entry)
             ub.session.commit()
         except Exception as e:
-            log.exception(e)
+            log.debug_or_exception(e)
             ub.session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
@@ -235,7 +239,7 @@ if ub.oauth_support:
                         flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
                         return redirect(url_for('web.profile'))
                     except Exception as e:
-                        log.exception(e)
+                        log.debug_or_exception(e)
                         ub.session.rollback()
                 else:
                     flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
@@ -282,7 +286,7 @@ if ub.oauth_support:
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
-                    log.exception(e)
+                    log.debug_or_exception(e)
                     ub.session.rollback()
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
