@@ -110,7 +110,7 @@ class WorkerThread(threading.Thread):
                 # We don't use a daemon here because we don't want the tasks to just be abruptly halted, leading to
                 # possible file / database corruption
                 item = self.queue.get(timeout=1)
-            except queue.Empty as ex:
+            except queue.Empty:
                 time.sleep(1)
                 continue
 
@@ -161,7 +161,7 @@ class CalibreTask:
             self.run(*args)
         except Exception as e:
             self._handleError(str(e))
-            log.exception(e)
+            log.debug_or_exception(e)
 
         self.end_time = datetime.now()
 
@@ -210,7 +210,6 @@ class CalibreTask:
         self._progress = x
 
     def _handleError(self, error_message):
-        log.exception(error_message)
         self.stat = STAT_FAIL
         self.progress = 1
         self.error = error_message

@@ -22,7 +22,7 @@
     <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot Password?')}}</button>
     {% endif %}
     {% if config.config_remote_login %}
-    <a href="{{url_for('web.remote_login')}}" class="pull-right">{{_('Log in with Magic Link')}}</a>
+    <a href="{{url_for('remotelogin.remote_login')}}" id="remote_login" class="pull-right">{{_('Log in with Magic Link')}}</a>
     {% endif %}
     {% if config.config_login_type == 2 %}
       {% if 1 in oauth_check %}

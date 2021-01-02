@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-12-02 15:51:36</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-02 07:53:24</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-12-02 18:01:04</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-02 10:58:22</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 41 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 37 min</p>
         </div>
       </div>
       </div>
@@ -236,13 +236,13 @@
 
     <tr id="su" class="skipClass">
         <td>TestCli</td>
+        <td class="text-center">8</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c2', 7)">Detail</a>
+            <a onclick="showClassDetail('c2', 8)">Detail</a>
         </td>
     </tr>
 
@@ -327,13 +327,22 @@
         </tr>
     
     
+    
+        <tr id='pt2.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCoverEditBooks</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -343,31 +352,11 @@
 
     
     
-        <tr id="ft3.1" class="none bg-danger">
+        <tr id='pt3.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCoverEditBooks - test_upload_jpg</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft3.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft3.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_cover_edit_books.py", line 92, in test_upload_jpg
-    self.assertTrue(self.check_element_on_page((By.ID, 'flash_alert')), "BMP file is not detected")
-AssertionError: False is not true : BMP file is not detected</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -622,11 +611,11 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -645,33 +634,11 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id="ft8.2" class="none bg-danger">
+        <tr id='pt8.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft8.2" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft8.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 212, in test_convert_only
-    self.assertEqual(ret[-1]['result'], 'Finished')
-AssertionError: 'Started' != 'Finished'
-- Started
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -686,12 +653,12 @@ AssertionError: 'Started' != 'Finished'
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">13</td>
-        <td class="text-center">11</td>
+        <td class="text-center">12</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c9', 13)">Detail</a>
@@ -763,33 +730,11 @@ AssertionError: 'Started' != 'Finished'
     
     
     
-        <tr id="et9.8" class="none bg-info">
+        <tr id='pt9.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et9.8" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et9.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_additional_books.py", line 649, in test_title_sort
-    self.edit_book(1, content={'book_title': u'A bok'})
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1397, in edit_book
-    ele.send_keys(Keys.CONTROL, "a")
-AttributeError: 'bool' object has no attribute 'send_keys'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1245,15 +1190,15 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
+        <td class="text-center">20</td>
         <td class="text-center">19</td>
-        <td class="text-center">19</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 19)">Detail</a>
+            <a onclick="showClassDetail('c12', 20)">Detail</a>
         </td>
     </tr>
 
@@ -1394,11 +1339,33 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.16' class='hiddenRow bg-success'>
+        <tr id="ft12.16" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft12.16" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft12.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 213, in test_edit_title
+    self.assertEqual('No Cover', title.get_attribute('value'))
+AssertionError: 'No Cover' != 'The camicdemo'
+- No Cover
++ The camicdemo</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1424,6 +1391,15 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
         <tr id='pt12.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_cover_hdd</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1697,13 +1673,13 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
 
     <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
-        <td class="text-center">12</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 12)">Detail</a>
+            <a onclick="showClassDetail('c18', 13)">Detail</a>
         </td>
     </tr>
 
@@ -1756,7 +1732,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
+                <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1765,7 +1741,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
+                <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1774,7 +1750,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_ldap_about</div>
+                <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1783,7 +1759,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
+                <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1792,7 +1768,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
+                <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1801,7 +1777,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt18.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
+                <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1809,6 +1785,15 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
         <tr id='pt18.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -1915,13 +1900,13 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
 
     <tr id="su" class="passClass">
         <td>TestLogin</td>
-        <td class="text-center">12</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 12)">Detail</a>
+            <a onclick="showClassDetail('c20', 13)">Detail</a>
         </td>
     </tr>
 
@@ -2019,7 +2004,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt20.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestLogin - test_next</div>
+                <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2027,6 +2012,15 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
         <tr id='pt20.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_next</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2071,13 +2065,13 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
 
     <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
-        <td class="text-center">20</td>
-        <td class="text-center">20</td>
+        <td class="text-center">21</td>
+        <td class="text-center">21</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 20)">Detail</a>
+            <a onclick="showClassDetail('c22', 21)">Detail</a>
         </td>
     </tr>
 
@@ -2256,6 +2250,15 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
         <tr id='pt22.20' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt22.21' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -2264,11 +2267,11 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestReader</td>
         <td class="text-center">5</td>
-        <td class="text-center">4</td>
-        <td class="text-center">1</td>
+        <td class="text-center">5</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2314,31 +2317,11 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="ft23.5" class="none bg-danger">
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft23.5" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft23.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_reader.py", line 59, in test_txt_reader
-    self.assertTrue('hörte' in content.text, 'Encoding of textfile viewer is not respected properly')
-AssertionError: False is not true : Encoding of textfile viewer is not respected properly</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2658,6 +2641,30 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
 
 
     <tr id="su" class="passClass">
+        <td>TestUserLoad</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c27', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt27.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserLoad - test_user_change_vis</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
         <td>TestUserTemplate</td>
         <td class="text-center">21</td>
         <td class="text-center">21</td>
@@ -2665,13 +2672,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 21)">Detail</a>
+            <a onclick="showClassDetail('c28', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -2680,7 +2687,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.2' class='hiddenRow bg-success'>
+        <tr id='pt28.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -2689,7 +2696,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id='pt28.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -2698,7 +2705,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.4' class='hiddenRow bg-success'>
+        <tr id='pt28.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -2707,7 +2714,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.5' class='hiddenRow bg-success'>
+        <tr id='pt28.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -2716,7 +2723,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.6' class='hiddenRow bg-success'>
+        <tr id='pt28.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -2725,7 +2732,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.7' class='hiddenRow bg-success'>
+        <tr id='pt28.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -2734,7 +2741,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.8' class='hiddenRow bg-success'>
+        <tr id='pt28.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -2743,7 +2750,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.9' class='hiddenRow bg-success'>
+        <tr id='pt28.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -2752,7 +2759,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.10' class='hiddenRow bg-success'>
+        <tr id='pt28.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -2761,7 +2768,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.11' class='hiddenRow bg-success'>
+        <tr id='pt28.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -2770,7 +2777,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.12' class='hiddenRow bg-success'>
+        <tr id='pt28.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -2779,7 +2786,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.13' class='hiddenRow bg-success'>
+        <tr id='pt28.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -2788,7 +2795,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.14' class='hiddenRow bg-success'>
+        <tr id='pt28.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -2797,7 +2804,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.15' class='hiddenRow bg-success'>
+        <tr id='pt28.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -2806,7 +2813,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.16' class='hiddenRow bg-success'>
+        <tr id='pt28.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -2815,7 +2822,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.17' class='hiddenRow bg-success'>
+        <tr id='pt28.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -2824,7 +2831,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.18' class='hiddenRow bg-success'>
+        <tr id='pt28.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -2833,7 +2840,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.19' class='hiddenRow bg-success'>
+        <tr id='pt28.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -2842,7 +2849,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.20' class='hiddenRow bg-success'>
+        <tr id='pt28.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -2851,7 +2858,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt27.21' class='hiddenRow bg-success'>
+        <tr id='pt28.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -2861,21 +2868,21 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">33</td>
-        <td class="text-center">25</td>
+        <td class="text-center">33</td>
         <td class="text-center">0</td>
-        <td class="text-center">8</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 33)">Detail</a>
+            <a onclick="showClassDetail('c29', 33)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -2884,7 +2891,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -2893,7 +2900,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -2902,7 +2909,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt28.4' class='hiddenRow bg-success'>
+        <tr id='pt29.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -2911,7 +2918,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt28.5' class='hiddenRow bg-success'>
+        <tr id='pt29.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -2920,38 +2927,16 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="et28.6" class="none bg-info">
+        <tr id='pt29.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.6" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 397, in test_admin_change_visibility_authors
-    self.verify_order("nav_author", 2, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt28.7' class='hiddenRow bg-success'>
+        <tr id='pt29.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -2960,38 +2945,16 @@ TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
     
     
     
-        <tr id="et28.8" class="none bg-info">
+        <tr id='pt29.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.8" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 362, in test_admin_change_visibility_file_formats
-    self.verify_order("nav_format", 1, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt28.9' class='hiddenRow bg-success'>
+        <tr id='pt29.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -3000,69 +2963,25 @@ TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
     
     
     
-        <tr id="et28.10" class="none bg-info">
+        <tr id='pt29.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.10')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.10" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 249, in test_admin_change_visibility_language
-    self.verify_order("nav_lang", 0, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et28.11" class="none bg-info">
+        <tr id='pt29.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.11')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.11" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 322, in test_admin_change_visibility_publisher
-    self.verify_order("nav_publisher", 0, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt28.12' class='hiddenRow bg-success'>
+        <tr id='pt29.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -3071,139 +2990,43 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="et28.13" class="none bg-info">
+        <tr id='pt29.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.13" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 188, in test_admin_change_visibility_rated
-    self.verify_order("nav_rated", order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-TypeError: 'bool' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et28.14" class="none bg-info">
+        <tr id='pt29.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.14" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 342, in test_admin_change_visibility_rating
-    self.verify_order("nav_rate", 0, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1117, in verify_order
-    list_elements[index].click()
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementNotInteractableException: Message: Element <a id="list_0" href="/ratings/new/1"> could not be scrolled into view</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et28.15" class="none bg-info">
+        <tr id='pt29.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.15" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 229, in test_admin_change_visibility_read
-    self.verify_order("nav_unread", 0, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1113, in verify_order
-    if not len(list_elements):
-TypeError: object of type 'bool' has no len()</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et28.16" class="none bg-info">
+        <tr id='pt29.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.16" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 302, in test_admin_change_visibility_series
-    self.verify_order("nav_serie", 0, order=order)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1128, in verify_order
-    book_id = int(books[1][index]['id'])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt28.17' class='hiddenRow bg-success'>
+        <tr id='pt29.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -3212,7 +3035,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.18' class='hiddenRow bg-success'>
+        <tr id='pt29.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -3221,7 +3044,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.19' class='hiddenRow bg-success'>
+        <tr id='pt29.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -3230,7 +3053,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.20' class='hiddenRow bg-success'>
+        <tr id='pt29.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -3239,7 +3062,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.21' class='hiddenRow bg-success'>
+        <tr id='pt29.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -3248,7 +3071,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.22' class='hiddenRow bg-success'>
+        <tr id='pt29.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -3257,7 +3080,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.23' class='hiddenRow bg-success'>
+        <tr id='pt29.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -3266,7 +3089,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.24' class='hiddenRow bg-success'>
+        <tr id='pt29.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -3275,7 +3098,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.25' class='hiddenRow bg-success'>
+        <tr id='pt29.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -3284,7 +3107,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.26' class='hiddenRow bg-success'>
+        <tr id='pt29.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -3293,7 +3116,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.27' class='hiddenRow bg-success'>
+        <tr id='pt29.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -3302,7 +3125,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.28' class='hiddenRow bg-success'>
+        <tr id='pt29.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -3311,7 +3134,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.29' class='hiddenRow bg-success'>
+        <tr id='pt29.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -3320,7 +3143,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.30' class='hiddenRow bg-success'>
+        <tr id='pt29.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -3329,7 +3152,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.31' class='hiddenRow bg-success'>
+        <tr id='pt29.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -3338,7 +3161,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.32' class='hiddenRow bg-success'>
+        <tr id='pt29.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -3347,7 +3170,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.33' class='hiddenRow bg-success'>
+        <tr id='pt29.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -3365,13 +3188,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 16)">Detail</a>
+            <a onclick="showClassDetail('c30', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -3380,7 +3203,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -3389,7 +3212,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -3398,7 +3221,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -3407,7 +3230,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -3416,7 +3239,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -3425,7 +3248,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -3434,7 +3257,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -3443,7 +3266,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -3452,7 +3275,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -3461,7 +3284,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -3470,7 +3293,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -3479,7 +3302,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.13' class='hiddenRow bg-success'>
+        <tr id='pt30.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -3488,7 +3311,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.14' class='hiddenRow bg-success'>
+        <tr id='pt30.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -3497,7 +3320,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.15' class='hiddenRow bg-success'>
+        <tr id='pt30.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -3506,7 +3329,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.16' class='hiddenRow bg-success'>
+        <tr id='pt30.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -3517,10 +3340,10 @@ IndexError: list index out of range</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>288</td>
-        <td>269</td>
-        <td>3</td>
-        <td>9</td>
+        <td>294</td>
+        <td>286</td>
+        <td>1</td>
+        <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3549,7 +3372,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.4.0-54-generic #60-Ubuntu SMP Fri Nov 6 10:37:59 UTC 2020 x86_64 x86_64</td>
+              <td>Linux 5.8.0-33-generic #36~20.04.1-Ubuntu SMP Wed Dec 9 17:01:13 UTC 2020 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3579,7 +3402,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Flask-Babel</th>
-              <td>1.0.0</td>
+              <td>2.0.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3615,7 +3438,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>pytz</th>
-              <td>2020.4</td>
+              <td>2020.5</td>
               <td>Basic</td>
             </tr>
           
@@ -3639,7 +3462,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.20</td>
+              <td>1.3.22</td>
               <td>Basic</td>
             </tr>
           
@@ -3651,13 +3474,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Unidecode</th>
-              <td>1.1.1</td>
+              <td>1.1.2</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Wand</th>
-              <td>0.5.9</td>
+              <td>0.6.5</td>
               <td>Basic</td>
             </tr>
           
@@ -3665,12 +3488,6 @@ IndexError: list index out of range</pre>
               <th>Werkzeug</th>
               <td>1.0.1</td>
               <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestCoverEditBooks</td>
             </tr>
           
             <tr>
@@ -3698,14 +3515,8 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEbookConvertCalibreGDrive</td>
-            </tr>
-          
-            <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3740,14 +3551,8 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEbookConvertGDriveKepubify</td>
-            </tr>
-          
-            <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -3770,12 +3575,6 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
               <th>rarfile</th>
               <td>4.0</td>
               <td>TestEditAdditionalBooks</td>
@@ -3784,12 +3583,6 @@ IndexError: list index out of range</pre>
             <tr>
               <th>lxml</th>
               <td>4.6.2</td>
-              <td>TestEditBooks</td>
-            </tr>
-          
-            <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
               <td>TestEditBooks</td>
             </tr>
           
@@ -3818,14 +3611,8 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEditBooksOnGdrive</td>
-            </tr>
-          
-            <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3854,8 +3641,8 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3915,7 +3702,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(269, 3, 9, 7);
+    drawCircle(286, 1, 0, 7);
 </script>
 
 </div>

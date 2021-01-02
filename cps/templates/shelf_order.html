@@ -5,30 +5,39 @@
     <div>{{_('Drag to Rearrange Order')}}</div>
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
-          <div id="{{entry['id']}}" class="list-group-item">
+          <div id="{{entry['Books']['id']}}" class="list-group-item">
             <div class="row">
               <div class="col-lg-2 col-sm-4 hidden-xs">
-                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['id']) }}">
+                {% if entry['visible'] %}
+                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
+                {% else %}
+                  <img class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
+                {% endif %}
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">
-                  {{entry['title']}}
-                  {% if entry['series']|length > 0 %}
+              {% if entry['visible'] %}
+                  {{entry['Books']['title']}}
+                  {% if entry['Books']['series']|length > 0 %}
                     <br>
-                    {{entry['series_index']}} - {{entry['series'][0].name}}
+                    {{entry['Books']['series_index']}} - {{entry['Books']['series'][0].name}}
                   {% endif %}
                   <br>
-                  {% for author in entry['author'] %}
+                  {% for author in entry['Books']['author'] %}
                     {{author.name.replace('|',',')}}
                     {% if not loop.last %}
                       &amp;
                     {% endif %}
                   {% endfor %}
+              {% else %}
+                  {{_('Hidden Book')}}
+                  <br>
+              {% endif %}
               </div>
             </div>
           </div>
         {% endfor %}
       </div>
-        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Change order')}}</button>
+        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Save')}}</button>
         <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-default">{{_('Back')}}</a>
   </div>
 {% endblock %}

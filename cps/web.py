@@ -22,46 +22,40 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
-import base64
 from datetime import datetime
 import json
 import mimetypes
-import traceback
-import binascii
-import re
+import chardet  # dependency of requests
 
 from babel.dates import format_date
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask import Blueprint, jsonify
-from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
+from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
-from flask_login import login_user, logout_user, login_required, current_user, confirm_login
+from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
+from sqlalchemy.sql.expression import text, func, false, not_, and_
 from sqlalchemy.orm.attributes import flag_modified
-from werkzeug.exceptions import default_exceptions
 from sqlalchemy.sql.functions import coalesce
 
 from .services.worker import WorkerThread
 
-try:
-    from werkzeug.exceptions import FailedDependency
-except ImportError:
-    from werkzeug.exceptions import UnprocessableEntity as FailedDependency
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
-from . import lm, babel, db, ub, config, get_locale, app
-from . import calibre_db
+from . import babel, db, ub, config, get_locale, app
+from . import calibre_db, shelf
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
 from .pagination import Pagination
 from .redirect import redirect_back
+from .usermanagement import login_required_if_no_ano
+from .render_template import render_title_template
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -71,7 +65,6 @@ feature_support = {
 
 try:
     from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
-
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
@@ -82,54 +75,11 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-
 try:
     from natsort import natsorted as sort
 except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
-
-# custom error page
-def error_http(error):
-    return render_template('http_error.html',
-                           error_code="Error {0}".format(error.code),
-                           error_name=error.name,
-                           issue=False,
-                           instance=config.config_calibre_web_title
-                           ), error.code
-
-
-def internal_error(error):
-    return render_template('http_error.html',
-                           error_code="Internal Server Error",
-                           error_name=str(error),
-                           issue=True,
-                           error_stack=traceback.format_exc().split("\n"),
-                           instance=config.config_calibre_web_title
-                           ), 500
-
-
-# http error handling
-for ex in default_exceptions:
-    if ex < 500:
-        app.register_error_handler(ex, error_http)
-    elif ex == 500:
-        app.register_error_handler(ex, internal_error)
-
-
-if feature_support['ldap']:
-    # Only way of catching the LDAPException upon logging in with LDAP server down
-    @app.errorhandler(services.ldap.LDAPException)
-    def handle_exception(e):
-        log.debug('LDAP server not accessible while trying to login to opds feed')
-        return error_http(FailedDependency())
-
-# @app.errorhandler(InvalidRequestError)
-#@app.errorhandler(OperationalError)
-#def handle_db_exception(e):
-#    db.session.rollback()
-#    log.error('Database request error: %s',e)
-#    return internal_error(InternalServerError(e))
 
 @app.after_request
 def add_security_headers(resp):
@@ -146,104 +96,6 @@ log = logger.create()
 
 
 # ################################### Login logic and rights management ###############################################
-def _fetch_user_by_name(username):
-    return ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
-
-
-@lm.user_loader
-def load_user(user_id):
-    return ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
-
-
-@lm.request_loader
-def load_user_from_request(request):
-    if config.config_allow_reverse_proxy_header_login:
-        rp_header_name = config.config_reverse_proxy_login_header_name
-        if rp_header_name:
-            rp_header_username = request.headers.get(rp_header_name)
-            if rp_header_username:
-                user = _fetch_user_by_name(rp_header_username)
-                if user:
-                    return user
-
-    auth_header = request.headers.get("Authorization")
-    if auth_header:
-        user = load_user_from_auth_header(auth_header)
-        if user:
-            return user
-
-    return
-
-
-def load_user_from_auth_header(header_val):
-    if header_val.startswith('Basic '):
-        header_val = header_val.replace('Basic ', '', 1)
-    basic_username = basic_password = ''
-    try:
-        header_val = base64.b64decode(header_val).decode('utf-8')
-        basic_username = header_val.split(':')[0]
-        basic_password = header_val.split(':')[1]
-    except (TypeError, UnicodeDecodeError, binascii.Error):
-        pass
-    user = _fetch_user_by_name(basic_username)
-    if user and config.config_login_type == constants.LOGIN_LDAP and services.ldap:
-        if services.ldap.bind_user(str(user.password), basic_password):
-            return user
-    if user and check_password_hash(str(user.password), basic_password):
-        return user
-    return
-
-
-def login_required_if_no_ano(func):
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if config.config_anonbrowse == 1:
-            return func(*args, **kwargs)
-        return login_required(func)(*args, **kwargs)
-
-    return decorated_view
-
-
-def remote_login_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if config.config_remote_login:
-            return f(*args, **kwargs)
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            data = {'status': 'error', 'message': 'Forbidden'}
-            response = make_response(json.dumps(data, ensure_ascii=False))
-            response.headers["Content-Type"] = "application/json; charset=utf-8"
-            return response, 403
-        abort(403)
-
-    return inner
-
-
-def admin_required(f):
-    """
-    Checks if current_user.role == 1
-    """
-
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if current_user.role_admin():
-            return f(*args, **kwargs)
-        abort(403)
-
-    return inner
-
-
-def unconfigured(f):
-    """
-    Checks if calibre-web instance is not configured
-    """
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if not config.db_configured:
-            return f(*args, **kwargs)
-        abort(403)
-
-    return inner
 
 
 def download_required(f):
@@ -265,155 +117,6 @@ def viewer_required(f):
 
     return inner
 
-
-def upload_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if current_user.role_upload() or current_user.role_admin():
-            return f(*args, **kwargs)
-        abort(403)
-
-    return inner
-
-
-def edit_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if current_user.role_edit() or current_user.role_admin():
-            return f(*args, **kwargs)
-        abort(403)
-
-    return inner
-
-
-# ################################### Helper functions ################################################################
-
-
-@web.before_app_request
-def before_request():
-    if current_user.is_authenticated:
-        confirm_login()
-    g.constants = constants
-    g.user = current_user
-    g.allow_registration = config.config_public_reg
-    g.allow_anonymous = config.config_anonbrowse
-    g.allow_upload = config.config_uploading
-    g.current_theme = config.config_theme
-    g.config_authors_max = config.config_authors_max
-    g.shelves_access = ub.session.query(ub.Shelf).filter(
-        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
-    if not config.db_configured and request.endpoint not in (
-        'admin.basic_configuration', 'login') and '/static/' not in request.path:
-        return redirect(url_for('admin.basic_configuration'))
-
-
-@app.route('/import_ldap_users')
-@login_required
-@admin_required
-def import_ldap_users():
-    showtext = {}
-    try:
-        new_users = services.ldap.get_group_members(config.config_ldap_group_name)
-    except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.exception(e)
-        showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
-        return json.dumps(showtext)
-    if not new_users:
-        log.debug('LDAP empty response')
-        showtext['text'] = _(u'Error: No user returned in response of LDAP server')
-        return json.dumps(showtext)
-
-    imported = 0
-    for username in new_users:
-        user = username.decode('utf-8')
-        if '=' in user:
-            # if member object field is empty take user object as filter
-            if config.config_ldap_member_user_object:
-                query_filter = config.config_ldap_member_user_object
-            else:
-                query_filter = config.config_ldap_user_object
-            try:
-                user_identifier = extract_user_identifier(user, query_filter)
-            except Exception as e:
-                log.warning(e)
-                continue
-        else:
-            user_identifier = user
-            query_filter = None
-        try:
-            user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
-        except AttributeError as e:
-            log.exception(e)
-            continue
-        if user_data:
-            user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
-
-            username = user_data[user_login_field][0].decode('utf-8')
-            # check for duplicate username
-            if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
-                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
-                log.warning("LDAP User  %s Already in Database", user_data)
-                continue
-
-            kindlemail = ''
-            if 'mail' in user_data:
-                useremail = user_data['mail'][0].decode('utf-8')
-                if (len(user_data['mail']) > 1):
-                    kindlemail = user_data['mail'][1].decode('utf-8')
-
-            else:
-                log.debug('No Mail Field Found in LDAP Response')
-                useremail = username + '@email.com'
-            # check for duplicate email
-            if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
-                log.warning("LDAP Email %s Already in Database", user_data)
-                continue
-            content = ub.User()
-            content.nickname = username
-            content.password = ''  # dummy password which will be replaced by ldap one
-            content.email = useremail
-            content.kindle_mail = kindlemail
-            content.role = config.config_default_role
-            content.sidebar_view = config.config_default_show
-            content.allowed_tags = config.config_allowed_tags
-            content.denied_tags = config.config_denied_tags
-            content.allowed_column_value = config.config_allowed_column_value
-            content.denied_column_value = config.config_denied_column_value
-            ub.session.add(content)
-            try:
-                ub.session.commit()
-                imported +=1
-            except Exception as e:
-                log.warning("Failed to create LDAP user: %s - %s", user, e)
-                ub.session.rollback()
-                showtext['text'] = _(u'Failed to Create at Least One LDAP User')
-        else:
-            log.warning("LDAP User: %s Not Found", user)
-            showtext['text'] = _(u'At Least One LDAP User Not Found in Database')
-    if not showtext:
-        showtext['text'] = _(u'{} User Successfully Imported'.format(imported))
-    return json.dumps(showtext)
-
-
-def extract_user_data_from_field(user, field):
-    match = re.search(field + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
-    if match:
-        return match.group(1)
-    else:
-        raise Exception("Could Not Parse LDAP User: {}".format(user))
-
-def extract_dynamic_field_from_filter(user, filter):
-    match = re.search("([a-zA-Z0-9-]+)=%s", filter, re.IGNORECASE | re.UNICODE)
-    if match:
-        return match.group(1)
-    else:
-        raise Exception("Could Not Parse LDAP Userfield: {}", user)
-
-def extract_user_identifier(user, filter):
-    dynamic_field = extract_dynamic_field_from_filter(user, filter)
-    return extract_user_data_from_field(user, dynamic_field)
-
-
 # ################################### data provider functions #########################################################
 
 
@@ -432,7 +135,10 @@ def bookmark(book_id, book_format):
                                               ub.Bookmark.book_id == book_id,
                                               ub.Bookmark.format == book_format)).delete()
     if not bookmark_key:
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
         return "", 204
 
     lbookmark = ub.Bookmark(user_id=current_user.id,
@@ -440,7 +146,10 @@ def bookmark(book_id, book_format):
                             format=book_format,
                             bookmark_key=bookmark_key)
     ub.session.merge(lbookmark)
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
     return "", 201
 
 
@@ -465,7 +174,10 @@ def toggle_read(book_id):
             kobo_reading_state.statistics = ub.KoboStatistics()
             book.kobo_reading_state = kobo_reading_state
         ub.session.merge(book)
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except OperationalError:
+            ub.session.rollback()
     else:
         try:
             calibre_db.update_title_sort(config)
@@ -499,7 +211,10 @@ def toggle_archived(book_id):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
         archived_book.is_archived = True
     ub.session.merge(archived_book)
-    ub.session.commit()
+    try:
+        ub.session.commit()
+    except OperationalError:
+        ub.session.rollback()
     return ""
 
 
@@ -620,8 +335,6 @@ def get_matching_tags():
     title_input = request.args.get('book_title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
     exclude_tag_inputs = request.args.getlist('exclude_tag') or ''
-    # include_extension_inputs = request.args.getlist('include_extension') or ''
-    # exclude_extension_inputs = request.args.getlist('exclude_extension') or ''
     q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
                  func.lower(db.Books.title).ilike("%" + title_input + "%"))
     if len(include_tag_inputs) > 0:
@@ -636,14 +349,6 @@ def get_matching_tags():
                 tag_dict['tags'].append(tag.id)
     json_dumps = json.dumps(tag_dict)
     return json_dumps
-
-
-# Returns the template for rendering and includes the instance name
-def render_title_template(*args, **kwargs):
-    sidebar = ub.get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
-                           accept=constants.EXTENSIONS_UPLOAD,
-                           *args, **kwargs)
 
 
 def render_books_list(data, sort, book_id, page):
@@ -749,8 +454,6 @@ def render_hot_books(page):
                 entries.append(downloadBook)
             else:
                 ub.delete_download(book.Downloads.book_id)
-                # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-                # ub.session.commit()
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -905,7 +608,8 @@ def render_language_books(page, name, order):
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
-def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
+
+def render_read_books(page, are_read, as_xml=False, order=None):
     order = order or []
     if not config.config_read_column:
         if are_read:
@@ -917,7 +621,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
                                                                 db.Books,
                                                                 db_filter,
                                                                 order,
-                                                                ub.ReadBook, db.Books.id==ub.ReadBook.book_id)
+                                                                ub.ReadBook, db.Books.id == ub.ReadBook.book_id)
     else:
         try:
             if are_read:
@@ -1086,10 +790,11 @@ def update_table_settings():
         except AttributeError:
             pass
         ub.session.commit()
-    except InvalidRequestError:
+    except (InvalidRequestError, OperationalError):
         log.error("Invalid request received: %r ", request, )
         return "Invalid request", 400
     return ""
+
 
 @web.route("/author")
 @login_required_if_no_ano
@@ -1323,6 +1028,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
     description = term.get("comment")
+    read_status = term.get("read_status")
     if author_name:
         author_name = author_name.strip().lower().replace(',', '|')
     if book_title:
@@ -1340,7 +1046,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
             include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
             publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
-            include_extension_inputs or exclude_extension_inputs:
+            include_extension_inputs or exclude_extension_inputs or read_status:
         searchterm.extend((author_name.replace('|', ','), book_title, publisher))
         if pub_start:
             try:
@@ -1358,7 +1064,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 pub_start = u""
         tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
         searchterm.extend(tag.name for tag in tag_names)
+        tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
+        searchterm.extend(tag.name for tag in tag_names)
         serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
+        searchterm.extend(serie.name for serie in serie_names)
+        serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
         searchterm.extend(serie.name for serie in serie_names)
         language_names = calibre_db.session.query(db.Languages).\
             filter(db.Languages.id.in_(include_languages_inputs)).all()
@@ -1369,6 +1079,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
         if rating_low:
             searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
+        if read_status:
+            searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
         searchterm.extend(ext for ext in include_extension_inputs)
         searchterm.extend(ext for ext in exclude_extension_inputs)
         # handle custom columns
@@ -1385,6 +1097,23 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.pubdate >= pub_start)
         if pub_end:
             q = q.filter(db.Books.pubdate <= pub_end)
+        if read_status:
+            if config.config_read_column:
+                if read_status=="True":
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(db.cc_classes[config.config_read_column].value == True)
+                else:
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            else:
+                if read_status == "True":
+                    q = q.join(ub.ReadBook, db.Books.id==ub.ReadBook.book_id, isouter=True)\
+                        .filter(ub.ReadBook.user_id == int(current_user.id),
+                                ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
+                else:
+                    q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
+                        .filter(ub.ReadBook.user_id == int(current_user.id),
+                                coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         for tag in include_tag_inputs:
@@ -1487,8 +1216,14 @@ def serve_book(book_id, book_format, anyname):
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers)
+        return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
     else:
+        if book_format.upper() == 'TXT':
+            rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                           "rb").read()
+            result = chardet.detect(rawdata)
+            return make_response(
+                rawdata.decode(result['encoding']).encode('utf-8'))
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
@@ -1674,89 +1409,7 @@ def logout():
     return redirect(url_for('web.login'))
 
 
-@web.route('/remote/login')
-@remote_login_required
-def remote_login():
-    auth_token = ub.RemoteAuthToken()
-    ub.session.add(auth_token)
-    ub.session.commit()
 
-    verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
-    log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
-    return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
-                                 verify_url=verify_url, page="remotelogin")
-
-
-@web.route('/verify/<token>')
-@remote_login_required
-@login_required
-def verify_token(token):
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
-
-    # Token not found
-    if auth_token is None:
-        flash(_(u"Token not found"), category="error")
-        log.error(u"Remote Login token not found")
-        return redirect(url_for('web.index'))
-
-    # Token expired
-    if datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
-        ub.session.commit()
-
-        flash(_(u"Token has expired"), category="error")
-        log.error(u"Remote Login token expired")
-        return redirect(url_for('web.index'))
-
-    # Update token with user information
-    auth_token.user_id = current_user.id
-    auth_token.verified = True
-    ub.session.commit()
-
-    flash(_(u"Success! Please return to your device"), category="success")
-    log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
-    return redirect(url_for('web.index'))
-
-
-@web.route('/ajax/verify_token', methods=['POST'])
-@remote_login_required
-def token_verified():
-    token = request.form['token']
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
-
-    data = {}
-
-    # Token not found
-    if auth_token is None:
-        data['status'] = 'error'
-        data['message'] = _(u"Token not found")
-
-    # Token expired
-    elif datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
-        ub.session.commit()
-
-        data['status'] = 'error'
-        data['message'] = _(u"Token has expired")
-
-    elif not auth_token.verified:
-        data['status'] = 'not_verified'
-
-    else:
-        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
-        login_user(user)
-
-        ub.session.delete(auth_token)
-        ub.session.commit()
-
-        data['status'] = 'success'
-        log.debug(u"Remote Login for userid %s succeded", user.id)
-        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-
-    response = make_response(json.dumps(data, ensure_ascii=False))
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-
-    return response
 
 
 # ################################### Users own configuration #########################################################
@@ -1839,14 +1492,11 @@ def profile():
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
-            '''return render_title_template("user_edit.html",
-                                         content=current_user,
-                                         translations=translations,
-                                         kobo_support=kobo_support,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname),
-                                         page="me",
-                                         registered_oauth=local_oauth_check,
-                                         oauth_status=oauth_status)'''
+        except OperationalError as e:
+            ub.session.rollback()
+            log.error("Database error: %s", e)
+            flash(_(u"Database error: %(error)s.", error=e), category="error")
+
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  profile=1,
@@ -1900,14 +1550,6 @@ def read_book(book_id, book_format):
                 log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileExt)
-        # if feature_support['rar']:
-        #    extensionList = ["cbr","cbt","cbz"]
-        # else:
-        #     extensionList = ["cbt","cbz"]
-        # for fileext in extensionList:
-        #     if book_format.lower() == fileext:
-        #         return render_title_template('readcbr.html', comicfile=book_id,
-        #         extension=fileext, title=_(u"Read a Book"), book=book)
         log.debug(u"Error opening eBook. File does not exist or file is not accessible")
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))

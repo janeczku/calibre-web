@@ -37,11 +37,36 @@ from . import config, get_locale, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
-from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
+from .render_template import render_title_template
+from .usermanagement import login_required_if_no_ano
+
+try:
+    from functools import wraps
+except ImportError:
+    pass  # We're not using Python 3
 
 
 editbook = Blueprint('editbook', __name__)
 log = logger.create()
+
+
+def upload_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_upload() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
+
+def edit_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_edit() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
 
 
 # Modifies different Database objects, first check if elements have to be added to database, than check
@@ -259,7 +284,7 @@ def delete_book(book_id, book_format, jsonResponse):
                         filter(db.Data.format == book_format).delete()
                 calibre_db.session.commit()
             except Exception as e:
-                log.exception(e)
+                log.debug_or_exception(e)
                 calibre_db.session.rollback()
         else:
             # book not found
@@ -287,7 +312,7 @@ def delete_book(book_id, book_format, jsonResponse):
 def render_edit_book(book_id):
     calibre_db.update_title_sort(config)
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = calibre_db.get_filtered_book(book_id)
+    book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
@@ -716,7 +741,7 @@ def edit_book(book_id):
             flash(error, category="error")
             return render_edit_book(book_id)
     except Exception as e:
-        log.exception(e)
+        log.debug_or_exception(e)
         calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
