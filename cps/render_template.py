@@ -104,7 +104,7 @@ def get_readbooks_ids():
             readBooks = calibre_db.session.query(db.cc_classes[config.config_read_column])\
                 .filter(db.cc_classes[config.config_read_column].value == True).all()
             return frozenset([x.book for x in readBooks])
-        except KeyError:
+        except (KeyError, AttributeError):
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
             return []
 
