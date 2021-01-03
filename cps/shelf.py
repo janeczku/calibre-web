@@ -221,20 +221,18 @@ def remove_from_shelf(shelf_id, book_id):
 @login_required
 def create_shelf():
     shelf = ub.Shelf()
-    create_edit_shelf(shelf)
-    return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
+    return create_edit_shelf(shelf, title=_(u"Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    create_edit_shelf(shelf, shelf_id)
-    return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
+    return create_edit_shelf(shelf, title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
 
 # if shelf ID is set, we are editing a shelf
-def create_edit_shelf(shelf, shelf_id=False):
+def create_edit_shelf(shelf, title, page, shelf_id=False):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if check_shelf_is_unique(shelf, to_save, shelf_id):
@@ -247,13 +245,13 @@ def create_edit_shelf(shelf, shelf_id=False):
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
             try:
-                if shelf_id:
+                if not shelf_id:
                     ub.session.add(shelf)
-                    shelf_action = "changed"
-                    flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
-                else:
                     shelf_action = "created"
                     flash_text = _(u"Shelf %(title)s created", title=to_save["title"])
+                else:
+                    shelf_action = "changed"
+                    flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
                 ub.session.commit()
                 log.info(u"Shelf {} {}".format(to_save["title"], shelf_action))
                 flash(flash_text, category="success")
@@ -266,6 +264,7 @@ def create_edit_shelf(shelf, shelf_id=False):
                 ub.session.rollback()
                 log.debug_or_exception(e)
                 flash(_(u"There was an error"), category="error")
+    return render_title_template('shelf_edit.html', shelf=shelf, title=title, page=page)
 
 
 def check_shelf_is_unique(shelf, to_save, shelf_id=False):
@@ -316,10 +315,12 @@ def delete_shelf(shelf_id):
         flash(_(u"Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
 
+
 @shelf.route("/simpleshelf/<int:shelf_id>")
 @login_required_if_no_ano
 def show_simpleshelf(shelf_id):
     return render_show_shelf(2, shelf_id, 1, None)
+
 
 @shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "order", 'page': 1})
 @shelf.route("/shelf/<int:shelf_id>/<sort_param>", defaults={'page': 1})
@@ -358,6 +359,7 @@ def order_shelf(shelf_id):
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")
 
+
 def change_shelf_order(shelf_id, order):
     result = calibre_db.session.query(db.Books).join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id)\
         .filter(ub.BookShelf.shelf == shelf_id).order_by(*order).all()
@@ -366,6 +368,7 @@ def change_shelf_order(shelf_id, order):
             .filter(ub.BookShelf.book_id == entry.id).first()
         book.order = index
     ub.session_commit("Shelf-id:{} - Order changed".format(shelf_id))
+
 
 def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
