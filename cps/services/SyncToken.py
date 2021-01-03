@@ -144,6 +144,8 @@ class SyncToken:
         except TypeError:
             log.error("SyncToken timestamps don't parse to a datetime.")
             return SyncToken(raw_kobo_store_token=raw_kobo_store_token)
+        except KeyError:
+            books_last_id = -1
 
         return SyncToken(
             raw_kobo_store_token=raw_kobo_store_token,

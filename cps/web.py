@@ -635,13 +635,12 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
                              ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
         else:
-            db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
-                             coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
+            db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db_filter,
                                                                 order,
-                                                                ub.ReadBook, db.Books.id==ub.ReadBook.book_id)
+                                                                ub.ReadBook, db.Books.id == ub.ReadBook.book_id)
     else:
         try:
             if are_read:
