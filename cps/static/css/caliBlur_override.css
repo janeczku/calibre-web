@@ -1,11 +1,11 @@
 body.serieslist.grid-view div.container-fluid>div>div.col-sm-10:before{
     display: none;
 }
-
 .cover .badge{
     position: absolute;
     top: 0;
     left: 0;
+    color: #fff;
     background-color: #cc7b19;
     border-radius: 0;
     padding: 0 8px;
@@ -14,4 +14,9 @@ body.serieslist.grid-view div.container-fluid>div>div.col-sm-10:before{
 }
 .cover{
     box-shadow: 0 0 4px rgba(0,0,0,.6);
+}
+
+.cover .read{
+    padding: 0 0px;
+    line-height: 15px;
 }

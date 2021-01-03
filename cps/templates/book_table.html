@@ -61,7 +61,7 @@
     </table>
 {% endblock %}
 {% block modal %}
-{{ delete_book(0) }}
+{{ delete_book() }}
 {% if g.user.role_edit() %}
 <div class="modal fade" id="mergeModal" role="dialog" aria-labelledby="metaMergeLabel">
   <div class="modal-dialog">

@@ -89,20 +89,7 @@
 {% endblock %}
 {% block modal %}
 {% if g.allow_registration %}
-<div id="DeleteDomain" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-sm">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-      </div>
-      <div class="modal-body text-center">
-        <p>{{_('Are you sure you want to delete this domain?')}}</p>
-        <button type="button" class="btn btn-danger" id="btndeletedomain" >{{_('Delete')}}</button>
-        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Cancel')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
+{{ delete_confirm_modal() }}
 {% endif %}
 {% endblock %}
 {% block js %}

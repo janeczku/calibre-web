@@ -33,7 +33,8 @@ from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
-from .web import render_read_books, download_required, load_user_from_request
+from .web import render_read_books
+from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
 from babel import Locale as LC
 from babel.core import UnknownLocaleError

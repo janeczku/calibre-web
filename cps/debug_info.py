@@ -21,7 +21,12 @@ import shutil
 import glob
 import zipfile
 import json
-import io
+from io import BytesIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import os
 
 from flask import send_file
@@ -32,11 +37,12 @@ from .about import collect_stats
 log = logger.create()
 
 def assemble_logfiles(file_name):
-    log_list = glob.glob(file_name + '*')
-    wfd = io.StringIO()
+    log_list = sorted(glob.glob(file_name + '*'), reverse=True)
+    wfd = StringIO()
     for f in log_list:
         with open(f, 'r') as fd:
             shutil.copyfileobj(fd, wfd)
+    wfd.seek(0)
     return send_file(wfd,
                      as_attachment=True,
                      attachment_filename=os.path.basename(file_name))
@@ -44,8 +50,12 @@ def assemble_logfiles(file_name):
 def send_debug():
     file_list = glob.glob(logger.get_logfile(config.config_logfile) + '*')
     file_list.extend(glob.glob(logger.get_accesslogfile(config.config_access_logfile) + '*'))
-    memory_zip = io.BytesIO()
+    for element in [logger.LOG_TO_STDOUT, logger.LOG_TO_STDERR]:
+        if element in file_list:
+            file_list.remove(element)
+    memory_zip = BytesIO()
     with zipfile.ZipFile(memory_zip, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr('settings.txt', json.dumps(config.toDict()))
         zf.writestr('libs.txt', json.dumps(collect_stats()))
         for fp in file_list:
             zf.write(fp, os.path.basename(fp))

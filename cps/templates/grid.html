@@ -28,8 +28,10 @@
               <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
                   <div class="cover">
                       <a href="{{url_for('web.books_list', data=data, sort_param='new', book_id=entry[0].series[0].id )}}">
-                          <img src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
-                          <span class="badge">{{entry.count}}</span>
+                          <span class="img">
+                              <img src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
+                              <span class="badge">{{entry.count}}</span>
+                            </span>
                       </a>
                   </div>
                   <div class="meta">

@@ -25,10 +25,9 @@ body {
   overflow: hidden;
   -webkit-transition: -webkit-transform 0.4s, width 0.2s;
   -moz-transition: -webkit-transform 0.4s, width 0.2s;
-  -ms-transition: -webkit-transform 0.4s, width 0.2s;
+  transition: -webkit-transform 0.4s, width 0.2s;
   -moz-box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
-  -ms-box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.1);
 }
 
@@ -45,7 +44,7 @@ body {
   text-align: center;
   -webkit-transition: opacity 0.5s;
   -moz-transition: opacity 0.5s;
-  -ms-transition: opacity 0.5s;
+  transition: opacity 0.5s;
   z-index: 10;
 }
 
@@ -79,7 +78,6 @@ body {
   color: rgba(0, 0, 0, 0.6);
   -moz-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.8);
   -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.8);
-  -ms-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.8);
   box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.8);
 }
 
@@ -121,7 +119,6 @@ body {
   font-weight: bold;
   cursor: pointer;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -147,7 +144,7 @@ body {
   height: 100%;
   -webkit-transition: -webkit-transform 0.5s;
   -moz-transition: -moz-transform 0.5s;
-  -ms-transition: -moz-transform 0.5s;
+  transition: -moz-transform 0.5s;
   overflow: hidden;
 }
 
@@ -183,7 +180,6 @@ body {
   height: 14px;
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
@@ -232,7 +228,6 @@ body {
 
 input::-webkit-input-placeholder { color: #454545; }
 input:-moz-placeholder { color: #454545; }
-input:-ms-placeholder { color: #454545; }
 
 #divider {
   position: absolute;
@@ -268,18 +263,18 @@ input:-ms-placeholder { color: #454545; }
   width: 25%;
   height: 100%;
   visibility: hidden;
-  -webkit-transition: visibility 0 ease 0.5s;
-  -moz-transition: visibility 0 ease 0.5s;
-  -ms-transition: visibility 0 ease 0.5s;
+  -webkit-transition: visibility 0s ease 0.5s;
+  -moz-transition: visibility 0s ease 0.5s;
+  transition: visibility 0s ease 0.5s;
 }
 
 #sidebar.open #tocView,
 #sidebar.open #bookmarksView {
   overflow-y: auto;
   visibility: visible;
-  -webkit-transition: visibility 0 ease 0;
-  -moz-transition: visibility 0 ease 0;
-  -ms-transition: visibility 0 ease 0;
+  -webkit-transition: visibility 0s ease 0s;
+  -moz-transition: visibility 0s ease 0s;
+  transition: visibility 0s ease 0s;
 }
 
 #sidebar.open #tocView {
@@ -495,9 +490,8 @@ input:-ms-placeholder { color: #454545; }
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 50%;
+  // width: 50%;
   width: 630px;
-
   height: auto;
   z-index: 2000;
   visibility: hidden;
@@ -518,7 +512,6 @@ input:-ms-placeholder { color: #454545; }
   background: rgba(255, 255, 255, 0.8);
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
-  -ms-transition: all 0.3s;
   transition: all 0.3s;
 }
 
@@ -588,7 +581,6 @@ input:-ms-placeholder { color: #454545; }
   opacity: 0;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
-  -ms-transition: all 0.3s;
   transition: all 0.3s;
 }
 
@@ -601,7 +593,7 @@ input:-ms-placeholder { color: #454545; }
 }
 
 .md-content > .closer {
-  font-size: 18px;
+  //font-size: 18px;
   position: absolute;
   right: 0;
   top: 0;
@@ -663,7 +655,7 @@ input:-ms-placeholder { color: #454545; }
     -ms-transform: translate(0, 0);
     -webkit-transition: -webkit-transform .3s;
     -moz-transition: -moz-transform .3s;
-    -ms-transition: -moz-transform .3s;
+    transition: -moz-transform .3s;
   }
 
   #main.closed {
@@ -778,7 +770,7 @@ and (orientation : landscape)
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
+    font-family: "fontello", serif;
     font-style: normal;
     font-weight: normal;
     speak: none;
