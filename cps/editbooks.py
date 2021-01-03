@@ -240,7 +240,7 @@ def delete_book(book_id, book_format, jsonResponse):
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
                     ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
                     ub.delete_download(book_id)
-                    ub.session.commit()
+                    ub.session_commit()
 
                     # check if only this book links to:
                     # author, language, series, tags, custom columns

@@ -46,8 +46,9 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants
+from . import constants, logger
 
+log = logger.create()
 
 session = None
 app_DB_path = None
@@ -695,3 +696,13 @@ def dispose():
                 old_session.bind.dispose()
             except Exception:
                 pass
+
+def session_commit(success=None):
+    try:
+        session.commit()
+        if success:
+            log.info(success)
+    except (exc.OperationalError, exc.InvalidRequestError) as e:
+        session.rollback()
+        log.debug_or_exception(e)
+    return ""
