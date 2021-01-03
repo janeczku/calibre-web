@@ -320,12 +320,7 @@ def delete_shelf_helper(cur_shelf):
     ub.session.delete(cur_shelf)
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
     ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
-    try:
-        ub.session.commit()
-        log.info("successfully deleted %s", cur_shelf)
-    except OperationalError:
-        ub.session.rollback()
-
+    ub.session_commit("successfully deleted Shelf {}".format(cur_shelf.name))
 
 
 @shelf.route("/shelf/delete/<int:shelf_id>")
@@ -388,10 +383,7 @@ def change_shelf_order(shelf_id, order):
         book = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .filter(ub.BookShelf.book_id == entry.id).first()
         book.order = index
-    try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
+    ub.session_commit("Shelf-id:{} - Order changed".format(shelf_id))
 
 def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()

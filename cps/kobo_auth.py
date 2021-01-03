@@ -148,10 +148,7 @@ def generate_auth_token(user_id):
             auth_token.token_type = 1
 
             ub.session.add(auth_token)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit()
         return render_title_template(
             "generate_kobo_auth_url.html",
             title=_(u"Kobo Setup"),
@@ -168,8 +165,5 @@ def delete_auth_token(user_id):
     # Invalidate any prevously generated Kobo Auth token for this user.
     ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\
         .filter(ub.RemoteAuthToken.token_type==1).delete()
-    try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
-    return ""
+
+    return ub.session_commit()
