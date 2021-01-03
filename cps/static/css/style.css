@@ -116,6 +116,7 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   display: block;
   max-width: 100%;
   height: auto;
+  max-height: 100%;
 }
 
 .container-fluid .discover{ margin-bottom: 50px; }
@@ -132,12 +133,19 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   position: relative;
 }
 
-.container-fluid .book .cover img {
+.container-fluid .book .cover span.img {
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+}
+
+.container-fluid .book .cover span img {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
   border: 1px solid #fff;
   box-sizing: border-box;
-  height: 100%;
-  bottom: 0;
-  position: absolute;
   -webkit-box-shadow: 0 5px 8px -6px #777;
   -moz-box-shadow: 0 5px 8px -6px #777;
   box-shadow: 0 5px 8px -6px #777;
@@ -206,11 +214,22 @@ span.glyphicon.glyphicon-tags {
 .navbar-default .navbar-toggle .icon-bar {background-color: #000; }
 .navbar-default .navbar-toggle {border-color: #000; }
 .cover { margin-bottom: 10px; }
+
 .cover .badge{
    position: absolute;
    top: 2px;
    left: 2px;
-   background-color: #777;
+   color: #000;
+   border-radius: 10px;
+   background-color: #fff;
+}
+.cover .read{
+  left: auto;
+  right: 2px;
+  width: 17px;
+  height: 17px;
+  display: inline-block;
+  padding: 2px;
 }
 .cover-height { max-height: 100px;}
 
@@ -241,7 +260,7 @@ span.glyphicon.glyphicon-tags {
 .button-link {color: #fff; }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{ background-color: #1C5484; }
 .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active { background-color: #89B9E2; }
-.btn-toolbar>.btn+.btn, .btn-toolbar>.btn-group+.btn, .btn-toolbar>.btn+.btn-group, .btn-toolbar>.btn-group+.btn-group { margin-left: 0px; }
+.btn-toolbar>.btn+.btn, .btn-toolbar>.btn-group+.btn, .btn-toolbar>.btn+.btn-group, .btn-toolbar>.btn-group+.btn-group { margin-left: 0; }
 .panel-body {background-color: #f5f5f5; }
 .spinner {margin: 0 41%; }
 .spinner2 {margin: 0 41%; }
@@ -311,11 +330,11 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 .editable-input { display:inline-block; }
 
 .editable-cancel {
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
   margin-left: 7px !important;
 }
 
-.editable-submit { margin-bottom: 0px !important; }
+.editable-submit { margin-bottom: 0 !important; }
 .filterheader { margin-bottom: 20px; }
 .errorlink { margin-top: 20px; }
 .emailconfig { margin-top: 10px; }
@@ -326,7 +345,7 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 }
 
 div.log {
-  font-family: Courier New;
+  font-family: Courier New, serif;
   font-size: 12px;
   box-sizing: border-box;
   height: 700px;

@@ -197,7 +197,8 @@
 {% endblock %}
 
 {% block modal %}
-{{ delete_book(book.id) }}
+{{ delete_book() }}
+{{ delete_confirm_modal() }}
 
 <div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
   <div class="modal-dialog modal-lg" role="document">

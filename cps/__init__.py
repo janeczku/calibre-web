@@ -94,7 +94,8 @@ def create_app():
         app.root_path = app.root_path.decode('utf-8')
         app.instance_path = app.instance_path.decode('utf-8')
 
-    cache_buster.init_cache_busting(app)
+    if os.environ.get('FLASK_DEBUG'):
+    	cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
     Principal(app)

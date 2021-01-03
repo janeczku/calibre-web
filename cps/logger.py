@@ -41,9 +41,17 @@ logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
 
 
+class _Logger(logging.Logger):
+
+    def debug_or_exception(self, message, *args, **kwargs):
+        if is_debug_enabled():
+            self.exception(message, stacklevel=2, *args, **kwargs)
+        else:
+            self.error(message, stacklevel=2, *args, **kwargs)
+
+
 def get(name=None):
     return logging.getLogger(name)
-
 
 def create():
     parent_frame = inspect.stack(0)[1]
@@ -53,7 +61,6 @@ def create():
         parent_frame = parent_frame[0]
     parent_module = inspect.getmodule(parent_frame)
     return get(parent_module.__name__)
-
 
 def is_debug_enabled():
     return logging.root.level <= logging.DEBUG
@@ -99,6 +106,7 @@ def setup(log_file, log_level=None):
     May be called multiple times.
     '''
     log_level = log_level or DEFAULT_LOG_LEVEL
+    logging.setLoggerClass(_Logger)
     logging.getLogger(__package__).setLevel(log_level)
 
     r = logging.root
