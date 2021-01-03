@@ -275,7 +275,7 @@ class _ConfigSQL(object):
     def toDict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' or k.endswith("password"):
+            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret"):
                 storage[k] = v
         return storage
 
