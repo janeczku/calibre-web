@@ -82,8 +82,8 @@
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
       {% if ( g.user and g.user.role_admin() and not new_user ) %}
-      <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
-      <a href="#" id="get_user_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
+      <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+      <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
       {% endif %}
     </div>
       <div class="col-sm-6">
