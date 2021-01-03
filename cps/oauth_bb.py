@@ -85,11 +85,7 @@ def register_user_with_oauth(user=None):
             except NoResultFound:
                 # no found, return error
                 return
-            try:
-                ub.session.commit()
-            except Exception as e:
-                log.debug_or_exception(e)
-                ub.session.rollback()
+            ub.session_commit("User {} with OAuth for provider {} registered".format(user.nickname, oauth_key))
 
 
 def logout_oauth_user():
@@ -101,19 +97,12 @@ def logout_oauth_user():
 if ub.oauth_support:
     oauthblueprints = []
     if not ub.session.query(ub.OAuthProvider).count():
-        oauthProvider = ub.OAuthProvider()
-        oauthProvider.provider_name = "github"
-        oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        ub.session.commit()
-        oauthProvider = ub.OAuthProvider()
-        oauthProvider.provider_name = "google"
-        oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        for provider in ("github", "google"):
+            oauthProvider = ub.OAuthProvider()
+            oauthProvider.provider_name = provider
+            oauthProvider.active = False
+            ub.session.add(oauthProvider)
+            ub.session_commit("{} Blueprint Created".format(provider))
 
     oauth_ids = ub.session.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',
@@ -203,12 +192,8 @@ if ub.oauth_support:
                 provider_user_id=provider_user_id,
                 token=token,
             )
-        try:
-            ub.session.add(oauth_entry)
-            ub.session.commit()
-        except Exception as e:
-            log.debug_or_exception(e)
-            ub.session.rollback()
+        ub.session.add(oauth_entry)
+        ub.session_commit()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
         # Value differrs depending on flask-dance version

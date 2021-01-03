@@ -66,9 +66,15 @@ class TaskConvert(CalibreTask):
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    worker_thread.add(self.user, TaskEmail(self.settings['subject'], self.results["path"],
-                               filename, self.settings, self.kindle_mail,
-                               self.settings['subject'], self.settings['body'], internal=True))
+                    worker_thread.add(self.user, TaskEmail(self.settings['subject'],
+                                                           self.results["path"],
+                                                           filename,
+                                                           self.settings,
+                                                           self.kindle_mail,
+                                                           self.settings['subject'],
+                                                           self.settings['body'],
+                                                           internal=True)
+                                      )
                 except Exception as e:
                     return self._handleError(str(e))
 
