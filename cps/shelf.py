@@ -235,23 +235,22 @@ def edit_shelf(shelf_id):
 def create_edit_shelf(shelf, title, page, shelf_id=False):
     if request.method == "POST":
         to_save = request.form.to_dict()
+        if "is_public" in to_save:
+            shelf.is_public = 1
+        else:
+            shelf.is_public = 0
         if check_shelf_is_unique(shelf, to_save, shelf_id):
-            if "is_public" in to_save:
-                shelf.is_public = 1
-            else:
-                shelf.is_public = 0
             shelf.name = to_save["title"]
-            shelf.last_modified = datetime.utcnow()
+            # shelf.last_modified = datetime.utcnow()
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
+                ub.session.add(shelf)
+                shelf_action = "created"
+                flash_text = _(u"Shelf %(title)s created", title=to_save["title"])
+            else:
+                shelf_action = "changed"
+                flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
             try:
-                if not shelf_id:
-                    ub.session.add(shelf)
-                    shelf_action = "created"
-                    flash_text = _(u"Shelf %(title)s created", title=to_save["title"])
-                else:
-                    shelf_action = "changed"
-                    flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
                 ub.session.commit()
                 log.info(u"Shelf {} {}".format(to_save["title"], shelf_action))
                 flash(flash_text, category="success")
