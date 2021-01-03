@@ -751,10 +751,7 @@ def get_or_create_reading_state(book_id):
         kobo_reading_state.statistics = ub.KoboStatistics()
         book_read.kobo_reading_state = kobo_reading_state
     ub.session.add(book_read)
-    #try:
-    #    ub.session.commit()
-    #except OperationalError:
-    #    ub.session.rollback()
+    ub.session_commit()
     return book_read.kobo_reading_state
 
 
