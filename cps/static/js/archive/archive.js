@@ -412,19 +412,6 @@ bitjs.archive = bitjs.archive || {};
     };
 
     /**
-     * Unrarrer5
-     * @extends {bitjs.archive.Unarchiver}
-     * @constructor
-     */
-    bitjs.archive.Unrarrer5 = function(arrayBuffer, optPathToBitJS) {
-        bitjs.base(this, arrayBuffer, optPathToBitJS);
-    };
-    bitjs.inherits(bitjs.archive.Unrarrer5, bitjs.archive.Unarchiver);
-    bitjs.archive.Unrarrer5.prototype.getScriptFileName = function() {
-        return "unrar5.js";
-    };
-
-    /**
      * Untarrer
      * @extends {bitjs.archive.Unarchiver}
      * @constructor
