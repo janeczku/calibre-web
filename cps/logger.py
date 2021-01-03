@@ -49,6 +49,13 @@ class _Logger(logging.Logger):
         else:
             self.error(message, stacklevel=2, *args, **kwargs)
 
+    def debug_no_auth(self, message, *args, **kwargs):
+        if message.startswith("send: AUTH"):
+            self.debug(message[:16], stacklevel=2, *args, **kwargs)
+        else:
+            self.debug(message, stacklevel=2, *args, **kwargs)
+
+
 
 def get(name=None):
     return logging.getLogger(name)
