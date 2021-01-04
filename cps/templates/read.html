@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/kthoom.css') }}" type="text/css"/>
     </head>
     <body>
       <div id="sidebar">
@@ -70,10 +71,39 @@
           <div class="md-content">
               <h3>{{_('Settings')}}</h3>
               <div>
-                  <p>
-                    <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
-                  </p>
+                <div class="settings-column">
+                  <table>
+                    <tbody>
+                      <th>
+                        <div class="inputs">
+                          <input type="checkbox" id="sidebarReflow" name="sidebarReflow"> {{_('Reflow text when sidebars are open.')}}
+                        </div>
+                      </th>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="settings-column">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>{{_('Settings')}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>{{_('Theme')}}:</th>
+                        <td>
+                          <div class="inputs">
+                            <label for="lightTheme"><input type="radio" id="lightTheme" name="theme" value="light" checked /> {{_('Light')}}</label>
+                            <label for="darkTheme"><input type="radio" id="darkTheme" name="theme" value="dark" /> {{_('Dark')}}</label>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
               <div class="closer icon-cancel-circled"></div>
           </div>
       </div>
