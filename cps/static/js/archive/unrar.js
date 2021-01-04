@@ -14,10 +14,10 @@
 /* global VM_FIXEDGLOBALSIZE, VM_GLOBALMEMSIZE, MAXWINMASK, VM_GLOBALMEMADDR, MAXWINSIZE */
 
 // This file expects to be invoked as a Worker (see onmessage below).
-/*importScripts("../io/bitstream.js");
+importScripts("../io/bitstream.js");
 importScripts("../io/bytebuffer.js");
 importScripts("archive.js");
-importScripts("rarvm.js");*/
+importScripts("rarvm.js");
 
 // Progress variables.
 var currentFilename = "";
@@ -29,21 +29,19 @@ var totalFilesInArchive = 0;
 
 // Helper functions.
 var info = function(str) {
-    console.log(str);
-    // postMessage(new bitjs.archive.UnarchiveInfoEvent(str));
+    postMessage(new bitjs.archive.UnarchiveInfoEvent(str));
 };
 var err = function(str) {
-    console.log(str);
-    // postMessage(new bitjs.archive.UnarchiveErrorEvent(str));
+    postMessage(new bitjs.archive.UnarchiveErrorEvent(str));
 };
 var postProgress = function() {
-    /*postMessage(new bitjs.archive.UnarchiveProgressEvent(
+    postMessage(new bitjs.archive.UnarchiveProgressEvent(
         currentFilename,
         currentFileNumber,
         currentBytesUnarchivedInFile,
         currentBytesUnarchived,
         totalUncompressedBytesInArchive,
-        totalFilesInArchive));*/
+        totalFilesInArchive));
 };
 
 // shows a byte value as its hex representation
@@ -1300,7 +1298,7 @@ var unrar = function(arrayBuffer) {
     totalUncompressedBytesInArchive = 0;
     totalFilesInArchive = 0;
 
-    //postMessage(new bitjs.archive.UnarchiveStartEvent());
+    postMessage(new bitjs.archive.UnarchiveStartEvent());
     var bstream = new bitjs.io.BitStream(arrayBuffer, false /* rtl */);
 
     var header = new RarVolumeHeader(bstream);
@@ -1350,7 +1348,7 @@ var unrar = function(arrayBuffer) {
                 localfile.unrar();
 
                 if (localfile.isValid) {
-                    // postMessage(new bitjs.archive.UnarchiveExtractEvent(localfile));
+                    postMessage(new bitjs.archive.UnarchiveExtractEvent(localfile));
                     postProgress();
                 }
             }
@@ -1360,7 +1358,7 @@ var unrar = function(arrayBuffer) {
     } else {
         err("Invalid RAR file");
     }
-    // postMessage(new bitjs.archive.UnarchiveFinishEvent());
+    postMessage(new bitjs.archive.UnarchiveFinishEvent());
 };
 
 // event.data.file has the ArrayBuffer.

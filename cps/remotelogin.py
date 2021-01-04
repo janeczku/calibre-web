@@ -59,8 +59,7 @@ def remote_login_required(f):
 def remote_login():
     auth_token = ub.RemoteAuthToken()
     ub.session.add(auth_token)
-    ub.session.commit()
-
+    ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
     return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
@@ -80,9 +79,9 @@ def verify_token(token):
         return redirect(url_for('web.index'))
 
     # Token expired
-    if datetime.now() > auth_token.expiration:
+    elif datetime.now() > auth_token.expiration:
         ub.session.delete(auth_token)
-        ub.session.commit()
+        ub.session_commit()
 
         flash(_(u"Token has expired"), category="error")
         log.error(u"Remote Login token expired")
@@ -91,7 +90,7 @@ def verify_token(token):
     # Update token with user information
     auth_token.user_id = current_user.id
     auth_token.verified = True
-    ub.session.commit()
+    ub.session_commit()
 
     flash(_(u"Success! Please return to your device"), category="success")
     log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
@@ -114,7 +113,7 @@ def token_verified():
     # Token expired
     elif datetime.now() > auth_token.expiration:
         ub.session.delete(auth_token)
-        ub.session.commit()
+        ub.session_commit()
 
         data['status'] = 'error'
         data['message'] = _(u"Token has expired")
@@ -127,7 +126,7 @@ def token_verified():
         login_user(user)
 
         ub.session.delete(auth_token)
-        ub.session.commit()
+        ub.session_commit("User {} logged in via remotelogin, token deleted".format(user.nickname))
 
         data['status'] = 'success'
         log.debug(u"Remote Login for userid %s succeded", user.id)
