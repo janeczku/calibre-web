@@ -20,7 +20,11 @@ from __future__ import division, print_function, unicode_literals
 
 from cps import config, logger
 from cps.services.worker import CalibreTask
-from urllib.request import urlopen
+
+try:
+    from urllib.request import urlopen
+except ImportError as e:
+    from urllib2 import urlopen
 
 
 class TaskReconnectDatabase(CalibreTask):
