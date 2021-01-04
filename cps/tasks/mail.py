@@ -44,7 +44,7 @@ class EmailBase:
 
     def send(self, strg):
         """Send `strg' to the server."""
-        log.debug('send: %r', strg[:300])
+        log.debug_no_auth('send: {}'.format(strg[:300]))
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
