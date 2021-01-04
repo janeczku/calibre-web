@@ -105,6 +105,7 @@ def unconfigured(f):
 
     return inner
 
+
 @admi.before_app_request
 def before_request():
     if current_user.is_authenticated:
@@ -118,8 +119,10 @@ def before_request():
     g.config_authors_max = config.config_authors_max
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
-    if not config.db_configured and request.endpoint not in (
-        'admin.basic_configuration', 'login', 'admin.config_pathchooser') and '/static/' not in request.path:
+    if '/static/' not in request.path and not config.db_configured and \
+        request.endpoint not in ('admin.basic_configuration',
+                                 'login',
+                                 'admin.config_pathchooser'):
         return redirect(url_for('admin.basic_configuration'))
 
 
@@ -218,12 +221,12 @@ def configuration():
 @login_required
 @admin_required
 def view_configuration():
-    readColumn = calibre_db.session.query(db.Custom_Columns)\
-            .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
-    restrictColumns= calibre_db.session.query(db.Custom_Columns)\
-            .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
-    return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
-                                 restrictColumns=restrictColumns,
+    read_column = calibre_db.session.query(db.Custom_Columns)\
+        .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
+    restrict_columns = calibre_db.session.query(db.Custom_Columns)\
+        .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
+                                 restrictColumns=restrict_columns,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 
@@ -265,7 +268,7 @@ def update_view_configuration():
 @admi.route("/ajax/loaddialogtexts/<element_id>")
 @login_required
 def load_dialogtexts(element_id):
-    texts = { "header": "", "main": "" }
+    texts = {"header": "", "main": ""}
     if element_id == "config_delete_kobo_token":
         texts["main"] = _('Do you really want to delete the Kobo Token?')
     elif element_id == "btndeletedomain":
@@ -288,11 +291,7 @@ def edit_domain(allow):
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
     answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
-    try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
-    return ""
+    return ub.session_commit("Registering Domains edited {}".format(answer.domain))
 
 
 @admi.route("/ajax/adddomain/<int:allow>", methods=['POST'])
@@ -305,10 +304,7 @@ def add_domain(allow):
     if not check:
         new_domain = ub.Registration(domain=domain_name, allow=allow)
         ub.session.add(new_domain)
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session_commit("Registering Domains added {}".format(domain_name))
     return ""
 
 
@@ -319,18 +315,12 @@ def delete_domain():
     try:
         domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
         ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session_commit("Registering Domains deleted {}".format(domain_id))
         # If last domain was deleted, add all domains by default
-        if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
-            new_domain = ub.Registration(domain="%.%",allow=1)
+        if not ub.session.query(ub.Registration).filter(ub.Registration.allow == 1).count():
+            new_domain = ub.Registration(domain="%.%", allow=1)
             ub.session.add(new_domain)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Last Registering Domain deleted, added *.* as default")
     except KeyError:
         pass
     return ""
@@ -347,7 +337,8 @@ def list_domain(allow):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/editrestriction/<int:res_type>", defaults={"user_id":0}, methods=['POST'])
+
+@admi.route("/ajax/editrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
 @admi.route("/ajax/editrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -356,12 +347,12 @@ def edit_restriction(res_type, user_id):
     if element['id'].startswith('a'):
         if res_type == 0:  # Tags as template
             elementlist = config.list_allowed_tags()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             config.config_allowed_tags = ','.join(elementlist)
             config.save()
         if res_type == 1:  # CustomC
             elementlist = config.list_allowed_column_values()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             config.config_allowed_column_value = ','.join(elementlist)
             config.save()
         if res_type == 2:  # Tags per user
@@ -370,33 +361,27 @@ def edit_restriction(res_type, user_id):
             else:
                 usr = current_user
             elementlist = usr.list_allowed_tags()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             usr.allowed_tags = ','.join(elementlist)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.nickname, usr.allowed_tags))
         if res_type == 3:  # CColumn per user
             if isinstance(user_id, int):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_allowed_column_values()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             usr.allowed_column_value = ','.join(elementlist)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.nickname, usr.allowed_column_value))
     if element['id'].startswith('d'):
         if res_type == 0:  # Tags as template
             elementlist = config.list_denied_tags()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             config.config_denied_tags = ','.join(elementlist)
             config.save()
         if res_type == 1:  # CustomC
             elementlist = config.list_denied_column_values()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             config.config_denied_column_value = ','.join(elementlist)
             config.save()
         if res_type == 2:  # Tags per user
@@ -405,25 +390,20 @@ def edit_restriction(res_type, user_id):
             else:
                 usr = current_user
             elementlist = usr.list_denied_tags()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             usr.denied_tags = ','.join(elementlist)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed denied tags of user {} to {}".format(usr.nickname, usr.denied_tags))
         if res_type == 3:  # CColumn per user
             if isinstance(user_id, int):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
             else:
                 usr = current_user
             elementlist = usr.list_denied_column_values()
-            elementlist[int(element['id'][1:])]=element['Element']
+            elementlist[int(element['id'][1:])] = element['Element']
             usr.denied_column_value = ','.join(elementlist)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed denied columns of user {} to {}".format(usr.nickname, usr.denied_column_value))
     return ""
+
 
 def restriction_addition(element, list_func):
     elementlist = list_func()
@@ -441,7 +421,7 @@ def restriction_deletion(element, list_func):
     return ','.join(elementlist)
 
 
-@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id":0}, methods=['POST'])
+@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -468,16 +448,10 @@ def add_restriction(res_type, user_id):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.nickname, usr.list_allowed_tags))
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed denied tags of user {} to {}".format(usr.nickname, usr.list_denied_tags))
     if res_type == 3:  # CustomC per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -485,19 +459,16 @@ def add_restriction(res_type, user_id):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.nickname,
+                                                                                usr.list_allowed_column_values))
         elif 'submit_deny' in element:
             usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Changed denied columns of user {} to {}".format(usr.nickname,
+                                                                               usr.list_denied_column_values))
     return ""
 
-@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id":0}, methods=['POST'])
+
+@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -524,16 +495,10 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.nickname, usr.list_allowed_tags))
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.nickname, usr.list_allowed_tags))
     elif res_type == 3:  # Columns per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -541,61 +506,60 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.nickname,
+                                                                              usr.list_allowed_column_values))
+
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit("Deleted denied columns of user {}: {}".format(usr.nickname,
+                                                                             usr.list_denied_column_values))
     return ""
 
-@admi.route("/ajax/listrestriction/<int:res_type>", defaults={"user_id":0})
+
+@admi.route("/ajax/listrestriction/<int:res_type>", defaults={"user_id": 0})
 @admi.route("/ajax/listrestriction/<int:res_type>/<int:user_id>")
 @login_required
 @admin_required
 def list_restriction(res_type, user_id):
     if res_type == 0:   # Tags as template
         restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_denied_tags()) if x != '' ]
-        allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
-                 for i,x in enumerate(config.list_allowed_tags()) if x != '']
+                    for i,x in enumerate(config.list_denied_tags()) if x != '']
+        allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
+                 for i, x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif res_type == 1:  # CustomC as template
-        restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_denied_column_values()) if x != '' ]
-        allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
-                 for i,x in enumerate(config.list_allowed_column_values()) if x != '']
+        restrict = [{'Element': x, 'type': _('Deny'), 'id': 'd'+str(i)}
+                    for i, x in enumerate(config.list_denied_column_values()) if x != '']
+        allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
+                 for i, x in enumerate(config.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
     elif res_type == 2:  # Tags per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
         else:
             usr = current_user
-        restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_denied_tags()) if x != '' ]
-        allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
-                 for i,x in enumerate(usr.list_allowed_tags()) if x != '']
+        restrict = [{'Element': x, 'type': _('Deny'), 'id': 'd'+str(i)}
+                    for i, x in enumerate(usr.list_denied_tags()) if x != '']
+        allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
+                 for i, x in enumerate(usr.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif res_type == 3:  # CustomC per user
         if isinstance(user_id, int):
-            usr = ub.session.query(ub.User).filter(ub.User.id==user_id).first()
+            usr = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
         else:
             usr = current_user
-        restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_denied_column_values()) if x != '' ]
-        allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
-                 for i,x in enumerate(usr.list_allowed_column_values()) if x != '']
+        restrict = [{'Element': x, 'type': _('Deny'), 'id': 'd'+str(i)}
+                    for i, x in enumerate(usr.list_denied_column_values()) if x != '']
+        allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
+                 for i, x in enumerate(usr.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
     else:
-        json_dumps=""
+        json_dumps = ""
     js = json.dumps(json_dumps)
     response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @admi.route("/basicconfig/pathchooser/")
 @unconfigured
@@ -604,11 +568,13 @@ def config_pathchooser():
         return pathchooser()
     abort(403)
 
+
 @admi.route("/ajax/pathchooser/")
 @login_required
 @admin_required
 def ajax_pathchooser():
     return pathchooser()
+
 
 def pathchooser():
     browse_for = "folder"
@@ -622,20 +588,20 @@ def pathchooser():
     else:
         oldfile = ""
 
-    abs = False
+    absolute = False
 
     if os.path.isdir(path):
-        #if os.path.isabs(path):
+        # if os.path.isabs(path):
         cwd = os.path.realpath(path)
-        abs = True
-        #else:
+        absolute = True
+        # else:
         #    cwd = os.path.relpath(path)
     else:
         cwd = os.getcwd()
 
     cwd = os.path.normpath(os.path.realpath(cwd))
     parentdir = os.path.dirname(cwd)
-    if not abs:
+    if not absolute:
         if os.path.realpath(cwd) == os.path.realpath("/"):
             cwd = os.path.relpath(cwd)
         else:
@@ -722,8 +688,8 @@ def _configuration_gdrive_helper(to_save):
         config.config_use_google_drive = False
 
     gdrive_secrets = {}
-    gdriveError = gdriveutils.get_error_text(gdrive_secrets)
-    if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdriveError:
+    gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
+    if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdrive_error:
         with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             gdrive_secrets = json.load(settings)['web']
         if not gdrive_secrets:
@@ -735,10 +701,11 @@ def _configuration_gdrive_helper(to_save):
                         )
 
     # always show google drive settings, but in case of error deny support
-    config.config_use_google_drive = (not gdriveError) and ("config_use_google_drive" in to_save)
+    config.config_use_google_drive = (not gdrive_error) and ("config_use_google_drive" in to_save)
     if _config_string(to_save, "config_google_drive_folder"):
         gdriveutils.deleteDatabaseOnChange()
-    return gdriveError
+    return gdrive_error
+
 
 def _configuration_oauth_helper(to_save):
     active_oauths = 0
@@ -761,22 +728,24 @@ def _configuration_oauth_helper(to_save):
              "active": element["active"]})
     return reboot_required
 
-def _configuration_logfile_helper(to_save, gdriveError):
+
+def _configuration_logfile_helper(to_save, gdrive_error):
     reboot_required = False
     reboot_required |= _config_int(to_save, "config_log_level")
     reboot_required |= _config_string(to_save, "config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
         return reboot_required, \
-               _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+               _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdrive_error)
 
     reboot_required |= _config_checkbox_int(to_save, "config_access_log")
     reboot_required |= _config_string(to_save, "config_access_logfile")
     if not logger.is_valid_logfile(config.config_access_logfile):
         return reboot_required, \
-               _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+               _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdrive_error)
     return reboot_required, None
 
-def _configuration_ldap_helper(to_save, gdriveError):
+
+def _configuration_ldap_helper(to_save, gdrive_error):
     reboot_required = False
     reboot_required |= _config_string(to_save, "config_ldap_provider_url")
     reboot_required |= _config_int(to_save, "config_ldap_port")
@@ -803,33 +772,33 @@ def _configuration_ldap_helper(to_save, gdriveError):
         or not config.config_ldap_dn \
         or not config.config_ldap_user_object:
         return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
-                                       'Port, DN and User Object Identifier'), gdriveError)
+                                                        'Port, DN and User Object Identifier'), gdrive_error)
 
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
             if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
                 return reboot_required, _configuration_result('Please Enter a LDAP Service Account and Password',
-                                                              gdriveError)
+                                                              gdrive_error)
         else:
             if not config.config_ldap_serv_username:
-                return reboot_required, _configuration_result('Please Enter a LDAP Service Account', gdriveError)
+                return reboot_required, _configuration_result('Please Enter a LDAP Service Account', gdrive_error)
 
     if config.config_ldap_group_object_filter:
         if config.config_ldap_group_object_filter.count("%s") != 1:
             return reboot_required, \
                    _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
-                                         gdriveError)
+                                         gdrive_error)
         if config.config_ldap_group_object_filter.count("(") != config.config_ldap_group_object_filter.count(")"):
             return reboot_required, _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
-                                         gdriveError)
+                                                          gdrive_error)
 
     if config.config_ldap_user_object.count("%s") != 1:
         return reboot_required, \
                _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
-                                     gdriveError)
+                                     gdrive_error)
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
-                                                      gdriveError)
+                                                      gdrive_error)
 
     if to_save["ldap_import_user_filter"] == '0':
         config.config_ldap_member_user_object = ""
@@ -837,10 +806,10 @@ def _configuration_ldap_helper(to_save, gdriveError):
         if config.config_ldap_member_user_object.count("%s") != 1:
             return reboot_required, \
                    _configuration_result(_('LDAP Member User Filter needs to Have One "%s" Format Identifier'),
-                   gdriveError)
+                                         gdrive_error)
         if config.config_ldap_member_user_object.count("(") != config.config_ldap_member_user_object.count(")"):
             return reboot_required, _configuration_result(_('LDAP Member User Filter Has Unmatched Parenthesis'),
-                                                          gdriveError)
+                                                          gdrive_error)
 
     if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
         if not (os.path.isfile(config.config_ldap_cacert_path) and
@@ -849,7 +818,7 @@ def _configuration_ldap_helper(to_save, gdriveError):
             return reboot_required, \
                    _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, '
                                            'Please Enter Correct Path'),
-                                         gdriveError)
+                                         gdrive_error)
     return reboot_required, None
 
 
@@ -857,7 +826,7 @@ def _configuration_update_helper(configured):
     reboot_required = False
     db_change = False
     to_save = request.form.to_dict()
-    gdriveError = None
+    gdrive_error = None
 
     to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
                                            '',
@@ -866,26 +835,26 @@ def _configuration_update_helper(configured):
     try:
         db_change |= _config_string(to_save, "config_calibre_dir")
 
-        # Google drive setup
-        gdriveError = _configuration_gdrive_helper(to_save)
+        # gdrive_error drive setup
+        gdrive_error = _configuration_gdrive_helper(to_save)
 
         reboot_required |= _config_int(to_save, "config_port")
 
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
             return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'),
-                                         gdriveError,
+                                         gdrive_error,
                                          configured)
 
         reboot_required |= _config_string(to_save, "config_certfile")
         if config.config_certfile and not os.path.isfile(config.config_certfile):
             return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'),
-                                         gdriveError,
+                                         gdrive_error,
                                          configured)
 
         _config_checkbox_int(to_save, "config_uploading")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
-        reboot_required |=  (_config_checkbox_int(to_save, "config_anonbrowse")
+        reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
                              and config.config_login_type == constants.LOGIN_LDAP)
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
@@ -905,9 +874,9 @@ def _configuration_update_helper(configured):
 
         reboot_required |= _config_int(to_save, "config_login_type")
 
-        #LDAP configurator,
+        # LDAP configurator,
         if config.config_login_type == constants.LOGIN_LDAP:
-            reboot, message = _configuration_ldap_helper(to_save, gdriveError)
+            reboot, message = _configuration_ldap_helper(to_save, gdrive_error)
             if message:
                 return message
             reboot_required |= reboot
@@ -916,7 +885,7 @@ def _configuration_update_helper(configured):
 
         _config_checkbox(to_save, "config_remote_login")
         if not config.config_remote_login:
-            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
+            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type == 0).delete()
 
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
@@ -937,7 +906,7 @@ def _configuration_update_helper(configured):
         if config.config_login_type == constants.LOGIN_OAUTH:
             reboot_required |= _configuration_oauth_helper(to_save)
 
-        reboot, message = _configuration_logfile_helper(to_save, gdriveError)
+        reboot, message = _configuration_logfile_helper(to_save, gdrive_error)
         if message:
             return message
         reboot_required |= reboot
@@ -946,10 +915,10 @@ def _configuration_update_helper(configured):
         if "config_rarfile_location" in to_save:
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
-                return _configuration_result(unrar_status, gdriveError, configured)
+                return _configuration_result(unrar_status, gdrive_error, configured)
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
-        _configuration_result(_(u"Settings DB is not Writeable"), gdriveError, configured)
+        _configuration_result(_(u"Settings DB is not Writeable"), gdrive_error, configured)
 
     try:
         metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
@@ -957,12 +926,12 @@ def _configuration_update_helper(configured):
             gdriveutils.downloadFile(None, "metadata.db", metadata_db)
             db_change = True
     except Exception as e:
-        return _configuration_result('%s' % e, gdriveError, configured)
+        return _configuration_result('%s' % e, gdrive_error, configured)
 
     if db_change:
         if not calibre_db.setup_db(config, ub.app_DB_path):
             return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
-                                         gdriveError,
+                                         gdrive_error,
                                          configured)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
@@ -972,16 +941,16 @@ def _configuration_update_helper(configured):
     if reboot_required:
         web_server.stop(True)
 
-    return _configuration_result(None, gdriveError, configured)
+    return _configuration_result(None, gdrive_error, configured)
 
 
-def _configuration_result(error_flash=None, gdriveError=None, configured=True):
+def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
     gdrive_authenticate = not is_gdrive_ready()
     gdrivefolders = []
-    if gdriveError is None:
-        gdriveError = gdriveutils.get_error_text()
-    if gdriveError:
-        gdriveError = _(gdriveError)
+    if gdrive_error is None:
+        gdrive_error = gdriveutils.get_error_text()
+    if gdrive_error:
+        gdrive_error = _(gdrive_error)
     else:
         # if config.config_use_google_drive and\
         if not gdrive_authenticate and gdrive_support:
@@ -994,14 +963,20 @@ def _configuration_result(error_flash=None, gdriveError=None, configured=True):
         flash(error_flash, category="error")
         show_login_button = False
 
-    return render_title_template("config_edit.html", config=config, provider=oauthblueprints,
-                                 show_back_button=show_back_button, show_login_button=show_login_button,
-                                 show_authenticate_google_drive=gdrive_authenticate, filepicker=configured,
-                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
+    return render_title_template("config_edit.html",
+                                 config=config,
+                                 provider=oauthblueprints,
+                                 show_back_button=show_back_button,
+                                 show_login_button=show_login_button,
+                                 show_authenticate_google_drive=gdrive_authenticate,
+                                 filepicker=configured,
+                                 gdriveError=gdrive_error,
+                                 gdrivefolders=gdrivefolders,
+                                 feature_support=feature_support,
                                  title=_(u"Basic Configuration"), page="config")
 
 
-def _handle_new_user(to_save, content,languages, translations, kobo_support):
+def _handle_new_user(to_save, content, languages, translations, kobo_support):
     content.default_language = to_save["default_language"]
     # content.mature_content = "Show_mature_content" in to_save
     content.locale = to_save.get("locale", content.locale)
@@ -1042,10 +1017,7 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
         ub.session.add(content)
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session.commit()
         flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
         return redirect(url_for('admin.admin'))
     except IntegrityError:
@@ -1056,15 +1028,12 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
         flash(_(u"Settings DB is not Writeable"), category="error")
 
 
-def _handle_edit_user(to_save, content,languages, translations, kobo_support):
+def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     if "delete" in to_save:
         if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
-            try:
-                ub.session.commit()
-            except OperationalError:
-                ub.session.rollback()
+            ub.session_commit()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin.admin'))
         else:
@@ -1072,8 +1041,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
             return redirect(url_for('admin.admin'))
     else:
         if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
-                                                ub.User.id != content.id).count() and \
-            not 'admin_role' in to_save:
+                                                ub.User.id != content.id).count() and 'admin_role' not in to_save:
             flash(_(u"No admin user remaining, can't remove admin role", nick=content.nickname), category="error")
             return redirect(url_for('admin.admin'))
 
@@ -1092,7 +1060,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
             value = element['visibility']
             if value in val and not content.check_visibility(value):
                 content.sidebar_view |= value
-            elif not value in val and content.check_visibility(value):
+            elif value not in val and content.check_visibility(value):
                 content.sidebar_view &= ~value
 
         if "Show_detail_random" in to_save:
@@ -1139,10 +1107,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support):
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
     try:
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session_commit()
         flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
     except IntegrityError:
         ub.session.rollback()
@@ -1264,9 +1229,8 @@ def reset_user_password(user_id):
 @login_required
 @admin_required
 def view_logfile():
-    logfiles = {}
-    logfiles[0] = logger.get_logfile(config.config_logfile)
-    logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
+    logfiles = {0: logger.get_logfile(config.config_logfile),
+                1: logger.get_accesslogfile(config.config_access_logfile)}
     return render_title_template("logviewer.html",
                                  title=_(u"Logfile viewer"),
                                  accesslog_enable=config.config_access_log,
@@ -1289,6 +1253,7 @@ def send_logfile(logtype):
                                    os.path.basename(logfile))
     else:
         return ""
+
 
 @admi.route("/admin/logdownload/<int:logtype>")
 @login_required
@@ -1349,7 +1314,7 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status'] = updater_thread.get_update_status()
-            if status['status']  == -1:
+            if status['status'] == -1:
                 status['status'] = 7
         except Exception:
             status['status'] = 11
@@ -1407,7 +1372,7 @@ def import_ldap_users():
             kindlemail = ''
             if 'mail' in user_data:
                 useremail = user_data['mail'][0].decode('utf-8')
-                if (len(user_data['mail']) > 1):
+                if len(user_data['mail']) > 1:
                     kindlemail = user_data['mail'][1].decode('utf-8')
 
             else:
@@ -1431,7 +1396,7 @@ def import_ldap_users():
             ub.session.add(content)
             try:
                 ub.session.commit()
-                imported +=1
+                imported += 1
             except Exception as e:
                 log.warning("Failed to create LDAP user: %s - %s", user, e)
                 ub.session.rollback()
@@ -1445,19 +1410,21 @@ def import_ldap_users():
 
 
 def extract_user_data_from_field(user, field):
-    match = re.search(field + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    match = re.search(field + r"=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:
         raise Exception("Could Not Parse LDAP User: {}".format(user))
 
-def extract_dynamic_field_from_filter(user, filter):
-    match = re.search("([a-zA-Z0-9-]+)=%s", filter, re.IGNORECASE | re.UNICODE)
+
+def extract_dynamic_field_from_filter(user, filtr):
+    match = re.search("([a-zA-Z0-9-]+)=%s", filtr, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:
         raise Exception("Could Not Parse LDAP Userfield: {}", user)
 
-def extract_user_identifier(user, filter):
-    dynamic_field = extract_dynamic_field_from_filter(user, filter)
+
+def extract_user_identifier(user, filtr):
+    dynamic_field = extract_dynamic_field_from_filter(user, filtr)
     return extract_user_data_from_field(user, dynamic_field)

@@ -136,10 +136,7 @@ def bookmark(book_id, book_format):
                                               ub.Bookmark.book_id == book_id,
                                               ub.Bookmark.format == book_format)).delete()
     if not bookmark_key:
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session_commit()
         return "", 204
 
     lbookmark = ub.Bookmark(user_id=current_user.id,
@@ -147,10 +144,7 @@ def bookmark(book_id, book_format):
                             format=book_format,
                             bookmark_key=bookmark_key)
     ub.session.merge(lbookmark)
-    try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
+    ub.session_commit("Bookmark for user {} in book {} created".format(current_user.id, book_id))
     return "", 201
 
 
@@ -175,10 +169,7 @@ def toggle_read(book_id):
             kobo_reading_state.statistics = ub.KoboStatistics()
             book.kobo_reading_state = kobo_reading_state
         ub.session.merge(book)
-        try:
-            ub.session.commit()
-        except OperationalError:
-            ub.session.rollback()
+        ub.session_commit("Book {} readbit toggled".format(book_id))
     else:
         try:
             calibre_db.update_title_sort(config)
@@ -212,10 +203,7 @@ def toggle_archived(book_id):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
         archived_book.is_archived = True
     ub.session.merge(archived_book)
-    try:
-        ub.session.commit()
-    except OperationalError:
-        ub.session.rollback()
+    ub.session_commit("Book {} archivebit toggled".format(book_id))
     return ""
 
 
