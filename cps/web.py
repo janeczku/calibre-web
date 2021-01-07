@@ -47,7 +47,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
-from . import calibre_db, shelf
+from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \

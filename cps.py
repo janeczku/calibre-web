@@ -31,7 +31,7 @@ else:
     sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
-from cps import create_app, config
+from cps import create_app
 from cps import web_server
 from cps.opds import opds
 from cps.web import web
