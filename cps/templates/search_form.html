@@ -98,7 +98,7 @@
     <div class="row">
         <div class="form-group col-sm-6">
         <div><label for="include_extension">{{_('Extensions')}}</label></div>
-        <select id="include_extension" class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" multiple>
         {% for extension in extensions %}
             <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
@@ -106,7 +106,7 @@
         </div>
         <div class="form-group col-sm-6">
         <div><label for="exclude_extension">{{_('Exclude Extensions')}}</label></div>
-        <select id="exclude_extension" class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" multiple>
         {% for extension in extensions %}
             <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
