@@ -545,7 +545,7 @@ class CalibreDB():
                                          backref='books'))
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
-                                                          autoflush=False,
+                                                          autoflush=True,
                                                           bind=cls.engine))
         for inst in cls.instances:
             inst.initSession()

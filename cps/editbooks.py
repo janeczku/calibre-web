@@ -31,7 +31,7 @@ from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, R
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
-
+from sqlite3 import OperationalError as sqliteOperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, ub, db
 from . import calibre_db
@@ -310,7 +310,6 @@ def delete_book(book_id, book_format, jsonResponse):
 
 
 def render_edit_book(book_id):
-    calibre_db.update_title_sort(config)
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if not book:
@@ -607,12 +606,19 @@ def upload_cover(request, book):
 @edit_required
 def edit_book(book_id):
     modif_date = False
+
+    # create the function for sorting...
+    try:
+        calibre_db.update_title_sort(config)
+    except sqliteOperationalError as e:
+        log.debug_or_exception(e)
+        calibre_db.session.rollback()
+
     # Show form
     if request.method != 'POST':
         return render_edit_book(book_id)
 
-    # create the function for sorting...
-    calibre_db.update_title_sort(config)
+
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
 
     # Book not found

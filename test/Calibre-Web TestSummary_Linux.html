@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-02 07:53:24</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-10 18:12:04</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-02 10:58:22</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-10 20:39:46</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 37 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>1h 59 min</p>
         </div>
       </div>
       </div>
@@ -611,15 +611,15 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEbookConvertGDriveKepubify</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c8', 3)">Detail</a>
+            <a onclick="showClassDetail('c8', 5)">Detail</a>
         </td>
     </tr>
 
@@ -634,20 +634,126 @@
     
     
     
-        <tr id='pt8.2' class='hiddenRow bg-success'>
+        <tr id="ft8.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft8.2" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft8.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 167, in test_convert_only
+    self.assertTrue(self.check_element_on_page((By.ID, "flash_success")))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt8.3' class='hiddenRow bg-success'>
+        <tr id="et8.3" class="none bg-info">
+            <td>
+                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et8.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et8.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 103, in tearDown
+    self.login('admin', 'admin123')
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 65, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "username")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et8.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et8.4" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et8.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 123, in test_convert_wrong_excecutable
+    task_len = len(self.check_tasks())
+TypeError: object of type 'bool' has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et8.5" class="none bg-info">
+            <td>
+                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et8.5" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et8.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 103, in tearDown
+    self.login('admin', 'admin123')
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 65, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "username")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1190,11 +1296,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">19</td>
-        <td class="text-center">1</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1339,33 +1445,11 @@
     
     
     
-        <tr id="ft12.16" class="none bg-danger">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.16" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft12.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 213, in test_edit_title
-    self.assertEqual('No Cover', title.get_attribute('value'))
-AssertionError: 'No Cover' != 'The camicdemo'
-- No Cover
-+ The camicdemo</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1509,12 +1593,12 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSetupGdrive</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c15', 1)">Detail</a>
@@ -1523,11 +1607,39 @@ AssertionError: 'No Cover' != 'The camicdemo'
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id="et15.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et15.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et15.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_gdrive_setup.py", line 160, in test_config_gdrive
+    auth_button.click()
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
+    return self._parent.execute(command, params)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&u=http%3A//127.0.0.1%3A8083/gdrive/authenticate&c=UTF-8&d=Firefox%20kann%20keine%20Verbindung%20zu%20dem%20Server%20unter%20127.0.0.1%3A8083%20aufbauen.</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1803,6 +1915,60 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
 
 
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c19', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et19.1" class="none bg-info">
+            <td>
+                <div class='testcase'>tearDownClass (test_ldap)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et19.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et19.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ldap.py", line 45, in tearDownClass
+    cls.stop_calibre_web()
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 370, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 360, in find_element_by_id
+    return self.find_element(by=By.ID, value=id_)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 976, in find_element
+    return self.execute(Command.FIND_ELEMENT, {
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="admin_stop"]</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
     <tr id="su" class="skipClass">
         <td>TestLogging</td>
         <td class="text-center">7</td>
@@ -1811,13 +1977,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 7)">Detail</a>
+            <a onclick="showClassDetail('c20', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -1826,7 +1992,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -1835,7 +2001,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt20.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -1844,19 +2010,19 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id="st19.4" class="none bg-warning">
+        <tr id="st20.4" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st19.4')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st20.4')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st19.4" class="popup_window test_output" style="display:none;">
+                <div id="div_st20.4" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st19.4').style.display='none'"><span
+                                onclick='document.getElementById('div_st20.4').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1870,7 +2036,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt20.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -1879,7 +2045,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt20.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -1888,7 +2054,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt20.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -1906,13 +2072,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 13)">Detail</a>
+            <a onclick="showClassDetail('c21', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -1921,7 +2087,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -1930,7 +2096,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -1939,7 +2105,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.4' class='hiddenRow bg-success'>
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -1948,7 +2114,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.5' class='hiddenRow bg-success'>
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -1957,7 +2123,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.6' class='hiddenRow bg-success'>
+        <tr id='pt21.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -1966,7 +2132,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.7' class='hiddenRow bg-success'>
+        <tr id='pt21.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -1975,7 +2141,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.8' class='hiddenRow bg-success'>
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -1984,7 +2150,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.9' class='hiddenRow bg-success'>
+        <tr id='pt21.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -1993,7 +2159,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.10' class='hiddenRow bg-success'>
+        <tr id='pt21.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -2002,7 +2168,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.11' class='hiddenRow bg-success'>
+        <tr id='pt21.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -2011,7 +2177,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.12' class='hiddenRow bg-success'>
+        <tr id='pt21.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -2020,7 +2186,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt20.13' class='hiddenRow bg-success'>
+        <tr id='pt21.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2038,13 +2204,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 2)">Detail</a>
+            <a onclick="showClassDetail('c22', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -2053,7 +2219,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -2071,13 +2237,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 21)">Detail</a>
+            <a onclick="showClassDetail('c23', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -2086,7 +2252,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -2095,7 +2261,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -2104,7 +2270,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -2113,7 +2279,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -2122,7 +2288,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -2131,7 +2297,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.7' class='hiddenRow bg-success'>
+        <tr id='pt23.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -2140,7 +2306,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.8' class='hiddenRow bg-success'>
+        <tr id='pt23.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -2149,7 +2315,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.9' class='hiddenRow bg-success'>
+        <tr id='pt23.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -2158,7 +2324,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.10' class='hiddenRow bg-success'>
+        <tr id='pt23.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -2167,7 +2333,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.11' class='hiddenRow bg-success'>
+        <tr id='pt23.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -2176,7 +2342,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.12' class='hiddenRow bg-success'>
+        <tr id='pt23.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -2185,7 +2351,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.13' class='hiddenRow bg-success'>
+        <tr id='pt23.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -2194,7 +2360,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.14' class='hiddenRow bg-success'>
+        <tr id='pt23.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -2203,7 +2369,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.15' class='hiddenRow bg-success'>
+        <tr id='pt23.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -2212,7 +2378,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.16' class='hiddenRow bg-success'>
+        <tr id='pt23.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -2221,7 +2387,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.17' class='hiddenRow bg-success'>
+        <tr id='pt23.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -2230,7 +2396,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.18' class='hiddenRow bg-success'>
+        <tr id='pt23.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -2239,7 +2405,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.19' class='hiddenRow bg-success'>
+        <tr id='pt23.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -2248,7 +2414,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.20' class='hiddenRow bg-success'>
+        <tr id='pt23.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -2257,7 +2423,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt22.21' class='hiddenRow bg-success'>
+        <tr id='pt23.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -2275,13 +2441,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 5)">Detail</a>
+            <a onclick="showClassDetail('c24', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -2290,7 +2456,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -2299,7 +2465,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -2308,7 +2474,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -2317,7 +2483,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt23.5' class='hiddenRow bg-success'>
+        <tr id='pt24.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -2335,13 +2501,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 7)">Detail</a>
+            <a onclick="showClassDetail('c25', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -2350,7 +2516,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -2359,7 +2525,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt25.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -2368,7 +2534,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt25.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -2377,7 +2543,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id='pt25.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -2386,7 +2552,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.6' class='hiddenRow bg-success'>
+        <tr id='pt25.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -2395,7 +2561,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt24.7' class='hiddenRow bg-success'>
+        <tr id='pt25.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -2413,13 +2579,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 11)">Detail</a>
+            <a onclick="showClassDetail('c26', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -2428,7 +2594,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -2437,7 +2603,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt26.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -2446,7 +2612,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.4' class='hiddenRow bg-success'>
+        <tr id='pt26.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -2455,7 +2621,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.5' class='hiddenRow bg-success'>
+        <tr id='pt26.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -2464,7 +2630,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.6' class='hiddenRow bg-success'>
+        <tr id='pt26.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -2473,7 +2639,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.7' class='hiddenRow bg-success'>
+        <tr id='pt26.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -2482,7 +2648,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.8' class='hiddenRow bg-success'>
+        <tr id='pt26.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -2491,7 +2657,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.9' class='hiddenRow bg-success'>
+        <tr id='pt26.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -2500,19 +2666,19 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id="st25.10" class="none bg-warning">
+        <tr id="st26.10" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.10')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.10')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st25.10" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.10" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st25.10').style.display='none'"><span
+                                onclick='document.getElementById('div_st26.10').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2526,7 +2692,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt25.11' class='hiddenRow bg-success'>
+        <tr id='pt26.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -2544,13 +2710,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 8)">Detail</a>
+            <a onclick="showClassDetail('c27', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -2559,7 +2725,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.2' class='hiddenRow bg-success'>
+        <tr id='pt27.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -2568,7 +2734,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -2577,7 +2743,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.4' class='hiddenRow bg-success'>
+        <tr id='pt27.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -2586,7 +2752,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.5' class='hiddenRow bg-success'>
+        <tr id='pt27.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -2595,7 +2761,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.6' class='hiddenRow bg-success'>
+        <tr id='pt27.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -2604,19 +2770,19 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id="st26.7" class="none bg-warning">
+        <tr id="st27.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st26.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st27.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st26.7').style.display='none'"><span
+                                onclick='document.getElementById('div_st27.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2630,7 +2796,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt26.8' class='hiddenRow bg-success'>
+        <tr id='pt27.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -2648,13 +2814,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 1)">Detail</a>
+            <a onclick="showClassDetail('c28', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -2672,13 +2838,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 21)">Detail</a>
+            <a onclick="showClassDetail('c29', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -2687,7 +2853,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -2696,7 +2862,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -2705,7 +2871,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.4' class='hiddenRow bg-success'>
+        <tr id='pt29.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -2714,7 +2880,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.5' class='hiddenRow bg-success'>
+        <tr id='pt29.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -2723,7 +2889,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.6' class='hiddenRow bg-success'>
+        <tr id='pt29.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -2732,7 +2898,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.7' class='hiddenRow bg-success'>
+        <tr id='pt29.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -2741,7 +2907,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.8' class='hiddenRow bg-success'>
+        <tr id='pt29.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -2750,7 +2916,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.9' class='hiddenRow bg-success'>
+        <tr id='pt29.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -2759,7 +2925,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.10' class='hiddenRow bg-success'>
+        <tr id='pt29.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -2768,7 +2934,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.11' class='hiddenRow bg-success'>
+        <tr id='pt29.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -2777,7 +2943,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.12' class='hiddenRow bg-success'>
+        <tr id='pt29.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -2786,7 +2952,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.13' class='hiddenRow bg-success'>
+        <tr id='pt29.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -2795,7 +2961,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.14' class='hiddenRow bg-success'>
+        <tr id='pt29.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -2804,7 +2970,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.15' class='hiddenRow bg-success'>
+        <tr id='pt29.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -2813,7 +2979,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.16' class='hiddenRow bg-success'>
+        <tr id='pt29.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -2822,7 +2988,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.17' class='hiddenRow bg-success'>
+        <tr id='pt29.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -2831,7 +2997,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.18' class='hiddenRow bg-success'>
+        <tr id='pt29.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -2840,7 +3006,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.19' class='hiddenRow bg-success'>
+        <tr id='pt29.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -2849,7 +3015,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.20' class='hiddenRow bg-success'>
+        <tr id='pt29.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -2858,7 +3024,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt28.21' class='hiddenRow bg-success'>
+        <tr id='pt29.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -2876,13 +3042,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 33)">Detail</a>
+            <a onclick="showClassDetail('c30', 33)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -2891,7 +3057,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -2900,7 +3066,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -2909,7 +3075,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -2918,7 +3084,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -2927,7 +3093,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -2936,7 +3102,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -2945,7 +3111,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -2954,7 +3120,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -2963,7 +3129,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -2972,7 +3138,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -2981,7 +3147,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -2990,7 +3156,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.13' class='hiddenRow bg-success'>
+        <tr id='pt30.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -2999,7 +3165,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.14' class='hiddenRow bg-success'>
+        <tr id='pt30.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -3008,7 +3174,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.15' class='hiddenRow bg-success'>
+        <tr id='pt30.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -3017,7 +3183,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.16' class='hiddenRow bg-success'>
+        <tr id='pt30.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -3026,7 +3192,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.17' class='hiddenRow bg-success'>
+        <tr id='pt30.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -3035,7 +3201,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.18' class='hiddenRow bg-success'>
+        <tr id='pt30.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -3044,7 +3210,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.19' class='hiddenRow bg-success'>
+        <tr id='pt30.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -3053,7 +3219,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.20' class='hiddenRow bg-success'>
+        <tr id='pt30.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -3062,7 +3228,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.21' class='hiddenRow bg-success'>
+        <tr id='pt30.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -3071,7 +3237,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.22' class='hiddenRow bg-success'>
+        <tr id='pt30.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -3080,7 +3246,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.23' class='hiddenRow bg-success'>
+        <tr id='pt30.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -3089,7 +3255,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.24' class='hiddenRow bg-success'>
+        <tr id='pt30.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -3098,7 +3264,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.25' class='hiddenRow bg-success'>
+        <tr id='pt30.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -3107,7 +3273,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.26' class='hiddenRow bg-success'>
+        <tr id='pt30.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -3116,7 +3282,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.27' class='hiddenRow bg-success'>
+        <tr id='pt30.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -3125,7 +3291,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.28' class='hiddenRow bg-success'>
+        <tr id='pt30.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -3134,7 +3300,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.29' class='hiddenRow bg-success'>
+        <tr id='pt30.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -3143,7 +3309,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.30' class='hiddenRow bg-success'>
+        <tr id='pt30.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -3152,7 +3318,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.31' class='hiddenRow bg-success'>
+        <tr id='pt30.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -3161,7 +3327,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.32' class='hiddenRow bg-success'>
+        <tr id='pt30.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -3170,7 +3336,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt29.33' class='hiddenRow bg-success'>
+        <tr id='pt30.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -3188,13 +3354,13 @@ AssertionError: 'No Cover' != 'The camicdemo'
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 16)">Detail</a>
+            <a onclick="showClassDetail('c31', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -3203,7 +3369,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -3212,7 +3378,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -3221,7 +3387,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -3230,7 +3396,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -3239,7 +3405,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -3248,7 +3414,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.7' class='hiddenRow bg-success'>
+        <tr id='pt31.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -3257,7 +3423,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.8' class='hiddenRow bg-success'>
+        <tr id='pt31.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -3266,7 +3432,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.9' class='hiddenRow bg-success'>
+        <tr id='pt31.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -3275,7 +3441,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id='pt31.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -3284,7 +3450,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.11' class='hiddenRow bg-success'>
+        <tr id='pt31.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -3293,7 +3459,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.12' class='hiddenRow bg-success'>
+        <tr id='pt31.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -3302,7 +3468,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.13' class='hiddenRow bg-success'>
+        <tr id='pt31.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -3311,7 +3477,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.14' class='hiddenRow bg-success'>
+        <tr id='pt31.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -3320,7 +3486,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.15' class='hiddenRow bg-success'>
+        <tr id='pt31.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -3329,7 +3495,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
     
     
     
-        <tr id='pt30.16' class='hiddenRow bg-success'>
+        <tr id='pt31.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -3340,10 +3506,10 @@ AssertionError: 'No Cover' != 'The camicdemo'
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>294</td>
-        <td>286</td>
+        <td>297</td>
+        <td>284</td>
         <td>1</td>
-        <td>0</td>
+        <td>5</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3372,7 +3538,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.8.0-33-generic #36~20.04.1-Ubuntu SMP Wed Dec 9 17:01:13 UTC 2020 x86_64 x86_64</td>
+              <td>Linux 5.8.0-36-generic #40~20.04.1-Ubuntu SMP Wed Jan 6 10:15:55 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3702,7 +3868,7 @@ AssertionError: 'No Cover' != 'The camicdemo'
 </div>
 
 <script>
-    drawCircle(286, 1, 0, 7);
+    drawCircle(284, 1, 5, 7);
 </script>
 
 </div>
