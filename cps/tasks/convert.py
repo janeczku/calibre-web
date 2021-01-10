@@ -123,7 +123,6 @@ class TaskConvert(CalibreTask):
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 try:
                     local_db.session.merge(new_format)
-                    local_db.session.flush()
                     local_db.session.commit()
                 except SQLAlchemyError as e:
                     local_db.session.rollback()
