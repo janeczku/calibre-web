@@ -394,7 +394,8 @@ def uploadFileToEbooksFolder(destFile, f):
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
-                driveFile = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],})
+                driveFile = drive.CreateFile({'title': x,
+                                              'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(f)
             driveFile.Upload()
         else:

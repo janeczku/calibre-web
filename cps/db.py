@@ -402,7 +402,10 @@ class AlchemyEncoder(json.JSONEncoder):
                                 el.append(ele.get())
                             else:
                                 el.append(json.dumps(ele, cls=AlchemyEncoder))
-                        data = ",".join(el)
+                        if field == 'authors':
+                            data = " & ".join(el)
+                        else:
+                            data = ",".join(el)
                         if data == '[]':
                             data = ""
                     else:
@@ -542,7 +545,7 @@ class CalibreDB():
                                          backref='books'))
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
-                                                          autoflush=True,
+                                                          autoflush=False,
                                                           bind=cls.engine))
         for inst in cls.instances:
             inst.initSession()
@@ -619,9 +622,12 @@ class CalibreDB():
             .join(*join, isouter=True) \
             .filter(db_filter) \
             .filter(self.common_filters(allow_show_archived))
-        pagination = Pagination(page, pagesize,
-                                len(query.all()))
-        entries = query.order_by(*order).offset(off).limit(pagesize).all()
+        try:
+            pagination = Pagination(page, pagesize,
+                                    len(query.all()))
+            entries = query.order_by(*order).offset(off).limit(pagesize).all()
+        except Exception as e:
+            logger.debug(e)
         for book in entries:
             book = self.order_authors(book)
         return entries, randm, pagination
