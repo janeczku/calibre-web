@@ -184,7 +184,7 @@ def toggle_read(book_id):
                 calibre_db.session.commit()
         except (KeyError, AttributeError):
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
-        except (OperationalError, OperationalError) as e:
+        except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: %e", e)
 
