@@ -66,7 +66,6 @@ from os import urandom
 from flask import g, Blueprint, url_for, abort, request
 from flask_login import login_user, login_required
 from flask_babel import gettext as _
-from sqlalchemy.exc import OperationalError
 
 from . import logger, ub, lm
 from .render_template import render_title_template
