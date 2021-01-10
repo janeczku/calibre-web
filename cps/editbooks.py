@@ -30,7 +30,7 @@ from uuid import uuid4
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
-from sqlalchemy.exc import OperationalError
+from sqlalchemy.exc import OperationalError, IntegrityError
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, ub, db
@@ -570,7 +570,7 @@ def upload_single_file(request, book, book_id):
                     calibre_db.session.add(db_format)
                     calibre_db.session.commit()
                     calibre_db.update_title_sort(config)
-                except OperationalError as e:
+                except (OperationalError, IntegrityError) as e:
                     calibre_db.session.rollback()
                     log.error('Database error: %s', e)
                     flash(_(u"Database error: %(error)s.", error=e), category="error")
@@ -925,7 +925,7 @@ def upload():
                     else:
                         resp = {"location": url_for('web.show_book', book_id=book_id)}
                         return Response(json.dumps(resp), mimetype='application/json')
-            except OperationalError as e:
+            except (OperationalError, IntegrityError) as e:
                 calibre_db.session.rollback()
                 log.error("Database error: %s", e)
                 flash(_(u"Database error: %(error)s.", error=e), category="error")
