@@ -44,10 +44,22 @@ logging.addLevelName(logging.CRITICAL, "CRIT")
 class _Logger(logging.Logger):
 
     def debug_or_exception(self, message, *args, **kwargs):
-        if is_debug_enabled():
-            self.exception(message, stacklevel=2, *args, **kwargs)
+        if sys.version_info > (3, 7):
+            if is_debug_enabled():
+                self.exception(message, stacklevel=2, *args, **kwargs)
+            else:
+                self.error(message, stacklevel=2, *args, **kwargs)
+        elif sys.version_info > (3, 0):
+            if is_debug_enabled():
+                self.exception(message, stack_info=True, *args, **kwargs)
+            else:
+                self.error(message, *args, **kwargs)
         else:
-            self.error(message, stacklevel=2, *args, **kwargs)
+            if is_debug_enabled():
+                self.exception(message, *args, **kwargs)
+            else:
+                self.error(message, *args, **kwargs)
+
 
     def debug_no_auth(self, message, *args, **kwargs):
         if message.startswith("send: AUTH"):
