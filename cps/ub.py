@@ -43,10 +43,11 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
+from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger
+from . import constants, logger, cli
 
 log = logger.create()
 
@@ -679,6 +680,21 @@ def init_db(app_db_path):
         Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
+
+    if cli.user_credentials:
+        username, password = cli.user_credentials.split(':')
+        user = session.query(User).filter(func.lower(User.nickname) == username.lower()).first()
+        if user:
+            user.password = generate_password_hash(password)
+            if session_commit() == "":
+                print("Password for user '{}' changed".format(username))
+                sys.exit(0)
+            else:
+                print("Failed changing password")
+                sys.exit(3)
+        else:
+            print("Username '{}' not valid, can't change password".format(username))
+            sys.exit(3)
 
 
 def dispose():
