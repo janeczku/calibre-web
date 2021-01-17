@@ -99,6 +99,9 @@ def create_app():
     	cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
+    if sys.version_info < (3, 0):
+        log.info('Python2 is EOL since end of 2020, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
+        print('Python2 is EOL since end of 2020, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
