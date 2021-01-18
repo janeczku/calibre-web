@@ -13,6 +13,76 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Merriweather+Sans:wght@300;400&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <style>
+          body {
+            font-family: "Merriweather", serif;
+            display: flex;
+            margin: auto;
+            justify-content: center;
+            color: #333;
+          }
+        
+          .site {
+            display: flex;
+            flex-direction: column;
+            max-width: 80vw;
+            height: 100vh;
+            margin: 0 auto;
+            overflow: hidden
+          }
+        
+          .header {
+            overflow: hidden;
+            padding: 35px 15px 35px 15px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0 15px 0 15px;
+            border-bottom: .5px solid #000
+          }
+        
+          .browse {
+            display: flex
+          }
+        
+          .browse-category {
+            padding: 0 22px 0 0;
+            border-right: .5px solid #000
+          }
+        
+          .search {
+            padding: 0 0 0 22px;
+            display: inline-block
+          }
+        
+          .search input {
+            width: 20%;
+            position: absolute;
+            margin: 2px 2px 2px 10px;
+            background-color: transparent;
+            border: none;
+            vertical-align: middle;
+            overflow: hidden
+          }
+        
+          .header-title {
+            font-size: 20px;
+            align-self: center
+          }
+        
+          .main {
+            height: 100%;
+            margin: 0 15px 0 15px;
+            padding: 30px 15px 15px 20px;
+            display: flex;
+            justify-content: center
+          }
+        </style>
     </head>
     <body>
       <div id="sidebar">
