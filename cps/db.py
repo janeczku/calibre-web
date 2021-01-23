@@ -50,6 +50,8 @@ try:
 except ImportError:
     use_unidecode = False
 
+log = logger.create()
+
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
 
@@ -627,9 +629,9 @@ class CalibreDB():
                                     len(query.all()))
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as e:
-            logger.debug(e)
-        for book in entries:
-            book = self.order_authors(book)
+            log.debug_or_exception(e)
+        #for book in entries:
+        #    book = self.order_authors(book)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
