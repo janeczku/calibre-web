@@ -13,14 +13,10 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/kthoom.css') }}" type="text/css"/>
 
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/io/bytestream.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/io/bytebuffer.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/io/bitstream.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/archive/archive.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/archive/rarvm.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/archive/unrar5.js') }}"></script>
   <script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/archive/archive.js') }}"></script>
   <script>
     var updateArrows = function() {
       if ($('input[name="direction"]:checked').val() === "0") {
