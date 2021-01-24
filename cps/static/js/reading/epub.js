@@ -20,6 +20,34 @@ var reader;
         $("#bookmark, #show-Bookmarks").remove();
     }
 
+    // Enable swipe support
+    // I have no idea why swiperRight/swiperLeft from plugins is not working, events just don't get fired
+    var touchStart = 0;
+    var touchEnd = 0;
+
+    reader.rendition.on('touchstart', function(event) {
+        touchStart = event.changedTouches[0].screenX;
+    });
+    reader.rendition.on('touchend', function(event) {
+      touchEnd = event.changedTouches[0].screenX;
+        if (touchStart < touchEnd) {
+            if(reader.book.package.metadata.direction === "rtl") {
+    			reader.rendition.next();
+    		} else {
+    			reader.rendition.prev();
+    		}
+            // Swiped Right
+        }
+        if (touchStart > touchEnd) {
+            if(reader.book.package.metadata.direction === "rtl") {
+    			reader.rendition.prev();
+    		} else {
+                reader.rendition.next();
+    		}
+            // Swiped Left
+        }
+    });
+
     /**
      * @param {string} action - Add or remove bookmark
      * @param {string|int} location - Location or zero
@@ -43,3 +71,5 @@ var reader;
         });
     }
 })();
+
+
