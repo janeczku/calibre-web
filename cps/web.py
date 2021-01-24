@@ -1198,7 +1198,7 @@ def serve_book(book_id, book_format, anyname):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book_id, book_format.upper())
     if not data:
-        abort(404)
+        return "File not in Database"
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
@@ -1207,11 +1207,14 @@ def serve_book(book_id, book_format, anyname):
         return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
     else:
         if book_format.upper() == 'TXT':
-            rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
-                           "rb").read()
-            result = chardet.detect(rawdata)
-            return make_response(
-                rawdata.decode(result['encoding']).encode('utf-8'))
+            try:
+                rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                               "rb").read()
+                result = chardet.detect(rawdata)
+                return make_response(
+                    rawdata.decode(result['encoding']).encode('utf-8'))
+            except FileNotFoundError:
+                return "File Not Found"
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
