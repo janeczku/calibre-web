@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-10 18:12:04</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-23 19:48:56</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-10 20:39:46</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-23 22:16:21</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 59 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 0 min</p>
         </div>
       </div>
       </div>
@@ -611,15 +611,15 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
         <td class="text-center">3</td>
         <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c8', 5)">Detail</a>
+            <a onclick="showClassDetail('c8', 3)">Detail</a>
         </td>
     </tr>
 
@@ -634,126 +634,20 @@
     
     
     
-        <tr id="ft8.2" class="none bg-danger">
+        <tr id='pt8.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft8.2" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft8.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 167, in test_convert_only
-    self.assertTrue(self.check_element_on_page((By.ID, "flash_success")))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et8.3" class="none bg-info">
-            <td>
-                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.3')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et8.3" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et8.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 103, in tearDown
-    self.login('admin', 'admin123')
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 65, in login
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "username")))
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message:</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="et8.4" class="none bg-info">
+        <tr id='pt8.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et8.4" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et8.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 123, in test_convert_wrong_excecutable
-    task_len = len(self.check_tasks())
-TypeError: object of type 'bool' has no len()</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="et8.5" class="none bg-info">
-            <td>
-                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et8.5" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et8.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py", line 103, in tearDown
-    self.login('admin', 'admin123')
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 65, in login
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "username")))
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message:</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1593,53 +1487,89 @@ selenium.common.exceptions.TimeoutException: Message:</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>TestSetupGdrive</td>
+    <tr id="su" class="failClass">
+        <td>TestFilePicker</td>
+        <td class="text-center">3</td>
+        <td class="text-center">2</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 1)">Detail</a>
+            <a onclick="showClassDetail('c15', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et15.1" class="none bg-info">
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
+                <div class='testcase'>TestFilePicker - test_filepicker_all_file</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft15.2" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.2')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et15.1" class="popup_window test_output" style="display:none;">
+                <div id="div_ft15.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et15.1').style.display='none'"><span
+                                onclick='document.getElementById('div_ft15.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_gdrive_setup.py", line 160, in test_config_gdrive
-    auth_button.click()
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&u=http%3A//127.0.0.1%3A8083/gdrive/authenticate&c=UTF-8&d=Firefox%20kann%20keine%20Verbindung%20zu%20dem%20Server%20unter%20127.0.0.1%3A8083%20aufbauen.</pre>
+  File "/home/ozzie/Development/calibre-web-test/test/test_filepicker.py", line 48, in test_filepicker_limited_file
+    self.assertEqual(CALIBRE_WEB_PATH, element.text)
+AssertionError: '/home/ozzie/Development/calibre-web' != ''
+- /home/ozzie/Development/calibre-web
++</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSetupGdrive</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c16', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt16.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1653,13 +1583,13 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 3)">Detail</a>
+            <a onclick="showClassDetail('c17', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -1668,7 +1598,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -1677,7 +1607,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -1695,13 +1625,13 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 9)">Detail</a>
+            <a onclick="showClassDetail('c18', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -1710,7 +1640,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -1719,7 +1649,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -1728,7 +1658,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -1737,7 +1667,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -1746,7 +1676,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -1755,7 +1685,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -1764,7 +1694,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -1773,7 +1703,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt18.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -1791,13 +1721,13 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 13)">Detail</a>
+            <a onclick="showClassDetail('c19', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -1806,7 +1736,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -1815,7 +1745,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -1824,7 +1754,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.4' class='hiddenRow bg-success'>
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -1833,7 +1763,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -1842,7 +1772,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -1851,7 +1781,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.7' class='hiddenRow bg-success'>
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -1860,7 +1790,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.8' class='hiddenRow bg-success'>
+        <tr id='pt19.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -1869,7 +1799,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.9' class='hiddenRow bg-success'>
+        <tr id='pt19.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -1878,7 +1808,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.10' class='hiddenRow bg-success'>
+        <tr id='pt19.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -1887,7 +1817,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.11' class='hiddenRow bg-success'>
+        <tr id='pt19.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -1896,7 +1826,7 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.12' class='hiddenRow bg-success'>
+        <tr id='pt19.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -1905,65 +1835,11 @@ selenium.common.exceptions.WebDriverException: Message: Reached error page: abou
     
     
     
-        <tr id='pt18.13' class='hiddenRow bg-success'>
+        <tr id='pt19.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c19', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="et19.1" class="none bg-info">
-            <td>
-                <div class='testcase'>tearDownClass (test_ldap)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et19.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et19.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ldap.py", line 45, in tearDownClass
-    cls.stop_calibre_web()
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 370, in stop_calibre_web
-    cls.driver.find_element_by_id('admin_stop').click()
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 360, in find_element_by_id
-    return self.find_element(by=By.ID, value=id_)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 976, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="admin_stop"]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
         </tr>
     
     
@@ -2066,13 +1942,13 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
 
     <tr id="su" class="passClass">
         <td>TestLogin</td>
-        <td class="text-center">13</td>
-        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">14</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 13)">Detail</a>
+            <a onclick="showClassDetail('c21', 14)">Detail</a>
         </td>
     </tr>
 
@@ -2187,6 +2063,15 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
     
         <tr id='pt21.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_proxy_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2433,11 +2318,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestReader</td>
         <td class="text-center">5</td>
-        <td class="text-center">5</td>
-        <td class="text-center">0</td>
+        <td class="text-center">4</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2483,11 +2368,31 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id="ft24.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft24.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft24.5" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft24.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_reader.py", line 61, in test_txt_reader
+    self.assertTrue('hörte' in content.text, 'Encoding of textfile viewer is not respected properly')
+AssertionError: False is not true : Encoding of textfile viewer is not respected properly</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3506,10 +3411,10 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>297</td>
-        <td>284</td>
-        <td>1</td>
-        <td>5</td>
+        <td>298</td>
+        <td>289</td>
+        <td>2</td>
+        <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3538,7 +3443,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.8.0-36-generic #40~20.04.1-Ubuntu SMP Wed Jan 6 10:15:55 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.8.0-40-generic #45~20.04.1-Ubuntu SMP Fri Jan 15 11:35:04 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3688,7 +3593,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
           
             <tr>
               <th>PyYAML</th>
-              <td>5.3.1</td>
+              <td>5.4.1</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3724,13 +3629,13 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
           
             <tr>
               <th>PyYAML</th>
-              <td>5.3.1</td>
+              <td>5.4.1</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>comicapi</th>
-              <td>2.1.2</td>
+              <td>2.1.3</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -3784,7 +3689,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
           
             <tr>
               <th>PyYAML</th>
-              <td>5.3.1</td>
+              <td>5.4.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3814,7 +3719,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
           
             <tr>
               <th>PyYAML</th>
-              <td>5.3.1</td>
+              <td>5.4.1</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3868,7 +3773,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
 </div>
 
 <script>
-    drawCircle(284, 1, 5, 7);
+    drawCircle(289, 2, 0, 7);
 </script>
 
 </div>
