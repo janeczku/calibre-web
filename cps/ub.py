@@ -227,9 +227,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
-        # Initialize flask_session once
-        if 'view' not in flask_session:
-            flask_session['view']={}
 
 
     def role_admin(self):
@@ -248,14 +245,18 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return False
 
     def get_view_property(self, page, prop):
-        if not flask_session['view'].get(page):
-            return None
-        return flask_session['view'][page].get(prop)
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                return None
+            return flask_session['view'][page].get(prop)
+        return None
 
     def set_view_property(self, page, prop, value):
-        if not flask_session['view'].get(page):
-            flask_session['view'][page] = dict()
-        flask_session['view'][page][prop] = value
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                flask_session['view'][page] = dict()
+            flask_session['view'][page][prop] = value
+        return None
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
