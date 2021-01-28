@@ -430,7 +430,12 @@ def check_auth(username, password):
             username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()
-    return bool(user and check_password_hash(str(user.password), password))
+    if bool(user and check_password_hash(str(user.password), password)):
+        return True
+    else:
+        ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ipAdress)
+        return False
 
 
 def authenticate():
