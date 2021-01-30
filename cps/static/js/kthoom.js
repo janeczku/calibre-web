@@ -635,6 +635,14 @@ function init(filename) {
     // Focus the scrollable area so that keyboard scrolling work as expected
     $("#mainContent").focus();
 
+    $("#mainContent").swipe( {
+        swipeRight:function() {
+            showLeftPage();
+        },
+        swipeLeft:function() {
+            showRightPage();
+        },
+    });
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
         // where the user clicked in the image.

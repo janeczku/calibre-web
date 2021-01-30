@@ -21,6 +21,7 @@ import sys
 import os
 from collections import namedtuple
 
+# if installed via pip this variable is set to true
 HOME_CONFIG = False
 
 # Base dir is parent of current file, necessary if called from different folder
@@ -40,7 +41,7 @@ if HOME_CONFIG:
         os.makedirs(home_dir)
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
 else:
-    CONFIG_DIR      = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
+    CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
 
 
 ROLE_USER               = 0 << 0
@@ -130,7 +131,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 
-STABLE_VERSION = {'version': '0.6.10 Beta'}
+STABLE_VERSION = {'version': '0.6.11 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'

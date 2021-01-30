@@ -24,6 +24,7 @@ from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
+import re
 import mimetypes
 import chardet  # dependency of requests
 
@@ -47,7 +48,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
-from . import calibre_db, shelf
+from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
@@ -184,7 +185,7 @@ def toggle_read(book_id):
                 calibre_db.session.commit()
         except (KeyError, AttributeError):
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
-        except OperationalError as e:
+        except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: %e", e)
 
@@ -1198,7 +1199,7 @@ def serve_book(book_id, book_format, anyname):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book_id, book_format.upper())
     if not data:
-        abort(404)
+        return "File not in Database"
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
@@ -1207,11 +1208,14 @@ def serve_book(book_id, book_format, anyname):
         return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
     else:
         if book_format.upper() == 'TXT':
-            rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
-                           "rb").read()
-            result = chardet.detect(rawdata)
-            return make_response(
-                rawdata.decode(result['encoding']).encode('utf-8'))
+            try:
+                rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                               "rb").read()
+                result = chardet.detect(rawdata)
+                return make_response(
+                    rawdata.decode(result['encoding']).encode('utf-8'))
+            except FileNotFoundError:
+                return "File Not Found"
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
@@ -1270,11 +1274,17 @@ def register():
         if config.config_register_email:
             nickname = to_save["email"]
         else:
-            nickname = to_save["nickname"]
-        if not nickname or not to_save["email"]:
+            nickname = to_save.get('nickname', None)
+        if not nickname or not to_save.get("email", None):
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
-
+        #if to_save["email"].count("@") != 1 or not \
+        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                     to_save["email"]):
+            flash(_(u"Invalid e-mail address format"), category="error")
+            log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
+            return render_title_template('register.html', title=_(u"register"), page="register")
 
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == nickname
                                                          .lower()).first()
@@ -1300,7 +1310,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                log.warning('Registering failed for user "%s" e-mail address: %s', to_save['nickname'], to_save["email"])
+                log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('web.login'))

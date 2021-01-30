@@ -45,6 +45,7 @@ mimetypes.add_type('application/fb2+zip', '.fb2')
 mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
 mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
 mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
 mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
@@ -98,6 +99,9 @@ def create_app():
     	cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
+    if sys.version_info < (3, 0):
+        log.info('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
+        print('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))

@@ -636,7 +636,7 @@ def pathchooser():
         "parentdir": parentdir,
         "type": browse_for,
         "oldfile": oldfile,
-        "absolute": abs,
+        "absolute": absolute,
     }
     return json.dumps(context)
 

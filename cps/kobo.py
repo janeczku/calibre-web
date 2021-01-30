@@ -43,7 +43,6 @@ from flask_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import load_only
 from sqlalchemy.exc import StatementError
 import requests
@@ -58,7 +57,7 @@ KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
 
-SYNC_ITEM_LIMIT = 5
+SYNC_ITEM_LIMIT = 100
 
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
