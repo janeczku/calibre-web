@@ -43,10 +43,11 @@ from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
+from sqlalchemy.sql.expression import func
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger
+from . import constants, logger, cli
 
 log = logger.create()
 
@@ -226,9 +227,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
-        # Initialize flask_session once
-        if 'view' not in flask_session:
-            flask_session['view']={}
 
 
     def role_admin(self):
@@ -247,14 +245,18 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return False
 
     def get_view_property(self, page, prop):
-        if not flask_session['view'].get(page):
-            return None
-        return flask_session['view'][page].get(prop)
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                return None
+            return flask_session['view'][page].get(prop)
+        return None
 
     def set_view_property(self, page, prop, value):
-        if not flask_session['view'].get(page):
-            flask_session['view'][page] = dict()
-        flask_session['view'][page][prop] = value
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                flask_session['view'][page] = dict()
+            flask_session['view'][page][prop] = value
+        return None
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
@@ -679,6 +681,21 @@ def init_db(app_db_path):
         Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
+
+    if cli.user_credentials:
+        username, password = cli.user_credentials.split(':')
+        user = session.query(User).filter(func.lower(User.nickname) == username.lower()).first()
+        if user:
+            user.password = generate_password_hash(password)
+            if session_commit() == "":
+                print("Password for user '{}' changed".format(username))
+                sys.exit(0)
+            else:
+                print("Failed changing password")
+                sys.exit(3)
+        else:
+            print("Username '{}' not valid, can't change password".format(username))
+            sys.exit(3)
 
 
 def dispose():
