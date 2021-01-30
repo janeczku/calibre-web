@@ -145,44 +145,16 @@ if ($("body.book").length > 0) {
     $(".blur-wrapper")
         .prepend('<div><img alt="Blurred cover" class="bg-blur" src="' + cover + '"></div>');
 
-    // Fix-up book detail headings
-    publisher = $(".publishers p span").text().split(":");
-    $(".publishers p span").remove();
-    $.each(publisher, function (i, val) {
-        $(".publishers").append("<span>" + publisher[i] + "</span>");
-    });
-    $(".publishers span:nth-child(3)").text(function () {
-        return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
-    });
-
-    // Fix-up book custom colums headings
-    // real_custom_column = $( '.real_custom_columns' ).text().split( ':' );
-    real_custom_column = $(".real_custom_columns");
-    // $( ".real_custom_columns" ).remove();
-    $.each(real_custom_column, function (i, val) {
-        var split = $(this).text().split(":");
-        real_cc_key = split.shift();
-        real_cc_value = split.join(":");
-        $(this).text("");
-        if (real_cc_value != "") {
-            $(this).append("<span>" + real_cc_key + "</span><span>" + real_cc_value + "</span>");
+    // Metadata Fields - Publishers, Published, Languages and Custom
+    $('.publishers, .publishing-date, .real_custom_columns, .languages').each(function () {
+        var splitText = $(this).text().split(':');
+        var label = splitText.shift().trim();
+        var value = splitText.join(':').trim();
+        // Preserve Links
+        if ($(this).find('a').length) {
+            value = $(this).find('a').first().removeClass();
         }
-    });
-    //$( '.real_custom_columns:nth-child(3)' ).text(function() {
-    //return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
-    //});
-
-    published = $(".publishing-date p")
-        .text().split(": ");
-    $(".publishing-date p").remove();
-    $.each(published, function (i, val) {
-        $(".publishing-date").append("<span>" + published[i] + "</span>");
-    });
-
-    languages = $(".languages p span").text().split(": ");
-    $(".languages p span").remove();
-    $.each(languages, function (i, val) {
-        $(".languages").append("<span>" + languages[i] + "</span>");
+        $(this).html('<span>' + label + '</span><span></span>').find('span').last().append(value);
     });
 
     $(".book-meta h2:first").clone()
@@ -245,11 +217,6 @@ if ($("body.book").length > 0) {
     $('div[aria-label="Add to shelves"]').click(function () {
         $("#add-to-shelves").toggle();
     });
-
-    // Fix formatting error on book detail languages
-    if (!$(".book-meta > .bookinfo > .languages > span:last-of-type").text().startsWith(" ")) {
-        $(".book-meta > .bookinfo > .languages > span:last-of-type").prepend(" ");
-    }
 
     //Work to reposition dropdowns. Does not currently solve for
     //screen resizing

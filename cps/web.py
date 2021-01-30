@@ -264,7 +264,7 @@ def get_comic_book(book_id, book_format, page):
                 else:
                     b64 = extract(page).encode('base64')
                 ext = names[page].rpartition('.')[-1]
-                if ext not in ('png', 'gif', 'jpg', 'jpeg'):
+                if ext not in ('png', 'gif', 'jpg', 'jpeg', 'webp'):
                     ext = 'png'
                 extractedfile="data:image/" + ext + ";base64," + b64
                 fileData={"name": names[page], "page":page, "last":len(names)-1, "content": extractedfile}
