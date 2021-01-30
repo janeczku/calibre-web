@@ -2119,8 +2119,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container 
     transition: all 0s
 }
 
-
-.book-meta > .bookinfo > .tags .btn-info, .well > form > .btn {
+.well > form > .btn {
     vertical-align: middle;
     -o-transition: background-color .2s, color .2s
 }
@@ -2957,46 +2956,35 @@ body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-
     margin-top: 24px
 }
 
-.book-meta > .bookinfo > .publishers > span:first-of-type, .book-meta > .bookinfo > .publishing-date > span:first-of-type {
+.book-meta > .bookinfo > .languages > span:first-of-type,
+.book-meta > .bookinfo > .publishers > span:first-of-type,
+.book-meta > .bookinfo > .publishing-date > span:first-of-type,
+.real_custom_columns > span:first-of-type {
     color: hsla(0, 0%, 100%, .45);
     text-transform: uppercase;
-    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif
+    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
+    width: 200px;
+    display: inline-block
 }
 
-.book-meta > .bookinfo > .publishers > span:last-of-type, .book-meta > .bookinfo > .publishing-date > span:last-of-type {
+.book-meta > .bookinfo > .languages > span:last-of-type,
+.book-meta > .bookinfo > .publishers > span:last-of-type,
+.book-meta > .bookinfo > .publishing-date > span:last-of-type,
+.real_custom_columns > span:last-of-type {
     font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
     color: #fff;
     font-size: 15px;
     -webkit-font-smoothing: antialiased
 }
 
-.book-meta > .bookinfo > .publishers > span:last-of-type {
-    padding-left: 90px
+.book-meta > .bookinfo > .languages > span > a,
+.book-meta > .bookinfo > .publishers > span > a,
+.book-meta > .bookinfo > .publishing-date > span > a,
+.real_custom_columns > span > a {
+    color: #fff
 }
 
-.real_custom_columns > span:last-of-type {
-    padding-left: 90px
-}
-
-.book-meta > .bookinfo > .publishing-date > span:last-of-type {
-    padding-left: 90px
-}
-
-.book-meta > .bookinfo > .languages > span:first-of-type {
-    color: hsla(0, 0%, 100%, .45);
-    text-transform: uppercase;
-    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif
-}
-
-.book-meta > .bookinfo > .languages > span:last-of-type {
-    font-size: 15px;
-    font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    color: #fff;
-    padding-left: 85px
-}
-
-.book-meta > .bookinfo > .tags .btn-info, .book-meta > h2, body.book .author {
+.book-meta > h2, body.book .author {
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif
 }
 
@@ -3077,32 +3065,8 @@ body.book .author {
     background-color: rgba(0, 0, 0, .3)
 }
 
-.book-meta > .bookinfo > .identifiers > p > .btn-success, .book-meta > .bookinfo > .tags .btn-info {
-    overflow: hidden;
-    text-align: center;
-    white-space: nowrap;
-    margin: 2px 3px 0 0;
-    padding: 0 10px
-}
-
-.book-meta > .bookinfo > .tags .btn-info {
-    background-color: rgba(0, 0, 0, .15);
-    color: hsla(0, 0%, 100%, .7);
-    font-size: 13px;
-    display: inline-block;
-    border-radius: 4px;
-    -webkit-transition: background-color .2s, color .2s;
-    transition: background-color .2s, color .2s;
-    text-transform: none
-}
-
 .dropdown-menu, .tooltip.in {
     -webkit-transition: opacity .15s ease-out, -webkit-transform .15s cubic-bezier(.6, .4, .2, 1.4)
-}
-
-.book-meta > .bookinfo > .tags .btn-info:hover {
-    color: #fff;
-    text-decoration: underline
 }
 
 .book-meta > .bookinfo > .identifiers, .book-meta > .bookinfo > .tags {
@@ -3345,7 +3309,8 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     box-shadow: none
 }
 
-.book-meta > .bookinfo > .identifiers > p > .btn-success {
+.book-meta > .bookinfo .btn-info,
+.book-meta > .bookinfo .btn-success {
     background-color: rgba(0, 0, 0, .15);
     color: hsla(0, 0%, 100%, .7);
     font-size: 13px;
@@ -3359,9 +3324,19 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     text-transform: none
 }
 
-.book-meta > .bookinfo > .identifiers > p > .btn-success:hover {
+.book-meta > .bookinfo .btn-info:hover,
+.book-meta > .bookinfo .btn-success:hover {
     color: #fff;
     text-decoration: underline
+}
+
+.book-meta > .bookinfo .btn-info,
+.book-meta > .bookinfo .btn-success {
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    margin: 2px 3px 0 0;
+    padding: 0 10px
 }
 
 #bookDetailsModal .book-meta {
@@ -6970,16 +6945,12 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin: 45px
     }
 
-    .book-meta > .bookinfo > .publishing-date > span:last-of-type {
-        padding-left: 25px
-    }
-
-    .book-meta > .bookinfo > .publishers > span:last-of-type {
-        padding-left: 70px
-    }
-
-    .book-meta > .bookinfo > .languages > span:last-of-type {
-        padding-left: 65px
+    .book-meta > .bookinfo > .languages > span:first-of-type,
+    .book-meta > .bookinfo > .publishers > span:first-of-type,
+    .book-meta > .bookinfo > .publishing-date > span:first-of-type,
+    .real_custom_columns > span:first-of-type {
+        width: 50%;
+        max-width: 200px;
     }
 
     .book-meta > .bookinfo .publishers {
