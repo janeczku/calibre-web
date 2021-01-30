@@ -89,7 +89,7 @@
             {% endif %}
         </div>
       </div>
-      <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
+      <h2 id="title">{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
