@@ -212,6 +212,64 @@ def view_configuration():
                                  restrictColumns=restrict_columns,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
+@admi.route("/admin/usertable")
+@login_required
+@admin_required
+def edit_user_table():
+    visibility = current_user.view_settings.get('useredit', {})
+    allUser = ub.session.query(ub.User).all()
+    return render_title_template("user_table.html", users=allUser, visiblility=visibility,
+                                 title=_(u"Edit Users"), page="usertable")
+
+@admi.route("/axjax/listusers")
+@login_required
+@admin_required
+def list_users():
+    off = request.args.get("offset") or 0
+    limit = request.args.get("limit") or 10
+
+    total_count = ub.session.query(ub.User).count()
+    search = request.args.get("search")
+    if search:
+        users = ub.session.query(ub.User).filter().offset(off).limit(limit).all()
+        filtered_count = users.length()
+        # entries, filtered_count, pagination = calibre_db.get_search_results(search, off, order, limit)
+    else:
+        users = ub.session.query(ub.User).offset(off).limit(limit).all()
+        filtered_count = total_count
+
+    table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": users}
+    js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
+
+    response = make_response(js_list)
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+
+@admi.route("/axjax/editlistusers/<param>", methods=['POST'])
+@login_required
+@admin_required
+def edit_list_user(param):
+    vals = request.form.to_dict()
+    user = ub.session.query(ub.User).filter(ub.User.id == vals['pk']).one_or_none() # ub.User.query calibre_db.get_book(vals['pk'])
+    if param =='nickname':
+        if not ub.session.query(ub.User).filter(ub.User.nickname == vals['value']).scalar():
+            user.nickname = vals['value']
+        else:
+            log.error(u"This username is already taken")
+            return _(u"This username is already taken"), 400
+    elif param =='email':
+        existing_email = ub.session.query(ub.User).filter(ub.User.email == vals['value'].lower()).first()
+        if not existing_email:
+            user.email = vals['value']
+        else:
+            log.error(u"Found an existing account for this e-mail address.")
+            return _(u"Found an existing account for this e-mail address."), 400
+    elif param =='kindle_mail':
+        user.kindle_mail = vals['value']
+    ub.session_commit()
+    return ""
+
 
 @admi.route("/admin/viewconfig", methods=["POST"])
 @login_required
