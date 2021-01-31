@@ -36,7 +36,7 @@ def get_sidebar_config(kwargs=None):
     else:
         content = 'conf' in kwargs
     sidebar = list()
-    sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
+    sidebar.append({"glyph": "glyphicon-book", "text": _('Books'), "link": 'web.index', "id": "new",
                     "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
                     "show_text": _('Show recent books'), "config_show":False})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
