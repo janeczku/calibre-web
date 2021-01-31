@@ -147,7 +147,7 @@ kthoom.ImageFile = function(file) {
             this.mimeType = "image/jpeg";
             break;
         case "gif":
-            this.mimeType = "iamge/gif";
+            this.mimeType = "image/gif";
             break;
         case "svg":
             this.mimeType = "image/svg+xml";
