@@ -20,21 +20,31 @@
            data-url="{{url_for('admin.list_users')}}">
       <thead>
         <tr>
+            <th data-buttontext="{{_('Edit User')}}" data-formatter="singleUserFormatter"></th>
             <th data-field="state" data-checkbox="true" data-sortable="true"></th>
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
-            {{ user_table_row('nickname', _('Enter Username'),_('Username'), true) }}
-            {{ user_table_row('email', _('Enter E-mail Address'),_('E-mail Address'), true) }}
-            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'),_('Kindle E-mail'), true) }}
-            <th data-field="admin" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="upload" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="download" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="view_books" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="edit" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="delete" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="public_shelf" data-checkbox="true" data-sortable="true"></th>
+            {{ user_table_row('nickname', _('Enter Username'), _('Username'), true) }}
+            {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
+            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), true) }}
+            <th data-field="role" data-column="{{all_roles.admin_role}}" data-formatter="checkboxFormatter">{{_('Admin')}}</th>
+            <th data-field="role" data-column="{{all_roles.download_role}}" data-formatter="checkboxFormatter">{{_('Upload')}}</th>
+            <th data-field="role" data-column="{{all_roles.upload_role}}" data-formatter="checkboxFormatter">{{_('Download')}}</th>
+            <th data-field="role" data-column="{{all_roles.edit_role}}" data-formatter="checkboxFormatter">{{_('Edit')}}</th>
+            <th data-field="role" data-column="{{all_roles.passwd_role}}" data-formatter="checkboxFormatter">{{_('Change Password')}}</th>
+            <th data-field="role" data-column="{{all_roles.edit_shelf_role}}" data-formatter="checkboxFormatter">{{_('Edit Public Shelfs')}}</th>
+            <th data-field="role" data-column="{{all_roles.delete_role}}" data-formatter="checkboxFormatter">{{_('Delete')}}</th>
+            <th data-field="role" data-column="{{all_roles.viewer_role}}" data-formatter="checkboxFormatter">{{_('View')}}</th>
+            {{ user_table_row('denied_tags', _("Enter Users's Locale"), _("Users's Locale"), true) }}
+            {{ user_table_row('allowed_tags', _("Enter Users's Locale"), _("Users's Locale"), true) }}
+            {{ user_table_row('allowed_column_value', _("Enter Users's Locale"), _("Users's Locale"), true) }}
+            {{ user_table_row('denied_column_value', _("Enter Users's Locale"), _("Users's Locale"), true) }}
+            <th data-align="right" data-formatter="UserActions" data-switchable="false">{{_('Delete User')}}</th>
         </tr>
       </thead>
     </table>
+{% endblock %}
+{% block modal %}
+{{ delete_confirm_modal() }}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
