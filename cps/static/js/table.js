@@ -256,13 +256,11 @@ $(function() {
         $("#h4").addClass("hidden");
     });
     function startTable(type, user_id) {
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
-        var path = src.substring(0, src.lastIndexOf("/"));
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
             },
-            url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
+            url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
             rowStyle: function(row) {
                 // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
@@ -276,13 +274,13 @@ $(function() {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),
-                        url: path + "/../../ajax/deleterestriction/" + type + "/" + user_id,
+                        url: getPath() + "/ajax/deleterestriction/" + type + "/" + user_id,
                         async: true,
                         timeout: 900,
                         success:function() {
                             $.ajax({
                                 method:"get",
-                                url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
+                                url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
                                 async: true,
                                 timeout: 900,
                                 success:function(data) {
@@ -298,7 +296,7 @@ $(function() {
         $("#restrict-elements-table").removeClass("table-hover");
         $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row) {
             $.ajax({
-                url: path + "/../../ajax/editrestriction/" + type + "/" + user_id,
+                url: getPath() + "/ajax/editrestriction/" + type + "/" + user_id,
                 type: "Post",
                 data: row
             });
@@ -306,13 +304,13 @@ $(function() {
         $("[id^=submit_]").click(function() {
             $(this)[0].blur();
             $.ajax({
-                url: path + "/../../ajax/addrestriction/" + type + "/" + user_id,
+                url: getPath() + "/ajax/addrestriction/" + type + "/" + user_id,
                 type: "Post",
                 data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
                 success: function () {
                     $.ajax ({
                         method:"get",
-                        url: path + "/../../ajax/listrestriction/" + type + "/" + user_id,
+                        url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
                         async: true,
                         timeout: 900,
                         success:function(data) {
