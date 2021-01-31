@@ -429,7 +429,8 @@ $(function() {
         },
     });
 
-    $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
+
+    /*$("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
         var rows = rowsAfter;
 
@@ -440,7 +441,7 @@ $(function() {
         var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
             return row.id;
         });
-    });
+    });*/
 });
 
 /* Function for deleting domain restrictions */
@@ -472,10 +473,39 @@ function EbookActions (value, row) {
     ].join("");
 }
 
+/* Function for deleting books */
+function UserActions (value, row) {
+    return [
+        "<div class=\"user-remove\" data-toggle=\"modal\" data-target=\"#GeneralDeleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "</div>"
+    ].join("");
+}
+
 /* Function for keeping checked rows */
 function responseHandler(res) {
     $.each(res.rows, function (i, row) {
         row.state = $.inArray(row.id, selections) !== -1;
     });
     return res;
+}
+
+function singleUserFormatter(value, row) {
+    return '<button type="button" className="btn btn-default"><a href="/admin/user/' + row.id + '">' + this.buttontext + '</a></button>'
+}
+
+function checkboxFormatter(value, row, index){
+    if(value & this.column)
+        return '<input type="checkbox" class="chk" checked onchange="checkboxChange(this, '+index+')">';
+    else
+        return '<input type="checkbox" class="chk" onchange="checkboxChange(this, '+index+')">';
+}
+
+function checkboxChange(checkbox, index){
+    $('#user-table').bootstrapTable('updateCell', {
+        index: index,
+        field: 'role',
+        value: checkbox.checked,
+        reinit: false
+    });
 }
