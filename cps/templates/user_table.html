@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% macro user_table_row(parameter, edit_text, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+    data-visible = "{{visiblility.get(parameter)}}"
+    data-editable-type="text"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-title="{{ edit_text }}"
+    data-edit="true"
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}" {% endif %}
+>{{ show_text }}</th>
+{%- endmacro %}
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<h2 class="{{page}}">{{_(title)}}</h2>
+    <table id="user-table" class="table table-no-bordered table-striped"
+           data-url="{{url_for('admin.list_users')}}">
+      <thead>
+        <tr>
+            <th data-field="state" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+            {{ user_table_row('nickname', _('Enter Username'),_('Username'), true) }}
+            {{ user_table_row('email', _('Enter E-mail Address'),_('E-mail Address'), true) }}
+            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'),_('Kindle E-mail'), true) }}
+            <th data-field="admin" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="upload" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="download" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="view_books" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="edit" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="delete" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="public_shelf" data-checkbox="true" data-sortable="true"></th>
+        </tr>
+      </thead>
+    </table>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script>
+</script>
+{% endblock %}

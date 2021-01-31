@@ -344,6 +344,103 @@ $(function() {
         $("#h3").removeClass("hidden");
     });
 
+    // User table handling
+    var user_column = [];
+    $("#user-table > thead > tr > th").each(function() {
+        var element = {};
+        if ($(this).attr("data-edit")) {
+            element = {
+                editable: {
+                    mode: "inline",
+                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    error: function(response) {
+                        return response.responseText;
+                    }
+                }
+            };
+        }
+        var validateText = $(this).attr("data-edit-validate");
+        if (validateText) {
+            element.editable.validate = function (value) {
+                if ($.trim(value) === "") return validateText;
+            };
+        }
+        user_column.push(element);
+    });
+
+    $("#user-table").bootstrapTable({
+        sidePagination: "server",
+        pagination: true,
+        paginationLoop: false,
+        paginationDetailHAlign: " hidden",
+        paginationHAlign: "left",
+        idField: "id",
+        uniqueId: "id",
+        search: true,
+        showColumns: true,
+        searchAlign: "left",
+        showSearchButton : false,
+        searchOnEnterKey: true,
+        checkboxHeader: false,
+        maintainMetaData: true,
+        responseHandler: responseHandler,
+        columns: user_column,
+        formatNoMatches: function () {
+            return "";
+        },
+        // eslint-disable-next-line no-unused-vars
+        /*onEditableSave: function (field, row, oldvalue, $el) {
+            if (field === "title" || field === "authors") {
+                $.ajax({
+                    method:"get",
+                    dataType: "json",
+                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
+                    success: function success(data) {
+                        var key = Object.keys(data)[0];
+                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
+                            id: row.id,
+                            field: key,
+                            value: data[key]
+                        });
+                        // console.log(data);
+                    }
+                });
+            }
+        },*/
+        // eslint-disable-next-line no-unused-vars
+        onColumnSwitch: function (field, checked) {
+            var visible = $("#user-table").bootstrapTable("getVisibleColumns");
+            var hidden  = $("#user-table").bootstrapTable("getHiddenColumns");
+            var st = "";
+            visible.forEach(function(item) {
+                st += "\"" + item.field + "\":\"" + "true" + "\",";
+            });
+            hidden.forEach(function(item) {
+                st += "\"" + item.field + "\":\"" + "false" + "\",";
+            });
+            st = st.slice(0, -1);
+            /*$.ajax({
+                method:"post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: window.location.pathname + "/../../ajax/table_settings",
+                data: "{" + st + "}",
+            });*/
+        },
+    });
+
+    $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
+    function (e, rowsAfter, rowsBefore) {
+        var rows = rowsAfter;
+
+        if (e.type === "uncheck-all") {
+            rows = rowsBefore;
+        }
+
+        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+            return row.id;
+        });
+    });
 });
 
 /* Function for deleting domain restrictions */
