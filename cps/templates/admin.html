@@ -168,9 +168,11 @@
         </tbody>
       </table>
 
+      {%  if feature_support['updater'] %}
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
       <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
       <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
+      {%  endif %}
     </div>
   </div>
 </div>
