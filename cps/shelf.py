@@ -21,19 +21,19 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-from datetime import datetime
+
 import sys
+from datetime import datetime
 
-from flask import Blueprint, request, flash, redirect, url_for
+from flask import Blueprint, flash, redirect, request, url_for
 from flask_babel import gettext as _
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
-from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import logger, ub, calibre_db, db, config
+from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
-
 
 shelf = Blueprint('shelf', __name__)
 log = logger.create()
@@ -240,8 +240,11 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
         else:
             shelf.is_public = 0
 
-        if config.config_kobo_sync and "kobo_sync" in to_save:
-            shelf.kobo_sync = True
+        if config.config_kobo_sync:
+            if "kobo_sync" in to_save:
+                shelf.kobo_sync = True
+            else:
+                shelf.kobo_sync = False
 
         if check_shelf_is_unique(shelf, to_save, shelf_id):
             shelf.name = to_save["title"]
@@ -358,8 +361,8 @@ def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
     if shelf and check_shelf_view_permissions(shelf):
-        result = calibre_db.session.query(db.Books)\
-            .join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id , isouter=True) \
+        result = calibre_db.session.query(db.Books) \
+            .join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .add_columns(calibre_db.common_filters().label("visible")) \
             .filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
     return render_title_template('shelf_order.html', entries=result,
@@ -368,7 +371,7 @@ def order_shelf(shelf_id):
 
 
 def change_shelf_order(shelf_id, order):
-    result = calibre_db.session.query(db.Books).join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id)\
+    result = calibre_db.session.query(db.Books).join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id) \
         .filter(ub.BookShelf.shelf == shelf_id).order_by(*order).all()
     for index, entry in enumerate(result):
         book = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
@@ -408,13 +411,13 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             page = 'shelfdown.html'
 
         result, __, pagination = calibre_db.fill_indexpage(page_no, pagesize,
-                                                            db.Books,
-                                                            ub.BookShelf.shelf == shelf_id,
-                                                            [ub.BookShelf.order.asc()],
-                                                            ub.BookShelf,ub.BookShelf.book_id == db.Books.id)
+                                                           db.Books,
+                                                           ub.BookShelf.shelf == shelf_id,
+                                                           [ub.BookShelf.order.asc()],
+                                                           ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
-        wrong_entries = calibre_db.session.query(ub.BookShelf)\
-            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True)\
+        wrong_entries = calibre_db.session.query(ub.BookShelf) \
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .filter(db.Books.id == None).all()
         for entry in wrong_entries:
             log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
