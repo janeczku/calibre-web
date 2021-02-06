@@ -30,7 +30,7 @@ from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func, true
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import logger, ub, calibre_db, db
+from . import logger, ub, calibre_db, db, config
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 
@@ -240,10 +240,8 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
         else:
             shelf.is_public = 0
 
-        if "kobo_sync" in to_save:
+        if config.config_kobo_sync and "kobo_sync" in to_save:
             shelf.kobo_sync = True
-        else:
-            shelf.kobo_sync = False
 
         if check_shelf_is_unique(shelf, to_save, shelf_id):
             shelf.name = to_save["title"]
@@ -269,7 +267,11 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
                 ub.session.rollback()
                 log.debug_or_exception(e)
                 flash(_(u"There was an error"), category="error")
-    return render_title_template('shelf_edit.html', shelf=shelf, title=title, page=page)
+    return render_title_template('shelf_edit.html',
+                                 shelf=shelf,
+                                 title=title,
+                                 page=page,
+                                 kobo_sync_enabled=config.config_kobo_sync)
 
 
 def check_shelf_is_unique(shelf, to_save, shelf_id=False):

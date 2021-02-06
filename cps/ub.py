@@ -498,6 +498,7 @@ def migrate_Database(session):
             conn.execute("ALTER TABLE shelf ADD column 'created' DATETIME")
             conn.execute("ALTER TABLE shelf ADD column 'last_modified' DATETIME")
             conn.execute("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME")
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
         for shelf in session.query(Shelf).all():
             shelf.uuid = str(uuid.uuid4())
             shelf.created = datetime.datetime.now()
