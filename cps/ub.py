@@ -268,6 +268,7 @@ class Shelf(Base):
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
+    kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
     created = Column(DateTime, default=datetime.datetime.utcnow)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
@@ -504,6 +505,15 @@ def migrate_Database(session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
+
+    try:
+        session.query(exists().where(Shelf.kobo_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
+        session.commit()
+
     try:
         # Handle table exists, but no content
         cnt = session.query(Registration).count()
