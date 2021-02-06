@@ -165,14 +165,14 @@ def HandleSyncRequest():
     if sync_token.books_last_id > -1:
         changed_entries = changed_entries.filter(db.Books.id > sync_token.books_last_id)
 
-    only_kobo_shelfs = (
+    only_kobo_shelves = (
                            calibre_db.session.query(ub.Shelf)
                                .filter(ub.Shelf.user_id == current_user.id)
                                .filter(ub.Shelf.kobo_sync)
                                .count()
                        ) > 0
 
-    if only_kobo_shelfs:
+    if only_kobo_shelves:
         changed_entries = (
             changed_entries.join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                 .join(ub.Shelf)
@@ -244,7 +244,7 @@ def HandleSyncRequest():
             })
             new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
 
-    sync_shelves(sync_token, sync_results, only_kobo_shelfs=only_kobo_shelfs)
+    sync_shelves(sync_token, sync_results, only_kobo_shelves=only_kobo_shelves)
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
@@ -605,7 +605,7 @@ def HandleTagRemoveItem(tag_id):
 
 # Add new, changed, or deleted shelves to the sync_results.
 # Note: Public shelves that aren't owned by the user aren't supported.
-def sync_shelves(sync_token, sync_results, only_kobo_shelfs=False):
+def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     new_tags_last_modified = sync_token.tags_last_modified
 
     for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
@@ -622,7 +622,7 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelfs=False):
         })
 
     extra_filters = []
-    if only_kobo_shelfs:
+    if only_kobo_shelves:
         for shelf in ub.session.query(ub.Shelf).filter(
             func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
             ub.Shelf.user_id == current_user.id,
