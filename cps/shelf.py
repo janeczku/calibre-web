@@ -239,6 +239,12 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
             shelf.is_public = 1
         else:
             shelf.is_public = 0
+
+        if "kobo_sync" in to_save:
+            shelf.kobo_sync = True
+        else:
+            shelf.kobo_sync = False
+
         if check_shelf_is_unique(shelf, to_save, shelf_id):
             shelf.name = to_save["title"]
             # shelf.last_modified = datetime.utcnow()
