@@ -23,6 +23,7 @@ from collections import namedtuple
 
 # if installed via pip this variable is set to true
 HOME_CONFIG = False
+UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
 if sys.version_info < (3, 0):
