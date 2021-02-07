@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-30 17:56:37</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-02-01 19:02:39</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-30 20:23:25</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-02-01 21:32:03</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 59 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 0 min</p>
         </div>
       </div>
       </div>
@@ -802,11 +802,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
         <td class="text-center">33</td>
-        <td class="text-center">30</td>
-        <td class="text-center">1</td>
+        <td class="text-center">31</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -977,33 +977,11 @@
     
     
     
-        <tr id="ft10.17" class="none bg-danger">
+        <tr id='pt10.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft10.17')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft10.17" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft10.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_books.py", line 131, in test_edit_title
-    self.assertEqual(ele.text, u'Very long extra super turbo cool title without any issue of ...')
-AssertionError: 'Very[33 chars]e without any issue of displaying including ö utf-8 characters' != 'Very[33 chars]e without any issue of ...'
-- Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters
-+ Very long extra super turbo cool title without any issue of ...</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1215,8 +1193,8 @@ AssertionError: 'Very[33 chars]e without any issue of displaying including ö ut
     <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">2</td>
+        <td class="text-center">19</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1361,33 +1339,11 @@ AssertionError: 'Very[33 chars]e without any issue of displaying including ö ut
     
     
     
-        <tr id="ft12.16" class="none bg-danger">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.16" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft12.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 227, in test_edit_title
-    self.assertEqual(ele.text, u'Very long extra super turbo cool title without any issue of ...')
-AssertionError: 'Very[33 chars]e without any issue of displaying including ö utf-8 characters' != 'Very[33 chars]e without any issue of ...'
-- Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters
-+ Very long extra super turbo cool title without any issue of ...</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1438,7 +1394,7 @@ AssertionError: 'Very[33 chars]e without any issue of displaying including ö ut
                         <pre class="text-left">Traceback (most recent call last):
   File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 847, in test_watch_metadata
     self.assertNotIn('series', book)
-AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'testbook', 'author': ['John Döe'], 'rating': 0, 'languages': ['English'], 'identifier': [], 'cover': '/cover/5?edit=f84d9deb-4c69-48d6-9f16-94ad43b3e3fa', 'tag': [], 'publisher': ['Randomhäus'], 'comment': '\n', 'add_shelf': [], 'del_shelf': [], 'edit_enable': True, 'kindle': None, 'kindlebtn': None, 'download': ['EPUB (6.7 kB)'], 'read': False, 'archived': False, 'series_all': 'Book 1.0 of test', 'series_index': '1.0', 'series': 'test', 'cust_columns': []}</pre>
+AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'testbook', 'author': ['John Döe'], 'rating': 0, 'languages': ['English'], 'identifier': [], 'cover': '/cover/5?edit=175d2a21-2733-49b6-9fcf-3ef9aee1670b', 'tag': [], 'publisher': ['Randomhäus'], 'comment': '\n', 'add_shelf': [], 'del_shelf': [], 'edit_enable': True, 'kindle': None, 'kindlebtn': None, 'download': ['EPUB (6.7 kB)'], 'read': False, 'archived': False, 'series_all': 'Book 1.0 of test', 'series_index': '1.0', 'series': 'test', 'cust_columns': []}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3443,8 +3399,8 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>299</td>
-        <td>289</td>
-        <td>3</td>
+        <td>291</td>
+        <td>1</td>
         <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
@@ -3528,7 +3484,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>Jinja2</th>
-              <td>2.11.2</td>
+              <td>2.11.3</td>
               <td>Basic</td>
             </tr>
           
@@ -3540,7 +3496,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>pytz</th>
-              <td>2020.5</td>
+              <td>2021.1</td>
               <td>Basic</td>
             </tr>
           
@@ -3804,7 +3760,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
 </div>
 
 <script>
-    drawCircle(289, 3, 0, 7);
+    drawCircle(291, 1, 0, 7);
 </script>
 
 </div>

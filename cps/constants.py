@@ -23,6 +23,7 @@ from collections import namedtuple
 
 # if installed via pip this variable is set to true
 HOME_CONFIG = False
+UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
 if sys.version_info < (3, 0):
@@ -131,7 +132,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 
-STABLE_VERSION = {'version': '0.6.11 Beta'}
+STABLE_VERSION = {'version': '0.6.12 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'
