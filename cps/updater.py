@@ -264,7 +264,7 @@ class Updater(threading.Thread):
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except OSError:
-                    logger.debug("Could not remove: %s", item_path)
+                    log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
     def is_venv(self):

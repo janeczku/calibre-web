@@ -56,7 +56,8 @@ log = logger.create()
 feature_support = {
         'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support),
-        'kobo':  bool(services.kobo)
+        'kobo':  bool(services.kobo),
+        'updater': constants.UPDATER_AVAILABLE
     }
 
 try:
@@ -1335,8 +1336,11 @@ def download_debug():
 @login_required
 @admin_required
 def get_update_status():
-    log.info(u"Update status requested")
-    return updater_thread.get_available_updates(request.method, locale=get_locale())
+    if feature_support['updater']:
+        log.info(u"Update status requested")
+        return updater_thread.get_available_updates(request.method, locale=get_locale())
+    else:
+        return ''
 
 
 @admi.route("/get_updater_status", methods=['GET', 'POST'])
@@ -1344,35 +1348,37 @@ def get_update_status():
 @admin_required
 def get_updater_status():
     status = {}
-    if request.method == "POST":
-        commit = request.form.to_dict()
-        if "start" in commit and commit['start'] == 'True':
-            text = {
-                "1": _(u'Requesting update package'),
-                "2": _(u'Downloading update package'),
-                "3": _(u'Unzipping update package'),
-                "4": _(u'Replacing files'),
-                "5": _(u'Database connections are closed'),
-                "6": _(u'Stopping server'),
-                "7": _(u'Update finished, please press okay and reload page'),
-                "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
-                "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
-                "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
-                "11": _(u'Update failed:') + u' ' + _(u'General error'),
-                "12": _(u'Update failed:') + u' ' + _(u'Update File Could Not be Saved in Temp Dir')
-            }
-            status['text'] = text
-            updater_thread.status = 0
-            updater_thread.resume()
-            status['status'] = updater_thread.get_update_status()
-    elif request.method == "GET":
-        try:
-            status['status'] = updater_thread.get_update_status()
-            if status['status'] == -1:
-                status['status'] = 7
-        except Exception:
-            status['status'] = 11
-    return json.dumps(status)
+    if feature_support['updater']:
+        if request.method == "POST":
+            commit = request.form.to_dict()
+            if "start" in commit and commit['start'] == 'True':
+                text = {
+                    "1": _(u'Requesting update package'),
+                    "2": _(u'Downloading update package'),
+                    "3": _(u'Unzipping update package'),
+                    "4": _(u'Replacing files'),
+                    "5": _(u'Database connections are closed'),
+                    "6": _(u'Stopping server'),
+                    "7": _(u'Update finished, please press okay and reload page'),
+                    "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
+                    "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
+                    "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
+                    "11": _(u'Update failed:') + u' ' + _(u'General error'),
+                    "12": _(u'Update failed:') + u' ' + _(u'Update File Could Not be Saved in Temp Dir')
+                }
+                status['text'] = text
+                updater_thread.status = 0
+                updater_thread.resume()
+                status['status'] = updater_thread.get_update_status()
+        elif request.method == "GET":
+            try:
+                status['status'] = updater_thread.get_update_status()
+                if status['status'] == -1:
+                    status['status'] = 7
+            except Exception:
+                status['status'] = 11
+        return json.dumps(status)
+    return ''
 
 
 @admi.route('/import_ldap_users')
