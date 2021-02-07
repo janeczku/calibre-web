@@ -673,12 +673,11 @@ def init_db(app_db_path):
     Session.configure(bind=engine)
     session = Session()
 
+    Base.metadata.create_all(engine)
     if os.path.exists(app_db_path):
-        Base.metadata.create_all(engine)
         migrate_Database(session)
         clean_database(session)
     else:
-        Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
 
