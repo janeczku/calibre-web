@@ -232,6 +232,11 @@ class Updater(threading.Thread):
         additional_path = self.is_venv()
         if additional_path:
             exclude = exclude + (additional_path,)
+
+        # check if we are in a package, rename cps.py to __init__.py
+        if constants.HOME_CONFIG:
+            shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
+
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
