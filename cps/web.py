@@ -719,8 +719,8 @@ def index(page):
     return render_books_list("newest", sort_param, 1, page)
 
 
-@web.route('/<data>/<sort_param>', defaults={'page': 1, 'book_id': "1"})
-@web.route('/<data>/<sort_param>/', defaults={'page': 1, 'book_id': "1"})
+@web.route('/<data>/<sort_param>', defaults={'page': 1, 'book_id': 1})
+@web.route('/<data>/<sort_param>/', defaults={'page': 1, 'book_id': 1})
 @web.route('/<data>/<sort_param>/<book_id>', defaults={'page': 1})
 @web.route('/<data>/<sort_param>/<book_id>/<int:page>')
 @login_required_if_no_ano
