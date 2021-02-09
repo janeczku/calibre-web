@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-02-01 19:02:39</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-02-08 20:40:55</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-02-01 21:32:03</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-02-08 23:09:33</p>
             
         </div>
       </div>
@@ -1190,11 +1190,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">19</td>
-        <td class="text-center">1</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1375,31 +1375,11 @@
     
     
     
-        <tr id="ft12.20" class="none bg-danger">
+        <tr id='pt12.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.20')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.20" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft12.20').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 847, in test_watch_metadata
-    self.assertNotIn('series', book)
-AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'testbook', 'author': ['John Döe'], 'rating': 0, 'languages': ['English'], 'identifier': [], 'cover': '/cover/5?edit=175d2a21-2733-49b6-9fcf-3ef9aee1670b', 'tag': [], 'publisher': ['Randomhäus'], 'comment': '\n', 'add_shelf': [], 'del_shelf': [], 'edit_enable': True, 'kindle': None, 'kindlebtn': None, 'download': ['EPUB (6.7 kB)'], 'read': False, 'archived': False, 'series_all': 'Book 1.0 of test', 'series_index': '1.0', 'series': 'test', 'cust_columns': []}</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1615,12 +1595,12 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestKoboSync</td>
         <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 9)">Detail</a>
@@ -1629,11 +1609,31 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 593, in test_book_download
+    print(data[0]['NewEntitlement']['BookMetadata']['DownloadUrls'][1]['Url'])
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3400,8 +3400,8 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
         <td>Total</td>
         <td>299</td>
         <td>291</td>
-        <td>1</td>
         <td>0</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3520,7 +3520,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.22</td>
+              <td>1.3.23</td>
               <td>Basic</td>
             </tr>
           
@@ -3556,7 +3556,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>httplib2</th>
-              <td>0.18.1</td>
+              <td>0.19.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3574,7 +3574,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.7.0</td>
+              <td>1.7.2</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3592,7 +3592,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>httplib2</th>
-              <td>0.18.1</td>
+              <td>0.19.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -3610,7 +3610,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.7.0</td>
+              <td>1.7.2</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -3652,7 +3652,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>httplib2</th>
-              <td>0.18.1</td>
+              <td>0.19.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3670,7 +3670,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.7.0</td>
+              <td>1.7.2</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3688,7 +3688,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>httplib2</th>
-              <td>0.18.1</td>
+              <td>0.19.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3700,7 +3700,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.7.0</td>
+              <td>1.7.2</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3713,6 +3713,12 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
             <tr>
               <th>goodreads</th>
               <td>0.3.2</td>
+              <td>TestGoodreads</td>
+            </tr>
+          
+            <tr>
+              <th>python-Levenshtein</th>
+              <td>0.12.2</td>
               <td>TestGoodreads</td>
             </tr>
           
@@ -3760,7 +3766,7 @@ AssertionError: 'series' unexpectedly found in {'reader': ['epub'], 'title': 'te
 </div>
 
 <script>
-    drawCircle(291, 1, 0, 7);
+    drawCircle(291, 0, 1, 7);
 </script>
 
 </div>
