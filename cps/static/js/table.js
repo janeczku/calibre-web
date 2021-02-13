@@ -116,7 +116,7 @@ $(function() {
         search: true,
         showColumns: true,
         searchAlign: "left",
-        showSearchButton : false,
+        showSearchButton : true,
         searchOnEnterKey: true,
         checkboxHeader: false,
         maintainMetaData: true,
@@ -377,14 +377,23 @@ $(function() {
         search: true,
         showColumns: true,
         searchAlign: "left",
-        showSearchButton : false,
+        showSearchButton : true,
         searchOnEnterKey: true,
-        checkboxHeader: false,
+        checkboxHeader: true,
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: user_column,
         formatNoMatches: function () {
             return "";
+        },
+        onPostBody () {
+            // var elements = ;
+            // Remove all checkboxes from Headers for showing the texts in the column selector
+            $('.columns [data-field]').each(function(){
+                var elText = $(this).next().text();
+                $(this).next().empty();
+                $(this).next().text(elText);
+            });
         },
         // eslint-disable-next-line no-unused-vars
         /*onEditableSave: function (field, row, oldvalue, $el) {
@@ -411,22 +420,47 @@ $(function() {
             var hidden  = $("#user-table").bootstrapTable("getHiddenColumns");
             var st = "";
             visible.forEach(function(item) {
-                st += "\"" + item.field + "\":\"" + "true" + "\",";
+                st += "\"" + item.name + "\":\"" + "true" + "\",";
             });
             hidden.forEach(function(item) {
-                st += "\"" + item.field + "\":\"" + "false" + "\",";
+                st += "\"" + item.name + "\":\"" + "false" + "\",";
             });
             st = st.slice(0, -1);
-            /*$.ajax({
+            $.ajax({
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: window.location.pathname + "/../../ajax/table_settings",
+                url: window.location.pathname + "/../../ajax/user_table_settings",
                 data: "{" + st + "}",
-            });*/
+            });
         },
     });
 
+    function user_handle (userId) {
+        $.ajax({
+            method:"post",
+            url: window.location.pathname + "/../../ajax/deleteuser",
+            data: {"userid":userId}
+        });
+        $.ajax({
+            method:"get",
+            url: window.location.pathname + "/../../ajax/listusers",
+            async: true,
+            timeout: 900,
+            success:function(data) {
+                $("#user-table").bootstrapTable("load", data);
+            }
+        });
+
+
+    }
+
+
+    $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
+        if (value === "denied_column_value") {
+            ConfirmDialog("btndeluser", $element.id, user_handle);
+        }
+    });
 
     /*$("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
@@ -474,7 +508,7 @@ function EbookActions (value, row) {
 /* Function for deleting books */
 function UserActions (value, row) {
     return [
-        "<div class=\"user-remove\" data-toggle=\"modal\" data-target=\"#GeneralDeleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class=\"user-remove\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
@@ -506,4 +540,9 @@ function checkboxChange(checkbox, index){
         value: checkbox.checked,
         reinit: false
     });
+}
+
+
+function checkboxHeader(element) {
+    console.log("hallo");
 }

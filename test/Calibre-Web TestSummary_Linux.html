@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-02-08 20:40:55</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-02-09 20:40:28</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-02-08 23:09:33</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-02-09 23:08:52</p>
             
         </div>
       </div>
@@ -1595,12 +1595,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 9)">Detail</a>
@@ -1609,31 +1609,11 @@
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et18.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 593, in test_book_download
-    print(data[0]['NewEntitlement']['BookMetadata']['DownloadUrls'][1]['Url'])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2376,11 +2356,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestRegister</td>
         <td class="text-center">8</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2453,11 +2433,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt25.8' class='hiddenRow bg-success'>
+        <tr id="ft25.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft25.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft25.8" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft25.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_register.py", line 185, in test_user_change_password
+    self.assertTrue(self.edit_user(u'upasswd', { 'resend_password':1}))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2594,12 +2594,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestUpdater</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c27', 8)">Detail</a>
@@ -2653,11 +2653,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.6' class='hiddenRow bg-success'>
+        <tr id="ft27.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft27.6" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft27.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_updater.py", line 312, in test_perform_update_stable_errors
+    self.assertTrue('HTTP Error' in self.check_element_on_page((By.ID, "DialogContent")).text)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2688,11 +2708,41 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.8' class='hiddenRow bg-success'>
+        <tr id="et27.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et27.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et27.8" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et27.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_updater.py", line 371, in test_reconnect_database
+    self.reconnect_database()
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 359, in reconnect_database
+    self.driver.find_element_by_id('restart_database').click()
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
+    return self._parent.execute(command, params)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: Element <div id="restart_database" class="btn btn-default"> is not clickable at point (553,718) because another element <div id="StatusDialog" class="modal fade in"> obscures it</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3399,8 +3449,8 @@ IndexError: list index out of range</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>299</td>
-        <td>291</td>
-        <td>0</td>
+        <td>289</td>
+        <td>2</td>
         <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
@@ -3430,7 +3480,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.8.0-41-generic #46~20.04.1-Ubuntu SMP Mon Jan 18 17:52:23 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.8.0-43-generic #49~20.04.1-Ubuntu SMP Fri Feb 5 09:57:56 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3766,7 +3816,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(291, 0, 1, 7);
+    drawCircle(289, 2, 1, 7);
 </script>
 
 </div>
