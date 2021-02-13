@@ -35,6 +35,7 @@ from flask import Blueprint, flash, redirect, url_for, abort, request, make_resp
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
 from sqlalchemy import and_
+from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
@@ -225,11 +226,12 @@ def edit_user_table():
     return render_title_template("user_table.html",
                                  users=allUser.all(),
                                  visiblility=visibility,
-                                 all_roles = constants.ALL_ROLES,
+                                 all_roles=constants.ALL_ROLES,
+                                 sidebar_settings=constants.sidebar_settings,
                                  title=_(u"Edit Users"),
                                  page="usertable")
 
-@admi.route("/axjax/listusers")
+@admi.route("/ajax/listusers")
 @login_required
 @admin_required
 def list_users():
@@ -242,8 +244,11 @@ def list_users():
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     total_count = all_user.count()
     if search:
-        users = all_user.filter().offset(off).limit(limit).all()
-        filtered_count = users.length()
+        users = all_user.filter(or_(func.lower(ub.User.nickname).ilike("%" + search + "%"),
+                                    func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
+                                    func.lower(ub.User.email).ilike("%" + search + "%")))\
+            .offset(off).limit(limit).all()
+        filtered_count = len(users)
     else:
         users = all_user.offset(off).limit(limit).all()
         filtered_count = total_count
@@ -254,6 +259,14 @@ def list_users():
     response = make_response(js_list)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
+@admi.route("/ajax/deleteuser")
+@login_required
+@admin_required
+def delete_user():
+    # ToDo User delete check also not last one
+    pass
+    return
 
 
 @admi.route("/axjax/editlistusers/<param>", methods=['POST'])
@@ -282,6 +295,24 @@ def edit_list_user(param):
     elif param =='kindle_mail':
         user.kindle_mail = vals['value']
     ub.session_commit()
+    return ""
+
+
+@admi.route("/ajax/user_table_settings", methods=['POST'])
+@login_required
+@admin_required
+def update_table_settings():
+    # ToDo: Save table settings
+    current_user.view_settings['useredit'] = json.loads(request.data)
+    try:
+        try:
+            flag_modified(current_user, "view_settings")
+        except AttributeError:
+            pass
+        ub.session.commit()
+    except (InvalidRequestError, OperationalError):
+        log.error("Invalid request received: %r ", request, )
+        return "Invalid request", 400
     return ""
 
 

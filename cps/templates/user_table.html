@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% macro user_table_row(parameter, edit_text, show_text, validate) -%}
 <th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
-    data-visible = "{{visiblility.get(parameter)}}"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
     data-editable-type="text"
     data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
     data-editable-title="{{ edit_text }}"
@@ -16,28 +17,44 @@
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
+    <table>
+    </table>
     <table id="user-table" class="table table-no-bordered table-striped"
            data-url="{{url_for('admin.list_users')}}">
       <thead>
         <tr>
-            <th data-buttontext="{{_('Edit User')}}" data-formatter="singleUserFormatter"></th>
-            <th data-field="state" data-checkbox="true" data-sortable="true"></th>
-            <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+            <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
+            <th data-name="state" data-field="state" data-checkbox="true" data-visible="{{visiblility.get('state')}}" data-sortable="true"></th>
+            <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ user_table_row('nickname', _('Enter Username'), _('Username'), true) }}
             {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
             {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), true) }}
-            <th data-field="role" data-column="{{all_roles.admin_role}}" data-formatter="checkboxFormatter">{{_('Admin')}}</th>
-            <th data-field="role" data-column="{{all_roles.download_role}}" data-formatter="checkboxFormatter">{{_('Upload')}}</th>
-            <th data-field="role" data-column="{{all_roles.upload_role}}" data-formatter="checkboxFormatter">{{_('Download')}}</th>
-            <th data-field="role" data-column="{{all_roles.edit_role}}" data-formatter="checkboxFormatter">{{_('Edit')}}</th>
-            <th data-field="role" data-column="{{all_roles.passwd_role}}" data-formatter="checkboxFormatter">{{_('Change Password')}}</th>
-            <th data-field="role" data-column="{{all_roles.edit_shelf_role}}" data-formatter="checkboxFormatter">{{_('Edit Public Shelfs')}}</th>
-            <th data-field="role" data-column="{{all_roles.delete_role}}" data-formatter="checkboxFormatter">{{_('Delete')}}</th>
-            <th data-field="role" data-column="{{all_roles.viewer_role}}" data-formatter="checkboxFormatter">{{_('View')}}</th>
+            <th data-name="admin_role" data-field="role" data-visible="{{visiblility.get('admin_role')}}" data-column="{{all_roles.admin_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Admin')}}</th>
+            <th data-name="download_role" data-field="role" data-visible="{{visiblility.get('download_role')}}" data-column="{{all_roles.download_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Upload')}}</th>
+            <th data-name="upload_role" data-field="role" data-visible="{{visiblility.get('upload_role')}}" data-column="{{all_roles.upload_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Download')}}</th>
+            <th data-name="edit_role" data-field="role" data-visible="{{visiblility.get('edit_role')}}" data-column="{{all_roles.edit_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Edit')}}</th>
+            <th data-name="passwd_role" data-field="role" data-visible="{{visiblility.get('passwd_role')}}" data-column="{{all_roles.passwd_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Change Password')}}</th>
+            <th data-name="edit_shelf_role" data-field="role" data-visible="{{visiblility.get('edit_shelf_role')}}" data-column="{{all_roles.edit_shelf_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Edit Public Shelfs')}}</th>
+            <th data-name="delete_role" data-field="role" data-visible="{{visiblility.get('delete_role')}}" data-column="{{all_roles.delete_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('Delete')}}</th>
+            <th data-name="viewer_role" data-field="role" data-visible="{{visiblility.get('viewer_role')}}" data-column="{{all_roles.viewer_role}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chkhead" onchange="checkboxHeader(this)"><br>{{_('View')}}</th>
             {{ user_table_row('denied_tags', _("Enter Users's Locale"), _("Users's Locale"), true) }}
             {{ user_table_row('allowed_tags', _("Enter Users's Locale"), _("Users's Locale"), true) }}
             {{ user_table_row('allowed_column_value', _("Enter Users's Locale"), _("Users's Locale"), true) }}
             {{ user_table_row('denied_column_value', _("Enter Users's Locale"), _("Users's Locale"), true) }}
+            <th data-name="detail_random" data-field="sidebar_view" data-visible="{{visiblility.get('detail_random')}}" data-column="{{sidebar_settings.detail_random}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show Random Books in Detail View')}}</th>
+            <th data-name="sidebar_language" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_language')}}" data-column="{{sidebar_settings.sidebar_language}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show language selection')}}</th>
+            <th data-name="sidebar_series" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_series')}}" data-column="{{sidebar_settings.sidebar_series}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show series selection')}}</th>
+            <th data-name="sidebar_category" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_category')}}" data-column="{{sidebar_settings.sidebar_category}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{ _('Show category selection')}}</th>
+            <th data-name="sidebar_random" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_random')}}" data-column="{{sidebar_settings.sidebar_random}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{ _('Show random books')}}</th>
+            <th data-name="sidebar_author" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_author')}}" data-column="{{sidebar_settings.sidebar_author}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show author selection')}}</th>
+            <th data-name="sidebar_best_rated" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_best_rated')}}" data-column="{{sidebar_settings.sidebar_best_rated}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show Top Rated Books')}}</th>
+            <th data-name="sidebar_read_and_unread" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_read_and_unread')}}" data-column="{{sidebar_settings.sidebar_read_and_unread}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show random books')}}</th>
+            <th data-name="sidebar_publisher" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_publisher')}}" data-column="{{sidebar_settings.sidebar_publisher}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show publisher selection')}}</th>
+            <th data-name="sidebar_rating" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_rating')}}" data-column="{{sidebar_settings.sidebar_rating}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show ratings selection')}}</th>
+            <th data-name="sidebar_format" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_format')}}" data-column="{{sidebar_settings.sidebar_format}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show file formats selection')}}</th>
+            <th data-name="sidebar_archived" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_archived')}}" data-column="{{sidebar_settings.sidebar_archived}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show archived books')}}</th>
+            <th data-name="sidebar_download" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_download')}}" data-column="{{sidebar_settings.sidebar_download}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show Downloaded Books')}}</th>
+            <th data-name="sidebar_list" data-field="sidebar_view" data-visible="{{visiblility.get('sidebar_list')}}" data-column="{{sidebar_settings.sidebar_list}}" data-formatter="checkboxFormatter"><input type="checkbox" class="chk" ><br>{{_('Show Books List')}}</th>
             <th data-align="right" data-formatter="UserActions" data-switchable="false">{{_('Delete User')}}</th>
         </tr>
       </thead>
