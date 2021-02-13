@@ -32,7 +32,7 @@ from tempfile import gettempdir
 import requests
 from babel.dates import format_datetime
 from babel.units import format_unit
-from flask import send_from_directory, make_response, redirect, abort, url_for, request
+from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text
@@ -592,22 +592,29 @@ def save_cover_from_url(url, book_path):
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
-    if hasattr(img,"metadata"):
-        img.save(filename=os.path.join(filepath, saved_filename))
-        img.close()
-    else:
-        # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-        if not os.path.exists(filepath):
-            try:
-                os.makedirs(filepath)
-            except OSError:
-                log.error(u"Failed to create path for cover")
-                return False, _(u"Failed to create path for cover")
+    # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+    if not os.path.exists(filepath):
         try:
-            img.save(os.path.join(filepath, saved_filename))
-        except (IOError, OSError):
-            log.error(u"Cover-file is not a valid image file, or could not be stored")
-            return False, _(u"Cover-file is not a valid image file, or could not be stored")
+            os.makedirs(filepath)
+        except OSError:
+            log.error(u"Failed to create path for cover")
+            return False, _(u"Failed to create path for cover")
+    try:
+        # upload of jgp file without wand
+        if isinstance(img, requests.Response):
+            with open(os.path.join(filepath, saved_filename), 'wb') as f:
+                f.write(img.content)
+        else:
+            if hasattr(img, "metadata"):
+                # upload of jpg/png... via url
+                img.save(filename=os.path.join(filepath, saved_filename))
+                img.close()
+            else:
+                # upload of jpg/png... from hdd
+                img.save(os.path.join(filepath, saved_filename))
+    except (IOError, OSError):
+        log.error(u"Cover-file is not a valid image file, or could not be stored")
+        return False, _(u"Cover-file is not a valid image file, or could not be stored")
     return True, None
 
 
