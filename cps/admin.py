@@ -269,16 +269,21 @@ def delete_user():
     return
 
 
-@admi.route("/axjax/editlistusers/<param>", methods=['POST'])
+# @admi.route("/ajax/editlistusers/<param>", defaults={"value": 0}, methods=['POST'])
+@admi.route("/ajax/editlistusers/<param>", methods=['POST'])
 @login_required
 @admin_required
 def edit_list_user(param):
-    vals = request.form.to_dict()
+    vals = request.form.to_dict(flat=False)
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
-
-    user = all_user.filter(ub.User.id == vals['pk']).one_or_none()
+    # only one user is posted
+    if "pk" in vals:
+        user = all_user.filter(ub.User.id == vals['pk']).one_or_none()
+    else:
+        # ToDo
+        user = all_user.filter(ub.User.id == vals['pk[]']).all()
     if param =='nickname':
         if not ub.session.query(ub.User).filter(ub.User.nickname == vals['value']).scalar():
             user.nickname = vals['value']
@@ -294,6 +299,17 @@ def edit_list_user(param):
             return _(u"Found an existing account for this e-mail address."), 400
     elif param =='kindle_mail':
         user.kindle_mail = vals['value']
+    elif param == 'role':
+        if vals['value'] == 'true':
+            user.role |= int(vals['field_index'])
+        else:
+            user.role &= ~int(vals['field_index'])
+    elif param == 'sidebar_view':
+        if vals['value'] == 'true':
+            user.sidebar_view |= int(vals['field_index'])
+        else:
+            user.sidebar_view &= ~int(vals['field_index'])
+
     ub.session_commit()
     return ""
 
