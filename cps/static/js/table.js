@@ -387,7 +387,6 @@ $(function() {
             return "";
         },
         onPostBody () {
-            // var elements = ;
             // Remove all checkboxes from Headers for showing the texts in the column selector
             $('.columns [data-field]').each(function(){
                 var elText = $(this).next().text();
@@ -436,6 +435,10 @@ $(function() {
         },
     });
 
+    $("#user_delete_selection").click(function() {
+        $("#user-table").bootstrapTable("uncheckAll");
+    });
+
     function user_handle (userId) {
         $.ajax({
             method:"post",
@@ -451,8 +454,6 @@ $(function() {
                 $("#user-table").bootstrapTable("load", data);
             }
         });
-
-
     }
 
 
@@ -462,7 +463,7 @@ $(function() {
         }
     });
 
-    /*$("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
+    $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
         var rows = rowsAfter;
 
@@ -473,7 +474,23 @@ $(function() {
         var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
             return row.id;
         });
-    });*/
+        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+        selections = window._[func](selections, ids);
+        if (selections.length < 1) {
+            $("#user_delete_selection").addClass("disabled");
+            $("#user_delete_selection").attr("aria-disabled", true);
+            $(".check_head").attr("aria-disabled", true);
+            $(".check_head").attr("disabled", true);
+            $(".check_head").prop('checked', false);
+        } else {
+            $("#user_delete_selection").removeClass("disabled");
+            $("#user_delete_selection").attr("aria-disabled", false);
+            $(".check_head").attr("aria-disabled", false);
+            $(".check_head").removeAttr("disabled");
+
+        }
+
+    });
 });
 
 /* Function for deleting domain restrictions */
@@ -528,21 +545,61 @@ function singleUserFormatter(value, row) {
 
 function checkboxFormatter(value, row, index){
     if(value & this.column)
-        return '<input type="checkbox" class="chk" checked onchange="checkboxChange(this, '+index+')">';
+        return '<input type="checkbox" class="chk" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
     else
-        return '<input type="checkbox" class="chk" onchange="checkboxChange(this, '+index+')">';
+        return '<input type="checkbox" class="chk" onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
 }
 
-function checkboxChange(checkbox, index){
-    $('#user-table').bootstrapTable('updateCell', {
-        index: index,
-        field: 'role',
-        value: checkbox.checked,
-        reinit: false
+function checkboxChange(checkbox, userId, field, field_index) {
+    $.ajax({
+        method:"post",
+        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        data: {"pk":userId, "field_index":field_index, "value": checkbox.checked}
+    });
+    $.ajax({
+        method:"get",
+        url: window.location.pathname + "/../../ajax/listusers",
+        async: true,
+        timeout: 900,
+        success:function(data) {
+            $("#user-table").bootstrapTable("load", data);
+        }
     });
 }
 
+function checkboxHeader(checkbox, field, field_index) {
+    var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+    $.ajax({
+        method:"post",
+        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        data:  {"pk":result, "field_index":field_index, "value": checkbox.checked}
+    });
+    $.ajax({
+        method:"get",
+        url: window.location.pathname + "/../../ajax/listusers",
+        async: true,
+        timeout: 900,
+        success:function(data) {
+            $("#user-table").bootstrapTable("load", data);
+        }
+    });
+}
 
-function checkboxHeader(element) {
-    console.log("hallo");
+function user_handle (userId) {
+    $.ajax({
+        method:"post",
+        url: window.location.pathname + "/../../ajax/deleteuser",
+        data: {"userid":userId}
+    });
+    $.ajax({
+        method:"get",
+        url: window.location.pathname + "/../../ajax/listusers",
+        async: true,
+        timeout: 900,
+        success:function(data) {
+            $("#user-table").bootstrapTable("load", data);
+        }
+    });
+
+
 }
