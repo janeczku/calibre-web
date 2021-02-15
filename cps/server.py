@@ -153,10 +153,10 @@ class WebServer(object):
         # not exist if a setuptools script is installed as an egg. It may be
         # set incorrectly for entry points created with pip on Windows.
         if getattr(__main__, "__package__", None) is None or (
-                os.name == "nt"
-                and __main__.__package__ == ""
-                and not os.path.exists(py_script)
-                and os.path.exists(f"{py_script}.exe")
+            os.name == "nt"
+            and __main__.__package__ == ""
+            and not os.path.exists(py_script)
+            and os.path.exists(f"{py_script}.exe")
         ):
             # Executed a file, like "python app.py".
             py_script = os.path.abspath(py_script)
