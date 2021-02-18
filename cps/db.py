@@ -624,6 +624,8 @@ class CalibreDB():
             .join(*join, isouter=True) \
             .filter(db_filter) \
             .filter(self.common_filters(allow_show_archived))
+        entries = list()
+        pagination = list()
         try:
             pagination = Pagination(page, pagesize,
                                     len(query.all()))
