@@ -19,17 +19,32 @@
     data-formatter="checkboxFormatter">
     <div class="form-check">
       <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader(this, '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Deny')}}
+        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('false', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Deny')}}
       </label>
     </div>
     <div class="form-check">
       <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader(this, '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Allow')}}
+        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('false', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Allow')}}
       </label>
     </div>
     {{show_text}}
 </th>
 {%- endmacro %}
+
+{% macro user_select_row(parameter, url, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
+    data-editable-type="select"
+    data-edit="true"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-source={{url}}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}" {% endif %}>
+    {{ show_text }}
+</th>
+<!--data-editable-source="[{'value': '1', 'text':'bootstrap-table'},{'value': '2', 'text':'bootstrap2-table'}]"-->
+{%- endmacro %}
+
 
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
@@ -51,7 +66,13 @@
             <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ user_table_row('nickname', _('Enter Username'), _('Username'), true) }}
             {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
+            {{ user_select_row('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
+            {{ user_select_row('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
             {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), true) }}
+            {{ user_table_row('denied_tags', _("Enter Users's Locale"), _("Denied Tags"), true) }}
+            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), true) }}
+            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), true) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), true) }}
             {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "download_role",_('Upload'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "upload_role", _('Download'), visiblility, all_roles)}}
@@ -60,10 +81,6 @@
             {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelfs'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "delete_role", _('Delete'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "viewer_role", _('View'), visiblility, all_roles)}}
-            {{ user_table_row('denied_tags', _("Enter Users's Locale"), _("Denied Tags"), true) }}
-            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), true) }}
-            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), true) }}
-            {{ user_table_row('denied_column_value', _("Enter Users's Locale"), _("Denied Columns Values"), true) }}
             {{ user_checkbox_row("sidebar_view", "detail_random", _('Show Random Books in Detail View'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show language selection'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_series", _('Show series selection'), visiblility, sidebar_settings)}}

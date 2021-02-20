@@ -31,6 +31,7 @@ from datetime import datetime, timedelta
 
 from babel import Locale as LC
 from babel.dates import format_datetime
+from babel.core import UnknownLocaleError
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
@@ -39,7 +40,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
-from . import constants, logger, helper, services
+from . import constants, logger, helper, services, isoLanguages
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
@@ -253,7 +254,21 @@ def list_users():
         users = all_user.offset(off).limit(limit).all()
         filtered_count = total_count
 
+    for user in users:
+        # set readable locale
+        #try:
+        #    user.local = LC.parse(user.locale).get_language_name(get_locale())
+        #except UnknownLocaleError:
+        #    # This should not happen
+        #    user.local = _(isoLanguages.get(part1=user.locale).name)
+        # Set default language
+        if user.default_language == "all":
+            user.default = _("all")
+        else:
+            user.default = LC.parse(user.default_language).get_language_name(get_locale())
+
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": users}
+
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
     response = make_response(js_list)
@@ -266,10 +281,32 @@ def list_users():
 def delete_user():
     # ToDo User delete check also not last one
     pass
-    return
+    return ""
+
+@admi.route("/ajax/getlocale")
+@login_required
+@admin_required
+def table_get_locale():
+    locale = babel.list_translations() + [LC('en')]
+    ret = list()
+    current_locale = get_locale()
+    for loc in locale:
+        ret.append({'value':str(loc),'text':loc.get_language_name(current_locale)})
+    return json.dumps(ret)
 
 
-# @admi.route("/ajax/editlistusers/<param>", defaults={"value": 0}, methods=['POST'])
+@admi.route("/ajax/getdefaultlanguage")
+@login_required
+@admin_required
+def table_get_default_lang():
+    languages = calibre_db.speaking_language()
+    ret = list()
+    ret.append({'value':'all','text':_('Show All')})
+    for lang in languages:
+        ret.append({'value':lang.lang_code,'text': lang.name})
+    return json.dumps(ret)
+
+
 @admi.route("/ajax/editlistusers/<param>", methods=['POST'])
 @login_required
 @admin_required
@@ -280,36 +317,56 @@ def edit_list_user(param):
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     # only one user is posted
     if "pk" in vals:
-        user = all_user.filter(ub.User.id == vals['pk']).one_or_none()
+        users = [all_user.filter(ub.User.id == vals['pk'][0]).one_or_none()]
     else:
-        # ToDo
-        user = all_user.filter(ub.User.id == vals['pk[]']).all()
-    if param =='nickname':
-        if not ub.session.query(ub.User).filter(ub.User.nickname == vals['value']).scalar():
-            user.nickname = vals['value']
+        if "pk[]" in vals:
+            users = all_user.filter(ub.User.id.in_(vals['pk[]'])).all()
         else:
-            log.error(u"This username is already taken")
-            return _(u"This username is already taken"), 400
-    elif param =='email':
-        existing_email = ub.session.query(ub.User).filter(ub.User.email == vals['value'].lower()).first()
-        if not existing_email:
-            user.email = vals['value']
-        else:
-            log.error(u"Found an existing account for this e-mail address.")
-            return _(u"Found an existing account for this e-mail address."), 400
-    elif param =='kindle_mail':
-        user.kindle_mail = vals['value']
-    elif param == 'role':
-        if vals['value'] == 'true':
-            user.role |= int(vals['field_index'])
-        else:
-            user.role &= ~int(vals['field_index'])
-    elif param == 'sidebar_view':
-        if vals['value'] == 'true':
-            user.sidebar_view |= int(vals['field_index'])
-        else:
-            user.sidebar_view &= ~int(vals['field_index'])
-
+            return ""
+    if 'field_index' in vals:
+        vals['field_index'] = vals['field_index'][0]
+    if 'value' in vals:
+        vals['value'] = vals['value'][0]
+    else:
+        return ""
+    for user in users:
+        if param =='nickname':
+            if not ub.session.query(ub.User).filter(ub.User.nickname == vals['value']).scalar():
+                user.nickname = vals['value']
+            else:
+                log.error(u"This username is already taken")
+                return _(u"This username is already taken"), 400
+        elif param =='email':
+            existing_email = ub.session.query(ub.User).filter(ub.User.email == vals['value'].lower()).first()
+            if not existing_email:
+                user.email = vals['value']
+            else:
+                log.error(u"Found an existing account for this e-mail address.")
+                return _(u"Found an existing account for this e-mail address."), 400
+        elif param =='kindle_mail':
+            user.kindle_mail = vals['value']
+        elif param == 'role':
+            if vals['value'] == 'true':
+                user.role |= int(vals['field_index'])
+            else:
+                user.role &= ~int(vals['field_index'])
+        elif param == 'sidebar_view':
+            if vals['value'] == 'true':
+                user.sidebar_view |= int(vals['field_index'])
+            else:
+                user.sidebar_view &= ~int(vals['field_index'])
+        elif param == 'denied_tags':
+                user.denied_tags = vals['value']
+        elif param == 'allowed_tags':
+                user.allowed_tags = vals['value']
+        elif param == 'allowed_column_value':
+            user.allowed_column_value = vals['value']
+        elif param == 'denied_column_value':
+            user.denied_column_value = vals['value']
+        elif param == 'locale':
+            user.locale = vals['value']
+        elif param == 'default_language':
+            user.default_language = vals['value']
     ub.session_commit()
     return ""
 

@@ -67,6 +67,7 @@ def get_language_codes(locale, language_names, remainder=None):
         remainder.extend(language_names)
     return languages
 
+
 def get_valid_language_codes(locale, language_names, remainder=None):
     languages = list()
     if "" in language_names:
