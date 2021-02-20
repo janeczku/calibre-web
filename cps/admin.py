@@ -220,12 +220,16 @@ def view_configuration():
 @admin_required
 def edit_user_table():
     visibility = current_user.view_settings.get('useredit', {})
+    languages = calibre_db.speaking_language()
+    translations = babel.list_translations() + [LC('en')]
     allUser = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
 
     return render_title_template("user_table.html",
                                  users=allUser.all(),
+                                 translations=translations,
+                                 languages=languages,
                                  visiblility=visibility,
                                  all_roles=constants.ALL_ROLES,
                                  sidebar_settings=constants.sidebar_settings,
