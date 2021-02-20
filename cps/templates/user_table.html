@@ -1,13 +1,19 @@
 {% extends "layout.html" %}
-{% macro user_table_row(parameter, edit_text, show_text, validate) -%}
-<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+{% macro user_table_row(parameter, edit_text, show_text, validate, button=False) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
     data-visible="{{visiblility.get(parameter)}}"
     data-editable-type="text"
     data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
     data-editable-title="{{ edit_text }}"
     data-edit="true"
-    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}" {% endif %}>
+    {% if not button %}
+    data-sortable="true"
+    {% endif %}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    {% if button %}
+    <div><div class="btn btn-default disabled" aria-disabled="true">{{edit_text}}</div></div><br>
+    {% endif %}
     {{ show_text }}
 </th>
 {%- endmacro %}
@@ -31,18 +37,47 @@
 </th>
 {%- endmacro %}
 
-{% macro user_select_row(parameter, url, show_text, validate) -%}
-<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+{% macro user_select_languages(parameter, url, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
     data-visible="{{visiblility.get(parameter)}}"
     data-editable-type="select"
     data-edit="true"
     data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
     data-editable-source={{url}}
-    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}" {% endif %}>
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    <div>
+      <select id="select_{{ parameter }}" disabled="">
+      <option value="all">{{ _('Show All') }}</option>
+      {% for language in languages %}
+        <option value="{{language.lang_code}}">{{language.name}}</option>
+      {% endfor %}
+      </select>
+    </div><br>
+
     {{ show_text }}
 </th>
-<!--data-editable-source="[{'value': '1', 'text':'bootstrap-table'},{'value': '2', 'text':'bootstrap2-table'}]"-->
+{%- endmacro %}
+
+{% macro user_select_translations(parameter, url, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
+    data-editable-type="select"
+    data-edit="true"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-source={{url}}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    <div>
+      <select id="select_{{ parameter }}" disabled="">
+      <option>{{_('Select...')}}</option>
+      {% for translation in translations %}
+        <option value="{{translation}}">{{translation.display_name|capitalize}}</option>
+      {% endfor %}
+    </select>
+    </div><br>
+    {{ show_text }}
+</th>
 {%- endmacro %}
 
 
@@ -66,13 +101,13 @@
             <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ user_table_row('nickname', _('Enter Username'), _('Username'), true) }}
             {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
-            {{ user_select_row('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
-            {{ user_select_row('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
             {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), true) }}
-            {{ user_table_row('denied_tags', _("Enter Users's Locale"), _("Denied Tags"), true) }}
-            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), true) }}
-            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), true) }}
-            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), true) }}
+            {{ user_select_translations('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
+            {{ user_select_languages('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
+            {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), true, true) }}
+            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), true, true) }}
+            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), true, true) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), true, true) }}
             {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "download_role",_('Upload'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "upload_role", _('Download'), visiblility, all_roles)}}
@@ -95,7 +130,7 @@
             {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show archived books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
-            <th data-align="right" data-formatter="UserActions" data-switchable="false">{{_('Delete User')}}</th>
+            <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
         </tr>
       </thead>
     </table>
