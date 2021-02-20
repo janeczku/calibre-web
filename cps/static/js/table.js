@@ -391,6 +391,10 @@ $(function() {
             $('.columns [data-field]').each(function(){
                 var elText = $(this).next().text();
                 $(this).next().empty();
+                var index = elText.lastIndexOf('\n', elText.length - 2);
+                if ( index > -1) {
+                    elText = elText.substr(index);
+                }
                 $(this).next().text(elText);
             });
         },
@@ -567,20 +571,22 @@ function checkboxChange(checkbox, userId, field, field_index) {
     });
 }
 
-function checkboxHeader(checkbox, field, field_index) {
+function checkboxHeader(CheckboxState, field, field_index) {
     var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
     $.ajax({
         method:"post",
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-        data:  {"pk":result, "field_index":field_index, "value": checkbox.checked}
-    });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
+        data:  {"pk":result, "field_index":field_index, "value": CheckboxState},
+        success:function() {
+            $.ajax({
+                method:"get",
+                url: window.location.pathname + "/../../ajax/listusers",
+                async: true,
+                timeout: 900,
+                success:function(data) {
+                    $("#user-table").bootstrapTable("load", data);
+                }
+            });
         }
     });
 }
@@ -600,6 +606,8 @@ function user_handle (userId) {
             $("#user-table").bootstrapTable("load", data);
         }
     });
+}
 
-
+function test(){
+    console.log("hello");
 }
