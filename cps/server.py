@@ -153,10 +153,10 @@ class WebServer(object):
         # not exist if a setuptools script is installed as an egg. It may be
         # set incorrectly for entry points created with pip on Windows.
         if getattr(__main__, "__package__", None) is None or (
-                os.name == "nt"
-                and __main__.__package__ == ""
-                and not os.path.exists(py_script)
-                and os.path.exists(f"{py_script}.exe")
+            os.name == "nt"
+            and __main__.__package__ == ""
+            and not os.path.exists(py_script)
+            and os.path.exists("{}.exe".format(py_script))
         ):
             # Executed a file, like "python app.py".
             py_script = os.path.abspath(py_script)
@@ -164,7 +164,7 @@ class WebServer(object):
             if os.name == "nt":
                 # Windows entry points have ".exe" extension and should be
                 # called directly.
-                if not os.path.exists(py_script) and os.path.exists(f"{py_script}.exe"):
+                if not os.path.exists(py_script) and os.path.exists("{}.exe".format(py_script)):
                     py_script += ".exe"
 
                 if (
@@ -185,7 +185,7 @@ class WebServer(object):
                     name = os.path.splitext(os.path.basename(py_script))[0]
 
                     if name != "__main__":
-                        py_module += f".{name}"
+                        py_module += ".{}".format(name)
                 else:
                     # Incorrectly rewritten by pydevd debugger from "-m script" to "script".
                     py_module = py_script
