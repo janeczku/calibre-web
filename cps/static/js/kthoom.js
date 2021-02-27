@@ -146,6 +146,9 @@ kthoom.ImageFile = function(file) {
         case "jpeg":
             this.mimeType = "image/jpeg";
             break;
+        case "png":
+            this.mimeType = "image/png";
+            break;
         case "gif":
             this.mimeType = "image/gif";
             break;
