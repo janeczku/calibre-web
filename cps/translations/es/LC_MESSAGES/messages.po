@@ -428,7 +428,7 @@ msgstr "Fallo al mover el archivo de cubierta %(file)s: %(error)s"
 #: cps/editbooks.py:923
 #, python-format
 msgid "File %(file)s uploaded"
-msgstr "El fichero %(file)s a sido subido"
+msgstr "El fichero %(file)s ha sido subido"
 
 #: cps/editbooks.py:949
 msgid "Source or destination format for conversion missing"
