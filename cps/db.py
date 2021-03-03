@@ -159,7 +159,7 @@ class Identifiers(Base):
         elif format_type == "url":
             return u"{0}".format(self.val)
         else:
-            return u""
+            return u"{0}".format(self.val)
 
 
 class Comments(Base):
