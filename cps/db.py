@@ -156,8 +156,6 @@ class Identifiers(Base):
             return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
             return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
-        elif format_type == "url":
-            return u"{0}".format(self.val)
         else:
             return u"{0}".format(self.val)
 
