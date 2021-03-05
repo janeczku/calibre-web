@@ -27,8 +27,9 @@ var cvResults = [];
 
 $(function () {
     var msg = i18nMsg;
-    var douban = "https://api.douban.com";
-    var dbSearch = "/v2/book/search";
+    var douban = "https://frodo.douban.com";
+    var dbSearch = "/api/v2/search/weixin";
+    var dbApiKey= "054022eaeae0b00e0fc068c0c0a2102a";
     var dbDone = 0;
 
     var google = "https://www.googleapis.com";
@@ -79,6 +80,7 @@ $(function () {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
+
         function formatDate (date) {
             var d = new Date(date),
                 month = "" + (d.getMonth() + 1),
@@ -93,6 +95,49 @@ $(function () {
             }
 
             return [year, month, day].join("-");
+        }
+
+        function toDbBook(result){
+            var seriesTitle = "";
+            if (result.series) {
+                seriesTitle = result.series.title;
+            }
+            var dateFomers = result.pubdate[0].split("-");
+            var publishedYear = parseInt(dateFomers[0]);
+            var publishedMonth = parseInt(dateFomers[1]);
+            var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
+            publishedDate = formatDate(publishedDate);
+            var book = {
+                id: result.id,
+                title: result.title,
+                authors: result.author || [],
+                description: result.intro,
+                publisher: result.publisher || "",
+                publishedDate: publishedDate || "",
+                tags: result.tags.map(function(tag) {
+                    return tag.name.toLowerCase().replace(/,/g, "_");
+                }),
+                rating: result.rating.average || 0,
+                series: seriesTitle || "",
+                cover: result.cover_url,
+                url: "https://book.douban.com/subject/" + result.id,
+                source: {
+                    id: "douban",
+                    description: "Douban Books",
+                    url: "https://book.douban.com/"
+                }
+            };
+
+            if (book.rating > 0) {
+                book.rating /= 2;
+            }
+
+            var $book = $(templates.bookResult(book));
+            $book.find("img").on("click", function () {
+                populateForm(book);
+            });
+
+            $("#book-list").append($book);
         }
 
         if (ggResults.length > 0) {
@@ -132,49 +177,21 @@ $(function () {
 
         if (dbResults.length > 0) {
             if (dbDone < 2) {
-                dbResults.forEach(function(result) {
-                    var seriesTitle = "";
-                    if (result.series) {
-                        seriesTitle = result.series.title;
+                dbResults.forEach(function(data) {
+                    if (data.type_name != "图书"){
+                        return;
                     }
-                    var dateFomers = result.pubdate.split("-");
-                    var publishedYear = parseInt(dateFomers[0]);
-                    var publishedMonth = parseInt(dateFomers[1]);
-                    var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
-
-                    publishedDate = formatDate(publishedDate);
-
-                    var book = {
-                        id: result.id,
-                        title: result.title,
-                        authors: result.author || [],
-                        description: result.summary,
-                        publisher: result.publisher || "",
-                        publishedDate: publishedDate || "",
-                        tags: result.tags.map(function(tag) {
-                            return tag.title.toLowerCase().replace(/,/g, "_");
-                        }),
-                        rating: result.rating.average || 0,
-                        series: seriesTitle || "",
-                        cover: result.image,
-                        url: "https://book.douban.com/subject/" + result.id,
-                        source: {
-                            id: "douban",
-                            description: "Douban Books",
-                            url: "https://book.douban.com/"
+                    var uri = douban + "/api/v2/book/" + data.target.id+"?apikey=" + dbApiKey;
+                    $.ajax({
+                        url: uri,
+                        type: "GET",
+                        dataType: "jsonp",
+                        async: false,
+                        jsonp: "callback",
+                        success: function success(book) {
+                            toDbBook(book);
                         }
-                    };
-
-                    if (book.rating > 0) {
-                        book.rating /= 2;
-                    }
-
-                    var $book = $(templates.bookResult(book));
-                    $book.find("img").on("click", function () {
-                        populateForm(book);
                     });
-
-                    $("#book-list").append($book);
                 });
                 dbDone = 2;
             } else {
@@ -260,7 +277,7 @@ $(function () {
             dataType: "jsonp",
             jsonp: "callback",
             success: function success(data) {
-                dbResults = data.books;
+                dbResults = data.items;
             },
             error: function error() {
                 $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
