@@ -16,20 +16,20 @@
       <input type="text" class="form-control" name="publisher" id="publisher" value="">
     </div>
     <div class="row">
-        <div class="form-group col-sm-6">
-          <label for="Publishstart">{{_('Published Date From')}}</label>
-          <div style="position: relative">
-            <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
-            <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
-          </div>
+      <div class="form-group col-sm-6">
+        <label for="Publishstart">{{_('Published Date From')}}</label>
+        <div style="position: relative">
+          <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
+          <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
         </div>
-        <div class="form-group col-sm-6">
-          <label for="Publishend">{{_('Published Date To')}}</label>
-          <div style="position: relative">
-            <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
-            <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
-          </div>
+      </div>
+      <div class="form-group col-sm-6">
+        <label for="Publishend">{{_('Published Date To')}}</label>
+        <div style="position: relative">
+          <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
+          <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
         </div>
+      </div>
     </div>
     <div class="form-group">
       <label for="read_status">{{_('Read Status')}}</label>
@@ -42,17 +42,17 @@
     <div class="row">
       <div class="form-group col-sm-6" id="tag">
         <div><label for="include_tag">{{_('Tags')}}</label></div>
-        <select class="selectpicker" name="include_tag" id="include_tag" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_tag" id="include_tag" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" multiple>
           {% for tag in tags %}
-            <option class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
+          <option class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_tag">{{_('Exclude Tags')}}</label></div>
-        <select class="selectpicker" name="exclude_tag" id="exclude_tag" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_tag" id="exclude_tag" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" multiple>
           {% for tag in tags %}
-            <option  class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
+          <option  class="tags_click" value="{{tag.id}}">{{tag.name}}</option>
           {% endfor %}
         </select>
       </div>
@@ -60,64 +60,83 @@
     <div class="row">
       <div class="form-group col-sm-6">
         <div><label for="include_serie">{{_('Series')}}</label></div>
-        <select class="selectpicker" name="include_serie" id="include_serie" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_serie" id="include_serie" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" multiple>
           {% for serie in series %}
-            <option value="{{serie.id}}">{{serie.name}}</option>
+          <option value="{{serie.id}}">{{serie.name}}</option>
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_serie">{{_('Exclude Series')}}</label></div>
-        <select class="selectpicker" name="exclude_serie" id="exclude_serie" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_serie" id="exclude_serie" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" multiple>
           {% for serie in series %}
-            <option value="{{serie.id}}">{{serie.name}}</option>
+          <option value="{{serie.id}}">{{serie.name}}</option>
           {% endfor %}
         </select>
       </div>
     </div>
+     <div class="row">
+      <div class="form-group col-sm-6">
+        <div><label for="include_shelf">{{_('Shelves')}}</label></div>
+        <select class="selectpicker" name="include_shelf" id="include_shelf" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" multiple>
+          {% for shelf in shelves %}
+          <option value="{{shelf.id}}">{{shelf.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-sm-6">
+        <div><label for="exclude_shelf">{{_('Exclude Shelves')}}</label></div>
+        <select class="selectpicker" name="exclude_shelf" id="exclude_shelf" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" multiple>
+          {% for shelf in shelves %}
+          <option value="{{shelf.id}}">{{shelf.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
     {% if languages %}
     <div class="row">
       <div class="form-group col-sm-6">
         <div><label for="include_language">{{_('Languages')}}</label></div>
-        <select class="selectpicker" name="include_language" id="include_language" data-live-search="true" data-style="btn-primary" multiple>
+        <select class="selectpicker" name="include_language" id="include_language" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" multiple>
           {% for language in languages %}
-            <option value="{{language.id}}">{{language.name}}</option>
+          <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
         </select>
       </div>
       <div class="form-group col-sm-6">
         <div><label for="exclude_language">{{_('Exclude Languages')}}</label></div>
-        <select class="selectpicker" name="exclude_language" id="exclude_language" data-live-search="true" data-style="btn-danger" multiple>
+        <select class="selectpicker" name="exclude_language" id="exclude_language" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" multiple>
           {% for language in languages %}
-            <option value="{{language.id}}">{{language.name}}</option>
+          <option value="{{language.id}}">{{language.name}}</option>
           {% endfor %}
         </select>
       </div>
     </div>
     {% endif%}
     <div class="row">
-        <div class="form-group col-sm-6">
+      <div class="form-group col-sm-6">
         <div><label for="include_extension">{{_('Extensions')}}</label></div>
-        <select class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" multiple>
-        {% for extension in extensions %}
-            <option value="{{extension.format}}">{{extension.format}}</option>
+        <select class="selectpicker" name="include_extension" id="include_extension" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" multiple>
+          {% for extension in extensions %}
+          <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
         </select>
-        </div>
-        <div class="form-group col-sm-6">
+      </div>
+      <div class="form-group col-sm-6">
         <div><label for="exclude_extension">{{_('Exclude Extensions')}}</label></div>
-        <select class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" multiple>
-        {% for extension in extensions %}
-            <option value="{{extension.format}}">{{extension.format}}</option>
+        <select class="selectpicker" name="exclude_extension" id="exclude_extension" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" multiple>
+          {% for extension in extensions %}
+          <option value="{{extension.format}}">{{extension.format}}</option>
           {% endfor %}
         </select>
-        </div>
+      </div>
     </div>
     <div class="row">
-        <div class="form-group col-sm-6">
-          <label for="ratinghigh">{{_('Rating Above')}}</label>
-          <input type="number"  name="ratinghigh" id="ratinghigh" class="rating input-lg" data-clearable="" >
-        </div>
+      <div class="form-group col-sm-6">
+        <label for="ratinghigh">{{_('Rating Above')}}</label>
+        <input type="number"  name="ratinghigh" id="ratinghigh" class="rating input-lg" data-clearable="" >
+      </div>
         <div class="form-group col-sm-6">
           <label for="ratinglow">{{_('Rating Below')}}</label>
           <input type="number"  name="ratinglow" id="ratinglow" class="rating input-lg" data-clearable="" >
@@ -129,47 +148,47 @@
     </div>
 
     {% if cc|length > 0 %}
-      {% for c in cc %}
-        <div class="form-group">
-        <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
-        {% if c.datatype == 'bool' %}
-          <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
-            <option value="" selected></option>
-            <option value="True" >{{_('Yes')}}</option>
-            <option value="False" >{{_('No')}}</option>
-          </select>
-        {% endif %}
+    {% for c in cc %}
+    <div class="form-group">
+      <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
+      {% if c.datatype == 'bool' %}
+      <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
+        <option value="" selected></option>
+        <option value="True" >{{_('Yes')}}</option>
+        <option value="False" >{{_('No')}}</option>
+      </select>
+      {% endif %}
 
-        {% if c.datatype == 'int' %}
-          <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
-        {% endif %}
+      {% if c.datatype == 'int' %}
+      <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+      {% endif %}
 
-        {% if c.datatype == 'float' %}
-          <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
-        {% endif %}
+      {% if c.datatype == 'float' %}
+      <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+      {% endif %}
 
-        {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
-          <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
-        {% endif %}
+      {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
+      <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+      {% endif %}
 
-        {% if c.datatype in ['text', 'series'] and c.is_multiple %}
-          <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
-        {% endif %}
+      {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+      <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+      {% endif %}
 
-        {% if c.datatype == 'enumeration' %}
-          <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
-              <option></option>
-              {% for opt in c.get_display_dict().enum_values %}
-                <option>{{ opt }}</option>
-              {% endfor %}
-          </select>
-        {% endif %}
+      {% if c.datatype == 'enumeration' %}
+      <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+        <option></option>
+        {% for opt in c.get_display_dict().enum_values %}
+        <option>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
 
-        {% if c.datatype == 'rating' %}
-          <input type="number" min="1" max="5" step="0.5" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
-        {% endif %}
-        </div>
-      {% endfor %}
+      {% if c.datatype == 'rating' %}
+      <input type="number" min="1" max="5" step="0.5" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+      {% endif %}
+    </div>
+    {% endfor %}
     {% endif %}
 
     <button type="submit" id="adv_submit" class="btn btn-default">{{_('Search')}}</button>

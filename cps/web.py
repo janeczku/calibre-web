@@ -682,17 +682,21 @@ def render_prepare_search_form(cc):
         .group_by(text('books_series_link.series'))\
         .order_by(db.Series.name)\
         .filter(calibre_db.common_filters()).all()
+    shelves = ub.session.query(ub.Shelf)\
+        .order_by(ub.Shelf.name).all()
     extensions = calibre_db.session.query(db.Data)\
         .join(db.Books)\
         .filter(calibre_db.common_filters()) \
         .group_by(db.Data.format)\
         .order_by(db.Data.format).all()
+    log.info(f"shelves: {shelves}")
+    log.info(f"series: {series}")
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series, title=_(u"Advanced Search"), cc=cc, page="advsearch")
+                                 series=series,shelves=shelves, title=_(u"Advanced Search"), cc=cc, page="advsearch")
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
@@ -984,7 +988,7 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     values = dict(request.form)
-    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_language',
+    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_shelf','exclude_shelf','include_language',
               'exclude_language', 'include_extension', 'exclude_extension']
     for param in params:
         values[param] = list(request.form.getlist(param))
@@ -1004,6 +1008,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     exclude_tag_inputs = term.get('exclude_tag')
     include_series_inputs = term.get('include_serie')
     exclude_series_inputs = term.get('exclude_serie')
+    include_shelf_inputs = term.get('include_shelf')
+    exclude_shelf_inputs = term.get('exclude_shelf')
     include_languages_inputs = term.get('include_language')
     exclude_languages_inputs = term.get('exclude_language')
     include_extension_inputs = term.get('include_extension')
@@ -1033,6 +1039,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             cc_present = True
 
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
+            include_shelf_inputs or exclude_shelf_inputs or \
             include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
             publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
             include_extension_inputs or exclude_extension_inputs or read_status:
@@ -1059,6 +1066,12 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         searchterm.extend(serie.name for serie in serie_names)
         serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
         searchterm.extend(serie.name for serie in serie_names)
+        shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(include_shelf_inputs)).all()
+        searchterm.extend(shelf.name for shelf in shelf_names)
+        shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(exclude_shelf_inputs)).all()
+        searchterm.extend(shelf.name for shelf in shelf_names)
+        
+
         language_names = calibre_db.session.query(db.Languages).\
             filter(db.Languages.id.in_(include_languages_inputs)).all()
         if language_names:
@@ -1113,6 +1126,10 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.series.any(db.Series.id == serie))
         for serie in exclude_series_inputs:
             q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
+        q = q.join(ub.BookShelf,db.Books.id==ub.BookShelf.book_id ,isouter=True)\
+            .filter(ub.BookShelf.shelf.notin_(exclude_shelf_inputs))
+        if len(include_shelf_inputs) >0:
+            q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
         for extension in include_extension_inputs:
             q = q.filter(db.Books.data.any(db.Data.format == extension))
         for extension in exclude_extension_inputs:
