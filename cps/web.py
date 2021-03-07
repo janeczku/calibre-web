@@ -683,6 +683,7 @@ def render_prepare_search_form(cc):
         .order_by(db.Series.name)\
         .filter(calibre_db.common_filters()).all()
     shelves = ub.session.query(ub.Shelf)\
+        .filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == int(current_user.id)))\
         .order_by(ub.Shelf.name).all()
     extensions = calibre_db.session.query(db.Data)\
         .join(db.Books)\
