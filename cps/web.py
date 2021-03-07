@@ -37,7 +37,7 @@ from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
-from sqlalchemy.sql.expression import text, func, false, not_, and_
+from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
 
@@ -1126,8 +1126,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.series.any(db.Series.id == serie))
         for serie in exclude_series_inputs:
             q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
-        q = q.join(ub.BookShelf,db.Books.id==ub.BookShelf.book_id ,isouter=True)\
-            .filter(ub.BookShelf.shelf.notin_(exclude_shelf_inputs))
+        q = q.outerjoin(ub.BookShelf,db.Books.id==ub.BookShelf.book_id)\
+            .filter(or_(ub.BookShelf.shelf==None,ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
         if len(include_shelf_inputs) >0:
             q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
         for extension in include_extension_inputs:
