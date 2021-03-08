@@ -405,10 +405,35 @@ $("div.comments").readmore({
 
 // Advanced Search Results
 if($("body.advsearch").length > 0) {
+  $("#loader + .container-fluid")
+    .prepend("<div class='blur-wrapper'></div>");
+  $("#add-to-shelves").insertBefore(".blur-wrapper");
   $('div[aria-label="Add to shelves"]').click(function () {
     $("#add-to-shelves").toggle();
   });
   $('#add-to-shelf').height("40px");
+  function dropdownToggle() {
+      topPos = $("#add-to-shelf").offset().top-20;
+      if ($('div[aria-label="Add to shelves"]').length > 0) {
+
+          position = $('div[aria-label="Add to shelves"]').offset().left
+
+          if (position + $("#add-to-shelves").width() > $(window).width()) {
+              positionOff = position + $("#add-to-shelves").width() - $(window).width();
+              adsPosition = position - positionOff - 5
+              $("#add-to-shelves").attr("style", "left: " + adsPosition + "px !important; right: auto;  top: " + topPos + "px");
+          } else {
+              $("#add-to-shelves").attr("style", "left: " + position + "px !important; right: auto;  top: " + topPos + "px");
+          }
+      }
+  }
+
+  dropdownToggle();
+
+  $(window).on("resize", function () {
+      dropdownToggle();
+  });
+
 }
 
 // Author Page Background Blur
