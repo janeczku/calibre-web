@@ -403,6 +403,14 @@ $("div.comments").readmore({
 //     End of Global Work     //
 ///////////////////////////////
 
+// Advanced Search Results
+if($("body.advsearch").length > 0) {
+  $('div[aria-label="Add to shelves"]').click(function () {
+    $("#add-to-shelves").toggle();
+  });
+  $('#add-to-shelf').height("40px");
+}
+
 // Author Page Background Blur
 if ($("body.author").length > 0) {
     cover = $(".author-bio img").attr("src");
