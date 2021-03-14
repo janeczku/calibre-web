@@ -93,6 +93,8 @@ a.editable-click:hover { border-bottom: None; }
 }
 
 .book-meta .tags a { display: inline; }
+table .bg-primary a { color: #fff; }
+table .bg-dark-danger a { color: #fff; }
 .book-meta .identifiers a { display: inline; }
 
 .navigation .create-shelf a {
@@ -227,8 +229,6 @@ span.glyphicon.glyphicon-tags {
 }
 
 .book-meta { padding-bottom: 20px; }
-table .bg-primary a { color: #fff; }
-table .bg-dark-danger a { color: #fff; }
 
 .navbar-default .navbar-toggle .icon-bar { background-color: #000; }
 .navbar-default .navbar-toggle { border-color: #000; }
