@@ -72,7 +72,7 @@ def load_user_from_request(request):
 def load_user_from_auth_header(header_val):
     if header_val.startswith('Basic '):
         header_val = header_val.replace('Basic ', '', 1)
-    basic_username = basic_password = ''
+    basic_username = basic_password = ''  # nosec
     try:
         header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]

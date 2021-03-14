@@ -490,7 +490,6 @@ input:-moz-placeholder { color: #454545; }
   position: fixed;
   top: 50%;
   left: 50%;
-  // width: 50%;
   width: 630px;
   height: auto;
   z-index: 2000;
@@ -593,7 +592,6 @@ input:-moz-placeholder { color: #454545; }
 }
 
 .md-content > .closer {
-  //font-size: 18px;
   position: absolute;
   right: 0;
   top: 0;
