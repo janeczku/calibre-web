@@ -88,7 +88,7 @@ $("#desc").click(function() {
     // Find count of middle element
     var count = $(".row:visible").length;
     if (count > 20) {
-        middle = parseInt(count / 2) + (count % 2);
+        middle = parseInt(count / 2, 10) + (count % 2);
 
         //var middle = parseInt(count / 2) + (count % 2);
         // search for the middle of all visible elements
@@ -135,7 +135,7 @@ $("#asc").click(function() {
     // Find count of middle element
     var count = $(".row:visible").length;
     if (count > 20) {
-        var middle = parseInt(count / 2) + (count % 2);
+        var middle = parseInt(count / 2, 10) + (count % 2);
 
         //var middle = parseInt(count / 2) + (count % 2);
         // search for the middle of all visible elements
