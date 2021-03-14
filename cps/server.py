@@ -137,7 +137,7 @@ class WebServer(object):
 
         return sock, _readable_listen_address(*address)
 
-
+    @staticmethod
     def _get_args_for_reloading(self):
         """Determine how the script was executed, and return the args needed
         to execute it again in a new process.

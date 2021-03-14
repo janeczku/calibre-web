@@ -677,7 +677,7 @@ $(".navbar-collapse.collapse.in").before('<div class="sidebar-backdrop"></div>')
 // Get rid of leading white space
 recentlyAdded = $("#nav_new a:contains('Recently')").text().trim();
 $("#nav_new a:contains('Recently')").contents().filter(function () {
-    return this.nodeType == 3
+    return this.nodeType === 3
 }).each(function () {
     this.textContent = this.textContent.replace(" Recently Added", recentlyAdded);
 });

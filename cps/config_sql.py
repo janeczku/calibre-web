@@ -146,15 +146,16 @@ class _ConfigSQL(object):
         self.load()
 
         change = False
-        if self.config_converterpath == None:
+        if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
             change = True
             self.config_converterpath = autodetect_calibre_binary()
 
-        if self.config_kepubifypath == None:
+        if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
+
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
-        if self.config_rarfile_location == None:
+        if self.config_rarfile_location == None:  # pylint: disable=access-member-before-definition
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
@@ -181,7 +182,8 @@ class _ConfigSQL(object):
             return None
         return self.config_keyfile
 
-    def get_config_ipaddress(self):
+    @staticmethod
+    def get_config_ipaddress():
         return cli.ipadress or ""
 
     def _has_role(self, role_flag):
@@ -299,6 +301,7 @@ class _ConfigSQL(object):
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        # pylint: disable=access-member-before-definition
         logfile = logger.setup(self.config_logfile, self.config_log_level)
         if logfile != self.config_logfile:
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)

@@ -16,6 +16,7 @@
  */
 
 /* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+/* global getPath, ConfirmDialog */
 
 var selections = [];
 

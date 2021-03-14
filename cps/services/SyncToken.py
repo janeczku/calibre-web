@@ -64,7 +64,7 @@ class SyncToken:
         books_last_modified: Datetime representing the last modified book that the device knows about.
     """
 
-    SYNC_TOKEN_HEADER = "x-kobo-synctoken"
+    SYNC_TOKEN_HEADER = "x-kobo-synctoken"  # nosec
     VERSION = "1-1-0"
     LAST_MODIFIED_ADDED_VERSION = "1-1-0"
     MIN_VERSION = "1-0-0"
@@ -91,7 +91,7 @@ class SyncToken:
 
     def __init__(
         self,
-        raw_kobo_store_token="",
+        raw_kobo_store_token="",  # nosec
         books_last_created=datetime.min,
         books_last_modified=datetime.min,
         archive_last_modified=datetime.min,
@@ -110,7 +110,7 @@ class SyncToken:
     @staticmethod
     def from_headers(headers):
         sync_token_header = headers.get(SyncToken.SYNC_TOKEN_HEADER, "")
-        if sync_token_header == "":
+        if sync_token_header == "":  # nosec
             return SyncToken()
 
         # On the first sync from a Kobo device, we may receive the SyncToken
