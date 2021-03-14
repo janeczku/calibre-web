@@ -373,23 +373,9 @@ def render_books_list(data, sort, book_id, page):
     order = get_sort_function(sort, data)
 
     if data == "rated":
-        if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
-            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                                    db.Books,
-                                                                    db.Books.ratings.any(db.Ratings.rating > 9),
-                                                                    order)
-            return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                         id=book_id, title=_(u"Top Rated Books"), page="rated")
-        else:
-            abort(404)
+        return render_rated_books(page, book_id, order=order)
     elif data == "discover":
-        if current_user.check_visibility(constants.SIDEBAR_RANDOM):
-            entries, __, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, [func.randomblob(2)])
-            pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
-            return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
-                                         title=_(u"Discover (Random Books)"), page="discover")
-        else:
-            abort(404)
+        return render_discover_books(page, book_id)
     elif data == "unread":
         return render_read_books(page, False, order=order)
     elif data == "read":
@@ -428,6 +414,27 @@ def render_books_list(data, sort, book_id, page):
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Books"), page=website)
 
+
+def render_rated_books(page, book_id, order):
+    if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Books.ratings.any(db.Ratings.rating > 9),
+                                                                order)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     id=book_id, title=_(u"Top Rated Books"), page="rated")
+    else:
+        abort(404)
+
+
+def render_discover_books(page, book_id):
+    if current_user.check_visibility(constants.SIDEBAR_RANDOM):
+        entries, __, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, [func.randomblob(2)])
+        pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
+        return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
+                                     title=_(u"Discover (Random Books)"), page="discover")
+    else:
+        abort(404)
 
 def render_hot_books(page):
     if current_user.check_visibility(constants.SIDEBAR_HOT):
@@ -1478,16 +1485,7 @@ def logout():
 
 
 # ################################### Users own configuration #########################################################
-def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
-    to_save = request.form.to_dict()
-    current_user.random_books = 0
-    if current_user.role_passwd() or current_user.role_admin():
-        if "password" in to_save and to_save["password"]:
-            current_user.password = generate_password_hash(to_save["password"])
-    if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
-        current_user.kindle_mail = to_save["kindle_mail"]
-    if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
-        current_user.allowed_tags = to_save["allowed_tags"].strip()
+def change_profile_email(to_save, kobo_support, local_oauth_check, oauth_status):
     if "email" in to_save and to_save["email"] != current_user.email:
         if config.config_public_reg and not check_valid_domain(to_save["email"]):
             flash(_(u"E-mail is not from valid domain"), category="error")
@@ -1496,6 +1494,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
                                          kobo_support=kobo_support,
                                          registered_oauth=local_oauth_check, oauth_status=oauth_status)
         current_user.email = to_save["email"]
+
+def change_profile_nickname(to_save, kobo_support, local_oauth_check, translations, languages):
     if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
         # Query User nickname, if not existing, change
         if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
@@ -1511,6 +1511,20 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
                                          title=_(u"Edit User %(nick)s",
                                                  nick=current_user.nickname),
                                          page="edituser")
+
+
+def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
+    to_save = request.form.to_dict()
+    current_user.random_books = 0
+    if current_user.role_passwd() or current_user.role_admin():
+        if "password" in to_save and to_save["password"]:
+            current_user.password = generate_password_hash(to_save["password"])
+    if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
+        current_user.kindle_mail = to_save["kindle_mail"]
+    if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
+        current_user.allowed_tags = to_save["allowed_tags"].strip()
+    change_profile_email(to_save, kobo_support, local_oauth_check, oauth_status)
+    change_profile_nickname(to_save, kobo_support, local_oauth_check, translations, languages)
     if "show_random" in to_save and to_save["show_random"] == "on":
         current_user.random_books = 1
     if "default_language" in to_save:

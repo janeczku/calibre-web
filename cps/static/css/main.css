@@ -370,7 +370,7 @@ input:-moz-placeholder { color: #454545; }
 }
 
 #searchResults li {
-  margin-bottom:10px;
+  margin-bottom: 10px;
   width: 225px;
   font-family: Georgia, "Times New Roman", Times, serif;
   list-style: none;
