@@ -51,7 +51,11 @@ body h2 {
   color: #444;
 }
 
-a, .danger, .book-remove, .editable-empty, .editable-empty:hover { color: #45b29d; }
+a,
+.danger,
+.book-remove,
+.editable-empty,
+.editable-empty:hover { color: #45b29d; }
 
 .book-remove:hover { color: #23527c; }
 
@@ -66,7 +70,9 @@ a, .danger, .book-remove, .editable-empty, .editable-empty:hover { color: #45b29
   color: #45b29d;
 }
 
-.editable-click, a.editable-click, a.editable-click:hover { border-bottom: None; }
+.editable-click,
+a.editable-click,
+a.editable-click:hover { border-bottom: None; }
 
 .navigation .nav-head {
   text-transform: uppercase;
@@ -122,6 +128,7 @@ a, .danger, .book-remove, .editable-empty, .editable-empty:hover { color: #45b29
 .container-fluid .discover { margin-bottom: 50px; }
 .container-fluid .new-books { border-top: 1px solid #ccc; }
 .container-fluid .new-books h2 { margin: 50px 0 0 0; }
+
 .container-fluid .book {
   margin-top: 20px;
   display: flex;
@@ -216,7 +223,7 @@ span.glyphicon.glyphicon-tags {
 .navbar-default .navbar-toggle { border-color: #000; }
 .cover { margin-bottom: 10px; }
 
-.cover .badge{
+.cover .badge {
   position: absolute;
   top: 2px;
   left: 2px;
@@ -224,7 +231,8 @@ span.glyphicon.glyphicon-tags {
   border-radius: 10px;
   background-color: #fff;
 }
-.cover .read{
+
+.cover .read {
   left: auto;
   right: 2px;
   width: 17px;
@@ -239,7 +247,10 @@ span.glyphicon.glyphicon-tags {
   max-height: 200px;
 }
 
-.btn-file { position: relative; overflow: hidden; }
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
 
 .btn-file input[type=file] {
   position: absolute;
@@ -275,26 +286,44 @@ fieldset[disabled] .btn-primary,
 fieldset[disabled] .btn-primary:hover,
 .btn-primary.disabled:focus,
 .btn-primary[disabled]:focus,
-fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active { background-color: #89B9E2; }
+fieldset[disabled] .btn-primary:focus,
+.btn-primary.disabled:active,
+.btn-primary[disabled]:active,
+fieldset[disabled] .btn-primary:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary.active { background-color: #89b9e2; }
 
-.btn-toolbar > .btn+.btn,
-.btn-toolbar > .btn-group+.btn,
-.btn-toolbar > .btn+.btn-group,
-.btn-toolbar > .btn-group+.btn-group { margin-left: 0; }
+.btn-toolbar > .btn + .btn,
+.btn-toolbar > .btn-group + .btn,
+.btn-toolbar > .btn + .btn-group,
+.btn-toolbar > .btn-group + .btn-group { margin-left: 0; }
 
 .panel-body { background-color: #f5f5f5; }
 .spinner { margin: 0 41%; }
 .spinner2 { margin: 0 41%; }
-.intend-form { margin-left:20px; }
-table .bg-dark-danger { background-color: #d9534f; color: #fff; }
+.intend-form { margin-left: 20px; }
+
+table .bg-dark-danger {
+  background-color: #d9534f;
+  color: #fff;
+}
 table .bg-dark-danger a { color: #fff; }
 table .bg-dark-danger:hover { background-color: #c9302c; }
 table .bg-primary:hover { background-color: #1c5484; }
 table .bg-primary a { color: #fff; }
 .block-label { display: block; }
-.fake-input { position: absolute; pointer-events: none; top: 0; }
 
-input.pill { position: absolute; opacity: 0; }
+.fake-input {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+}
+
+input.pill {
+  position: absolute;
+  opacity: 0;
+}
 
 input.pill + label {
   border: 2px solid #45b29d;
@@ -317,11 +346,24 @@ input.pill:checked + label {
 input.pill:not(:checked) + label .glyphicon { display: none; }
 
 .author-bio img { margin: 0 1em 1em 0; }
-.author-link { display: inline-block; margin-top: 10px; width: 100px; }
-.author-link img { display: block; height: 100%; }
-#remove-from-shelves .btn, #shelf-action-errors { margin-left: 5px; }
 
-.tags_click, .serie_click, .language_click { margin-right: 5px; }
+.author-link {
+  display: inline-block;
+  margin-top: 10px;
+  width: 100px;
+}
+
+.author-link img {
+  display: block;
+  height: 100%;
+}
+
+#remove-from-shelves .btn,
+#shelf-action-errors { margin-left: 5px; }
+
+.tags_click,
+.serie_click,
+.language_click { margin-right: 5px; }
 
 #meta-info {
   height: 600px;
@@ -344,11 +386,11 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 #btn-upload-cover { display: none; }
 .panel-title > a { text-decoration: none; }
 .editable-buttons {
-  display:inline-block;
+  display: inline-block;
   margin-left: 7px;
 }
 
-.editable-input { display:inline-block; }
+.editable-input { display: inline-block; }
 
 .editable-cancel {
   margin-bottom: 0 !important;
