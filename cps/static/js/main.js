@@ -55,7 +55,7 @@ $(document).on("change", "select[data-control]", function() {
 $(document).on("change", "select[data-controlall]", function() {
     var $this = $(this);
     var name = $this.data("controlall");
-    var showOrHide = parseInt($this.val());
+    var showOrHide = parseInt($this.val(), 10);
     if (showOrHide) {
         $("[data-related=" + name + "]").show();
     } else {
