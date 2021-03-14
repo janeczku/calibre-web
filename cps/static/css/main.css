@@ -72,11 +72,6 @@ body {
   padding: 3px;
 }
 
-.list_item.currentChapter > a,
-.list_item a:hover {
-  color: #f1f1f1;
-}
-
 #panels a {
   visibility: hidden;
   width: 18px;
@@ -212,6 +207,11 @@ body {
   text-decoration: none;
 }
 
+.list_item.currentChapter > a,
+.list_item a:hover {
+  color: #f1f1f1;
+}
+
 #panels a:active {
   color: #aaa;
   margin: 1px 0 -1px 6px;
@@ -299,6 +299,15 @@ input:-moz-placeholder { color: #454545; }
   font-family: Georgia, "Times New Roman", Times, serif;
   list-style: none;
   text-transform: capitalize;
+}
+
+.md-content > div ul li {
+  padding: 5px 0;
+}
+
+#settingsPanel li {
+  font-size: 1em;
+  color: #f1f1f1;
 }
 
 #tocView li:active,
@@ -392,6 +401,11 @@ input:-moz-placeholder { color: #454545; }
   color: #000;
 }
 
+.md-content > div p {
+  margin: 0;
+  padding: 10px 0;
+}
+
 #searchResults li > p {
   color: #aaa;
 }
@@ -442,7 +456,7 @@ input:-moz-placeholder { color: #454545; }
 }
 
 #note-text[disabled],
-#note-text[disabled="disabled"]{
+#note-text[disabled="disabled"] {
   opacity: 0.5;
 }
 
@@ -455,20 +469,31 @@ input:-moz-placeholder { color: #454545; }
   display: none;
 }
 
+.md-content h3 {
+  margin: 0;
+  padding: 6px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 300;
+  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px 3px 0 0;
+}
+
 #settingsPanel h3 {
   color: #f1f1f1;
   font-family: Georgia, "Times New Roman", Times, serif;
   margin-bottom: 10px;
 }
 
+.md-content > div ul {
+  margin: 0;
+  padding: 0 0 30px 20px;
+}
+
 #settingsPanel ul {
   margin-top: 60px;
   list-style-type: none;
-}
-
-#settingsPanel li {
-  font-size: 1em;
-  color: #f1f1f1;
 }
 
 #settingsPanel .xsmall { font-size: x-small; }
@@ -525,36 +550,11 @@ input:-moz-placeholder { color: #454545; }
   height: 320px;
 }
 
-.md-content h3 {
-  margin: 0;
-  padding: 6px;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 300;
-  opacity: 0.8;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 3px 3px 0 0;
-}
-
 .md-content > div {
   padding: 15px 40px 30px;
   margin: 0;
   font-weight: 300;
   font-size: 14px;
-}
-
-.md-content > div p {
-  margin: 0;
-  padding: 10px 0;
-}
-
-.md-content > div ul {
-  margin: 0;
-  padding: 0 0 30px 20px;
-}
-
-.md-content > div ul li {
-  padding: 5px 0;
 }
 
 .md-content button {
@@ -680,10 +680,10 @@ input:-moz-placeholder { color: #454545; }
 }
 
 @media only screen
-and (min-device-width: 768px)
-and (max-device-width: 1024px)
-and (orientation : landscape)
-/*and (-webkit-min-device-pixel-ratio: 2)*/ {
+  and (min-device-width: 768px)
+  and (max-device-width: 1024px)
+  and (orientation : landscape)
+  /* and (-webkit-min-device-pixel-ratio: 2)*/ {
   #viewer {
     width: 80%;
     margin-left: 10%;
@@ -695,7 +695,7 @@ and (orientation : landscape)
   }
 }
 
- /*For iPad landscape layouts only */
+/* For iPad landscape layouts only */
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
   #viewer iframe {
     width: 960px;
@@ -724,8 +724,8 @@ and (orientation : landscape)
   }
 
   #viewer iframe {
-     width: 450px;
-     height: 300px;
+   width: 450px;
+   height: 300px;
   }
 }
 
@@ -737,8 +737,8 @@ and (orientation : landscape)
   }
 
   #viewer iframe {
-     width: 256px;
-     height: 432px;
+   width: 256px;
+   height: 432px;
   }
 }
 
@@ -750,7 +750,8 @@ and (orientation : landscape)
   }
 }
 
-[class^="icon-"]::before, [class*=" icon-"]:before {
+[class^="icon-"]::before,
+[class*=" icon-"]::before {
   font-family: "fontello", serif;
   font-style: normal;
   font-weight: normal;
@@ -760,32 +761,34 @@ and (orientation : landscape)
   width: 1em;
   margin-right: 0.2em;
   text-align: center;
-  /* For safety - reset parent styles, that can break glyph codes*/
+
+  /* For safety - reset parent styles, that can break glyph codes */
   font-variant: normal;
   text-transform: none;
+
   /* you can be more comfortable with increased icons size */
   font-size: 112%;
 }
 
-.icon-search:before { content: '\e807'; } /* '' */
-.icon-resize-full-1:before { content: '\e804'; } /* '' */
-.icon-cancel-circled2:before { content: '\e80f'; } /* '' */
-.icon-link:before { content: '\e80d'; } /* '' */
-.icon-bookmark:before { content: '\e805'; } /* '' */
-.icon-bookmark-empty:before { content: '\e806'; } /* '' */
-.icon-download-cloud:before { content: '\e811'; } /* '' */
-.icon-edit:before { content: '\e814'; } /* '' */
-.icon-menu:before { content: '\e802'; } /* '' */
-.icon-cog:before { content: '\e813'; } /* '' */
-.icon-resize-full:before { content: '\e812'; } /* '' */
-.icon-cancel-circled:before { content: '\e80e'; } /* '' */
-.icon-up-dir:before { content: '\e80c'; } /* '' */
-.icon-right-dir:before { content: '\e80b'; } /* '' */
-.icon-angle-right:before { content: '\e809'; } /* '' */
-.icon-angle-down:before { content: '\e80a'; } /* '' */
-.icon-right:before { content: '\e815'; } /* '' */
-.icon-list-1:before { content: '\e803'; } /* '' */
-.icon-list-numbered:before { content: '\e801'; } /* '' */
-.icon-columns:before { content: '\e810'; } /* '' */
-.icon-list:before { content: '\e800'; } /* '' */
-.icon-resize-small:before { content: '\e808'; } /* '' */
+.icon-search::before { content: '\e807'; } /* '' */
+.icon-resize-full-1::before { content: '\e804'; } /* '' */
+.icon-cancel-circled2::before { content: '\e80f'; } /* '' */
+.icon-link::before { content: '\e80d'; } /* '' */
+.icon-bookmark::before { content: '\e805'; } /* '' */
+.icon-bookmark-empty::before { content: '\e806'; } /* '' */
+.icon-download-cloud::before { content: '\e811'; } /* '' */
+.icon-edit::before { content: '\e814'; } /* '' */
+.icon-menu::before { content: '\e802'; } /* '' */
+.icon-cog::before { content: '\e813'; } /* '' */
+.icon-resize-full::before { content: '\e812'; } /* '' */
+.icon-cancel-circled::before { content: '\e80e'; } /* '' */
+.icon-up-dir::before { content: '\e80c'; } /* '' */
+.icon-right-dir::before { content: '\e80b'; } /* '' */
+.icon-angle-right::before { content: '\e809'; } /* '' */
+.icon-angle-down::before { content: '\e80a'; } /* '' */
+.icon-right::before { content: '\e815'; } /* '' */
+.icon-list-1::before { content: '\e803'; } /* '' */
+.icon-list-numbered::before { content: '\e801'; } /* '' */
+.icon-columns::before { content: '\e810'; } /* '' */
+.icon-list::before { content: '\e800'; } /* '' */
+.icon-resize-small::before { content: '\e808'; } /* '' */
