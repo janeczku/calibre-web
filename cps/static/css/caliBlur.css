@@ -1786,7 +1786,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover {
 .container-fluid .book .meta .series {
     /* font-weight: 400; */
     /* font-size: 12px; */
-    color: #ffffff73;
+    color: hsla(0, 0%, 100%, .45);
 }
 
 .container-fluid .book .meta > p {
