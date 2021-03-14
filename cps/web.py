@@ -977,6 +977,82 @@ def search():
                                      title=_(u"Search"),
                                      page="search")
 
+def adv_search_custom_columns(cc, term, q):
+    for c in cc:
+        custom_query = term.get('custom_column_' + str(c.id))
+        if custom_query != '' and custom_query is not None:
+            if c.datatype == 'bool':
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value == (custom_query == "True")))
+            elif c.datatype == 'int' or c.datatype == 'float':
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value == custom_query))
+            elif c.datatype == 'rating':
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value == int(float(custom_query) * 2)))
+            else:
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
+    return q
+
+
+def extend_search_term(searchterm,
+                       author_name,
+                       book_title,
+                       publisher,
+                       pub_start,
+                       pub_end,
+                       include_tag_inputs,
+                       exclude_tag_inputs,
+                       include_series_inputs,
+                       exclude_series_inputs,
+                       include_languages_inputs,
+                       rating_high,
+                       rating_low,
+                       read_status,
+                       include_extension_inputs,
+                       exclude_extension_inputs
+                       ):
+    searchterm.extend((author_name.replace('|', ','), book_title, publisher))
+    if pub_start:
+        try:
+            searchterm.extend([_(u"Published after ") +
+                               format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
+                                           format='medium', locale=get_locale())])
+        except ValueError:
+            pub_start = u""
+    if pub_end:
+        try:
+            searchterm.extend([_(u"Published before ") +
+                               format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
+                                           format='medium', locale=get_locale())])
+        except ValueError:
+            pub_start = u""
+    tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
+    searchterm.extend(tag.name for tag in tag_names)
+    tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
+    searchterm.extend(tag.name for tag in tag_names)
+    serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
+    searchterm.extend(serie.name for serie in serie_names)
+    serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
+    searchterm.extend(serie.name for serie in serie_names)
+    language_names = calibre_db.session.query(db.Languages). \
+        filter(db.Languages.id.in_(include_languages_inputs)).all()
+    if language_names:
+        language_names = calibre_db.speaking_language(language_names)
+    searchterm.extend(language.name for language in language_names)
+    if rating_high:
+        searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
+    if rating_low:
+        searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
+    if read_status:
+        searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
+    searchterm.extend(ext for ext in include_extension_inputs)
+    searchterm.extend(ext for ext in exclude_extension_inputs)
+    # handle custom columns
+    searchterm = " + ".join(filter(None, searchterm))
+    return searchterm
+
 
 @web.route("/advsearch", methods=['POST'])
 @login_required_if_no_ano
@@ -1034,47 +1110,22 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
             publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
             include_extension_inputs or exclude_extension_inputs or read_status:
-        searchterm.extend((author_name.replace('|', ','), book_title, publisher))
-        if pub_start:
-            try:
-                searchterm.extend([_(u"Published after ") +
-                                   format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
-                                               format='medium', locale=get_locale())])
-            except ValueError:
-                pub_start = u""
-        if pub_end:
-            try:
-                searchterm.extend([_(u"Published before ") +
-                                   format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
-                                               format='medium', locale=get_locale())])
-            except ValueError:
-                pub_start = u""
-        tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
-        searchterm.extend(tag.name for tag in tag_names)
-        tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
-        searchterm.extend(tag.name for tag in tag_names)
-        serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
-        searchterm.extend(serie.name for serie in serie_names)
-        serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
-        searchterm.extend(serie.name for serie in serie_names)
-        language_names = calibre_db.session.query(db.Languages).\
-            filter(db.Languages.id.in_(include_languages_inputs)).all()
-        if language_names:
-            language_names = calibre_db.speaking_language(language_names)
-        searchterm.extend(language.name for language in language_names)
-        if rating_high:
-            searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
-        if rating_low:
-            searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
-        if read_status:
-            searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
-        searchterm.extend(ext for ext in include_extension_inputs)
-        searchterm.extend(ext for ext in exclude_extension_inputs)
-        # handle custom columns
-        #for c in cc:
-        #    if term.get('custom_column_' + str(c.id)):
-        #        searchterm.extend([(u"%s: %s" % (c.name, term.get('custom_column_' + str(c.id))))])
-        searchterm = " + ".join(filter(None, searchterm))
+        searchterm = extend_search_term(searchterm,
+                           author_name,
+                           book_title,
+                           publisher,
+                           pub_start,
+                           pub_end,
+                           include_tag_inputs,
+                           exclude_tag_inputs,
+                           include_series_inputs,
+                           exclude_series_inputs,
+                           include_languages_inputs,
+                           rating_high,
+                           rating_low,
+                           read_status,
+                           include_extension_inputs,
+                           exclude_extension_inputs)
         q = q.filter()
         if author_name:
             q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_name + "%")))
@@ -1132,21 +1183,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
-        for c in cc:
-            custom_query = term.get('custom_column_' + str(c.id))
-            if custom_query != '' and custom_query is not None:
-                if c.datatype == 'bool':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == (custom_query == "True")))
-                elif c.datatype == 'int' or c.datatype == 'float':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == custom_query))
-                elif c.datatype == 'rating':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
-                else:
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
+        q = adv_search_custom_columns(cc, term, q)
+
     q = q.order_by(*order).all()
     flask_session['query'] = json.dumps(term)
     ub.store_ids(q)

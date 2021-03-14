@@ -114,7 +114,7 @@ $(document).ready(function() {
   }
 });
 
-function ConfirmDialog(id, dataValue, yesFn, noFn) {
+function confirmDialog(id, dataValue, yesFn, noFn) {
     var $confirm = $("#GeneralDeleteModal");
     // var dataValue= e.data('value'); // target.data('value');
     $confirm.modal('show');
@@ -481,7 +481,7 @@ $(function() {
         });
 
     $("#config_delete_kobo_token").click(function() {
-        ConfirmDialog(
+        confirmDialog(
             $(this).attr('id'),
             $(this).data('value'),
             function (value) {
@@ -509,7 +509,7 @@ $(function() {
     });
 
     $("#btndeluser").click(function() {
-        ConfirmDialog(
+        confirmDialog(
             $(this).attr('id'),
             $(this).data('value'),
             function(value){
@@ -527,7 +527,7 @@ $(function() {
     });
 
     $("#delete_shelf").click(function() {
-        ConfirmDialog(
+        confirmDialog(
             $(this).attr('id'),
             $(this).data('value'),
             function(value){
