@@ -1783,6 +1783,12 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover {
     margin-top: 0
 }
 
+.container-fluid .book .meta .series {
+    /* font-weight: 400; */
+    /* font-size: 12px; */
+    color: #ffffff73;
+}
+
 .container-fluid .book .meta > p {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
