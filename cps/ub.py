@@ -610,7 +610,7 @@ def migrate_Database(session):
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
-                     "view_settings VARCHAR,"               
+                     "view_settings VARCHAR,"
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
             conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
