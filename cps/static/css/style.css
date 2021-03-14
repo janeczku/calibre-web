@@ -95,7 +95,6 @@ a.editable-click:hover { border-bottom: None; }
 .book-meta .tags a { display: inline; }
 .book-meta .identifiers a { display: inline; }
 
-
 .navigation .create-shelf a {
   color: #fff;
   background: #45b29d;
@@ -155,6 +154,7 @@ a.editable-click:hover { border-bottom: None; }
   height: 100%;
   position: absolute;
 }
+.author-bio img { margin: 0 1em 1em 0; }
 
 .container-fluid .single .cover img {
   border: 1px solid #fff;
@@ -229,7 +229,6 @@ span.glyphicon.glyphicon-tags {
 .book-meta { padding-bottom: 20px; }
 table .bg-primary a { color: #fff; }
 table .bg-dark-danger a { color: #fff; }
-.author-bio img { margin: 0 1em 1em 0; }
 
 .navbar-default .navbar-toggle .icon-bar { background-color: #000; }
 .navbar-default .navbar-toggle { border-color: #000; }
@@ -418,4 +417,3 @@ div.log {
   white-space: nowrap;
   padding: 0.5em;
 }
-
