@@ -37,7 +37,7 @@
     </div>
     <label for="mail_size">{{_('Attachment Size Limit')}}</label>
      <div class="form-group input-group">
-      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}">
+      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}" required>
       <span class="input-group-btn">
         <button type="button" id="attachement_size" class="btn btn-default" disabled>MB</button>
       </span>
@@ -89,20 +89,7 @@
 {% endblock %}
 {% block modal %}
 {% if g.allow_registration %}
-<div id="DeleteDomain" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-sm">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-      </div>
-      <div class="modal-body text-center">
-        <p>{{_('Are you sure you want to delete this domain?')}}</p>
-        <button type="button" class="btn btn-danger" id="btndeletedomain" >{{_('Delete')}}</button>
-        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Cancel')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
+{{ delete_confirm_modal() }}
 {% endif %}
 {% endblock %}
 {% block js %}

@@ -25,7 +25,7 @@
 from __future__ import division, print_function, unicode_literals
 import datetime
 import mimetypes
-import re
+from uuid import uuid4
 
 from babel.dates import format_date
 from flask import Blueprint, request, url_for
@@ -44,6 +44,8 @@ log = logger.create()
 def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
+    for get, val in request.args.items():
+        args[get] = val
     return url_for(request.endpoint, **args)
 
 
@@ -76,22 +78,18 @@ def mimetype_filter(val):
 @jinjia.app_template_filter('formatdate')
 def formatdate_filter(val):
     try:
-        conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-        formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-        return format_date(formatdate, format='medium', locale=get_locale())
+        return format_date(val, format='medium', locale=get_locale())
     except AttributeError as e:
         log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
                   current_user.locale,
                   current_user.nickname
                   )
-        return formatdate
+        return val
 
 
 @jinjia.app_template_filter('formatdateinput')
 def format_date_input(val):
-    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    date_obj = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    input_date = date_obj.isoformat().split('T', 1)[0]  # Hack to support dates <1900
+    input_date = val.isoformat().split('T', 1)[0]  # Hack to support dates <1900
     return '' if input_date == "0101-01-01" else input_date
 
 
@@ -112,9 +110,26 @@ def timestamptodate(date, fmt=None):
 def yesno(value, yes, no):
     return yes if value else no
 
+
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
     formatedstring = '%d' % value
     if (value % 1) != 0:
         formatedstring = ('%s.%d' % (formatedstring, (value % 1) * 10**decimals)).rstrip('0')
     return formatedstring
+
+
+@jinjia.app_template_filter('formatseriesindex')
+def formatseriesindex_filter(series_index):
+    if series_index:
+        if int(series_index) - series_index == 0:
+            return int(series_index)
+        else:
+            return series_index
+    return 0
+
+@jinjia.app_template_filter('uuidfilter')
+def uuidfilter(var):
+    return uuid4()
+
+

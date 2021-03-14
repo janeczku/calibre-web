@@ -41,9 +41,36 @@ logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
 
 
+class _Logger(logging.Logger):
+
+    def debug_or_exception(self, message, *args, **kwargs):
+        if sys.version_info > (3, 7):
+            if is_debug_enabled():
+                self.exception(message, stacklevel=2, *args, **kwargs)
+            else:
+                self.error(message, stacklevel=2, *args, **kwargs)
+        elif sys.version_info > (3, 0):
+            if is_debug_enabled():
+                self.exception(message, stack_info=True, *args, **kwargs)
+            else:
+                self.error(message, *args, **kwargs)
+        else:
+            if is_debug_enabled():
+                self.exception(message, *args, **kwargs)
+            else:
+                self.error(message, *args, **kwargs)
+
+
+    def debug_no_auth(self, message, *args, **kwargs):
+        if message.startswith("send: AUTH"):
+            self.debug(message[:16], stacklevel=2, *args, **kwargs)
+        else:
+            self.debug(message, stacklevel=2, *args, **kwargs)
+
+
+
 def get(name=None):
     return logging.getLogger(name)
-
 
 def create():
     parent_frame = inspect.stack(0)[1]
@@ -53,7 +80,6 @@ def create():
         parent_frame = parent_frame[0]
     parent_module = inspect.getmodule(parent_frame)
     return get(parent_module.__name__)
-
 
 def is_debug_enabled():
     return logging.root.level <= logging.DEBUG
@@ -99,6 +125,7 @@ def setup(log_file, log_level=None):
     May be called multiple times.
     '''
     log_level = log_level or DEFAULT_LOG_LEVEL
+    logging.setLoggerClass(_Logger)
     logging.getLogger(__package__).setLevel(log_level)
 
     r = logging.root
@@ -126,11 +153,11 @@ def setup(log_file, log_level=None):
             file_handler.baseFilename = log_file
     else:
         try:
-            file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+            file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2, encoding='utf-8')
         except IOError:
             if log_file == DEFAULT_LOG_FILE:
                 raise
-            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2)
+            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2, encoding='utf-8')
             log_file = ""
     file_handler.setFormatter(FORMATTER)
 
@@ -152,11 +179,11 @@ def create_access_log(log_file, log_name, formatter):
     access_log.propagate = False
     access_log.setLevel(logging.INFO)
     try:
-        file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+        file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2, encoding='utf-8')
     except IOError:
         if log_file == DEFAULT_ACCESS_LOG:
             raise
-        file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2)
+        file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2, encoding='utf-8')
         log_file = ""
 
     file_handler.setFormatter(formatter)

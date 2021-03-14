@@ -72,7 +72,7 @@ def get_author_info(author_name):
         author_info = _client.find_author(author_name=author_name)
     except Exception as ex:
         # Skip goodreads, if site is down/inaccessible
-        log.warning('Goodreads website is down/inaccessible? %s', ex)
+        log.warning('Goodreads website is down/inaccessible? %s', ex.__str__())
         return
 
     if author_info:

@@ -45,6 +45,7 @@ mimetypes.add_type('application/fb2+zip', '.fb2')
 mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
 mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
 mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
 mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
@@ -73,7 +74,6 @@ ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
 
-searched_ids = {}
 web_server = WebServer()
 
 babel = Babel()
@@ -83,6 +83,8 @@ log = logger.create()
 
 from . import services
 
+db.CalibreDB.setup_db(config, cli.settingspath)
+
 calibre_db = db.CalibreDB()
 
 def create_app():
@@ -91,18 +93,20 @@ def create_app():
     if sys.version_info < (3, 0):
         app.static_folder = app.static_folder.decode('utf-8')
         app.root_path = app.root_path.decode('utf-8')
-        app.instance_path = app.instance_path .decode('utf-8')
+        app.instance_path = app.instance_path.decode('utf-8')
 
-    cache_buster.init_cache_busting(app)
+    if os.environ.get('FLASK_DEBUG'):
+    	cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
+    if sys.version_info < (3, 0):
+        log.info('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
+        print('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
-    calibre_db.setup_db(config, cli.settingspath)
-    calibre_db.start()
 
     babel.init_app(app)
     _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())

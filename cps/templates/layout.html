@@ -1,4 +1,4 @@
-{% from 'modal_restriction.html' import restrict_modal %}
+{% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal %}
 <!DOCTYPE html>
 <html lang="{{ g.user.locale }}">
   <head>
@@ -16,7 +16,7 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
     {% if g.current_theme == 1 %}
-       <link href="{{ url_for('static', filename='css/caliBlur.min.css') }}" rel="stylesheet" media="screen">
+       <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
        <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
     {% endif %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -64,7 +64,7 @@
                     <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" method="post" enctype="multipart/form-data">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
-                        type="file" accept="{% for format in accept %}.{{format}}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
+                        type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
                       </div>
                     </form>
                   </li>
@@ -128,7 +128,7 @@
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if g.user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort='new')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort_param='stored')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
               {% if g.user.is_authenticated or g.allow_anonymous %}
@@ -136,10 +136,6 @@
                 {% for shelf in g.shelves_access %}
                   <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span>{{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                 {% endfor %}
-                <!--li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
-                {% for shelf in g.user.shelf %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
-                {% endfor %}-->
               {% if not g.user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
                 <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
@@ -155,29 +151,29 @@
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
               {% if pagination.has_prev %}
-              <a class="previous" href="{{ (pagination.page - 1)|url_for_other_page
-                }}">&laquo; {{_('Previous')}}</a>
+              <li class="page-item page-previous"><a class="page-link" aria-label="next page" href="{{ (pagination.page - 1)|url_for_other_page
+                }}">&laquo; {{_('Previous')}}</a></li>
               {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
-                  <a href="{{ (page)|url_for_other_page }}">{{ page }}</a>
+                  <li class="page-item"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
                 {% else %}
-                  <strong>{{ page }}</strong>
+                  <li class="page-item active"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
                 {% endif %}
               {% else %}
-                <span class="ellipsis">…</span>
+                <li class="page-item page-last-separator disabled"><a class="page-link" aria-label="">…</a></li>
               {% endif %}
             {% endfor %}
             {% if pagination.has_next %}
-              <a class="next" href="{{ (pagination.page + 1)|url_for_other_page
-                }}">{{_('Next')}} &raquo;</a>
+              <li class="page-item page-next"><a class="page-link next" aria-label="next page" href="{{ (pagination.page + 1)|url_for_other_page
+                }}">{{_('Next')}} &raquo;</a></li>
             {% endif %}
             </div>
           {% endif %}
-        </div>
       </div>
     </div>
+  </div>
     <div class="modal fade" id="bookDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookDetailsModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -193,10 +189,7 @@
       </div>
     </div>
     {% block modal %}{% endblock %}
-
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--script src="https://code.jquery.com/jquery.js"></script-->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
@@ -205,14 +198,7 @@
     <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
-    {% if g.current_theme == 1 %}
-      <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
-    {% endif %}
     <script type="text/javascript">
         $(function() {
             $("#form-upload").uploadprogress({
@@ -222,18 +208,15 @@
               modalFooter: "{{_('Close')}}",
               modalTitleFailed: "{{_('Error')}}"
             });
-            $("#btn-upload").change(function() {
-                $("#form-upload").submit();
-            });
-            $(document).ready(function() {
-              var inp = $('#query').first()
-              var val = inp.val()
-              if (val !== "undefined") {
-                  inp.val('').blur().focus().val(val)
-              }
-            });
         });
     </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% if g.current_theme == 1 %}
+      <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
+    {% endif %}
     {% block js %}{% endblock %}
   </body>
 </html>

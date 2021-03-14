@@ -44,7 +44,6 @@
         <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
       {% if (config.config_login_type == 1) %}
         <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
-        <!--a href="#" id="import_ldap_users" name="import_ldap_users"><button type="submit" class="btn btn-default">{{_('Import LDAP Users')}}</button></a-->
       {% endif %}
     </div>
   </div>
@@ -52,23 +51,31 @@
   <div class="row">
     <div class="col">
       <h2>{{_('E-mail Server Settings')}}</h2>
-      <table class="table table-striped" id="table_email">
-        <tr>
-          <th>{{_('SMTP Hostname')}}</th>
-          <th>{{_('SMTP Port')}}</th>
-          <th>{{_('Encryption')}}</th>
-          <th>{{_('SMTP Login')}}</th>
-          <th class="hidden-xs">{{_('From E-mail')}}</th>
-        </tr>
-        <tr>
-          <td>{{email.mail_server}}</td>
-          <td>{{email.mail_port}}</td>
-          <td>{% if email.mail_use_ssl %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-          <td>{{email.mail_login}}</td>
-          <td class="hidden-xs">{{email.mail_from}}</td>
-        </tr>
-      </table>
-      <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a></div>
+      {% if config.get_mail_server_configured() %}
+      <div class="col-xs-12 col-sm-12">
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Hostname')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_server}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('SMTP Port')}}</div>
+            <div class="col-xs-6 col-sm-3">{{email.mail_port}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Encryption')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(email.mail_use_ssl) }}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('SMTP Login')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_login}}</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-sm-3">{{_('From E-mail')}}</div>
+          <div class="col-xs-6 col-sm-3">{{email.mail_from}}</div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="btn btn-default emailconfig" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a></div>
     </div>
   </div>
 
@@ -88,7 +95,7 @@
             <div class="col-xs-6 col-sm-6">{{_('Port')}}</div>
             <div class="col-xs-6 col-sm-6">{{config.config_port}}</div>
         </div>
-        {% if feature_support['kobo'] and config.config_port != config.config_external_port %}
+        {% if kobo_support and config.config_port != config.config_external_port %}
         <div class="row">
           <div class="col-xs-6 col-sm-6">{{_('External Port')}}</div>
           <div class="col-xs-6 col-sm-6">{{config.config_external_port}}</div>
@@ -132,14 +139,15 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
-      <h2>{{_('Administration')}}</h2>
+    <div class="row form-group">
+    <h2>{{_('Administration')}}</h2>
+      <div class="btn btn-default"><a id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a></div>
       <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
+    </div>
+    <div class="row form-group">
       <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
       <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
       <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
-    </div>
   </div>
 
   <div class="row">
@@ -160,9 +168,11 @@
         </tbody>
       </table>
 
+      {%  if feature_support['updater'] %}
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
-      <div class="btn btn-default" id="check_for_update">{{_('Check for Update')}}</div>
-      <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
+      <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
+      <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
+      {%  endif %}
     </div>
   </div>
 </div>

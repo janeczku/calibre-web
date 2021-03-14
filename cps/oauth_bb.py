@@ -30,12 +30,15 @@ from flask_babel import gettext as _
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from sqlalchemy.orm.exc import NoResultFound
 
 from . import constants, logger, config, app, ub
-from .web import login_required
-from .oauth import OAuthBackend, backend_resultcode
+
+try:
+    from .oauth import OAuthBackend, backend_resultcode
+except NameError:
+    pass
 
 
 oauth_check = {}
@@ -84,11 +87,7 @@ def register_user_with_oauth(user=None):
             except NoResultFound:
                 # no found, return error
                 return
-            try:
-                ub.session.commit()
-            except Exception as e:
-                log.exception(e)
-                ub.session.rollback()
+            ub.session_commit("User {} with OAuth for provider {} registered".format(user.nickname, oauth_key))
 
 
 def logout_oauth_user():
@@ -100,16 +99,12 @@ def logout_oauth_user():
 if ub.oauth_support:
     oauthblueprints = []
     if not ub.session.query(ub.OAuthProvider).count():
-        oauthProvider = ub.OAuthProvider()
-        oauthProvider.provider_name = "github"
-        oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        ub.session.commit()
-        oauthProvider = ub.OAuthProvider()
-        oauthProvider.provider_name = "google"
-        oauthProvider.active = False
-        ub.session.add(oauthProvider)
-        ub.session.commit()
+        for provider in ("github", "google"):
+            oauthProvider = ub.OAuthProvider()
+            oauthProvider.provider_name = provider
+            oauthProvider.active = False
+            ub.session.add(oauthProvider)
+            ub.session_commit("{} Blueprint Created".format(provider))
 
     oauth_ids = ub.session.query(ub.OAuthProvider).all()
     ele1 = dict(provider_name='github',
@@ -199,12 +194,8 @@ if ub.oauth_support:
                 provider_user_id=provider_user_id,
                 token=token,
             )
-        try:
-            ub.session.add(oauth_entry)
-            ub.session.commit()
-        except Exception as e:
-            log.exception(e)
-            ub.session.rollback()
+        ub.session.add(oauth_entry)
+        ub.session_commit()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
         # Value differrs depending on flask-dance version
@@ -235,7 +226,7 @@ if ub.oauth_support:
                         flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
                         return redirect(url_for('web.profile'))
                     except Exception as e:
-                        log.exception(e)
+                        log.debug_or_exception(e)
                         ub.session.rollback()
                 else:
                     flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
@@ -282,7 +273,7 @@ if ub.oauth_support:
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
-                    log.exception(e)
+                    log.debug_or_exception(e)
                     ub.session.rollback()
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:

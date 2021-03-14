@@ -66,19 +66,12 @@ body {
   right: 40px;
 }
 
-xmp,
-pre,
-plaintext {
-  display: block;
-  font-family: -moz-fixed;
-  white-space: pre;
-  margin: 1em 0;
-}
-
 pre {
+  display: block;
+  margin: 1em 0;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: -moz-fixed;
+  font-family: -moz-fixed, sans-serif;
   column-count: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
