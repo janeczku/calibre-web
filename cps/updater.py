@@ -272,7 +272,8 @@ class Updater(threading.Thread):
                     log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
-    def is_venv(self):
+    @staticmethod
+    def is_venv():
         if (hasattr(sys, 'real_prefix')) or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
             return os.sep + os.path.relpath(sys.prefix, constants.BASE_DIR)
         else:
