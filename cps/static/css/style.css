@@ -28,6 +28,11 @@ html.http-error {
   height: 100%;
 }
 
+body {
+  background: #f2f2f2;
+  margin-bottom: 40px;
+}
+
 .http-error body {
   margin: 0;
   height: 100%;
@@ -41,11 +46,6 @@ html.http-error {
   text-align: center;
 }
 
-body {
-  background: #f2f2f2;
-  margin-bottom: 40px;
-}
-
 body h2 {
   font-weight: normal;
   color: #444;
@@ -56,10 +56,16 @@ a,
 .book-remove,
 .editable-empty,
 .editable-empty:hover { color: #45b29d; }
-
-.book-remove:hover { color: #23527c; }
-
+.user-remove:hover { color: #23527c; }
 .btn-default a { color: #444; }
+.panel-title > a { text-decoration: none; }
+
+.navigation li a {
+  color: #444;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+}
 
 .btn-default a:hover {
   color: #45b29d;
@@ -85,11 +91,17 @@ a.editable-click:hover { border-bottom: None; }
   padding-top: 20px;
 }
 
-.navigation li a {
-  color: #444;
+.book-meta .tags a { display: inline; }
+table .bg-primary a { color: #fff; }
+table .bg-dark-danger a { color: #fff; }
+.book-meta .identifiers a { display: inline; }
+
+.navigation .create-shelf a {
+  color: #fff;
+  background: #45b29d;
+  padding: 10px 20px;
+  border-radius: 5px;
   text-decoration: none;
-  display: block;
-  padding: 10px;
 }
 
 .navigation li a:hover {
@@ -103,14 +115,6 @@ a.editable-click:hover { border-bottom: None; }
   margin: 30px 0;
   font-size: 12px;
   text-align: center;
-}
-
-.navigation .create-shelf a {
-  color: #fff;
-  background: #45b29d;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
 }
 
 .row.display-flex {
@@ -134,16 +138,31 @@ a.editable-click:hover { border-bottom: None; }
   display: flex;
   flex-direction: column;
 }
+.cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
   height: 225px;
   position: relative;
 }
 
+.author-link img {
+  display: block;
+  height: 100%;
+}
+
 .container-fluid .book .cover span.img {
   bottom: 0;
   height: 100%;
   position: absolute;
+}
+.author-bio img { margin: 0 1em 1em 0; }
+
+.container-fluid .single .cover img {
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  -webkit-box-shadow: 0 5px 8px -6px #777;
+  -moz-box-shadow: 0 5px 8px -6px #777;
+  box-shadow: 0 5px 8px -6px #777;
 }
 
 .container-fluid .book .cover span img {
@@ -159,6 +178,7 @@ a.editable-click:hover { border-bottom: None; }
 }
 
 .container-fluid .book .meta { margin-top: 10px; }
+.media-body p { text-align: justify; }
 .container-fluid .book .meta p { margin: 0; }
 
 .container-fluid .book .meta .title {
@@ -208,20 +228,9 @@ span.glyphicon.glyphicon-tags {
 }
 
 .book-meta { padding-bottom: 20px; }
-.book-meta .tags a { display: inline; }
-.book-meta .identifiers a { display: inline; }
-
-.container-fluid .single .cover img {
-  border: 1px solid #fff;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 5px 8px -6px #777;
-  -moz-box-shadow: 0 5px 8px -6px #777;
-  box-shadow: 0 5px 8px -6px #777;
-}
 
 .navbar-default .navbar-toggle .icon-bar { background-color: #000; }
 .navbar-default .navbar-toggle { border-color: #000; }
-.cover { margin-bottom: 10px; }
 
 .cover .badge {
   position: absolute;
@@ -308,10 +317,8 @@ table .bg-dark-danger {
   background-color: #d9534f;
   color: #fff;
 }
-table .bg-dark-danger a { color: #fff; }
 table .bg-dark-danger:hover { background-color: #c9302c; }
 table .bg-primary:hover { background-color: #1c5484; }
-table .bg-primary a { color: #fff; }
 .block-label { display: block; }
 
 .fake-input {
@@ -345,17 +352,10 @@ input.pill:checked + label {
 
 input.pill:not(:checked) + label .glyphicon { display: none; }
 
-.author-bio img { margin: 0 1em 1em 0; }
-
 .author-link {
   display: inline-block;
   margin-top: 10px;
   width: 100px;
-}
-
-.author-link img {
-  display: block;
-  height: 100%;
 }
 
 #remove-from-shelves .btn,
@@ -371,7 +371,6 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 }
 
 .media-list { padding-right: 15px; }
-.media-body p { text-align: justify; }
 
 #meta-info img {
   max-height: 150px;
@@ -384,7 +383,7 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
 #btn-upload-format { display: none; }
 .upload-cover-input-text { display: initial; }
 #btn-upload-cover { display: none; }
-.panel-title > a { text-decoration: none; }
+
 .editable-buttons {
   display: inline-block;
   margin-left: 7px;
@@ -417,4 +416,3 @@ div.log {
   white-space: nowrap;
   padding: 0.5em;
 }
-

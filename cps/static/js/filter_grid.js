@@ -56,15 +56,15 @@ $("#asc").click(function() {
 $("#all").click(function() {
     // go through all elements and make them visible
     $list.isotope({ filter: function() {
-            return true;
-        }
+        return true;
+    }
     });
 });
 
 $(".char").click(function() {
     var character = this.innerText;
     $list.isotope({ filter: function() {
-            return this.attributes["data-id"].value.charAt(0).toUpperCase() == character;
-        }
+        return this.attributes["data-id"].value.charAt(0).toUpperCase() === character;
+    }
     });
 });
