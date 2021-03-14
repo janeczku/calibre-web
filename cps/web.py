@@ -216,7 +216,7 @@ def update_view():
             for param in to_save[element]:
                 current_user.set_view_property(element, param, to_save[element][param])
     except Exception as e:
-        log.error("Could not save view_settings: %r %r: e", request, to_save, e)
+        log.error("Could not save view_settings: %r %r: %e", request, to_save, e)
         return "Invalid request", 400
     return "1", 200
 
@@ -340,7 +340,7 @@ def get_matching_tags():
     return json_dumps
 
 
-def render_books_list(data, sort, book_id, page):
+def get_sort_function(sort, data):
     order = [db.Books.timestamp.desc()]
     if sort == 'stored':
         sort = current_user.get_view_property(data, 'stored')
@@ -366,6 +366,11 @@ def render_books_list(data, sort, book_id, page):
         order = [db.Books.series_index.asc()]
     if sort == 'seriesdesc':
         order = [db.Books.series_index.desc()]
+    return order
+
+
+def render_books_list(data, sort, book_id, page):
+    order = get_sort_function(sort, data)
 
     if data == "rated":
         if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
@@ -453,18 +458,11 @@ def render_hot_books(page):
 
 def render_downloaded_books(page, order):
     if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD):
-        # order = order or []
         if current_user.show_detail_random():
             random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
                 .order_by(func.random()).limit(config.config_random_books)
         else:
             random = false()
-        # off = int(int(config.config_books_per_page) * (page - 1))
-        '''entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                                db.Books,
-                                                                db_filter,
-                                                                order,
-                                                                ub.ReadBook, db.Books.id==ub.ReadBook.book_id)'''
 
         entries, __, pagination = calibre_db.fill_indexpage(page,
                                                             0,
@@ -748,7 +746,7 @@ def list_books():
     search = request.args.get("search")
     total_count = calibre_db.session.query(db.Books).count()
     if search:
-        entries, filtered_count, pagination = calibre_db.get_search_results(search, off, order, limit)
+        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit)
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
         filtered_count = total_count
@@ -1411,12 +1409,71 @@ def logout():
 
 
 # ################################### Users own configuration #########################################################
+def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
+    to_save = request.form.to_dict()
+    current_user.random_books = 0
+    if current_user.role_passwd() or current_user.role_admin():
+        if "password" in to_save and to_save["password"]:
+            current_user.password = generate_password_hash(to_save["password"])
+    if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
+        current_user.kindle_mail = to_save["kindle_mail"]
+    if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
+        current_user.allowed_tags = to_save["allowed_tags"].strip()
+    if "email" in to_save and to_save["email"] != current_user.email:
+        if config.config_public_reg and not check_valid_domain(to_save["email"]):
+            flash(_(u"E-mail is not from valid domain"), category="error")
+            return render_title_template("user_edit.html", content=current_user,
+                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                         kobo_support=kobo_support,
+                                         registered_oauth=local_oauth_check, oauth_status=oauth_status)
+        current_user.email = to_save["email"]
+    if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
+        # Query User nickname, if not existing, change
+        if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+            current_user.nickname = to_save["nickname"]
+        else:
+            flash(_(u"This username is already taken"), category="error")
+            return render_title_template("user_edit.html",
+                                         translations=translations,
+                                         languages=languages,
+                                         kobo_support=kobo_support,
+                                         new_user=0, content=current_user,
+                                         registered_oauth=local_oauth_check,
+                                         title=_(u"Edit User %(nick)s",
+                                                 nick=current_user.nickname),
+                                         page="edituser")
+    if "show_random" in to_save and to_save["show_random"] == "on":
+        current_user.random_books = 1
+    if "default_language" in to_save:
+        current_user.default_language = to_save["default_language"]
+    if "locale" in to_save:
+        current_user.locale = to_save["locale"]
+
+    val = 0
+    for key, __ in to_save.items():
+        if key.startswith('show'):
+            val += int(key[5:])
+    current_user.sidebar_view = val
+    if "Show_detail_random" in to_save:
+        current_user.sidebar_view += constants.DETAIL_RANDOM
+
+    try:
+        ub.session.commit()
+        flash(_(u"Profile updated"), category="success")
+        log.debug(u"Profile updated")
+    except IntegrityError:
+        ub.session.rollback()
+        flash(_(u"Found an existing account for this e-mail address."), category="error")
+        log.debug(u"Found an existing account for this e-mail address.")
+    except OperationalError as e:
+        ub.session.rollback()
+        log.error("Database error: %s", e)
+        flash(_(u"Database error: %(error)s.", error=e), category="error")
 
 
 @web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    # downloads = list()
     languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
@@ -1427,74 +1484,8 @@ def profile():
         oauth_status = None
         local_oauth_check = {}
 
-    '''entries, __, pagination = calibre_db.fill_indexpage(page,
-                                                        0,
-                                                        db.Books,
-                                                        ub.Downloads.user_id == int(current_user.id), # True,
-                                                        [],
-                                                        ub.Downloads, db.Books.id == ub.Downloads.book_id)'''
-
     if request.method == "POST":
-        to_save = request.form.to_dict()
-        current_user.random_books = 0
-        if current_user.role_passwd() or current_user.role_admin():
-            if "password" in to_save and to_save["password"]:
-                current_user.password = generate_password_hash(to_save["password"])
-        if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
-            current_user.kindle_mail = to_save["kindle_mail"]
-        if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
-            current_user.allowed_tags = to_save["allowed_tags"].strip()
-        if "email" in to_save and to_save["email"] != current_user.email:
-            if config.config_public_reg and not check_valid_domain(to_save["email"]):
-                flash(_(u"E-mail is not from valid domain"), category="error")
-                return render_title_template("user_edit.html", content=current_user,
-                                             title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                             kobo_support=kobo_support,
-                                             registered_oauth=local_oauth_check, oauth_status=oauth_status)
-            current_user.email = to_save["email"]
-        if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
-            # Query User nickname, if not existing, change
-            if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
-                current_user.nickname = to_save["nickname"]
-            else:
-                flash(_(u"This username is already taken"), category="error")
-                return render_title_template("user_edit.html",
-                                             translations=translations,
-                                             languages=languages,
-                                             kobo_support=kobo_support,
-                                             new_user=0, content=current_user,
-                                             registered_oauth=local_oauth_check,
-                                             title=_(u"Edit User %(nick)s",
-                                                     nick=current_user.nickname),
-                                             page="edituser")
-        if "show_random" in to_save and to_save["show_random"] == "on":
-            current_user.random_books = 1
-        if "default_language" in to_save:
-            current_user.default_language = to_save["default_language"]
-        if "locale" in to_save:
-            current_user.locale = to_save["locale"]
-
-        val = 0
-        for key, __ in to_save.items():
-            if key.startswith('show'):
-                val += int(key[5:])
-        current_user.sidebar_view = val
-        if "Show_detail_random" in to_save:
-            current_user.sidebar_view += constants.DETAIL_RANDOM
-
-        try:
-            ub.session.commit()
-            flash(_(u"Profile updated"), category="success")
-            log.debug(u"Profile updated")
-        except IntegrityError:
-            ub.session.rollback()
-            flash(_(u"Found an existing account for this e-mail address."), category="error")
-            log.debug(u"Found an existing account for this e-mail address.")
-        except OperationalError as e:
-            ub.session.rollback()
-            log.error("Database error: %s", e)
-            flash(_(u"Database error: %(error)s.", error=e), category="error")
-
+        change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages)
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  profile=1,

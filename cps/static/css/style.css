@@ -1,7 +1,7 @@
 
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
-  font-family: Open Sans Semibold,Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 3px 10px;
@@ -48,25 +48,25 @@ body {
 
 body h2 {
   font-weight: normal;
-  color:#444;
+  color: #444;
 }
 
-a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d; }
+a, .danger, .book-remove, .editable-empty, .editable-empty:hover { color: #45b29d; }
 
 .book-remove:hover { color: #23527c; }
 
 .btn-default a { color: #444; }
 
 .btn-default a:hover {
-    color: #45b29d;
-    text-decoration: None;
+  color: #45b29d;
+  text-decoration: None;
 }
 
 .btn-default:hover {
-    color: #45b29d;
+  color: #45b29d;
 }
 
-.editable-click, a.editable-click, a.editable-click:hover  { border-bottom: None; }
+.editable-click, a.editable-click, a.editable-click:hover { border-bottom: None; }
 
 .navigation .nav-head {
   text-transform: uppercase;
@@ -119,7 +119,7 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   max-height: 100%;
 }
 
-.container-fluid .discover{ margin-bottom: 50px; }
+.container-fluid .discover { margin-bottom: 50px; }
 .container-fluid .new-books { border-top: 1px solid #ccc; }
 .container-fluid .new-books h2 { margin: 50px 0 0 0; }
 .container-fluid .book {
@@ -174,9 +174,10 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
 .container-fluid .book .meta .rating { margin-top: 5px; }
 .rating .glyphicon-star-empty { color: #444; }
 .rating .glyphicon-star.good { color: #444; }
-.rating-clear .glyphicon-remove { color: #333  }
+.rating-clear .glyphicon-remove { color: #333; }
 
-.container-fluid .author .author-hidden, .container-fluid .author .author-hidden-divider { display: none; }
+.container-fluid .author .author-hidden,
+.container-fluid .author .author-hidden-divider { display: none; }
 
 .navbar-brand {
   font-family: 'Grand Hotel', cursive;
@@ -190,7 +191,7 @@ a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d
   border-top: 1px solid #ccc;
 }
 
-.more-stuff>li { margin-bottom: 10px; }
+.more-stuff > li { margin-bottom: 10px; }
 .navbar-collapse.in .navbar-nav { margin: 0; }
 
 span.glyphicon.glyphicon-tags {
@@ -211,17 +212,17 @@ span.glyphicon.glyphicon-tags {
   box-shadow: 0 5px 8px -6px #777;
 }
 
-.navbar-default .navbar-toggle .icon-bar {background-color: #000; }
-.navbar-default .navbar-toggle {border-color: #000; }
+.navbar-default .navbar-toggle .icon-bar { background-color: #000; }
+.navbar-default .navbar-toggle { border-color: #000; }
 .cover { margin-bottom: 10px; }
 
 .cover .badge{
-   position: absolute;
-   top: 2px;
-   left: 2px;
-   color: #000;
-   border-radius: 10px;
-   background-color: #fff;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: #000;
+  border-radius: 10px;
+  background-color: #fff;
 }
 .cover .read{
   left: auto;
@@ -231,14 +232,14 @@ span.glyphicon.glyphicon-tags {
   display: inline-block;
   padding: 2px;
 }
-.cover-height { max-height: 100px;}
+.cover-height { max-height: 100px; }
 
 .col-sm-2 a .cover-small {
   margin: 5px;
   max-height: 200px;
 }
 
-.btn-file {position: relative; overflow: hidden;}
+.btn-file { position: relative; overflow: hidden; }
 
 .btn-file input[type=file] {
   position: absolute;
@@ -256,22 +257,42 @@ span.glyphicon.glyphicon-tags {
   display: block;
 }
 
-.btn-toolbar .btn,.discover .btn { margin-bottom: 5px; }
-.button-link {color: #fff; }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary{ background-color: #1C5484; }
-.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active { background-color: #89B9E2; }
-.btn-toolbar>.btn+.btn, .btn-toolbar>.btn-group+.btn, .btn-toolbar>.btn+.btn-group, .btn-toolbar>.btn-group+.btn-group { margin-left: 0; }
-.panel-body {background-color: #f5f5f5; }
-.spinner {margin: 0 41%; }
-.spinner2 {margin: 0 41%; }
+.btn-toolbar .btn,
+.discover .btn { margin-bottom: 5px; }
+.button-link { color: #fff; }
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary { background-color: #1c5484; }
+
+.btn-primary.disabled,
+.btn-primary[disabled],
+fieldset[disabled] .btn-primary,
+.btn-primary.disabled:hover,
+.btn-primary[disabled]:hover,
+fieldset[disabled] .btn-primary:hover,
+.btn-primary.disabled:focus,
+.btn-primary[disabled]:focus,
+fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active { background-color: #89B9E2; }
+
+.btn-toolbar > .btn+.btn,
+.btn-toolbar > .btn-group+.btn,
+.btn-toolbar > .btn+.btn-group,
+.btn-toolbar > .btn-group+.btn-group { margin-left: 0; }
+
+.panel-body { background-color: #f5f5f5; }
+.spinner { margin: 0 41%; }
+.spinner2 { margin: 0 41%; }
 .intend-form { margin-left:20px; }
-table .bg-dark-danger {background-color: #d9534f; color: #fff; }
-table .bg-dark-danger a {color: #fff; }
-table .bg-dark-danger:hover {background-color: #c9302c; }
-table .bg-primary:hover {background-color: #1C5484; }
-table .bg-primary a {color: #fff; }
-.block-label {display: block;}
-.fake-input {position: absolute; pointer-events: none; top: 0; }
+table .bg-dark-danger { background-color: #d9534f; color: #fff; }
+table .bg-dark-danger a { color: #fff; }
+table .bg-dark-danger:hover { background-color: #c9302c; }
+table .bg-primary:hover { background-color: #1c5484; }
+table .bg-primary a { color: #fff; }
+.block-label { display: block; }
+.fake-input { position: absolute; pointer-events: none; top: 0; }
 
 input.pill { position: absolute; opacity: 0; }
 

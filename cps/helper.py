@@ -134,8 +134,59 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
         text=txt
     ))
-
     return
+
+
+def check_send_to_kindle_without_converter(entry):
+    bookformats = list()
+    # no converter - only for mobi and pdf formats
+    for ele in iter(entry.data):
+        if ele.uncompressed_size < config.mail_size:
+            if 'MOBI' in ele.format:
+                bookformats.append({'format': 'Mobi',
+                                    'convert': 0,
+                                    'text': _('Send %(format)s to Kindle', format='Mobi')})
+            if 'PDF' in ele.format:
+                bookformats.append({'format': 'Pdf',
+                                    'convert': 0,
+                                    'text': _('Send %(format)s to Kindle', format='Pdf')})
+            if 'AZW' in ele.format:
+                bookformats.append({'format': 'Azw',
+                                    'convert': 0,
+                                    'text': _('Send %(format)s to Kindle', format='Azw')})
+    return bookformats
+
+def check_send_to_kindle_with_converter(entry):
+    bookformats = list()
+    formats = list()
+    for ele in iter(entry.data):
+        if ele.uncompressed_size < config.mail_size:
+            formats.append(ele.format)
+    if 'MOBI' in formats:
+        bookformats.append({'format': 'Mobi',
+                            'convert': 0,
+                            'text': _('Send %(format)s to Kindle', format='Mobi')})
+    if 'AZW' in formats:
+        bookformats.append({'format': 'Azw',
+                            'convert': 0,
+                            'text': _('Send %(format)s to Kindle', format='Azw')})
+    if 'PDF' in formats:
+        bookformats.append({'format': 'Pdf',
+                            'convert': 0,
+                            'text': _('Send %(format)s to Kindle', format='Pdf')})
+    if 'EPUB' in formats and 'MOBI' not in formats:
+        bookformats.append({'format': 'Mobi',
+                            'convert': 1,
+                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                      orig='Epub',
+                                      format='Mobi')})
+    if 'AZW3' in formats and not 'MOBI' in formats:
+        bookformats.append({'format': 'Mobi',
+                            'convert': 2,
+                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                      orig='Azw3',
+                                      format='Mobi')})
+    return bookformats
 
 
 def check_send_to_kindle(entry):
@@ -143,54 +194,11 @@ def check_send_to_kindle(entry):
         returns all available book formats for sending to Kindle
     """
     if len(entry.data):
-        bookformats = list()
         if not config.config_converterpath:
-            # no converter - only for mobi and pdf formats
-            for ele in iter(entry.data):
-                if ele.uncompressed_size < config.mail_size:
-                    if 'MOBI' in ele.format:
-                        bookformats.append({'format': 'Mobi',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Mobi')})
-                    if 'PDF' in ele.format:
-                        bookformats.append({'format': 'Pdf',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Pdf')})
-                    if 'AZW' in ele.format:
-                        bookformats.append({'format': 'Azw',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Azw')})
+            book_formats = check_send_to_kindle_with_converter(entry)
         else:
-            formats = list()
-            for ele in iter(entry.data):
-                if ele.uncompressed_size < config.mail_size:
-                    formats.append(ele.format)
-            if 'MOBI' in formats:
-                bookformats.append({'format': 'Mobi',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Mobi')})
-            if 'AZW' in formats:
-                bookformats.append({'format': 'Azw',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Azw')})
-            if 'PDF' in formats:
-                bookformats.append({'format': 'Pdf',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Pdf')})
-            if config.config_converterpath:
-                if 'EPUB' in formats and 'MOBI' not in formats:
-                    bookformats.append({'format': 'Mobi',
-                                        'convert':1,
-                                        'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                                  orig='Epub',
-                                                  format='Mobi')})
-                if 'AZW3' in formats and not 'MOBI' in formats:
-                    bookformats.append({'format': 'Mobi',
-                                        'convert': 2,
-                                        'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                                  orig='Azw3',
-                                                  format='Mobi')})
-        return bookformats
+            book_formats = check_send_to_kindle_with_converter(entry)
+        return book_formats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
         return None
@@ -742,7 +750,7 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for num, user, added, task in tasklist:
+    for __, user, added, task in tasklist:
         if user == current_user.nickname or current_user.role_admin():
             ret = {}
             if task.start_time:

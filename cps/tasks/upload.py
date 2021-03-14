@@ -12,7 +12,6 @@ class TaskUpload(CalibreTask):
 
     def run(self, worker_thread):
         """Upload task doesn't have anything to do, it's simply a way to add information to the task list"""
-        pass
 
     @property
     def name(self):
