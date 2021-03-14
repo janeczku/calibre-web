@@ -171,7 +171,7 @@ def HandleSyncRequest():
                             ub.BookShelf.date_added > sync_token.books_last_modified))
                 .filter(db.Data.format.in_(KOBO_FORMATS))
                 .order_by(db.Books.id)
-                .order_by('last_modified')
+                .order_by(ub.ArchivedBook.last_modified)
                 .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                 .join(ub.Shelf)
                 .filter(ub.Shelf.kobo_sync)
@@ -253,11 +253,36 @@ def HandleSyncRequest():
         books_last_id = -1
 
     # generate reading state data
+    changed_reading_states = ub.session.query(ub.KoboReadingState)
+
+    if only_kobo_shelves:
+        changed_reading_states = (
+            changed_reading_states.join(ub.BookShelf, ub.KoboReadingState.book_id == ub.BookShelf.book_id)
+            .join(ub.Shelf)
+            .filter(
+                ub.Shelf.kobo_sync,
+                or_(
+                    func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
+                    ub.BookShelf.date_added > sync_token.books_last_modified
+                )
+            )
+        ).distinct()
+
+    else:
+        changed_reading_states = (
+            changed_reading_states.filter(
+                func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified
+            )
+        )
     changed_reading_states = (
-        ub.session.query(ub.KoboReadingState)
-        .filter(and_(func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
-                     ub.KoboReadingState.user_id == current_user.id,
-                     ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements))))
+        changed_reading_states.filter(
+            and_(
+                ub.KoboReadingState.user_id == current_user.id,
+                ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)
+            )
+        )
+    )
+
     for kobo_reading_state in changed_reading_states.all():
         book = calibre_db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
         if book:
