@@ -3,17 +3,17 @@
 {% if book %}
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-        <img src="{{ url_for('web.get_cover', book_id=book.id) }}" alt="{{ book.title }}"/>
+        <img src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/>
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
-      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
+      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
         <div class="form-group">
-          <a href="{{ url_for('editbook.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
+          <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
         </div>
       {% endfor %}
       </div>
@@ -92,15 +92,19 @@
       <label for="rating">{{_('Rating')}}</label>
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
+    {% if g.user.role_upload() or g.user.role_admin()%}
+      {% if g.allow_upload %}
     <div class="form-group">
       <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
-    <div class="form-group" aria-label="Upload cover from local drive">
+      <div class="form-group" aria-label="Upload cover from local drive">
         <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
         <div class="upload-cover-input-text" id="upload-cover"></div>
         <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
-    </div>
+      </div>
+      {% endif %}
+    {% endif %}
     <div class="form-group">
       <label for="pubdate">{{_('Published Date')}}</label>
       <div style="position: relative">
@@ -193,34 +197,8 @@
 {% endblock %}
 
 {% block modal %}
-{% if g.user.role_delete_books() %}
-<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-center">
-          <span>{{_('Are you really sure?')}}</span>
-      </div>
-        <div class="modal-body text-center">
-          <p>
-          <span>{{_('This book will be permanently erased from database')}}</span>
-          <span>{{_('and hard disk')}}</span>
-		  </p>
-          {% if config.config_kobo_sync %}
-          <p>
-            <span>{{_('Important Kobo Note: deleted books will remain on any paired Kobo device.')}}</span>
-            <span>{{_('Books must first be archived and the device synced before a book can safely be deleted.')}}</span>
-          </p>
-          {% endif %}
-        </div>
-
-      <div class="modal-footer">
-        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" id="delete_confirm" class="btn btn-danger">{{_('Delete')}}</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
+{{ delete_book() }}
+{{ delete_confirm_modal() }}
 
 <div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
   <div class="modal-dialog modal-lg" role="document">

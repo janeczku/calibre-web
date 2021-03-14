@@ -1,0 +1,4211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calibre-Web Tests</title>
+    <meta name="generator" content=""/>
+    <meta name="version" content=""/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
+    <link href="./../cps/static/css/libs/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="./../cps/static/js/libs/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./../cps/static/js/libs/bootstrap.min.js"></script>
+    <!-- Project CSS -->
+    <link href="css/runner.css" rel="stylesheet">
+    <!-- Project JS -->
+    <script src="js/runner.js"></script>
+</head>
+
+<body>
+
+
+    <div class="row report-title">
+        <h1 id='report_title' class="text-center">Calibre-Web Tests</h1>
+    </div>
+  <div class="row">
+    <div class="col">
+      <div class="col-xs-12 col-sm-6">
+        <div class="piechart">
+          <div>
+              <canvas id="circle" width="350" height="168" ></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+      <div class="row">
+        <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
+            
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-02 08:38:57</p>
+            
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-6 col-sm-offset-3">
+            
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-02 12:04:50</p>
+            
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 col-md-6 col-sm-offset-3">
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 58 min</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+    <div class='report-description'>
+        <div id='report_description' class='row text-center'></div>
+    </div>
+<div class='text-center buttons'>
+<div id='show_detail_line' class="btn-group pagination-centered" role="group" aria-label="TESTE">
+    <button type="button" class="btn btn-success" data-toggle="button" aria-pressed="false" data-placement="top"
+            title="Show only the execution summary" onclick="showCase(0)">Summary
+    </button>
+    <button type="button" class="btn btn-info" data-toggle="button" aria-pressed="false" data-placement="top"
+            title="Show only the execution summary" onclick="showCase(5)">Summary Problems
+    </button>
+    <button type="button" class="btn btn-warning" data-toggle="button" aria-pressed="false" data-placement="top"
+            title="Show skipped test cases" onclick="showCase(3)">Skipped
+    </button>
+    <button type="button" class="btn btn-danger" data-toggle="button" aria-pressed="false" data-placement="top"
+            title="Show the filed test cases" onclick="showCase(1)">Failed
+    </button>
+        <button type="button" class="btn btn-info" data-toggle="button" aria-pressed="false" data-placement="top"
+            title="Show the filed test cases" onclick="showCase(4)">Error
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="tooltip" aria-pressed="false" data-placement="top"
+            title="Show all test cases" onclick="showCase(2)">All
+    </button>
+</div>
+</div>
+<table id='result_table' class='table table-bordered table-responsive table-curved'>
+    <colgroup>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+        <col/>
+    </colgroup>
+    <tr id='header_row' class="text-center bg-grey">
+        <td>Test Group/Test case</td>
+        <td>Count</td>
+        <td>Pass</td>
+        <td>Fail</td>
+        <td>Error</td>
+        <td>Skip</td>
+        <td>View</td>
+    </tr>
+
+
+    <tr id="su" class="passClass">
+        <td>TestAnonymous</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c1', 13)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt1.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_check_locale_guest</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_format</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_change_visibility_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_random_books_available</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_restricted_settings_visibility</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt1.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestAnonymous - test_guest_visibility_sidebar</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestCli</td>
+        <td class="text-center">8</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c2', 8)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt2.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_already_started</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_bind_to_single_interface</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_SSL_files</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_different_folder</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_different_settings_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st2.6" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestCli - test_cli_gdrive_location</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st2.6')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st2.6" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st2.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_environ_port_setting</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestCoverEditBooks</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c3', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt3.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCoverEditBooks - test_upload_jpg</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestDeleteDatabase</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c4', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt4.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestDeleteDatabase - test_delete_books_in_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestEbookConvertCalibre</td>
+        <td class="text-center">11</td>
+        <td class="text-center">11</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c5', 11)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt5.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_deactivate</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_failed_and_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_parameter</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_wrong_excecutable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_email_failed</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_email_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_kindle_send_not_configured</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_ssl_smtp_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt5.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_starttls_smtp_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c6', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et6.1" class="none bg-info">
+            <td>
+                <div class='testcase'>setUpClass (test_ebook_convert_gdrive)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_ebook_convert_gdrive.py", line 35, in setUpClass
+    prepare_gdrive()
+  File "C:\Entwicklung\calibre-web-test\test\helper_gdrive.py", line 36, in prepare_gdrive
+    test = fs.makedir('test')
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\googledrivefs\googledrivefs.py", line 343, in makedir
+    raise DirectoryExists(path=path)
+fs.errors.DirectoryExists: directory 'test' exists</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et6.2" class="none bg-info">
+            <td>
+                <div class='testcase'>setUpClass (test_ebook_convert_kepubify_gdrive)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.2" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_ebook_convert_kepubify_gdrive.py", line 32, in setUpClass
+    prepare_gdrive()
+  File "C:\Entwicklung\calibre-web-test\test\helper_gdrive.py", line 30, in prepare_gdrive
+    fs.removetree('test')
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\base.py", line 1232, in removetree
+    self.removedir(dir_path)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\googledrivefs\googledrivefs.py", line 395, in removedir
+    raise DirectoryNotEmpty(path=path)
+fs.errors.DirectoryNotEmpty: directory 'test' is not empty</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et6.3" class="none bg-info">
+            <td>
+                <div class='testcase'>tearDownClass (test_updater)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 39, in tearDownClass
+    cls.stop_calibre_web()
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 370, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+AttributeError: 'NoneType' object has no attribute 'find_element_by_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 41, in tearDownClass
+    cls.driver.get("http://127.0.0.1:8083")
+AttributeError: 'NoneType' object has no attribute 'get'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestEbookConvertKepubify</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c7', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt7.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertKepubify - test_convert_deactivate</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt7.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt7.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertKepubify - test_convert_wrong_excecutable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestEditAdditionalBooks</td>
+        <td class="text-center">13</td>
+        <td class="text-center">11</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c8', 13)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt8.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_delete_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt8.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st8.12" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.12')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st8.12" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st8.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="st8.13" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.13')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st8.13" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st8.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">writeonly database on windows is not checked</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestEditBooks</td>
+        <td class="text-center">33</td>
+        <td class="text-center">31</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c9', 33)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt9.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_comments</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_bool</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_categories</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st9.14" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_publishing_date</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.14')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st9.14" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st9.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st9.18" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.18')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st9.18" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st9.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.22' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.23' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.24' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.25' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.26' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.27' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.28' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.29' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.30' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.31' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.32' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.33' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestEditBooksList</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c10', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt10.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_edit_books_list</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_list_visibility</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_merge_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="failClass">
+        <td>TestEditBooksOnGdrive</td>
+        <td class="text-center">20</td>
+        <td class="text-center">19</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c11', 20)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt11.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_epub</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft11.19" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_upload_cover_hdd</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.19')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft11.19" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft11.19').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_ebooks_gdrive.py", line 716, in test_upload_cover_hdd
+    self.assertGreater(diff('bmp.png', 'jpeg.png', delete_diff_file=True), 0.006)
+AssertionError: 0.003931532360116369 not greater than 0.006</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSTARTTLS</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c12', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt12.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSSL</td>
+        <td class="text-center">5</td>
+        <td class="text-center">5</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c13', 5)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt13.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSSL - test_SSL_logging_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSSL - test_SSL_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSSL - test_email_limit</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSetupGdrive</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c14', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt14.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestGoodreads</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c15', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt15.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestGoodreads - test_author_page</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestGoodreads - test_goodreads_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestKoboSync</td>
+        <td class="text-center">9</td>
+        <td class="text-center">9</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c16', 9)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt16.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_book_download</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_kobo_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_invalid</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_sync_upload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestLdapLogin</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c17', 13)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt17.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestLogging</td>
+        <td class="text-center">7</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c18', 7)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt18.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_access_log_recover</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_debug_log</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_failed_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st18.4" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestLogging - test_failed_register</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.4')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st18.4" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st18.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_logfile_change</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_logfile_recover</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogging - test_logviewer</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestLogin</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c19', 13)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt19.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_digest_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_delete_admin</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_empty_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_locale_select</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_protected</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_remember_me</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_rename_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_magic_remote_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_next</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_robots</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestOAuthLogin</td>
+        <td class="text-center">2</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c20', 2)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt20.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestOPDSFeed</td>
+        <td class="text-center">21</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c21', 21)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt21.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_random</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_search</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_recently_added</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestReader</td>
+        <td class="text-center">5</td>
+        <td class="text-center">5</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c22', 5)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt22.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_comic_reader</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt22.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_epub_reader</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt22.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_pdf_reader</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt22.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_sound_listener</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt22.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_txt_reader</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestRegister</td>
+        <td class="text-center">7</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c23', 7)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt23.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_forgot_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_limit_domain</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_register_no_server</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_only_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_user_fail</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt23.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_user_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestShelf</td>
+        <td class="text-center">11</td>
+        <td class="text-center">10</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c24', 11)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt24.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_arrange_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_private_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_public_private_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_public_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_rename_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_anonymous</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st24.10" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_database_change</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st24.10')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st24.10" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st24.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Change Database Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt24.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_long_name</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>TestUpdater</td>
+        <td class="text-center">15</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">14</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c25', 15)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et25.1" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 206, in test_check_update_nightly_errors
+    self.fill_basic_config({'config_updatechannel': 'Nightly'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.2" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.2" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.3" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 234, in test_check_update_nightly_request_errors
+    self.fill_basic_config({'config_updatechannel': 'Nightly'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.4" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.4" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.5" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.5" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 118, in test_check_update_stable_errors
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.6" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.6" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.7" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.7" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 146, in test_check_update_stable_versions
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.8" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.8" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.9" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.9" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 341, in test_perform_update
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.10" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.10" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.11" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.11" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 288, in test_perform_update_stable_errors
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.12" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.12" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="st25.13" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.13')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st25.13" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st25.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Takes too long</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.14" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_reconnect_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.14')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.14" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 366, in test_reconnect_database
+    self.reconnect_database()
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 356, in reconnect_database
+    self.driver.find_element_by_id('restart_database').click()
+AttributeError: 'NoneType' object has no attribute 'find_element_by_id'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.15" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_reconnect_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.15" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestUserLoad</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c26', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt26.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserLoad - test_user_change_vis</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestUserTemplate</td>
+        <td class="text-center">21</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c27', 21)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt27.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_author_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_best_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_category_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_download_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_format_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_language_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_list_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_random_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_read_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_series_user_template</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestCalibreWebVisibilitys</td>
+        <td class="text-center">33</td>
+        <td class="text-center">33</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c28', 33)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt28.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.22' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.23' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.24' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.25' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.26' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.27' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.28' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.29' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.30' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.31' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.32' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt28.33' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestCalibreHelper</td>
+        <td class="text-center">16</td>
+        <td class="text-center">16</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c29', 16)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt29.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_high23</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_random_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_split_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt29.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+    <tr id='total_row' class="text-center bg-grey">
+        <td>Total</td>
+        <td>295</td>
+        <td>269</td>
+        <td>1</td>
+        <td>17</td>
+        <td>8</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+          <span class="glyphicon glyphicon-plus"></span>
+          Tested environment
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+        <table id="libs" class="table">
+          <thead>
+            <tr>
+              <th>Program library</th>
+              <th>Installed Version</th>
+              <th>Test class</th>
+            </tr>
+          </thead>
+          <tbody>
+          
+            <tr>
+              <th>Platform</th>
+              <td>Windows 10 10.0.19041 Intel64 Family 6 Model 69 Stepping 1, GenuineIntel AMD64</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Python</th>
+              <td>3.8.6</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Babel</th>
+              <td>2.8.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>backports-abc</th>
+              <td>0.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask</th>
+              <td>1.1.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Babel</th>
+              <td>2.0.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Login</th>
+              <td>0.5.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Principal</th>
+              <td>0.4.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>iso-639</th>
+              <td>0.4.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Jinja2</th>
+              <td>2.11.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>PyPDF2</th>
+              <td>1.26.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>pytz</th>
+              <td>2020.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>requests</th>
+              <td>2.24.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>singledispatch</th>
+              <td>3.4.0.3</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>six</th>
+              <td>1.15.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>SQLAlchemy</th>
+              <td>1.3.22</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>tornado</th>
+              <td>6.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Unidecode</th>
+              <td>1.1.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Wand</th>
+              <td>0.6.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Werkzeug</th>
+              <td>1.0.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>google-api-python-client</th>
+              <td>1.12.8</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>httplib2</th>
+              <td>0.18.1</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>oauth2client</th>
+              <td>4.1.3</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyYAML</th>
+              <td>5.3.1</td>
+              <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>google-api-python-client</th>
+              <td>1.12.8</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>httplib2</th>
+              <td>0.18.1</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>oauth2client</th>
+              <td>4.1.3</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>PyYAML</th>
+              <td>5.3.1</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>comicapi</th>
+              <td>2.1.2</td>
+              <td>TestEditAdditionalBooks</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEditAdditionalBooks</td>
+            </tr>
+          
+            <tr>
+              <th>rarfile</th>
+              <td>4.0</td>
+              <td>TestEditAdditionalBooks</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEditBooks</td>
+            </tr>
+          
+            <tr>
+              <th>google-api-python-client</th>
+              <td>1.12.8</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>httplib2</th>
+              <td>0.18.1</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>oauth2client</th>
+              <td>4.1.3</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyYAML</th>
+              <td>5.3.1</td>
+              <td>TestEditBooksOnGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>google-api-python-client</th>
+              <td>1.12.8</td>
+              <td>TestSetupGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>httplib2</th>
+              <td>0.18.1</td>
+              <td>TestSetupGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>oauth2client</th>
+              <td>4.1.3</td>
+              <td>TestSetupGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
+              <td>TestSetupGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>PyYAML</th>
+              <td>5.3.1</td>
+              <td>TestSetupGdrive</td>
+            </tr>
+          
+            <tr>
+              <th>goodreads</th>
+              <td>0.3.2</td>
+              <td>TestGoodreads</td>
+            </tr>
+          
+            <tr>
+              <th>jsonschema</th>
+              <td>3.2.0</td>
+              <td>TestKoboSync</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-SimpleLDAP</th>
+              <td>1.4.0</td>
+              <td>TestLdapLogin</td>
+            </tr>
+          
+            <tr>
+              <th>jsonschema</th>
+              <td>3.2.0</td>
+              <td>TestLdapLogin</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Dance</th>
+              <td>3.2.0</td>
+              <td>TestOAuthLogin</td>
+            </tr>
+          
+            <tr>
+              <th>SQLAlchemy-Utils</th>
+              <td>0.36.8</td>
+              <td>TestOAuthLogin</td>
+            </tr>
+          
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    drawCircle(269, 1, 17, 8);
+</script>
+
+</div>
+
+<footer>
+<div id='foter' class="text-center">
+    <p>Made with HTMLTestRunner from https://github.com/oldani/HtmlTestRunner</p>
+</div>
+</footer>
+
+</body>
+</html>

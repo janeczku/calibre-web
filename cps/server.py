@@ -22,11 +22,14 @@ import os
 import errno
 import signal
 import socket
+import subprocess
 
 try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
+    from greenlet import GreenletExit
+    import ssl
     VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
@@ -134,6 +137,64 @@ class WebServer(object):
 
         return sock, _readable_listen_address(*address)
 
+    @staticmethod
+    def _get_args_for_reloading():
+        """Determine how the script was executed, and return the args needed
+        to execute it again in a new process.
+        Code from https://github.com/pyload/pyload. Author GammaC0de, voulter
+        """
+        rv = [sys.executable]
+        py_script = sys.argv[0]
+        args = sys.argv[1:]
+        # Need to look at main module to determine how it was executed.
+        __main__ = sys.modules["__main__"]
+
+        # The value of __package__ indicates how Python was called. It may
+        # not exist if a setuptools script is installed as an egg. It may be
+        # set incorrectly for entry points created with pip on Windows.
+        if getattr(__main__, "__package__", None) is None or (
+            os.name == "nt"
+            and __main__.__package__ == ""
+            and not os.path.exists(py_script)
+            and os.path.exists("{}.exe".format(py_script))
+        ):
+            # Executed a file, like "python app.py".
+            py_script = os.path.abspath(py_script)
+
+            if os.name == "nt":
+                # Windows entry points have ".exe" extension and should be
+                # called directly.
+                if not os.path.exists(py_script) and os.path.exists("{}.exe".format(py_script)):
+                    py_script += ".exe"
+
+                if (
+                        os.path.splitext(sys.executable)[1] == ".exe"
+                        and os.path.splitext(py_script)[1] == ".exe"
+                ):
+                    rv.pop(0)
+
+            rv.append(py_script)
+        else:
+            # Executed a module, like "python -m module".
+            if sys.argv[0] == "-m":
+                args = sys.argv
+            else:
+                if os.path.isfile(py_script):
+                    # Rewritten by Python from "-m script" to "/path/to/script.py".
+                    py_module = __main__.__package__
+                    name = os.path.splitext(os.path.basename(py_script))[0]
+
+                    if name != "__main__":
+                        py_module += ".{}".format(name)
+                else:
+                    # Incorrectly rewritten by pydevd debugger from "-m script" to "script".
+                    py_module = py_script
+
+                rv.extend(("-m", py_module.lstrip(".")))
+
+        rv.extend(args)
+        return rv
+
     def _start_gevent(self):
         ssl_args = self.ssl_args or {}
 
@@ -143,6 +204,16 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
+            if ssl_args:
+                wrap_socket = self.wsgiserver.wrap_socket
+                def my_wrap_socket(*args, **kwargs):
+                    try:
+                        return wrap_socket(*args, **kwargs)
+                    except (ssl.SSLError, OSError) as ex:
+                        log.warning('Gevent SSL Error: %s', ex)
+                        raise GreenletExit
+
+                self.wsgiserver.wrap_socket = my_wrap_socket
             self.wsgiserver.serve_forever()
         finally:
             if self.unix_socket_file:
@@ -187,22 +258,16 @@ class WebServer(object):
             return True
 
         log.info("Performing restart of Calibre-Web")
-        arguments = list(sys.argv)
-        arguments.insert(0, sys.executable)
-        if os.name == 'nt':
-            arguments = ["\"%s\"" % a for a in arguments]
-        os.execv(sys.executable, arguments)
+        args = self._get_args_for_reloading()
+        subprocess.call(args, close_fds=True)
         return True
 
-    def _killServer(self, ignored_signum, ignored_frame):
+    def _killServer(self, __, ___):
         self.stop()
 
     def stop(self, restart=False):
         from . import updater_thread
         updater_thread.stop()
-        from . import calibre_db
-        calibre_db.stop()
-
 
         log.info("webserver stop (restart=%s)", restart)
         self.restart = restart

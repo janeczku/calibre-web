@@ -19,10 +19,10 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
-import json
 import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, cli, logger, ub
@@ -109,9 +109,12 @@ class _Settings(_Base):
     config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
     config_ldap_serv_password = Column(String, default="")
     config_ldap_encryption = Column(SmallInteger, default=0)
+    config_ldap_cacert_path = Column(String, default="")
     config_ldap_cert_path = Column(String, default="")
+    config_ldap_key_path = Column(String, default="")
     config_ldap_dn = Column(String, default='dc=example,dc=org')
     config_ldap_user_object = Column(String, default='uid=%s')
+    config_ldap_member_user_object = Column(String, default='') #
     config_ldap_openldap = Column(Boolean, default=True)
     config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
     config_ldap_group_members_field = Column(String, default='memberUid')
@@ -143,15 +146,16 @@ class _ConfigSQL(object):
         self.load()
 
         change = False
-        if self.config_converterpath == None:
+        if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
             change = True
             self.config_converterpath = autodetect_calibre_binary()
 
-        if self.config_kepubifypath == None:
+        if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
+
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
-        if self.config_rarfile_location == None:
+        if self.config_rarfile_location == None:  # pylint: disable=access-member-before-definition
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
@@ -178,7 +182,8 @@ class _ConfigSQL(object):
             return None
         return self.config_keyfile
 
-    def get_config_ipaddress(self):
+    @staticmethod
+    def get_config_ipaddress():
         return cli.ipadress or ""
 
     def _has_role(self, role_flag):
@@ -269,6 +274,14 @@ class _ConfigSQL(object):
         setattr(self, field, new_value)
         return True
 
+    def toDict(self):
+        storage = {}
+        for k, v in self.__dict__.items():
+            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret"):
+                storage[k] = v
+        return storage
+
+
     def load(self):
         '''Load all configuration values from the underlying storage.'''
         s = self._read_from_storage()  # type: _Settings
@@ -287,13 +300,18 @@ class _ConfigSQL(object):
                 db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in self.config_upload_formats.split(',')]
+        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        # pylint: disable=access-member-before-definition
         logfile = logger.setup(self.config_logfile, self.config_log_level)
         if logfile != self.config_logfile:
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
             self._session.merge(s)
-            self._session.commit()
+            try:
+                self._session.commit()
+            except OperationalError as e:
+                log.error('Database error: %s', e)
+                self._session.rollback()
 
     def save(self):
         '''Apply all configuration values to the underlying storage.'''
@@ -307,7 +325,11 @@ class _ConfigSQL(object):
 
         log.debug("_ConfigSQL updating storage")
         self._session.merge(s)
-        self._session.commit()
+        try:
+            self._session.commit()
+        except OperationalError as e:
+            log.error('Database error: %s', e)
+            self._session.rollback()
         self.load()
 
     def invalidate(self, error=None):
@@ -348,7 +370,10 @@ def _migrate_table(session, orm_class):
                 changed = True
 
     if changed:
-        session.commit()
+        try:
+            session.commit()
+        except OperationalError:
+            session.rollback()
 
 
 def autodetect_calibre_binary():

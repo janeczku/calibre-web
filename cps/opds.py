@@ -25,7 +25,7 @@ import sys
 import datetime
 from functools import wraps
 
-from flask import Blueprint, request, render_template, Response, g, make_response
+from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
@@ -33,7 +33,8 @@ from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
-from .web import render_read_books, download_required
+from .web import render_read_books
+from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
@@ -51,7 +52,7 @@ def requires_basic_auth_if_no_ano(f):
             if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and config.config_anonbrowse != 1:
         return services.ldap.basic_auth_required(f)
     return decorated
 
@@ -100,7 +101,7 @@ def feed_normal_search():
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books, True, [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -118,7 +119,7 @@ def feed_discover():
 @requires_basic_auth_if_no_ano
 def feed_best_rated():
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                         [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -164,7 +165,7 @@ def feed_authorindex():
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.authors.any(db.Authors.id == book_id),
                                                         [db.Books.timestamp.desc()])
@@ -190,7 +191,7 @@ def feed_publisherindex():
 @requires_basic_auth_if_no_ano
 def feed_publisher(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.publishers.any(db.Publishers.id == book_id),
                                                         [db.Books.timestamp.desc()])
@@ -218,7 +219,7 @@ def feed_categoryindex():
 @requires_basic_auth_if_no_ano
 def feed_category(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.tags.any(db.Tags.id == book_id),
                                                         [db.Books.timestamp.desc()])
@@ -245,7 +246,7 @@ def feed_seriesindex():
 @requires_basic_auth_if_no_ano
 def feed_series(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.series.any(db.Series.id == book_id),
                                                         [db.Books.series_index])
@@ -276,7 +277,7 @@ def feed_ratingindex():
 @requires_basic_auth_if_no_ano
 def feed_ratings(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.ratings.any(db.Ratings.id == book_id),
                                                         [db.Books.timestamp.desc()])
@@ -304,7 +305,7 @@ def feed_formatindex():
 @requires_basic_auth_if_no_ano
 def feed_format(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.data.any(db.Data.format == book_id.upper()),
                                                         [db.Books.timestamp.desc()])
@@ -338,7 +339,7 @@ def feed_languagesindex():
 @requires_basic_auth_if_no_ano
 def feed_languages(book_id):
     off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.languages.any(db.Languages.id == book_id),
                                                         [db.Books.timestamp.desc()])
@@ -383,8 +384,13 @@ def feed_shelf(book_id):
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
-@download_required
 def opds_download_link(book_id, book_format):
+    # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
+    # workaround, loading the user from the request and checking it's download rights here
+    # in case of anonymous browsing user is None
+    user = load_user_from_request(request) or current_user
+    if not user.role_download():
+        return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
     else:
@@ -408,7 +414,7 @@ def get_metadata_calibre_companion(uuid, library):
 
 def feed_search(term):
     if term:
-        entries = calibre_db.get_search_results(term)
+        entries, __, ___ = calibre_db.get_search_results(term)
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -418,10 +424,18 @@ def feed_search(term):
 
 def check_auth(username, password):
     if sys.version_info.major == 3:
-        username = username.encode('windows-1252')
+        try:
+            username = username.encode('windows-1252')
+        except UnicodeEncodeError:
+            username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()
-    return bool(user and check_password_hash(str(user.password), password))
+    if bool(user and check_password_hash(str(user.password), password)):
+        return True
+    else:
+        ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ipAdress)
+        return False
 
 
 def authenticate():

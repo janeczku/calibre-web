@@ -24,31 +24,47 @@ var $list = $("#list").isotope({
 });
 
 $("#desc").click(function() {
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
+    });
     $list.isotope({
         sortBy: "name",
         sortAscending: true
     });
-    return;
 });
 
 $("#asc").click(function() {
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
+    });
     $list.isotope({
         sortBy: "name",
         sortAscending: false
     });
-    return;
 });
 
 $("#all").click(function() {
     // go through all elements and make them visible
     $list.isotope({ filter: function() {
         return true;
-      } })
+    }
+    });
 });
 
 $(".char").click(function() {
     var character = this.innerText;
     $list.isotope({ filter: function() {
-        return this.attributes["data-id"].value.charAt(0).toUpperCase() == character;
-      } })
+        return this.attributes["data-id"].value.charAt(0).toUpperCase() === character;
+    }
+    });
 });

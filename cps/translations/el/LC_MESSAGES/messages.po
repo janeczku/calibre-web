@@ -1,0 +1,2798 @@
+# Greek Translations for Calibre-Web.
+# Copyright (C) 2020 Ozzie Isaacs
+# This file is distributed under the same license as the Calibre-Web project.
+# Depountis Georgios 2020.
+msgid ""
+msgstr ""
+"Project-Id-Version:  Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2021-02-02 18:58+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Depountis Georgios\n"
+"Language: el\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.0\n"
+
+#: cps/about.py:42
+msgid "installed"
+msgstr "εγκαταστάθηκε"
+
+#: cps/about.py:44 cps/converter.py:32
+msgid "not installed"
+msgstr "δεν εγκαταστάθηκε"
+
+#: cps/about.py:99
+msgid "Statistics"
+msgstr "Στατιστικά"
+
+#: cps/admin.py:147
+msgid "Server restarted, please reload page"
+msgstr "Ο διακομιστής επανεκκίνησε, παρακαλούμε φόρτωσε ξανά τη σελίδα"
+
+#: cps/admin.py:149
+msgid "Performing shutdown of server, please close window"
+msgstr "Πραγματοποιείται κλείσιμο του διακομιστή, παρακαλούμε κλείσε το παράθυρο"
+
+#: cps/admin.py:157
+msgid "Reconnect successful"
+msgstr "Επιτυχής επανασύνδεση"
+
+#: cps/admin.py:160
+msgid "Unknown command"
+msgstr "Άγνωστη εντολή"
+
+#: cps/admin.py:170 cps/editbooks.py:642 cps/editbooks.py:654
+#: cps/editbooks.py:757 cps/editbooks.py:759 cps/editbooks.py:820
+#: cps/editbooks.py:836 cps/updater.py:510 cps/uploader.py:90
+#: cps/uploader.py:100
+msgid "Unknown"
+msgstr "ʼΑγνωστο"
+
+#: cps/admin.py:191
+msgid "Admin page"
+msgstr "Σελίδα διαχειριστή"
+
+#: cps/admin.py:213
+msgid "UI Configuration"
+msgstr "UI Διαμόρφωση"
+
+#: cps/admin.py:245 cps/admin.py:923
+msgid "Calibre-Web configuration updated"
+msgstr "Ενημερώθηκε η διαμόρφωση Calibre-Web"
+
+#: cps/admin.py:256
+msgid "Do you really want to delete the Kobo Token?"
+msgstr "Θέλεις πραγματικά να διαγράψεις τη Μονάδα Kobo;"
+
+#: cps/admin.py:258
+msgid "Do you really want to delete this domain?"
+msgstr ""
+
+#: cps/admin.py:260
+msgid "Do you really want to delete this user?"
+msgstr ""
+
+#: cps/admin.py:262 cps/templates/shelf.html:90
+msgid "Are you sure you want to delete this shelf?"
+msgstr "Είσαι σίγουρος/η πως θέλεις να διαγράψεις αυτό το ράφι;"
+
+#: cps/admin.py:508 cps/admin.py:514 cps/admin.py:524 cps/admin.py:534
+#: cps/templates/modal_dialogs.html:29
+msgid "Deny"
+msgstr "Απόρριψη"
+
+#: cps/admin.py:510 cps/admin.py:516 cps/admin.py:526 cps/admin.py:536
+#: cps/templates/modal_dialogs.html:28
+msgid "Allow"
+msgstr "Επιτρέπεται"
+
+#: cps/admin.py:679
+msgid "client_secrets.json Is Not Configured For Web Application"
+msgstr "client_secrets.json Δεν Έχει Διαμορφωθεί Για Διαδικτυακή Εφαρμογή"
+
+#: cps/admin.py:721
+msgid "Logfile Location is not Valid, Please Enter Correct Path"
+msgstr "Το Φύλλο Καταγραφής Τοποθεσίας δεν είναι Έγκυρο, Παρακαλούμε Συμπλήρωσε Τη Σωστή Πορεία"
+
+#: cps/admin.py:727
+msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
+msgstr "Η Πρόσβαση Φύλλου Καταγραφης Τοποθεσίας δεν είναι έγκυρη, Παρακαλούμε Συμπλήρωσε Τη Σωστή Πορεία"
+
+#: cps/admin.py:757
+msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
+msgstr "Παρακαλούμε Συμπλήρωσε ένα Πάροχο LDAP, Θύρα, DN και Αντικείμενο Αναγνώρισης Χρήστη"
+
+#: cps/admin.py:772
+#, python-format
+msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
+msgstr "Το Αντικείμενο Φίλτρου Ομάδας LDAP Πρέπει να Έχει Μια \"%s\" Αναγνώριση Μορφής"
+
+#: cps/admin.py:775
+msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
+msgstr "Το Αντικείμενο Φίλτρου Ομάδας LDAP Έχει Παρενθέσεις Που Δεν Ταιριάζουν"
+
+#: cps/admin.py:780
+#, python-format
+msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgstr "Το Αντικείμενο Φίλτρου Χρήστη LDAP πρέπει να Έχει Μια \"%s\" Αναγνώριση Μορφής"
+
+#: cps/admin.py:783
+msgid "LDAP User Object Filter Has Unmatched Parenthesis"
+msgstr "Το Αντικείμενο Φίλτρου Χρήστη LDAP Έχει Παρενθέσεις Που Δεν Ταιριάζουν"
+
+#: cps/admin.py:791
+#, python-format
+msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+#: cps/admin.py:794
+msgid "LDAP Member User Filter Has Unmatched Parenthesis"
+msgstr ""
+
+#: cps/admin.py:802
+msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:828
+msgid "Keyfile Location is not Valid, Please Enter Correct Path"
+msgstr "Το Αρχειο Κλειδί Τοποθεσίας δεν είναι Έγκυρο, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
+
+#: cps/admin.py:834
+msgid "Certfile Location is not Valid, Please Enter Correct Path"
+msgstr "Η Τοποθεσία Certfile δεν είναι Έγκυρη, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
+
+#: cps/admin.py:904 cps/admin.py:1011 cps/admin.py:1100 cps/admin.py:1149
+#: cps/shelf.py:102 cps/shelf.py:159 cps/shelf.py:200 cps/shelf.py:261
+#: cps/shelf.py:314 cps/shelf.py:348 cps/shelf.py:418
+msgid "Settings DB is not Writeable"
+msgstr "Οι ρυθμίσεις DB δεν μπορούν να Γραφτούν"
+
+#: cps/admin.py:916
+msgid "DB Location is not Valid, Please Enter Correct Path"
+msgstr "Η Τοποθεσία DB δεν είναι Έγκυρη, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
+
+#: cps/admin.py:920
+msgid "DB is not Writeable"
+msgstr "Η DB δεν μπορεί να Γραφτεί"
+
+#: cps/admin.py:959
+msgid "Basic Configuration"
+msgstr "Βασική Διαμόρφωση"
+
+#: cps/admin.py:974 cps/web.py:1279
+msgid "Please fill out all fields!"
+msgstr "Παρακαλούμε συμπλήρωσε όλα τα πεδία!"
+
+#: cps/admin.py:977 cps/admin.py:989 cps/admin.py:995 cps/admin.py:1118
+msgid "Add new user"
+msgstr "Προσθήκη νέου χρήστη"
+
+#: cps/admin.py:986 cps/web.py:1449
+msgid "E-mail is not from valid domain"
+msgstr "Το E-mail δεν είναι από έγκυρο domain"
+
+#: cps/admin.py:993 cps/admin.py:1008
+msgid "Found an existing account for this e-mail address or nickname."
+msgstr "Βρέθηκε ένας ήδη υπάρχον λογαριασμός για αυτή τη διεύθυνση e-mail ή όνομα χρήστη."
+
+#: cps/admin.py:1004
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Χρήστης/ες '%(user)s' δημιουργήθηκαν"
+
+#: cps/admin.py:1020
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Χρήστης/ες '%(nick)s' διαγράφηκαν"
+
+#: cps/admin.py:1023
+msgid "No admin user remaining, can't delete user"
+msgstr "Δεν έχει απομείνει χρήστης διαχειριστής, δεν μπορεί να διαγραφεί ο χρήστης"
+
+#: cps/admin.py:1028
+msgid "No admin user remaining, can't remove admin role"
+msgstr "Δεν έχει απομείνει χρήστης διαχειριστής, δεν μπορεί να αφαιρεθεί ο ρόλος διαχειριστή"
+
+#: cps/admin.py:1064 cps/web.py:1491
+msgid "Found an existing account for this e-mail address."
+msgstr "Βρέθηκε ένας ήδη υπάρχον λογαριασμός για αυτή τη διεύθυνση e-mail."
+
+#: cps/admin.py:1073 cps/admin.py:1087 cps/admin.py:1190 cps/web.py:1467
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Επεξεργασία χρήστη %(nick)s"
+
+#: cps/admin.py:1079 cps/web.py:1460
+msgid "This username is already taken"
+msgstr "Αυτό το όνομα χρήστη έχει ήδη παρθεί"
+
+#: cps/admin.py:1094
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Χρήστης/ες '%(nick)s' ενημερώθηκαν"
+
+#: cps/admin.py:1097
+msgid "An unknown error occured."
+msgstr "Προέκυψε ένα άγνωστο σφάλμα."
+
+#: cps/admin.py:1127 cps/templates/admin.html:78
+msgid "Edit E-mail Server Settings"
+msgstr "Επεξεργασία Ρυθμίσεων E-mail Διακομιστή"
+
+#: cps/admin.py:1156
+#, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr "Το e-mail δοκιμής στάλθηκε επιτυχώς στο %(kindlemail)s"
+
+#: cps/admin.py:1159
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Παρουσιάστηκε σφάλμα κατά την αποστολή του δοκιμαστικού e-mail:% (res)s"
+
+#: cps/admin.py:1161
+msgid "Please configure your e-mail address first..."
+msgstr "Παρακαλούμε ρύθμισε πρώτα τη διεύθυνση e-mail σου..."
+
+#: cps/admin.py:1163
+msgid "E-mail server settings updated"
+msgstr "Ενημερώθηκαν οι ρυθμίσεις E-mail διακομιστή"
+
+#: cps/admin.py:1174
+msgid "User not found"
+msgstr "Δεν βρέθηκε χρήστης"
+
+#: cps/admin.py:1201
+#, python-format
+msgid "Password for user %(user)s reset"
+msgstr "Κωδικός για επαναφορά %(user) χρήστη/ών"
+
+#: cps/admin.py:1204 cps/web.py:1309 cps/web.py:1373
+msgid "An unknown error occurred. Please try again later."
+msgstr "Προέκυψε ένα άγνωστο σφάλμα. Παρακαλούμε δοκίμασε ξανά αργότερα."
+
+#: cps/admin.py:1207 cps/web.py:1241
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Παρακαλούμε διαμόρφωσε πρώτα τις ρυθμίσεις ταχυδρομείου SMTP..."
+
+#: cps/admin.py:1218
+msgid "Logfile viewer"
+msgstr "Προβολέας αρχείου φύλλου καταγραφής"
+
+#: cps/admin.py:1280
+msgid "Requesting update package"
+msgstr "Αίτημα πακέτου ενημέρωσης"
+
+#: cps/admin.py:1281
+msgid "Downloading update package"
+msgstr "Κατεβάζει πακέτο ενημέρωσης"
+
+#: cps/admin.py:1282
+msgid "Unzipping update package"
+msgstr "Ανοίγει πακέτο ενημέρωσης"
+
+#: cps/admin.py:1283
+msgid "Replacing files"
+msgstr "Αντικατάσταση αρχείων"
+
+#: cps/admin.py:1284
+msgid "Database connections are closed"
+msgstr "Οι συνδέσεις βάσης δεδομένων είναι κλειστές"
+
+#: cps/admin.py:1285
+msgid "Stopping server"
+msgstr "Σταματάει το διακομιστή"
+
+#: cps/admin.py:1286
+msgid "Update finished, please press okay and reload page"
+msgstr "Η ενημέρωση τελειώσε, παρακαλούμε πιέστε το εντάξει και φορτώστε ξανά τη σελίδα"
+
+#: cps/admin.py:1287 cps/admin.py:1288 cps/admin.py:1289 cps/admin.py:1290
+#: cps/admin.py:1291
+msgid "Update failed:"
+msgstr "Η ενημέρωση απέτυχε:"
+
+#: cps/admin.py:1287 cps/updater.py:320 cps/updater.py:521 cps/updater.py:523
+msgid "HTTP Error"
+msgstr "HTTP Σφάλμα"
+
+#: cps/admin.py:1288 cps/updater.py:322 cps/updater.py:525
+msgid "Connection error"
+msgstr "Σφάλμα σύνδεσης"
+
+#: cps/admin.py:1289 cps/updater.py:324 cps/updater.py:527
+msgid "Timeout while establishing connection"
+msgstr "Τελείωσε ο χρόνος κατά την προσπάθεια δημιουργίας σύνδεσης"
+
+#: cps/admin.py:1290 cps/updater.py:326 cps/updater.py:529
+msgid "General error"
+msgstr "Γενικό σφάλμα"
+
+#: cps/admin.py:1291
+msgid "Update File Could Not be Saved in Temp Dir"
+msgstr "Το Αρχείο Ενημέρωσης Δεν Μπόρεσε Να Αποθηκευτεί σε"
+
+#: cps/admin.py:1316
+#, python-format
+msgid "Error: %(ldaperror)s"
+msgstr "Σφάλμα: %(ldaperror)s"
+
+#: cps/admin.py:1320
+msgid "Error: No user returned in response of LDAP server"
+msgstr "Σφάλμα: Δεν επιστράφηκε χρήστης σε απάντηση του διακομιστή LDAP"
+
+#: cps/admin.py:1386
+msgid "Failed to Create at Least One LDAP User"
+msgstr "Αποτυχία Δημιουργίας Τουλάχιστον Ενός Χρήστη LDAP"
+
+#: cps/admin.py:1389
+msgid "At Least One LDAP User Not Found in Database"
+msgstr "Τουλάχιστον Ένας Χρήστης LDAP Δεν Βρέθηκε Στη Βάση Δεδομένων"
+
+#: cps/admin.py:1391
+msgid "{} User Successfully Imported"
+msgstr ""
+
+#: cps/converter.py:31
+msgid "not configured"
+msgstr "δεν διαμορφώθηκε"
+
+#: cps/converter.py:33
+msgid "Execution permissions missing"
+msgstr "Λείπουν άδειες εκτέλεσης"
+
+#: cps/editbooks.py:297 cps/editbooks.py:299
+msgid "Book Format Successfully Deleted"
+msgstr "Η μορφή βιβλίου Διαγράφηκε Επιτυχώς"
+
+#: cps/editbooks.py:306 cps/editbooks.py:308
+msgid "Book Successfully Deleted"
+msgstr "Το Βιβλίο Διαγράφηκε Επιτυχώς"
+
+#: cps/editbooks.py:316 cps/editbooks.py:626 cps/web.py:1519 cps/web.py:1552
+#: cps/web.py:1623
+msgid "Error opening eBook. File does not exist or file is not accessible"
+msgstr "Σφάλμα ανοίγματος eBook. Το αρχείο δεν υπάρχει ή το αρχείο δεν είναι προσβάσιμο"
+
+#: cps/editbooks.py:350
+msgid "edit metadata"
+msgstr "επεξεργασία μεταδεδομένων"
+
+#: cps/editbooks.py:425
+#, python-format
+msgid "%(langname)s is not a valid language"
+msgstr "%(langname)s δεν είναι μια έγκυρη γλώσσα"
+
+#: cps/editbooks.py:536 cps/editbooks.py:802
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Η επέκταση αρχείου '%(ext)s' δεν επιτρέπεται να ανέβει σε αυτό το διακομιστή"
+
+#: cps/editbooks.py:540 cps/editbooks.py:806
+msgid "File to be uploaded must have an extension"
+msgstr "Το αρχείο προς ανέβασμα πρέπει να έχει μια επέκταση"
+
+#: cps/editbooks.py:552
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Αποτυχεία δημιουργίας πορείας %(path)s (Η άδεια απορρήφθηκε)."
+
+#: cps/editbooks.py:557
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Αποτυχία αποθήκευσης αρχείου %(file)s."
+
+#: cps/editbooks.py:575 cps/editbooks.py:937 cps/web.py:1496
+#, python-format
+msgid "Database error: %(error)s."
+msgstr "Σφάλμα βάσης δεδομένων: %(error)s."
+
+#: cps/editbooks.py:579
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "Μορφή αρχείου %(ext)s προστέθηκε σε %(book)s"
+
+#: cps/editbooks.py:706
+msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
+msgstr "Τα αναγνωριστικά δεν έχουν Διάκριση Πεζών-Κεφαλαίων Γραμμάτων, Αντικατάσταση Παλιού Αναγνωριστικού"
+
+#: cps/editbooks.py:743
+msgid "Metadata successfully updated"
+msgstr "Τα μεταδεδομένα ενημερώθηκαν επιτυχώς"
+
+#: cps/editbooks.py:752
+msgid "Error editing book, please check logfile for details"
+msgstr "Σφάλμα επεξεργασίας βιβλίου, παρακαλούμε έλεγξε το φύλλο καταγραφής για λεπτομέρειες"
+
+#: cps/editbooks.py:814
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr "Το αρχείο %(filename)s δεν μπόρεσε να αποθηκευτεί σε temp dir"
+
+#: cps/editbooks.py:824
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr "Το βιβλίο που ανέβηκε πιθανόν να υπάρχει στη βιβλιοθήκη, σκέψου να το αλλάξεις πριν ανεβάσεις νέο: "
+
+#: cps/editbooks.py:912
+#, python-format
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr "Αποτυχία Μετακίνησης Αρχείου Φόντου %(file)s: %(error)s"
+
+#: cps/editbooks.py:923
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr "Το αρχείο %(file)s ανέβηκε"
+
+#: cps/editbooks.py:949
+msgid "Source or destination format for conversion missing"
+msgstr "Η δομή πηγής ή προορισμού για μετατροπή λείπει"
+
+#: cps/editbooks.py:957
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "Το βιβλίο είναι σε σειρά επιτυχώς για μετατροπή σε %(book_format)s"
+
+#: cps/editbooks.py:961
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Υπήρξε ένα σφάλμα στη μετατροπή αυτού του βιβλίου: %(res)s"
+
+#: cps/gdrive.py:60
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr "Η ρύθμιση του Google Drive δεν ολοκληρώθηκε, προσπάθησε να απενεργοποιήσεις και να ενεργοποιήσεις ξανά το Google Drive"
+
+#: cps/gdrive.py:97
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "Η ανάκληση ονόματος δεν έχει επαληθευτεί, παρακαλούμε ακολούθησε τα βήματα για την επαλήθευση ονόματος στην κονσόλα προγραμματιστή google"
+
+#: cps/helper.py:80
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "%(format)s η δομή δεν βρέθηκε για την ταυτότητα βιβλίου: %(book)d"
+
+#: cps/helper.py:86 cps/tasks/convert.py:52
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s δεν βρέθηκε στο Google Drive: %(fn)s"
+
+#: cps/helper.py:91
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s δεν βρέθηκε: %(fn)s"
+
+#: cps/helper.py:96 cps/helper.py:229 cps/templates/detail.html:41
+#: cps/templates/detail.html:45
+msgid "Send to Kindle"
+msgstr "Αποστολή στο Kindle"
+
+#: cps/helper.py:97 cps/helper.py:113 cps/helper.py:231
+msgid "This e-mail has been sent via Calibre-Web."
+msgstr "Αυτό το e-mail έχει σταλεί μέσω Calibre-Web."
+
+#: cps/helper.py:111
+msgid "Calibre-Web test e-mail"
+msgstr "Calibre-Web δοκιμαστικό e-mail"
+
+#: cps/helper.py:112
+msgid "Test e-mail"
+msgstr "Δοκιμαστικό e-mail"
+
+#: cps/helper.py:129
+msgid "Get Started with Calibre-Web"
+msgstr "Ξεκινήστε με το Calibre-Web"
+
+#: cps/helper.py:134
+#, python-format
+msgid "Registration e-mail for user: %(name)s"
+msgstr "e-mail εγγραφής για χρήστη: %(name)s"
+
+#: cps/helper.py:154 cps/helper.py:158 cps/helper.py:162 cps/helper.py:171
+#: cps/helper.py:175 cps/helper.py:179
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr "Αποστολή %(format)s στο Kindle"
+
+#: cps/helper.py:184 cps/helper.py:190
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr "Μετατροπή %(orig)s σε %(format)s και αποστολή στο Kindle"
+
+#: cps/helper.py:231
+#, python-format
+msgid "E-mail: %(book)s"
+msgstr "E-mail: %(book)s"
+
+#: cps/helper.py:233
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Το αρχείου που χητήθηκε δεν μπορεί να διαβαστεί. Μπορεί να υπάρχουν λαθασμένες άδειες;"
+
+#: cps/helper.py:330
+#, python-format
+msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
+msgstr "Η διαγραφή φακέλου βιβλίου για το βιβλίο %(id)s απέτυχε, η πορεία έχει υπό-φακέλους: %(path)s"
+
+#: cps/helper.py:336
+#, python-format
+msgid "Deleting book %(id)s failed: %(message)s"
+msgstr "Η διαγραφή βιβλίου %(id)s απέτυχε: %(message)s"
+
+#: cps/helper.py:346
+#, python-format
+msgid "Deleting book %(id)s, book path not valid: %(path)s"
+msgstr "Διαγραφή βιβλίου %(id)s, η πορεία βιβλίου δεν είναι έγκυρη: %(path)s"
+
+#: cps/helper.py:401
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Η μετονομασία τίτλου από: '%(src)s' σε '%(dest)s' απέτυχε με σφάλμα: %(error)s"
+
+#: cps/helper.py:416
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Η μετονομασία αρχείου σε πορεία '%(src)s' σε '%(dest)s' απέτυχε με σφάλμα: %(error)s"
+
+#: cps/helper.py:441 cps/helper.py:451 cps/helper.py:459
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "Το αρχείο %(file)s δεν βρέθηκε στο Google Drive"
+
+#: cps/helper.py:480
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "Η πορεία βιβλίου %(path)s δεν βρέθηκε στο Google Drive"
+
+#: cps/helper.py:588
+msgid "Error Downloading Cover"
+msgstr "Σφάλμα Κατεβάσματος Φόντου"
+
+#: cps/helper.py:591
+msgid "Cover Format Error"
+msgstr "Σφάλμα Μορφής Φόντου"
+
+#: cps/helper.py:605
+msgid "Failed to create path for cover"
+msgstr "Αποτυχία δημιουργίας πορείας για φόντο"
+
+#: cps/helper.py:610
+msgid "Cover-file is not a valid image file, or could not be stored"
+msgstr "Το αρχείο φόντου δεν είναι ένα έγκυρο αρχείο εικόνας, ή δεν μπόρεσε να αποθηκευτεί"
+
+#: cps/helper.py:621
+msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:634
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr "Μόνο jpg/jpeg αρχεία υποστηρίζονται ως αρχεία φόντου"
+
+#: cps/helper.py:685
+msgid "Unrar binary file not found"
+msgstr "Δεν βρέθηκε δυαδικό αρχείο Unrar"
+
+#: cps/helper.py:699
+msgid "Error excecuting UnRar"
+msgstr "Σφάλμα εκτέλεσης UnRar"
+
+#: cps/helper.py:748
+msgid "Waiting"
+msgstr "Αναμονή"
+
+#: cps/helper.py:750
+msgid "Failed"
+msgstr "Απέτυχε"
+
+#: cps/helper.py:752
+msgid "Started"
+msgstr "Ξεκίνησε"
+
+#: cps/helper.py:754
+msgid "Finished"
+msgstr "Τελείωσε"
+
+#: cps/helper.py:756
+msgid "Unknown Status"
+msgstr "ʼΑγνωστη κατάσταση"
+
+#: cps/kobo_auth.py:130
+msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
+msgstr "Παρακαλούμε λάβε πρόσβαση στο calibre-web από ένα μη τοπικό εξηπηρετητή για να λάβεις μια έγκυρη api_endpoint για συσκευή kobo"
+
+#: cps/kobo_auth.py:133 cps/kobo_auth.py:161
+msgid "Kobo Setup"
+msgstr "Καθορισμός Kobo"
+
+#: cps/oauth_bb.py:73
+#, python-format
+msgid "Register with %(provider)s"
+msgstr "Εγγραφή με %(provider)s"
+
+#: cps/oauth_bb.py:146
+msgid "Failed to log in with GitHub."
+msgstr "Αποτυχία σύνδεσης με GitHub."
+
+#: cps/oauth_bb.py:151
+msgid "Failed to fetch user info from GitHub."
+msgstr "Αποτυχία συγκέντρωσης πληροφοριών χρήστη από το GitHub."
+
+#: cps/oauth_bb.py:162
+msgid "Failed to log in with Google."
+msgstr "Αποτυχία σύνδεσης με το Google."
+
+#: cps/oauth_bb.py:167
+msgid "Failed to fetch user info from Google."
+msgstr "Αποτυχία συγκέντρωσης πληροφοριών χρήστη από το Google."
+
+#: cps/oauth_bb.py:213 cps/remotelogin.py:133 cps/web.py:1345
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "τώρα έχεις συνδεθεί ως: '%(nickname)s'"
+
+#: cps/oauth_bb.py:223
+#, python-format
+msgid "Link to %(oauth)s Succeeded"
+msgstr "Η Σύνδεση στο %(oauth)s Πέτυχε"
+
+#: cps/oauth_bb.py:229
+msgid "Login failed, No User Linked With OAuth Account"
+msgstr "Η σύνδεση απέτυχε, Δεν Υπάρχει Συνδεδεμένος Χρήστης Με Λογαριασμό OAuth"
+
+#: cps/oauth_bb.py:271
+#, python-format
+msgid "Unlink to %(oauth)s Succeeded"
+msgstr "Η αφαίρεση σύνδεσης με το %(oauth)s Πέτυχε"
+
+#: cps/oauth_bb.py:275
+#, python-format
+msgid "Unlink to %(oauth)s Failed"
+msgstr "Η αφαίρεση σύνδεσης με το %(oauth)s Απέτυχε"
+
+#: cps/oauth_bb.py:278
+#, python-format
+msgid "Not Linked to %(oauth)s"
+msgstr "Δεν Είναι Συνδεδεμένο με το %(oauth)s"
+
+#: cps/oauth_bb.py:306
+msgid "GitHub Oauth error, please retry later."
+msgstr "GitHub Oauth σφάλμα, παρακαλούμε δοκίμασε ξανά αργότερα."
+
+#: cps/oauth_bb.py:325
+msgid "Google Oauth error, please retry later."
+msgstr "Google Oauth σφάλμα, παρακαλούμε δοκίμασε ξανά αργότερα."
+
+#: cps/remotelogin.py:65 cps/web.py:1392
+msgid "login"
+msgstr "σύνδεση"
+
+#: cps/remotelogin.py:77 cps/remotelogin.py:111
+msgid "Token not found"
+msgstr "Η μάρκα δεν βρέθηκε"
+
+#: cps/remotelogin.py:86 cps/remotelogin.py:119
+msgid "Token has expired"
+msgstr "Η μάρκα έχει λήξει"
+
+#: cps/remotelogin.py:95
+msgid "Success! Please return to your device"
+msgstr "Επιτυχία! Παρακαλούμε επέστρεψε στη συσκευή σου"
+
+#: cps/render_template.py:39 cps/web.py:424
+msgid "Books"
+msgstr "Βιβλία"
+
+#: cps/render_template.py:41
+msgid "Show recent books"
+msgstr "Προβολή πρόσφατων βιβλίων"
+
+#: cps/render_template.py:42 cps/templates/index.xml:17
+msgid "Hot Books"
+msgstr "Βιβλία στη Μόδα"
+
+#: cps/render_template.py:44
+msgid "Show Hot Books"
+msgstr "Προβολή Βιβλίων στη Μόδα"
+
+#: cps/render_template.py:45
+msgid "Downloaded Books"
+msgstr "Κατεβασμένα Βιβλία"
+
+#: cps/render_template.py:47
+msgid "Show Downloaded Books"
+msgstr "Προβολή Κατεβασμένων Βιβλίων"
+
+#: cps/render_template.py:50 cps/templates/index.xml:24 cps/web.py:377
+msgid "Top Rated Books"
+msgstr "Βιβλία με Κορυφαία Αξιολόγηση"
+
+#: cps/render_template.py:52
+msgid "Show Top Rated Books"
+msgstr "Προβολή Βιβλίων με Κορυφαία Αξιολόγηση"
+
+#: cps/render_template.py:53 cps/templates/index.xml:46
+#: cps/templates/index.xml:50 cps/web.py:637
+msgid "Read Books"
+msgstr "Βιβλία που Διαβάστηκαν"
+
+#: cps/render_template.py:55
+msgid "Show read and unread"
+msgstr "Προβολή διαβασμένων και αδιάβαστων"
+
+#: cps/render_template.py:57 cps/templates/index.xml:53
+#: cps/templates/index.xml:57 cps/web.py:640
+msgid "Unread Books"
+msgstr "Βιβλία που δεν Διαβάστηκαν"
+
+#: cps/render_template.py:59
+msgid "Show unread"
+msgstr "Προβολή αδιάβαστων"
+
+#: cps/render_template.py:60
+msgid "Discover"
+msgstr "Ανακάλυψε"
+
+#: cps/render_template.py:62
+msgid "Show random books"
+msgstr "Προβολή τυχαίων βιβλίων"
+
+#: cps/render_template.py:63 cps/templates/book_table.html:50
+#: cps/templates/index.xml:75 cps/web.py:942
+msgid "Categories"
+msgstr "Κατηγορίες"
+
+#: cps/render_template.py:65
+msgid "Show category selection"
+msgstr "Προβολή επιλογών κατηγορίας"
+
+#: cps/render_template.py:66 cps/templates/book_edit.html:84
+#: cps/templates/book_table.html:51 cps/templates/index.xml:82
+#: cps/templates/search_form.html:62 cps/web.py:846 cps/web.py:856
+msgid "Series"
+msgstr "Σειρές"
+
+#: cps/render_template.py:68
+msgid "Show series selection"
+msgstr "Προβολή επιλογών σειράς"
+
+#: cps/render_template.py:69 cps/templates/book_table.html:49
+#: cps/templates/index.xml:61
+msgid "Authors"
+msgstr "Συγγραφείς"
+
+#: cps/render_template.py:71
+msgid "Show author selection"
+msgstr "Προβολή επιλογών συγγραφέα"
+
+#: cps/render_template.py:73 cps/templates/book_table.html:55
+#: cps/templates/index.xml:68 cps/web.py:825
+msgid "Publishers"
+msgstr "Εκδότες"
+
+#: cps/render_template.py:75
+msgid "Show publisher selection"
+msgstr "Προβολή επιλογών εκδότη"
+
+#: cps/render_template.py:76 cps/templates/book_table.html:53
+#: cps/templates/index.xml:89 cps/templates/search_form.html:81 cps/web.py:921
+msgid "Languages"
+msgstr "Γλώσσες"
+
+#: cps/render_template.py:79
+msgid "Show language selection"
+msgstr "Προβολή επιλογών γλώσσας"
+
+#: cps/render_template.py:80 cps/templates/index.xml:96
+msgid "Ratings"
+msgstr "Αξιολογήσεις"
+
+#: cps/render_template.py:82
+msgid "Show ratings selection"
+msgstr "Προβολή επιλογών αξιολόγησης"
+
+#: cps/render_template.py:83 cps/templates/index.xml:104
+msgid "File formats"
+msgstr "Μορφές αρχείου"
+
+#: cps/render_template.py:85
+msgid "Show file formats selection"
+msgstr "Προβολή επιλογών μορφής αρχείου"
+
+#: cps/render_template.py:87 cps/web.py:664
+msgid "Archived Books"
+msgstr "Αρχειοθετημένα Βιβλία"
+
+#: cps/render_template.py:89
+msgid "Show archived books"
+msgstr "Προβολή αρχειοθετημένων βιβλίων"
+
+#: cps/render_template.py:91 cps/web.py:735
+msgid "Books List"
+msgstr "Λίστα Βιβλίων"
+
+#: cps/render_template.py:93
+msgid "Show Books List"
+msgstr "Προβολή Λίστας Βιβλίων"
+
+#: cps/shelf.py:69 cps/shelf.py:122
+msgid "Invalid shelf specified"
+msgstr "Διευκρινίστηκε μη έγκυρο ράφι"
+
+#: cps/shelf.py:75
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgstr "Συγγνώμη δεν σου επιτρέπεται να προσθέσεις ένα βιβλίο στο ράφι: %(shelfname)s"
+
+#: cps/shelf.py:85
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "Το βιβλίο είναι ήδη μέρος αυτού του ραφιού: %(shelfname)s"
+
+#: cps/shelf.py:108
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Το βιβλίο έχει προστεθεί στο ράφι: %(sname)s"
+
+#: cps/shelf.py:126
+#, python-format
+msgid "You are not allowed to add a book to the the shelf: %(name)s"
+msgstr "Δεν σου επιτρέπεται να προσθέσεις ένα βιβλίο στο ράφι: %(name)s"
+
+#: cps/shelf.py:144
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "Τα βιβλία είναι ήδη μέρος του ραφιού: %(name)s"
+
+#: cps/shelf.py:156
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "Βιβλία είχαν προστεθεί στο ραφι: %(sname)s"
+
+#: cps/shelf.py:161
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Δεν μπόρεσε να γίνει η προσθήκη βιβλίων στο ράφι: %(sname)s"
+
+#: cps/shelf.py:206
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Το βιβλίο έχει αφαιρεθεί από το ράφι: %(sname)s"
+
+#: cps/shelf.py:214
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr "Συγγνώμη αλλά δεν σου επιτρέπεται η αφαίρεση ενός βιβλίου από αυτό το ράφι: %(sname)s"
+
+#: cps/shelf.py:224 cps/templates/layout.html:140
+msgid "Create a Shelf"
+msgstr "Δημιούργησε ένα Ράφι"
+
+#: cps/shelf.py:231
+msgid "Edit a shelf"
+msgstr "Επεξεργασία ενός ραφιού"
+
+#: cps/shelf.py:249
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Το ράφι %(title)s δημιουργήθηκε"
+
+#: cps/shelf.py:252
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Το ράφι %(title)s άλλαξε"
+
+#: cps/shelf.py:265
+msgid "There was an error"
+msgstr "Υπήρξε ένα σφάλμα"
+
+#: cps/shelf.py:281
+#, python-format
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr "Ένα δημόσιο ράφι με το όνομα '%(title)s' υπάρχει ήδη."
+
+#: cps/shelf.py:291
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr "Ένα ιδιωτικό ράφι με το όνομα '%(title)s' υπάρχει ήδη."
+
+#: cps/shelf.py:358
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Αλλαγή σειράς του Ραφιού: '%(name)s'"
+
+#: cps/shelf.py:423
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Ράφι: '%(name)s"
+
+#: cps/shelf.py:427
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Σφάλμα κατά το άνοιγμα του ραφιού. Το ράφι δεν υπάρχει ή δεν είναι προσβάσιμο"
+
+#: cps/updater.py:295 cps/updater.py:306 cps/updater.py:407 cps/updater.py:421
+msgid "Unexpected data while reading update information"
+msgstr "Απρόβλεπτα δεδομένα κατά την ανάγνωση των πληροφοριών ενημέρωσης"
+
+#: cps/updater.py:302 cps/updater.py:413
+msgid "No update available. You already have the latest version installed"
+msgstr "Δεν υπάρχει διαθέσιμη ενημέρωση. Έχεις ήδη την τελευταία έκδοση εγκατεστημένη"
+
+#: cps/updater.py:334
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "Μια νέα ενημέρωση είναι διαθέσιμη. Κάνε κλικ στο κουμπί πιο κάτω για να ενημερώσεις με την τελευταία έκδοση."
+
+#: cps/updater.py:386
+msgid "Could not fetch update information"
+msgstr "Δεν μπόρεσε να συγκεντρώσει τις πληροφορίες ενημέρωσης"
+
+#: cps/updater.py:400
+msgid "No release information available"
+msgstr "Δεν υπάρχουν διαθέσιμες πληροφορίες αποδέσμευσης"
+
+#: cps/updater.py:457 cps/updater.py:468 cps/updater.py:487
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "Μια νέα ενημέρωση είναι διαθέσιμη. Κάνε κλικ στο κουμπί πιο κάτω για ενημέρωση με την έκδοση: %(version)s"
+
+#: cps/updater.py:478
+msgid "Click on the button below to update to the latest stable version."
+msgstr "Κάνε κλικ στο κουμπί πιο κάτω για να ενημερώσεις με την τελευταία σταθερή έκδοση."
+
+#: cps/templates/index.html:5 cps/web.py:385
+msgid "Discover (Random Books)"
+msgstr "Ανακάλυψε (Τυχαία Βιβλία)"
+
+#: cps/web.py:449
+msgid "Hot Books (Most Downloaded)"
+msgstr "Βιβλία στη Μόδα (Με τα περισσότερα κατεβάσματα)"
+
+#: cps/web.py:484
+#, python-format
+msgid "Downloaded books by %(user)s"
+msgstr "Κατεβασμένα βιβλία από %(user)s"
+
+#: cps/web.py:498
+msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgstr "Oυπς! Ο επιλεγμένος τίτλος βιβλίου δεν είναι διαθέσιμος. Το αρχείο δεν υπάρχει ή δεν είναι προσβάσιμο"
+
+#: cps/web.py:512
+#, python-format
+msgid "Author: %(name)s"
+msgstr "Συγγραφέας: %(name)s"
+
+#: cps/web.py:526
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Εκδότης: %(name)s"
+
+#: cps/web.py:539
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Σειρές: %(serie)s"
+
+#: cps/web.py:552
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr "Αξιολόγηση: %(rating)s stars"
+
+#: cps/web.py:565
+#, python-format
+msgid "File format: %(format)s"
+msgstr "Μορφή αρχείου: %(format)s"
+
+#: cps/web.py:579
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Κατηγορία: %(name)s"
+
+#: cps/web.py:598
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Γλώσσα: %(name)s"
+
+#: cps/web.py:628
+#, python-format
+msgid "Custom Column No.%(column)d is not existing in calibre database"
+msgstr "Η ειδικά προσαρμοσμένη στήλη No.%(column)d δεν υπάρχει στο επίπεδο βάσης δεδομένων"
+
+#: cps/templates/layout.html:56 cps/web.py:695 cps/web.py:1169
+msgid "Advanced Search"
+msgstr "Προχωρημένη Αναζήτηση"
+
+#: cps/templates/book_edit.html:214 cps/templates/feed.xml:33
+#: cps/templates/layout.html:45 cps/templates/layout.html:48
+#: cps/templates/search_form.html:175 cps/web.py:707 cps/web.py:979
+msgid "Search"
+msgstr "Αναζήτηση"
+
+#: cps/web.py:874
+msgid "Ratings list"
+msgstr "Λίστα αξιολογήσεων"
+
+#: cps/web.py:893
+msgid "File formats list"
+msgstr "Λίστα μορφών αρχείου"
+
+#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:956
+msgid "Tasks"
+msgstr "Εργασίες"
+
+#: cps/web.py:1042
+msgid "Published after "
+msgstr "Εκδόθηκε μετά"
+
+#: cps/web.py:1049
+msgid "Published before "
+msgstr "Εκδόθηκε πριν"
+
+#: cps/web.py:1068
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Αξιολόγηση <= %(rating)s"
+
+#: cps/web.py:1070
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Αξιολόγηση >= %(rating)s"
+
+#: cps/web.py:1072
+#, python-format
+msgid "Read Status = %(status)s"
+msgstr ""
+
+#: cps/web.py:1246
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "Το βιβλίο έχει επιτυχώς μπει σε σειρά για αποστολή στο %(kindlemail)s"
+
+#: cps/web.py:1250
+#, python-format
+msgid "Oops! There was an error sending this book: %(res)s"
+msgstr "Oυπς! Υπήρξε ένα σφάλμα κατά την αποστολή αυτού του βιβλίου: %(res)s"
+
+#: cps/web.py:1252
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgstr "Παρακαλούμε ενημέρωσε το προφίλ σου με μια έγκυρη Διεύθυνση E-mail Αποστολής στο Kindle."
+
+#: cps/web.py:1269
+msgid "E-Mail server is not configured, please contact your administrator!"
+msgstr "Ο διακομιστής E-Mail δεν έχει διαμορφωθεί, παρακαλούμε επικοινώνησε με το διαχειριστή σου!"
+
+#: cps/web.py:1270 cps/web.py:1280 cps/web.py:1287 cps/web.py:1310
+#: cps/web.py:1314 cps/web.py:1319 cps/web.py:1323
+msgid "register"
+msgstr "εγγραφή"
+
+#: cps/web.py:1285
+msgid "Invalid e-mail address format"
+msgstr ""
+
+#: cps/web.py:1312
+msgid "Your e-mail is not allowed to register"
+msgstr "Η διεύθυνση e-mail σου δεν επιτρέπεται να εγγραφεί"
+
+#: cps/web.py:1315
+msgid "Confirmation e-mail was send to your e-mail account."
+msgstr "Το e-mail επιβεβαίωσης έχει σταλεί στον e-mail λογαριασμό σου."
+
+#: cps/web.py:1318
+msgid "This username or e-mail address is already in use."
+msgstr "Αυτό το όνομα χρήστη ή η διεύθυνση e-mail είναι ήδη σε χρήση."
+
+#: cps/web.py:1335
+msgid "Cannot activate LDAP authentication"
+msgstr "Δεν μπόρεσε να ενεργοποιηθεί η επαλήθευση LDAP"
+
+#: cps/web.py:1352
+#, python-format
+msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgstr "Εναλλακτική Σύνδεση ως: '%(nickname)s', Ο Διακομιστής LDAP δεν είναι προσβάσιμος, ή ο χρήστης δεν είναι γνωστός"
+
+#: cps/web.py:1358
+#, python-format
+msgid "Could not login: %(message)s"
+msgstr "Δεν μπόρεσε να συνδεθεί: %(message)s"
+
+#: cps/web.py:1362 cps/web.py:1386
+msgid "Wrong Username or Password"
+msgstr "Λανθασμένο Όνομα Χρήστη ή Κωδικός"
+
+#: cps/web.py:1369
+msgid "New Password was send to your email address"
+msgstr "Ο Νέος Κωδικός έχει σταλεί στη διεύθυνση email σου"
+
+#: cps/web.py:1375
+msgid "Please enter valid username to reset password"
+msgstr "Παρακαλούμε συμπλήρωσε ένα έγκυρο όνομα χρήστη για επαναφορά του κωδικού"
+
+#: cps/web.py:1381
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr "Έχεις συνδεθεί ως: '%(nickname)s'"
+
+#: cps/web.py:1451 cps/web.py:1504
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)s's προφίλ"
+
+#: cps/web.py:1487
+msgid "Profile updated"
+msgstr "Το προφίλ ενημερώθηκε"
+
+#: cps/web.py:1531 cps/web.py:1534 cps/web.py:1537 cps/web.py:1544
+#: cps/web.py:1549
+msgid "Read a Book"
+msgstr "Διάβασε ένα Βιβλίο"
+
+#: cps/tasks/convert.py:114
+#, python-format
+msgid "Calibre ebook-convert %(tool)s not found"
+msgstr "Το εργαλείο μετατροπής Calibre ebook %(tool)s δεν βρέθηκε"
+
+#: cps/tasks/convert.py:138
+#, python-format
+msgid "%(format)s format not found on disk"
+msgstr "%(format)s μορφή δεν βρέθηκε σε δίσκο"
+
+#: cps/tasks/convert.py:142
+msgid "Ebook converter failed with unknown error"
+msgstr "Ο μετατροπέας Ebook απέτυχε με άγνωστο σφάλμα"
+
+#: cps/tasks/convert.py:152
+#, python-format
+msgid "Kepubify-converter failed: %(error)s"
+msgstr "Ο μετατροπέας Kepubify απέτυχε: %(error)s"
+
+#: cps/tasks/convert.py:176
+#, python-format
+msgid "Converted file not found or more than one file in folder %(folder)s"
+msgstr "Το τροποποιημένο αρχείο δεν βρέθηκε ή υπάρχουν περισσότερα από ένα αρχεία στο φάκελο %(folder)s"
+
+#: cps/tasks/convert.py:199
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "Ο μετατροπέας Ebook απέτυχε: %(error)s"
+
+#: cps/tasks/convert.py:224
+#, python-format
+msgid "Calibre failed with error: %(error)s"
+msgstr "Το Calibre απέτυχε με σφάλμα: %(error)s"
+
+#: cps/templates/admin.html:9
+msgid "Users"
+msgstr "Χρήστες"
+
+#: cps/templates/admin.html:12 cps/templates/login.html:8
+#: cps/templates/login.html:9 cps/templates/register.html:8
+#: cps/templates/user_edit.html:9
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+#: cps/templates/admin.html:13 cps/templates/register.html:13
+#: cps/templates/user_edit.html:14
+msgid "E-mail Address"
+msgstr "Διεύθυνση E-mail"
+
+#: cps/templates/admin.html:14 cps/templates/user_edit.html:27
+msgid "Send to Kindle E-mail Address"
+msgstr "Διεύθυνση E-mail Αποστολής στο Kindle"
+
+#: cps/templates/admin.html:15
+msgid "Downloads"
+msgstr "Κατεβασμένα"
+
+#: cps/templates/admin.html:16 cps/templates/layout.html:77
+msgid "Admin"
+msgstr "Διαχειριστής"
+
+#: cps/templates/admin.html:17 cps/templates/login.html:12
+#: cps/templates/login.html:13 cps/templates/user_edit.html:22
+msgid "Password"
+msgstr "Κωδικός"
+
+#: cps/templates/admin.html:18 cps/templates/layout.html:66
+msgid "Upload"
+msgstr "Ανέβασμα"
+
+#: cps/templates/admin.html:19 cps/templates/detail.html:18
+#: cps/templates/detail.html:27 cps/templates/shelf.html:6
+msgid "Download"
+msgstr "Κατέβασμα"
+
+#: cps/templates/admin.html:20
+msgid "View Books"
+msgstr "Προβολή Βιβλίων"
+
+#: cps/templates/admin.html:21
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+#: cps/templates/admin.html:22 cps/templates/book_edit.html:16
+#: cps/templates/book_table.html:57 cps/templates/modal_dialogs.html:63
+#: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:66
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: cps/templates/admin.html:23
+msgid "Public Shelf"
+msgstr "Δημόσιο Ράφι"
+
+#: cps/templates/admin.html:44
+msgid "Add New User"
+msgstr "Προσθήκη Νέου Χρήστη"
+
+#: cps/templates/admin.html:46
+msgid "Import LDAP Users"
+msgstr "Εισαγωγή Χρηστών LDAP"
+
+#: cps/templates/admin.html:53
+msgid "E-mail Server Settings"
+msgstr "Ρυθμίσεις E-mail Διακομιστή"
+
+#: cps/templates/admin.html:57 cps/templates/email_edit.html:11
+msgid "SMTP Hostname"
+msgstr "Όνομα Εξυπηρετητή SMTP"
+
+#: cps/templates/admin.html:61 cps/templates/email_edit.html:15
+msgid "SMTP Port"
+msgstr "SMTP Θύρα"
+
+#: cps/templates/admin.html:65 cps/templates/email_edit.html:19
+msgid "Encryption"
+msgstr "Κρυπτογράφηση"
+
+#: cps/templates/admin.html:69 cps/templates/email_edit.html:27
+msgid "SMTP Login"
+msgstr "Σύνδεση SMTP"
+
+#: cps/templates/admin.html:73 cps/templates/email_edit.html:35
+msgid "From E-mail"
+msgstr "Από E-mail"
+
+#: cps/templates/admin.html:84
+msgid "Configuration"
+msgstr "Διαμόρφωση"
+
+#: cps/templates/admin.html:87
+msgid "Calibre Database Directory"
+msgstr "Ευρετήριο Βάσης Δεδομένων Calibre"
+
+#: cps/templates/admin.html:91 cps/templates/config_edit.html:136
+msgid "Log Level"
+msgstr "Επίπεδο Φύλλου Καταγραφής"
+
+#: cps/templates/admin.html:95
+msgid "Port"
+msgstr "Θύρα"
+
+#: cps/templates/admin.html:100
+msgid "External Port"
+msgstr "Εξωτερική Θύρα"
+
+#: cps/templates/admin.html:107 cps/templates/config_view_edit.html:27
+msgid "Books per Page"
+msgstr "Βιβλία ανά Σελίδα"
+
+#: cps/templates/admin.html:111
+msgid "Uploads"
+msgstr "Ανεβάσμένα"
+
+#: cps/templates/admin.html:115
+msgid "Anonymous Browsing"
+msgstr "Ανώνυμη Περιήγηση"
+
+#: cps/templates/admin.html:119
+msgid "Public Registration"
+msgstr "Δημόσια Εγγραφή"
+
+#: cps/templates/admin.html:123
+msgid "Magic Link Remote Login"
+msgstr "Μαγικός Σύνδεσμος Απομακρυσμένης Σύνδεσης"
+
+#: cps/templates/admin.html:127
+msgid "Reverse Proxy Login"
+msgstr "Αναστροφή Σύνδεσης Διακομιστή Μεσολάβησης"
+
+#: cps/templates/admin.html:132
+msgid "Reverse proxy header name"
+msgstr "Όνομα επικεφαλίδας αναστροφής διακομιστή μεσολάβησης"
+
+#: cps/templates/admin.html:137
+msgid "Edit Basic Configuration"
+msgstr "Επεξεργασία Βασικής Διαμόρφωσης"
+
+#: cps/templates/admin.html:138
+msgid "Edit UI Configuration"
+msgstr "Επεξεργασία Διαμόρφωσης UI"
+
+#: cps/templates/admin.html:143
+msgid "Administration"
+msgstr "Διοίκηση"
+
+#: cps/templates/admin.html:144
+msgid "Download Debug Package"
+msgstr ""
+
+#: cps/templates/admin.html:145
+msgid "View Logs"
+msgstr "Προβολή Φύλλων Καταγραφής"
+
+#: cps/templates/admin.html:148
+msgid "Reconnect Calibre Database"
+msgstr "Επανασύνδεση Βάσης Δεδομένων Calibre"
+
+#: cps/templates/admin.html:149
+msgid "Restart"
+msgstr "Επανεκκίνηση"
+
+#: cps/templates/admin.html:150
+msgid "Shutdown"
+msgstr "Κλείσιμο"
+
+#: cps/templates/admin.html:155
+msgid "Update"
+msgstr "Ενημέρωση"
+
+#: cps/templates/admin.html:159
+msgid "Version"
+msgstr "Έκδοση"
+
+#: cps/templates/admin.html:160
+msgid "Details"
+msgstr "Λεπτομέρειες"
+
+#: cps/templates/admin.html:166
+msgid "Current version"
+msgstr "Τρέχουσα έκδοση"
+
+#: cps/templates/admin.html:172
+msgid "Check for Update"
+msgstr "Έλεγχος για Ενημέρωση"
+
+#: cps/templates/admin.html:173
+msgid "Perform Update"
+msgstr "Πραγματοποίηση Ενημέρωσης"
+
+#: cps/templates/admin.html:185
+msgid "Are you sure you want to restart?"
+msgstr "Είσαι σίγουρος/η πως θέλεις να κάνεις επανεκκίνηση"
+
+#: cps/templates/admin.html:190 cps/templates/admin.html:204
+#: cps/templates/admin.html:224 cps/templates/shelf.html:95
+msgid "OK"
+msgstr "OK"
+
+#: cps/templates/admin.html:191 cps/templates/admin.html:205
+#: cps/templates/book_edit.html:192 cps/templates/book_table.html:84
+#: cps/templates/config_edit.html:427 cps/templates/config_view_edit.html:151
+#: cps/templates/email_edit.html:47 cps/templates/modal_dialogs.html:64
+#: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
+#: cps/templates/shelf.html:96 cps/templates/shelf_edit.html:19
+#: cps/templates/user_edit.html:132
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#: cps/templates/admin.html:203
+msgid "Are you sure you want to shutdown?"
+msgstr "Είσαι σίγουρος/η πως θέλεις να κάνεις κλείσιμο;"
+
+#: cps/templates/admin.html:215
+msgid "Updating, please do not reload this page"
+msgstr "Γίνεται ενημέρωση, παρακαλούμε μη φορτώσεις ξανά αυτή τη σελίδα"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr "μέσω"
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "Στη Βιβλιοθήκη"
+
+#: cps/templates/author.html:26 cps/templates/index.html:68
+#: cps/templates/search.html:29 cps/templates/shelf.html:16
+msgid "Sort according to book date, newest first"
+msgstr ""
+
+#: cps/templates/author.html:27 cps/templates/index.html:69
+#: cps/templates/search.html:30 cps/templates/shelf.html:17
+msgid "Sort according to book date, oldest first"
+msgstr ""
+
+#: cps/templates/author.html:28 cps/templates/index.html:70
+#: cps/templates/search.html:31 cps/templates/shelf.html:18
+msgid "Sort title in alphabetical order"
+msgstr ""
+
+#: cps/templates/author.html:29 cps/templates/index.html:71
+#: cps/templates/search.html:32 cps/templates/shelf.html:19
+msgid "Sort title in reverse alphabetical order"
+msgstr ""
+
+#: cps/templates/author.html:30 cps/templates/index.html:74
+#: cps/templates/search.html:35 cps/templates/shelf.html:22
+msgid "Sort according to publishing date, newest first"
+msgstr ""
+
+#: cps/templates/author.html:31 cps/templates/index.html:75
+#: cps/templates/search.html:36 cps/templates/shelf.html:23
+msgid "Sort according to publishing date, oldest first"
+msgstr ""
+
+#: cps/templates/author.html:57 cps/templates/author.html:117
+#: cps/templates/discover.html:30 cps/templates/index.html:29
+#: cps/templates/index.html:106 cps/templates/search.html:65
+#: cps/templates/shelf.html:51
+msgid "reduce"
+msgstr "μείωση"
+
+#: cps/templates/author.html:101
+msgid "More by"
+msgstr "Περισσότερα από"
+
+#: cps/templates/book_edit.html:10
+msgid "Delete Book"
+msgstr "Διαγραφή Βιβλίου"
+
+#: cps/templates/book_edit.html:13
+msgid "Delete formats:"
+msgstr "Διαγραφή μορφών:"
+
+#: cps/templates/book_edit.html:24
+msgid "Convert book format:"
+msgstr "Μετατροπή μορφής βιβλίου:"
+
+#: cps/templates/book_edit.html:28
+msgid "Convert from:"
+msgstr "Μετατροπή από:"
+
+#: cps/templates/book_edit.html:30 cps/templates/book_edit.html:37
+msgid "select an option"
+msgstr "διάλεξε μια επιλογή"
+
+#: cps/templates/book_edit.html:35
+msgid "Convert to:"
+msgstr "Μετατροπή σε:"
+
+#: cps/templates/book_edit.html:44
+msgid "Convert book"
+msgstr "Μετατροπή βιβλίου"
+
+#: cps/templates/book_edit.html:53 cps/templates/search_form.html:7
+msgid "Book Title"
+msgstr "Τίτλος Βιβλίου"
+
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:11
+msgid "Author"
+msgstr "Συγγραφέας"
+
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:263
+#: cps/templates/book_edit.html:278 cps/templates/search_form.html:127
+msgid "Description"
+msgstr "Περιγραφή"
+
+#: cps/templates/book_edit.html:66
+msgid "Identifiers"
+msgstr "Αναγνωριστικά"
+
+#: cps/templates/book_edit.html:70 cps/templates/book_edit.html:287
+msgid "Identifier Type"
+msgstr "Είδος Αναγνωριστικού"
+
+#: cps/templates/book_edit.html:71 cps/templates/book_edit.html:288
+msgid "Identifier Value"
+msgstr "Τιμή Αναγνωριστικού"
+
+#: cps/templates/book_edit.html:72 cps/templates/book_edit.html:289
+msgid "Remove"
+msgstr "Αφαίρεση"
+
+#: cps/templates/book_edit.html:76
+msgid "Add Identifier"
+msgstr "Προσθήκη Αναγνωριστικού"
+
+#: cps/templates/book_edit.html:80 cps/templates/search_form.html:44
+msgid "Tags"
+msgstr "Ετικέτες"
+
+#: cps/templates/book_edit.html:88
+msgid "Series ID"
+msgstr "Ταυτότητα Σειράς"
+
+#: cps/templates/book_edit.html:92
+msgid "Rating"
+msgstr "Αξιολόγηση"
+
+#: cps/templates/book_edit.html:98
+msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgstr "Συγκέντρωση Εξώφυλλου από URL (JPEG - Η εικόνα θα κατέβει και θα αποθηκευτεί σε βάση δεδομένων)"
+
+#: cps/templates/book_edit.html:102
+msgid "Upload Cover from Local Disk"
+msgstr "Ανέβασμα Εξώφυλλου από Τοπικό Δίσκο"
+
+#: cps/templates/book_edit.html:109
+msgid "Published Date"
+msgstr "Ημερομηνία Έκδοσης"
+
+#: cps/templates/book_edit.html:116 cps/templates/book_edit.html:260
+#: cps/templates/book_edit.html:277 cps/templates/detail.html:156
+#: cps/templates/search_form.html:15
+msgid "Publisher"
+msgstr "Εκδότης"
+
+#: cps/templates/book_edit.html:120 cps/templates/detail.html:123
+#: cps/templates/user_edit.html:32
+msgid "Language"
+msgstr "Γλώσσα"
+
+#: cps/templates/book_edit.html:130 cps/templates/search_form.html:38
+#: cps/templates/search_form.html:138
+msgid "Yes"
+msgstr "Ναι"
+
+#: cps/templates/book_edit.html:131 cps/templates/search_form.html:39
+#: cps/templates/search_form.html:139
+msgid "No"
+msgstr "Όχι"
+
+#: cps/templates/book_edit.html:178
+msgid "Upload Format"
+msgstr "Μορφή Ανεβάσματος"
+
+#: cps/templates/book_edit.html:187
+msgid "View Book on Save"
+msgstr "Προβολή Βιβλίου σε Αποθήκευση"
+
+#: cps/templates/book_edit.html:190 cps/templates/book_edit.html:208
+msgid "Fetch Metadata"
+msgstr "Συγκέντρωση Μεταδεδομένων"
+
+#: cps/templates/book_edit.html:191 cps/templates/config_edit.html:424
+#: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:45
+#: cps/templates/shelf_edit.html:17 cps/templates/shelf_order.html:40
+#: cps/templates/user_edit.html:130
+msgid "Save"
+msgstr "Αποθήκευση"
+
+#: cps/templates/book_edit.html:211
+msgid "Keyword"
+msgstr "Λέξη κλειδί"
+
+#: cps/templates/book_edit.html:212
+msgid " Search keyword "
+msgstr "Αναζήτηση λέξης κλειδιού"
+
+#: cps/templates/book_edit.html:218
+msgid "Click the cover to load metadata to the form"
+msgstr "Κάνε κλικ στο εξώφυλλο για φόρτωση μεταδεδομένων στη φόρμα"
+
+#: cps/templates/book_edit.html:233 cps/templates/book_edit.html:273
+msgid "Loading..."
+msgstr "Φόρτωση..."
+
+#: cps/templates/book_edit.html:238 cps/templates/layout.html:186
+#: cps/templates/layout.html:208 cps/templates/modal_dialogs.html:34
+#: cps/templates/user_edit.html:150
+msgid "Close"
+msgstr "Κλείσιμο"
+
+#: cps/templates/book_edit.html:265 cps/templates/book_edit.html:279
+msgid "Source"
+msgstr "Πηγή"
+
+#: cps/templates/book_edit.html:274
+msgid "Search error!"
+msgstr "Σφάλμα αναζήτησης!"
+
+#: cps/templates/book_edit.html:275
+msgid "No Result(s) found! Please try another keyword."
+msgstr "Δεν βρέθηκε(αν) αποτέλεσμα(τα)! Παρακαλούμε δοκίμασε μια άλλη λέξη κλειδί."
+
+#: cps/templates/book_table.html:10 cps/templates/book_table.html:52
+msgid "This Field is Required"
+msgstr "Αυτό το Πεδίο Απαιτείται"
+
+#: cps/templates/book_table.html:23
+msgid "Merge selected books"
+msgstr "Συγχώνευση επιλεγμένων βιβλίων"
+
+#: cps/templates/book_table.html:24
+msgid "Remove Selections"
+msgstr "Αφαίρεση Επιλογών"
+
+#: cps/templates/book_table.html:30
+msgid "Update Title Sort automatically"
+msgstr "Ενημέρωση Ταξινόμησης Τίτλων αυτόματα"
+
+#: cps/templates/book_table.html:34
+msgid "Update Author Sort automatically"
+msgstr "Ενημέρωση Ταξινίμησης Συγγραφέα αυτόματα"
+
+#: cps/templates/book_table.html:46
+msgid "Enter Title"
+msgstr "Εισαγωγή Τίτλου"
+
+#: cps/templates/book_table.html:46 cps/templates/config_view_edit.html:23
+#: cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Τίτλος"
+
+#: cps/templates/book_table.html:47
+msgid "Enter Title Sort"
+msgstr "Εισαγωγή Ταξινόμησης Τίτλου"
+
+#: cps/templates/book_table.html:47
+msgid "Title Sort"
+msgstr "Ταξινόμηση Τίτλου"
+
+#: cps/templates/book_table.html:48
+msgid "Enter Author Sort"
+msgstr "Εισαγωγή Ταξινόμησης Συγγραφέας"
+
+#: cps/templates/book_table.html:48
+msgid "Author Sort"
+msgstr "Ταξινόμηση Συγγραφέα"
+
+#: cps/templates/book_table.html:49
+msgid "Enter Authors"
+msgstr "Εισαγωγή Συγγραφέων"
+
+#: cps/templates/book_table.html:50
+msgid "Enter Categories"
+msgstr "Εισαγωγή Κατηγοριών"
+
+#: cps/templates/book_table.html:51
+msgid "Enter Series"
+msgstr "Εισαγωγή Σειρών"
+
+#: cps/templates/book_table.html:52
+msgid "Enter title"
+msgstr "Εισαγωγή τίτλου"
+
+#: cps/templates/book_table.html:52
+msgid "Series Index"
+msgstr "Ευρετήριο Σειρών"
+
+#: cps/templates/book_table.html:53
+msgid "Enter Languages"
+msgstr "Εισαγωγή Γλωσσών"
+
+#: cps/templates/book_table.html:54
+msgid "Publishing Date"
+msgstr "Ημερομηνία Έκδοσης"
+
+#: cps/templates/book_table.html:55
+msgid "Enter Publishers"
+msgstr "Εισαγωγή Εκδοτών"
+
+#: cps/templates/book_table.html:70 cps/templates/modal_dialogs.html:46
+msgid "Are you really sure?"
+msgstr "Είσαι πραγματικά σίγουρος/η;"
+
+#: cps/templates/book_table.html:74
+msgid "Books with Title will be merged from:"
+msgstr "Βιβλία με Τίτλους θα ενωθούν από:"
+
+#: cps/templates/book_table.html:78
+msgid "Into Book with Title:"
+msgstr "Μέσα σε Βιβλίο με Τίτλο:"
+
+#: cps/templates/book_table.html:83
+msgid "Merge"
+msgstr "Συγχώνευση"
+
+#: cps/templates/config_edit.html:12
+msgid "Library Configuration"
+msgstr "Διαμόρφωση Βιβλιοθήκης"
+
+#: cps/templates/config_edit.html:18
+msgid "Location of Calibre Database"
+msgstr "Τοποθεσία Βάσης Δεδομένων Calibre"
+
+#: cps/templates/config_edit.html:29
+msgid "To activate serverside filepicker start Calibre-Web with -f option"
+msgstr ""
+
+#: cps/templates/config_edit.html:35
+msgid "Use Google Drive?"
+msgstr "Χρήση Google Drive;"
+
+#: cps/templates/config_edit.html:41
+msgid "Google Drive config problem"
+msgstr "Google Drive πρόβλημα διαμόρφωσης"
+
+#: cps/templates/config_edit.html:47
+msgid "Authenticate Google Drive"
+msgstr "Πιστοποίηση αυθεντικότητας Google Drive"
+
+#: cps/templates/config_edit.html:51
+msgid "Please hit save to continue with setup"
+msgstr "Παρακαλούμε επέλεξε αποθήκευση για να συνεχίσεις με τον καθορισμό"
+
+#: cps/templates/config_edit.html:54
+msgid "Please finish Google Drive setup after login"
+msgstr "Παρακαλούμε ολοκλήρωσε τον καθορισμό του Google Drive μετά τη σύνδεση"
+
+#: cps/templates/config_edit.html:59
+msgid "Google Drive Calibre folder"
+msgstr "Αρχείο Google Drive Calibre"
+
+#: cps/templates/config_edit.html:67
+msgid "Metadata Watch Channel ID"
+msgstr "Ταυτότητα Καναλιού Προβολής Μεταδεδομένων"
+
+#: cps/templates/config_edit.html:70
+msgid "Revoke"
+msgstr "Αναίρεση"
+
+#: cps/templates/config_edit.html:90
+msgid "Server Configuration"
+msgstr "Διαμόρφωση Διακομιστή"
+
+#: cps/templates/config_edit.html:97
+msgid "Server Port"
+msgstr "Θύρα Διακομιστή"
+
+#: cps/templates/config_edit.html:100
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "Τοποθεσία πιστοποιητικού SSL (αφήστε το κενό για Διακομιστές που δεν είναι SSL)"
+
+#: cps/templates/config_edit.html:107
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "Τοποθεσία αρχείου κλειδιού SSL (αφήστε το κενό για Διακομιστές που δεν είναι SSL)"
+
+#: cps/templates/config_edit.html:115
+msgid "Update Channel"
+msgstr "Ενημέρωση Καναλιού"
+
+#: cps/templates/config_edit.html:117
+msgid "Stable"
+msgstr "Σταθερό"
+
+#: cps/templates/config_edit.html:118
+msgid "Nightly"
+msgstr "Νυχτερινό"
+
+#: cps/templates/config_edit.html:129
+msgid "Logfile Configuration"
+msgstr "Διαμόρφωση αρχείου καταγραφής"
+
+#: cps/templates/config_edit.html:145
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Τοποθεσία και όνομα αρχείου φύλλου καταγραφής (calibre-web.log για καμία καταχώρηση)"
+
+#: cps/templates/config_edit.html:150
+msgid "Enable Access Log"
+msgstr "Ενεργοποίηση Πρόσβασης Φύλλου Καταγραφής"
+
+#: cps/templates/config_edit.html:153
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr "Τοποθεσία και όνομα πρόσβασης αρχείου φύλλου καταγραφής (access.log για καμία καταχώρηση)"
+
+#: cps/templates/config_edit.html:164
+msgid "Feature Configuration"
+msgstr "Διαμόρφωση Λειτουργίας"
+
+#: cps/templates/config_edit.html:172
+msgid "Enable Uploads"
+msgstr "Ενεργοποίηση Ανεβάσματος"
+
+#: cps/templates/config_edit.html:176
+msgid "Allowed Upload Fileformats"
+msgstr "Επιτρεπόμενες Μορφές Αρχείων για Ανέβασμα"
+
+#: cps/templates/config_edit.html:182
+msgid "Enable Anonymous Browsing"
+msgstr "Ενεργοποίηση Ανώνυμης Περιήγησης"
+
+#: cps/templates/config_edit.html:186
+msgid "Enable Public Registration"
+msgstr "Ενεργοποίηση Δημόσιας Εγγραφής"
+
+#: cps/templates/config_edit.html:191
+msgid "Use E-Mail as Username"
+msgstr "Χρήση E-Mail ως Όνομα Χρήστη"
+
+#: cps/templates/config_edit.html:196
+msgid "Enable Magic Link Remote Login"
+msgstr "Ενεργοποίηση Μαγικού Συνδέσμου Απομακρυσμένης Σύνδεσης"
+
+#: cps/templates/config_edit.html:201
+msgid "Enable Kobo sync"
+msgstr "Ενεργοποίηση συγχρονισμού Kobo"
+
+#: cps/templates/config_edit.html:206
+msgid "Proxy unknown requests to Kobo Store"
+msgstr "Proxy άγνωστα αιτήματα στο Κατάστημα Kobo"
+
+#: cps/templates/config_edit.html:209
+msgid "Server External Port (for port forwarded API calls)"
+msgstr "Εξωτερική Θύρα Διακομιστή (για κλήσεις API προωθημένες στη θύρα)"
+
+#: cps/templates/config_edit.html:217
+msgid "Use Goodreads"
+msgstr "Χρήση Goodreads"
+
+#: cps/templates/config_edit.html:218
+msgid "Create an API Key"
+msgstr "Δημιουργία ενός Κλειδιού API"
+
+#: cps/templates/config_edit.html:222
+msgid "Goodreads API Key"
+msgstr "Goodreads Κλειδί API"
+
+#: cps/templates/config_edit.html:226
+msgid "Goodreads API Secret"
+msgstr "Goodreads Μυστικό API"
+
+#: cps/templates/config_edit.html:233
+msgid "Allow Reverse Proxy Authentication"
+msgstr "Να Επιτραπεί η Αναστροφή Επαλήθευσης Proxy"
+
+#: cps/templates/config_edit.html:237
+msgid "Reverse Proxy Header Name"
+msgstr "Αναστροφή Proxy Όνομα Επικεφαλίδας"
+
+#: cps/templates/config_edit.html:244
+msgid "Login type"
+msgstr "Είδος σύνδεσης"
+
+#: cps/templates/config_edit.html:246
+msgid "Use Standard Authentication"
+msgstr "Χρήση Στεθερής Επαλήθευσης"
+
+#: cps/templates/config_edit.html:248
+msgid "Use LDAP Authentication"
+msgstr "Χρήση Επαλήθευσης LDAP"
+
+#: cps/templates/config_edit.html:251
+msgid "Use OAuth"
+msgstr "Χρήση OAuth"
+
+#: cps/templates/config_edit.html:258
+msgid "LDAP Server Host Name or IP Address"
+msgstr "Όνομα Διακομιστή Φιλοξενίας LDAP ή Διεύθυνση IP"
+
+#: cps/templates/config_edit.html:262
+msgid "LDAP Server Port"
+msgstr "Θύρα Διακομιστή LDAP"
+
+#: cps/templates/config_edit.html:266
+msgid "LDAP Encryption"
+msgstr "LDAP Αποκρυπτογράφηση"
+
+#: cps/templates/config_edit.html:268 cps/templates/config_view_edit.html:61
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Κανένα"
+
+#: cps/templates/config_edit.html:269
+msgid "TLS"
+msgstr "TLS"
+
+#: cps/templates/config_edit.html:270
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/config_edit.html:274
+msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/templates/config_edit.html:281
+msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/templates/config_edit.html:288
+msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/templates/config_edit.html:297
+msgid "LDAP Authentication"
+msgstr "LDAP Επαλήθευση"
+
+#: cps/templates/config_edit.html:299
+msgid "Anonymous"
+msgstr "Ανώνυμοι"
+
+#: cps/templates/config_edit.html:300
+msgid "Unauthenticated"
+msgstr "Μη επαληθεύσιμο"
+
+#: cps/templates/config_edit.html:301
+msgid "Simple"
+msgstr "Απλό"
+
+#: cps/templates/config_edit.html:306
+msgid "LDAP Administrator Username"
+msgstr "LDAP Όνομα Χρήστη Διαχειριστή"
+
+#: cps/templates/config_edit.html:312
+msgid "LDAP Administrator Password"
+msgstr "LDAP Κωδικός Διαχειριστή"
+
+#: cps/templates/config_edit.html:317
+msgid "LDAP Distinguished Name (DN)"
+msgstr "LDAP Χαρακτηριστικό Όνομα (ΧΟ)"
+
+#: cps/templates/config_edit.html:321
+msgid "LDAP User Object Filter"
+msgstr "LDAP Αντικείμενο Φίλτρου Χρήστη"
+
+#: cps/templates/config_edit.html:326
+msgid "LDAP Server is OpenLDAP?"
+msgstr "Είναι ο Διακομιστής LDAP OpenLDAP;"
+
+#: cps/templates/config_edit.html:328
+msgid "Following Settings are Needed For User Import"
+msgstr "Χρειάζονται οι Ακόλουθες Ρυθμίσεις για Εισαγωγη Χρήστη"
+
+#: cps/templates/config_edit.html:330
+msgid "LDAP Group Object Filter"
+msgstr "Αντικείμενο Φίλτρου Ομάδας LDAP"
+
+#: cps/templates/config_edit.html:334
+msgid "LDAP Group Name"
+msgstr "LDAP Όνομα Ομάδας"
+
+#: cps/templates/config_edit.html:338
+msgid "LDAP Group Members Field"
+msgstr "LDAP Πεδίο Μελών Ομάδας"
+
+#: cps/templates/config_edit.html:342
+msgid "LDAP Member User Filter Detection"
+msgstr ""
+
+#: cps/templates/config_edit.html:344
+msgid "Autodetect"
+msgstr ""
+
+#: cps/templates/config_edit.html:345
+msgid "Custom Filter"
+msgstr ""
+
+#: cps/templates/config_edit.html:350
+msgid "LDAP Member User Filter"
+msgstr ""
+
+#: cps/templates/config_edit.html:361
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr "Απόκτηση %(provider)s OAuth Διαπιστευτήρια"
+
+#: cps/templates/config_edit.html:364
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr "%(provider)s OAuth Ταυτότητα Πελάτη"
+
+#: cps/templates/config_edit.html:368
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth Μυστικό Πελάτη"
+
+#: cps/templates/config_edit.html:384
+msgid "External binaries"
+msgstr "Εξωτερικοί Δυαδικοί"
+
+#: cps/templates/config_edit.html:390
+msgid "Path to Calibre E-Book Converter"
+msgstr "Πορεία για το Μετατροπέα Calibre E-Book"
+
+#: cps/templates/config_edit.html:398
+msgid "Calibre E-Book Converter Settings"
+msgstr "Calibre E-Book Ρυθμίσεις Μετατροπέα"
+
+#: cps/templates/config_edit.html:401
+msgid "Path to Kepubify E-Book Converter"
+msgstr "Πορεία για Μετατροπέα Kepubify E-Book"
+
+#: cps/templates/config_edit.html:409
+msgid "Location of Unrar binary"
+msgstr "Τοποθεσία δυαδικού Unrar"
+
+#: cps/templates/config_edit.html:430 cps/templates/layout.html:85
+#: cps/templates/login.html:4 cps/templates/login.html:20
+msgid "Login"
+msgstr "Σύνδεση"
+
+#: cps/templates/config_view_edit.html:16
+msgid "View Configuration"
+msgstr "Προβολή Διαμόρφωσης"
+
+#: cps/templates/config_view_edit.html:31
+msgid "No. of Random Books to Display"
+msgstr "Αριθμός Τυχαίων Βιβλίων για Εμφάνιση"
+
+#: cps/templates/config_view_edit.html:35
+msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
+msgstr "Αριθμός Συγγραφέων για Εμφάνιση Πριν την Απόκρυψη (0=Απενεργοποίηση Απόκρυψης)"
+
+#: cps/templates/config_view_edit.html:39 cps/templates/readcbr.html:113
+msgid "Theme"
+msgstr "Θέμα"
+
+#: cps/templates/config_view_edit.html:41
+msgid "Standard Theme"
+msgstr "Σταθερό Θέμα"
+
+#: cps/templates/config_view_edit.html:42
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! Σκοτεινό θέμα"
+
+#: cps/templates/config_view_edit.html:46
+msgid "Regular Expression for Ignoring Columns"
+msgstr "Συνήθης Έφραση για  για να Αγνοηθούν Στήλες"
+
+#: cps/templates/config_view_edit.html:50
+msgid "Link Read/Unread Status to Calibre Column"
+msgstr "Σύνδεση Κατάστασης Διαβασμένο/Αδιάβαστο σε Στήλη Calibre"
+
+#: cps/templates/config_view_edit.html:59
+msgid "View Restrictions based on Calibre column"
+msgstr "Προβολή Περιορισμών με βάση τη στήλη Calibre"
+
+#: cps/templates/config_view_edit.html:68
+msgid "Regular Expression for Title Sorting"
+msgstr "Συνήθης Έκφραση για Ταξινόμηση Τίτλου"
+
+#: cps/templates/config_view_edit.html:80
+msgid "Default Settings for New Users"
+msgstr "Προκαθορισμένες Ρυθμίσεις για Νέους Χρήστες"
+
+#: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:94
+msgid "Admin User"
+msgstr "Χρήστης Διαχειριστής"
+
+#: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:99
+msgid "Allow Downloads"
+msgstr "Να Επιτρέπεται το Κατέβασμα"
+
+#: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:103
+msgid "Allow eBook Viewer"
+msgstr "Να Επιτρέπεται η Προβολή eBook Viewer"
+
+#: cps/templates/config_view_edit.html:100 cps/templates/user_edit.html:107
+msgid "Allow Uploads"
+msgstr "Να Επιτρέπεται το Ανέβασμα"
+
+#: cps/templates/config_view_edit.html:104 cps/templates/user_edit.html:111
+msgid "Allow Edit"
+msgstr "Να Επιτρέπεται η Επεξεργασία"
+
+#: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:115
+msgid "Allow Delete Books"
+msgstr "Να Επιτρέπεται η Διαγραφή Βιβλίων"
+
+#: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:120
+msgid "Allow Changing Password"
+msgstr "Να Επιτρέπεται η Αλλαγή Κωδικού"
+
+#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:124
+msgid "Allow Editing Public Shelves"
+msgstr "Να Επιτρέπεται η Επεξεργασία Δημόσιων Ραφιών"
+
+#: cps/templates/config_view_edit.html:126
+msgid "Default Visibilities for New Users"
+msgstr "Προκαθορισμένες Ορατότηες για Νέους Χρήστες"
+
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:82
+msgid "Show Random Books in Detail View"
+msgstr "Προβολή Τυχαίων Βιβλίων σε Προβολή Λεπτομερειών"
+
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:85
+msgid "Add Allowed/Denied Tags"
+msgstr "Προσθήκη ετικετών Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/config_view_edit.html:145
+msgid "Add Allowed/Denied custom column values"
+msgstr "Προσθήκη τιμών ειδικά κατασκευασμένων στηλών Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/detail.html:59
+msgid "Read in Browser"
+msgstr "Διάβασε στο Πρόγραμμα Περιήγησης"
+
+#: cps/templates/detail.html:72
+msgid "Listen in Browser"
+msgstr "ʼΑκουσε στο Πρόγραμμα Περιήγησης"
+
+#: cps/templates/detail.html:117
+msgid "Book"
+msgstr "Βιβλίο"
+
+#: cps/templates/detail.html:117
+msgid "of"
+msgstr "από"
+
+#: cps/templates/detail.html:165
+msgid "Published"
+msgstr "Εκδόθηκε"
+
+#: cps/templates/detail.html:208
+msgid "Mark As Unread"
+msgstr "Σήμανση ως Αδιάβαστο"
+
+#: cps/templates/detail.html:208
+msgid "Mark As Read"
+msgstr "Σήμανση ως Διαβασμένο"
+
+#: cps/templates/detail.html:209
+msgid "Read"
+msgstr "Διαβάστηκε"
+
+#: cps/templates/detail.html:217
+msgid "Restore from archive"
+msgstr "Επαναφορά από το αρχείο"
+
+#: cps/templates/detail.html:217
+msgid "Add to archive"
+msgstr "Προσθήκη στο αρχείο"
+
+#: cps/templates/detail.html:218
+msgid "Archived"
+msgstr "Αρχειοθετήθηκε"
+
+#: cps/templates/detail.html:229
+msgid "Description:"
+msgstr "Περιγραφή"
+
+#: cps/templates/detail.html:242 cps/templates/search.html:14
+msgid "Add to shelf"
+msgstr "Προσθήκη στο ράφι"
+
+#: cps/templates/detail.html:253 cps/templates/detail.html:270
+#: cps/templates/feed.xml:79 cps/templates/layout.html:137
+#: cps/templates/search.html:20
+msgid "(Public)"
+msgstr "(Δημόσιο)"
+
+#: cps/templates/detail.html:284
+msgid "Edit Metadata"
+msgstr "Επεξεργασία Μεταδεδομένων"
+
+#: cps/templates/email_edit.html:22
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:23
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:31
+msgid "SMTP Password"
+msgstr "SMTP Κωδικός"
+
+#: cps/templates/email_edit.html:38
+msgid "Attachment Size Limit"
+msgstr "Όριο Μεγέθους Επισύναψης"
+
+#: cps/templates/email_edit.html:46
+msgid "Save and Send Test E-mail"
+msgstr "Αποθήκευση και Αποστολή E-mail Δοκιμής"
+
+#: cps/templates/email_edit.html:51
+msgid "Allowed Domains (Whitelist)"
+msgstr "Επιτρεπόμενα Domains (Λευκή λίστα)"
+
+#: cps/templates/email_edit.html:54 cps/templates/email_edit.html:80
+msgid "Add Domain"
+msgstr "Προσθήκη Domain"
+
+#: cps/templates/email_edit.html:57 cps/templates/email_edit.html:83
+msgid "Add"
+msgstr "Προσθήκη"
+
+#: cps/templates/email_edit.html:62 cps/templates/email_edit.html:72
+msgid "Enter domainname"
+msgstr "Όνομα domain"
+
+#: cps/templates/email_edit.html:68
+msgid "Denied Domains (Blacklist)"
+msgstr "Domains που Απορρίφθηκαν (Μαύρη λίστα)"
+
+#: cps/templates/feed.xml:21 cps/templates/layout.html:170
+msgid "Next"
+msgstr "Επόμενο"
+
+#: cps/templates/generate_kobo_auth_url.html:5
+msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgstr "ʼΑνοιξε το .kobo/Kobo eReader.conf αρχείο σε πρόγραμμα επεξεργασίας κειμένου και πρόσθεσε (ή κάνε επεξεργασία):"
+
+#: cps/templates/grid.html:14 cps/templates/list.html:14
+msgid "All"
+msgstr "Όλα"
+
+#: cps/templates/http_error.html:38
+msgid "Create Issue"
+msgstr "Δημιουργία Θέματος"
+
+#: cps/templates/http_error.html:45
+msgid "Return to Home"
+msgstr "Επιστροφή στην Κεντρική"
+
+#: cps/templates/index.html:72 cps/templates/search.html:33
+#: cps/templates/shelf.html:20
+msgid "Sort authors in alphabetical order"
+msgstr ""
+
+#: cps/templates/index.html:73 cps/templates/search.html:34
+#: cps/templates/shelf.html:21
+msgid "Sort authors in reverse alphabetical order"
+msgstr ""
+
+#: cps/templates/index.html:77
+msgid "Sort ascending according to series index"
+msgstr ""
+
+#: cps/templates/index.html:78
+msgid "Sort descending according to series index"
+msgstr ""
+
+#: cps/templates/index.xml:6
+msgid "Start"
+msgstr "Έναρξη"
+
+#: cps/templates/index.xml:21
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Δημοφιλείς εκδόσεις από αυτό τον κατάλογο με βάση τις Λήψεις."
+
+#: cps/templates/index.xml:28
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Δημοφιλείς εκδόσεις από αυτό τον κατάλογο με βάση την Αξιολόγηση."
+
+#: cps/templates/index.xml:31
+msgid "Recently added Books"
+msgstr "Βιβλία που προστέθηκαν Πρόσφατα"
+
+#: cps/templates/index.xml:35
+msgid "The latest Books"
+msgstr "Τα τελευταία Βιβλία"
+
+#: cps/templates/index.xml:38
+msgid "Random Books"
+msgstr "Τυχαία Βιβλία"
+
+#: cps/templates/index.xml:42
+msgid "Show Random Books"
+msgstr "Προβολή Τυχαίων Βιβλίων"
+
+#: cps/templates/index.xml:65
+msgid "Books ordered by Author"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά Συγγραφέα"
+
+#: cps/templates/index.xml:72
+msgid "Books ordered by publisher"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά εκδότη"
+
+#: cps/templates/index.xml:79
+msgid "Books ordered by category"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά κατηγορία"
+
+#: cps/templates/index.xml:86
+msgid "Books ordered by series"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά σειρές"
+
+#: cps/templates/index.xml:93
+msgid "Books ordered by Languages"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά Γλώσσες"
+
+#: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά Αξιολόγηση"
+
+#: cps/templates/index.xml:108
+msgid "Books ordered by file formats"
+msgstr "Τα βιβλία ταξινομήθηκαν ανά μορφές αρχείου"
+
+#: cps/templates/index.xml:111 cps/templates/layout.html:135
+msgid "Shelves"
+msgstr "Ράφια"
+
+#: cps/templates/index.xml:115
+msgid "Books organized in shelves"
+msgstr "Βιβλία οργανωμένα σε ράφια"
+
+#: cps/templates/layout.html:29
+msgid "Home"
+msgstr "Κεντρική"
+
+#: cps/templates/layout.html:29 cps/templates/shelf_order.html:41
+msgid "Back"
+msgstr "Πίσω"
+
+#: cps/templates/layout.html:35
+msgid "Toggle Navigation"
+msgstr "Αλλαγή Θέσης Περιήγησης"
+
+#: cps/templates/layout.html:46
+msgid "Search Library"
+msgstr "Αναζήτηση Βιβλιοθήκης"
+
+#: cps/templates/layout.html:77 cps/templates/read.html:71
+#: cps/templates/readcbr.html:84 cps/templates/readcbr.html:108
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: cps/templates/layout.html:79
+msgid "Account"
+msgstr "Λογαριασμός"
+
+#: cps/templates/layout.html:81
+msgid "Logout"
+msgstr "Αποσύνδεση"
+
+#: cps/templates/layout.html:86 cps/templates/register.html:16
+msgid "Register"
+msgstr "Εγγραφή"
+
+#: cps/templates/layout.html:117 cps/templates/layout.html:207
+msgid "Uploading..."
+msgstr "Φόρτωση..."
+
+#: cps/templates/layout.html:118
+msgid "Please do not refresh the page"
+msgstr "Παρακαλούμε μην ανανεώσεις τη σελίδα"
+
+#: cps/templates/layout.html:128
+msgid "Browse"
+msgstr "Περιήγηση"
+
+#: cps/templates/layout.html:141 cps/templates/stats.html:3
+msgid "About"
+msgstr "Σχετικά"
+
+#: cps/templates/layout.html:155
+msgid "Previous"
+msgstr "Προηγούμενο"
+
+#: cps/templates/layout.html:182
+msgid "Book Details"
+msgstr "Λεπτομέρειες Βιβλίου"
+
+#: cps/templates/layout.html:206
+msgid "Upload done, processing, please wait..."
+msgstr "Το ανέβασμα έγινε, γίνεται επεξεργασία, παρακαλούμε περίμενε..."
+
+#: cps/templates/layout.html:209
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: cps/templates/login.html:17
+msgid "Remember Me"
+msgstr "Να με Θυμάσαι"
+
+#: cps/templates/login.html:22
+msgid "Forgot Password?"
+msgstr "Ξέχασες τον Κωδικό;"
+
+#: cps/templates/login.html:25
+msgid "Log in with Magic Link"
+msgstr "Σύνδεση με το Μαγικό Σύνδεσμο"
+
+#: cps/templates/logviewer.html:6
+msgid "Show Calibre-Web Log: "
+msgstr "Προβολή Φύλλου Καταγραφής Calibre-Web:"
+
+#: cps/templates/logviewer.html:8
+msgid "Calibre-Web Log: "
+msgstr "Calibre-Web Φύλλο Καταγραφής:"
+
+#: cps/templates/logviewer.html:8
+msgid "Stream output, can't be displayed"
+msgstr "Η ροή απόδοσης, δεν μπορεί να εμφανιστεί"
+
+#: cps/templates/logviewer.html:12
+msgid "Show Access Log: "
+msgstr "Προβολή Φύλλου Καταγραφής Πρόσβασης:"
+
+#: cps/templates/logviewer.html:18
+msgid "Download Calibre-Web Log"
+msgstr ""
+
+#: cps/templates/logviewer.html:21
+msgid "Download Access Log"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:6
+msgid "Select Allowed/Denied Tags"
+msgstr "Επιλογή Ετικετών Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/modal_dialogs.html:7
+msgid "Select Allowed/Denied Custom Column Values"
+msgstr "Επιλογή Τιμών Ειδικά Προσαρμοσμένης Στήλης Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/modal_dialogs.html:8
+msgid "Select Allowed/Denied Tags of User"
+msgstr "Επιλογή Ετικετών Χρήστη Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/modal_dialogs.html:9
+msgid "Select Allowed/Denied Custom Column Values of User"
+msgstr "Επιλογή Τιμών Χρήστη Ειδικά Προσαρμοσμένης Στήλης Επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/modal_dialogs.html:15
+msgid "Enter Tag"
+msgstr "Εισαγωγή Ετικέτας"
+
+#: cps/templates/modal_dialogs.html:24
+msgid "Add View Restriction"
+msgstr "Προσθήκη Περιορισμού Προβολής"
+
+#: cps/templates/modal_dialogs.html:50
+msgid "This book format will be permanently erased from database"
+msgstr "Αυτή η μορφή βιβλίου θα διαγραφεί για πάντα από τη βάση δεδομένων"
+
+#: cps/templates/modal_dialogs.html:51
+msgid "This book will be permanently erased from database"
+msgstr "Αυτό το βιβλίο θα διαγραφεί για πάντα από τη βάση δεδομένων"
+
+#: cps/templates/modal_dialogs.html:52
+msgid "and hard disk"
+msgstr "και σκληρός δίσκος"
+
+#: cps/templates/modal_dialogs.html:56
+msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr "Σημαντική Σημείωση Kobo: τα διαγραμμένα βιβλία θα παραμείνουν σε οποιαδήποτε συνδεδεμένη συσκευή Kobo."
+
+#: cps/templates/modal_dialogs.html:57
+msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgstr "Τα βιβλία πρέπει πρώτα να αρχειοθετηθούν και να συγχρονιστεί η συσκευή πριν μπορέσει να διαγραφεί με ασφάλεια το βιβλίο."
+
+#: cps/templates/modal_dialogs.html:76
+msgid "Choose File Location"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:82
+msgid "type"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:83
+msgid "name"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:84
+msgid "size"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:90
+msgid "Parent Directory"
+msgstr ""
+
+#: cps/templates/modal_dialogs.html:98
+msgid "Select"
+msgstr ""
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web eBook Catalog"
+msgstr "Calibre-Web Κατάλογος eBook"
+
+#: cps/templates/read.html:74
+msgid "Reflow text when sidebars are open."
+msgstr "Επανάληψη ροής κειμένου όταν οι μπάρες στο πλάι είναι ανοιχτές."
+
+#: cps/templates/readcbr.html:89
+msgid "Keyboard Shortcuts"
+msgstr "Συντομεύσεις Πληκτρολογίου"
+
+#: cps/templates/readcbr.html:92
+msgid "Previous Page"
+msgstr "Προηγούμενη Σελίδα"
+
+#: cps/templates/readcbr.html:93
+msgid "Next Page"
+msgstr "Επόμενη Σελίδα"
+
+#: cps/templates/readcbr.html:94
+msgid "Scale to Best"
+msgstr "Κλιμάκωση στο Καλυτερο"
+
+#: cps/templates/readcbr.html:95
+msgid "Scale to Width"
+msgstr "Κλιμάκωση σε Πλάτος"
+
+#: cps/templates/readcbr.html:96
+msgid "Scale to Height"
+msgstr "Κλιμάκωση σε Ύψος"
+
+#: cps/templates/readcbr.html:97
+msgid "Scale to Native"
+msgstr "Κλιμάκωση σε Τοπικό"
+
+#: cps/templates/readcbr.html:98
+msgid "Rotate Right"
+msgstr "Περιστροφή Δεξιά"
+
+#: cps/templates/readcbr.html:99
+msgid "Rotate Left"
+msgstr "Περιστροφή Αριστερά"
+
+#: cps/templates/readcbr.html:100
+msgid "Flip Image"
+msgstr "Γύρισμα Σελίδας"
+
+#: cps/templates/readcbr.html:116
+msgid "Light"
+msgstr "Φωτεινό"
+
+#: cps/templates/readcbr.html:117
+msgid "Dark"
+msgstr "Σκοτεινό"
+
+#: cps/templates/readcbr.html:122
+msgid "Scale"
+msgstr "Κλίμακα"
+
+#: cps/templates/readcbr.html:125
+msgid "Best"
+msgstr "Καλύτερο"
+
+#: cps/templates/readcbr.html:126
+msgid "Width"
+msgstr "Πλάτος"
+
+#: cps/templates/readcbr.html:127
+msgid "Height"
+msgstr "Ύψος"
+
+#: cps/templates/readcbr.html:128
+msgid "Native"
+msgstr "Ντόπιο"
+
+#: cps/templates/readcbr.html:133
+msgid "Rotate"
+msgstr "Περιστροφή"
+
+#: cps/templates/readcbr.html:144
+msgid "Flip"
+msgstr "Γύρισμα"
+
+#: cps/templates/readcbr.html:147
+msgid "Horizontal"
+msgstr "Οριζόντιο"
+
+#: cps/templates/readcbr.html:148
+msgid "Vertical"
+msgstr "Κάθετο"
+
+#: cps/templates/readcbr.html:153
+msgid "Direction"
+msgstr "Κατεύθυνση"
+
+#: cps/templates/readcbr.html:156
+msgid "Left to Right"
+msgstr "Αριστερά προς Δεξιά"
+
+#: cps/templates/readcbr.html:157
+msgid "Right to Left"
+msgstr "Δεξιά προς Αριστερά"
+
+#: cps/templates/readpdf.html:29
+msgid "PDF reader"
+msgstr "PDF πρόγραμμα ανάγνωσης"
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Βασικό Πρόγραμμα Ανάγνωσης txt"
+
+#: cps/templates/register.html:4
+msgid "Register New Account"
+msgstr "Εγγραφή Νέου Λογαριασμού"
+
+#: cps/templates/register.html:9
+msgid "Choose a username"
+msgstr "Επιλογή ενός ονόματος χρήστη"
+
+#: cps/templates/register.html:14
+msgid "Your email address"
+msgstr "Η διεύθυνση email σου"
+
+#: cps/templates/remote_login.html:4
+msgid "Magic Link - Authorise New Device"
+msgstr "Μαγικός Σύνδεσμος - Εξουσιοδότηση Νέας Συσκευής"
+
+#: cps/templates/remote_login.html:6
+msgid "On another device, login and visit:"
+msgstr "Σε μια άλλη συσκευή, σύνδεση και επίσκεψη:"
+
+#: cps/templates/remote_login.html:10
+msgid "Once verified, you will automatically be logged in on this device."
+msgstr "Με την επαλήθευση, θα συνδεθείτε αυτόματα σε αυτή τη συσκευή."
+
+#: cps/templates/remote_login.html:13
+msgid "This verification link will expire in 10 minutes."
+msgstr "Αυτός ο σύνδεσμος επαλήθευσης θα λήξει σε 10 λεπτά."
+
+#: cps/templates/search.html:5
+msgid "No Results Found"
+msgstr "Δεν Βρέθηκαν Αποτελέσματα"
+
+#: cps/templates/search.html:6
+msgid "Search Term:"
+msgstr "Όρος Αναζήτησης:"
+
+#: cps/templates/search.html:8
+msgid "Results for:"
+msgstr "Αποτελέσματα για:"
+
+#: cps/templates/search_form.html:20
+msgid "Published Date From"
+msgstr "Ημερομηνία Έκδοσης Από"
+
+#: cps/templates/search_form.html:27
+msgid "Published Date To"
+msgstr "Ημερομηνία Έκδοσης Μέχρι"
+
+#: cps/templates/search_form.html:35
+msgid "Read Status"
+msgstr ""
+
+#: cps/templates/search_form.html:52
+msgid "Exclude Tags"
+msgstr "Εξαίρεση Ετικετών"
+
+#: cps/templates/search_form.html:70
+msgid "Exclude Series"
+msgstr "Εξαίρεση Σειρών"
+
+#: cps/templates/search_form.html:89
+msgid "Exclude Languages"
+msgstr "Εξαίρεση Γλωσσών"
+
+#: cps/templates/search_form.html:100
+msgid "Extensions"
+msgstr "Επεκτάσεις"
+
+#: cps/templates/search_form.html:108
+msgid "Exclude Extensions"
+msgstr "Εξαίρεση Επεκτάσεων"
+
+#: cps/templates/search_form.html:118
+msgid "Rating Above"
+msgstr "Βαθμολογία Πάνω από"
+
+#: cps/templates/search_form.html:122
+msgid "Rating Below"
+msgstr "Βαθμολογία Κάτω από"
+
+#: cps/templates/shelf.html:10
+msgid "Delete this Shelf"
+msgstr "Διαγραφή αυτού του Ραφιού"
+
+#: cps/templates/shelf.html:11
+msgid "Edit Shelf Properties"
+msgstr ""
+
+#: cps/templates/shelf.html:13
+msgid "Arrange books manually"
+msgstr ""
+
+#: cps/templates/shelf.html:14
+msgid "Disable Change order"
+msgstr ""
+
+#: cps/templates/shelf.html:14
+msgid "Enable Change order"
+msgstr ""
+
+#: cps/templates/shelf.html:93
+msgid "Shelf will be deleted for all users"
+msgstr "Το ράφι θα διαγραφεί για όλους τουε χρήστες"
+
+#: cps/templates/shelf_edit.html:13
+msgid "Share with Everyone"
+msgstr "Κοινοποίηση με Όλους"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag to Rearrange Order"
+msgstr "Σύρε για Αναδιάταξη Σειράς"
+
+#: cps/templates/shelf_order.html:32
+msgid "Hidden Book"
+msgstr "Κρυμμένο Βιβλίο"
+
+#: cps/templates/stats.html:7
+msgid "Library Statistics"
+msgstr "Στατιστικά Βιβλιοθήκης"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Βιβλία σε αυτή τη Βιβλιοθήκη"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Συγγραφείς σε αυτή τη Βιβλιοθήκη"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Κατηγορίες σε αυτή τη Βιβλιοθήκη"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Σειρές σε αυτή τη Βιβλιοθήκη"
+
+#: cps/templates/stats.html:29
+msgid "System Statistics"
+msgstr ""
+
+#: cps/templates/stats.html:33
+msgid "Program Library"
+msgstr "Πρόγραμμα Βιβλιοθήκης"
+
+#: cps/templates/stats.html:34
+msgid "Installed Version"
+msgstr "Εγκατεστημένη Έκδοση"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Χρήστης"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Εργασία"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Κατάσταση"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Πρόοδος"
+
+#: cps/templates/tasks.html:17
+msgid "Run Time"
+msgstr "Χρόνος Λειτουργίας"
+
+#: cps/templates/tasks.html:18
+msgid "Start Time"
+msgstr "Ώρα Έναρξης"
+
+#: cps/templates/tasks.html:24
+msgid "Delete finished tasks"
+msgstr "Διαγραφή ολοκληρωμένων εργασιών"
+
+#: cps/templates/tasks.html:25
+msgid "Hide all tasks"
+msgstr "Απόκρυψη όλων των εργασιών"
+
+#: cps/templates/user_edit.html:19
+msgid "Reset user Password"
+msgstr "Επαναφορά Κωδικού χρήστη"
+
+#: cps/templates/user_edit.html:42
+msgid "Language of Books"
+msgstr "Γλώσσα Βιβλίων"
+
+#: cps/templates/user_edit.html:44
+msgid "Show All"
+msgstr "Προβολή Όλων"
+
+#: cps/templates/user_edit.html:53
+msgid "OAuth Settings"
+msgstr "OAuth Ρυθμίσεις"
+
+#: cps/templates/user_edit.html:55
+msgid "Link"
+msgstr "Σύνδεση"
+
+#: cps/templates/user_edit.html:57
+msgid "Unlink"
+msgstr "Αποσύνδεση"
+
+#: cps/templates/user_edit.html:63
+msgid "Kobo Sync Token"
+msgstr "Kobo Μονάδα Συγχρονισμού"
+
+#: cps/templates/user_edit.html:65
+msgid "Create/View"
+msgstr "Δημιουγία/Προβολή"
+
+#: cps/templates/user_edit.html:86
+msgid "Add allowed/Denied Custom Column Values"
+msgstr "Προσθήκη Τιμών Ειδικά Προσαρμοσμένης Στήλης επιτρέπεται/Απορρίπτεται"
+
+#: cps/templates/user_edit.html:135
+msgid "Delete User"
+msgstr "Διαγραφή Χρήστη"
+
+#: cps/templates/user_edit.html:146
+msgid "Generate Kobo Auth URL"
+msgstr "Δημιουργία Kobo Auth URL"
+

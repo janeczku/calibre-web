@@ -4,13 +4,13 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+          <img src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          {% if g.user.role_download() %}
+          {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
@@ -81,7 +81,7 @@
 
               {% for format in entry.data %}
                   {% if format.format|lower in audioentries %}
-                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
@@ -89,10 +89,10 @@
             {% endif %}
         </div>
       </div>
-      <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
+      <h2 id="title">{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -114,7 +114,7 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series',sort='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
@@ -143,7 +143,7 @@
         <span class="glyphicon glyphicon-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.books_list', data='category', sort='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort_param='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
@@ -154,13 +154,13 @@
       <div class="publishers">
         <p>
           <span>{{_('Publisher')}}:
-              <a href="{{url_for('web.books_list', data='publisher', sort='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
           </span>
         </p>
       </div>
       {% endif %}
 
-      {% if entry.pubdate[:10] != '0101-01-01' %}
+      {% if (entry.pubdate|string)[:10] != '0101-01-01' %}
       <div class="publishing-date">
         <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
       </div>
@@ -278,10 +278,10 @@
       {% endif %}
 
       {% endif %}
-      {% if g.user.role_edit() %}
+      {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
+          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
         </div>
       </div>
       {% endif %}

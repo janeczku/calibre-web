@@ -19,7 +19,6 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import re
-import sys
 from flask_babel import gettext as _
 
 from . import config, logger

@@ -31,7 +31,7 @@ import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
-from .web import render_title_template
+from .render_template import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:
@@ -47,6 +47,11 @@ try:
     from flask_dance import __version__ as flask_danceVersion
 except ImportError:
     flask_danceVersion = None
+
+try:
+    from greenlet import __version__ as greenlet_Version
+except ImportError:
+    greenlet_Version = None
 
 from . import services
 
@@ -77,10 +82,17 @@ _VERSIONS = OrderedDict(
     python_LDAP = services.ldapVersion if bool(services.ldapVersion) else None,
     Goodreads = u'installed' if bool(services.goodreads_support) else None,
     jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else None,
-    flask_dance = flask_danceVersion
+    flask_dance = flask_danceVersion,
+    greenlet = greenlet_Version
 )
 _VERSIONS.update(uploader.get_versions())
 
+
+def collect_stats():
+    _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
+    _VERSIONS['unrar'] = _(converter.get_unrar_version())
+    _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
+    return _VERSIONS
 
 @about.route("/stats")
 @flask_login.login_required
@@ -89,8 +101,7 @@ def stats():
     authors = calibre_db.session.query(db.Authors).count()
     categorys = calibre_db.session.query(db.Tags).count()
     series = calibre_db.session.query(db.Series).count()
-    _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
-    _VERSIONS['unrar'] = _(converter.get_unrar_version())
-    _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
-    return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
+    return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=collect_stats(),
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
+
+

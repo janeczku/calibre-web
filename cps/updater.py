@@ -227,6 +227,7 @@ class Updater(threading.Thread):
             os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
             os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
+            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so'
         )
         additional_path = self.is_venv()
         if additional_path:
@@ -263,10 +264,11 @@ class Updater(threading.Thread):
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except OSError:
-                    logger.debug("Could not remove: %s", item_path)
+                    log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
-    def is_venv(self):
+    @staticmethod
+    def is_venv():
         if (hasattr(sys, 'real_prefix')) or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
             return os.sep + os.path.relpath(sys.prefix, constants.BASE_DIR)
         else:
