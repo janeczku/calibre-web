@@ -64,7 +64,7 @@ $("#all").click(function() {
 $(".char").click(function() {
     var character = this.innerText;
     $list.isotope({ filter: function() {
-        return this.attributes["data-id"].value.charAt(0).toUpperCase() == character;
-        }
+        return this.attributes["data-id"].value.charAt(0).toUpperCase() === character;
+    }
     });
 });

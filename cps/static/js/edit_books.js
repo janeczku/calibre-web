@@ -265,7 +265,7 @@ $("#search").on("change input.typeahead:selected", function(event) {
             }
         });
         $("#include_tag option:selected").each(function () {
-            $("#exclude_tag").find("[value="+$(this).val() + "]").prop("disabled", true);
+            $("#exclude_tag").find("[value=" + $(this).val() + "]").prop("disabled", true);
         });
         $("#include_tag").selectpicker("refresh");
         $("#exclude_tag").selectpicker("refresh");
