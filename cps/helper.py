@@ -137,43 +137,8 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     return
 
 
-def check_send_to_kindle_without_converter(entry):
+def check_send_to_kindle_with_converter(formats):
     bookformats = list()
-    # no converter - only for mobi and pdf formats
-    for ele in iter(entry.data):
-        if ele.uncompressed_size < config.mail_size:
-            if 'MOBI' in ele.format:
-                bookformats.append({'format': 'Mobi',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Mobi')})
-            if 'PDF' in ele.format:
-                bookformats.append({'format': 'Pdf',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Pdf')})
-            if 'AZW' in ele.format:
-                bookformats.append({'format': 'Azw',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Azw')})
-    return bookformats
-
-def check_send_to_kindle_with_converter(entry):
-    bookformats = list()
-    formats = list()
-    for ele in iter(entry.data):
-        if ele.uncompressed_size < config.mail_size:
-            formats.append(ele.format)
-    if 'MOBI' in formats:
-        bookformats.append({'format': 'Mobi',
-                            'convert': 0,
-                            'text': _('Send %(format)s to Kindle', format='Mobi')})
-    if 'AZW' in formats:
-        bookformats.append({'format': 'Azw',
-                            'convert': 0,
-                            'text': _('Send %(format)s to Kindle', format='Azw')})
-    if 'PDF' in formats:
-        bookformats.append({'format': 'Pdf',
-                            'convert': 0,
-                            'text': _('Send %(format)s to Kindle', format='Pdf')})
     if 'EPUB' in formats and 'MOBI' not in formats:
         bookformats.append({'format': 'Mobi',
                             'convert': 1,
@@ -193,12 +158,27 @@ def check_send_to_kindle(entry):
     """
         returns all available book formats for sending to Kindle
     """
+    formats = list()
+    bookformats = list()
     if len(entry.data):
-        if not config.config_converterpath:
-            book_formats = check_send_to_kindle_with_converter(entry)
-        else:
-            book_formats = check_send_to_kindle_with_converter(entry)
-        return book_formats
+        for ele in iter(entry.data):
+            if ele.uncompressed_size < config.mail_size:
+                formats.append(ele.format)
+        if 'MOBI' in formats:
+            bookformats.append({'format': 'Mobi',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Mobi')})
+        if 'PDF' in formats:
+            bookformats.append({'format': 'Pdf',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Pdf')})
+        if 'AZW' in formats:
+            bookformats.append({'format': 'Azw',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Azw')})
+        if config.config_converterpath:
+            bookformats.extend(check_send_to_kindle_with_converter(formats))
+        return bookformats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
         return None
