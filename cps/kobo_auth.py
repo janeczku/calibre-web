@@ -81,6 +81,7 @@ log = logger.create()
 
 def register_url_value_preprocessor(kobo):
     @kobo.url_value_preprocessor
+    # pylint: disable=unused-variable
     def pop_auth_token(__, values):
         g.auth_token = values.pop("auth_token")
 

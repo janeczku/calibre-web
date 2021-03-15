@@ -918,7 +918,7 @@ def HandleAuthRequest():
     if config.config_kobo_proxy:
         try:
             return redirect_or_proxy_request()
-        except:
+        except Exception:
             log.error("Failed to receive or parse response from Kobo's auth endpoint. Falling back to un-proxied mode.")
     return make_calibre_web_auth_response()
 
