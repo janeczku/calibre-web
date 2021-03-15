@@ -70,15 +70,15 @@ msgstr "Vuoi veramente eliminare il token di Kobo?"
 
 #: cps/admin.py:258
 msgid "Do you really want to delete this domain?"
-msgstr ""
+msgstr "Vuoi veramente eliminare questo dominio?"
 
 #: cps/admin.py:260
 msgid "Do you really want to delete this user?"
-msgstr ""
+msgstr "Vuoi veramente eliminare questo utente?"
 
 #: cps/admin.py:262 cps/templates/shelf.html:90
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Vuoi davvero eliminare questo scaffale?"
+msgstr "Vuoi veramente eliminare questo scaffale?"
 
 #: cps/admin.py:508 cps/admin.py:514 cps/admin.py:524 cps/admin.py:534
 #: cps/templates/modal_dialogs.html:29
@@ -562,7 +562,7 @@ msgstr "Il file della copertina non è in un formato immagine valido o non può 
 
 #: cps/helper.py:621
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr ""
+msgstr "Solamente i file nei formati jpg/jpeg/png/webp/bmp sono supportati per le copertine"
 
 #: cps/helper.py:634
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -598,7 +598,7 @@ msgstr "Stato sconosciuto"
 
 #: cps/kobo_auth.py:130
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Per favore accedi a calibe-web non da localhost per ottenere un api-endpoint valido per il lettore kobo"
 
 #: cps/kobo_auth.py:133 cps/kobo_auth.py:161
 msgid "Kobo Setup"
@@ -796,7 +796,7 @@ msgstr "Formati file"
 
 #: cps/render_template.py:85
 msgid "Show file formats selection"
-msgstr "Mostra la selezione del formato dei file"
+msgstr "Mostra l'opzione per la selezione del formato dei file"
 
 #: cps/render_template.py:87 cps/web.py:664
 msgid "Archived Books"
@@ -888,12 +888,12 @@ msgstr "C'era un errore"
 #: cps/shelf.py:281
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Uno scaffale pubblico denominato '%(title)s' esiste già."
+msgstr "Esiste già uno scaffale pubblico denominato '%(title)s'."
 
 #: cps/shelf.py:291
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Uno scaffale privato denominato '%(title)s' esiste già."
+msgstr "Esiste già uno scaffale privato denominato '%(title)s'."
 
 #: cps/shelf.py:358
 #, python-format
@@ -915,7 +915,7 @@ msgstr "Dati inattesi durante il processo di aggiornamento"
 
 #: cps/updater.py:302 cps/updater.py:413
 msgid "No update available. You already have the latest version installed"
-msgstr "Nessun aggiornamento disponibile. Hai già installato l'ultima versione"
+msgstr "Nessun aggiornamento disponibile. Hai già installata l'ultima versione"
 
 #: cps/updater.py:334
 msgid "A new update is available. Click on the button below to update to the latest version."
@@ -1038,7 +1038,7 @@ msgstr "Valutazione >= %(rating)s"
 #: cps/web.py:1072
 #, python-format
 msgid "Read Status = %(status)s"
-msgstr ""
+msgstr "Stato di lettura = %(status)s"
 
 #: cps/web.py:1246
 #, python-format
@@ -1065,7 +1065,7 @@ msgstr "registra"
 
 #: cps/web.py:1285
 msgid "Invalid e-mail address format"
-msgstr ""
+msgstr "L'e-mail non è scritto in un formato valido"
 
 #: cps/web.py:1312
 msgid "Your e-mail is not allowed to register"
@@ -1505,7 +1505,7 @@ msgstr "Valutazione"
 
 #: cps/templates/book_edit.html:98
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Carica la copertina da URL (jpg - L'immagine della copertina viene scaricata e salvata nel database)"
+msgstr "Carica la copertina da URL (jpeg - l'immagine della copertina viene scaricata e salvata nel database)"
 
 #: cps/templates/book_edit.html:102
 msgid "Upload Cover from Local Disk"
@@ -1692,7 +1692,7 @@ msgstr "Posizione del database di Calibre"
 
 #: cps/templates/config_edit.html:29
 msgid "To activate serverside filepicker start Calibre-Web with -f option"
-msgstr ""
+msgstr "Per attivare sul server la funzione filepicker (per permettere al server di leggere i file locali selezionati), avviare Calibre-Web con l'opzione -f"
 
 #: cps/templates/config_edit.html:35
 msgid "Use Google Drive?"
@@ -1945,7 +1945,7 @@ msgstr "LDAP Member User Filter Detection"
 
 #: cps/templates/config_edit.html:344
 msgid "Autodetect"
-msgstr "Autodetect"
+msgstr "Autodetect - determina automaticamente"
 
 #: cps/templates/config_edit.html:345
 msgid "Custom Filter"
@@ -2229,7 +2229,7 @@ msgstr "Ordina in ordine discendente secondo l'indice della serie"
 
 #: cps/templates/index.xml:6
 msgid "Start"
-msgstr "Inizio"
+msgstr "Avvio"
 
 #: cps/templates/index.xml:21
 msgid "Popular publications from this catalog based on Downloads."
@@ -2430,7 +2430,7 @@ msgstr "e dal disco rigido"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Oservazione importante riguardo a Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
+msgstr "Osservazione importante riguardo Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
@@ -2438,27 +2438,27 @@ msgstr "Prima di poter eliminare in sicurezza un libro, occorre che il libro ven
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr ""
+msgstr "Scegli la posizione del file"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
-msgstr ""
+msgstr "tipo"
 
 #: cps/templates/modal_dialogs.html:83
 msgid "name"
-msgstr ""
+msgstr "nome"
 
 #: cps/templates/modal_dialogs.html:84
 msgid "size"
-msgstr ""
+msgstr "dimensione"
 
 #: cps/templates/modal_dialogs.html:90
 msgid "Parent Directory"
-msgstr ""
+msgstr "Cartella principale"
 
 #: cps/templates/modal_dialogs.html:98
 msgid "Select"
-msgstr ""
+msgstr "Seleziona"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2622,7 +2622,7 @@ msgstr "Data di pubblicazione fino a"
 
 #: cps/templates/search_form.html:35
 msgid "Read Status"
-msgstr ""
+msgstr "Stato di lettura"
 
 #: cps/templates/search_form.html:52
 msgid "Exclude Tags"
@@ -2658,19 +2658,19 @@ msgstr "Cancella questo scaffale"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf Properties"
-msgstr ""
+msgstr "Modifica le caratteristiche dello scaffale"
 
 #: cps/templates/shelf.html:13
 msgid "Arrange books manually"
-msgstr ""
+msgstr "Disponi i libri manualmente"
 
 #: cps/templates/shelf.html:14
 msgid "Disable Change order"
-msgstr ""
+msgstr "Disabilita la modifica della disposizione"
 
 #: cps/templates/shelf.html:14
 msgid "Enable Change order"
-msgstr ""
+msgstr "Abilita la modifica della disposizione"
 
 #: cps/templates/shelf.html:93
 msgid "Shelf will be deleted for all users"
