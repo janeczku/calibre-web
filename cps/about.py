@@ -37,6 +37,7 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 try:
+    # pylint: disable=unused-import
     import unidecode
     # _() necessary to make babel aware of string for translation
     unidecode_version = _(u'installed')

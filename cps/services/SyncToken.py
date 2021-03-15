@@ -22,6 +22,7 @@ from base64 import b64decode, b64encode
 from jsonschema import validate, exceptions, __version__
 from datetime import datetime
 try:
+    # pylint: disable=unused-import
     from urllib import unquote
 except ImportError:
     from urllib.parse import unquote
@@ -91,14 +92,14 @@ class SyncToken:
 
     def __init__(
         self,
-        raw_kobo_store_token="",  # nosec
+        raw_kobo_store_token="",
         books_last_created=datetime.min,
         books_last_modified=datetime.min,
         archive_last_modified=datetime.min,
         reading_state_last_modified=datetime.min,
         tags_last_modified=datetime.min,
         books_last_id=-1
-    ):
+    ):  # nosec
         self.raw_kobo_store_token = raw_kobo_store_token
         self.books_last_created = books_last_created
         self.books_last_modified = books_last_modified

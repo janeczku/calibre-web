@@ -284,7 +284,8 @@ class Updater(threading.Thread):
     def _stable_version_info(cls):
         return constants.STABLE_VERSION  # Current version
 
-    def _populate_parent_commits(self, update_data, status, locale, tz, parents):
+    @staticmethod
+    def _populate_parent_commits(update_data, status, locale, tz, parents):
         try:
             parent_commit = update_data['parents'][0]
             # limit the maximum search depth
@@ -322,7 +323,8 @@ class Updater(threading.Thread):
                     break
         return parents
 
-    def _load_nightly_data(self, repository_url, commit, status):
+    @staticmethod
+    def _load_nightly_data(repository_url, commit, status):
         try:
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'],
