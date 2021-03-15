@@ -1,0 +1,2 @@
+self.$wnd=self;self.$doc=self;function djvu_worker(){var c='81EB501BD7AB47786C30D3175CE1EA2B',d='.cache.js',e='djvu_worker',f='';var b;try{b=c}catch(a){return}importScripts(b+d);gwtOnLoad(undefined,e,f)}
+djvu_worker();
