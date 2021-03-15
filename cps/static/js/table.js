@@ -586,6 +586,11 @@ function checkboxHeader(CheckboxState, field, field_index) {
                 timeout: 900,
                 success:function(data) {
                     $("#user-table").bootstrapTable("load", data);
+                    $("#user_delete_selection").addClass("disabled");
+                    $("#user_delete_selection").attr("aria-disabled", true);
+                    $(".check_head").attr("aria-disabled", true);
+                    $(".check_head").attr("disabled", true);
+                    $(".check_head").prop('checked', false);
                 }
             });
         }
