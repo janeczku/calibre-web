@@ -87,7 +87,7 @@ $(".container-fluid").bind('drop', function (e) {
         var files = e.originalEvent.dataTransfer.files;
         var test = $("#btn-upload")[0].accept;
         $(this).css('background', '');
-        const dt = new DataTransfer()
+        const dt = new DataTransfer();
         jQuery.each(files, function (index, item) {
             if (test.indexOf(item.name.substr(item.name.lastIndexOf('.'))) !== -1) {
                 dt.items.add(item);
