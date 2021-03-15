@@ -49,7 +49,7 @@ def init_cache_busting(app):
             # compute version component
             rooted_filename = os.path.join(dirpath, filename)
             with open(rooted_filename, 'rb') as f:
-                file_hash = hashlib.md5(f.read()).hexdigest()[:7]
+                file_hash = hashlib.md5(f.read()).hexdigest()[:7] # nosec
 
             # save version to tables
             file_path = rooted_filename.replace(static_folder, "")
@@ -64,6 +64,7 @@ def init_cache_busting(app):
         return filename.split("?", 1)[0]
 
     @app.url_defaults
+    # pylint: disable=unused-variable
     def reverse_to_cache_busted_url(endpoint, values):
         """
         Make `url_for` produce busted filenames when using the 'static' endpoint.

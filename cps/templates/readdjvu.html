@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='js/libs/djvu_html5/Djvu_html5.css') }}">
+
+<title>Djvu HTML5 browser demo</title>
+
+<script type="text/javascript" language="javascript"
+	src="{{ url_for('static', filename='js/libs/djvu_html5/djvu_html5/djvu_html5.nocache.js') }}"></script>
+</head>
+
+<body>
+
+	<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this
+			application to display correctly.</div>
+	</noscript>
+
+	<div id="djvuContainer" file="{{ url_for('web.serve_book', book_id=djvufile,book_format='djvu') }}"></div>
+	<script type="text/javascript">
+	var DJVU_CONTEXT = {
+			background: "#666",
+			uiHideDelay: 1500,
+	};
+	</script>
+
+</body>
+</html>

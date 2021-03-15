@@ -22,7 +22,7 @@ import os
 import errno
 import signal
 import socket
-import subprocess
+import subprocess  # nosec
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -260,7 +260,7 @@ class WebServer(object):
 
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
-        subprocess.call(args, close_fds=True)
+        subprocess.call(args, close_fds=True)  # nosec
         return True
 
     def _killServer(self, __, ___):
