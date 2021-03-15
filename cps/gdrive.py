@@ -142,7 +142,7 @@ def on_received_watch_confirmation():
             else:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
             if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                and response['file']['md5Checksum'] != hashlib.md5(dbpath):
+                and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
                 tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
                 if not os.path.isdir(tmp_dir):
                     os.mkdir(tmp_dir)

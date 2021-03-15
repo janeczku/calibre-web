@@ -60,14 +60,8 @@ def init_errorhandler():
     if services.ldap:
         # Only way of catching the LDAPException upon logging in with LDAP server down
         @app.errorhandler(services.ldap.LDAPException)
+        # pylint: disable=unused-variable
         def handle_exception(e):
             log.debug('LDAP server not accessible while trying to login to opds feed')
             return error_http(FailedDependency())
 
-
-# @app.errorhandler(InvalidRequestError)
-#@app.errorhandler(OperationalError)
-#def handle_db_exception(e):
-#    db.session.rollback()
-#    log.error('Database request error: %s',e)
-#    return internal_error(InternalServerError(e))
