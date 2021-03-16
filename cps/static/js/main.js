@@ -114,26 +114,23 @@ $(document).ready(function() {
   }
 });
 
-function confirmDialog(id, dataValue, yesFn, noFn) {
-    var $confirm = $("#GeneralDeleteModal");
-    // var dataValue= e.data('value'); // target.data('value');
+function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
+    var $confirm = $("#" + dialogid);
     $confirm.modal('show');
     $.ajax({
         method:"get",
         dataType: "json",
         url: getPath() + "/ajax/loaddialogtexts/" + id,
         success: function success(data) {
-            $("#header").html(data.header);
-            $("#text").html(data.main);
+            $("#header-"+ dialogid).html(data.header);
+            $("#text-"+ dialogid).html(data.main);
         }
     });
-
-
-    $("#btnConfirmYes").off('click').click(function () {
+    $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
         yesFn(dataValue);
         $confirm.modal("hide");
     });
-    $("#btnConfirmNo").off('click').click(function () {
+    $("#btnConfirmNo-"+ dialogid).off('click').click(function () {
         if (typeof noFn !== 'undefined') {
             noFn(dataValue);
         }
@@ -483,6 +480,7 @@ $(function() {
     $("#config_delete_kobo_token").click(function() {
         confirmDialog(
             $(this).attr('id'),
+            "GeneralDeleteModal",
             $(this).data('value'),
             function (value) {
                 $.ajax({
@@ -511,6 +509,7 @@ $(function() {
     $("#btndeluser").click(function() {
         confirmDialog(
             $(this).attr('id'),
+            "GeneralDeleteModal",
             $(this).data('value'),
             function(value){
                 var subform = $('#user_submit').closest("form");
@@ -529,6 +528,7 @@ $(function() {
     $("#delete_shelf").click(function() {
         confirmDialog(
             $(this).attr('id'),
+            "GeneralDeleteModal",
             $(this).data('value'),
             function(value){
                 window.location.href = window.location.pathname + "/../../shelf/delete/" + value
