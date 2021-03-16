@@ -237,12 +237,12 @@ $(function() {
     }
     $("#domain-allow-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === 2) {
-            confirmDialog("btndeletedomain", $element.id, domainHandle);
+            confirmDialog("btndeletedomain", "GeneralDeleteModal", $element.id, domainHandle);
         }
     });
     $("#domain-deny-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === 2) {
-            confirmDialog("btndeletedomain", $element.id, domainHandle);
+            confirmDialog("btndeletedomain", "GeneralDeleteModal", $element.id, domainHandle);
         }
     });
 
@@ -508,7 +508,7 @@ $(function() {
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
-            ConfirmDialog("btndeluser", $element.id, user_handle);
+            ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
         }
     });
 
@@ -621,62 +621,69 @@ function checkboxChange(checkbox, userId, field, field_index) {
         }
     });
 }
+function deactivateHeaderButtons(e) {
+    $("#user_delete_selection").addClass("disabled");
+    $("#user_delete_selection").attr("aria-disabled", true);
+    $(".check_head").attr("aria-disabled", true);
+    $(".check_head").attr("disabled", true);
+    $(".check_head").prop('checked', false);
+    $(".button_head").attr("aria-disabled", true);
+    $(".button_head").addClass("disabled");
+    $(".header_select").attr("disabled", true);
+}
 
 function selectHeader(element, field) {
-    var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
-    $.ajax({
-        method:"post",
-        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-        data:  {"pk":result, "value": element.value},
-        success:function() {
+    if (element.value !== "None") {
+        confirmDialog(element.id, "GeneralChangeModal", 0, function () {
+            var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
             $.ajax({
-                method:"get",
-                url: window.location.pathname + "/../../ajax/listusers",
-                async: true,
-                timeout: 900,
-                success:function(data) {
-                    $("#user-table").bootstrapTable("load", data);
-                    $("#user_delete_selection").addClass("disabled");
-                    $("#user_delete_selection").attr("aria-disabled", true);
-                    $(".check_head").attr("aria-disabled", true);
-                    $(".check_head").attr("disabled", true);
-                    $(".check_head").prop('checked', false);
-                    $(".button_head").attr("aria-disabled", true);
-                    $(".button_head").addClass("disabled");
-                    $(".header_select").attr("disabled", true);
+                method: "post",
+                url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                data: {"pk": result, "value": element.value},
+                success: function () {
+                    $.ajax({
+                        method: "get",
+                        url: window.location.pathname + "/../../ajax/listusers",
+                        async: true,
+                        timeout: 900,
+                        success: function (data) {
+                            $("#user-table").bootstrapTable("load", data);
+                            deactivateHeaderButtons();
+                        }
+                    });
                 }
             });
-        }
-    });
-
-   console.log("test");
+        });
+    }
 }
 
 function checkboxHeader(CheckboxState, field, field_index) {
-    var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
-    $.ajax({
-        method:"post",
-        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-        data:  {"pk":result, "field_index":field_index, "value": CheckboxState},
-        success:function() {
-            $.ajax({
-                method:"get",
-                url: window.location.pathname + "/../../ajax/listusers",
-                async: true,
-                timeout: 900,
-                success:function(data) {
-                    $("#user-table").bootstrapTable("load", data);
-                    $("#user_delete_selection").addClass("disabled");
-                    $("#user_delete_selection").attr("aria-disabled", true);
-                    $(".check_head").attr("aria-disabled", true);
-                    $(".check_head").attr("disabled", true);
-                    $(".check_head").prop('checked', false);
-                    $(".button_head").attr("aria-disabled", true);
-                    $(".button_head").addClass("disabled");
-                    $(".header_select").attr("disabled", true);
-                }
-            });
-        }
+    confirmDialog(field, "GeneralChangeModal", 0, function() {
+        var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+        $.ajax({
+            method: "post",
+            url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+            data: {"pk": result, "field_index": field_index, "value": CheckboxState},
+            success: function () {
+                $.ajax({
+                    method: "get",
+                    url: window.location.pathname + "/../../ajax/listusers",
+                    async: true,
+                    timeout: 900,
+                    success: function (data) {
+                        $("#user-table").bootstrapTable("load", data);
+                        $("#user_delete_selection").addClass("disabled");
+                        $("#user_delete_selection").attr("aria-disabled", true);
+                        $(".check_head").attr("aria-disabled", true);
+                        $(".check_head").attr("disabled", true);
+                        $(".check_head").prop('checked', false);
+                        $(".button_head").attr("aria-disabled", true);
+                        $(".button_head").addClass("disabled");
+                        $(".header_select").attr("disabled", true);
+                    }
+                });
+            }
+        });
     });
 }
 

@@ -70,7 +70,7 @@
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     <div>
       <select id="select_{{ parameter }}" class="header_select" onchange="selectHeader(this, '{{parameter}}')" disabled="">
-      <option>{{_('Select...')}}</option>
+      <option value="None">{{_('Select...')}}</option>
       {% for translation in translations %}
         <option value="{{translation}}">{{translation.display_name|capitalize}}</option>
       {% endfor %}
@@ -137,6 +137,7 @@
 {% endblock %}
 {% block modal %}
 {{ delete_confirm_modal() }}
+{{ change_confirm_modal() }}
 {{ restrict_modal() }}
 {% endblock %}
 {% block js %}

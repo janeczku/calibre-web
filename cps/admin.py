@@ -440,6 +440,14 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Do you really want to delete this user?')
     elif element_id == "delete_shelf":
         texts["main"] = _('Are you sure you want to delete this shelf?')
+    elif element_id == "select_locale":
+        texts["main"] = _('Are you sure you want to change locales of selected user(s)?')
+    elif element_id == "select_default_language":
+        texts["main"] = _('Are you sure you want to change visible book languages for selected user(s)?')
+    elif element_id == "role":
+        texts["main"] = _('Are you sure you want to change the selected role for the selected user(s)?')
+    elif element_id == "sidebar_view":
+        texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
     return json.dumps(texts)
 
 
