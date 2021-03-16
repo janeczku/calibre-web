@@ -246,7 +246,7 @@ $(function() {
         }
     });
 
-    $("#restrictModal").on("hidden.bs.modal", function () {
+    $("#restrictModal").on("hidden.bs.modal", function (e) {
         // Destroy table and remove hooks for buttons
         $("#restrict-elements-table").unbind();
         $("#restrict-elements-table").bootstrapTable("destroy");
@@ -255,8 +255,54 @@ $(function() {
         $("#h2").addClass("hidden");
         $("#h3").addClass("hidden");
         $("#h4").addClass("hidden");
+        $("#add_element").val("");
     });
-    function startTable(type, userId) {
+
+    function startTable(target, userId) {
+        var type = 0;
+        switch(target) {
+            case "get_column_values":
+                type = 1;
+                $("#h2").removeClass("hidden");
+                break;
+            case "get_tags":
+                type = 0;
+                $("#h1").removeClass("hidden");
+                break;
+            case "get_user_column_values":
+                type = 3;
+                $("#h4").removeClass("hidden");
+                break;
+            case "get_user_tags":
+                type = 2;
+                $("#h3").removeClass("hidden");
+                break;
+            case "denied_tags":
+                type = 2;
+                $("#h2").removeClass("hidden");
+                $("#submit_allow").addClass("hidden");
+                $("#submit_restrict").removeClass("hidden");
+                break;
+            case "allowed_tags":
+                type = 2;
+                $("#h2").removeClass("hidden");
+                $("#submit_restrict").addClass("hidden");
+                $("#submit_allow").removeClass("hidden");
+                break;
+            case "allowed_column_value":
+                type = 3;
+                $("#h2").removeClass("hidden");
+                $("#submit_restrict").addClass("hidden");
+                $("#submit_allow").removeClass("hidden");
+                break;
+            case "denied_column_value":
+                type = 3;
+                $("#h2").removeClass("hidden");
+                $("#submit_allow").addClass("hidden");
+                $("#submit_restrict").removeClass("hidden");
+                break;
+        }
+
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
@@ -269,6 +315,10 @@ $(function() {
                 } else {
                     return {classes: "bg-dark-danger"};
                 }
+            },
+            onLoadSuccess: function () {
+                $(".no-records-found").addClass("hidden");
+                $(".fixed-table-loading").addClass("hidden");
             },
             onClickCell: function (field, value, row) {
                 if (field === 3) {
@@ -323,24 +373,18 @@ $(function() {
             return;
         });
     }
-    $("#get_column_values").on("click", function() {
-        startTable(1, 0);
-        $("#h2").removeClass("hidden");
-    });
 
-    $("#get_tags").on("click", function() {
-        startTable(0, 0);
-        $("#h1").removeClass("hidden");
-    });
-    $("#get_user_column_values").on("click", function() {
-        startTable(3, $(this).data("id"));
-        $("#h4").removeClass("hidden");
-    });
-
-    $("#get_user_tags").on("click", function() {
-        startTable(2,  $(this).data("id"));
-        $(this)[0].blur();
-        $("#h3").removeClass("hidden");
+    $("#restrictModal").on("show.bs.modal", function(e) {
+         var target = $(e.relatedTarget).attr('id');
+         var dataId;
+         $(e.relatedTarget).one('focus', function(e){$(this).blur();});
+         //$(e.relatedTarget).blur();
+         if ($(e.relatedTarget).hasClass("button_head")) {
+             dataId = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+         } else {
+             dataId = $(e.relatedTarget).data("id");
+         }
+         startTable(target, dataId);
     });
 
     // User table handling
@@ -487,16 +531,22 @@ $(function() {
             $(".check_head").attr("aria-disabled", true);
             $(".check_head").attr("disabled", true);
             $(".check_head").prop('checked', false);
+            $(".button_head").attr("aria-disabled", true);
+            $(".button_head").addClass("disabled");
+            $(".header_select").attr("disabled", true);
         } else {
             $("#user_delete_selection").removeClass("disabled");
             $("#user_delete_selection").attr("aria-disabled", false);
             $(".check_head").attr("aria-disabled", false);
             $(".check_head").removeAttr("disabled");
-
+            $(".button_head").attr("aria-disabled", false);
+            $(".button_head").removeClass("disabled");
+            $(".header_select").removeAttr("disabled");
         }
 
     });
 });
+
 
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
@@ -572,6 +622,36 @@ function checkboxChange(checkbox, userId, field, field_index) {
     });
 }
 
+function selectHeader(element, field) {
+    var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+    $.ajax({
+        method:"post",
+        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        data:  {"pk":result, "value": element.value},
+        success:function() {
+            $.ajax({
+                method:"get",
+                url: window.location.pathname + "/../../ajax/listusers",
+                async: true,
+                timeout: 900,
+                success:function(data) {
+                    $("#user-table").bootstrapTable("load", data);
+                    $("#user_delete_selection").addClass("disabled");
+                    $("#user_delete_selection").attr("aria-disabled", true);
+                    $(".check_head").attr("aria-disabled", true);
+                    $(".check_head").attr("disabled", true);
+                    $(".check_head").prop('checked', false);
+                    $(".button_head").attr("aria-disabled", true);
+                    $(".button_head").addClass("disabled");
+                    $(".header_select").attr("disabled", true);
+                }
+            });
+        }
+    });
+
+   console.log("test");
+}
+
 function checkboxHeader(CheckboxState, field, field_index) {
     var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
     $.ajax({
@@ -591,6 +671,9 @@ function checkboxHeader(CheckboxState, field, field_index) {
                     $(".check_head").attr("aria-disabled", true);
                     $(".check_head").attr("disabled", true);
                     $(".check_head").prop('checked', false);
+                    $(".button_head").attr("aria-disabled", true);
+                    $(".button_head").addClass("disabled");
+                    $(".header_select").attr("disabled", true);
                 }
             });
         }
