@@ -74,6 +74,41 @@ def _cover_processing(tmp_file_name, img, extension):
     return tmp_cover_name
 
 
+def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable):
+    cover_data = None
+    if original_file_extension.upper() == '.CBZ':
+        cf = zipfile.ZipFile(tmp_file_name)
+        for name in cf.namelist():
+            ext = os.path.splitext(name)
+            if len(ext) > 1:
+                extension = ext[1].lower()
+                if extension in COVER_EXTENSIONS:
+                    cover_data = cf.read(name)
+                    break
+    elif original_file_extension.upper() == '.CBT':
+        cf = tarfile.TarFile(tmp_file_name)
+        for name in cf.getnames():
+            ext = os.path.splitext(name)
+            if len(ext) > 1:
+                extension = ext[1].lower()
+                if extension in COVER_EXTENSIONS:
+                    cover_data = cf.extractfile(name).read()
+                    break
+    elif original_file_extension.upper() == '.CBR' and use_rarfile:
+        try:
+            rarfile.UNRAR_TOOL = rarExecutable
+            cf = rarfile.RarFile(tmp_file_name)
+            for name in cf.getnames():
+                ext = os.path.splitext(name)
+                if len(ext) > 1:
+                    extension = ext[1].lower()
+                    if extension in COVER_EXTENSIONS:
+                        cover_data = cf.read(name)
+                        break
+        except Exception as e:
+            log.debug('Rarfile failed with error: %s', e)
+    return cover_data
+
 
 def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
     cover_data = extension = None
@@ -87,37 +122,7 @@ def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
                     cover_data = archive.getPage(index)
                     break
     else:
-        if original_file_extension.upper() == '.CBZ':
-            cf = zipfile.ZipFile(tmp_file_name)
-            for name in cf.namelist():
-                ext = os.path.splitext(name)
-                if len(ext) > 1:
-                    extension = ext[1].lower()
-                    if extension in COVER_EXTENSIONS:
-                        cover_data = cf.read(name)
-                        break
-        elif original_file_extension.upper() == '.CBT':
-            cf = tarfile.TarFile(tmp_file_name)
-            for name in cf.getnames():
-                ext = os.path.splitext(name)
-                if len(ext) > 1:
-                    extension = ext[1].lower()
-                    if extension in COVER_EXTENSIONS:
-                        cover_data = cf.extractfile(name).read()
-                        break
-        elif original_file_extension.upper() == '.CBR' and use_rarfile:
-            try:
-                rarfile.UNRAR_TOOL = rarExecutable
-                cf = rarfile.RarFile(tmp_file_name)
-                for name in cf.getnames():
-                    ext = os.path.splitext(name)
-                    if len(ext) > 1:
-                        extension = ext[1].lower()
-                        if extension in COVER_EXTENSIONS:
-                            cover_data = cf.read(name)
-                            break
-            except Exception as e:
-                log.debug('Rarfile failed with error: %s', e)
+        cover_data = _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable)
     return _cover_processing(tmp_file_name, cover_data, extension)
 
 
@@ -142,7 +147,8 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loadedMetadata.title or original_file_name,
-                author=" & ".join([credit["person"] for credit in loadedMetadata.credits if credit["role"] == "Writer"]) or u'Unknown',
+                author=" & ".join([credit["person"]
+                                   for credit in loadedMetadata.credits if credit["role"] == "Writer"]) or u'Unknown',
                 cover=_extractCover(tmp_file_path, original_file_extension, rarExecutable),
                 description=loadedMetadata.comments or "",
                 tags="",

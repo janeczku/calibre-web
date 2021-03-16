@@ -33,7 +33,6 @@ body {
   position: relative;
   cursor: pointer;
   padding: 4px;
-
   transition: all 0.2s ease;
 }
 
@@ -45,7 +44,7 @@ body {
 
 #sidebar a.active,
 #sidebar a.active img + span {
-  background-color: #45B29D;
+  background-color: #45b29d;
 }
 
 #sidebar li img {
@@ -99,7 +98,7 @@ body {
   background-color: #ccc;
 }
 
-#progress .bar-read  {
+#progress .bar-read {
   color: #fff;
   background-color: #45b29d;
 }

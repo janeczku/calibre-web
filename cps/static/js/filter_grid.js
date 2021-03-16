@@ -36,7 +36,6 @@ $("#desc").click(function() {
         sortBy: "name",
         sortAscending: true
     });
-    return;
 });
 
 $("#asc").click(function() {
@@ -52,19 +51,20 @@ $("#asc").click(function() {
         sortBy: "name",
         sortAscending: false
     });
-    return;
 });
 
 $("#all").click(function() {
     // go through all elements and make them visible
     $list.isotope({ filter: function() {
         return true;
-      } })
+    }
+    });
 });
 
 $(".char").click(function() {
     var character = this.innerText;
     $list.isotope({ filter: function() {
-        return this.attributes["data-id"].value.charAt(0).toUpperCase() == character;
-      } })
+        return this.attributes["data-id"].value.charAt(0).toUpperCase() === character;
+    }
+    });
 });
