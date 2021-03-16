@@ -156,10 +156,8 @@ class Identifiers(Base):
             return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
             return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
-        elif format_type == "url":
-            return u"{0}".format(self.val)
         else:
-            return u""
+            return u"{0}".format(self.val)
 
 
 class Comments(Base):
@@ -386,14 +384,14 @@ class Custom_Columns(Base):
 
 class AlchemyEncoder(json.JSONEncoder):
 
-    def default(self, obj):
-        if isinstance(obj.__class__, DeclarativeMeta):
+    def default(self, o):
+        if isinstance(o.__class__, DeclarativeMeta):
             # an SQLAlchemy class
             fields = {}
-            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata']:
                 if field == 'books':
                     continue
-                data = obj.__getattribute__(field)
+                data = o.__getattribute__(field)
                 try:
                     if isinstance(data, str):
                         data = data.replace("'", "\'")
@@ -413,12 +411,12 @@ class AlchemyEncoder(json.JSONEncoder):
                     else:
                         json.dumps(data)
                     fields[field] = data
-                except:
+                except Exception:
                     fields[field] = ""
             # a json-encodable dict
             return fields
 
-        return json.JSONEncoder.default(self, obj)
+        return json.JSONEncoder.default(self, o)
 
 
 class CalibreDB():
@@ -565,8 +563,8 @@ class CalibreDB():
     def get_book_by_uuid(self, book_uuid):
         return self.session.query(Books).filter(Books.uuid == book_uuid).first()
 
-    def get_book_format(self, book_id, format):
-        return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == format).first()
+    def get_book_format(self, book_id, file_format):
+        return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
 
     # Language and content filters for displaying in the UI
     def common_filters(self, allow_show_archived=False):
@@ -744,7 +742,7 @@ class CalibreDB():
             if old_session:
                 try:
                     old_session.close()
-                except:
+                except Exception:
                     pass
                 if old_session.bind:
                     try:

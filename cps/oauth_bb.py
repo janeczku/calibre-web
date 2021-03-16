@@ -35,7 +35,10 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from . import constants, logger, config, app, ub
 
-from .oauth import OAuthBackend, backend_resultcode
+try:
+    from .oauth import OAuthBackend, backend_resultcode
+except NameError:
+    pass
 
 
 oauth_check = {}

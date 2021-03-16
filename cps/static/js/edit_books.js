@@ -1,7 +1,7 @@
 /**
  * Created by SpeedProg on 05.04.2015.
  */
-/* global Bloodhound, language, Modernizr, tinymce */
+/* global Bloodhound, language, Modernizr, tinymce, getPath */
 
 if ($("#description").length) {
     tinymce.init({
@@ -250,14 +250,14 @@ promisePublishers.done(function() {
 });
 
 $("#search").on("change input.typeahead:selected", function(event) {
-    if (event.target.type == "search" && event.target.tagName == "INPUT") {
+    if (event.target.type === "search" && event.target.tagName === "INPUT") {
         return;
     }
     var form = $("form").serialize();
     $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
         $(".tags_click").each(function() {
             if ($.inArray(parseInt($(this).val(), 10), data.tags) === -1) {
-                if(!$(this).prop("selected")) {
+                if (!$(this).prop("selected")) {
                     $(this).prop("disabled", true);
                 }
             } else {
@@ -265,10 +265,10 @@ $("#search").on("change input.typeahead:selected", function(event) {
             }
         });
         $("#include_tag option:selected").each(function () {
-            $("#exclude_tag").find("[value="+$(this).val()+"]").prop("disabled", true);
+            $("#exclude_tag").find("[value=" + $(this).val() + "]").prop("disabled", true);
         });
-        $('#include_tag').selectpicker("refresh");
-        $('#exclude_tag').selectpicker("refresh");
+        $("#include_tag").selectpicker("refresh");
+        $("#exclude_tag").selectpicker("refresh");
     });
 });
 

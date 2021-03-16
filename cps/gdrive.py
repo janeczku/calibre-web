@@ -47,7 +47,7 @@ except ImportError as err:
 
 current_milli_time = lambda: int(round(time() * 1000))
 
-gdrive_watch_callback_token = 'target=calibreweb-watch_files'
+gdrive_watch_callback_token = 'target=calibreweb-watch_files'  #nosec
 
 
 @gdrive.route("/authenticate")

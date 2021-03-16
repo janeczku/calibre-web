@@ -16,6 +16,7 @@
  */
 
 /* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+/* global getPath, confirmDialog */
 
 var selections = [];
 
@@ -209,7 +210,7 @@ $(function() {
         striped: false
     });
 
-    function domain_handle(domainId) {
+    function domainHandle(domainId) {
         $.ajax({
             method:"post",
             url: window.location.pathname + "/../../ajax/deletedomain",
@@ -236,12 +237,12 @@ $(function() {
     }
     $("#domain-allow-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === 2) {
-            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+            confirmDialog("btndeletedomain", $element.id, domainHandle);
         }
     });
     $("#domain-deny-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === 2) {
-            ConfirmDialog("btndeletedomain", $element.id, domain_handle);
+            confirmDialog("btndeletedomain", $element.id, domainHandle);
         }
     });
 
@@ -255,12 +256,12 @@ $(function() {
         $("#h3").addClass("hidden");
         $("#h4").addClass("hidden");
     });
-    function startTable(type, user_id) {
+    function startTable(type, userId) {
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
             },
-            url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
+            url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
             rowStyle: function(row) {
                 // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
@@ -274,13 +275,13 @@ $(function() {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),
-                        url: getPath() + "/ajax/deleterestriction/" + type + "/" + user_id,
+                        url: getPath() + "/ajax/deleterestriction/" + type + "/" + userId,
                         async: true,
                         timeout: 900,
                         success:function() {
                             $.ajax({
                                 method:"get",
-                                url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
+                                url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
                                 async: true,
                                 timeout: 900,
                                 success:function(data) {
@@ -296,7 +297,7 @@ $(function() {
         $("#restrict-elements-table").removeClass("table-hover");
         $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row) {
             $.ajax({
-                url: getPath() + "/ajax/editrestriction/" + type + "/" + user_id,
+                url: getPath() + "/ajax/editrestriction/" + type + "/" + userId,
                 type: "Post",
                 data: row
             });
@@ -304,13 +305,13 @@ $(function() {
         $("[id^=submit_]").click(function() {
             $(this)[0].blur();
             $.ajax({
-                url: getPath() + "/ajax/addrestriction/" + type + "/" + user_id,
+                url: getPath() + "/ajax/addrestriction/" + type + "/" + userId,
                 type: "Post",
                 data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
                 success: function () {
                     $.ajax ({
                         method:"get",
-                        url: getPath() + "/ajax/listrestriction/" + type + "/" + user_id,
+                        url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
                         async: true,
                         timeout: 900,
                         success:function(data) {
@@ -332,12 +333,12 @@ $(function() {
         $("#h1").removeClass("hidden");
     });
     $("#get_user_column_values").on("click", function() {
-        startTable(3, $(this).data('id'));
+        startTable(3, $(this).data("id"));
         $("#h4").removeClass("hidden");
     });
 
     $("#get_user_tags").on("click", function() {
-        startTable(2,  $(this).data('id'));
+        startTable(2,  $(this).data("id"));
         $(this)[0].blur();
         $("#h3").removeClass("hidden");
     });
