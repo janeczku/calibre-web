@@ -1632,6 +1632,9 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         log.debug(u"Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "djvu":
+        log.debug(u"Start djvu reader for %d", book_id)
+        return render_title_template('readdjvu.html', djvufile=book_id, title=_(u"Read a Book"))
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:

@@ -104,7 +104,7 @@ LDAP_AUTH_SIMPLE         = 0
 
 DEFAULT_MAIL_SERVER = "mail.example.org"
 
-DEFAULT_PASSWORD    = "admin123"  # nosec  # noqa
+DEFAULT_PASSWORD    = "admin123"  # nosec
 DEFAULT_PORT        = 8083
 env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
 try:
