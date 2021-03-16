@@ -41,7 +41,7 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
         else:
             exc_command = [x for x in command]
 
-    return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=newlines, env=env)
+    return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=newlines, env=env) # nosec
 
 
 def process_wait(command, serr=subprocess.PIPE):

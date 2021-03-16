@@ -22,7 +22,7 @@ import os
 import errno
 import signal
 import socket
-import subprocess
+import subprocess  # nosec
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -253,13 +253,13 @@ class WebServer(object):
 
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
-            # prevent irritiating log of pending tasks message from asyncio
+            # prevent irritating log of pending tasks message from asyncio
             logger.get('asyncio').setLevel(logger.logging.CRITICAL)
             return True
 
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
-        subprocess.call(args, close_fds=True)
+        subprocess.call(args, close_fds=True)  # nosec
         return True
 
     def _killServer(self, __, ___):
