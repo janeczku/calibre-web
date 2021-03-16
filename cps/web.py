@@ -695,8 +695,6 @@ def render_prepare_search_form(cc):
         .filter(calibre_db.common_filters()) \
         .group_by(db.Data.format)\
         .order_by(db.Data.format).all()
-    log.info(f"shelves: {shelves}")
-    log.info(f"series: {series}")
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
