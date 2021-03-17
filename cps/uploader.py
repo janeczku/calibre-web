@@ -22,10 +22,9 @@ import hashlib
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
-from . import logger, comic
+from . import logger, comic, isoLanguages, get_locale
 from .constants import BookMeta
 from .helper import split_authors
-
 
 log = logger.create()
 
@@ -82,7 +81,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
                                         original_file_name,
                                         original_file_extension,
                                         rarExecutable)
-    except Exception as ex:
+    except Exception as ex:      
         log.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
@@ -98,7 +97,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         extension=original_file_extension,
         title=original_file_name,
         author=_(u'Unknown'),
-        cover=None,
+        cover=pdf_preview(tmp_file_path, original_file_name),
         description="",
         tags="",
         series="",
@@ -106,31 +105,95 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         languages="")
 
 
+def parse_xmp(pdf_file):
+    """
+    Parse XMP Metadata and prepare for BookMeta object 
+    """
+    try:
+        xmp_info = pdf_file.getXmpMetadata()
+    except Exception as e:
+        log.debug('Can not read XMP metadata', e)
+        return None
+
+    if xmp_info:
+        try:
+            xmp_author = xmp_info.dc_creator # list
+        except:
+            xmp_author = ['Unknown']
+        
+        if xmp_info.dc_title: 
+            xmp_title = xmp_info.dc_title['x-default']
+        else:
+            xmp_title = ''
+
+        if xmp_info.dc_description:
+            xmp_description = xmp_info.dc_description['x-default']
+        else:
+            xmp_description = ''
+
+        languages = []
+        for i in xmp_info.dc_language:
+            #calibre-web currently only takes one language.
+            languages.append(isoLanguages.get_lang3(i))
+        
+        xmp_tags = ', '.join(xmp_info.dc_subject)
+        xmp_publisher = ', '.join(xmp_info.dc_publisher)
+        xmp_languages = xmp_info.dc_language
+
+        return {'author': xmp_author,
+                    'title': xmp_title,
+                    'subject': xmp_description,
+                    'tags': xmp_tags, 'languages': languages,
+                    'publisher': xmp_publisher
+                    }
+
+
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
+    xmp_info = None
+
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            doc_info = PdfFileReader(f).getDocumentInfo()
-    if doc_info:
-        author = doc_info.author if doc_info.author else u'Unknown'
-        title = doc_info.title if doc_info.title else original_file_name
+            pdf_file = PdfFileReader(f)
+            doc_info = pdf_file.getDocumentInfo()
+            xmp_info = parse_xmp(pdf_file)
+
+    if xmp_info:
+        author = ' & '.join(split_authors(xmp_info['author']))
+        title = xmp_info['title']
+        subject = xmp_info['subject']
+        tags = xmp_info['tags']
+        languages = xmp_info['languages']
+        publisher = xmp_info['publisher']
+
+    elif doc_info:
+        author = ' & '.join(split_authors([doc_info.author]))
+        title = doc_info.title
         subject = doc_info.subject
+        tags = doc_info['/Keywords']
+        languages = ""
+        publisher = ""
+
     else:
-        author = u'Unknown'
+        author= u'Unknown'
         title = original_file_name
         subject = ""
+        tags = ""
+        languages = ""
+        publisher = ""
 
     return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title,
-        author=' & '.join(split_authors([author])),
+        author=author,
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
-        tags="",
+        tags=tags,
         series="",
         series_id="",
-        languages="")
+        languages=', '.join(languages)
+        )
 
 
 def pdf_preview(tmp_file_path, tmp_dir):
