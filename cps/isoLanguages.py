@@ -57,27 +57,29 @@ def get_language_name(locale, lang_code):
 
 def get_language_codes(locale, language_names, remainder=None):
     language_names = set(x.strip().lower() for x in language_names if x)
-    languages = list()
+    lang = list()
     for k, v in get_language_names(locale).items():
         v = v.lower()
         if v in language_names:
-            languages.append(k)
+            lang.append(k)
             language_names.remove(v)
     if remainder is not None:
         remainder.extend(language_names)
-    return languages
+    return lang
+
 
 def get_valid_language_codes(locale, language_names, remainder=None):
-    languages = list()
+    lang = list()
     if "" in language_names:
         language_names.remove("")
     for k, __ in get_language_names(locale).items():
         if k in language_names:
-            languages.append(k)
+            lang.append(k)
             language_names.remove(k)
     if remainder is not None and len(language_names):
         remainder.extend(language_names)
-    return languages
+    return lang
+
 
 def get_lang3(lang):
     try:

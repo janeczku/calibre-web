@@ -444,10 +444,10 @@ def edit_book_languages(languages, book, upload=False):
     return modify_database_object(input_l, book.languages, db.Languages, calibre_db.session, 'languages')
 
 
-def edit_book_publisher(to_save, book):
+def edit_book_publisher(publishers, book):
     changed = False
-    if to_save["publisher"]:
-        publisher = to_save["publisher"].rstrip().strip()
+    if publishers:        
+        publisher = publishers.rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
             changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
                                               'publisher')
@@ -740,7 +740,7 @@ def edit_book(book_id):
                 book.pubdate = db.Books.DEFAULT_PUBDATE
 
             # handle book publisher
-            modif_date |= edit_book_publisher(to_save, book)
+            modif_date |= edit_book_publisher(to_save['publisher'], book)
 
             # handle book languages
             modif_date |= edit_book_languages(to_save['languages'], book)
@@ -866,6 +866,9 @@ def create_book_on_upload(modif_date, meta):
 
     # handle tags
     modif_date |= edit_book_tags(meta.tags, db_book)
+
+    # handle publisher
+    modif_date |= edit_book_publisher(meta.publisher, db_book)
 
     # handle series
     modif_date |= edit_book_series(meta.series, db_book)
