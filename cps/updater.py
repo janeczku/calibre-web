@@ -325,6 +325,7 @@ class Updater(threading.Thread):
 
     @staticmethod
     def _load_nightly_data(repository_url, commit, status):
+        update_data = dict()
         try:
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'],
