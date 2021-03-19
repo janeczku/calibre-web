@@ -22,10 +22,9 @@ import hashlib
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
-from . import logger, comic
+from . import logger, comic, isoLanguages, get_locale
 from .constants import BookMeta
 from .helper import split_authors
-
 
 log = logger.create()
 
@@ -45,12 +44,17 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF2 import PdfFileReader
-    from PyPDF2 import __version__ as PyPdfVersion
+    from PyPDF3 import PdfFileReader
+    from PyPDF3 import __version__ as PyPdfVersion
     use_pdf_meta = True
-except ImportError as e:
-    log.debug('Cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
-    use_pdf_meta = False
+except ImportError as ex:
+    try:
+        from PyPDF2 import PdfFileReader
+        from PyPDF2 import __version__ as PyPdfVersion
+        use_pdf_meta = True
+    except ImportError as e:
+        log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
+        use_pdf_meta = False
 
 try:
     from . import epub
@@ -82,7 +86,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
                                         original_file_name,
                                         original_file_extension,
                                         rarExecutable)
-    except Exception as ex:
+    except Exception as ex:      
         log.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
@@ -98,39 +102,199 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         extension=original_file_extension,
         title=original_file_name,
         author=_(u'Unknown'),
-        cover=None,
+        cover=None, #pdf_preview(tmp_file_path, original_file_name),
         description="",
         tags="",
         series="",
         series_id="",
-        languages="")
+        languages="",
+        publisher="")
+
+
+def parse_xmp(pdf_file):
+    """
+    Parse XMP Metadata and prepare for BookMeta object 
+    """
+    try:
+        xmp_info = pdf_file.getXmpMetadata()
+    except Exception as e:
+        log.debug('Can not read XMP metadata', e)
+        return None
+
+    if xmp_info:
+        try:
+            xmp_author = xmp_info.dc_creator # list
+        except AttributeError:
+            xmp_author = ['']
+        
+        if xmp_info.dc_title: 
+            xmp_title = xmp_info.dc_title['x-default']
+        else:
+            xmp_title = ''
+
+        if xmp_info.dc_description:
+            xmp_description = xmp_info.dc_description['x-default']
+        else:
+            xmp_description = ''
+
+        languages = []
+        try:
+            for i in xmp_info.dc_language:
+                #calibre-web currently only takes one language.
+                languages.append(isoLanguages.get_lang3(i))
+        except:
+            languages.append('')
+        
+        xmp_tags = ', '.join(xmp_info.dc_subject)
+        xmp_publisher = ', '.join(xmp_info.dc_publisher)
+
+        return {'author': xmp_author,
+                    'title': xmp_title,
+                    'subject': xmp_description,
+                    'tags': xmp_tags, 'languages': languages,
+                    'publisher': xmp_publisher
+                    }
+
+
+def parse_xmp(pdf_file):
+    """
+    Parse XMP Metadata and prepare for BookMeta object 
+    """
+    try:
+        xmp_info = pdf_file.getXmpMetadata()
+    except Exception as e:
+        log.debug('Can not read XMP metadata', e)
+        return None
+
+    if xmp_info:
+        try:
+            xmp_author = xmp_info.dc_creator # list
+        except:
+            xmp_author = ['']
+        
+        if xmp_info.dc_title: 
+            xmp_title = xmp_info.dc_title['x-default']
+        else:
+            xmp_title = ''
+
+        if xmp_info.dc_description:
+            xmp_description = xmp_info.dc_description['x-default']
+        else:
+            xmp_description = ''
+
+        languages = []
+        try:
+            for i in xmp_info.dc_language:
+                languages.append(isoLanguages.get_lang3(i))
+        except AttributeError:
+            languages= [""]
+        
+        xmp_tags = ', '.join(xmp_info.dc_subject)
+        xmp_publisher = ', '.join(xmp_info.dc_publisher)
+
+        return {'author': xmp_author,
+                    'title': xmp_title,
+                    'subject': xmp_description,
+                    'tags': xmp_tags,
+                    'languages': languages,
+                    'publisher': xmp_publisher
+                    }
+
+
+def parse_xmp(pdf_file):
+    """
+    Parse XMP Metadata and prepare for BookMeta object 
+    """
+    try:
+        xmp_info = pdf_file.getXmpMetadata()
+    except Exception as e:
+        log.debug('Can not read XMP metadata', e)
+        return None
+
+    if xmp_info:
+        try:
+            xmp_author = xmp_info.dc_creator # list
+        except AttributeError:
+            xmp_author = ['Unknown']
+        
+        if xmp_info.dc_title: 
+            xmp_title = xmp_info.dc_title['x-default']
+        else:
+            xmp_title = ''
+
+        if xmp_info.dc_description:
+            xmp_description = xmp_info.dc_description['x-default']
+        else:
+            xmp_description = ''
+
+        languages = []
+        try:
+            for i in xmp_info.dc_language:
+                languages.append(isoLanguages.get_lang3(i))
+        except AttributeError:
+            languages.append('')
+        
+        xmp_tags = ', '.join(xmp_info.dc_subject)
+        xmp_publisher = ', '.join(xmp_info.dc_publisher)
+
+        return {'author': xmp_author,
+                'title': xmp_title,
+                'subject': xmp_description,
+                'tags': xmp_tags,
+                'languages': languages,
+                'publisher': xmp_publisher
+                }
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
+    xmp_info = None
+
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            doc_info = PdfFileReader(f).getDocumentInfo()
-    if doc_info:
-        author = doc_info.author if doc_info.author else u'Unknown'
-        title = doc_info.title if doc_info.title else original_file_name
-        subject = doc_info.subject
+            pdf_file = PdfFileReader(f)
+            doc_info = pdf_file.getDocumentInfo()
+            xmp_info = parse_xmp(pdf_file)
+
+    if xmp_info:
+        author = ' & '.join(split_authors(xmp_info['author']))
+        title = xmp_info['title']
+        subject = xmp_info['subject']
+        tags = xmp_info['tags']
+        languages = xmp_info['languages']
+        publisher = xmp_info['publisher']
     else:
         author = u'Unknown'
-        title = original_file_name
+        title = ''
+        languages = [""]
+        publisher = ""
         subject = ""
+        tags = ""
+
+    if doc_info:
+        if author == '':
+            author = ' & '.join(split_authors([doc_info.author])) if doc_info.author else u'Unknown'
+        if title == '':
+            title = doc_info.title if doc_info.title else original_file_name
+        if subject == '':
+            subject = doc_info.subject
+        if tags == '' and '/Keywords' in doc_info:
+            tags = doc_info['/Keywords']
+    else:
+        title = original_file_name
 
     return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title,
-        author=' & '.join(split_authors([author])),
+        author=author,
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
-        tags="",
+        tags=tags,
         series="",
         series_id="",
-        languages="")
+        languages=','.join(languages),
+        publisher=publisher)
 
 
 def pdf_preview(tmp_file_path, tmp_dir):
