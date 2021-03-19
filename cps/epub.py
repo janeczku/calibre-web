@@ -142,4 +142,5 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tags=epub_metadata['subject'].encode('utf-8').decode('utf-8'),
         series=epub_metadata['series'].encode('utf-8').decode('utf-8'),
         series_id=epub_metadata['series_id'].encode('utf-8').decode('utf-8'),
-        languages=epub_metadata['language'])
+        languages=epub_metadata['language'],
+        publisher="")

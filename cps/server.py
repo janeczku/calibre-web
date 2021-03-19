@@ -251,7 +251,7 @@ class WebServer(object):
         finally:
             self.wsgiserver = None
 
-        # prevent irritiating log of pending tasks message from asyncio
+        # prevent irritating log of pending tasks message from asyncio
         logger.get('asyncio').setLevel(logger.logging.CRITICAL)
 
         if not self.restart:
