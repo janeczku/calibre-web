@@ -251,10 +251,11 @@ class WebServer(object):
         finally:
             self.wsgiserver = None
 
+        # prevent irritating log of pending tasks message from asyncio
+        logger.get('asyncio').setLevel(logger.logging.CRITICAL)
+
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
-            # prevent irritating log of pending tasks message from asyncio
-            logger.get('asyncio').setLevel(logger.logging.CRITICAL)
             return True
 
         log.info("Performing restart of Calibre-Web")
