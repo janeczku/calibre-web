@@ -214,7 +214,7 @@ def parse_xmp(pdf_file):
     if xmp_info:
         try:
             xmp_author = xmp_info.dc_creator # list
-        except:
+        except AttributeError:
             xmp_author = ['Unknown']
         
         if xmp_info.dc_title: 
@@ -228,20 +228,22 @@ def parse_xmp(pdf_file):
             xmp_description = ''
 
         languages = []
-        for i in xmp_info.dc_language:
-            #calibre-web currently only takes one language.
-            languages.append(isoLanguages.get_lang3(i))
+        try:
+            for i in xmp_info.dc_language:
+                languages.append(isoLanguages.get_lang3(i))
+        except AttributeError:
+            languages.append('')
         
         xmp_tags = ', '.join(xmp_info.dc_subject)
         xmp_publisher = ', '.join(xmp_info.dc_publisher)
-        xmp_languages = xmp_info.dc_language
 
         return {'author': xmp_author,
-                    'title': xmp_title,
-                    'subject': xmp_description,
-                    'tags': xmp_tags, 'languages': languages,
-                    'publisher': xmp_publisher
-                    }
+                'title': xmp_title,
+                'subject': xmp_description,
+                'tags': xmp_tags,
+                'languages': languages,
+                'publisher': xmp_publisher
+                }
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -250,8 +252,6 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            languages = [""]
-            publisher = ""
             pdf_file = PdfFileReader(f)
             doc_info = pdf_file.getDocumentInfo()
             xmp_info = parse_xmp(pdf_file)
@@ -263,6 +263,13 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         tags = xmp_info['tags']
         languages = xmp_info['languages']
         publisher = xmp_info['publisher']
+    else:
+        author = u'Unknown'
+        title = ''
+        languages = [""]
+        publisher = ""
+        subject = ""
+        tags = ""
 
     if doc_info:
         if author == '':
@@ -273,14 +280,8 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
             subject = doc_info.subject
         if tags == '' and '/Keywords' in doc_info:
             tags = doc_info['/Keywords']
-
     else:
-        author= u'Unknown'
         title = original_file_name
-        subject = ""
-        tags = ""
-        languages = [""]
-        publisher = ""
 
     return BookMeta(
         file_path=tmp_file_path,
