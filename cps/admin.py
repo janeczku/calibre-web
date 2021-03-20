@@ -40,7 +40,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
-from . import constants, logger, helper, services, isoLanguages
+from . import constants, logger, helper, services, isoLanguages, fs
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
@@ -162,6 +162,23 @@ def shutdown():
 
     showtext['text'] = _(u'Unknown command')
     return json.dumps(showtext), 400
+
+
+@admi.route("/clear-cache")
+@login_required
+@admin_required
+def clear_cache():
+    cache_type = request.args.get('cache_type'.strip())
+    showtext = {}
+
+    if cache_type == fs.CACHE_TYPE_THUMBNAILS:
+        log.info('clearing cover thumbnail cache')
+        showtext['text'] = _(u'Cleared cover thumbnail cache')
+        helper.clear_cover_thumbnail_cache()
+        return json.dumps(showtext)
+
+    showtext['text'] = _(u'Unknown command')
+    return json.dumps(showtext)
 
 
 @admi.route("/admin/view")

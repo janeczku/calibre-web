@@ -403,7 +403,7 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                                             db.Books,
                                                             ub.BookShelf.shelf == shelf_id,
                                                             [ub.BookShelf.order.asc()],
-                                                            ub.BookShelf,ub.BookShelf.book_id == db.Books.id)
+                                                            ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
         wrong_entries = calibre_db.session.query(ub.BookShelf)\
             .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True)\

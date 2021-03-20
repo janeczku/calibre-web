@@ -142,15 +142,18 @@
     </div>
   </div>
 
-    <div class="row form-group">
+  <div class="row form-group">
     <h2>{{_('Administration')}}</h2>
-      <div class="btn btn-default"><a id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a></div>
-      <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
-    </div>
-    <div class="row form-group">
-      <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
-      <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
-      <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
+    <div class="btn btn-default"><a id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a></div>
+    <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
+  </div>
+  <div class="row form-group">
+    <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
+    <div class="btn btn-default" id="clear_cover_thumbnail_cache" data-toggle="modal" data-target="#ClearCacheDialog">{{_('Clear Cover Thumbnail Cache')}}</div>
+  </div>
+  <div class="row form-group">
+    <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
+    <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
   </div>
 
   <div class="row">
@@ -227,6 +230,23 @@
          <div id="DialogContent"></div>
           <p></p>
         <button type="button" class="btn btn-default hidden" id="DialogFinished" data-dismiss="modal">{{_('OK')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="ClearCacheDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info"></div>
+      <div class="modal-body text-center">
+        <p>{{_('Are you sure you want to clear the cover thumbnail cache?')}}</p>
+        <div id="spinner3" class="spinner" style="display:none;">
+          <img id="img-spinner3" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/>
+        </div>
+        <p></p>
+        <button type="button" class="btn btn-default" id="clear_cache" >{{_('OK')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
