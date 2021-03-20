@@ -38,12 +38,16 @@ except ImportError:
         oauth_support = True
     except ImportError:
         oauth_support = False
-from sqlalchemy import create_engine, exc, exists, event
+from sqlalchemy import create_engine, exc, exists, event, text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.expression import func
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
@@ -484,7 +488,7 @@ def migrate_registration_table(engine, session):
 def migrate_guest_password(engine, session):
     try:
         with engine.connect() as conn:
-            conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
+            conn.execute(text("UPDATE user SET password='' where nickname = 'Guest' and password !=''"))
         session.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
@@ -597,11 +601,11 @@ def migrate_Database(session):
     try:
         # check if one table with autoincrement is existing (should be user table)
         with engine.connect() as conn:
-            conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+            conn.execute(text("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'"))
     except exc.OperationalError:
         # Create new table user_id and copy contents of table user into it
         with engine.connect() as conn:
-            conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+            conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                      "nickname VARCHAR(64),"
                      "email VARCHAR(120),"
                      "role SMALLINT,"
@@ -612,14 +616,14 @@ def migrate_Database(session):
                      "default_language VARCHAR(3),"
                      "view_settings VARCHAR,"
                      "UNIQUE (nickname),"
-                     "UNIQUE (email))")
-            conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
+                     "UNIQUE (email))"))
+            conn.execute(text("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
                      "sidebar_view, default_language, view_settings) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                     "sidebar_view, default_language FROM user")
+                     "sidebar_view, default_language FROM user"))
             # delete old user table and rename new user_id table to user:
-            conn.execute("DROP TABLE user")
-            conn.execute("ALTER TABLE user_id RENAME TO user")
+            conn.execute(text("DROP TABLE user"))
+            conn.execute(text("ALTER TABLE user_id RENAME TO user"))
         session.commit()
     migrate_guest_password(engine, session)
 

@@ -30,7 +30,12 @@ from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.ext.declarative import DeclarativeMeta
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -465,8 +470,9 @@ class CalibreDB():
                                        isolation_level="SERIALIZABLE",
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
-            cls.engine.execute("attach database '{}' as calibre;".format(dbpath))
-            cls.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
+            with cls.engine.begin() as connection:
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
             conn = cls.engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
@@ -477,7 +483,7 @@ class CalibreDB():
         config.db_configured = True
 
         if not cc_classes:
-            cc = conn.execute("SELECT id, datatype FROM custom_columns")
+            cc = conn.execute(text("SELECT id, datatype FROM custom_columns"))
 
             cc_ids = []
             books_custom_column_links = {}
