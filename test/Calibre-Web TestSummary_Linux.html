@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-19 16:22:43</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-20 19:40:16</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-19 18:56:39</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-20 22:11:28</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 5 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 2 min</p>
         </div>
       </div>
       </div>
@@ -500,11 +500,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -532,11 +532,33 @@
     
     
     
-        <tr id='pt6.3' class='hiddenRow bg-success'>
+        <tr id="ft6.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft6.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft6.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py", line 323, in test_convert_only
+    self.assertEqual(ret[-4]['result'], 'Finished')
+AssertionError: 'Failed' != 'Finished'
+- Failed
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1595,12 +1617,12 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestKoboSync</td>
         <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 9)">Detail</a>
@@ -1609,11 +1631,33 @@
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 585, in test_book_download
+    data = self.inital_sync()
+  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 133, in inital_sync
+    self.assertEqual(data[3]['NewEntitlement']['BookMetadata']['DownloadUrls'][1]['Format'], 'EPUB')
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2469,13 +2513,13 @@
 
     <tr id="su" class="skipClass">
         <td>TestShelf</td>
+        <td class="text-center">12</td>
         <td class="text-center">11</td>
-        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 11)">Detail</a>
+            <a onclick="showClassDetail('c27', 12)">Detail</a>
         </td>
     </tr>
 
@@ -2492,7 +2536,7 @@
     
         <tr id='pt27.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_arrange_shelf</div>
+                <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2501,7 +2545,7 @@
     
         <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
+                <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2510,7 +2554,7 @@
     
         <tr id='pt27.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_private_shelf</div>
+                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2519,7 +2563,7 @@
     
         <tr id='pt27.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_public_private_shelf</div>
+                <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2528,7 +2572,7 @@
     
         <tr id='pt27.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_public_shelf</div>
+                <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2537,7 +2581,7 @@
     
         <tr id='pt27.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_rename_shelf</div>
+                <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2546,7 +2590,7 @@
     
         <tr id='pt27.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+                <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2555,6 +2599,15 @@
     
         <tr id='pt27.9' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt27.10' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -2562,19 +2615,19 @@
     
     
     
-        <tr id="st27.10" class="none bg-warning">
+        <tr id="st27.11" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.10')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.11')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.10" class="popup_window test_output" style="display:none;">
+                <div id="div_st27.11" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st27.10').style.display='none'"><span
+                                onclick='document.getElementById('div_st27.11').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2588,7 +2641,7 @@
     
     
     
-        <tr id='pt27.11' class='hiddenRow bg-success'>
+        <tr id='pt27.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -3402,10 +3455,10 @@
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>300</td>
-        <td>293</td>
-        <td>0</td>
-        <td>0</td>
+        <td>301</td>
+        <td>292</td>
+        <td>1</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3776,7 +3829,7 @@
 </div>
 
 <script>
-    drawCircle(293, 0, 0, 7);
+    drawCircle(292, 1, 1, 7);
 </script>
 
 </div>
