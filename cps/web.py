@@ -1085,9 +1085,9 @@ def adv_search_serie(q, include_series_inputs, exclude_series_inputs):
     return q
 
 def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
-    q = q.outerjoin(ub.BookShelf,db.Books.id==ub.BookShelf.book_id)\
-        .filter(or_(ub.BookShelf.shelf==None,ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
-    if len(include_shelf_inputs) >0:
+    q = q.outerjoin(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)\
+        .filter(or_(ub.BookShelf.shelf == None, ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
+    if len(include_shelf_inputs) > 0:
         q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
     return q
 
@@ -1097,18 +1097,10 @@ def extend_search_term(searchterm,
                        publisher,
                        pub_start,
                        pub_end,
-                       include_tag_inputs,
-                       exclude_tag_inputs,
-                       include_series_inputs,
-                       exclude_series_inputs,
-                       include_shelf_inputs,
-                       exclude_shelf_inputs,
-                       include_languages_inputs,
+                       tags,
                        rating_high,
                        rating_low,
                        read_status,
-                       include_extension_inputs,
-                       exclude_extension_inputs
                        ):
     searchterm.extend((author_name.replace('|', ','), book_title, publisher))
     if pub_start:
@@ -1125,20 +1117,27 @@ def extend_search_term(searchterm,
                                            format='medium', locale=get_locale())])
         except ValueError:
             pub_start = u""
-    tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
-    searchterm.extend(tag.name for tag in tag_names)
-    tag_names = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(exclude_tag_inputs)).all()
-    searchterm.extend(tag.name for tag in tag_names)
-    serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
-    searchterm.extend(serie.name for serie in serie_names)
-    serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(exclude_series_inputs)).all()
-    searchterm.extend(serie.name for serie in serie_names)
-    shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(include_shelf_inputs)).all()
-    searchterm.extend(shelf.name for shelf in shelf_names)
-    shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(exclude_shelf_inputs)).all()
-    searchterm.extend(shelf.name for shelf in shelf_names)
+    elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
+    for key, db_element in elements.items():
+        tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
+        searchterm.extend(tag.name for tag in tag_names)
+        tag_names = calibre_db.session.query(db_element).filter(db.Tags.id.in_(tags['exclude_' + key])).all()
+        searchterm.extend(tag.name for tag in tag_names)
+    #serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(tags['include_serie'])).all()
+    #searchterm.extend(serie.name for serie in serie_names)
+    #serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(tags['include_serie'])).all()
+    #searchterm.extend(serie.name for serie in serie_names)
+    #shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(tags['include_shelf'])).all()
+    #searchterm.extend(shelf.name for shelf in shelf_names)
+    #shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(tags['include_shelf'])).all()
+    #searchterm.extend(shelf.name for shelf in shelf_names)
     language_names = calibre_db.session.query(db.Languages). \
-        filter(db.Languages.id.in_(include_languages_inputs)).all()
+        filter(db.Languages.id.in_(tags['include_language'])).all()
+    if language_names:
+        language_names = calibre_db.speaking_language(language_names)
+    searchterm.extend(language.name for language in language_names)
+    language_names = calibre_db.session.query(db.Languages). \
+        filter(db.Languages.id.in_(tags['exclude_language'])).all()
     if language_names:
         language_names = calibre_db.speaking_language(language_names)
     searchterm.extend(language.name for language in language_names)
@@ -1148,8 +1147,8 @@ def extend_search_term(searchterm,
         searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
     if read_status:
         searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
-    searchterm.extend(ext for ext in include_extension_inputs)
-    searchterm.extend(ext for ext in exclude_extension_inputs)
+    searchterm.extend(ext for ext in tags['include_extension'])
+    searchterm.extend(ext for ext in tags['exclude_extension'])
     # handle custom columns
     searchterm = " + ".join(filter(None, searchterm))
     return searchterm, pub_start, pub_end
@@ -1163,16 +1162,12 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
 
-    include_tag_inputs = term.get('include_tag')
-    exclude_tag_inputs = term.get('exclude_tag')
-    include_series_inputs = term.get('include_serie')
-    exclude_series_inputs = term.get('exclude_serie')
-    include_shelf_inputs = term.get('include_shelf')
-    exclude_shelf_inputs = term.get('exclude_shelf')
-    include_languages_inputs = term.get('include_language')
-    exclude_languages_inputs = term.get('exclude_language')
-    include_extension_inputs = term.get('include_extension')
-    exclude_extension_inputs = term.get('exclude_extension')
+    # parse multiselects to a complete dict
+    tags = dict()
+    elements = ['tag', 'serie', 'shelf', 'language', 'extension']
+    for element in elements:
+        tags['include_' + element] = term.get('include_' + element)
+        tags['exclude_' + element] = term.get('exclude_' + element)
 
     author_name = term.get("author_name")
     book_title = term.get("book_title")
@@ -1197,29 +1192,18 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             searchterm.extend([(u"%s: %s" % (c.name, term.get('custom_column_' + str(c.id))))])
             cc_present = True
 
-    if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-            include_shelf_inputs or exclude_shelf_inputs or \
-            include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
-            publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
-            include_extension_inputs or exclude_extension_inputs or read_status:
+    if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
+       or rating_high or description or cc_present or read_status:
         searchterm, pub_start, pub_end = extend_search_term(searchterm,
                                                             author_name,
                                                             book_title,
                                                             publisher,
                                                             pub_start,
                                                             pub_end,
-                                                            include_tag_inputs,
-                                                            exclude_tag_inputs,
-                                                            include_series_inputs,
-                                                            exclude_series_inputs,
-                                                            include_shelf_inputs,
-                                                            exclude_shelf_inputs,
-                                                            include_languages_inputs,
+                                                            tags,
                                                             rating_high,
                                                             rating_low,
-                                                            read_status,
-                                                            include_extension_inputs,
-                                                            exclude_extension_inputs)
+                                                            read_status)
         q = q.filter()
         if author_name:
             q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_name + "%")))
@@ -1232,11 +1216,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         q = adv_search_read_status(q, read_status)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
-        q = adv_search_tag(q, include_tag_inputs, exclude_tag_inputs)
-        q = adv_search_serie(q, include_series_inputs, exclude_series_inputs)
-        q = adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs)
-        q = adv_search_extension(q, include_extension_inputs, exclude_extension_inputs)
-        q = adv_search_language(q, include_languages_inputs, exclude_languages_inputs)
+        q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])
+        q = adv_search_serie(q, tags['include_serie'], tags['exclude_serie'])
+        q = adv_search_shelf(q, tags['include_shelf'], tags['exclude_shelf'])
+        q = adv_search_extension(q, tags['include_extension'], tags['exclude_extension'])
+        q = adv_search_language(q, tags['include_language'], tags['exclude_language'])
         q = adv_search_ratings(q, rating_high, rating_low)
 
         if description:
