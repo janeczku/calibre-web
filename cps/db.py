@@ -619,9 +619,10 @@ class CalibreDB():
             randm = false()
         off = int(int(pagesize) * (page - 1))
         query = self.session.query(database) \
-            .join(*join, isouter=True) \
             .filter(db_filter) \
             .filter(self.common_filters(allow_show_archived))
+        if len(join):
+            query = query.join(*join, isouter=True)
         entries = list()
         pagination = list()
         try:
