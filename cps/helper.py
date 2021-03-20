@@ -52,12 +52,13 @@ except ImportError:
 
 from . import calibre_db
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub
+from . import logger, config, get_locale, db, fs, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.mail import TaskEmail
+from .tasks.thumbnail import TaskClearCoverThumbnailCache
 
 log = logger.create()
 
@@ -514,10 +515,30 @@ def update_dir_stucture(book_id, calibrepath, first_author=None, orignal_filepat
 
 
 def delete_book(book, calibrepath, book_format):
+    clear_cover_thumbnail_cache(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
         return delete_book_file(book, calibrepath, book_format)
+
+
+def get_thumbnails_for_books(books):
+    books_with_covers = list(filter(lambda b: b.has_cover, books))
+    book_ids = list(map(lambda b: b.id, books_with_covers))
+    cache = fs.FileSystem()
+    thumbnail_files = cache.list_cache_files(fs.CACHE_TYPE_THUMBNAILS)
+
+    return ub.session\
+        .query(ub.Thumbnail)\
+        .filter(ub.Thumbnail.book_id.in_(book_ids))\
+        .filter(ub.Thumbnail.filename.in_(thumbnail_files))\
+        .filter(ub.Thumbnail.expiration > datetime.utcnow())\
+        .all()
+
+
+def get_thumbnails_for_book_series(series):
+    books = list(map(lambda s: s[0], series))
+    return get_thumbnails_for_books(books)
 
 
 def get_cover_on_failure(use_generic_cover):
@@ -532,14 +553,54 @@ def get_book_cover(book_id):
     return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 
-def get_book_cover_with_uuid(book_uuid,
-                             use_generic_cover_on_failure=True):
+def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
     book = calibre_db.get_book_by_uuid(book_uuid)
     return get_book_cover_internal(book, use_generic_cover_on_failure)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure):
+def get_cached_book_cover(cache_id):
+    parts = cache_id.split('_')
+    book_uuid = parts[0] if len(parts) else None
+    resolution = parts[2] if len(parts) > 2 else None
+    book = calibre_db.get_book_by_uuid(book_uuid) if book_uuid else None
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+
+
+def get_cached_book_cover_thumbnail(cache_id):
+    parts = cache_id.split('_')
+    thumbnail_uuid = parts[0] if len(parts) else None
+    thumbnail = None
+    if thumbnail_uuid:
+        thumbnail = ub.session\
+            .query(ub.Thumbnail)\
+            .filter(ub.Thumbnail.uuid == thumbnail_uuid)\
+            .first()
+
+    if thumbnail and thumbnail.expiration > datetime.utcnow():
+        cache = fs.FileSystem()
+        if cache.get_cache_file_path(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
+            return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
+
+    elif thumbnail:
+        book = calibre_db.get_book(thumbnail.book_id)
+        return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+
+    else:
+        return get_cover_on_failure(True)
+
+
+def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
     if book and book.has_cover:
+
+        # Send the book cover thumbnail if it exists in cache
+        if resolution:
+            thumbnail = get_book_cover_thumbnail(book, resolution)
+            if thumbnail:
+                cache = fs.FileSystem()
+                if cache.get_cache_file_path(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
+                    return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
+
+        # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
@@ -550,9 +611,11 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
                     return get_cover_on_failure(use_generic_cover_on_failure)
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
+
+        # Send the book cover from the Calibre directory
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
@@ -561,6 +624,16 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 return get_cover_on_failure(use_generic_cover_on_failure)
     else:
         return get_cover_on_failure(use_generic_cover_on_failure)
+
+
+def get_book_cover_thumbnail(book, resolution):
+    if book and book.has_cover:
+        return ub.session\
+            .query(ub.Thumbnail)\
+            .filter(ub.Thumbnail.book_id == book.id)\
+            .filter(ub.Thumbnail.resolution == resolution)\
+            .filter(ub.Thumbnail.expiration > datetime.utcnow())\
+            .first()
 
 
 # saves book cover from url
@@ -820,3 +893,7 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def clear_cover_thumbnail_cache(book_id=None):
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))

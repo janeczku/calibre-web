@@ -22,6 +22,7 @@ vendor/
 # calibre-web
 *.db
 *.log
+cps/cache
 
 .idea/
 *.bak

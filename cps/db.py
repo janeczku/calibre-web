@@ -620,15 +620,18 @@ class CalibreDB():
             randm = self.session.query(Books) \
                 .filter(self.common_filters(allow_show_archived)) \
                 .order_by(func.random()) \
-                .limit(self.config.config_random_books)
+                .limit(self.config.config_random_books) \
+                .all()
         else:
             randm = false()
         off = int(int(pagesize) * (page - 1))
-        query = self.session.query(database) \
-            .filter(db_filter) \
+        query = self.session.query(database)
+        if len(join) == 3:
+            query = query.join(join[0], join[1]).join(join[2], isouter=True)
+        elif len(join) == 2:
+            query = query.join(join[0], join[1], isouter=True)
+        query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
-        if len(join):
-            query = query.join(*join, isouter=True)
         entries = list()
         pagination = list()
         try:

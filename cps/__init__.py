@@ -96,7 +96,7 @@ def create_app():
         app.instance_path = app.instance_path.decode('utf-8')
 
     if os.environ.get('FLASK_DEBUG'):
-    	cache_buster.init_cache_busting(app)
+        cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
     if sys.version_info < (3, 0):
@@ -120,6 +120,7 @@ def create_app():
                                            config.config_use_goodreads)
 
     return app
+
 
 @babel.localeselector
 def get_locale():

@@ -128,8 +128,30 @@ def formatseriesindex_filter(series_index):
             return series_index
     return 0
 
+
 @jinjia.app_template_filter('uuidfilter')
 def uuidfilter(var):
     return uuid4()
 
 
+@jinjia.app_template_filter('book_cover_cache_id')
+def book_cover_cache_id(book, resolution=None):
+    timestamp = int(book.last_modified.timestamp() * 1000)
+    cache_bust = str(book.uuid) + '_' + str(timestamp)
+    return cache_bust if not resolution else cache_bust + '_' + str(resolution)
+
+
+@jinjia.app_template_filter('get_book_thumbnails')
+def get_book_thumbnails(book_id, thumbnails=None):
+    return list(filter(lambda t: t.book_id == book_id, thumbnails)) if book_id > -1 and thumbnails else list()
+
+
+@jinjia.app_template_filter('get_book_thumbnail_srcset')
+def get_book_thumbnail_srcset(thumbnails):
+    srcset = list()
+    for thumbnail in thumbnails:
+        timestamp = int(thumbnail.generated_at.timestamp() * 1000)
+        cache_id = str(thumbnail.uuid) + '_' + str(timestamp)
+        url = url_for('web.get_cached_cover_thumbnail', cache_id=cache_id)
+        srcset.append(url + ' ' + str(thumbnail.resolution) + 'x')
+    return ', '.join(srcset)
