@@ -94,7 +94,7 @@ def feed_cc_search(query):
 @opds.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
 def feed_normal_search():
-    return feed_search(request.args.get("query").strip())
+    return feed_search(request.args.get("query", "").strip())
 
 
 @opds.route("/opds/new")
