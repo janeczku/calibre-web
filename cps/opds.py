@@ -27,7 +27,7 @@ from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
-from sqlalchemy.sql.expression import func, text, or_, and_
+from sqlalchemy.sql.expression import func, text, or_, and_, true
 from werkzeug.security import check_password_hash
 
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
@@ -97,6 +97,15 @@ def feed_normal_search():
     return feed_search(request.args.get("query", "").strip())
 
 
+@opds.route("/opds/books")
+@requires_basic_auth_if_no_ano
+def feed_books():
+    off = request.args.get("offset") or 0
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
+                                                        db.Books, True, [db.Books.sort])
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+
 @opds.route("/opds/new")
 @requires_basic_auth_if_no_ano
 def feed_new():
@@ -151,13 +160,29 @@ def feed_hot():
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset") or 0
+    entries = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('id'),
+                                       func.upper(func.substr(db.Authors.sort, 1, 1)).label('name')) \
+        .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
+        .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
+
+    # ToDo: Add All to list -> All: id = 0
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries))
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_letter_author', pagination=pagination)
+
+
+@opds.route("/opds/author/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_author(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "0" else func.upper(db.Authors.sort).startswith(book_id)
     entries = calibre_db.session.query(db.Authors).join(db.books_authors_link).join(db.Books)\
-        .filter(calibre_db.common_filters())\
+        .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_authors_link.author'))\
         .order_by(db.Authors.sort).limit(config.config_books_per_page)\
-        .offset(off)
+        .offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(calibre_db.session.query(db.Authors).all()))
+                            len(entries))
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination)
 
 
