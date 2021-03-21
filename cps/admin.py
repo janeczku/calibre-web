@@ -345,7 +345,7 @@ def edit_list_user(param):
             else:
                 log.error(u"Found an existing account for this e-mail address.")
                 return _(u"Found an existing account for this e-mail address."), 400
-        elif param =='kindle_mail':
+        elif param == 'kindle_mail':
             user.kindle_mail = vals['value']
         elif param == 'role':
             if vals['value'] == 'true':
