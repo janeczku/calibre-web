@@ -480,8 +480,8 @@ def reset_password(user_id):
         password = generate_random_password()
         existing_user.password = generate_password_hash(password)
         ub.session.commit()
-        send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-        return 1, existing_user.nickname
+        send_registration_mail(existing_user.email, existing_user.name, password, True)
+        return 1, existing_user.name
     except Exception:
         ub.session.rollback()
         return 0, None
@@ -731,7 +731,7 @@ def format_runtime(runtime):
 def render_task_status(tasklist):
     renderedtasklist = list()
     for __, user, __, task in tasklist:
-        if user == current_user.nickname or current_user.role_admin():
+        if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
                 ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())

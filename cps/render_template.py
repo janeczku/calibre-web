@@ -42,7 +42,7 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
                     "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
                     "show_text": _('Show Hot Books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
+    sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.download_list',
                     "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not g.user.is_anonymous),
                     "page": "download", "show_text": _('Show Downloaded Books'),
                     "config_show": content})

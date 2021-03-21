@@ -428,7 +428,7 @@ def check_auth(username, password):
             username = username.encode('windows-1252')
         except UnicodeEncodeError:
             username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
                                             username.decode('utf-8').lower()).first()
     if bool(user and check_password_hash(str(user.password), password)):
         return True

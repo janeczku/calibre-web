@@ -41,7 +41,7 @@ def login_required_if_no_ano(func):
 
 
 def _fetch_user_by_name(username):
-    return ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+    return ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first()
 
 
 @lm.user_loader

@@ -371,7 +371,6 @@ def get_sort_function(sort, data):
 
 def render_books_list(data, sort, book_id, page):
     order = get_sort_function(sort, data)
-
     if data == "rated":
         return render_rated_books(page, book_id, order=order)
     elif data == "discover":
@@ -383,7 +382,7 @@ def render_books_list(data, sort, book_id, page):
     elif data == "hot":
         return render_hot_books(page)
     elif data == "download":
-        return render_downloaded_books(page, order)
+        return render_downloaded_books(page, order, book_id)
     elif data == "author":
         return render_author_books(page, book_id, order)
     elif data == "publisher":
@@ -463,7 +462,8 @@ def render_hot_books(page):
         abort(404)
 
 
-def render_downloaded_books(page, order):
+def render_downloaded_books(page, order, user_id):
+    user_id = int(user_id)
     if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD):
         if current_user.show_detail_random():
             random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
@@ -474,19 +474,19 @@ def render_downloaded_books(page, order):
         entries, __, pagination = calibre_db.fill_indexpage(page,
                                                             0,
                                                             db.Books,
-                                                            ub.Downloads.user_id == int(current_user.id),
+                                                            ub.Downloads.user_id == user_id,
                                                             order,
                                                             ub.Downloads, db.Books.id == ub.Downloads.book_id)
         for book in entries:
             if not calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
                              .filter(db.Books.id == book.id).first():
                 ub.delete_download(book.id)
-
+        user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
         return render_title_template('index.html',
                                      random=random,
                                      entries=entries,
                                      pagination=pagination,
-                                     title=_(u"Downloaded books by %(user)s",user=current_user.nickname),
+                                     title=_(u"Downloaded books by %(user)s",user=user.name),
                                      page="download")
     else:
         abort(404)
@@ -811,6 +811,24 @@ def author_list():
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                      title=u"Authors", page="authorlist", data='author')
+    else:
+        abort(404)
+
+@web.route("/downloadlist")
+@login_required_if_no_ano
+def download_list():
+    if current_user.get_view_property('download', 'dir') == 'desc':
+        order = ub.User.name.desc()       # ToDo
+    else:
+        order = ub.User.name.asc()        # ToDo
+    if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD) and current_user.role_admin():
+        entries = ub.session.query(ub.User, func.count(ub.Downloads.book_id).label('count'))\
+            .join(ub.Downloads).group_by(ub.Downloads.user_id).order_by(order).all()
+        charlist = ub.session.query(func.upper(func.substr(ub.User.name, 1, 1)).label('char')) \
+            .filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS) \
+            .group_by(func.upper(func.substr(ub.User.name, 1, 1))).all()
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+                                     title=_(u"Downloads"), page="downloadlist", data="download")
     else:
         abort(404)
 
@@ -1320,7 +1338,7 @@ def send_to_kindle(book_id, book_format, convert):
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
-                           current_user.nickname)
+                           current_user.name)
         if result is None:
             flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
@@ -1353,7 +1371,7 @@ def register():
         if config.config_register_email:
             nickname = to_save["email"]
         else:
-            nickname = to_save.get('nickname', None)
+            nickname = to_save.get('name', None)
         if not nickname or not to_save.get("email", None):
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
@@ -1365,13 +1383,13 @@ def register():
             log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == nickname
+        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == nickname
                                                          .lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
         if not existing_user and not existing_email:
             content = ub.User()
             if check_valid_domain(to_save["email"]):
-                content.nickname = nickname
+                content.name = nickname
                 content.email = to_save["email"]
                 password = generate_random_password()
                 content.password = generate_password_hash(password)
@@ -1414,22 +1432,22 @@ def login():
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()) \
+        user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form['username'].strip().lower()) \
             .first()
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
                 login_user(user, remember=bool(form.get('remember_me')))
-                log.debug(u"You are now logged in as: '%s'", user.nickname)
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
+                log.debug(u"You are now logged in as: '%s'", user.name)
+                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
                       category="success")
                 return redirect_back(url_for("web.index"))
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
-                and user.nickname != "Guest":
+                and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
-                log.info("Local Fallback Login as: '%s'", user.nickname)
+                log.info("Local Fallback Login as: '%s'", user.name)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
-                        nickname=user.nickname),
+                        nickname=user.name),
                       category="warning")
                 return redirect_back(url_for("web.index"))
             elif login_result is None:
@@ -1442,7 +1460,7 @@ def login():
         else:
             ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
             if 'forgot' in form and form['forgot'] == 'forgot':
-                if user != None and user.nickname != "Guest":
+                if user != None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")
@@ -1454,10 +1472,10 @@ def login():
                     flash(_(u"Please enter valid username to reset password"), category="error")
                     log.warning('Username missing for password reset IP-address: %s', ipAdress)
             else:
-                if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+                if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
-                    log.debug(u"You are now logged in as: '%s'", user.nickname)
-                    flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                    log.debug(u"You are now logged in as: '%s'", user.name)
+                    flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
@@ -1495,16 +1513,16 @@ def change_profile_email(to_save, kobo_support, local_oauth_check, oauth_status)
         if config.config_public_reg and not check_valid_domain(to_save["email"]):
             flash(_(u"E-mail is not from valid domain"), category="error")
             return render_title_template("user_edit.html", content=current_user,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                         title=_(u"%(name)s's profile", name=current_user.name), page="me",
                                          kobo_support=kobo_support,
                                          registered_oauth=local_oauth_check, oauth_status=oauth_status)
         current_user.email = to_save["email"]
 
 def change_profile_nickname(to_save, kobo_support, local_oauth_check, translations, languages):
-    if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
-        # Query User nickname, if not existing, change
-        if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
-            current_user.nickname = to_save["nickname"]
+    if "name" in to_save and to_save["name"] != current_user.name:
+        # Query User name, if not existing, change
+        if not ub.session.query(ub.User).filter(ub.User.name == to_save["name"]).scalar():
+            current_user.name = to_save["name"]
         else:
             flash(_(u"This username is already taken"), category="error")
             return render_title_template("user_edit.html",
@@ -1514,7 +1532,7 @@ def change_profile_nickname(to_save, kobo_support, local_oauth_check, translatio
                                          new_user=0, content=current_user,
                                          registered_oauth=local_oauth_check,
                                          title=_(u"Edit User %(nick)s",
-                                                 nick=current_user.nickname),
+                                                 nick=current_user.name),
                                          page="edituser")
 
 
@@ -1580,7 +1598,7 @@ def profile():
                                  languages=languages,
                                  content=current_user,
                                  kobo_support=kobo_support,
-                                 title=_(u"%(name)s's profile", name=current_user.nickname),
+                                 title=_(u"%(name)s's profile", name=current_user.name),
                                  page="me",
                                  registered_oauth=local_oauth_check,
                                  oauth_status=oauth_status)

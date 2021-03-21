@@ -127,7 +127,7 @@ def get_locale():
     user = getattr(g, 'user', None)
     # user = None
     if user is not None and hasattr(user, "locale"):
-        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+        if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
 
     preferred = list()

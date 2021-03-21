@@ -4,10 +4,10 @@
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
     <div class="col-md-10 col-lg-8">
-    {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
+    {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
-      <label for="nickname">{{_('Username')}}</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
+      <label for="name">{{_('Username')}}</label>
+      <input type="text" class="form-control" name="name" id="name" value="{{ content.name if content.name != None }}" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">

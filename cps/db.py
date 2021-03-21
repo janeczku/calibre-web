@@ -31,6 +31,7 @@ from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy.exc import OperationalError
 try:
     # Compability with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
@@ -331,7 +332,6 @@ class Books(Base):
     has_cover = Column(Integer, default=0)
     uuid = Column(String)
     isbn = Column(String(collation='NOCASE'), default="")
-    # Iccn = Column(String(collation='NOCASE'), default="")
     flags = Column(Integer, nullable=False, default=1)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
@@ -551,8 +551,11 @@ class CalibreDB():
         config.db_configured = True
 
         if not cc_classes:
-            cc = conn.execute("SELECT id, datatype FROM custom_columns")
-            cls.setup_db_cc_classes(cc)
+            try:
+                cc = conn.execute("SELECT id, datatype FROM custom_columns")
+                cls.setup_db_cc_classes(cc)
+            except OperationalError as e:
+                log.debug_or_exception(e)
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
