@@ -169,8 +169,8 @@ class TaskEmail(CalibreTask):
         except (MemoryError) as e:
             log.debug_or_exception(e)
             self._handleError(u'MemoryError sending email: ' + str(e))
-            # return None
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
+            log.debug_or_exception(e)
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.decode('utf-8').replace("\n", '. ')
             elif hasattr(e, "message"):
@@ -178,13 +178,11 @@ class TaskEmail(CalibreTask):
             elif hasattr(e, "args"):
                 text = '\n'.join(e.args)
             else:
-                log.debug_or_exception(e)
                 text = ''
             self._handleError(u'Smtplib Error sending email: ' + text)
-            # return None
         except (socket.error) as e:
+            log.debug_or_exception(e)
             self._handleError(u'Socket Error sending email: ' + e.strerror)
-            # return None
 
 
     @property
