@@ -11,18 +11,18 @@
   <link rel="up"
         href="{{url_for('opds.feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
-{% if pagination.has_prev %}
+{% if pagination and pagination.has_prev %}
   <link rel="first"
         href="{{request.script_root + request.path}}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
 {% endif %}
-{% if pagination.has_next %}
+{% if pagination and pagination.has_next %}
   <link rel="next"
         title="{{_('Next')}}"
         href="{{ request.script_root + request.path }}?offset={{ pagination.next_offset }}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
 {% endif %}
-{% if pagination.has_prev %}
+{% if pagination and pagination.has_prev %}
   <link rel="previous"
         href="{{request.script_root + request.path}}?offset={{ pagination.previous_offset }}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
@@ -30,7 +30,7 @@
     <link rel="search"
       href="{{url_for('opds.feed_osd')}}"
       type="application/opensearchdescription+xml"/>
-  <!--link title="{{_('Search')}}" type="application/atom+xml" href="{{url_for('opds.feed_normal_search')}}?query={searchTerms}" rel="search"/-->
+  <link type="application/atom+xml" rel="search" title="{{_('Search')}}" href="{{url_for('opds.feed_cc_search')}}/{searchTerms}" />
   <title>{{instance}}</title>
   <author>
     <name>{{instance}}</name>

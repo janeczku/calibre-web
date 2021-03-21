@@ -8,6 +8,7 @@
   <link rel="search"
       href="{{url_for('opds.feed_osd')}}"
       type="application/opensearchdescription+xml"/>
+  <link type="application/atom+xml" rel="search" title="{{_('Search')}}" href="{{url_for('opds.feed_cc_search')}}/{searchTerms}" />
   <title>{{instance}}</title>
   <author>
     <name>{{instance}}</name>
