@@ -430,12 +430,12 @@ def load_configuration(session):
         session.commit()
     conf = _ConfigSQL(session)
     # Migrate from global restrictions to user based restrictions
-    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
-        conf.config_denied_tags = conf.config_mature_content_tags
-        conf.save()
-        session.query(ub.User).filter(ub.User.mature_content != True). \
-            update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
-        session.commit()
+    #if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
+    #    conf.config_denied_tags = conf.config_mature_content_tags
+    #    conf.save()
+    #    session.query(ub.User).filter(ub.User.mature_content != True). \
+    #        update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
+    #    session.commit()
     return conf
 
 def get_flask_session_key(session):

@@ -87,7 +87,7 @@ def register_user_with_oauth(user=None):
             except NoResultFound:
                 # no found, return error
                 return
-            ub.session_commit("User {} with OAuth for provider {} registered".format(user.nickname, oauth_key))
+            ub.session_commit("User {} with OAuth for provider {} registered".format(user.name, oauth_key))
 
 
 def logout_oauth_user():
@@ -133,8 +133,8 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
         # already bind with user, just login
         if oauth_entry.user:
             login_user(oauth_entry.user)
-            log.debug(u"You are now logged in as: '%s'", oauth_entry.user.nickname)
-            flash(_(u"you are now logged in as: '%(nickname)s'", nickname= oauth_entry.user.nickname),
+            log.debug(u"You are now logged in as: '%s'", oauth_entry.user.name)
+            flash(_(u"you are now logged in as: '%(nickname)s'", nickname= oauth_entry.user.name),
                   category="success")
             return redirect(url_for('web.index'))
         else:

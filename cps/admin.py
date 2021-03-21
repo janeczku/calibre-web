@@ -248,7 +248,7 @@ def list_users():
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     total_count = all_user.count()
     if search:
-        users = all_user.filter(or_(func.lower(ub.User.nickname).ilike("%" + search + "%"),
+        users = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
                                     func.lower(ub.User.email).ilike("%" + search + "%")))\
             .offset(off).limit(limit).all()
@@ -332,9 +332,9 @@ def edit_list_user(param):
     else:
         return ""
     for user in users:
-        if param =='nickname':
-            if not ub.session.query(ub.User).filter(ub.User.nickname == vals['value']).scalar():
-                user.nickname = vals['value']
+        if param =='name':
+            if not ub.session.query(ub.User).filter(ub.User.name == vals['value']).scalar():
+                user.name = vals['value']
             else:
                 log.error(u"This username is already taken")
                 return _(u"This username is already taken"), 400
@@ -532,7 +532,7 @@ def edit_restriction(res_type, user_id):
             elementlist = usr.list_allowed_tags()
             elementlist[int(element['id'][1:])] = element['Element']
             usr.allowed_tags = ','.join(elementlist)
-            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.nickname, usr.allowed_tags))
+            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.name, usr.allowed_tags))
         if res_type == 3:  # CColumn per user
             if isinstance(user_id, int):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -541,7 +541,7 @@ def edit_restriction(res_type, user_id):
             elementlist = usr.list_allowed_column_values()
             elementlist[int(element['id'][1:])] = element['Element']
             usr.allowed_column_value = ','.join(elementlist)
-            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.nickname, usr.allowed_column_value))
+            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.name, usr.allowed_column_value))
     if element['id'].startswith('d'):
         if res_type == 0:  # Tags as template
             elementlist = config.list_denied_tags()
@@ -561,7 +561,7 @@ def edit_restriction(res_type, user_id):
             elementlist = usr.list_denied_tags()
             elementlist[int(element['id'][1:])] = element['Element']
             usr.denied_tags = ','.join(elementlist)
-            ub.session_commit("Changed denied tags of user {} to {}".format(usr.nickname, usr.denied_tags))
+            ub.session_commit("Changed denied tags of user {} to {}".format(usr.name, usr.denied_tags))
         if res_type == 3:  # CColumn per user
             if isinstance(user_id, int):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -570,7 +570,7 @@ def edit_restriction(res_type, user_id):
             elementlist = usr.list_denied_column_values()
             elementlist[int(element['id'][1:])] = element['Element']
             usr.denied_column_value = ','.join(elementlist)
-            ub.session_commit("Changed denied columns of user {} to {}".format(usr.nickname, usr.denied_column_value))
+            ub.session_commit("Changed denied columns of user {} to {}".format(usr.name, usr.denied_column_value))
     return ""
 
 
@@ -617,10 +617,10 @@ def add_restriction(res_type, user_id):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
-            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.nickname, usr.list_allowed_tags))
+            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.name, usr.list_allowed_tags))
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
-            ub.session_commit("Changed denied tags of user {} to {}".format(usr.nickname, usr.list_denied_tags))
+            ub.session_commit("Changed denied tags of user {} to {}".format(usr.name, usr.list_denied_tags))
     if res_type == 3:  # CustomC per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -628,11 +628,11 @@ def add_restriction(res_type, user_id):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
-            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.nickname,
+            ub.session_commit("Changed allowed columns of user {} to {}".format(usr.name,
                                                                                 usr.list_allowed_column_values))
         elif 'submit_deny' in element:
             usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
-            ub.session_commit("Changed denied columns of user {} to {}".format(usr.nickname,
+            ub.session_commit("Changed denied columns of user {} to {}".format(usr.name,
                                                                                usr.list_denied_column_values))
     return ""
 
@@ -664,10 +664,10 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.nickname, usr.list_allowed_tags))
+            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.nickname, usr.list_allowed_tags))
+            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
     elif res_type == 3:  # Columns per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -675,12 +675,12 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
-            ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.nickname,
+            ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.name,
                                                                               usr.list_allowed_column_values))
 
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
-            ub.session_commit("Deleted denied columns of user {}: {}".format(usr.nickname,
+            ub.session_commit("Deleted denied columns of user {}: {}".format(usr.name,
                                                                              usr.list_denied_column_values))
     return ""
 
@@ -1156,18 +1156,18 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
 
     content.role = constants.selected_roles(to_save)
 
-    if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+    if not to_save["name"] or not to_save["email"] or not to_save["password"]:
         flash(_(u"Please fill out all fields!"), category="error")
         return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      registered_oauth=oauth_check, kobo_support=kobo_support,
                                      title=_(u"Add new user"))
     content.password = generate_password_hash(to_save["password"])
-    existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()) \
+    existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == to_save["name"].lower()) \
         .first()
     existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
         .first()
     if not existing_user and not existing_email:
-        content.nickname = to_save["nickname"]
+        content.name = to_save["name"]
         if config.config_public_reg and not check_valid_domain(to_save["email"]):
             flash(_(u"E-mail is not from valid domain"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
@@ -1176,7 +1176,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         else:
             content.email = to_save["email"]
     else:
-        flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
+        flash(_(u"Found an existing account for this e-mail address or name."), category="error")
         return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
@@ -1187,11 +1187,11 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.denied_column_value = config.config_denied_column_value
         ub.session.add(content)
         ub.session.commit()
-        flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
+        flash(_(u"User '%(user)s' created", user=content.name), category="success")
         return redirect(url_for('admin.admin'))
     except IntegrityError:
         ub.session.rollback()
-        flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
+        flash(_(u"Found an existing account for this e-mail address or name."), category="error")
     except OperationalError:
         ub.session.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
@@ -1203,15 +1203,15 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                             ub.User.id != content.id).count():
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
             ub.session_commit()
-            flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
+            flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
             return redirect(url_for('admin.admin'))
         else:
-            flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
+            flash(_(u"No admin user remaining, can't delete user", nick=content.name), category="error")
             return redirect(url_for('admin.admin'))
     else:
         if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                                 ub.User.id != content.id).count() and 'admin_role' not in to_save:
-            flash(_(u"No admin user remaining, can't remove admin role", nick=content.nickname), category="error")
+            flash(_(u"No admin user remaining, can't remove admin role", nick=content.name), category="error")
             return redirect(url_for('admin.admin'))
 
         if "password" in to_save and to_save["password"]:
@@ -1256,11 +1256,11 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                              new_user=0,
                                              content=content,
                                              registered_oauth=oauth_check,
-                                             title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
-        if "nickname" in to_save and to_save["nickname"] != content.nickname:
-            # Query User nickname, if not existing, change
-            if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
-                content.nickname = to_save["nickname"]
+                                             title=_(u"Edit User %(nick)s", nick=content.name), page="edituser")
+        if "name" in to_save and to_save["name"] != content.name:
+            # Query User name, if not existing, change
+            if not ub.session.query(ub.User).filter(ub.User.name == to_save["name"]).scalar():
+                content.name = to_save["name"]
             else:
                 flash(_(u"This username is already taken"), category="error")
                 return render_title_template("user_edit.html",
@@ -1270,14 +1270,14 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                              new_user=0, content=content,
                                              registered_oauth=oauth_check,
                                              kobo_support=kobo_support,
-                                             title=_(u"Edit User %(nick)s", nick=content.nickname),
+                                             title=_(u"Edit User %(nick)s", nick=content.name),
                                              page="edituser")
 
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
     try:
         ub.session_commit()
-        flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
+        flash(_(u"User '%(nick)s' updated", nick=content.name), category="success")
     except IntegrityError:
         ub.session.rollback()
         flash(_(u"An unknown error occured."), category="error")
@@ -1337,7 +1337,7 @@ def update_mailsettings():
 
     if to_save.get("test"):
         if current_user.email:
-            result = send_test_mail(current_user.email, current_user.nickname)
+            result = send_test_mail(current_user.email, current_user.name)
             if result is None:
                 flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.email),
                       category="success")
@@ -1356,7 +1356,7 @@ def update_mailsettings():
 @admin_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
-    if not content or (not config.config_anonbrowse and content.nickname == "Guest"):
+    if not content or (not config.config_anonbrowse and content.name == "Guest"):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
     languages = calibre_db.speaking_language()
@@ -1373,7 +1373,7 @@ def edit_user(user_id):
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
-                                 title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+                                 title=_(u"Edit User %(nick)s", nick=content.name), page="edituser")
 
 
 @admi.route("/admin/resetpassword/<int:user_id>")
@@ -1500,8 +1500,8 @@ def ldap_import_create_user(user, user_data):
 
     username = user_data[user_login_field][0].decode('utf-8')
     # check for duplicate username
-    if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
-        # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
+    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first():
+        # if ub.session.query(ub.User).filter(ub.User.name == username).first():
         log.warning("LDAP User  %s Already in Database", user_data)
         return 0, None
 
@@ -1519,7 +1519,7 @@ def ldap_import_create_user(user, user_data):
         log.warning("LDAP Email %s Already in Database", user_data)
         return 0, None
     content = ub.User()
-    content.nickname = username
+    content.name = username
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
     content.kindle_mail = kindlemail

@@ -618,7 +618,7 @@ def upload_single_file(request, book, book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            WorkerThread.add(current_user.nickname, TaskUpload(
+            WorkerThread.add(current_user.name, TaskUpload(
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>"))
 
             return uploader.process(
@@ -997,7 +997,7 @@ def upload():
                 if error:
                     flash(error, category="error")
                 uploadText=_(u"File %(file)s uploaded", file=title)
-                WorkerThread.add(current_user.nickname, TaskUpload(
+                WorkerThread.add(current_user.name, TaskUpload(
                     "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>"))
 
                 if len(request.files.getlist("btn-upload")) < 2:
@@ -1027,7 +1027,7 @@ def convert_bookformat(book_id):
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
-                                     book_format_to.upper(), current_user.nickname)
+                                     book_format_to.upper(), current_user.name)
 
     if rtn is None:
         flash(_(u"Book successfully queued for converting to %(book_format)s",
