@@ -31,7 +31,6 @@ from datetime import datetime, timedelta
 
 from babel import Locale as LC
 from babel.dates import format_datetime
-from babel.core import UnknownLocaleError
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
@@ -40,7 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
-from . import constants, logger, helper, services, isoLanguages
+from . import constants, logger, helper, services
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
@@ -63,7 +62,7 @@ feature_support = {
     }
 
 try:
-    import rarfile
+    import rarfile  # pylint: disable=unused-import
     feature_support['rar'] = True
 except (ImportError, SyntaxError):
     feature_support['rar'] = False
@@ -284,7 +283,6 @@ def list_users():
 @admin_required
 def delete_user():
     # ToDo User delete check also not last one
-    pass
     return ""
 
 @admi.route("/ajax/getlocale")
