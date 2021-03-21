@@ -31,7 +31,6 @@ from datetime import datetime, timedelta
 
 from babel import Locale as LC
 from babel.dates import format_datetime
-from babel.core import UnknownLocaleError
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
@@ -63,7 +62,7 @@ feature_support = {
     }
 
 try:
-    import rarfile
+    import rarfile  # pylint: disable=unused-import
     feature_support['rar'] = True
 except (ImportError, SyntaxError):
     feature_support['rar'] = False
@@ -301,7 +300,6 @@ def list_users():
 @admin_required
 def delete_user():
     # ToDo User delete check also not last one
-    pass
     return ""
 
 @admi.route("/ajax/getlocale")
