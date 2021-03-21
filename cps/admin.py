@@ -1495,6 +1495,51 @@ def get_updater_status():
     return ''
 
 
+def ldap_import_create_user(user, user_data):
+    user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
+
+    username = user_data[user_login_field][0].decode('utf-8')
+    # check for duplicate username
+    if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
+        # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
+        log.warning("LDAP User  %s Already in Database", user_data)
+        return 0, None
+
+    kindlemail = ''
+    if 'mail' in user_data:
+        useremail = user_data['mail'][0].decode('utf-8')
+        if len(user_data['mail']) > 1:
+            kindlemail = user_data['mail'][1].decode('utf-8')
+
+    else:
+        log.debug('No Mail Field Found in LDAP Response')
+        useremail = username + '@email.com'
+    # check for duplicate email
+    if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
+        log.warning("LDAP Email %s Already in Database", user_data)
+        return 0, None
+    content = ub.User()
+    content.nickname = username
+    content.password = ''  # dummy password which will be replaced by ldap one
+    content.email = useremail
+    content.kindle_mail = kindlemail
+    content.role = config.config_default_role
+    content.sidebar_view = config.config_default_show
+    content.allowed_tags = config.config_allowed_tags
+    content.denied_tags = config.config_denied_tags
+    content.allowed_column_value = config.config_allowed_column_value
+    content.denied_column_value = config.config_denied_column_value
+    ub.session.add(content)
+    try:
+        ub.session.commit()
+        return 1, None    # increase no of users
+    except Exception as e:
+        log.warning("Failed to create LDAP user: %s - %s", user, e)
+        ub.session.rollback()
+        message = _(u'Failed to Create at Least One LDAP User')
+        return 0, message
+
+
 @admi.route('/import_ldap_users')
 @login_required
 @admin_required
@@ -1534,47 +1579,11 @@ def import_ldap_users():
             log.debug_or_exception(e)
             continue
         if user_data:
-            user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
-
-            username = user_data[user_login_field][0].decode('utf-8')
-            # check for duplicate username
-            if ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first():
-                # if ub.session.query(ub.User).filter(ub.User.nickname == username).first():
-                log.warning("LDAP User  %s Already in Database", user_data)
-                continue
-
-            kindlemail = ''
-            if 'mail' in user_data:
-                useremail = user_data['mail'][0].decode('utf-8')
-                if len(user_data['mail']) > 1:
-                    kindlemail = user_data['mail'][1].decode('utf-8')
-
+            user_count, message = ldap_import_create_user(user, user_data, showtext)
+            if message:
+                showtext['text'] = message
             else:
-                log.debug('No Mail Field Found in LDAP Response')
-                useremail = username + '@email.com'
-            # check for duplicate email
-            if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
-                log.warning("LDAP Email %s Already in Database", user_data)
-                continue
-            content = ub.User()
-            content.nickname = username
-            content.password = ''  # dummy password which will be replaced by ldap one
-            content.email = useremail
-            content.kindle_mail = kindlemail
-            content.role = config.config_default_role
-            content.sidebar_view = config.config_default_show
-            content.allowed_tags = config.config_allowed_tags
-            content.denied_tags = config.config_denied_tags
-            content.allowed_column_value = config.config_allowed_column_value
-            content.denied_column_value = config.config_denied_column_value
-            ub.session.add(content)
-            try:
-                ub.session.commit()
-                imported += 1
-            except Exception as e:
-                log.warning("Failed to create LDAP user: %s - %s", user, e)
-                ub.session.rollback()
-                showtext['text'] = _(u'Failed to Create at Least One LDAP User')
+                imported += user_count
         else:
             log.warning("LDAP User: %s Not Found", user)
             showtext['text'] = _(u'At Least One LDAP User Not Found in Database')

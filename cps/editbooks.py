@@ -883,6 +883,48 @@ def create_book_on_upload(modif_date, meta):
     calibre_db.session.flush()
     return db_book, input_authors, title_dir
 
+def file_handling_on_upload(requested_file):
+    # check if file extension is correct
+    if '.' in requested_file.filename:
+        file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+        if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+            flash(
+                _("File extension '%(ext)s' is not allowed to be uploaded to this server",
+                  ext=file_ext), category="error")
+            return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    else:
+        flash(_('File to be uploaded must have an extension'), category="error")
+        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+
+    # extract metadata from file
+    try:
+        meta = uploader.upload(requested_file, config.config_rarfile_location)
+    except (IOError, OSError):
+        log.error("File %s could not saved to temp dir", requested_file.filename)
+        flash(_(u"File %(filename)s could not saved to temp dir",
+                filename=requested_file.filename), category="error")
+        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    return meta, None
+
+
+def move_coverfile(meta, db_book):
+    # move cover to final directory, including book id
+    if meta.cover:
+        coverfile = meta.cover
+    else:
+        coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
+    try:
+        copyfile(coverfile, new_coverpath)
+        if meta.cover:
+            os.unlink(meta.cover)
+    except OSError as e:
+        log.error("Failed to move cover file %s: %s", new_coverpath, e)
+        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
+                error=e),
+              category="error")
+
+
 @editbook.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
 @upload_required
@@ -897,30 +939,15 @@ def upload():
                 calibre_db.update_title_sort(config)
                 calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
-                # check if file extension is correct
-                if '.' in requested_file.filename:
-                    file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
-                        flash(
-                            _("File extension '%(ext)s' is not allowed to be uploaded to this server",
-                              ext=file_ext), category="error")
-                        return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+                response, error = file_handling_on_upload(requested_file)
+                if error:
+                    return response
                 else:
-                    flash(_('File to be uploaded must have an extension'), category="error")
-                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-
-                # extract metadata from file
-                try:
-                    meta = uploader.upload(requested_file, config.config_rarfile_location)
-                except (IOError, OSError):
-                    log.error("File %s could not saved to temp dir", requested_file.filename)
-                    flash(_(u"File %(filename)s could not saved to temp dir",
-                            filename= requested_file.filename), category="error")
-                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+                    meta = response
 
                 db_book, input_authors, title_dir = create_book_on_upload(modif_date, meta)
 
-                # Comments needs book id therfore only possible after flush
+                # Comments needs book id therefore only possible after flush
                 modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
 
                 book_id = db_book.id
@@ -932,21 +959,7 @@ def upload():
                                                    meta.file_path,
                                                    title_dir + meta.extension)
 
-                # move cover to final directory, including book id
-                if meta.cover:
-                    coverfile = meta.cover
-                else:
-                    coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-                new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
-                try:
-                    copyfile(coverfile, new_coverpath)
-                    if meta.cover:
-                        os.unlink(meta.cover)
-                except OSError as e:
-                    log.error("Failed to move cover file %s: %s", new_coverpath, e)
-                    flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
-                            error=e),
-                          category="error")
+                move_coverfile(meta, db_book)
 
                 # save data to database, reread data
                 calibre_db.session.commit()

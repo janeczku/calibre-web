@@ -299,39 +299,6 @@ if ub.oauth_support:
         )  # ToDo: Translate
         flash(msg, category="error")
 
-
-    @oauth.route('/link/github')
-    @oauth_required
-    def github_login():
-        if not github.authorized:
-            return redirect(url_for('github.login'))
-        account_info = github.get('/user')
-        if account_info.ok:
-            account_info_json = account_info.json()
-            return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login', 'github')
-        flash(_(u"GitHub Oauth error, please retry later."), category="error")
-        return redirect(url_for('web.login'))
-
-
-    @oauth.route('/unlink/github', methods=["GET"])
-    @login_required
-    def github_login_unlink():
-        return unlink_oauth(oauthblueprints[0]['id'])
-
-
-    @oauth.route('/link/google')
-    @oauth_required
-    def google_login():
-        if not google.authorized:
-            return redirect(url_for("google.login"))
-        resp = google.get("/oauth2/v2/userinfo")
-        if resp.ok:
-            account_info_json = resp.json()
-            return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login', 'google')
-        flash(_(u"Google Oauth error, please retry later."), category="error")
-        return redirect(url_for('web.login'))
-
-
     @oauth_error.connect_via(oauthblueprints[1]['blueprint'])
     def google_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
@@ -346,7 +313,39 @@ if ub.oauth_support:
         flash(msg, category="error")
 
 
-    @oauth.route('/unlink/google', methods=["GET"])
-    @login_required
-    def google_login_unlink():
-        return unlink_oauth(oauthblueprints[1]['id'])
+@oauth.route('/link/github')
+@oauth_required
+def github_login():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+    account_info = github.get('/user')
+    if account_info.ok:
+        account_info_json = account_info.json()
+        return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login', 'github')
+    flash(_(u"GitHub Oauth error, please retry later."), category="error")
+    return redirect(url_for('web.login'))
+
+
+@oauth.route('/unlink/github', methods=["GET"])
+@login_required
+def github_login_unlink():
+    return unlink_oauth(oauthblueprints[0]['id'])
+
+
+@oauth.route('/link/google')
+@oauth_required
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v2/userinfo")
+    if resp.ok:
+        account_info_json = resp.json()
+        return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login', 'google')
+    flash(_(u"Google Oauth error, please retry later."), category="error")
+    return redirect(url_for('web.login'))
+
+
+@oauth.route('/unlink/google', methods=["GET"])
+@login_required
+def google_login_unlink():
+    return unlink_oauth(oauthblueprints[1]['id'])
