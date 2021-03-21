@@ -510,15 +510,14 @@ class Updater(threading.Thread):
                     # before major update
                     if i == (len(commit) - 1):
                         i -= 1
-                    status, parents = self._stable_updater_parse_major_version(self,
-                                                                               commit,
+                    status, parents = self._stable_updater_parse_major_version(commit,
                                                                                i,
                                                                                parents,
                                                                                current_version,
                                                                                status)
                     break
 
-            status = self._stable_updater_set_status(self, i, newer, status, parents, commit)
+            status = self._stable_updater_set_status(i, newer, status, parents, commit)
         return json.dumps(status)
 
     def _get_request_path(self):

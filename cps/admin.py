@@ -1579,7 +1579,7 @@ def import_ldap_users():
             log.debug_or_exception(e)
             continue
         if user_data:
-            user_count, message = ldap_import_create_user(user, user_data, showtext)
+            user_count, message = ldap_import_create_user(user, user_data)
             if message:
                 showtext['text'] = message
             else:
