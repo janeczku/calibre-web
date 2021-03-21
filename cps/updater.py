@@ -403,6 +403,52 @@ class Updater(threading.Thread):
             return json.dumps(status)
         return ''
 
+    def _stable_updater_set_status(self, i, newer, status, parents, commit):
+        if i == -1 and newer == False:
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(
+                    u'Click on the button below to update to the latest stable version.'),
+                'history': parents
+            })
+            self.updateFile = commit[0]['zipball_url']
+        elif i == -1 and newer == True:
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[0]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[0]['zipball_url']
+        return status
+
+    def _stable_updater_parse_major_version(self, commit, i, parents, current_version, status):
+        if int(commit[i + 1]['tag_name'].split('.')[1]) == current_version[1]:
+            parents.append([commit[i]['tag_name'],
+                            commit[i]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[i]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[i]['zipball_url']
+        else:
+            parents.append([commit[i + 1]['tag_name'],
+                            commit[i + 1]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[i + 1]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[i + 1]['zipball_url']
+        return status, parents
+
     def _stable_available_updates(self, request_method):
         if request_method == "GET":
             parents = []
@@ -464,48 +510,15 @@ class Updater(threading.Thread):
                     # before major update
                     if i == (len(commit) - 1):
                         i -= 1
-                    if int(commit[i+1]['tag_name'].split('.')[1]) == current_version[1]:
-                        parents.append([commit[i]['tag_name'],
-                                        commit[i]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
-                        status.update({
-                            'update': True,
-                            'success': True,
-                            'message': _(u'A new update is available. Click on the button below to '
-                                         u'update to version: %(version)s', version=commit[i]['tag_name']),
-                            'history': parents
-                        })
-                        self.updateFile = commit[i]['zipball_url']
-                    else:
-                        parents.append([commit[i+1]['tag_name'],
-                                        commit[i+1]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
-                        status.update({
-                            'update': True,
-                            'success': True,
-                            'message': _(u'A new update is available. Click on the button below to '
-                                         u'update to version: %(version)s', version=commit[i+1]['tag_name']),
-                            'history': parents
-                        })
-                        self.updateFile = commit[i+1]['zipball_url']
+                    status, parents = self._stable_updater_parse_major_version(self,
+                                                                               commit,
+                                                                               i,
+                                                                               parents,
+                                                                               current_version,
+                                                                               status)
                     break
-            if i == -1 and newer == False:
-                status.update({
-                    'update': True,
-                    'success': True,
-                    'message': _(
-                        u'Click on the button below to update to the latest stable version.'),
-                    'history': parents
-                })
-                self.updateFile = commit[0]['zipball_url']
-            elif i == -1 and newer == True:
-                status.update({
-                    'update': True,
-                    'success': True,
-                    'message': _(u'A new update is available. Click on the button below to '
-                                 u'update to version: %(version)s', version=commit[0]['tag_name']),
-                    'history': parents
-                })
-                self.updateFile = commit[0]['zipball_url']
 
+            status = self._stable_updater_set_status(self, i, newer, status, parents, commit)
         return json.dumps(status)
 
     def _get_request_path(self):

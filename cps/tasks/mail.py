@@ -110,8 +110,7 @@ class TaskEmail(CalibreTask):
 
         self.results = dict()
 
-    def run(self, worker_thread):
-        # create MIME message
+    def prepare_message(self):
         msg = MIMEMultipart()
         msg['Subject'] = self.subject
         msg['Message-Id'] = make_msgid('calibre-web')
@@ -128,19 +127,22 @@ class TaskEmail(CalibreTask):
 
         msg['From'] = self.settings["mail_from"]
         msg['To'] = self.recipent
+        # convert MIME message to string
+        fp = StringIO()
+        gen = Generator(fp, mangle_from_=False)
+        gen.flatten(msg)
+        return fp.getvalue()
+
+    def run(self, worker_thread):
+        # create MIME message
+        msg = self.prepare_message()
 
         use_ssl = int(self.settings.get('mail_use_ssl', 0))
         try:
-            # convert MIME message to string
-            fp = StringIO()
-            gen = Generator(fp, mangle_from_=False)
-            gen.flatten(msg)
-            msg = fp.getvalue()
-
             # send email
             timeout = 600  # set timeout to 5mins
 
-            # redirect output to logfile on python2 pn python3 debugoutput is caught with overwritten
+            # redirect output to logfile on python2 on python3 debugoutput is caught with overwritten
             # _print_debug function
             if sys.version_info < (3, 0):
                 org_smtpstderr = smtplib.stderr
@@ -169,7 +171,6 @@ class TaskEmail(CalibreTask):
         except (MemoryError) as e:
             log.debug_or_exception(e)
             self._handleError(u'MemoryError sending email: ' + str(e))
-            # return None
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.decode('utf-8').replace("\n", '. ')
@@ -181,10 +182,8 @@ class TaskEmail(CalibreTask):
                 log.debug_or_exception(e)
                 text = ''
             self._handleError(u'Smtplib Error sending email: ' + text)
-            # return None
         except (socket.error) as e:
             self._handleError(u'Socket Error sending email: ' + e.strerror)
-            # return None
 
 
     @property

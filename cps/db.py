@@ -442,11 +442,79 @@ class CalibreDB():
 
         self.instances.add(self)
 
-
     def initSession(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
+
+    @classmethod
+    def setup_db_cc_classes(self, cc):
+        cc_ids = []
+        books_custom_column_links = {}
+        for row in cc:
+            if row.datatype not in cc_exceptions:
+                if row.datatype == 'series':
+                    dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
+                                 'id': Column(Integer, primary_key=True),
+                                 'book': Column(Integer, ForeignKey('books.id'),
+                                                primary_key=True),
+                                 'map_value': Column('value', Integer,
+                                                     ForeignKey('custom_column_' +
+                                                                str(row.id) + '.id'),
+                                                     primary_key=True),
+                                 'extra': Column(Float),
+                                 'asoc': relationship('custom_column_' + str(row.id), uselist=False),
+                                 'value': association_proxy('asoc', 'value')
+                                 }
+                    books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
+                                                             (Base,), dicttable)
+                else:
+                    books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
+                                                              Base.metadata,
+                                                              Column('book', Integer, ForeignKey('books.id'),
+                                                                     primary_key=True),
+                                                              Column('value', Integer,
+                                                                     ForeignKey('custom_column_' +
+                                                                                str(row.id) + '.id'),
+                                                                     primary_key=True)
+                                                              )
+                cc_ids.append([row.id, row.datatype])
+
+                ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                          'id': Column(Integer, primary_key=True)}
+                if row.datatype == 'float':
+                    ccdict['value'] = Column(Float)
+                elif row.datatype == 'int':
+                    ccdict['value'] = Column(Integer)
+                elif row.datatype == 'bool':
+                    ccdict['value'] = Column(Boolean)
+                else:
+                    ccdict['value'] = Column(String)
+                if row.datatype in ['float', 'int', 'bool']:
+                    ccdict['book'] = Column(Integer, ForeignKey('books.id'))
+                cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
+
+        for cc_id in cc_ids:
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(cc_classes[cc_id[0]],
+                                     primaryjoin=(
+                                         Books.id == cc_classes[cc_id[0]].book),
+                                     backref='books'))
+            elif (cc_id[1] == 'series'):
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(books_custom_column_links[cc_id[0]],
+                                     backref='books'))
+            else:
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(cc_classes[cc_id[0]],
+                                     secondary=books_custom_column_links[cc_id[0]],
+                                     backref='books'))
+
+        return cc_classes
 
     @classmethod
     def setup_db(cls, config, app_db_path):
@@ -483,72 +551,8 @@ class CalibreDB():
         config.db_configured = True
 
         if not cc_classes:
-            cc = conn.execute(text("SELECT id, datatype FROM custom_columns"))
-
-            cc_ids = []
-            books_custom_column_links = {}
-            for row in cc:
-                if row.datatype not in cc_exceptions:
-                    if row.datatype == 'series':
-                        dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
-                                     'id': Column(Integer, primary_key=True),
-                                     'book': Column(Integer, ForeignKey('books.id'),
-                                                    primary_key=True),
-                                     'map_value': Column('value', Integer,
-                                                         ForeignKey('custom_column_' +
-                                                                    str(row.id) + '.id'),
-                                                         primary_key=True),
-                                     'extra': Column(Float),
-                                     'asoc': relationship('custom_column_' + str(row.id), uselist=False),
-                                     'value': association_proxy('asoc', 'value')
-                                     }
-                        books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
-                                                                 (Base,), dicttable)
-                    else:
-                        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
-                                                                  Base.metadata,
-                                                                  Column('book', Integer, ForeignKey('books.id'),
-                                                                         primary_key=True),
-                                                                  Column('value', Integer,
-                                                                         ForeignKey('custom_column_' +
-                                                                                    str(row.id) + '.id'),
-                                                                         primary_key=True)
-                                                                  )
-                    cc_ids.append([row.id, row.datatype])
-
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True)}
-                    if row.datatype == 'float':
-                        ccdict['value'] = Column(Float)
-                    elif row.datatype == 'int':
-                        ccdict['value'] = Column(Integer)
-                    elif row.datatype == 'bool':
-                        ccdict['value'] = Column(Boolean)
-                    else:
-                        ccdict['value'] = Column(String)
-                    if row.datatype in ['float', 'int', 'bool']:
-                        ccdict['book'] = Column(Integer, ForeignKey('books.id'))
-                    cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
-
-            for cc_id in cc_ids:
-                if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(cc_classes[cc_id[0]],
-                                         primaryjoin=(
-                                             Books.id == cc_classes[cc_id[0]].book),
-                                         backref='books'))
-                elif (cc_id[1] == 'series'):
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(books_custom_column_links[cc_id[0]],
-                                         backref='books'))
-                else:
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(cc_classes[cc_id[0]],
-                                         secondary=books_custom_column_links[cc_id[0]],
-                                         backref='books'))
+            cc = conn.execute("SELECT id, datatype FROM custom_columns")
+            cls.setup_db_cc_classes(cc)
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,

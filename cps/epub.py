@@ -87,18 +87,29 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     lang = epub_metadata['language'].split('-', 1)[0].lower()
     epub_metadata['language'] = isoLanguages.get_lang3(lang)
 
-    series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series']/@content", namespaces=ns)
-    if len(series) > 0:
-        epub_metadata['series'] = series[0]
-    else:
-        epub_metadata['series'] = ''
+    epub_metadata = parse_epbub_series(tree, epub_metadata)
 
-    series_id = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series_index']/@content", namespaces=ns)
-    if len(series_id) > 0:
-        epub_metadata['series_id'] = series_id[0]
-    else:
-        epub_metadata['series_id'] = '1'
+    coverfile = parse_ebpub_cover(ns, tree, epubZip, coverpath, tmp_file_path)
 
+    if not epub_metadata['title']:
+        title = original_file_name
+    else:
+        title = epub_metadata['title']
+
+    return BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=title.encode('utf-8').decode('utf-8'),
+        author=epub_metadata['creator'].encode('utf-8').decode('utf-8'),
+        cover=coverfile,
+        description=epub_metadata['description'],
+        tags=epub_metadata['subject'].encode('utf-8').decode('utf-8'),
+        series=epub_metadata['series'].encode('utf-8').decode('utf-8'),
+        series_id=epub_metadata['series_id'].encode('utf-8').decode('utf-8'),
+        languages=epub_metadata['language'],
+        publisher="")
+
+def parse_ebpub_cover(ns, tree, epubZip, coverpath, tmp_file_path):
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     coverfile = None
     if len(coversection) > 0:
@@ -126,21 +137,18 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                     coverfile = extractCover(epubZip, filename, "", tmp_file_path)
             else:
                 coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
+    return coverfile
 
-    if not epub_metadata['title']:
-        title = original_file_name
+def parse_epbub_series(tree, epub_metadata):
+    series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series']/@content", namespaces=ns)
+    if len(series) > 0:
+        epub_metadata['series'] = series[0]
     else:
-        title = epub_metadata['title']
+        epub_metadata['series'] = ''
 
-    return BookMeta(
-        file_path=tmp_file_path,
-        extension=original_file_extension,
-        title=title.encode('utf-8').decode('utf-8'),
-        author=epub_metadata['creator'].encode('utf-8').decode('utf-8'),
-        cover=coverfile,
-        description=epub_metadata['description'],
-        tags=epub_metadata['subject'].encode('utf-8').decode('utf-8'),
-        series=epub_metadata['series'].encode('utf-8').decode('utf-8'),
-        series_id=epub_metadata['series_id'].encode('utf-8').decode('utf-8'),
-        languages=epub_metadata['language'],
-        publisher="")
+    series_id = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series_index']/@content", namespaces=ns)
+    if len(series_id) > 0:
+        epub_metadata['series_id'] = series_id[0]
+    else:
+        epub_metadata['series_id'] = '1'
+    return epub_metadata
