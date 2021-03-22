@@ -99,10 +99,35 @@ def feed_normal_search():
 
 @opds.route("/opds/books")
 @requires_basic_auth_if_no_ano
-def feed_books():
+def feed_booksindex():
     off = request.args.get("offset") or 0
+    entries = calibre_db.session.query(func.upper(func.substr(db.Books.sort, 1, 1)).label('id'))\
+        .filter(calibre_db.common_filters()).group_by(func.upper(func.substr(db.Books.sort, 1, 1))).all()
+
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+    for entry in entries:
+        elements.append({'id': entry.id, 'name': entry.id})
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(elements))
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_books',
+                               pagination=pagination)
+
+
+@opds.route("/opds/books/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_books(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Books.sort).startswith(book_id)
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books, True, [db.Books.sort])
+                                                        db.Books,
+                                                        letter,
+                                                        [db.Books.sort])
+
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -160,22 +185,29 @@ def feed_hot():
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset") or 0
-    entries = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('id'),
-                                       func.upper(func.substr(db.Authors.sort, 1, 1)).label('name')) \
-        .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
+    entries = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('id'))\
+        .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters())\
         .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
 
-    # ToDo: Add All to list -> All: id = 0
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+    for entry in entries:
+        elements.append({'id': entry.id, 'name': entry.id})
+
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(entries))
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_letter_author', pagination=pagination)
+                            len(elements))
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_author',
+                               pagination=pagination)
 
 
 @opds.route("/opds/author/letter/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_letter_author(book_id):
     off = request.args.get("offset") or 0
-    letter = true() if book_id == "0" else func.upper(db.Authors.sort).startswith(book_id)
+    letter = true() if book_id == "00" else func.upper(db.Authors.sort).startswith(book_id)
     entries = calibre_db.session.query(db.Authors).join(db.books_authors_link).join(db.Books)\
         .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_authors_link.author'))\
@@ -227,10 +259,31 @@ def feed_publisher(book_id):
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
     off = request.args.get("offset") or 0
+    entries = calibre_db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('id'))\
+        .join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters())\
+        .group_by(func.upper(func.substr(db.Tags.name, 1, 1))).all()
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+    for entry in entries:
+        elements.append({'id': entry.id, 'name': entry.id})
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(elements))
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_category',
+                               pagination=pagination)
+
+@opds.route("/opds/category/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_category(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Tags.name).startswith(book_id)
     entries = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\
         .join(db.Books)\
-        .filter(calibre_db.common_filters())\
+        .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_tags_link.tag'))\
         .order_by(db.Tags.name)\
         .offset(off)\
@@ -255,10 +308,31 @@ def feed_category(book_id):
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("offset") or 0
+    entries = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('id'))\
+        .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters())\
+        .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+    for entry in entries:
+        elements.append({'id': entry.id, 'name': entry.id})
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(elements))
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_series',
+                               pagination=pagination)
+
+@opds.route("/opds/series/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_series(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Series.sort).startswith(book_id)
     entries = calibre_db.session.query(db.Series)\
         .join(db.books_series_link)\
         .join(db.Books)\
-        .filter(calibre_db.common_filters())\
+        .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_series_link.series'))\
         .order_by(db.Series.sort)\
         .offset(off).all()
@@ -294,7 +368,7 @@ def feed_ratingindex():
                             len(entries))
     element = list()
     for entry in entries:
-        element.append(FeedObject(entry[0].id, "{} Stars".format(entry.name)))
+        element.append(FeedObject(entry[0].id, _("{} Stars").format(entry.name)))
     return render_xml_template('feed.xml', listelements=element, folder='opds.feed_ratings', pagination=pagination)
 
 
