@@ -502,6 +502,7 @@ def render_author_books(page, author_id, order):
                                                         db.Books.authors.any(db.Authors.id == author_id),
                                                         [order[0], db.Series.name, db.Books.series_index],
                                                         db.books_series_link,
+                                                        db.Books.id == db.books_series_link.c.book,
                                                         db.Series)
     if entries is None or not len(entries):
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
@@ -530,6 +531,7 @@ def render_publisher_books(page, book_id, order):
                                                                 db.Books.publishers.any(db.Publishers.id == book_id),
                                                                 [db.Series.name, order[0], db.Books.series_index],
                                                                 db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
@@ -583,7 +585,9 @@ def render_category_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.tags.any(db.Tags.id == book_id),
                                                                 [order[0], db.Series.name, db.Books.series_index],
-                                                                db.books_series_link, db.Series)
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Category: %(name)s", name=name.name), page="category")
     else:
