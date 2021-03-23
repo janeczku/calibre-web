@@ -109,12 +109,14 @@ def search_objects_add(db_book_object, db_type, input_elements):
 
 
 def remove_objects(db_book_object, db_session, del_elements):
+    changed = False
     if len(del_elements) > 0:
         for del_element in del_elements:
             db_book_object.remove(del_element)
             changed = True
             if len(del_element.books) == 0:
                 db_session.delete(del_element)
+    return changed
 
 def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
     changed = False
@@ -147,6 +149,7 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             db_element = create_objects_for_addition(db_element, add_element, db_type)
             changed = True
             # add element to book
+            changed = True
             db_book_object.append(db_element)
     return changed
 
@@ -154,7 +157,7 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
 def create_objects_for_addition(db_element, add_element, db_type):
     if db_type == 'custom':
         if db_element.value != add_element:
-            db_element.value = add_element
+            db_element.value = add_element  # ToDo: Before new_element, but this is not plausible
     elif db_type == 'languages':
         if db_element.lang_code != add_element:
             db_element.lang_code = add_element
@@ -172,6 +175,7 @@ def create_objects_for_addition(db_element, add_element, db_type):
             db_element.sort = None
     elif db_element.name != add_element:
         db_element.name = add_element
+    return db_element
 
 
 # Modifies different Database objects, first check if elements if elements have to be deleted,
@@ -187,11 +191,11 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     # 2. search for elements that need to be added
     add_elements = search_objects_add(db_book_object, db_type, input_elements)
     # if there are elements to remove, we remove them now
-    remove_objects(db_book_object, db_session, del_elements)
+    changed = remove_objects(db_book_object, db_session, del_elements)
     # if there are elements to add, we add them now!
     if len(add_elements) > 0:
-        return add_objects(db_book_object, db_object, db_session, db_type, add_elements)
-    return False
+        changed |= add_objects(db_book_object, db_object, db_session, db_type, add_elements)
+    return changed
 
 
 def modify_identifiers(input_identifiers, db_identifiers, db_session):
@@ -967,11 +971,9 @@ def upload():
                 calibre_db.update_title_sort(config)
                 calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
-                response, error = file_handling_on_upload(requested_file)
+                meta, error = file_handling_on_upload(requested_file)
                 if error:
-                    return response
-                else:
-                    meta = response
+                    return error
 
                 db_book, input_authors, title_dir = create_book_on_upload(modif_date, meta)
 
