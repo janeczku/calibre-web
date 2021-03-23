@@ -636,6 +636,8 @@ class CalibreDB():
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
         elif len(join) == 2:
             query = query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            query = query.outerjoin(join[0])
         query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()

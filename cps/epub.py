@@ -87,7 +87,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     lang = epub_metadata['language'].split('-', 1)[0].lower()
     epub_metadata['language'] = isoLanguages.get_lang3(lang)
 
-    epub_metadata = parse_epbub_series(tree, epub_metadata)
+    epub_metadata = parse_epbub_series(ns, tree, epub_metadata)
 
     coverfile = parse_ebpub_cover(ns, tree, epubZip, coverpath, tmp_file_path)
 
@@ -139,7 +139,7 @@ def parse_ebpub_cover(ns, tree, epubZip, coverpath, tmp_file_path):
                 coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
     return coverfile
 
-def parse_epbub_series(tree, epub_metadata):
+def parse_epbub_series(ns, tree, epub_metadata):
     series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series']/@content", namespaces=ns)
     if len(series) > 0:
         epub_metadata['series'] = series[0]
