@@ -42,6 +42,7 @@ except NameError:
 
 
 oauth_check = {}
+oauthblueprints = []
 oauth = Blueprint('oauth', __name__)
 log = logger.create()
 
@@ -203,7 +204,6 @@ def unlink_oauth(provider):
     return redirect(url_for('web.profile'))
 
 def generate_oauth_blueprints():
-    oauthblueprints = []
     if not ub.session.query(ub.OAuthProvider).count():
         for provider in ("github", "google"):
             oauthProvider = ub.OAuthProvider()
