@@ -222,7 +222,7 @@ $(function() {
     function updateTimer() {
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/get_updater_status",
+            url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
                 // console.log(data.status);
                 $("#DialogContent").html(updateText[data.status]);
