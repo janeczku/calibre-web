@@ -16,7 +16,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+        <a class="btn btn-default" id="resend_password" href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
@@ -52,9 +52,9 @@
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>
         {% if id not in oauth_status %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
+        <a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a>
         {% else %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
+        <a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a>
         {% endif %}
       {% endfor %}
     </div>
