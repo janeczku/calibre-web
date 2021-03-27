@@ -42,6 +42,7 @@
           {% endif %}
         {% endfor %}
       </table>
+    {% endif %}
         <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
         <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
       {% if (config.config_login_type == 1) %}
