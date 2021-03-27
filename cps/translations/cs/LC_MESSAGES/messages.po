@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-03-15 08:14+0100\n"
+"POT-Creation-Date: 2021-03-27 12:16+0100\n"
 "PO-Revision-Date: 2020-06-09 21:11+0100\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: cps/about.py:42
+#: cps/about.py:43
 msgid "installed"
 msgstr "nainstalováno"
 
-#: cps/about.py:44 cps/converter.py:32
+#: cps/about.py:45 cps/converter.py:32
 msgid "not installed"
 msgstr "není nainstalováno"
 
-#: cps/about.py:105
+#: cps/about.py:106
 msgid "Statistics"
 msgstr "Statistika"
 
@@ -45,10 +45,10 @@ msgstr "Úspěšně obnovené připojení"
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: cps/admin.py:172 cps/editbooks.py:642 cps/editbooks.py:654
-#: cps/editbooks.py:757 cps/editbooks.py:759 cps/editbooks.py:820
-#: cps/editbooks.py:836 cps/updater.py:511 cps/uploader.py:90
-#: cps/uploader.py:100
+#: cps/admin.py:172 cps/editbooks.py:662 cps/editbooks.py:674
+#: cps/editbooks.py:777 cps/editbooks.py:779 cps/editbooks.py:806
+#: cps/editbooks.py:822 cps/updater.py:521 cps/uploader.py:94
+#: cps/uploader.py:104
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -145,7 +145,7 @@ msgstr "Umístění souboru klíčů není platné, zadejte prosím správnou ce
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Umístění certifikátu není platné, zadejte prosím správnou cestu"
 
-#: cps/admin.py:917 cps/admin.py:1024 cps/admin.py:1047 cps/admin.py:1169
+#: cps/admin.py:917 cps/admin.py:1024 cps/admin.py:1047 cps/admin.py:1168
 #: cps/shelf.py:102 cps/shelf.py:159 cps/shelf.py:200 cps/shelf.py:261
 #: cps/shelf.py:314 cps/shelf.py:348 cps/shelf.py:418
 msgid "Settings DB is not Writeable"
@@ -163,7 +163,7 @@ msgstr "Databáze není zapisovatelná"
 msgid "Basic Configuration"
 msgstr "Základní konfigurace"
 
-#: cps/admin.py:987 cps/web.py:1353
+#: cps/admin.py:987 cps/web.py:1358
 msgid "Please fill out all fields!"
 msgstr "Vyplňte všechna pole!"
 
@@ -171,7 +171,7 @@ msgstr "Vyplňte všechna pole!"
 msgid "Add new user"
 msgstr "Přidat nového uživatele"
 
-#: cps/admin.py:999 cps/web.py:1491
+#: cps/admin.py:999 cps/web.py:1496
 msgid "E-mail is not from valid domain"
 msgstr "E-mail není z platné domény"
 
@@ -206,16 +206,16 @@ msgstr "Došlo k neznámé chybě."
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Nezbývá žádný správce, nelze odebrat roli správce"
 
-#: cps/admin.py:1092 cps/web.py:1549
+#: cps/admin.py:1092 cps/web.py:1554
 msgid "Found an existing account for this e-mail address."
 msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu."
 
-#: cps/admin.py:1101 cps/admin.py:1115 cps/admin.py:1210 cps/web.py:1511
+#: cps/admin.py:1101 cps/admin.py:1115 cps/admin.py:1209 cps/web.py:1516
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Upravit uživatele %(nick)s"
 
-#: cps/admin.py:1107 cps/web.py:1504
+#: cps/admin.py:1107 cps/web.py:1509
 msgid "This username is already taken"
 msgstr "Zadané uživatelské jméno je již použito"
 
@@ -223,116 +223,116 @@ msgstr "Zadané uživatelské jméno je již použito"
 msgid "Edit E-mail Server Settings"
 msgstr "Změnit SMTP nastavení"
 
-#: cps/admin.py:1176
+#: cps/admin.py:1175
 #, python-format
-msgid "Test e-mail successfully send to %(kindlemail)s"
-msgstr "Zkušební e-mail úspěšně odeslán na %(kindlemail)s"
+msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
+msgstr ""
 
-#: cps/admin.py:1179
+#: cps/admin.py:1178
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Při odesílání zkušebního e-mailu došlo k chybě: %(res)s"
 
-#: cps/admin.py:1181
+#: cps/admin.py:1180
 msgid "Please configure your e-mail address first..."
 msgstr "Prvně nastavte svou e-mailovou adresu..."
 
-#: cps/admin.py:1183
+#: cps/admin.py:1182
 msgid "E-mail server settings updated"
 msgstr "Nastavení e-mailového serveru aktualizováno"
 
-#: cps/admin.py:1194
+#: cps/admin.py:1193
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
-#: cps/admin.py:1221
+#: cps/admin.py:1220
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Heslo pro uživatele %(user)s resetováno"
 
-#: cps/admin.py:1224 cps/web.py:1383 cps/web.py:1447
+#: cps/admin.py:1223 cps/web.py:1388 cps/web.py:1452
 msgid "An unknown error occurred. Please try again later."
 msgstr "Neznámá chyba. Opakujte prosím později."
 
-#: cps/admin.py:1227 cps/web.py:1315
+#: cps/admin.py:1226 cps/web.py:1320
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Nejprve nakonfigurujte nastavení pošty SMTP..."
 
-#: cps/admin.py:1238
+#: cps/admin.py:1237
 msgid "Logfile viewer"
 msgstr "Prohlížeč log souborů"
 
-#: cps/admin.py:1304
+#: cps/admin.py:1303
 msgid "Requesting update package"
 msgstr "Požadování balíčku aktualizace"
 
-#: cps/admin.py:1305
+#: cps/admin.py:1304
 msgid "Downloading update package"
 msgstr "Stahování balíčku aktualizace"
 
-#: cps/admin.py:1306
+#: cps/admin.py:1305
 msgid "Unzipping update package"
 msgstr "Rozbalování balíčku aktualizace"
 
-#: cps/admin.py:1307
+#: cps/admin.py:1306
 msgid "Replacing files"
 msgstr "Nahrazování souborů"
 
-#: cps/admin.py:1308
+#: cps/admin.py:1307
 msgid "Database connections are closed"
 msgstr "Databázová připojení jsou uzavřena"
 
-#: cps/admin.py:1309
+#: cps/admin.py:1308
 msgid "Stopping server"
 msgstr "Zastavuji server"
 
-#: cps/admin.py:1310
+#: cps/admin.py:1309
 msgid "Update finished, please press okay and reload page"
 msgstr "Aktualizace dokončena, klepněte na tlačítko OK a znovu načtěte stránku"
 
-#: cps/admin.py:1311 cps/admin.py:1312 cps/admin.py:1313 cps/admin.py:1314
-#: cps/admin.py:1315
+#: cps/admin.py:1310 cps/admin.py:1311 cps/admin.py:1312 cps/admin.py:1313
+#: cps/admin.py:1314
 msgid "Update failed:"
 msgstr "Aktualizace selhala:"
 
-#: cps/admin.py:1311 cps/updater.py:321 cps/updater.py:522 cps/updater.py:524
+#: cps/admin.py:1310 cps/updater.py:337 cps/updater.py:532 cps/updater.py:534
 msgid "HTTP Error"
 msgstr "HTTP chyba"
 
-#: cps/admin.py:1312 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1311 cps/updater.py:339 cps/updater.py:536
 msgid "Connection error"
 msgstr "Chyba připojení"
 
-#: cps/admin.py:1313 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1312 cps/updater.py:341 cps/updater.py:538
 msgid "Timeout while establishing connection"
 msgstr "Vypršel časový limit při navazování spojení"
 
-#: cps/admin.py:1314 cps/updater.py:327 cps/updater.py:530
+#: cps/admin.py:1313 cps/updater.py:343 cps/updater.py:540
 msgid "General error"
 msgstr "Všeobecná chyba"
 
-#: cps/admin.py:1315
+#: cps/admin.py:1314
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "Aktualizační soubor nemohl být uložen do Temp Dir"
 
-#: cps/admin.py:1377
+#: cps/admin.py:1376
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Nepodařilo se vytvořit nejméně jednoho uživatele LDAP"
 
-#: cps/admin.py:1390
+#: cps/admin.py:1389
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Chyba: %(ldaperror)s"
 
-#: cps/admin.py:1394
+#: cps/admin.py:1393
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Chyba: Žádná reakce od uživatele LDAP serveru"
 
-#: cps/admin.py:1427
+#: cps/admin.py:1426
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Nejméně jeden uživatel LDAP nenalezen v databázi"
 
-#: cps/admin.py:1429
+#: cps/admin.py:1428
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -344,98 +344,98 @@ msgstr "není nakonfigurováno"
 msgid "Execution permissions missing"
 msgstr "Chybí povolení k exekuci"
 
-#: cps/editbooks.py:297 cps/editbooks.py:299
+#: cps/editbooks.py:267 cps/editbooks.py:269
 msgid "Book Format Successfully Deleted"
 msgstr "Formát knihy úspěšně smazán"
 
-#: cps/editbooks.py:306 cps/editbooks.py:308
+#: cps/editbooks.py:276 cps/editbooks.py:278
 msgid "Book Successfully Deleted"
 msgstr "Kniha úspěšně smazána"
 
-#: cps/editbooks.py:316 cps/editbooks.py:626 cps/web.py:1593 cps/web.py:1626
-#: cps/web.py:1697
+#: cps/editbooks.py:325 cps/editbooks.py:646 cps/web.py:1598 cps/web.py:1634
+#: cps/web.py:1705
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Chyba otevírání eknihy. Soubor neexistuje nebo není přístupný"
 
-#: cps/editbooks.py:350
+#: cps/editbooks.py:359
 msgid "edit metadata"
 msgstr "upravit metadata"
 
-#: cps/editbooks.py:425
+#: cps/editbooks.py:434
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s není platným jazykem"
 
-#: cps/editbooks.py:536 cps/editbooks.py:802
+#: cps/editbooks.py:556 cps/editbooks.py:905
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Soubor s příponou '%(ext)s' nelze odeslat na tento server"
 
-#: cps/editbooks.py:540 cps/editbooks.py:806
+#: cps/editbooks.py:560 cps/editbooks.py:909
 msgid "File to be uploaded must have an extension"
 msgstr "Soubor, který má být odeslán musí mít příponu"
 
-#: cps/editbooks.py:552
+#: cps/editbooks.py:572
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nepodařilo se vytvořit cestu %(path)s (oprávnění odepřeno)."
 
-#: cps/editbooks.py:557
+#: cps/editbooks.py:577
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Uložení souboru %(file)s se nezdařilo."
 
-#: cps/editbooks.py:575 cps/editbooks.py:937 cps/web.py:1554
+#: cps/editbooks.py:595 cps/editbooks.py:972 cps/web.py:1559
 #, python-format
 msgid "Database error: %(error)s."
 msgstr "Chyba databáze: %(error)s."
 
-#: cps/editbooks.py:579
+#: cps/editbooks.py:599
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Formát souboru %(ext)s přidán do %(book)s"
 
-#: cps/editbooks.py:706
+#: cps/editbooks.py:726
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:743
+#: cps/editbooks.py:763
 msgid "Metadata successfully updated"
 msgstr "Metadata úspěšně aktualizována"
 
-#: cps/editbooks.py:752
+#: cps/editbooks.py:772
 msgid "Error editing book, please check logfile for details"
 msgstr "Chyba při úpravách knihy, zkontrolujte prosím log pro podrobnosti"
 
-#: cps/editbooks.py:814
+#: cps/editbooks.py:810
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
+
+#: cps/editbooks.py:917
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Soubor %(filename)s nemohl být uložen do dočasného adresáře"
 
-#: cps/editbooks.py:824
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
-
-#: cps/editbooks.py:912
+#: cps/editbooks.py:947
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Nepodařilo se přesunout soubor obalu %(file)s: %(error)s"
 
-#: cps/editbooks.py:923
+#: cps/editbooks.py:958
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Soubor %(file)s nahrán"
 
-#: cps/editbooks.py:949
+#: cps/editbooks.py:984
 msgid "Source or destination format for conversion missing"
 msgstr "Chybí zdrojový nebo cílový formát pro převod"
 
-#: cps/editbooks.py:957
+#: cps/editbooks.py:992
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kniha byla úspěšně zařazena do fronty pro převod do %(book_format)s"
 
-#: cps/editbooks.py:961
+#: cps/editbooks.py:996
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Při převodu této knihy došlo k chybě: %(res)s"
@@ -595,11 +595,11 @@ msgstr "Dokončeno"
 msgid "Unknown Status"
 msgstr "Neznámý stav"
 
-#: cps/kobo_auth.py:130
+#: cps/kobo_auth.py:131
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
 msgstr "Pro získání platného api_endpoint pro zařízení Kobo, přístupte na calibre-web bez localhost"
 
-#: cps/kobo_auth.py:133 cps/kobo_auth.py:161
+#: cps/kobo_auth.py:134 cps/kobo_auth.py:162
 msgid "Kobo Setup"
 msgstr "Kobo nastavení"
 
@@ -608,60 +608,60 @@ msgstr "Kobo nastavení"
 msgid "Register with %(provider)s"
 msgstr "Registrovat s %(provider)s"
 
-#: cps/oauth_bb.py:149
-msgid "Failed to log in with GitHub."
-msgstr "Přihlášení pomocí GitHub selhalo."
-
-#: cps/oauth_bb.py:154
-msgid "Failed to fetch user info from GitHub."
-msgstr "Nepodařilo se načíst informace o uživateli z GitHub."
-
-#: cps/oauth_bb.py:165
-msgid "Failed to log in with Google."
-msgstr "Přihlášení pomocí Google selhalo."
-
-#: cps/oauth_bb.py:170
-msgid "Failed to fetch user info from Google."
-msgstr "Nepodařilo se načíst informace o uživateli z Google."
-
-#: cps/oauth_bb.py:216 cps/remotelogin.py:133 cps/web.py:1419
+#: cps/oauth_bb.py:137 cps/remotelogin.py:133 cps/web.py:1424
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "nyní jste přihlášen jako: '%(nickname)s'"
 
-#: cps/oauth_bb.py:226
+#: cps/oauth_bb.py:147
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
 msgstr "Připojení k %(oauth)s úspěšné"
 
-#: cps/oauth_bb.py:232
+#: cps/oauth_bb.py:153
 msgid "Login failed, No User Linked With OAuth Account"
 msgstr "Přihlášení selhalo, žádný uživatel s OAuth účtem"
 
-#: cps/oauth_bb.py:274
+#: cps/oauth_bb.py:195
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
 msgstr "Odpojení od %(oauth)s úspěšné"
 
-#: cps/oauth_bb.py:278
+#: cps/oauth_bb.py:199
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
 msgstr "Odpojení od %(oauth)s selhalo"
 
-#: cps/oauth_bb.py:281
+#: cps/oauth_bb.py:202
 #, python-format
 msgid "Not Linked to %(oauth)s"
 msgstr ""
 
-#: cps/oauth_bb.py:309
+#: cps/oauth_bb.py:259
+msgid "Failed to log in with GitHub."
+msgstr "Přihlášení pomocí GitHub selhalo."
+
+#: cps/oauth_bb.py:264
+msgid "Failed to fetch user info from GitHub."
+msgstr "Nepodařilo se načíst informace o uživateli z GitHub."
+
+#: cps/oauth_bb.py:275
+msgid "Failed to log in with Google."
+msgstr "Přihlášení pomocí Google selhalo."
+
+#: cps/oauth_bb.py:280
+msgid "Failed to fetch user info from Google."
+msgstr "Nepodařilo se načíst informace o uživateli z Google."
+
+#: cps/oauth_bb.py:312
 msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth chyba, prosím opakujte později."
 
-#: cps/oauth_bb.py:328
+#: cps/oauth_bb.py:331
 msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth chyba, prosím opakujte později."
 
-#: cps/remotelogin.py:65 cps/web.py:1466
+#: cps/remotelogin.py:65 cps/web.py:1471
 msgid "login"
 msgstr "přihlásit se"
 
@@ -685,7 +685,7 @@ msgstr "Knihy"
 msgid "Show recent books"
 msgstr "Zobrazit nedávné knihy"
 
-#: cps/render_template.py:42 cps/templates/index.xml:17
+#: cps/render_template.py:42 cps/templates/index.xml:18
 msgid "Hot Books"
 msgstr "Žhavé knihy"
 
@@ -701,7 +701,7 @@ msgstr ""
 msgid "Show Downloaded Books"
 msgstr ""
 
-#: cps/render_template.py:50 cps/templates/index.xml:24 cps/web.py:425
+#: cps/render_template.py:50 cps/templates/index.xml:25 cps/web.py:425
 msgid "Top Rated Books"
 msgstr "Nejlépe hodnocené knihy"
 
@@ -709,8 +709,8 @@ msgstr "Nejlépe hodnocené knihy"
 msgid "Show Top Rated Books"
 msgstr "Zobrazit nejlépe hodnocené knihy"
 
-#: cps/render_template.py:53 cps/templates/index.xml:46
-#: cps/templates/index.xml:50 cps/web.py:642
+#: cps/render_template.py:53 cps/templates/index.xml:47
+#: cps/templates/index.xml:51 cps/web.py:642
 msgid "Read Books"
 msgstr "Přečtené knihy"
 
@@ -718,8 +718,8 @@ msgstr "Přečtené knihy"
 msgid "Show read and unread"
 msgstr "Zobrazit prečtené a nepřečtené"
 
-#: cps/render_template.py:57 cps/templates/index.xml:53
-#: cps/templates/index.xml:57 cps/web.py:645
+#: cps/render_template.py:57 cps/templates/index.xml:54
+#: cps/templates/index.xml:58 cps/web.py:645
 msgid "Unread Books"
 msgstr "Nepřečtené knihy"
 
@@ -736,7 +736,7 @@ msgid "Show random books"
 msgstr "Zobrazit náhodné knihy"
 
 #: cps/render_template.py:63 cps/templates/book_table.html:50
-#: cps/templates/index.xml:75 cps/web.py:947
+#: cps/templates/index.xml:76 cps/web.py:950
 msgid "Categories"
 msgstr "Kategorie"
 
@@ -745,8 +745,8 @@ msgid "Show category selection"
 msgstr "Zobrazit výběr kategorie"
 
 #: cps/render_template.py:66 cps/templates/book_edit.html:84
-#: cps/templates/book_table.html:51 cps/templates/index.xml:82
-#: cps/templates/search_form.html:62 cps/web.py:851 cps/web.py:861
+#: cps/templates/book_table.html:51 cps/templates/index.xml:83
+#: cps/templates/search_form.html:62 cps/web.py:854 cps/web.py:864
 msgid "Series"
 msgstr "Série"
 
@@ -755,7 +755,7 @@ msgid "Show series selection"
 msgstr "Zobrazit výběr sérií"
 
 #: cps/render_template.py:69 cps/templates/book_table.html:49
-#: cps/templates/index.xml:61
+#: cps/templates/index.xml:62
 msgid "Authors"
 msgstr "Autoři"
 
@@ -764,7 +764,7 @@ msgid "Show author selection"
 msgstr "Zobrazit výběr autora"
 
 #: cps/render_template.py:73 cps/templates/book_table.html:55
-#: cps/templates/index.xml:68 cps/web.py:830
+#: cps/templates/index.xml:69 cps/web.py:833
 msgid "Publishers"
 msgstr "Vydavatelé"
 
@@ -773,7 +773,7 @@ msgid "Show publisher selection"
 msgstr "Zobrazit výběr vydavatele"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:53
-#: cps/templates/index.xml:89 cps/templates/search_form.html:81 cps/web.py:926
+#: cps/templates/index.xml:90 cps/templates/search_form.html:100 cps/web.py:929
 msgid "Languages"
 msgstr "Jazyky"
 
@@ -781,7 +781,7 @@ msgstr "Jazyky"
 msgid "Show language selection"
 msgstr "Zobrazit výběr jazyka"
 
-#: cps/render_template.py:80 cps/templates/index.xml:96
+#: cps/render_template.py:80 cps/templates/index.xml:97
 msgid "Ratings"
 msgstr "Hodnocení"
 
@@ -789,7 +789,7 @@ msgstr "Hodnocení"
 msgid "Show ratings selection"
 msgstr "Zobrazit výběr hodnocení"
 
-#: cps/render_template.py:83 cps/templates/index.xml:104
+#: cps/render_template.py:83 cps/templates/index.xml:105
 msgid "File formats"
 msgstr "Formáty souborů"
 
@@ -805,7 +805,7 @@ msgstr "Archivované knihy"
 msgid "Show archived books"
 msgstr "Zobrazit archivované knihy"
 
-#: cps/render_template.py:91 cps/web.py:740
+#: cps/render_template.py:91 cps/web.py:743
 msgid "Books List"
 msgstr ""
 
@@ -908,32 +908,32 @@ msgstr "Police: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
 
-#: cps/updater.py:296 cps/updater.py:307 cps/updater.py:408 cps/updater.py:422
+#: cps/updater.py:355 cps/updater.py:366 cps/updater.py:418 cps/updater.py:432
 msgid "Unexpected data while reading update information"
 msgstr "Neočekávaná data při čtení informací o aktualizaci"
 
-#: cps/updater.py:303 cps/updater.py:414
+#: cps/updater.py:362 cps/updater.py:424
 msgid "No update available. You already have the latest version installed"
 msgstr "Aktualizace není k dispozici. Máte nainstalovanou nejnovější verzi"
 
-#: cps/updater.py:335
+#: cps/updater.py:379
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na nejnovější verzi."
 
-#: cps/updater.py:387
+#: cps/updater.py:397
 msgid "Could not fetch update information"
 msgstr "Nelze získat informace o aktualizaci"
 
-#: cps/updater.py:401
+#: cps/updater.py:411
 msgid "No release information available"
 msgstr "Nejsou k dispozici žádné informace o verzi"
 
-#: cps/updater.py:458 cps/updater.py:469 cps/updater.py:488
+#: cps/updater.py:468 cps/updater.py:479 cps/updater.py:498
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na verzi: %(version)s"
 
-#: cps/updater.py:479
+#: cps/updater.py:489
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klepnutím na tlačítko níže aktualizujte na nejnovější stabilní verzi."
 
@@ -994,132 +994,133 @@ msgstr "Jazyky: %(name)s"
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr "Vlastní sloupec %(column)d neexistuje v databázi"
 
-#: cps/templates/layout.html:56 cps/web.py:700 cps/web.py:1243
+#: cps/templates/layout.html:56 cps/web.py:703 cps/web.py:1248
 msgid "Advanced Search"
 msgstr "Rozšířené hledání"
 
 #: cps/templates/book_edit.html:214 cps/templates/feed.xml:33
-#: cps/templates/layout.html:45 cps/templates/layout.html:48
-#: cps/templates/search_form.html:175 cps/web.py:712 cps/web.py:984
+#: cps/templates/index.xml:11 cps/templates/layout.html:45
+#: cps/templates/layout.html:48 cps/templates/search_form.html:194
+#: cps/web.py:715 cps/web.py:987
 msgid "Search"
 msgstr "Hledat"
 
-#: cps/web.py:879
+#: cps/web.py:882
 msgid "Ratings list"
 msgstr "Seznam hodnocení"
 
-#: cps/web.py:898
+#: cps/web.py:901
 msgid "File formats list"
 msgstr "Seznam formátů"
 
-#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:961
+#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:964
 msgid "Tasks"
 msgstr "Úlohy"
 
-#: cps/web.py:1105
+#: cps/web.py:1108
 msgid "Published after "
 msgstr "Vydáno po "
 
-#: cps/web.py:1112
+#: cps/web.py:1115
 msgid "Published before "
 msgstr "Vydáno před "
 
-#: cps/web.py:1131
+#: cps/web.py:1145
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Hodnocení <= %(rating)s"
 
-#: cps/web.py:1133
+#: cps/web.py:1147
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Hodnocení >= %(rating)s"
 
-#: cps/web.py:1135
+#: cps/web.py:1149
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/web.py:1320
+#: cps/web.py:1325
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemail)s"
 
-#: cps/web.py:1324
+#: cps/web.py:1329
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Při odesílání této knihy došlo k chybě: %(res)s"
 
-#: cps/web.py:1326
+#: cps/web.py:1331
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Nejprve nakonfigurujte vaši kindle e-mailovou adresu.."
 
-#: cps/web.py:1343
+#: cps/web.py:1348
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "E-mailový server není nakonfigurován, kontaktujte svého správce!"
 
-#: cps/web.py:1344 cps/web.py:1354 cps/web.py:1361 cps/web.py:1384
-#: cps/web.py:1388 cps/web.py:1393 cps/web.py:1397
+#: cps/web.py:1349 cps/web.py:1359 cps/web.py:1366 cps/web.py:1389
+#: cps/web.py:1393 cps/web.py:1398 cps/web.py:1402
 msgid "register"
 msgstr "registrovat"
 
-#: cps/web.py:1359
+#: cps/web.py:1364
 msgid "Invalid e-mail address format"
 msgstr ""
 
-#: cps/web.py:1386
+#: cps/web.py:1391
 msgid "Your e-mail is not allowed to register"
 msgstr "Váš e-mail nemá povolení k registraci"
 
-#: cps/web.py:1389
+#: cps/web.py:1394
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Potvrzovací e-mail byl odeslán na váš účet."
 
-#: cps/web.py:1392
+#: cps/web.py:1397
 msgid "This username or e-mail address is already in use."
 msgstr "Toto uživatelské jméno nebo e-mailová adresa jsou již používány."
 
-#: cps/web.py:1409
+#: cps/web.py:1414
 msgid "Cannot activate LDAP authentication"
 msgstr "Nelze aktivovat ověření LDAP"
 
-#: cps/web.py:1426
+#: cps/web.py:1431
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Záložní přihlášení jako: ‘%(nickname)s’, server LDAP není dosažitelný nebo neznámý uživatel"
 
-#: cps/web.py:1432
+#: cps/web.py:1437
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Nelze se přihlásit: %(message)s"
 
-#: cps/web.py:1436 cps/web.py:1460
+#: cps/web.py:1441 cps/web.py:1465
 msgid "Wrong Username or Password"
 msgstr "Špatné uživatelské jméno nebo heslo"
 
-#: cps/web.py:1443
+#: cps/web.py:1448
 msgid "New Password was send to your email address"
 msgstr "Nové heslo bylo zasláno na vaši emailovou adresu"
 
-#: cps/web.py:1449
+#: cps/web.py:1454
 msgid "Please enter valid username to reset password"
 msgstr "Zadejte platné uživatelské jméno pro obnovení hesla"
 
-#: cps/web.py:1455
+#: cps/web.py:1460
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Nyní jste přihlášeni jako: '%(nickname)s'"
 
-#: cps/web.py:1493 cps/web.py:1578
+#: cps/web.py:1498 cps/web.py:1583
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s profil"
 
-#: cps/web.py:1545
+#: cps/web.py:1550
 msgid "Profile updated"
 msgstr "Profil aktualizován"
 
-#: cps/web.py:1605 cps/web.py:1608 cps/web.py:1611 cps/web.py:1618
-#: cps/web.py:1623
+#: cps/web.py:1610 cps/web.py:1613 cps/web.py:1616 cps/web.py:1619
+#: cps/web.py:1626 cps/web.py:1631
 msgid "Read a Book"
 msgstr "Číst knihu"
 
@@ -1466,7 +1467,7 @@ msgid "Author"
 msgstr "Autor"
 
 #: cps/templates/book_edit.html:61 cps/templates/book_edit.html:263
-#: cps/templates/book_edit.html:278 cps/templates/search_form.html:127
+#: cps/templates/book_edit.html:278 cps/templates/search_form.html:146
 msgid "Description"
 msgstr "Popis"
 
@@ -1515,23 +1516,23 @@ msgid "Published Date"
 msgstr "Datum vydání"
 
 #: cps/templates/book_edit.html:116 cps/templates/book_edit.html:260
-#: cps/templates/book_edit.html:277 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:277 cps/templates/detail.html:164
 #: cps/templates/search_form.html:15
 msgid "Publisher"
 msgstr "Vydavatel"
 
-#: cps/templates/book_edit.html:120 cps/templates/detail.html:123
+#: cps/templates/book_edit.html:120 cps/templates/detail.html:131
 #: cps/templates/user_edit.html:32
 msgid "Language"
 msgstr "Jazyk"
 
 #: cps/templates/book_edit.html:130 cps/templates/search_form.html:38
-#: cps/templates/search_form.html:138
+#: cps/templates/search_form.html:157
 msgid "Yes"
 msgstr "Ano"
 
 #: cps/templates/book_edit.html:131 cps/templates/search_form.html:39
-#: cps/templates/search_form.html:139
+#: cps/templates/search_form.html:158
 msgid "No"
 msgstr "Ne"
 
@@ -2086,65 +2087,65 @@ msgstr "Přidat povolené/zakázané štítky"
 msgid "Add Allowed/Denied custom column values"
 msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
 
-#: cps/templates/detail.html:59
+#: cps/templates/detail.html:60 cps/templates/detail.html:69
 msgid "Read in Browser"
 msgstr "Číst v prohližeči"
 
-#: cps/templates/detail.html:72
+#: cps/templates/detail.html:77 cps/templates/detail.html:94
 msgid "Listen in Browser"
 msgstr "Poslechnout v prohlížeči"
 
-#: cps/templates/detail.html:117
+#: cps/templates/detail.html:125
 msgid "Book"
 msgstr "Kniha"
 
-#: cps/templates/detail.html:117
+#: cps/templates/detail.html:125
 msgid "of"
 msgstr "z"
 
-#: cps/templates/detail.html:165
+#: cps/templates/detail.html:173
 msgid "Published"
 msgstr "Publikováno"
 
-#: cps/templates/detail.html:208
+#: cps/templates/detail.html:216
 msgid "Mark As Unread"
 msgstr "Označit jako nepřečtené"
 
-#: cps/templates/detail.html:208
+#: cps/templates/detail.html:216
 msgid "Mark As Read"
 msgstr "Označit jako přečtené"
 
-#: cps/templates/detail.html:209
+#: cps/templates/detail.html:217
 msgid "Read"
 msgstr "Přečteno"
 
-#: cps/templates/detail.html:217
+#: cps/templates/detail.html:225
 msgid "Restore from archive"
 msgstr "Obnovit z archivu"
 
-#: cps/templates/detail.html:217
+#: cps/templates/detail.html:225
 msgid "Add to archive"
 msgstr "Archívovat"
 
-#: cps/templates/detail.html:218
+#: cps/templates/detail.html:226
 msgid "Archived"
 msgstr "Archivováno"
 
-#: cps/templates/detail.html:229
+#: cps/templates/detail.html:237
 msgid "Description:"
 msgstr "Popis:"
 
-#: cps/templates/detail.html:242 cps/templates/search.html:14
+#: cps/templates/detail.html:250 cps/templates/search.html:14
 msgid "Add to shelf"
 msgstr "Přidat do police"
 
-#: cps/templates/detail.html:253 cps/templates/detail.html:270
+#: cps/templates/detail.html:261 cps/templates/detail.html:278
 #: cps/templates/feed.xml:79 cps/templates/layout.html:137
 #: cps/templates/search.html:20
 msgid "(Public)"
 msgstr "(Veřejné)"
 
-#: cps/templates/detail.html:284
+#: cps/templates/detail.html:292
 msgid "Edit Metadata"
 msgstr "Upravit metadata"
 
@@ -2230,63 +2231,64 @@ msgstr ""
 msgid "Start"
 msgstr "Start"
 
-#: cps/templates/index.xml:21
+#: cps/templates/index.xml:22
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "Oblíbené publikace z tohoto katalogu založené na počtu stažení."
 
-#: cps/templates/index.xml:28
+#: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Rating."
 msgstr "Oblíbené publikace z tohoto katalogu založené na hodnocení."
 
-#: cps/templates/index.xml:31
+#: cps/templates/index.xml:32
 msgid "Recently added Books"
 msgstr "Nedávno přidané knihy"
 
-#: cps/templates/index.xml:35
+#: cps/templates/index.xml:36
 msgid "The latest Books"
 msgstr "Nejnovější knihy"
 
-#: cps/templates/index.xml:38
+#: cps/templates/index.xml:39
 msgid "Random Books"
 msgstr "Náhodné knihy"
 
-#: cps/templates/index.xml:42
+#: cps/templates/index.xml:43
 msgid "Show Random Books"
 msgstr "Zobrazit náhodné knihy"
 
-#: cps/templates/index.xml:65
+#: cps/templates/index.xml:66
 msgid "Books ordered by Author"
 msgstr "Knihy seřazené podle autora"
 
-#: cps/templates/index.xml:72
+#: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
 msgstr "Knihy seřazené podle vydavatele"
 
-#: cps/templates/index.xml:79
+#: cps/templates/index.xml:80
 msgid "Books ordered by category"
 msgstr "Knihy seřazené podle kategorie"
 
-#: cps/templates/index.xml:86
+#: cps/templates/index.xml:87
 msgid "Books ordered by series"
 msgstr "Knihy seřazené podle série"
 
-#: cps/templates/index.xml:93
+#: cps/templates/index.xml:94
 msgid "Books ordered by Languages"
 msgstr "Knihy seřazené podle jazyků"
 
-#: cps/templates/index.xml:100
+#: cps/templates/index.xml:101
 msgid "Books ordered by Rating"
 msgstr "Knihy řazené podle hodnocení"
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by file formats"
 msgstr "Knihy seřazené podle souboru formátů"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:135
+#: cps/templates/index.xml:112 cps/templates/layout.html:135
+#: cps/templates/search_form.html:80
 msgid "Shelves"
 msgstr "Police"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:116
 msgid "Books organized in shelves"
 msgstr "Knihy organizované v policích"
 
@@ -2631,23 +2633,28 @@ msgstr "Vynechat štítky"
 msgid "Exclude Series"
 msgstr "Vynechat série"
 
-#: cps/templates/search_form.html:89
+#: cps/templates/search_form.html:88
+#, fuzzy
+msgid "Exclude Shelves"
+msgstr "Vynechat série"
+
+#: cps/templates/search_form.html:108
 msgid "Exclude Languages"
 msgstr "Vynechat jazyky"
 
-#: cps/templates/search_form.html:100
+#: cps/templates/search_form.html:119
 msgid "Extensions"
 msgstr "Přípony"
 
-#: cps/templates/search_form.html:108
+#: cps/templates/search_form.html:127
 msgid "Exclude Extensions"
 msgstr "Vynechat přípony"
 
-#: cps/templates/search_form.html:118
+#: cps/templates/search_form.html:137
 msgid "Rating Above"
 msgstr "Hodnoceni více než"
 
-#: cps/templates/search_form.html:122
+#: cps/templates/search_form.html:141
 msgid "Rating Below"
 msgstr "Hodnocení méně než"
 
