@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-24 21:22:48</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-26 21:09:36</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-24 23:54:47</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-26 23:41:56</p>
             
         </div>
       </div>
@@ -1615,12 +1615,12 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 9)">Detail</a>
@@ -1629,33 +1629,11 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et18.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 585, in test_book_download
-    data = self.inital_sync()
-  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 133, in inital_sync
-    self.assertEqual(data[3]['NewEntitlement']['BookMetadata']['DownloadUrls'][1]['Format'], 'EPUB')
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2431,11 +2409,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestRegister</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">1</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2508,31 +2486,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft26.8" class="none bg-danger">
+        <tr id='pt26.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft26.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft26.8" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft26.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_register.py", line 185, in test_user_change_password
-    self.assertTrue(self.edit_user(u'upasswd', { 'resend_password': 1}))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3483,9 +3441,9 @@ AssertionError: False is not true</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>302</td>
-        <td>292</td>
+        <td>294</td>
+        <td>0</td>
         <td>1</td>
-        <td>2</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3514,7 +3472,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.8.0-45-generic #51~20.04.1-Ubuntu SMP Tue Feb 23 13:46:31 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.8.0-48-generic #54~20.04.1-Ubuntu SMP Sat Mar 20 13:40:25 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3856,7 +3814,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(292, 1, 2, 7);
+    drawCircle(294, 0, 1, 7);
 </script>
 
 </div>
