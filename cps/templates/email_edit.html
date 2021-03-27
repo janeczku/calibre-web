@@ -9,11 +9,11 @@
   <form role="form" class="col-md-10 col-lg-6" method="POST">
     <div class="form-group">
       <label for="mail_server">{{_('SMTP Hostname')}}</label>
-      <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}">
+      <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}" required>
     </div>
     <div class="form-group">
       <label for="mail_port">{{_('SMTP Port')}}</label>
-      <input type="number" min="1" max="65535" step="1" class="form-control" name="mail_port" id="mail_port" value="{% if content.mail_port != None %}{{ content.mail_port }}{% endif %}" autocomplete="off">
+      <input type="number" min="1" max="65535" step="1" class="form-control" name="mail_port" id="mail_port" value="{% if content.mail_port != None %}{{ content.mail_port }}{% endif %}" autocomplete="off" required>
     </div>
     <div class="form-group">
       <label for="mail_use_ssl">{{_('Encryption')}}</label>
