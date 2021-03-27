@@ -12,7 +12,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - full graphical setup
 - User management with fine-grained per-user permissions
 - Admin interface
-- User Interface in czech, dutch, english, finnish, french, german, greek, hungarian, italian, japanese, khmer, polish, russian, simplified chinese, spanish, swedish, turkish, ukrainian
+- User Interface in brazilian, czech, dutch, english, finnish, french, german, greek, hungarian, italian, japanese, khmer, polish, russian, simplified chinese, spanish, swedish, turkish, ukrainian
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create a custom book collection (shelves)
