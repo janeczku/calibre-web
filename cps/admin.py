@@ -1319,7 +1319,6 @@ def edit_mailsettings():
 @admin_required
 def update_mailsettings():
     to_save = request.form.to_dict()
-    # log.debug("update_mailsettings %r", to_save)
 
     _config_string(to_save, "mail_server")
     _config_int(to_save, "mail_port")
@@ -1339,8 +1338,8 @@ def update_mailsettings():
         if current_user.email:
             result = send_test_mail(current_user.email, current_user.name)
             if result is None:
-                flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.email),
-                      category="success")
+                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result", email=current_user.email),
+                      category="info")
             else:
                 flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
         else:
