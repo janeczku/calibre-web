@@ -39,7 +39,7 @@ class _Flask_Settings(_Base):
     __tablename__ = 'flask_settings'
 
     id = Column(Integer, primary_key=True)
-    flask_session_key = Column(BLOB, default="")
+    flask_session_key = Column(BLOB, default=b"")
 
     def __init__(self, key):
         self.flask_session_key = key
@@ -58,6 +58,8 @@ class _Settings(_Base):
     mail_password = Column(String, default='mypassword')
     mail_from = Column(String, default='automailer <mail@example.com>')
     mail_size = Column(Integer, default=25*1024*1024)
+    mail_server_type = Column(SmallInteger, default=0)
+    mail_gmail_token = Column(JSON, default={})
 
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
@@ -246,7 +248,8 @@ class _ConfigSQL(object):
         return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
 
     def get_mail_server_configured(self):
-        return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
+        return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
+                    or (self.mail_gmail_token != b"" and self.mail_server_type == 1))
 
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
@@ -364,10 +367,14 @@ def _migrate_table(session, orm_class):
                     if isinstance(column.default.arg, bool):
                         column_default = ("DEFAULT %r" % int(column.default.arg))
                     else:
-                        column_default = ("DEFAULT %r" % column.default.arg)
+                        column_default = ("DEFAULT '%r'" % column.default.arg)
+                if isinstance(column.type, JSON):
+                    column_type = "JSON"
+                else:
+                    column_type = column.type
                 alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
                                                                         column_name,
-                                                                        column.type,
+                                                                        column_type,
                                                                         column_default)
                 log.debug(alter_table)
                 session.execute(alter_table)

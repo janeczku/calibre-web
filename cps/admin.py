@@ -39,7 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
-from . import constants, logger, helper, services
+from . import constants, logger, helper, services, gmail
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
@@ -1319,14 +1319,24 @@ def edit_mailsettings():
 @admin_required
 def update_mailsettings():
     to_save = request.form.to_dict()
-
-    _config_string(to_save, "mail_server")
-    _config_int(to_save, "mail_port")
-    _config_int(to_save, "mail_use_ssl")
-    _config_string(to_save, "mail_login")
-    _config_string(to_save, "mail_password")
-    _config_string(to_save, "mail_from")
-    _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
+    _config_int(to_save, "mail_server_type")
+    if to_save.get("invalidate_server"):
+        config.mail_gmail_token = {}
+        try:
+            flag_modified(config, "mail_gmail_token")
+        except AttributeError:
+            pass
+    elif to_save.get("gmail"):
+        config.mail_gmail_token = gmail.setup_gmail(config)
+        flash(_(u"G-Mail Account Verification Successfull"), category="success")
+    else:
+        _config_string(to_save, "mail_server")
+        _config_int(to_save, "mail_port")
+        _config_int(to_save, "mail_use_ssl")
+        _config_string(to_save, "mail_login")
+        _config_string(to_save, "mail_password")
+        _config_string(to_save, "mail_from")
+        _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
     try:
         config.save()
     except (OperationalError, InvalidRequestError):
@@ -1338,8 +1348,8 @@ def update_mailsettings():
         if current_user.email:
             result = send_test_mail(current_user.email, current_user.name)
             if result is None:
-                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result", email=current_user.email),
-                      category="info")
+                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result",
+                        email=current_user.email), category="info")
             else:
                 flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
         else:
