@@ -305,7 +305,8 @@ def get_download_url_for_book(book, book_format):
             book_format=book_format.lower()
         )
     return url_for(
-        "web.download_link",
+        "kobo.download_book",
+        auth_token=kobo_auth.get_auth_token(),
         book_id=book.id,
         book_format=book_format.lower(),
         _external=True,
