@@ -41,7 +41,7 @@
           {% endif %}
         {% endfor %}
       </table>
-        <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
+        <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
       {% if (config.config_login_type == 1) %}
         <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
       {% endif %}
@@ -75,7 +75,7 @@
         </div>
       </div>
       {% endif %}
-      <div class="btn btn-default emailconfig" id="admin_edit_email"><a href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a></div>
+      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a>
     </div>
   </div>
 
@@ -134,15 +134,15 @@
         </div>
         {% endif %}
       </div>
-      <div class="btn btn-default"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a></div>
-      <div class="btn btn-default"><a id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a></div>
+      <a class="btn btn-default" id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a>
+      <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
     </div>
   </div>
 
     <div class="row form-group">
     <h2>{{_('Administration')}}</h2>
-      <div class="btn btn-default"><a id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a></div>
-      <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
+      <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
+      <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
     </div>
     <div class="row form-group">
       <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
