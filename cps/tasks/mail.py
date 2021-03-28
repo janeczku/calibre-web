@@ -103,7 +103,7 @@ class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
 
 class TaskEmail(CalibreTask):
-    def __init__(self, subject, filepath, attachment, settings, recipient, taskMessage, text):
+    def __init__(self, subject, filepath, attachment, settings, recipient, taskMessage, text, internal=False):
         super(TaskEmail, self).__init__(taskMessage)
         self.subject = subject
         self.attachment = attachment
