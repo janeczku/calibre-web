@@ -249,15 +249,15 @@ class _ConfigSQL(object):
 
     def get_mail_server_configured(self):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
-                    or (self.mail_gmail_token != b"" and self.mail_server_type == 1))
+                    or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
-        '''Possibly updates a field of this object.
+        """Possibly updates a field of this object.
         The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
 
         :returns: `True` if the field has changed value
-        '''
+        """
         new_value = dictionary.get(field, default)
         if new_value is None:
             # log.debug("_ConfigSQL set_from_dictionary field '%s' not found", field)
@@ -308,8 +308,11 @@ class _ConfigSQL(object):
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
-        # pylint: disable=access-member-before-definition
-        logfile = logger.setup(self.config_logfile, self.config_log_level)
+        if os.environ.get('FLASK_DEBUG'):
+            logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
+        else:
+            # pylint: disable=access-member-before-definition
+            logfile = logger.setup(self.config_logfile, self.config_log_level)
         if logfile != self.config_logfile:
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile

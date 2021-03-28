@@ -39,7 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_
 
-from . import constants, logger, helper, services, gmail
+from . import constants, logger, helper, services
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
@@ -58,7 +58,8 @@ feature_support = {
         'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo),
-        'updater': constants.UPDATER_AVAILABLE
+        'updater': constants.UPDATER_AVAILABLE,
+        'gmail': bool(services.gmail)
     }
 
 try:
@@ -1311,7 +1312,7 @@ def new_user():
 def edit_mailsettings():
     content = config.get_mail_settings()
     return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
-                                 page="mailset")
+                                 page="mailset", feature_support=feature_support)
 
 
 @admi.route("/admin/mailsettings", methods=["POST"])
@@ -1320,15 +1321,21 @@ def edit_mailsettings():
 def update_mailsettings():
     to_save = request.form.to_dict()
     _config_int(to_save, "mail_server_type")
-    if to_save.get("invalidate_server"):
+    if to_save.get("invalidate"):
         config.mail_gmail_token = {}
         try:
             flag_modified(config, "mail_gmail_token")
         except AttributeError:
             pass
     elif to_save.get("gmail"):
-        config.mail_gmail_token = gmail.setup_gmail(config)
-        flash(_(u"G-Mail Account Verification Successfull"), category="success")
+        try:
+            config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
+            flash(_(u"G-Mail Account Verification Successfull"), category="success")
+        except Exception as e:
+            flash(e, category="error")
+            log.error(e)
+            return edit_mailsettings()
+
     else:
         _config_string(to_save, "mail_server")
         _config_int(to_save, "mail_port")

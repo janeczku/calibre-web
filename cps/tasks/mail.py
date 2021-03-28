@@ -4,6 +4,8 @@ import os
 import smtplib
 import threading
 import socket
+import mimetypes
+import base64
 
 try:
     from StringIO import StringIO
@@ -16,11 +18,14 @@ except ImportError:
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
+
+
 from email import encoders
 from email.utils import formatdate, make_msgid
 from email.generator import Generator
 
 from cps.services.worker import CalibreTask
+from cps.services import gmail
 from cps import logger, config
 
 from cps import gdriveutils
@@ -98,7 +103,7 @@ class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
 
 class TaskEmail(CalibreTask):
-    def __init__(self, subject, filepath, attachment, settings, recipient, taskMessage, text, internal=False):
+    def __init__(self, subject, filepath, attachment, settings, recipient, taskMessage, text):
         super(TaskEmail, self).__init__(taskMessage)
         self.subject = subject
         self.attachment = attachment
@@ -107,70 +112,38 @@ class TaskEmail(CalibreTask):
         self.recipent = recipient
         self.text = text
         self.asyncSMTP = None
-
         self.results = dict()
 
     def prepare_message(self):
-        msg = MIMEMultipart()
-        msg['Subject'] = self.subject
-        msg['Message-Id'] = make_msgid('calibre-web')
-        msg['Date'] = formatdate(localtime=True)
+        message = MIMEMultipart()
+        message['to'] = self.recipent
+        message['from'] = self.settings["mail_from"]
+        message['subject'] = self.subject
+        message['Message-Id'] = make_msgid('calibre-web')
+        message['Date'] = formatdate(localtime=True)
         text = self.text
-        msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
+        msg = MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8')
+        message.attach(msg)
         if self.attachment:
             result = self._get_attachment(self.filepath, self.attachment)
             if result:
-                msg.attach(result)
+                message.attach(result)
             else:
                 self._handleError(u"Attachment not found")
                 return
-
-        msg['From'] = self.settings["mail_from"]
-        msg['To'] = self.recipent
-        # convert MIME message to string
-        fp = StringIO()
-        gen = Generator(fp, mangle_from_=False)
-        gen.flatten(msg)
-        return fp.getvalue()
+        return message
 
     def run(self, worker_thread):
         # create MIME message
         msg = self.prepare_message()
-
-        use_ssl = int(self.settings.get('mail_use_ssl', 0))
         try:
-            # send email
-            timeout = 600  # set timeout to 5mins
-
-            # redirect output to logfile on python2 on python3 debugoutput is caught with overwritten
-            # _print_debug function
-            if sys.version_info < (3, 0):
-                org_smtpstderr = smtplib.stderr
-                smtplib.stderr = logger.StderrLogger('worker.smtp')
-
-            if use_ssl == 2:
-                self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
-                                           timeout=timeout)
+            if self.settings['mail_server_type'] == 0:
+                self.send_standard_email(msg)
             else:
-                self.asyncSMTP = Email(self.settings["mail_server"], self.settings["mail_port"], timeout=timeout)
-
-            # link to logginglevel
-            if logger.is_debug_enabled():
-                self.asyncSMTP.set_debuglevel(1)
-            if use_ssl == 1:
-                self.asyncSMTP.starttls()
-            if self.settings["mail_password"]:
-                self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password"]))
-            self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, msg)
-            self.asyncSMTP.quit()
-            self._handleSuccess()
-
-            if sys.version_info < (3, 0):
-                smtplib.stderr = org_smtpstderr
-
-        except (MemoryError) as e:
+                self.send_gmail_email(msg)
+        except MemoryError as e:
             log.debug_or_exception(e)
-            self._handleError(u'MemoryError sending email: ' + str(e))
+            self._handleError(u'MemoryError sending email: {}'.format(str(e)))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             log.debug_or_exception(e)
             if hasattr(e, "smtp_error"):
@@ -181,11 +154,54 @@ class TaskEmail(CalibreTask):
                 text = '\n'.join(e.args)
             else:
                 text = ''
-            self._handleError(u'Smtplib Error sending email: ' + text)
-        except (socket.error) as e:
+            self._handleError(u'Smtplib Error sending email: {}'.format(text))
+        except socket.error as e:
             log.debug_or_exception(e)
-            self._handleError(u'Socket Error sending email: ' + e.strerror)
+            self._handleError(u'Socket Error sending email: {}'.format(e.strerror))
+        except Exception as e:
+            log.debug_or_exception(e)
+            self._handleError(u'Error sending email: {}'.format(e))
 
+
+    def send_standard_email(self, msg):
+        use_ssl = int(self.settings.get('mail_use_ssl', 0))
+        timeout = 600  # set timeout to 5mins
+
+        # redirect output to logfile on python2 on python3 debugoutput is caught with overwritten
+        # _print_debug function
+        if sys.version_info < (3, 0):
+            org_smtpstderr = smtplib.stderr
+            smtplib.stderr = logger.StderrLogger('worker.smtp')
+
+        if use_ssl == 2:
+            self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
+                                       timeout=timeout)
+        else:
+            self.asyncSMTP = Email(self.settings["mail_server"], self.settings["mail_port"], timeout=timeout)
+
+        # link to logginglevel
+        if logger.is_debug_enabled():
+            self.asyncSMTP.set_debuglevel(1)
+        if use_ssl == 1:
+            self.asyncSMTP.starttls()
+        if self.settings["mail_password"]:
+            self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password"]))
+
+        # Convert message to something to send
+        fp = StringIO()
+        gen = Generator(fp, mangle_from_=False)
+        gen.flatten(msg)
+
+        self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, fp.getvalue())
+        self.asyncSMTP.quit()
+        self._handleSuccess()
+
+        if sys.version_info < (3, 0):
+            smtplib.stderr = org_smtpstderr
+
+
+    def send_gmail_email(self, message):
+        return gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
 
     @property
     def progress(self):
@@ -205,13 +221,13 @@ class TaskEmail(CalibreTask):
     @classmethod
     def _get_attachment(cls, bookpath, filename):
         """Get file as MIMEBase message"""
-        calibrepath = config.config_calibre_dir
+        calibre_path = config.config_calibre_dir
         if config.config_use_google_drive:
             df = gdriveutils.getFileFromEbooksFolder(bookpath, filename)
             if df:
-                datafile = os.path.join(calibrepath, bookpath, filename)
-                if not os.path.exists(os.path.join(calibrepath, bookpath)):
-                    os.makedirs(os.path.join(calibrepath, bookpath))
+                datafile = os.path.join(calibre_path, bookpath, filename)
+                if not os.path.exists(os.path.join(calibre_path, bookpath)):
+                    os.makedirs(os.path.join(calibre_path, bookpath))
                 df.GetContentFile(datafile)
             else:
                 return None
@@ -221,19 +237,22 @@ class TaskEmail(CalibreTask):
             os.remove(datafile)
         else:
             try:
-                file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
+                file_ = open(os.path.join(calibre_path, bookpath, filename), 'rb')
                 data = file_.read()
                 file_.close()
             except IOError as e:
                 log.debug_or_exception(e)
                 log.error(u'The requested file could not be read. Maybe wrong permissions?')
                 return None
-
-        attachment = MIMEBase('application', 'octet-stream')
+        # Set mimetype
+        content_type, encoding = mimetypes.guess_type(filename)
+        if content_type is None or encoding is not None:
+            content_type = 'application/octet-stream'
+        main_type, sub_type = content_type.split('/', 1)
+        attachment = MIMEBase(main_type, sub_type)
         attachment.set_payload(data)
         encoders.encode_base64(attachment)
-        attachment.add_header('Content-Disposition', 'attachment',
-                              filename=filename)
+        attachment.add_header('Content-Disposition', 'attachment', filename=filename)
         return attachment
 
     @property
