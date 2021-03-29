@@ -577,10 +577,6 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     color: hsla(0, 0%, 100%, .7)
 }
 
-div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > .downloadBtn {
-    border-left: 2px solid rgba(0, 0, 0, .15)
-}
-
 div[aria-label="Edit/Delete book"] > .btn {
     width: 50px;
     height: 60px;
@@ -3145,6 +3141,10 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     margin: 0;
     overflow: hidden;
     padding: 0
+}
+#readbtn {
+  height: 100%;
+  padding: 16px;
 }
 
 #add-to-shelf > span.caret, #btnGroupDrop1 > span.caret, #read-in-browser > span.caret, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret {
