@@ -316,6 +316,8 @@ $(function() {
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
             if ($("body").hasClass("blur")) {
                 $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+                $(" a:not(.dropdown-toggle) ")
+                  .removeAttr("data-toggle");
             }
             $(".load-more .row").isotope( "appended", $(data), null );
         });
