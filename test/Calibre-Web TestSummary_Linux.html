@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-26 21:09:36</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-03-28 20:37:06</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-26 23:41:56</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-03-28 23:05:12</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 3 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 0 min</p>
         </div>
       </div>
       </div>
@@ -500,11 +500,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -532,11 +532,33 @@
     
     
     
-        <tr id='pt6.3' class='hiddenRow bg-success'>
+        <tr id="ft6.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft6.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft6.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py", line 327, in test_convert_only
+    self.assertEqual(ret[-2]['result'], 'Finished')
+AssertionError: 'Failed' != 'Finished'
+- Failed
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1190,11 +1212,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">20</td>
-        <td class="text-center">0</td>
+        <td class="text-center">19</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1375,22 +1397,42 @@
     
     
     
-        <tr id='pt12.20' class='hiddenRow bg-success'>
+        <tr id="ft12.20" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.20')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft12.20" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft12.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 848, in test_watch_metadata
+    self.assertNotIn('series', book)
+AssertionError: 'series' unexpectedly found in {'id': 5, 'reader': [], 'title': 'testbook', 'author': ['John Döe'], 'rating': 0, 'languages': ['English'], 'identifier': [], 'cover': '/cover/5?edit=4ff3250d-64b1-4c99-8a68-3b7e505dc2f2', 'tag': [], 'publisher': ['Randomhäus'], 'comment': '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p><p>Aenean commodo ligula eget dolor.</p><p>Aenean massa.</p><p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p><p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p><p>Nulla consequat massa quis enim.</p><p>Donec pede justo, fringilla vel, aliquet nec, vulputate</p>', 'add_shelf': [], 'del_shelf': [], 'edit_enable': True, 'kindle': None, 'kindlebtn': None, 'download': ['EPUB (6.7 kB)'], 'read': False, 'archived': False, 'series_all': 'Book 1.0 of test', 'series_index': '1.0', 'series': 'test', 'cust_columns': []}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSTARTTLS</td>
         <td class="text-center">3</td>
-        <td class="text-center">3</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 3)">Detail</a>
@@ -1417,22 +1459,42 @@
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id="et13.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et13.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py", line 108, in test_STARTTLS_resend_password
+    password_link = self.check_element_on_page((By.ID, "resend_password")).find_elements_by_tag_name("a")[0].get_attribute('href')
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestSSL</td>
         <td class="text-center">5</td>
         <td class="text-center">4</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c14', 5)">Detail</a>
@@ -1441,31 +1503,11 @@
 
     
     
-        <tr id="et14.1" class="none bg-info">
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et14.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et14.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py", line 126, in test_SSL_None_setup_error
-    task_len, ret = self.check_tasks(tasks)
-ValueError: not enough values to unpack (expected 2, got 1)</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1479,11 +1521,31 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id="ft14.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft14.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft14.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py", line 139, in test_SSL_logging_email
+    self.assertTrue(len(re.findall('Subject: Calibre-Web test e-mail',data)),"Email logging not working")
+AssertionError: 0 is not true : Email logging not working</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1615,12 +1677,12 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestKoboSync</td>
         <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 9)">Detail</a>
@@ -1629,11 +1691,33 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 585, in test_book_download
+    data = self.inital_sync()
+  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 133, in inital_sync
+    self.assertEqual(data[3]['NewEntitlement']['BookMetadata']['DownloadUrls'][1]['Format'], 'EPUB')
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3441,9 +3525,9 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>302</td>
-        <td>294</td>
-        <td>0</td>
-        <td>1</td>
+        <td>290</td>
+        <td>3</td>
+        <td>2</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3814,7 +3898,7 @@ ValueError: not enough values to unpack (expected 2, got 1)</pre>
 </div>
 
 <script>
-    drawCircle(294, 0, 1, 7);
+    drawCircle(290, 3, 2, 7);
 </script>
 
 </div>
