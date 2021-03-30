@@ -812,7 +812,7 @@ msgstr "Bücherliste"
 
 #: cps/render_template.py:93
 msgid "Show Books List"
-msgstr "Zeiche Bücherliste"
+msgstr "Zeige Bücherliste"
 
 #: cps/shelf.py:69 cps/shelf.py:122
 msgid "Invalid shelf specified"
