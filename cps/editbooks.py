@@ -1021,7 +1021,7 @@ def scholar_search(query):
                 break
         return Response(json.dumps(result),mimetype='application/json')
     else:
-        return 'Scholarly not installed'
+        return []
 
 
 
