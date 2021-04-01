@@ -27,6 +27,15 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
+# Improve this to check if scholarly is available in a global way, like other pythonic libraries
+have_scholar = True
+try:
+    from scholarly import scholarly
+except ImportError:
+    have_scholar = False
+    pass
+
+
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
@@ -995,6 +1004,26 @@ def convert_bookformat(book_id):
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
+
+@editbook.route("/scholarsearch/<query>",methods=['GET'])
+@login_required_if_no_ano
+@edit_required
+def scholar_search(query):
+    if have_scholar:
+        scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
+        i=0
+        result = []
+        for publication in scholar_gen:
+            del publication['source']
+            result.append(publication)
+            i+=1
+            if(i>=10):
+                break
+        return Response(json.dumps(result),mimetype='application/json')
+    else:
+        return 'Scholarly not installed'
+
+
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
