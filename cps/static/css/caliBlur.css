@@ -1498,7 +1498,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
 }
 
 #books > .cover > a:hover, #books_rand > .cover > a:hover, .book.isotope-item > .cover > a:hover, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a:hover {
-    outline: solid var(--color-secondary);
+    /* outline: solid var(--color-secondary); */
     font-size: 50px;
     -o-transition: outline 0s;
     transition: outline 0s;
