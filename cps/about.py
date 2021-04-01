@@ -54,6 +54,12 @@ try:
 except ImportError:
     greenlet_Version = None
 
+try:
+    from scholarly import scholarly
+    scholarly_version = _(u'installed')
+except ImportError:
+    scholarly_version = _(u'not installed')
+
 from . import services
 
 about = flask.Blueprint('about', __name__)
@@ -79,6 +85,7 @@ _VERSIONS = OrderedDict(
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
     Unidecode = unidecode_version,
+    Scholarly = scholarly_version,
     Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else None,
     python_LDAP = services.ldapVersion if bool(services.ldapVersion) else None,
     Goodreads = u'installed' if bool(services.goodreads_support) else None,
