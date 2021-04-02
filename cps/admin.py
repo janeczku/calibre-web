@@ -970,7 +970,7 @@ def _configuration_ldap_helper(to_save, gdrive_error):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                                       gdrive_error)
 
-    if to_save["ldap_import_user_filter"] == '0':
+    if "ldap_import_user_filter" in to_save and to_save["ldap_import_user_filter"] == '0':
         config.config_ldap_member_user_object = ""
     else:
         if config.config_ldap_member_user_object.count("%s") != 1:
