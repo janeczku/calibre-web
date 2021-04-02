@@ -1002,24 +1002,41 @@ def convert_bookformat(book_id):
 def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
+    ret = ""
     if param =='series_index':
         edit_book_series_index(vals['value'], book)
+        ret = Response(json.dumps({'success':True, 'newValue': book.series_index}), mimetype='application/json')
     elif param =='tags':
         edit_book_tags(vals['value'], book)
+        ret = Response(json.dumps({'success':True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
+                       mimetype='application/json')
     elif param =='series':
         edit_book_series(vals['value'], book)
+        ret = Response(json.dumps({'success':True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
+                       mimetype='application/json')
     elif param =='publishers':
         vals['publisher'] = vals['value']
         edit_book_publisher(vals, book)
+        ret =  Response(json.dumps({'success':True, 'newValue':  book.publishers}),
+                       mimetype='application/json')
     elif param =='languages':
         edit_book_languages(vals['value'], book)
+        # ToDo: Not working
+        ret =  Response(json.dumps({'success':True, 'newValue':  ', '.join([lang.name for lang in book.languages])}),
+                       mimetype='application/json')
     elif param =='author_sort':
         book.author_sort = vals['value']
+        ret = Response(json.dumps({'success':True, 'newValue':  book.author_sort}),
+                       mimetype='application/json')
     elif param =='title':
         book.title = vals['value']
         helper.update_dir_stucture(book.id, config.config_calibre_dir)
+        ret = Response(json.dumps({'success':True, 'newValue':  book.title}),
+                       mimetype='application/json')
     elif param =='sort':
         book.sort = vals['value']
+        ret = Response(json.dumps({'success':True, 'newValue':  book.sort}),
+                       mimetype='application/json')
     # ToDo: edit books
     elif param =='authors':
         input_authors = vals['value'].split('&')
@@ -1037,9 +1054,11 @@ def edit_list_book(param):
         if book.author_sort != sort_authors:
             book.author_sort = sort_authors
         helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
+        ret = Response(json.dumps({'success':True, 'newValue':  ', '.join([author.name for author in book.authors])}),
+                       mimetype='application/json')
     book.last_modified = datetime.utcnow()
     calibre_db.session.commit()
-    return ""
+    return ret
 
 @editbook.route("/ajax/sort_value/<field>/<int:bookid>")
 @login_required
