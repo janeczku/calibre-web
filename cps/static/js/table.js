@@ -140,7 +140,6 @@ $(function() {
                             field: key,
                             value: data[key]
                         });
-                        // console.log(data);
                     }
                 });
             }
