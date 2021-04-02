@@ -94,6 +94,10 @@ $(function() {
                 editable: {
                     mode: "inline",
                     emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    success: function (response, __) {
+                        if(!response.success) return response.msg;
+                        return {newValue: response.newValue};
+                    }
                 }
             };
         }
