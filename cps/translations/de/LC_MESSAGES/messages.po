@@ -1693,7 +1693,7 @@ msgstr "Speicherort der Calibre-Datenbank"
 
 #: cps/templates/config_edit.html:29
 msgid "To activate serverside filepicker start Calibre-Web with -f option"
-msgstr "Calibre-Web mit -f option starten um die serverseiten Dateiauswahl zu aktivieren"
+msgstr "Calibre-Web mit -f Option starten um die serverseitige Dateiauswahl zu aktivieren"
 
 #: cps/templates/config_edit.html:35
 msgid "Use Google Drive?"
