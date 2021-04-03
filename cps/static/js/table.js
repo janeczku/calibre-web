@@ -95,17 +95,22 @@ $(function() {
                     mode: "inline",
                     emptytext: "<span class='glyphicon glyphicon-plus'></span>",
                     success: function (response, __) {
-                        if(!response.success) return response.msg;
+                        if (!response.success) return response.msg;
                         return {newValue: response.newValue};
+                    },
+                    params: function (params) {
+                        params.checkA = $('#autoupdate_authorsort').prop('checked');
+                        params.checkT = $('#autoupdate_titlesort').prop('checked');
+                        return params
                     }
                 }
             };
-        }
-        var validateText = $(this).attr("data-edit-validate");
-        if (validateText) {
-            element.editable.validate = function (value) {
-                if ($.trim(value) === "") return validateText;
-            };
+            var validateText = $(this).attr("data-edit-validate");
+            if (validateText) {
+                element.editable.validate = function (value) {
+                    if ($.trim(value) === "") return validateText;
+                };
+            }
         }
         column.push(element);
     });
@@ -132,7 +137,8 @@ $(function() {
         },
         // eslint-disable-next-line no-unused-vars
         onEditableSave: function (field, row, oldvalue, $el) {
-            if (field === "title" || field === "authors") {
+            if ($.inArray(field, [ "title", "sort" ]) !== -1 && $('#autoupdate_titlesort').prop('checked')
+                || $.inArray(field, [ "authors", "author_sort" ]) !== -1 && $('#autoupdate_authorsort').prop('checked')) {
                 $.ajax({
                     method:"get",
                     dataType: "json",
@@ -561,7 +567,10 @@ function TableActions (value, row) {
     ].join("");
 }
 
-
+function editEntry(param)
+{
+    console.log(param);
+}
 /* Function for deleting domain restrictions */
 function RestrictionActions (value, row) {
     return [
@@ -598,7 +607,7 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<button type="button" className="btn btn-default"><a href="/admin/user/' + row.id + '">' + this.buttontext + '</a></button>'
+    return '<a class="btn btn-default" href="/admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
 function checkboxFormatter(value, row, index){
