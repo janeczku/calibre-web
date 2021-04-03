@@ -27,6 +27,8 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
+from babel import Locale as LC
+from babel.core import UnknownLocaleError
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
@@ -447,7 +449,7 @@ def edit_book_comments(comments, book):
     return modif_date
 
 
-def edit_book_languages(languages, book, upload=False):
+def edit_book_languages(languages, book, upload=False, invalid=None):
     input_languages = languages.split(',')
     unknown_languages = []
     if not upload:
@@ -456,7 +458,10 @@ def edit_book_languages(languages, book, upload=False):
         input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
-        flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
+        if isinstance(invalid, list):
+            invalid.append(l)
+        else:
+            flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
     # ToDo: Not working correct
     if upload and len(input_l) == 1:
         # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
@@ -645,18 +650,21 @@ def upload_cover(request, book):
                 return False
     return None
 
-def handle_title_on_edit(book, to_save):
+
+def handle_title_on_edit(book, book_title):
     # handle book title
-    if book.title != to_save["book_title"].rstrip().strip():
-        if to_save["book_title"] == '':
-            to_save["book_title"] = _(u'Unknown')
-        book.title = to_save["book_title"].rstrip().strip()
+    book_title = book_title.rstrip().strip()
+    if book.title != book_title:
+        if book_title == '':
+            book_title = _(u'Unknown')
+        book.title = book_title
         return True
     return False
 
-def handle_author_on_edit(book, to_save):
+
+def handle_author_on_edit(book, author_name, update_stored=True):
     # handle author(s)
-    input_authors = to_save["author_name"].split('&')
+    input_authors = author_name.split('&')
     input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
     # Remove duplicates in authors list
     input_authors = helper.uniq(input_authors)
@@ -666,7 +674,7 @@ def handle_author_on_edit(book, to_save):
 
     change = modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
-    # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
+    # Search for each author if author is in database, if not, author name and sorted author name is generated new
     # everything then is assembled for sorted author field in database
     sort_authors_list = list()
     for inp in input_authors:
@@ -677,7 +685,7 @@ def handle_author_on_edit(book, to_save):
             stored_author = stored_author.sort
         sort_authors_list.append(helper.get_sorted_author(stored_author))
     sort_authors = ' & '.join(sort_authors_list)
-    if book.author_sort != sort_authors:
+    if book.author_sort != sort_authors and update_stored:
         book.author_sort = sort_authors
         change = True
     return input_authors, change
@@ -718,14 +726,9 @@ def edit_book(book_id):
         edited_books_id = None
 
         # handle book title
-        if book.title != to_save["book_title"].rstrip().strip():
-            if to_save["book_title"] == '':
-                to_save["book_title"] = _(u'Unknown')
-            book.title = to_save["book_title"].rstrip().strip()
-            edited_books_id = book.id
-            modif_date = True
+        modif_date |= handle_title_on_edit(book, to_save["book_title"])
 
-        input_authors, change = handle_author_on_edit(book, to_save)
+        input_authors, change = handle_author_on_edit(book, to_save["author_name"])
         if change:
             edited_books_id = book.id
             modif_date = True
@@ -1039,6 +1042,7 @@ def convert_bookformat(book_id):
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
 
+
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
@@ -1048,71 +1052,79 @@ def edit_list_book(param):
     ret = ""
     if param =='series_index':
         edit_book_series_index(vals['value'], book)
-        ret = Response(json.dumps({'success':True, 'newValue': book.series_index}), mimetype='application/json')
+        ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
     elif param =='tags':
         edit_book_tags(vals['value'], book)
-        ret = Response(json.dumps({'success':True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
+        ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
                        mimetype='application/json')
     elif param =='series':
         edit_book_series(vals['value'], book)
-        ret = Response(json.dumps({'success':True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
+        ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
                        mimetype='application/json')
     elif param =='publishers':
-        vals['publisher'] = vals['value']
-        edit_book_publisher(vals, book)
-        ret =  Response(json.dumps({'success':True, 'newValue':  book.publishers}),
+        edit_book_publisher(vals['value'], book)
+        ret =  Response(json.dumps({'success': True,
+                                    'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
                        mimetype='application/json')
     elif param =='languages':
-        edit_book_languages(vals['value'], book)
-        # ToDo: Not working
-        ret =  Response(json.dumps({'success':True, 'newValue':  ', '.join([lang.name for lang in book.languages])}),
-                       mimetype='application/json')
+        invalid = list()
+        edit_book_languages(vals['value'], book, invalid=invalid)
+        if invalid:
+            ret = Response(json.dumps({'success': False,
+                                       'msg': 'Invalid languages in request: {}'.format(','.join(invalid))}),
+                           mimetype='application/json')
+        else:
+            lang_names = list()
+            for lang in book.languages:
+                try:
+                    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
+                except UnknownLocaleError:
+                    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
+            ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
+                            mimetype='application/json')
     elif param =='author_sort':
         book.author_sort = vals['value']
-        ret = Response(json.dumps({'success':True, 'newValue':  book.author_sort}),
+        ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
                        mimetype='application/json')
-    elif param =='title':
-        book.title = vals['value']
+    elif param == 'title':
+        sort = book.sort
+        handle_title_on_edit(book, vals.get('value', ""))
         helper.update_dir_stucture(book.id, config.config_calibre_dir)
-        ret = Response(json.dumps({'success':True, 'newValue':  book.title}),
+        ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
                        mimetype='application/json')
     elif param =='sort':
         book.sort = vals['value']
-        ret = Response(json.dumps({'success':True, 'newValue':  book.sort}),
+        ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
                        mimetype='application/json')
-    # ToDo: edit books
     elif param =='authors':
-        input_authors = vals['value'].split('&')
-        input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
-        modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
-        sort_authors_list = list()
-        for inp in input_authors:
-            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
-            if not stored_author:
-                stored_author = helper.get_sorted_author(inp)
-            else:
-                stored_author = stored_author.sort
-            sort_authors_list.append(helper.get_sorted_author(stored_author))
-        sort_authors = ' & '.join(sort_authors_list)
-        if book.author_sort != sort_authors:
-            book.author_sort = sort_authors
+        input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
         helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
-        ret = Response(json.dumps({'success':True, 'newValue':  ', '.join([author.name for author in book.authors])}),
+        ret = Response(json.dumps({'success': True,
+                                   'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
     book.last_modified = datetime.utcnow()
     calibre_db.session.commit()
+    # revert change for sort if automatic fields link is deactivated
+    if param == 'title' and vals.get('checkT') == "false":
+        book.sort = sort
+        calibre_db.session.commit()
     return ret
+
 
 @editbook.route("/ajax/sort_value/<field>/<int:bookid>")
 @login_required
 def get_sorted_entry(field, bookid):
-    if field == 'title' or field == 'authors':
+    if field in ['title', 'authors', 'sort', 'author_sort']:
         book = calibre_db.get_filtered_book(bookid)
         if book:
             if field == 'title':
                 return json.dumps({'sort': book.sort})
             elif field == 'authors':
                 return json.dumps({'author_sort': book.author_sort})
+            if field == 'sort':
+                return json.dumps({'sort': book.title})
+            if field == 'author_sort':
+                return json.dumps({'author_sort': book.author})
     return ""
 
 

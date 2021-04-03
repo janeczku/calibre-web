@@ -498,6 +498,7 @@ def generate_random_password():
 
 def uniq(inpt):
     output = []
+    inpt = [ " ".join(inp.split()) for inp in inpt]
     for x in inpt:
         if x not in output:
             output.append(x)
