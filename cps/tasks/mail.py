@@ -158,9 +158,9 @@ class TaskEmail(CalibreTask):
         except socket.error as e:
             log.debug_or_exception(e)
             self._handleError(u'Socket Error sending email: {}'.format(e.strerror))
-        except Exception as e:
-            log.debug_or_exception(e)
-            self._handleError(u'Error sending email: {}'.format(e))
+        except Exception as ex:
+            log.debug_or_exception(ex)
+            self._handleError(u'Error sending email: {}'.format(ex))
 
 
     def send_standard_email(self, msg):

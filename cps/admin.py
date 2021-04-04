@@ -42,7 +42,8 @@ from sqlalchemy.sql.expression import func, or_
 from . import constants, logger, helper, services
 from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
-from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
+from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
+    valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from . import debug_info
@@ -151,7 +152,7 @@ def shutdown():
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
-        web_server.stop(task == 0)
+        web_server.stop(task==0)
         return json.dumps(showtext)
 
     if task == 2:
@@ -241,9 +242,8 @@ def edit_user_table():
 @admin_required
 def list_users():
     off = request.args.get("offset") or 0
-    limit = request.args.get("limit") or 40
+    limit = request.args.get("limit") or 10
     search = request.args.get("search")
-
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
@@ -259,22 +259,13 @@ def list_users():
         filtered_count = total_count
 
     for user in users:
-        # set readable locale
-        #try:
-        #    user.local = LC.parse(user.locale).get_language_name(get_locale())
-        #except UnknownLocaleError:
-        #    # This should not happen
-        #    user.local = _(isoLanguages.get(part1=user.locale).name)
-        # Set default language
         if user.default_language == "all":
             user.default = _("all")
         else:
             user.default = LC.parse(user.default_language).get_language_name(get_locale())
 
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": users}
-
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
-
     response = make_response(js_list)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -294,7 +285,7 @@ def table_get_locale():
     ret = list()
     current_locale = get_locale()
     for loc in locale:
-        ret.append({'value':str(loc),'text':loc.get_language_name(current_locale)})
+        ret.append({'value': str(loc), 'text': loc.get_language_name(current_locale)})
     return json.dumps(ret)
 
 
@@ -306,7 +297,7 @@ def table_get_default_lang():
     ret = list()
     ret.append({'value':'all','text':_('Show All')})
     for lang in languages:
-        ret.append({'value':lang.lang_code,'text': lang.name})
+        ret.append({'value': lang.lang_code, 'text': lang.name})
     return json.dumps(ret)
 
 
@@ -333,43 +324,45 @@ def edit_list_user(param):
     else:
         return ""
     for user in users:
-        if param =='name':
-            if not ub.session.query(ub.User).filter(ub.User.name == vals['value']).scalar():
-                user.name = vals['value']
-            else:
-                log.error(u"This username is already taken")
-                return _(u"This username is already taken"), 400
-        elif param =='email':
-            existing_email = ub.session.query(ub.User).filter(ub.User.email == vals['value'].lower()).first()
-            if not existing_email:
-                user.email = vals['value']
-            else:
-                log.error(u"Found an existing account for this e-mail address.")
-                return _(u"Found an existing account for this e-mail address."), 400
-        elif param == 'kindle_mail':
-            user.kindle_mail = vals['value']
-        elif param == 'role':
-            if vals['value'] == 'true':
-                user.role |= int(vals['field_index'])
-            else:
-                user.role &= ~int(vals['field_index'])
-        elif param == 'sidebar_view':
-            if vals['value'] == 'true':
-                user.sidebar_view |= int(vals['field_index'])
-            else:
-                user.sidebar_view &= ~int(vals['field_index'])
-        elif param == 'denied_tags':
-                user.denied_tags = vals['value']
-        elif param == 'allowed_tags':
-                user.allowed_tags = vals['value']
-        elif param == 'allowed_column_value':
-            user.allowed_column_value = vals['value']
-        elif param == 'denied_column_value':
-            user.denied_column_value = vals['value']
-        elif param == 'locale':
-            user.locale = vals['value']
-        elif param == 'default_language':
-            user.default_language = vals['value']
+        try:
+            vals['value'] = vals['value'].strip()
+            if param == 'name':
+                if user.name == "Guest":
+                    raise Exception(_("Guest Name can't be changed"))
+                user.name = check_username(vals['value'])
+            elif param =='email':
+                user.email = check_email(vals['value'])
+            elif param == 'kindle_mail':
+                user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
+            elif param == 'role':
+                if vals['value'] == 'true':
+                    user.role |= int(vals['field_index'])
+                else:
+                    if int(vals['field_index']) == constants.ROLE_ADMIN:
+                        if not ub.session.query(ub.User).\
+                               filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                      ub.User.id != user.id).count():
+                            return _(u"No admin user remaining, can't remove admin role", nick=user.name), 400
+                    user.role &= ~int(vals['field_index'])
+            elif param == 'sidebar_view':
+                if vals['value'] == 'true':
+                    user.sidebar_view |= int(vals['field_index'])
+                else:
+                    user.sidebar_view &= ~int(vals['field_index'])
+            elif param == 'denied_tags':
+                    user.denied_tags = vals['value']
+            elif param == 'allowed_tags':
+                    user.allowed_tags = vals['value']
+            elif param == 'allowed_column_value':
+                user.allowed_column_value = vals['value']
+            elif param == 'denied_column_value':
+                user.denied_column_value = vals['value']
+            elif param == 'locale':
+                user.locale = vals['value']
+            elif param == 'default_language':
+                user.default_language = vals['value']
+        except Exception as ex:
+            return str(ex), 400
     ub.session_commit()
     return ""
 
@@ -378,7 +371,6 @@ def edit_list_user(param):
 @login_required
 @admin_required
 def update_table_settings():
-    # ToDo: Save table settings
     current_user.view_settings['useredit'] = json.loads(request.data)
     try:
         try:
@@ -387,7 +379,7 @@ def update_table_settings():
             pass
         ub.session.commit()
     except (InvalidRequestError, OperationalError):
-        log.error("Invalid request received: %r ", request, )
+        log.error("Invalid request received: {}".format(request))
         return "Invalid request", 400
     return ""
 
@@ -787,7 +779,6 @@ def pathchooser():
         folders = []
 
     files = []
-    # locale = get_locale()
     for f in folders:
         try:
             data = {"name": f, "fullpath": os.path.join(cwd, f)}
@@ -932,7 +923,7 @@ def _configuration_ldap_helper(to_save, gdrive_error):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
-    if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"] != "":
+    if to_save.get("config_ldap_serv_password", "") != "":
         reboot_required |= 1
         config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
     config.save()
@@ -970,7 +961,7 @@ def _configuration_ldap_helper(to_save, gdrive_error):
         return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                                       gdrive_error)
 
-    if "ldap_import_user_filter" in to_save and to_save["ldap_import_user_filter"] == '0':
+    if to_save.get("ldap_import_user_filter") == '0':
         config.config_ldap_member_user_object = ""
     else:
         if config.config_ldap_member_user_object.count("%s") != 1:
@@ -1095,8 +1086,8 @@ def _configuration_update_helper(configured):
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
             gdriveutils.downloadFile(None, "metadata.db", metadata_db)
             db_change = True
-    except Exception as e:
-        return _configuration_result('%s' % e, gdrive_error, configured)
+    except Exception as ex:
+        return _configuration_result('%s' % ex, gdrive_error, configured)
 
     if db_change:
         if not calibre_db.setup_db(config, ub.app_DB_path):
@@ -1148,7 +1139,6 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
 
 def _handle_new_user(to_save, content, languages, translations, kobo_support):
     content.default_language = to_save["default_language"]
-    # content.mature_content = "Show_mature_content" in to_save
     content.locale = to_save.get("locale", content.locale)
 
     content.sidebar_view = sum(int(key[5:]) for key in to_save if key.startswith('show_'))
@@ -1156,28 +1146,21 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.sidebar_view |= constants.DETAIL_RANDOM
 
     content.role = constants.selected_roles(to_save)
-
-    if not to_save["name"] or not to_save["email"] or not to_save["password"]:
-        flash(_(u"Please fill out all fields!"), category="error")
-        return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                     registered_oauth=oauth_check, kobo_support=kobo_support,
-                                     title=_(u"Add new user"))
     content.password = generate_password_hash(to_save["password"])
-    existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == to_save["name"].lower()) \
-        .first()
-    existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
-        .first()
-    if not existing_user and not existing_email:
-        content.name = to_save["name"]
-        if config.config_public_reg and not check_valid_domain(to_save["email"]):
-            flash(_(u"E-mail is not from valid domain"), category="error")
-            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         registered_oauth=oauth_check, kobo_support=kobo_support,
-                                         title=_(u"Add new user"))
-        else:
-            content.email = to_save["email"]
-    else:
-        flash(_(u"Found an existing account for this e-mail address or name."), category="error")
+    try:
+        if not to_save["name"] or not to_save["email"] or not to_save["password"]:
+            log.info("Missing entries on new user")
+            raise Exception(_(u"Please fill out all fields!"))
+        content.email = check_email(to_save["email"])
+        # Query User name, if not existing, change
+        content.name = check_username(to_save["name"])
+        if to_save.get("kindle_mail"):
+            content.kindle_mail = valid_email(to_save["kindle_mail"])
+        if config.config_public_reg and not check_valid_domain(content.email):
+            log.info("E-mail: {} for new user is not from valid domain".format(content.email))
+            raise Exception(_(u"E-mail is not from valid domain"))
+    except Exception as ex:
+        flash(str(ex), category="error")
         return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
@@ -1199,7 +1182,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
 
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
-    if "delete" in to_save:
+    if to_save.get("delete"):
         if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
@@ -1214,8 +1197,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                                 ub.User.id != content.id).count() and 'admin_role' not in to_save:
             flash(_(u"No admin user remaining, can't remove admin role", nick=content.name), category="error")
             return redirect(url_for('admin.admin'))
-
-        if "password" in to_save and to_save["password"]:
+        if to_save.get("password"):
             content.password = generate_password_hash(to_save["password"])
         anonymous = content.is_anonymous
         content.role = constants.selected_roles(to_save)
@@ -1233,49 +1215,37 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             elif value not in val and content.check_visibility(value):
                 content.sidebar_view &= ~value
 
-        if "Show_detail_random" in to_save:
+        if to_save.get("Show_detail_random"):
             content.sidebar_view |= constants.DETAIL_RANDOM
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
 
-        if "default_language" in to_save:
+        if to_save.get("default_language"):
             content.default_language = to_save["default_language"]
-        if "locale" in to_save and to_save["locale"]:
+        if to_save.get("locale"):
             content.locale = to_save["locale"]
-        if to_save["email"] and to_save["email"] != content.email:
-            existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
-                .first()
-            if not existing_email:
-                content.email = to_save["email"]
-            else:
-                flash(_(u"Found an existing account for this e-mail address."), category="error")
-                return render_title_template("user_edit.html",
-                                             translations=translations,
-                                             languages=languages,
-                                             mail_configured=config.get_mail_server_configured(),
-                                             kobo_support=kobo_support,
-                                             new_user=0,
-                                             content=content,
-                                             registered_oauth=oauth_check,
-                                             title=_(u"Edit User %(nick)s", nick=content.name), page="edituser")
-        if "name" in to_save and to_save["name"] != content.name:
+        try:
+            if to_save.get("email", content.email) != content.email:
+                content.email = check_email(to_save["email"])
             # Query User name, if not existing, change
-            if not ub.session.query(ub.User).filter(ub.User.name == to_save["name"]).scalar():
-                content.name = to_save["name"]
-            else:
-                flash(_(u"This username is already taken"), category="error")
-                return render_title_template("user_edit.html",
-                                             translations=translations,
-                                             languages=languages,
-                                             mail_configured=config.get_mail_server_configured(),
-                                             new_user=0, content=content,
-                                             registered_oauth=oauth_check,
-                                             kobo_support=kobo_support,
-                                             title=_(u"Edit User %(nick)s", nick=content.name),
-                                             page="edituser")
-
-        if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
-            content.kindle_mail = to_save["kindle_mail"]
+            if to_save.get("name", content.name) != content.name:
+                if to_save.get("name") == "Guest":
+                    raise Exception(_("Guest Name can't be changed"))
+                content.name = check_username(to_save["name"])
+            if to_save.get("kindle_mail") != content.kindle_mail:
+                content.kindle_mail = valid_email(to_save["kindle_mail"]) if to_save["kindle_mail"] else ""
+        except Exception as ex:
+            flash(str(ex), category="error")
+            return render_title_template("user_edit.html",
+                                         translations=translations,
+                                         languages=languages,
+                                         mail_configured=config.get_mail_server_configured(),
+                                         kobo_support=kobo_support,
+                                         new_user=0,
+                                         content=content,
+                                         registered_oauth=oauth_check,
+                                         title=_(u"Edit User %(nick)s", nick=content.name),
+                                         page="edituser")
     try:
         ub.session_commit()
         flash(_(u"User '%(nick)s' updated", nick=content.name), category="success")
@@ -1330,10 +1300,10 @@ def update_mailsettings():
     elif to_save.get("gmail"):
         try:
             config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"G-Mail Account Verification Successfull"), category="success")
-        except Exception as e:
-            flash(e, category="error")
-            log.error(e)
+            flash(_(u"G-Mail Account Verification Successful"), category="success")
+        except Exception as ex:
+            flash(str(ex), category="error")
+            log.error(ex)
             return edit_mailsettings()
 
     else:
@@ -1389,7 +1359,8 @@ def edit_user(user_id):
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
-                                 title=_(u"Edit User %(nick)s", nick=content.name), page="edituser")
+                                 title=_(u"Edit User %(nick)s", nick=content.name),
+                                 page="edituser")
 
 
 @admi.route("/admin/resetpassword/<int:user_id>")
@@ -1530,9 +1501,12 @@ def ldap_import_create_user(user, user_data):
     else:
         log.debug('No Mail Field Found in LDAP Response')
         useremail = username + '@email.com'
-    # check for duplicate email
-    if ub.session.query(ub.User).filter(func.lower(ub.User.email) == useremail.lower()).first():
-        log.warning("LDAP Email %s Already in Database", user_data)
+
+    try:
+        # check for duplicate email
+        useremail = check_email(useremail)
+    except Exception as ex:
+        log.warning("LDAP Email Error: {}, {}".format(user_data, ex))
         return 0, None
     content = ub.User()
     content.name = username
@@ -1549,8 +1523,8 @@ def ldap_import_create_user(user, user_data):
     try:
         ub.session.commit()
         return 1, None    # increase no of users
-    except Exception as e:
-        log.warning("Failed to create LDAP user: %s - %s", user, e)
+    except Exception as ex:
+        log.warning("Failed to create LDAP user: %s - %s", user, ex)
         ub.session.rollback()
         message = _(u'Failed to Create at Least One LDAP User')
         return 0, message
@@ -1583,16 +1557,16 @@ def import_ldap_users():
                 query_filter = config.config_ldap_user_object
             try:
                 user_identifier = extract_user_identifier(user, query_filter)
-            except Exception as e:
-                log.warning(e)
+            except Exception as ex:
+                log.warning(ex)
                 continue
         else:
             user_identifier = user
             query_filter = None
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
-        except AttributeError as e:
-            log.debug_or_exception(e)
+        except AttributeError as ex:
+            log.debug_or_exception(ex)
             continue
         if user_data:
             user_count, message = ldap_import_create_user(user, user_data)

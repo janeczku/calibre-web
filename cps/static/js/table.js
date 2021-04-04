@@ -452,6 +452,17 @@ $(function() {
                 $(this).next().text(elText);
             });
         },
+        onLoadSuccess: function () {
+            var guest = $(".editable[data-name='name'][data-value='Guest']");
+            guest.editable("disable");
+            $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
+            $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            // ToDo: Disable delete
+
+        },
+
         // eslint-disable-next-line no-unused-vars
         /*onEditableSave: function (field, row, oldvalue, $el) {
             if (field === "title" || field === "authors") {
@@ -612,9 +623,9 @@ function singleUserFormatter(value, row) {
 
 function checkboxFormatter(value, row, index){
     if(value & this.column)
-        return '<input type="checkbox" class="chk" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.name + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
     else
-        return '<input type="checkbox" class="chk" onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.name + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
 }
 
 function checkboxChange(checkbox, userId, field, field_index) {
@@ -622,6 +633,11 @@ function checkboxChange(checkbox, userId, field, field_index) {
         method:"post",
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
         data: {"pk":userId, "field_index":field_index, "value": checkbox.checked}
+        /*<div className="editable-buttons">
+            <button type="button" className="btn btn-default btn-sm editable-cancel"><i
+                className="glyphicon glyphicon-remove"></i></button>
+        </div>*/
+        /*<div className="editable-error-block help-block" style="">Text to show</div>*/
     });
     $.ajax({
         method:"get",

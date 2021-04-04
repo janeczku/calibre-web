@@ -255,13 +255,13 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
                 log.info(u"Shelf {} {}".format(to_save["title"], shelf_action))
                 flash(flash_text, category="success")
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
-            except (OperationalError, InvalidRequestError) as e:
+            except (OperationalError, InvalidRequestError) as ex:
                 ub.session.rollback()
-                log.debug_or_exception(e)
+                log.debug_or_exception(ex)
                 flash(_(u"Settings DB is not Writeable"), category="error")
-            except Exception as e:
+            except Exception as ex:
                 ub.session.rollback()
-                log.debug_or_exception(e)
+                log.debug_or_exception(ex)
                 flash(_(u"There was an error"), category="error")
     return render_title_template('shelf_edit.html', shelf=shelf, title=title, page=page)
 

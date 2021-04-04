@@ -544,8 +544,8 @@ class CalibreDB():
 
             conn = cls.engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
-        except Exception as e:
-            config.invalidate(e)
+        except Exception as ex:
+            config.invalidate(ex)
             return False
 
         config.db_configured = True
@@ -646,8 +646,8 @@ class CalibreDB():
             pagination = Pagination(page, pagesize,
                                     len(query.all()))
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
-        except Exception as e:
-            log.debug_or_exception(e)
+        except Exception as ex:
+            log.debug_or_exception(ex)
         #for book in entries:
         #    book = self.order_authors(book)
         return entries, randm, pagination
@@ -791,7 +791,7 @@ class CalibreDB():
 def lcase(s):
     try:
         return unidecode.unidecode(s.lower())
-    except Exception as e:
+    except Exception as ex:
         log = logger.create()
-        log.debug_or_exception(e)
+        log.debug_or_exception(ex)
         return s.lower()

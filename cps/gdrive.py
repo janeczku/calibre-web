@@ -155,6 +155,6 @@ def on_received_watch_confirmation():
                 # prevent error on windows, as os.rename does on existing files, also allow cross hdd move
                 move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                 calibre_db.reconnect_db(config, ub.app_DB_path)
-    except Exception as e:
-        log.debug_or_exception(e)
+    except Exception as ex:
+        log.debug_or_exception(ex)
     return ''

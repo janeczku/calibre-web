@@ -35,7 +35,7 @@ from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text
+from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 
@@ -504,6 +504,31 @@ def uniq(inpt):
             output.append(x)
     return output
 
+def check_email(email):
+    email = valid_email(email)
+    if ub.session.query(ub.User).filter(func.lower(ub.User.email) == email.lower()).first():
+        log.error(u"Found an existing account for this e-mail address")
+        raise Exception(_(u"Found an existing account for this e-mail address"))
+    return email
+
+
+def check_username(username):
+    username = username.strip()
+    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
+        log.error(u"This username is already taken")
+        raise Exception (_(u"This username is already taken"))
+    return username
+
+
+def valid_email(email):
+    email = email.strip()
+    # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+    if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                     email):
+        log.error(u"Invalid e-mail address format")
+        raise Exception(_(u"Invalid e-mail address format"))
+    return email
+
 # ################################# External interface #################################
 
 
@@ -551,8 +576,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
                     return get_cover_on_failure(use_generic_cover_on_failure)
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
