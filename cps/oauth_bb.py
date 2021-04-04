@@ -147,8 +147,8 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
                     ub.session.commit()
                     flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
                     return redirect(url_for('web.profile'))
-                except Exception as e:
-                    log.debug_or_exception(e)
+                except Exception as ex:
+                    log.debug_or_exception(ex)
                     ub.session.rollback()
             else:
                 flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
@@ -194,8 +194,8 @@ def unlink_oauth(provider):
                 ub.session.commit()
                 logout_oauth_user()
                 flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 ub.session.rollback()
                 flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
     except NoResultFound:

@@ -336,8 +336,8 @@ def delete_book(book_id, book_format, jsonResponse):
                     calibre_db.session.query(db.Data).filter(db.Data.book == book.id).\
                         filter(db.Data.format == book_format).delete()
                 calibre_db.session.commit()
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 calibre_db.session.rollback()
         else:
             # book not found
@@ -726,10 +726,10 @@ def edit_book(book_id):
         edited_books_id = None
 
         # handle book title
-        modif_date |= handle_title_on_edit(book, to_save["book_title"])
+        title_change = handle_title_on_edit(book, to_save["book_title"])
 
-        input_authors, change = handle_author_on_edit(book, to_save["author_name"])
-        if change:
+        input_authors, authorchange = handle_author_on_edit(book, to_save["author_name"])
+        if authorchange or title_change:
             edited_books_id = book.id
             modif_date = True
 
@@ -801,8 +801,8 @@ def edit_book(book_id):
             calibre_db.session.rollback()
             flash(error, category="error")
             return render_edit_book(book_id)
-    except Exception as e:
-        log.debug_or_exception(e)
+    except Exception as ex:
+        log.debug_or_exception(ex)
         calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))

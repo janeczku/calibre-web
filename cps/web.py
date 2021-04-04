@@ -24,7 +24,6 @@ from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
-import re
 import mimetypes
 import chardet  # dependency of requests
 
@@ -50,9 +49,9 @@ from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, \
+from .helper import check_valid_domain, render_task_status, check_email, check_username, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
-    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
+    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email
 from .pagination import Pagination
 from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
@@ -215,8 +214,8 @@ def update_view():
         for element in to_save:
             for param in to_save[element]:
                 current_user.set_view_property(element, param, to_save[element][param])
-    except Exception as e:
-        log.error("Could not save view_settings: %r %r: %e", request, to_save, e)
+    except Exception as ex:
+        log.error("Could not save view_settings: %r %r: %e", request, to_save, ex)
         return "Invalid request", 400
     return "1", 200
 
@@ -1164,14 +1163,6 @@ def extend_search_term(searchterm,
         searchterm.extend(tag.name for tag in tag_names)
         tag_names = calibre_db.session.query(db_element).filter(db.Tags.id.in_(tags['exclude_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
-    #serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(tags['include_serie'])).all()
-    #searchterm.extend(serie.name for serie in serie_names)
-    #serie_names = calibre_db.session.query(db.Series).filter(db.Series.id.in_(tags['include_serie'])).all()
-    #searchterm.extend(serie.name for serie in serie_names)
-    #shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(tags['include_shelf'])).all()
-    #searchterm.extend(shelf.name for shelf in shelf_names)
-    #shelf_names = ub.session.query(ub.Shelf).filter(ub.Shelf.id.in_(tags['include_shelf'])).all()
-    #searchterm.extend(shelf.name for shelf in shelf_names)
     language_names = calibre_db.session.query(db.Languages). \
         filter(db.Languages.id.in_(tags['include_language'])).all()
     if language_names:
@@ -1345,11 +1336,7 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    if "Kobo" in request.headers.get('User-Agent'):
-        client = "kobo"
-    else:
-        client=""
-
+    client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
     return get_download_link(book_id, book_format, client)
 
 
@@ -1391,52 +1378,41 @@ def register():
 
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if config.config_register_email:
-            nickname = to_save["email"]
-        else:
-            nickname = to_save.get('name', None)
-        if not nickname or not to_save.get("email", None):
+        nickname = to_save["email"].strip() if config.config_register_email else to_save.get('name')
+        if not nickname or not to_save.get("email"):
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
-        #if to_save["email"].count("@") != 1 or not \
-        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-                     to_save["email"]):
-            flash(_(u"Invalid e-mail address format"), category="error")
-            log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
+        try:
+            nickname = check_username(nickname)
+            email = check_email(to_save["email"])
+        except Exception as ex:
+            flash(str(ex), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == nickname
-                                                         .lower()).first()
-        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
-        if not existing_user and not existing_email:
-            content = ub.User()
-            if check_valid_domain(to_save["email"]):
-                content.name = nickname
-                content.email = to_save["email"]
-                password = generate_random_password()
-                content.password = generate_password_hash(password)
-                content.role = config.config_default_role
-                content.sidebar_view = config.config_default_show
-                try:
-                    ub.session.add(content)
-                    ub.session.commit()
-                    if feature_support['oauth']:
-                        register_user_with_oauth(content)
-                    send_registration_mail(to_save["email"], nickname, password)
-                except Exception:
-                    ub.session.rollback()
-                    flash(_(u"An unknown error occurred. Please try again later."), category="error")
-                    return render_title_template('register.html', title=_(u"register"), page="register")
-            else:
-                flash(_(u"Your e-mail is not allowed to register"), category="error")
-                log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
+        content = ub.User()
+        if check_valid_domain(email):
+            content.name = nickname
+            content.email = email
+            password = generate_random_password()
+            content.password = generate_password_hash(password)
+            content.role = config.config_default_role
+            content.sidebar_view = config.config_default_show
+            try:
+                ub.session.add(content)
+                ub.session.commit()
+                if feature_support['oauth']:
+                    register_user_with_oauth(content)
+                send_registration_mail(to_save["email"].strip(), nickname, password)
+            except Exception:
+                ub.session.rollback()
+                flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 return render_title_template('register.html', title=_(u"register"), page="register")
-            flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
-            return redirect(url_for('web.login'))
         else:
-            flash(_(u"This username or e-mail address is already in use."), category="error")
+            flash(_(u"Your e-mail is not allowed to register"), category="error")
+            log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
             return render_title_template('register.html', title=_(u"register"), page="register")
+        flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
+        return redirect(url_for('web.login'))
 
     if feature_support['oauth']:
         register_user_with_oauth()
@@ -1527,63 +1503,41 @@ def logout():
     return redirect(url_for('web.login'))
 
 
-
-
-
 # ################################### Users own configuration #########################################################
-def change_profile_email(to_save, kobo_support, local_oauth_check, oauth_status):
-    if "email" in to_save and to_save["email"] != current_user.email:
-        if config.config_public_reg and not check_valid_domain(to_save["email"]):
-            flash(_(u"E-mail is not from valid domain"), category="error")
-            return render_title_template("user_edit.html", content=current_user,
-                                         title=_(u"%(name)s's profile", name=current_user.name), page="me",
-                                         kobo_support=kobo_support,
-                                         registered_oauth=local_oauth_check, oauth_status=oauth_status)
-        current_user.email = to_save["email"]
-
-def change_profile_nickname(to_save, kobo_support, local_oauth_check, translations, languages):
-    if "name" in to_save and to_save["name"] != current_user.name:
-        # Query User name, if not existing, change
-        if not ub.session.query(ub.User).filter(ub.User.name == to_save["name"]).scalar():
-            current_user.name = to_save["name"]
-        else:
-            flash(_(u"This username is already taken"), category="error")
-            return render_title_template("user_edit.html",
-                                         translations=translations,
-                                         languages=languages,
-                                         kobo_support=kobo_support,
-                                         new_user=0, content=current_user,
-                                         registered_oauth=local_oauth_check,
-                                         title=_(u"Edit User %(nick)s",
-                                                 nick=current_user.name),
-                                         page="edituser")
-
-
 def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
     to_save = request.form.to_dict()
     current_user.random_books = 0
     if current_user.role_passwd() or current_user.role_admin():
-        if "password" in to_save and to_save["password"]:
+        if to_save.get("password"):
             current_user.password = generate_password_hash(to_save["password"])
-    if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
-        current_user.kindle_mail = to_save["kindle_mail"]
-    if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
-        current_user.allowed_tags = to_save["allowed_tags"].strip()
-    change_profile_email(to_save, kobo_support, local_oauth_check, oauth_status)
-    change_profile_nickname(to_save, kobo_support, local_oauth_check, translations, languages)
-    if "show_random" in to_save and to_save["show_random"] == "on":
-        current_user.random_books = 1
-    if "default_language" in to_save:
-        current_user.default_language = to_save["default_language"]
-    if "locale" in to_save:
-        current_user.locale = to_save["locale"]
+    try:
+        if to_save.get("allowed_tags", current_user.allowed_tags) != current_user.allowed_tags:
+            current_user.allowed_tags = to_save["allowed_tags"].strip()
+        if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
+            current_user.kindle_mail = valid_email(to_save["kindle_mail"])
+        if to_save.get("email", current_user.email) != current_user.email:
+            current_user.email = check_email(to_save["email"])
+        if to_save.get("name", current_user.name) != current_user.name:
+            # Query User name, if not existing, change
+            current_user.name = check_username(to_save["name"])
+        current_user.random_books = 1 if to_save.get("show_random") == "on" else 0
+        if to_save.get("default_language"):
+            current_user.default_language = to_save["default_language"]
+        if to_save.get("locale"):
+            current_user.locale = to_save["locale"]
+    except Exception as ex:
+        flash(str(ex), category="error")
+        return render_title_template("user_edit.html", content=current_user,
+                                     title=_(u"%(name)s's profile", name=current_user.name), page="me",
+                                     kobo_support=kobo_support,
+                                     registered_oauth=local_oauth_check, oauth_status=oauth_status)
 
     val = 0
     for key, __ in to_save.items():
         if key.startswith('show'):
             val += int(key[5:])
     current_user.sidebar_view = val
-    if "Show_detail_random" in to_save:
+    if to_save.get("Show_detail_random"):
         current_user.sidebar_view += constants.DETAIL_RANDOM
 
     try:

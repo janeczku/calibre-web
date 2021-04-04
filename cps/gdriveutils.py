@@ -202,8 +202,8 @@ def getDrive(drive=None, gauth=None):
                 gauth.Refresh()
             except RefreshError as e:
                 log.error("Google Drive error: %s", e)
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -497,8 +497,8 @@ def getChangeById (drive, change_id):
     except (errors.HttpError) as error:
         log.error(error)
         return None
-    except Exception as e:
-        log.error(e)
+    except Exception as ex:
+        log.error(ex)
         return None
 
 
