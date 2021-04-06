@@ -3290,7 +3290,9 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
-    left: 0 !important
+    left: 0 !important;
+    max-height: 80%;
+    overflow-y: auto;
 }
 
 .dropdown-menu > li > a {
