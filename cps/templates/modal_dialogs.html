@@ -22,7 +22,7 @@
           <form id="add_restriction" action="" method="POST">
           <div class="form-group required">
             <label for="add_element">{{_('Add View Restriction')}}</label>
-            <input type="text" class="form-control" name="add_element" id="add_element" >
+            <input type="text" class="form-control" name="add_element" id="add_element">
           </div>
           <div class="form-group required">
             <input type="button" class="btn btn-default" value="{{_('Allow')}}" name="submit_allow" id="submit_allow" data-dismiss="static">
@@ -108,13 +108,31 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
-      <span id="header"></span>
+      <span id="header-GeneralDeleteModal"></span>
       </div>
       <div class="modal-body text-center">
-        <span id="text"></span>
+        <span id="text-GeneralDeleteModal"></span>
           <p></p>
-        <button id="btnConfirmYes" type="button" class="btn btn btn-danger">{{_('Delete')}}</button>
-        <button id="btnConfirmNo" type="button" class="btn btn-default">{{_('Cancel')}}</button>
+        <button id="btnConfirmYes-GeneralDeleteModal" type="button" class="btn btn btn-danger">{{_('Delete')}}</button>
+        <button id="btnConfirmNo-GeneralDeleteModal" type="button" class="btn btn-default">{{_('Cancel')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro change_confirm_modal() %}
+<div id="GeneralChangeModal" class="modal fade" role="Dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-center">
+      <span id="header-GeneralChangeModal"></span>
+      </div>
+      <div class="modal-body text-center">
+        <span id="text-GeneralChangeModal"></span>
+          <p></p>
+        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn btn-default">{{_('Ok')}}</button>
+        <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-default">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>

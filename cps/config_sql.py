@@ -23,7 +23,11 @@ import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.ext.declarative import declarative_base
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, cli, logger, ub
 
@@ -35,7 +39,7 @@ class _Flask_Settings(_Base):
     __tablename__ = 'flask_settings'
 
     id = Column(Integer, primary_key=True)
-    flask_session_key = Column(BLOB, default="")
+    flask_session_key = Column(BLOB, default=b"")
 
     def __init__(self, key):
         self.flask_session_key = key
@@ -54,6 +58,8 @@ class _Settings(_Base):
     mail_password = Column(String, default='mypassword')
     mail_from = Column(String, default='automailer <mail@example.com>')
     mail_size = Column(Integer, default=25*1024*1024)
+    mail_server_type = Column(SmallInteger, default=0)
+    mail_gmail_token = Column(JSON, default={})
 
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
@@ -242,15 +248,16 @@ class _ConfigSQL(object):
         return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
 
     def get_mail_server_configured(self):
-        return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
+        return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
+                    or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
-        '''Possibly updates a field of this object.
+        """Possibly updates a field of this object.
         The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
 
         :returns: `True` if the field has changed value
-        '''
+        """
         new_value = dictionary.get(field, default)
         if new_value is None:
             # log.debug("_ConfigSQL set_from_dictionary field '%s' not found", field)
@@ -301,8 +308,11 @@ class _ConfigSQL(object):
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
-        # pylint: disable=access-member-before-definition
-        logfile = logger.setup(self.config_logfile, self.config_log_level)
+        if os.environ.get('FLASK_DEBUG'):
+            logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
+        else:
+            # pylint: disable=access-member-before-definition
+            logfile = logger.setup(self.config_logfile, self.config_log_level)
         if logfile != self.config_logfile:
             log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
@@ -360,10 +370,14 @@ def _migrate_table(session, orm_class):
                     if isinstance(column.default.arg, bool):
                         column_default = ("DEFAULT %r" % int(column.default.arg))
                     else:
-                        column_default = ("DEFAULT %r" % column.default.arg)
+                        column_default = ("DEFAULT '%r'" % column.default.arg)
+                if isinstance(column.type, JSON):
+                    column_type = "JSON"
+                else:
+                    column_type = column.type
                 alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
                                                                         column_name,
-                                                                        column.type,
+                                                                        column_type,
                                                                         column_default)
                 log.debug(alter_table)
                 session.execute(alter_table)
@@ -426,12 +440,12 @@ def load_configuration(session):
         session.commit()
     conf = _ConfigSQL(session)
     # Migrate from global restrictions to user based restrictions
-    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
-        conf.config_denied_tags = conf.config_mature_content_tags
-        conf.save()
-        session.query(ub.User).filter(ub.User.mature_content != True). \
-            update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
-        session.commit()
+    #if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
+    #    conf.config_denied_tags = conf.config_mature_content_tags
+    #    conf.save()
+    #    session.query(ub.User).filter(ub.User.mature_content != True). \
+    #        update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
+    #    session.commit()
     return conf
 
 def get_flask_session_key(session):

@@ -141,8 +141,8 @@
             <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if conf.show_detail_random() %}checked{% endif %}>
             <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
         </div>
-        <a href="#" id="get_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
-        <a href="#" id="get_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied custom column values')}}</a>
+        <a href="#" id="get_tags" data-id="0" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+        <a href="#" id="get_column_values" data-id="0" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied custom column values')}}</a>
       </div>
     </div>
   </div>

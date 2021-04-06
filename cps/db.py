@@ -30,7 +30,13 @@ from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.ext.declarative import DeclarativeMeta
+from sqlalchemy.exc import OperationalError
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -326,7 +332,6 @@ class Books(Base):
     has_cover = Column(Integer, default=0)
     uuid = Column(String)
     isbn = Column(String(collation='NOCASE'), default="")
-    # Iccn = Column(String(collation='NOCASE'), default="")
     flags = Column(Integer, nullable=False, default=1)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
@@ -437,11 +442,79 @@ class CalibreDB():
 
         self.instances.add(self)
 
-
     def initSession(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
+
+    @classmethod
+    def setup_db_cc_classes(self, cc):
+        cc_ids = []
+        books_custom_column_links = {}
+        for row in cc:
+            if row.datatype not in cc_exceptions:
+                if row.datatype == 'series':
+                    dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
+                                 'id': Column(Integer, primary_key=True),
+                                 'book': Column(Integer, ForeignKey('books.id'),
+                                                primary_key=True),
+                                 'map_value': Column('value', Integer,
+                                                     ForeignKey('custom_column_' +
+                                                                str(row.id) + '.id'),
+                                                     primary_key=True),
+                                 'extra': Column(Float),
+                                 'asoc': relationship('custom_column_' + str(row.id), uselist=False),
+                                 'value': association_proxy('asoc', 'value')
+                                 }
+                    books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
+                                                             (Base,), dicttable)
+                else:
+                    books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
+                                                              Base.metadata,
+                                                              Column('book', Integer, ForeignKey('books.id'),
+                                                                     primary_key=True),
+                                                              Column('value', Integer,
+                                                                     ForeignKey('custom_column_' +
+                                                                                str(row.id) + '.id'),
+                                                                     primary_key=True)
+                                                              )
+                cc_ids.append([row.id, row.datatype])
+
+                ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                          'id': Column(Integer, primary_key=True)}
+                if row.datatype == 'float':
+                    ccdict['value'] = Column(Float)
+                elif row.datatype == 'int':
+                    ccdict['value'] = Column(Integer)
+                elif row.datatype == 'bool':
+                    ccdict['value'] = Column(Boolean)
+                else:
+                    ccdict['value'] = Column(String)
+                if row.datatype in ['float', 'int', 'bool']:
+                    ccdict['book'] = Column(Integer, ForeignKey('books.id'))
+                cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
+
+        for cc_id in cc_ids:
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(cc_classes[cc_id[0]],
+                                     primaryjoin=(
+                                         Books.id == cc_classes[cc_id[0]].book),
+                                     backref='books'))
+            elif (cc_id[1] == 'series'):
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(books_custom_column_links[cc_id[0]],
+                                     backref='books'))
+            else:
+                setattr(Books,
+                        'custom_column_' + str(cc_id[0]),
+                        relationship(cc_classes[cc_id[0]],
+                                     secondary=books_custom_column_links[cc_id[0]],
+                                     backref='books'))
+
+        return cc_classes
 
     @classmethod
     def setup_db(cls, config, app_db_path):
@@ -465,84 +538,24 @@ class CalibreDB():
                                        isolation_level="SERIALIZABLE",
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
-            cls.engine.execute("attach database '{}' as calibre;".format(dbpath))
-            cls.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
+            with cls.engine.begin() as connection:
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
             conn = cls.engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
-        except Exception as e:
-            config.invalidate(e)
+        except Exception as ex:
+            config.invalidate(ex)
             return False
 
         config.db_configured = True
 
         if not cc_classes:
-            cc = conn.execute("SELECT id, datatype FROM custom_columns")
-
-            cc_ids = []
-            books_custom_column_links = {}
-            for row in cc:
-                if row.datatype not in cc_exceptions:
-                    if row.datatype == 'series':
-                        dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
-                                     'id': Column(Integer, primary_key=True),
-                                     'book': Column(Integer, ForeignKey('books.id'),
-                                                    primary_key=True),
-                                     'map_value': Column('value', Integer,
-                                                         ForeignKey('custom_column_' +
-                                                                    str(row.id) + '.id'),
-                                                         primary_key=True),
-                                     'extra': Column(Float),
-                                     'asoc': relationship('custom_column_' + str(row.id), uselist=False),
-                                     'value': association_proxy('asoc', 'value')
-                                     }
-                        books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
-                                                                 (Base,), dicttable)
-                    else:
-                        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
-                                                                  Base.metadata,
-                                                                  Column('book', Integer, ForeignKey('books.id'),
-                                                                         primary_key=True),
-                                                                  Column('value', Integer,
-                                                                         ForeignKey('custom_column_' +
-                                                                                    str(row.id) + '.id'),
-                                                                         primary_key=True)
-                                                                  )
-                    cc_ids.append([row.id, row.datatype])
-
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True)}
-                    if row.datatype == 'float':
-                        ccdict['value'] = Column(Float)
-                    elif row.datatype == 'int':
-                        ccdict['value'] = Column(Integer)
-                    elif row.datatype == 'bool':
-                        ccdict['value'] = Column(Boolean)
-                    else:
-                        ccdict['value'] = Column(String)
-                    if row.datatype in ['float', 'int', 'bool']:
-                        ccdict['book'] = Column(Integer, ForeignKey('books.id'))
-                    cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
-
-            for cc_id in cc_ids:
-                if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(cc_classes[cc_id[0]],
-                                         primaryjoin=(
-                                             Books.id == cc_classes[cc_id[0]].book),
-                                         backref='books'))
-                elif (cc_id[1] == 'series'):
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(books_custom_column_links[cc_id[0]],
-                                         backref='books'))
-                else:
-                    setattr(Books,
-                            'custom_column_' + str(cc_id[0]),
-                            relationship(cc_classes[cc_id[0]],
-                                         secondary=books_custom_column_links[cc_id[0]],
-                                         backref='books'))
+            try:
+                cc = conn.execute("SELECT id, datatype FROM custom_columns")
+                cls.setup_db_cc_classes(cc)
+            except OperationalError as e:
+                log.debug_or_exception(e)
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
@@ -614,13 +627,18 @@ class CalibreDB():
             randm = self.session.query(Books) \
                 .filter(self.common_filters(allow_show_archived)) \
                 .order_by(func.random()) \
-                .limit(self.config.config_random_books)
+                .limit(self.config.config_random_books).all()
         else:
             randm = false()
         off = int(int(pagesize) * (page - 1))
-        query = self.session.query(database) \
-            .join(*join, isouter=True) \
-            .filter(db_filter) \
+        query = self.session.query(database)
+        if len(join) == 3:
+            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
+        elif len(join) == 2:
+            query = query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            query = query.outerjoin(join[0])
+        query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()
         pagination = list()
@@ -628,8 +646,8 @@ class CalibreDB():
             pagination = Pagination(page, pagesize,
                                     len(query.all()))
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
-        except Exception as e:
-            log.debug_or_exception(e)
+        except Exception as ex:
+            log.debug_or_exception(ex)
         #for book in entries:
         #    book = self.order_authors(book)
         return entries, randm, pagination
@@ -773,7 +791,7 @@ class CalibreDB():
 def lcase(s):
     try:
         return unidecode.unidecode(s.lower())
-    except Exception as e:
+    except Exception as ex:
         log = logger.create()
-        log.debug_or_exception(e)
+        log.debug_or_exception(ex)
         return s.lower()

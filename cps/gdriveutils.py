@@ -28,7 +28,11 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, UniqueConstraint
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 try:
@@ -198,8 +202,8 @@ def getDrive(drive=None, gauth=None):
                 gauth.Refresh()
             except RefreshError as e:
                 log.error("Google Drive error: %s", e)
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -493,8 +497,8 @@ def getChangeById (drive, change_id):
     except (errors.HttpError) as error:
         log.error(error)
         return None
-    except Exception as e:
-        log.error(e)
+    except Exception as ex:
+        log.error(ex)
         return None
 
 
