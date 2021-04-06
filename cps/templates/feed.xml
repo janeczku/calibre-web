@@ -84,4 +84,11 @@
     <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for(folder, book_id=entry.id)}}"/>
   </entry>
   {% endfor %}
+  {% for entry in letterelements %}
+  <entry>
+    <title>{{entry['name']}}</title>
+    <id>{{ url_for(folder, book_id=entry['id']) }}</id>
+    <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for(folder, book_id=entry['id'])}}"/>
+  </entry>
+  {% endfor %}
 </feed>

@@ -159,9 +159,9 @@ class CalibreTask:
         # catch any unhandled exceptions in a task and automatically fail it
         try:
             self.run(*args)
-        except Exception as e:
-            self._handleError(str(e))
-            log.debug_or_exception(e)
+        except Exception as ex:
+            self._handleError(str(ex))
+            log.debug_or_exception(ex)
 
         self.end_time = datetime.now()
 

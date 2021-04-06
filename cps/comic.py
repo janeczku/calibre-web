@@ -105,8 +105,8 @@ def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecu
                     if extension in COVER_EXTENSIONS:
                         cover_data = cf.read(name)
                         break
-        except Exception as e:
-            log.debug('Rarfile failed with error: %s', e)
+        except Exception as ex:
+            log.debug('Rarfile failed with error: %s', ex)
     return cover_data
 
 

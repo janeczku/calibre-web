@@ -117,8 +117,8 @@ def parse_xmp(pdf_file):
     """
     try:
         xmp_info = pdf_file.getXmpMetadata()
-    except Exception as e:
-        log.debug('Can not read XMP metadata %e', e)
+    except Exception as ex:
+        log.debug('Can not read XMP metadata {}'.format(ex))
         return None
 
     if xmp_info:
@@ -162,8 +162,8 @@ def parse_xmp(pdf_file):
     """
     try:
         xmp_info = pdf_file.getXmpMetadata()
-    except Exception as e:
-        log.debug('Can not read XMP metadata', e)
+    except Exception as ex:
+        log.debug('Can not read XMP metadata {}'.format(ex))
         return None
 
     if xmp_info:

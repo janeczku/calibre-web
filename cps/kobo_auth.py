@@ -155,7 +155,7 @@ def generate_auth_token(user_id):
         for book in books:
             formats = [data.format for data in book.data]
             if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
-                helper.convert_book_format(book.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.nickname)
+                helper.convert_book_format(book.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.name)
 
         return render_title_template(
             "generate_kobo_auth_url.html",
