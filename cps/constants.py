@@ -21,8 +21,10 @@ import sys
 import os
 from collections import namedtuple
 
-# if installed via pip this variable is set to true
-HOME_CONFIG = False
+# if installed via pip this variable is set to true (empty file with name .HOMEDIR present)
+HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.HOMEDIR'))
+
+#In executables updater is not available, so variable is set to False there
 UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
@@ -85,6 +87,26 @@ SIDEBAR_FORMAT          = 1 << 14
 SIDEBAR_ARCHIVED        = 1 << 15
 SIDEBAR_DOWNLOAD        = 1 << 16
 SIDEBAR_LIST            = 1 << 17
+
+sidebar_settings = {
+                "detail_random": DETAIL_RANDOM,
+                "sidebar_language": SIDEBAR_LANGUAGE,
+                "sidebar_series": SIDEBAR_SERIES,
+                "sidebar_category": SIDEBAR_CATEGORY,
+                "sidebar_random": SIDEBAR_RANDOM,
+                "sidebar_author": SIDEBAR_AUTHOR,
+                "sidebar_best_rated": SIDEBAR_BEST_RATED,
+                "sidebar_read_and_unread": SIDEBAR_READ_AND_UNREAD,
+                "sidebar_recent": SIDEBAR_RECENT,
+                "sidebar_sorted": SIDEBAR_SORTED,
+                "sidebar_publisher": SIDEBAR_PUBLISHER,
+                "sidebar_rating": SIDEBAR_RATING,
+                "sidebar_format": SIDEBAR_FORMAT,
+                "sidebar_archived": SIDEBAR_ARCHIVED,
+                "sidebar_download": SIDEBAR_DOWNLOAD,
+                "sidebar_list": SIDEBAR_LIST,
+            }
+
 
 ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_ANONYMOUS
 ADMIN_USER_SIDEBAR      = (SIDEBAR_LIST << 1) - 1

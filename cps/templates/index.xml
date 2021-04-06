@@ -15,6 +15,13 @@
     <uri>https://github.com/janeczku/calibre-web</uri>
   </author>
   <entry>
+    <title>{{_('Alphabetical Books')}}</title>
+    <link href="{{url_for('opds.feed_booksindex')}}" type="application/atom+xml;profile=opds-catalog"/>
+    <id>{{url_for('opds.feed_booksindex')}}</id>
+    <updated>{{ current_time }}</updated>
+    <content type="text">{{_('Books sorted alphabetically')}}</content>
+  </entry>
+  <entry>
     <title>{{_('Hot Books')}}</title>
     <link href="{{url_for('opds.feed_hot')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('opds.feed_hot')}}</id>

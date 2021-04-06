@@ -56,6 +56,7 @@ a,
 .book-remove,
 .editable-empty,
 .editable-empty:hover { color: #45b29d; }
+.book-remove:hover { color: #23527c; }
 .user-remove:hover { color: #23527c; }
 .btn-default a { color: #444; }
 .panel-title > a { text-decoration: none; }
