@@ -15,6 +15,8 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+var direction = $("#asc").data('order');  // 0=Descending order; 1= ascending order
+
 var $list = $("#list").isotope({
     itemSelector: ".book",
     layoutMode: "fitRows",
@@ -24,6 +26,9 @@ var $list = $("#list").isotope({
 });
 
 $("#desc").click(function() {
+    if (direction === 0) {
+        return;
+    }
     var page = $(this).data("id");
     $.ajax({
         method:"post",
@@ -39,6 +44,9 @@ $("#desc").click(function() {
 });
 
 $("#asc").click(function() {
+    if (direction === 1) {
+        return;
+    }
     var page = $(this).data("id");
     $.ajax({
         method:"post",

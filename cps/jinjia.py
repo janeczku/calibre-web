@@ -82,7 +82,7 @@ def formatdate_filter(val):
     except AttributeError as e:
         log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
                   current_user.locale,
-                  current_user.nickname
+                  current_user.name
                   )
         return val
 

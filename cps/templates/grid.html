@@ -8,8 +8,8 @@
         <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
        {% endif %}
       {% endif %}
-      <button id="desc" data-id="series" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
-      <button id="asc" data-id="series" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      <button id="asc" data-id="series" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+      <button id="desc" data-id="series" data-order="{{ order }}" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
       {% if charlist|length %}
       <button id="all" class="btn btn-primary">{{_('All')}}</button>
       {% endif %}

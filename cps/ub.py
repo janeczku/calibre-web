@@ -31,19 +31,23 @@ from flask_login import AnonymousUserMixin, current_user
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
-except ImportError:
+except ImportError as e:
     # fails on flask-dance >1.3, due to renaming
     try:
         from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
         oauth_support = True
-    except ImportError:
+    except ImportError as e:
         oauth_support = False
-from sqlalchemy import create_engine, exc, exists, event
+from sqlalchemy import create_engine, exc, exists, event, text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.expression import func
+try:
+    # Compability with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
@@ -158,7 +162,7 @@ class UserBase:
             # ToDo: Error message
 
     def __repr__(self):
-        return '<User %r>' % self.nickname
+        return '<User %r>' % self.name
 
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
@@ -168,7 +172,7 @@ class User(UserBase, Base):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
-    nickname = Column(String(64), unique=True)
+    name = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
     role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
@@ -178,7 +182,6 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
-    mature_content = Column(Boolean, default=True)
     denied_tags = Column(String, default="")
     allowed_tags = Column(String, default="")
     denied_column_value = Column(String, default="")
@@ -214,13 +217,12 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def loadSettings(self):
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\
             .first()  # type: User
-        self.nickname = data.nickname
+        self.name = data.name
         self.role = data.role
         self.id=data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        # self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
         self.denied_tags = data.denied_tags
         self.allowed_tags = data.allowed_tags
@@ -484,7 +486,7 @@ def migrate_registration_table(engine, session):
 def migrate_guest_password(engine, session):
     try:
         with engine.connect() as conn:
-            conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
+            conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
         session.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
@@ -590,37 +592,42 @@ def migrate_Database(session):
         with engine.connect() as conn:
             conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
         session.commit()
-
-    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
-        is None:
-        create_anonymous_user(session)
     try:
-        # check if one table with autoincrement is existing (should be user table)
-        with engine.connect() as conn:
-            conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+        # check if name is in User table instead of nickname
+        session.query(exists().where(User.name)).scalar()
     except exc.OperationalError:
         # Create new table user_id and copy contents of table user into it
         with engine.connect() as conn:
-            conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                     "nickname VARCHAR(64),"
+            conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                     "name VARCHAR(64),"
                      "email VARCHAR(120),"
                      "role SMALLINT,"
                      "password VARCHAR,"
                      "kindle_mail VARCHAR(120),"
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
-                     "default_language VARCHAR(3),"
-                     "view_settings VARCHAR,"
-                     "UNIQUE (nickname),"
-                     "UNIQUE (email))")
-            conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, view_settings) "
+                     "default_language VARCHAR(3),"                     
+                     "denied_tags VARCHAR,"
+                     "allowed_tags VARCHAR,"
+                     "denied_column_value VARCHAR,"
+                     "allowed_column_value VARCHAR,"
+                     "view_settings JSON,"         
+                     "UNIQUE (name),"
+                     "UNIQUE (email))"))
+            conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings)"
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                     "sidebar_view, default_language FROM user")
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings FROM user"))
             # delete old user table and rename new user_id table to user:
-            conn.execute("DROP TABLE user")
-            conn.execute("ALTER TABLE user_id RENAME TO user")
+            conn.execute(text("DROP TABLE user"))
+            conn.execute(text("ALTER TABLE user_id RENAME TO user"))
         session.commit()
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
+       is None:
+        create_anonymous_user(session)
+
     migrate_guest_password(engine, session)
 
 
@@ -656,7 +663,7 @@ def delete_download(book_id):
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
-    user.nickname = "Guest"
+    user.name = "Guest"
     user.email = 'no@email'
     user.role = constants.ROLE_ANONYMOUS
     user.password = ''
@@ -671,7 +678,7 @@ def create_anonymous_user(session):
 # Generate User admin with admin123 password, and access to everything
 def create_admin_user(session):
     user = User()
-    user.nickname = "admin"
+    user.name = "admin"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
@@ -707,7 +714,7 @@ def init_db(app_db_path):
 
     if cli.user_credentials:
         username, password = cli.user_credentials.split(':')
-        user = session.query(User).filter(func.lower(User.nickname) == username.lower()).first()
+        user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
         if user:
             user.password = generate_password_hash(password)
             if session_commit() == "":

@@ -36,6 +36,8 @@ except ImportError:
     pass
 
 
+from babel import Locale as LC
+from babel.core import UnknownLocaleError
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
@@ -77,17 +79,7 @@ def edit_required(f):
 
     return inner
 
-
-# Modifies different Database objects, first check if elements have to be added to database, than check
-# if elements have to be deleted, because they are no longer used
-def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
-    # passing input_elements not as a list may lead to undesired results
-    if not isinstance(input_elements, list):
-        raise TypeError(str(input_elements) + " should be passed as a list")
-    changed = False
-    input_elements = [x for x in input_elements if x != '']
-    # we have all input element (authors, series, tags) names now
-    # 1. search for elements to remove
+def search_objects_remove(db_book_object, db_type, input_elements):
     del_elements = []
     for c_elements in db_book_object:
         found = False
@@ -105,7 +97,10 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
         # if the element was not found in the new list, add it to remove list
         if not found:
             del_elements.append(c_elements)
-    # 2. search for elements that need to be added
+    return del_elements
+
+
+def search_objects_add(db_book_object, db_type, input_elements):
     add_elements = []
     for inp_element in input_elements:
         found = False
@@ -121,64 +116,96 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 break
         if not found:
             add_elements.append(inp_element)
-    # if there are elements to remove, we remove them now
+    return add_elements
+
+
+def remove_objects(db_book_object, db_session, del_elements):
+    changed = False
     if len(del_elements) > 0:
         for del_element in del_elements:
             db_book_object.remove(del_element)
             changed = True
             if len(del_element.books) == 0:
                 db_session.delete(del_element)
+    return changed
+
+def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
+    changed = False
+    if db_type == 'languages':
+        db_filter = db_object.lang_code
+    elif db_type == 'custom':
+        db_filter = db_object.value
+    else:
+        db_filter = db_object.name
+    for add_element in add_elements:
+        # check if a element with that name exists
+        db_element = db_session.query(db_object).filter(db_filter == add_element).first()
+        # if no element is found add it
+        # if new_element is None:
+        if db_type == 'author':
+            new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')), "")
+        elif db_type == 'series':
+            new_element = db_object(add_element, add_element)
+        elif db_type == 'custom':
+            new_element = db_object(value=add_element)
+        elif db_type == 'publisher':
+            new_element = db_object(add_element, None)
+        else:  # db_type should be tag or language
+            new_element = db_object(add_element)
+        if db_element is None:
+            changed = True
+            db_session.add(new_element)
+            db_book_object.append(new_element)
+        else:
+            db_element = create_objects_for_addition(db_element, add_element, db_type)
+            changed = True
+            # add element to book
+            changed = True
+            db_book_object.append(db_element)
+    return changed
+
+
+def create_objects_for_addition(db_element, add_element, db_type):
+    if db_type == 'custom':
+        if db_element.value != add_element:
+            db_element.value = add_element  # ToDo: Before new_element, but this is not plausible
+    elif db_type == 'languages':
+        if db_element.lang_code != add_element:
+            db_element.lang_code = add_element
+    elif db_type == 'series':
+        if db_element.name != add_element:
+            db_element.name = add_element
+            db_element.sort = add_element
+    elif db_type == 'author':
+        if db_element.name != add_element:
+            db_element.name = add_element
+            db_element.sort = add_element.replace('|', ',')
+    elif db_type == 'publisher':
+        if db_element.name != add_element:
+            db_element.name = add_element
+            db_element.sort = None
+    elif db_element.name != add_element:
+        db_element.name = add_element
+    return db_element
+
+
+# Modifies different Database objects, first check if elements if elements have to be deleted,
+# because they are no longer used, than check if elements have to be added to database
+def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
+    # passing input_elements not as a list may lead to undesired results
+    if not isinstance(input_elements, list):
+        raise TypeError(str(input_elements) + " should be passed as a list")
+    input_elements = [x for x in input_elements if x != '']
+    # we have all input element (authors, series, tags) names now
+    # 1. search for elements to remove
+    del_elements = search_objects_remove(db_book_object, db_type, input_elements)
+    # 2. search for elements that need to be added
+    add_elements = search_objects_add(db_book_object, db_type, input_elements)
+    # if there are elements to remove, we remove them now
+    changed = remove_objects(db_book_object, db_session, del_elements)
     # if there are elements to add, we add them now!
     if len(add_elements) > 0:
-        if db_type == 'languages':
-            db_filter = db_object.lang_code
-        elif db_type == 'custom':
-            db_filter = db_object.value
-        else:
-            db_filter = db_object.name
-        for add_element in add_elements:
-            # check if a element with that name exists
-            db_element = db_session.query(db_object).filter(db_filter == add_element).first()
-            # if no element is found add it
-            # if new_element is None:
-            if db_type == 'author':
-                new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')), "")
-            elif db_type == 'series':
-                new_element = db_object(add_element, add_element)
-            elif db_type == 'custom':
-                new_element = db_object(value=add_element)
-            elif db_type == 'publisher':
-                new_element = db_object(add_element, None)
-            else:  # db_type should be tag or language
-                new_element = db_object(add_element)
-            if db_element is None:
-                changed = True
-                db_session.add(new_element)
-                db_book_object.append(new_element)
-            else:
-                if db_type == 'custom':
-                    if db_element.value != add_element:
-                        new_element.value = add_element
-                elif db_type == 'languages':
-                    if db_element.lang_code != add_element:
-                        db_element.lang_code = add_element
-                elif db_type == 'series':
-                    if db_element.name != add_element:
-                        db_element.name = add_element
-                        db_element.sort = add_element
-                elif db_type == 'author':
-                    if db_element.name != add_element:
-                        db_element.name = add_element
-                        db_element.sort = add_element.replace('|', ',')
-                elif db_type == 'publisher':
-                    if db_element.name != add_element:
-                        db_element.name = add_element
-                        db_element.sort = None
-                elif db_element.name != add_element:
-                    db_element.name = add_element
-                # add element to book
-                changed = True
-                db_book_object.append(db_element)
+        changed |= add_objects(db_book_object, db_object, db_session, db_type, add_elements)
     return changed
 
 
@@ -318,8 +345,8 @@ def delete_book(book_id, book_format, jsonResponse):
                     calibre_db.session.query(db.Data).filter(db.Data.book == book.id).\
                         filter(db.Data.format == book_format).delete()
                 calibre_db.session.commit()
-            except Exception as e:
-                log.debug_or_exception(e)
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 calibre_db.session.rollback()
         else:
             # book not found
@@ -431,7 +458,7 @@ def edit_book_comments(comments, book):
     return modif_date
 
 
-def edit_book_languages(languages, book, upload=False):
+def edit_book_languages(languages, book, upload=False, invalid=None):
     input_languages = languages.split(',')
     unknown_languages = []
     if not upload:
@@ -440,7 +467,10 @@ def edit_book_languages(languages, book, upload=False):
         input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
-        flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
+        if isinstance(invalid, list):
+            invalid.append(l)
+        else:
+            flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
     # ToDo: Not working correct
     if upload and len(input_l) == 1:
         # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
@@ -606,7 +636,7 @@ def upload_single_file(request, book, book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            WorkerThread.add(current_user.nickname, TaskUpload(
+            WorkerThread.add(current_user.name, TaskUpload(
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>"))
 
             return uploader.process(
@@ -630,6 +660,46 @@ def upload_cover(request, book):
     return None
 
 
+def handle_title_on_edit(book, book_title):
+    # handle book title
+    book_title = book_title.rstrip().strip()
+    if book.title != book_title:
+        if book_title == '':
+            book_title = _(u'Unknown')
+        book.title = book_title
+        return True
+    return False
+
+
+def handle_author_on_edit(book, author_name, update_stored=True):
+    # handle author(s)
+    input_authors = author_name.split('&')
+    input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+    # Remove duplicates in authors list
+    input_authors = helper.uniq(input_authors)
+    # we have all author names now
+    if input_authors == ['']:
+        input_authors = [_(u'Unknown')]  # prevent empty Author
+
+    change = modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
+
+    # Search for each author if author is in database, if not, author name and sorted author name is generated new
+    # everything then is assembled for sorted author field in database
+    sort_authors_list = list()
+    for inp in input_authors:
+        stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+        if not stored_author:
+            stored_author = helper.get_sorted_author(inp)
+        else:
+            stored_author = stored_author.sort
+        sort_authors_list.append(helper.get_sorted_author(stored_author))
+    sort_authors = ' & '.join(sort_authors_list)
+    if book.author_sort != sort_authors and update_stored:
+        book.author_sort = sort_authors
+        change = True
+    return input_authors, change
+
+
 @editbook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
 @edit_required
@@ -646,7 +716,6 @@ def edit_book(book_id):
     # Show form
     if request.method != 'POST':
         return render_edit_book(book_id)
-
 
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
 
@@ -665,39 +734,12 @@ def edit_book(book_id):
         # Update book
         edited_books_id = None
 
-        #handle book title
-        if book.title != to_save["book_title"].rstrip().strip():
-            if to_save["book_title"] == '':
-                to_save["book_title"] = _(u'Unknown')
-            book.title = to_save["book_title"].rstrip().strip()
+        # handle book title
+        title_change = handle_title_on_edit(book, to_save["book_title"])
+
+        input_authors, authorchange = handle_author_on_edit(book, to_save["author_name"])
+        if authorchange or title_change:
             edited_books_id = book.id
-            modif_date = True
-
-        # handle author(s)
-        input_authors = to_save["author_name"].split('&')
-        input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
-        # Remove duplicates in authors list
-        input_authors = helper.uniq(input_authors)
-        # we have all author names now
-        if input_authors == ['']:
-            input_authors = [_(u'Unknown')]  # prevent empty Author
-
-        modif_date |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
-
-        # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
-        # everything then is assembled for sorted author field in database
-        sort_authors_list = list()
-        for inp in input_authors:
-            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
-            if not stored_author:
-                stored_author = helper.get_sorted_author(inp)
-            else:
-                stored_author = stored_author.sort
-            sort_authors_list.append(helper.get_sorted_author(stored_author))
-        sort_authors = ' & '.join(sort_authors_list)
-        if book.author_sort != sort_authors:
-            edited_books_id = book.id
-            book.author_sort = sort_authors
             modif_date = True
 
         if config.config_use_google_drive:
@@ -724,10 +766,8 @@ def edit_book(book_id):
 
             # Add default series_index to book
             modif_date |= edit_book_series_index(to_save["series_index"], book)
-
             # Handle book comments/description
             modif_date |= edit_book_comments(to_save["description"], book)
-
             # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
             modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
@@ -736,9 +776,16 @@ def edit_book(book_id):
             modif_date |= modification
             # Handle book tags
             modif_date |= edit_book_tags(to_save['tags'], book)
-
             # Handle book series
             modif_date |= edit_book_series(to_save["series"], book)
+            # handle book publisher
+            modif_date |= edit_book_publisher(to_save['publisher'], book)
+            # handle book languages
+            modif_date |= edit_book_languages(to_save['languages'], book)
+            # handle book ratings
+            modif_date |= edit_book_ratings(to_save, book)
+            # handle cc data
+            modif_date |= edit_cc_data(book_id, book, to_save)
 
             if to_save["pubdate"]:
                 try:
@@ -747,18 +794,6 @@ def edit_book(book_id):
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-
-            # handle book publisher
-            modif_date |= edit_book_publisher(to_save['publisher'], book)
-
-            # handle book languages
-            modif_date |= edit_book_languages(to_save['languages'], book)
-
-            # handle book ratings
-            modif_date |= edit_book_ratings(to_save, book)
-
-            # handle cc data
-            modif_date |= edit_cc_data(book_id, book, to_save)
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
@@ -775,8 +810,8 @@ def edit_book(book_id):
             calibre_db.session.rollback()
             flash(error, category="error")
             return render_edit_book(book_id)
-    except Exception as e:
-        log.debug_or_exception(e)
+    except Exception as ex:
+        log.debug_or_exception(ex)
         calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
@@ -892,6 +927,48 @@ def create_book_on_upload(modif_date, meta):
     calibre_db.session.flush()
     return db_book, input_authors, title_dir
 
+def file_handling_on_upload(requested_file):
+    # check if file extension is correct
+    if '.' in requested_file.filename:
+        file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+        if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+            flash(
+                _("File extension '%(ext)s' is not allowed to be uploaded to this server",
+                  ext=file_ext), category="error")
+            return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    else:
+        flash(_('File to be uploaded must have an extension'), category="error")
+        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+
+    # extract metadata from file
+    try:
+        meta = uploader.upload(requested_file, config.config_rarfile_location)
+    except (IOError, OSError):
+        log.error("File %s could not saved to temp dir", requested_file.filename)
+        flash(_(u"File %(filename)s could not saved to temp dir",
+                filename=requested_file.filename), category="error")
+        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    return meta, None
+
+
+def move_coverfile(meta, db_book):
+    # move cover to final directory, including book id
+    if meta.cover:
+        coverfile = meta.cover
+    else:
+        coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
+    try:
+        copyfile(coverfile, new_coverpath)
+        if meta.cover:
+            os.unlink(meta.cover)
+    except OSError as e:
+        log.error("Failed to move cover file %s: %s", new_coverpath, e)
+        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
+                error=e),
+              category="error")
+
+
 @editbook.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
 @upload_required
@@ -906,30 +983,13 @@ def upload():
                 calibre_db.update_title_sort(config)
                 calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
-                # check if file extension is correct
-                if '.' in requested_file.filename:
-                    file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
-                        flash(
-                            _("File extension '%(ext)s' is not allowed to be uploaded to this server",
-                              ext=file_ext), category="error")
-                        return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-                else:
-                    flash(_('File to be uploaded must have an extension'), category="error")
-                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-
-                # extract metadata from file
-                try:
-                    meta = uploader.upload(requested_file, config.config_rarfile_location)
-                except (IOError, OSError):
-                    log.error("File %s could not saved to temp dir", requested_file.filename)
-                    flash(_(u"File %(filename)s could not saved to temp dir",
-                            filename= requested_file.filename), category="error")
-                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+                meta, error = file_handling_on_upload(requested_file)
+                if error:
+                    return error
 
                 db_book, input_authors, title_dir = create_book_on_upload(modif_date, meta)
 
-                # Comments needs book id therfore only possible after flush
+                # Comments needs book id therefore only possible after flush
                 modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
 
                 book_id = db_book.id
@@ -941,21 +1001,7 @@ def upload():
                                                    meta.file_path,
                                                    title_dir + meta.extension)
 
-                # move cover to final directory, including book id
-                if meta.cover:
-                    coverfile = meta.cover
-                else:
-                    coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-                new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
-                try:
-                    copyfile(coverfile, new_coverpath)
-                    if meta.cover:
-                        os.unlink(meta.cover)
-                except OSError as e:
-                    log.error("Failed to move cover file %s: %s", new_coverpath, e)
-                    flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
-                            error=e),
-                          category="error")
+                move_coverfile(meta, db_book)
 
                 # save data to database, reread data
                 calibre_db.session.commit()
@@ -965,7 +1011,7 @@ def upload():
                 if error:
                     flash(error, category="error")
                 uploadText=_(u"File %(file)s uploaded", file=title)
-                WorkerThread.add(current_user.nickname, TaskUpload(
+                WorkerThread.add(current_user.name, TaskUpload(
                     "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>"))
 
                 if len(request.files.getlist("btn-upload")) < 2:
@@ -995,7 +1041,7 @@ def convert_bookformat(book_id):
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
-                                     book_format_to.upper(), current_user.nickname)
+                                     book_format_to.upper(), current_user.name)
 
     if rtn is None:
         flash(_(u"Book successfully queued for converting to %(book_format)s",
@@ -1023,63 +1069,88 @@ def scholar_search(query):
     else:
         return []
 
-
-
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
+    ret = ""
     if param =='series_index':
         edit_book_series_index(vals['value'], book)
+        ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
     elif param =='tags':
         edit_book_tags(vals['value'], book)
+        ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
+                       mimetype='application/json')
     elif param =='series':
         edit_book_series(vals['value'], book)
+        ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
+                       mimetype='application/json')
     elif param =='publishers':
-        vals['publisher'] = vals['value']
-        edit_book_publisher(vals, book)
+        edit_book_publisher(vals['value'], book)
+        ret =  Response(json.dumps({'success': True,
+                                    'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
+                       mimetype='application/json')
     elif param =='languages':
-        edit_book_languages(vals['value'], book)
+        invalid = list()
+        edit_book_languages(vals['value'], book, invalid=invalid)
+        if invalid:
+            ret = Response(json.dumps({'success': False,
+                                       'msg': 'Invalid languages in request: {}'.format(','.join(invalid))}),
+                           mimetype='application/json')
+        else:
+            lang_names = list()
+            for lang in book.languages:
+                try:
+                    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
+                except UnknownLocaleError:
+                    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
+            ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
+                            mimetype='application/json')
     elif param =='author_sort':
         book.author_sort = vals['value']
-    elif param =='title':
-        book.title = vals['value']
+        ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
+                       mimetype='application/json')
+    elif param == 'title':
+        sort = book.sort
+        handle_title_on_edit(book, vals.get('value', ""))
         helper.update_dir_stucture(book.id, config.config_calibre_dir)
+        ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
+                       mimetype='application/json')
     elif param =='sort':
         book.sort = vals['value']
-    # ToDo: edit books
+        ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
+                       mimetype='application/json')
     elif param =='authors':
-        input_authors = vals['value'].split('&')
-        input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
-        modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
-        sort_authors_list = list()
-        for inp in input_authors:
-            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
-            if not stored_author:
-                stored_author = helper.get_sorted_author(inp)
-            else:
-                stored_author = stored_author.sort
-            sort_authors_list.append(helper.get_sorted_author(stored_author))
-        sort_authors = ' & '.join(sort_authors_list)
-        if book.author_sort != sort_authors:
-            book.author_sort = sort_authors
+        input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
         helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
+        ret = Response(json.dumps({'success': True,
+                                   'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
+                       mimetype='application/json')
     book.last_modified = datetime.utcnow()
     calibre_db.session.commit()
-    return ""
+    # revert change for sort if automatic fields link is deactivated
+    if param == 'title' and vals.get('checkT') == "false":
+        book.sort = sort
+        calibre_db.session.commit()
+    return ret
+
 
 @editbook.route("/ajax/sort_value/<field>/<int:bookid>")
 @login_required
 def get_sorted_entry(field, bookid):
-    if field == 'title' or field == 'authors':
+    if field in ['title', 'authors', 'sort', 'author_sort']:
         book = calibre_db.get_filtered_book(bookid)
         if book:
             if field == 'title':
                 return json.dumps({'sort': book.sort})
             elif field == 'authors':
                 return json.dumps({'author_sort': book.author_sort})
+            if field == 'sort':
+                return json.dumps({'sort': book.title})
+            if field == 'author_sort':
+                return json.dumps({'author_sort': book.author})
     return ""
 
 
