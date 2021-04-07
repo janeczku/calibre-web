@@ -1185,10 +1185,14 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     if to_save.get("delete"):
         if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
-            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
-            ub.session_commit()
-            flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
-            return redirect(url_for('admin.admin'))
+            if content.name != "Guest":
+                ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+                ub.session_commit()
+                flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
+                return redirect(url_for('admin.admin'))
+            else:
+                flash(_(u"Can't delete Guest User"), category="error")
+                return redirect(url_for('admin.admin'))
         else:
             flash(_(u"No admin user remaining, can't delete user", nick=content.name), category="error")
             return redirect(url_for('admin.admin'))
@@ -1255,6 +1259,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     except OperationalError:
         ub.session.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
+    return ""
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
@@ -1350,7 +1355,9 @@ def edit_user(user_id):
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
-        _handle_edit_user(to_save, content, languages, translations, kobo_support)
+        resp = _handle_edit_user(to_save, content, languages, translations, kobo_support)
+        if resp:
+            return resp
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  languages=languages,
