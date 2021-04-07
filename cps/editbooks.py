@@ -229,14 +229,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @editbook.route("/ajax/delete/<int:book_id>")
 @login_required
 def delete_book_from_details(book_id):
-    return Response(delete_book(book_id,"", True), mimetype='application/json')
+    return Response(delete_book(book_id, "", True), mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
 @editbook.route("/delete/<int:book_id>/<string:book_format>")
 @login_required
 def delete_book_ajax(book_id, book_format):
-    return delete_book(book_id,book_format, False)
+    return delete_book(book_id, book_format, False)
 
 
 def delete_whole_book(book_id, book):
