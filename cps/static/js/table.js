@@ -459,6 +459,7 @@ $(function() {
             $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             // ToDo: Disable delete
 
         },
