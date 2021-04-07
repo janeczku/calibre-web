@@ -335,6 +335,9 @@ def edit_list_user(param):
             elif param == 'kindle_mail':
                 user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
             elif param == 'role':
+                if user.name == "Guest" and int(vals['field_index']) in \
+                             [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                    raise Exception(_("Guest can't have this role"))
                 if vals['value'] == 'true':
                     user.role |= int(vals['field_index'])
                 else:
@@ -345,6 +348,8 @@ def edit_list_user(param):
                             return _(u"No admin user remaining, can't remove admin role", nick=user.name), 400
                     user.role &= ~int(vals['field_index'])
             elif param == 'sidebar_view':
+                if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
+                    raise Exception(_("Guest can't have this view"))
                 if vals['value'] == 'true':
                     user.sidebar_view |= int(vals['field_index'])
                 else:
@@ -358,6 +363,8 @@ def edit_list_user(param):
             elif param == 'denied_column_value':
                 user.denied_column_value = vals['value']
             elif param == 'locale':
+                if user.name == "Guest":
+                    raise Exception(_("Guest's Locale is determined automatically and can't be set"))
                 user.locale = vals['value']
             elif param == 'default_language':
                 user.default_language = vals['value']
