@@ -29,7 +29,7 @@ from sqlalchemy import Column, UniqueConstraint
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import sessionmaker, scoped_session
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
