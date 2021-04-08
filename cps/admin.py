@@ -37,7 +37,7 @@ from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
-from sqlalchemy.sql.expression import func, or_
+from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -244,6 +244,13 @@ def list_users():
     off = request.args.get("offset") or 0
     limit = request.args.get("limit") or 10
     search = request.args.get("search")
+    sort = request.args.get("sort")
+    order = request.args.get("order")
+    if sort and order:
+        order = text(sort + " " + order)
+    else:
+        order = ub.User.name.desc()
+
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
@@ -252,10 +259,10 @@ def list_users():
         users = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
                                     func.lower(ub.User.email).ilike("%" + search + "%")))\
-            .offset(off).limit(limit).all()
+            .order_by(order).offset(off).limit(limit).all()
         filtered_count = len(users)
     else:
-        users = all_user.offset(off).limit(limit).all()
+        users = all_user.order_by(order).offset(off).limit(limit).all()
         filtered_count = total_count
 
     for user in users:
