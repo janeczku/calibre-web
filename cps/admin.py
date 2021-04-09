@@ -37,7 +37,7 @@ from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
-from sqlalchemy.sql.expression import func, or_
+from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -244,6 +244,13 @@ def list_users():
     off = request.args.get("offset") or 0
     limit = request.args.get("limit") or 10
     search = request.args.get("search")
+    sort = request.args.get("sort")
+    order = request.args.get("order")
+    if sort and order:
+        order = text(sort + " " + order)
+    else:
+        order = ub.User.name.desc()
+
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
@@ -252,10 +259,10 @@ def list_users():
         users = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
                                     func.lower(ub.User.email).ilike("%" + search + "%")))\
-            .offset(off).limit(limit).all()
+            .order_by(order).offset(off).limit(limit).all()
         filtered_count = len(users)
     else:
-        users = all_user.offset(off).limit(limit).all()
+        users = all_user.order_by(order).offset(off).limit(limit).all()
         filtered_count = total_count
 
     for user in users:
@@ -335,6 +342,9 @@ def edit_list_user(param):
             elif param == 'kindle_mail':
                 user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
             elif param == 'role':
+                if user.name == "Guest" and int(vals['field_index']) in \
+                             [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                    raise Exception(_("Guest can't have this role"))
                 if vals['value'] == 'true':
                     user.role |= int(vals['field_index'])
                 else:
@@ -345,6 +355,8 @@ def edit_list_user(param):
                             return _(u"No admin user remaining, can't remove admin role", nick=user.name), 400
                     user.role &= ~int(vals['field_index'])
             elif param == 'sidebar_view':
+                if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
+                    raise Exception(_("Guest can't have this view"))
                 if vals['value'] == 'true':
                     user.sidebar_view |= int(vals['field_index'])
                 else:
@@ -358,6 +370,8 @@ def edit_list_user(param):
             elif param == 'denied_column_value':
                 user.denied_column_value = vals['value']
             elif param == 'locale':
+                if user.name == "Guest":
+                    raise Exception(_("Guest's Locale is determined automatically and can't be set"))
                 user.locale = vals['value']
             elif param == 'default_language':
                 user.default_language = vals['value']
@@ -1185,10 +1199,14 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     if to_save.get("delete"):
         if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                             ub.User.id != content.id).count():
-            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
-            ub.session_commit()
-            flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
-            return redirect(url_for('admin.admin'))
+            if content.name != "Guest":
+                ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+                ub.session_commit()
+                flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
+                return redirect(url_for('admin.admin'))
+            else:
+                flash(_(u"Can't delete Guest User"), category="error")
+                return redirect(url_for('admin.admin'))
         else:
             flash(_(u"No admin user remaining, can't delete user", nick=content.name), category="error")
             return redirect(url_for('admin.admin'))
@@ -1255,6 +1273,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     except OperationalError:
         ub.session.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
+    return ""
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
@@ -1350,7 +1369,9 @@ def edit_user(user_id):
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
-        _handle_edit_user(to_save, content, languages, translations, kobo_support)
+        resp = _handle_edit_user(to_save, content, languages, translations, kobo_support)
+        if resp:
+            return resp
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  languages=languages,

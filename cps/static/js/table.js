@@ -459,8 +459,8 @@ $(function() {
             $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            // ToDo: Disable delete
-
+            $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            $(".user-remove[data-pk='"+guest.data("pk")+"']").prop("disabled", true);
         },
 
         // eslint-disable-next-line no-unused-vars
@@ -603,7 +603,7 @@ function EbookActions (value, row) {
 /* Function for deleting books */
 function UserActions (value, row) {
     return [
-        "<div class=\"user-remove\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
+        "<div class=\"user-remove\" data-pk=\"" + row.id + "\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
@@ -618,14 +618,14 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<a class="btn btn-default" href="/admin/user/' + row.id + '">' + this.buttontext + '</a>'
+    return '<a class="btn btn-default" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
 function checkboxFormatter(value, row, index){
     if(value & this.column)
-        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.name + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
-        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.name + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
 
 function checkboxChange(checkbox, userId, field, field_index) {
@@ -730,6 +730,11 @@ function user_handle (userId) {
             $("#user-table").bootstrapTable("load", data);
         }
     });
+}
+
+function checkboxSorter(a, b, c, d)
+{
+    return a - b
 }
 
 function test(){

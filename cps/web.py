@@ -755,11 +755,12 @@ def books_table():
 def list_books():
     off = request.args.get("offset") or 0
     limit = request.args.get("limit") or config.config_books_per_page
-    # sort = request.args.get("sort")
-    if request.args.get("order") == 'desc':
-        order = [db.Books.timestamp.desc()]
+    sort = request.args.get("sort")
+    order = request.args.get("order")
+    if sort and order:
+        order = [text(sort + " " + order)]
     else:
-        order = [db.Books.timestamp.asc()]
+        order = [db.Books.timestamp.desc()]
     search = request.args.get("search")
     total_count = calibre_db.session.query(db.Books).count()
     if search:
