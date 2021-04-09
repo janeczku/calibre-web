@@ -24,7 +24,7 @@ import sys
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base

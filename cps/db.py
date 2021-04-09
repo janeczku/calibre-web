@@ -33,7 +33,7 @@ from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import OperationalError
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
@@ -393,7 +393,7 @@ class AlchemyEncoder(json.JSONEncoder):
         if isinstance(o.__class__, DeclarativeMeta):
             # an SQLAlchemy class
             fields = {}
-            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata']:
+            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata' and x!="password"]:
                 if field == 'books':
                     continue
                 data = o.__getattribute__(field)
