@@ -525,7 +525,6 @@ $(function() {
         });
     }
 
-
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
             ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
@@ -563,7 +562,6 @@ $(function() {
             $(".button_head").removeClass("disabled");
             $(".header_select").removeAttr("disabled");
         }
-
     });
 });
 
@@ -603,7 +601,7 @@ function EbookActions (value, row) {
 /* Function for deleting books */
 function UserActions (value, row) {
     return [
-        "<div class=\"user-remove\" data-pk=\"" + row.id + "\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
+        "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
@@ -715,26 +713,40 @@ function checkboxHeader(CheckboxState, field, field_index) {
     });
 }
 
-function user_handle (userId) {
-    $.ajax({
-        method:"post",
-        url: window.location.pathname + "/../../ajax/deleteuser",
-        data: {"userid":userId}
-    });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
+function deleteUser(a,b){
+    confirmDialog(
+    "btndeluser",
+        "GeneralDeleteModal",
+        0,
+        function() {
+            $.ajax({
+                method:"post",
+                url: window.location.pathname + "/../../ajax/deleteuser",
+                data: {"userid":b},
+                success:function(data) {
+                    $("#flash_success").remove();
+                    $("#flash_danger").remove();
+                    if (!jQuery.isEmptyObject(data)) {
+                        $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
+                            '</div>');
+                    }
+                    $.ajax({
+                        method: "get",
+                        url: window.location.pathname + "/../../ajax/listusers",
+                        async: true,
+                        timeout: 900,
+                        success: function (data) {
+                            $("#user-table").bootstrapTable("load", data);
+                        }
+                    });
+                }
+            });
         }
-    });
+    );
 }
 
-function checkboxSorter(a, b, c, d)
-{
-    return a - b
+function user_handle (userId) {
 }
 
 function test(){
