@@ -422,6 +422,7 @@ $(function() {
 
     $("#user-table").bootstrapTable({
         sidePagination: "server",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
         paginationDetailHAlign: " hidden",
@@ -462,28 +463,10 @@ $(function() {
             $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $(".user-remove[data-pk='"+guest.data("pk")+"']").prop("disabled", true);
         },
-
-        // eslint-disable-next-line no-unused-vars
-        /*onEditableSave: function (field, row, oldvalue, $el) {
-            if (field === "title" || field === "authors") {
-                $.ajax({
-                    method:"get",
-                    dataType: "json",
-                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
-                    success: function success(data) {
-                        var key = Object.keys(data)[0];
-                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
-                            id: row.id,
-                            field: key,
-                            value: data[key]
-                        });
-                        // console.log(data);
-                    }
-                });
-            }
-        },*/
-        // eslint-disable-next-line no-unused-vars
-        onColumnSwitch: function (field, checked) {
+        onSort: function(a, b) {
+            console.log("huh");
+        },
+        onColumnSwitch: function () {
             var visible = $("#user-table").bootstrapTable("getVisibleColumns");
             var hidden  = $("#user-table").bootstrapTable("getHiddenColumns");
             var st = "";
@@ -525,7 +508,6 @@ $(function() {
         });
     }
 
-
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
             ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
@@ -563,7 +545,6 @@ $(function() {
             $(".button_head").removeClass("disabled");
             $(".header_select").removeAttr("disabled");
         }
-
     });
 });
 
@@ -603,7 +584,7 @@ function EbookActions (value, row) {
 /* Function for deleting books */
 function UserActions (value, row) {
     return [
-        "<div class=\"user-remove\" data-pk=\"" + row.id + "\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
+        "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
@@ -715,26 +696,45 @@ function checkboxHeader(CheckboxState, field, field_index) {
     });
 }
 
-function user_handle (userId) {
-    $.ajax({
-        method:"post",
-        url: window.location.pathname + "/../../ajax/deleteuser",
-        data: {"userid":userId}
-    });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
+function deleteUser(a,b){
+    confirmDialog(
+    "btndeluser",
+        "GeneralDeleteModal",
+        0,
+        function() {
+            $.ajax({
+                method:"post",
+                url: window.location.pathname + "/../../ajax/deleteuser",
+                data: {"userid":b},
+                success:function(data) {
+                    $("#flash_success").remove();
+                    $("#flash_danger").remove();
+                    if (!jQuery.isEmptyObject(data)) {
+                        $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
+                            '</div>');
+                    }
+                    $.ajax({
+                        method: "get",
+                        url: window.location.pathname + "/../../ajax/listusers",
+                        async: true,
+                        timeout: 900,
+                        success: function (data) {
+                            $("#user-table").bootstrapTable("load", data);
+                        }
+                    });
+                }
+            });
         }
-    });
+    );
 }
 
-function checkboxSorter(a, b, c, d)
+function queryParams(params)
 {
-    return a - b
+    params.state = JSON.stringify(selections);
+    return params;
+}
+function user_handle (userId) {
 }
 
 function test(){

@@ -31,13 +31,14 @@ from datetime import datetime, timedelta
 
 from babel import Locale as LC
 from babel.dates import format_datetime
-from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g
+from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
+# from sqlalchemy.func import field
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -241,29 +242,44 @@ def edit_user_table():
 @login_required
 @admin_required
 def list_users():
-    off = request.args.get("offset") or 0
-    limit = request.args.get("limit") or 10
+    off = int(request.args.get("offset") or 0)
+    limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
-    sort = request.args.get("sort")
+    sort = request.args.get("sort", "state")
     order = request.args.get("order")
-    if sort and order:
+    state = None
+    if sort != "state" and order:
         order = text(sort + " " + order)
     else:
         order = ub.User.name.desc()
+    if sort == "state":
+        state = json.loads(request.args.get("state"))
 
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
-    total_count = all_user.count()
+
+    total_count = filtered_count = all_user.count()
+
     if search:
-        users = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
+        all_user = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
-                                    func.lower(ub.User.email).ilike("%" + search + "%")))\
-            .order_by(order).offset(off).limit(limit).all()
-        filtered_count = len(users)
+                                    func.lower(ub.User.email).ilike("%" + search + "%")))
+    if state:
+        outcome = list()
+        userlist = {user.id:user for user in all_user.all()}
+        for entry in state:
+            outcome.append(userlist[entry])
+            del userlist[entry]
+        for entry in userlist:
+            outcome.append(userlist[entry])
+        if request.args.get("order", "").lower() == "asc":
+            outcome.reverse()
+        users = outcome[off:off + limit]
     else:
         users = all_user.order_by(order).offset(off).limit(limit).all()
-        filtered_count = total_count
+    if search:
+        filtered_count = len(users)
 
     for user in users:
         if user.default_language == "all":
@@ -277,12 +293,19 @@ def list_users():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/deleteuser")
+@admi.route("/ajax/deleteuser", methods=['POST'])
 @login_required
 @admin_required
 def delete_user():
-    # ToDo User delete check also not last one
-    return ""
+    user_id = request.values.get('userid', -1)
+    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).one_or_none()
+    try:
+        message = _delete_user(content)
+        return Response(json.dumps({'type': "success", 'message': message}), mimetype='application/json')
+    except Exception as ex:
+        return Response(json.dumps({'type': "danger", 'message':str(ex)}), mimetype='application/json')
+    log.error("User not found")
+    return Response(json.dumps({'type': "danger", 'message':_("User not found")}), mimetype='application/json')
 
 @admi.route("/ajax/getlocale")
 @login_required
@@ -1194,22 +1217,29 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         flash(_(u"Settings DB is not Writeable"), category="error")
 
+def _delete_user(content):
+    if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                        ub.User.id != content.id).count():
+        if content.name != "Guest":
+            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session_commit()
+            log.info(u"User {} deleted".format(content.name))
+            return(_(u"User '%(nick)s' deleted", nick=content.name))
+        else:
+            log.warning(_(u"Can't delete Guest User"))
+            raise Exception(_(u"Can't delete Guest User"))
+    else:
+        log.warning(u"No admin user remaining, can't delete user")
+        raise Exception(_(u"No admin user remaining, can't delete user"))
+
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     if to_save.get("delete"):
-        if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
-                                            ub.User.id != content.id).count():
-            if content.name != "Guest":
-                ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
-                ub.session_commit()
-                flash(_(u"User '%(nick)s' deleted", nick=content.name), category="success")
-                return redirect(url_for('admin.admin'))
-            else:
-                flash(_(u"Can't delete Guest User"), category="error")
-                return redirect(url_for('admin.admin'))
-        else:
-            flash(_(u"No admin user remaining, can't delete user", nick=content.name), category="error")
-            return redirect(url_for('admin.admin'))
+        try:
+            flash(_delete_user(content), category="success")
+        except Exception as ex:
+            flash(str(ex), category="error")
+        return redirect(url_for('admin.admin'))
     else:
         if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                                 ub.User.id != content.id).count() and 'admin_role' not in to_save:
