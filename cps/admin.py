@@ -38,6 +38,7 @@ from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
+# from sqlalchemy.func import field
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -241,29 +242,44 @@ def edit_user_table():
 @login_required
 @admin_required
 def list_users():
-    off = request.args.get("offset") or 0
-    limit = request.args.get("limit") or 10
+    off = int(request.args.get("offset") or 0)
+    limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
-    sort = request.args.get("sort")
+    sort = request.args.get("sort", "state")
     order = request.args.get("order")
-    if sort and order:
+    state = None
+    if sort != "state" and order:
         order = text(sort + " " + order)
     else:
         order = ub.User.name.desc()
+    if sort == "state":
+        state = json.loads(request.args.get("state"))
 
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
         all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
-    total_count = all_user.count()
+
+    total_count = filtered_count = all_user.count()
+
     if search:
-        users = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
+        all_user = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
-                                    func.lower(ub.User.email).ilike("%" + search + "%")))\
-            .order_by(order).offset(off).limit(limit).all()
-        filtered_count = len(users)
+                                    func.lower(ub.User.email).ilike("%" + search + "%")))
+    if state:
+        outcome = list()
+        userlist = {user.id:user for user in all_user.all()}
+        for entry in state:
+            outcome.append(userlist[entry])
+            del userlist[entry]
+        for entry in userlist:
+            outcome.append(userlist[entry])
+        if request.args.get("order", "").lower() == "asc":
+            outcome.reverse()
+        users = outcome[off:off + limit]
     else:
         users = all_user.order_by(order).offset(off).limit(limit).all()
-        filtered_count = total_count
+    if search:
+        filtered_count = len(users)
 
     for user in users:
         if user.default_language == "all":

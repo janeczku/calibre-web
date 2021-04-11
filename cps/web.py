@@ -753,21 +753,42 @@ def books_table():
 @web.route("/ajax/listbooks")
 @login_required
 def list_books():
-    off = request.args.get("offset") or 0
-    limit = request.args.get("limit") or config.config_books_per_page
-    sort = request.args.get("sort")
+    off = int(request.args.get("offset") or 0)
+    limit = int(request.args.get("limit") or config.config_books_per_page)
+    search = request.args.get("search")
+    sort = request.args.get("sort", "state")
     order = request.args.get("order")
-    if sort and order:
+    state = None
+    if sort != "state" and order:
         order = [text(sort + " " + order)]
     else:
         order = [db.Books.timestamp.desc()]
-    search = request.args.get("search")
-    total_count = calibre_db.session.query(db.Books).count()
-    if search:
+    if sort == "state":
+        state = json.loads(request.args.get("state"))
+
+    total_count = filtered_count = calibre_db.session.query(db.Books).count()
+
+    if state:
+        outcome = list()
+        if search:
+            books = calibre_db.search_query(search)
+            filtered_count = len(books)
+        else:
+            books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
+        booklist = {book.id: book for book in books}
+        for entry in state:
+            outcome.append(booklist[entry])
+            del booklist[entry]
+        for entry in booklist:
+            outcome.append(booklist[entry])
+        if request.args.get("order", "").lower() == "asc":
+            outcome.reverse()
+        entries = outcome[off:off + limit]
+    elif search:
         entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit)
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
-        filtered_count = total_count
+
     for entry in entries:
         for index in range(0, len(entry.languages)):
             try:

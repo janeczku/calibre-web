@@ -422,6 +422,7 @@ $(function() {
 
     $("#user-table").bootstrapTable({
         sidePagination: "server",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
         paginationDetailHAlign: " hidden",
@@ -462,28 +463,10 @@ $(function() {
             $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $(".user-remove[data-pk='"+guest.data("pk")+"']").prop("disabled", true);
         },
-
-        // eslint-disable-next-line no-unused-vars
-        /*onEditableSave: function (field, row, oldvalue, $el) {
-            if (field === "title" || field === "authors") {
-                $.ajax({
-                    method:"get",
-                    dataType: "json",
-                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
-                    success: function success(data) {
-                        var key = Object.keys(data)[0];
-                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
-                            id: row.id,
-                            field: key,
-                            value: data[key]
-                        });
-                        // console.log(data);
-                    }
-                });
-            }
-        },*/
-        // eslint-disable-next-line no-unused-vars
-        onColumnSwitch: function (field, checked) {
+        onSort: function(a, b) {
+            console.log("huh");
+        },
+        onColumnSwitch: function () {
             var visible = $("#user-table").bootstrapTable("getVisibleColumns");
             var hidden  = $("#user-table").bootstrapTable("getHiddenColumns");
             var st = "";
@@ -746,6 +729,11 @@ function deleteUser(a,b){
     );
 }
 
+function queryParams(params)
+{
+    params.state = JSON.stringify(selections);
+    return params;
+}
 function user_handle (userId) {
 }
 
