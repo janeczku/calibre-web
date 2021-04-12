@@ -249,7 +249,7 @@ def list_users():
     order = request.args.get("order", "").lower()
     state = None
     if sort == "state":
-        state = json.loads(request.args.get("state"))
+        state = json.loads(request.args.get("state", "[]"))
 
     if sort != "state" and order:
         order = text(sort + " " + order)
@@ -356,7 +356,7 @@ def edit_list_user(param):
                 user.email = check_email(vals['value'])
             elif param == 'kindle_mail':
                 user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
-            elif param == 'role':
+            elif param.endswith('role'):
                 if user.name == "Guest" and int(vals['field_index']) in \
                              [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                     raise Exception(_("Guest can't have this role"))
@@ -367,7 +367,9 @@ def edit_list_user(param):
                         if not ub.session.query(ub.User).\
                                filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                       ub.User.id != user.id).count():
-                            return _(u"No admin user remaining, can't remove admin role", nick=user.name), 400
+                            return Response(json.dumps({'type': "danger",
+                                                        'message':_(u"No admin user remaining, can't remove admin role",
+                                                                    nick=user.name)}), mimetype='application/json')
                     user.role &= ~int(vals['field_index'])
             elif param == 'sidebar_view':
                 if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
