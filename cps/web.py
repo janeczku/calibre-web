@@ -757,33 +757,26 @@ def list_books():
     limit = int(request.args.get("limit") or config.config_books_per_page)
     search = request.args.get("search")
     sort = request.args.get("sort", "state")
-    order = request.args.get("order")
+    order = request.args.get("order", "").lower()
     state = None
-    if sort != "state" and order:
-        order = [text(sort + " " + order)]
-    else:
-        order = [db.Books.timestamp.desc()]
+
     if sort == "state":
         state = json.loads(request.args.get("state"))
+
+    if sort != "state" and order:
+        order = [text(sort + " " + order)]
+    elif not state:
+        order = [db.Books.timestamp.desc()]
 
     total_count = filtered_count = calibre_db.session.query(db.Books).count()
 
     if state:
-        outcome = list()
         if search:
             books = calibre_db.search_query(search)
             filtered_count = len(books)
         else:
             books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
-        booklist = {book.id: book for book in books}
-        for entry in state:
-            outcome.append(booklist[entry])
-            del booklist[entry]
-        for entry in booklist:
-            outcome.append(booklist[entry])
-        if request.args.get("order", "").lower() == "asc":
-            outcome.reverse()
-        entries = outcome[off:off + limit]
+        entries = calibre_db.get_checkbox_sorted(books, state, off, limit,order)
     elif search:
         entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit)
     else:
