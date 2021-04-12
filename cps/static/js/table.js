@@ -117,6 +117,7 @@ $(function() {
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
         paginationDetailHAlign: " hidden",
@@ -733,8 +734,6 @@ function queryParams(params)
 {
     params.state = JSON.stringify(selections);
     return params;
-}
-function user_handle (userId) {
 }
 
 function test(){
