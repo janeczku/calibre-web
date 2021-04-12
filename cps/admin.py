@@ -246,14 +246,15 @@ def list_users():
     limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
     sort = request.args.get("sort", "state")
-    order = request.args.get("order")
+    order = request.args.get("order", "").lower()
     state = None
+    if sort == "state":
+        state = json.loads(request.args.get("state", "[]"))
+
     if sort != "state" and order:
         order = text(sort + " " + order)
-    else:
+    elif not state:
         order = ub.User.name.desc()
-    if sort == "state":
-        state = json.loads(request.args.get("state"))
 
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
@@ -266,16 +267,7 @@ def list_users():
                                     func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
                                     func.lower(ub.User.email).ilike("%" + search + "%")))
     if state:
-        outcome = list()
-        userlist = {user.id:user for user in all_user.all()}
-        for entry in state:
-            outcome.append(userlist[entry])
-            del userlist[entry]
-        for entry in userlist:
-            outcome.append(userlist[entry])
-        if request.args.get("order", "").lower() == "asc":
-            outcome.reverse()
-        users = outcome[off:off + limit]
+        users = calibre_db.get_checkbox_sorted(all_user.all(), state, off, limit, request.args.get("order", "").lower())
     else:
         users = all_user.order_by(order).offset(off).limit(limit).all()
     if search:
@@ -364,7 +356,7 @@ def edit_list_user(param):
                 user.email = check_email(vals['value'])
             elif param == 'kindle_mail':
                 user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
-            elif param == 'role':
+            elif param.endswith('role'):
                 if user.name == "Guest" and int(vals['field_index']) in \
                              [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                     raise Exception(_("Guest can't have this role"))
@@ -375,7 +367,9 @@ def edit_list_user(param):
                         if not ub.session.query(ub.User).\
                                filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                       ub.User.id != user.id).count():
-                            return _(u"No admin user remaining, can't remove admin role", nick=user.name), 400
+                            return Response(json.dumps({'type': "danger",
+                                                        'message':_(u"No admin user remaining, can't remove admin role",
+                                                                    nick=user.name)}), mimetype='application/json')
                     user.role &= ~int(vals['field_index'])
             elif param == 'sidebar_view':
                 if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:

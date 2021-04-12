@@ -117,6 +117,7 @@ $(function() {
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
         paginationDetailHAlign: " hidden",
@@ -461,7 +462,7 @@ $(function() {
             $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
             $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            $(".user-remove[data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+            $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
         },
         onSort: function(a, b) {
             console.log("huh");
@@ -611,25 +612,30 @@ function checkboxFormatter(value, row, index){
 
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
-        method:"post",
+        method: "post",
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-        data: {"pk":userId, "field_index":field_index, "value": checkbox.checked}
-        /*<div className="editable-buttons">
-            <button type="button" className="btn btn-default btn-sm editable-cancel"><i
-                className="glyphicon glyphicon-remove"></i></button>
-        </div>*/
-        /*<div className="editable-error-block help-block" style="">Text to show</div>*/
-    });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
+        data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
+        success: function (data) {
+            if (!jQuery.isEmptyObject(data)) {
+                $("#flash_success").remove();
+                $("#flash_danger").remove();
+                $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                    '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
+                    '</div>');
+            }
+            $.ajax({
+                method: "get",
+                url: window.location.pathname + "/../../ajax/listusers",
+                async: true,
+                timeout: 900,
+                success: function (data) {
+                    $("#user-table").bootstrapTable("load", data);
+                }
+            });
         }
     });
 }
+
 function deactivateHeaderButtons(e) {
     $("#user_delete_selection").addClass("disabled");
     $("#user_delete_selection").attr("aria-disabled", true);
@@ -733,8 +739,6 @@ function queryParams(params)
 {
     params.state = JSON.stringify(selections);
     return params;
-}
-function user_handle (userId) {
 }
 
 function test(){

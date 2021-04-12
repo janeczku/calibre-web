@@ -616,6 +616,19 @@ class CalibreDB():
         return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
+    @staticmethod
+    def get_checkbox_sorted(inputlist, state, offset, limit, order):
+        outcome = list()
+        elementlist = {ele.id: ele for ele in inputlist}
+        for entry in state:
+            outcome.append(elementlist[entry])
+            del elementlist[entry]
+        for entry in elementlist:
+            outcome.append(elementlist[entry])
+        if order == "asc":
+            outcome.reverse()
+        return outcome[offset:offset + limit]
+
     # Fill indexpage with all requested data from database
     def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
         return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
