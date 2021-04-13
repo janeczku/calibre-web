@@ -63,12 +63,12 @@ msgstr "Configurazione dell'interfaccia utente"
 #: cps/admin.py:237 cps/templates/admin.html:46
 #, fuzzy
 msgid "Edit Users"
-msgstr "Utente amministratore"
+msgstr "Modifica gli utenti"
 
 #: cps/admin.py:263
 #, fuzzy
 msgid "all"
-msgstr "Tutti"
+msgstr "tutti"
 
 #: cps/admin.py:298 cps/templates/user_edit.html:44
 #: cps/templates/user_table.html:52
@@ -77,7 +77,7 @@ msgstr "tutte le lingue presenti"
 
 #: cps/admin.py:331 cps/admin.py:1233
 msgid "Guest Name can't be changed"
-msgstr ""
+msgstr "Il nome dell'utente Guest non può essere modificato"
 
 #: cps/admin.py:345 cps/admin.py:1198
 msgid "No admin user remaining, can't remove admin role"
@@ -106,19 +106,19 @@ msgstr "Vuoi veramente eliminare questo scaffale?"
 #: cps/admin.py:435
 #, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Vuoi veramente eliminare questo scaffale?"
+msgstr "Sei sicuro di voler modificare le impostazioni locali dell'/degli utente/i selezionato/i?"
 
 #: cps/admin.py:437
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr ""
+msgstr "Sei sicuro di voler modificare le impostazioni delle lingue visualizzabili dell'/degli utente/i selezionato/i?"
 
 #: cps/admin.py:439
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr ""
+msgstr "Sei sicuro di voler modificare il ruolo evidenziato dell'/degli utente/i selezionato/i?"
 
 #: cps/admin.py:441
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr ""
+msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione dell'/degli utente/i selezionato/i?"
 
 #: cps/admin.py:687 cps/admin.py:693 cps/admin.py:703 cps/admin.py:713
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:28
@@ -254,12 +254,12 @@ msgstr "Modifica le impostazioni del server e-mail"
 
 #: cps/admin.py:1303
 msgid "G-Mail Account Verification Successful"
-msgstr ""
+msgstr "L'account g-mail è stato verificato con successo"
 
 #: cps/admin.py:1328
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr ""
+msgstr "L'e-mail di test è stato accodato con successo per essere spedito a  %(email)s, per favore verifica tramite il pulsante 'Compito' il risultato"
 
 #: cps/admin.py:1331
 #, python-format
@@ -714,7 +714,7 @@ msgstr "Tutti"
 
 #: cps/opds.py:385
 msgid "{} Stars"
-msgstr ""
+msgstr "{} Stelle"
 
 #: cps/remotelogin.py:65 cps/web.py:1488
 msgid "login"
@@ -1109,7 +1109,7 @@ msgstr "Libro accodato con successo per essere spedito a %(kindlemail)s"
 #: cps/web.py:1357
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
-msgstr "Si è verificato un errore durante l'invio di questo libro: %(res)s"
+msgstr "Oops! Si è verificato un errore durante l'invio di questo libro: %(res)s"
 
 #: cps/web.py:1359
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
@@ -1183,7 +1183,7 @@ msgstr "Leggi un libro"
 
 #: cps/services/gmail.py:41
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr ""
+msgstr "Ho trovato un gmail.json file senza informazione OAuth"
 
 #: cps/tasks/convert.py:114
 #, python-format
@@ -1314,11 +1314,11 @@ msgstr "E-mail da"
 
 #: cps/templates/admin.html:84
 msgid "E-Mail Service"
-msgstr ""
+msgstr "Servizio e-mail"
 
 #: cps/templates/admin.html:85
 msgid "Gmail via Oauth2"
-msgstr ""
+msgstr "Gmail via Oauth2"
 
 #: cps/templates/admin.html:100
 msgid "Configuration"
@@ -1370,11 +1370,11 @@ msgstr "Nome intestazione reverse proxy"
 
 #: cps/templates/admin.html:153
 msgid "Edit Basic Configuration"
-msgstr "Edita la configurazione di base"
+msgstr "Modifica la configurazione di base"
 
 #: cps/templates/admin.html:154
 msgid "Edit UI Configuration"
-msgstr "Edita la configurazione dell'interfaccia utente"
+msgstr "Modifica la configurazione dell'interfaccia utente"
 
 #: cps/templates/admin.html:159
 msgid "Administration"
@@ -2018,7 +2018,7 @@ msgstr "LDAP Member User Filter Detection"
 
 #: cps/templates/config_edit.html:344
 msgid "Autodetect"
-msgstr "Autodetect - determina automaticamente"
+msgstr "Autodetect - identifica automaticamente"
 
 #: cps/templates/config_edit.html:345
 msgid "Custom Filter"
@@ -2225,23 +2225,23 @@ msgstr "Modifica metadati"
 
 #: cps/templates/email_edit.html:12
 msgid "Choose Server Type"
-msgstr ""
+msgstr "Scegli il tipo di server"
 
 #: cps/templates/email_edit.html:14
 msgid "Use Standard E-Mail Account"
-msgstr ""
+msgstr "Utilizza un account e-mail standard"
 
 #: cps/templates/email_edit.html:15
 msgid "G-Mail Account with OAuth2 Verfification"
-msgstr ""
+msgstr "Utilizza un account g-mail con la verifica OAuth2"
 
 #: cps/templates/email_edit.html:21
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr ""
+msgstr "Configura l'account gmail quale server e-mail"
 
 #: cps/templates/email_edit.html:23
 msgid "Revoke G-Mail Access"
-msgstr ""
+msgstr "Revoca l'accesso g-mail"
 
 #: cps/templates/email_edit.html:41
 msgid "STARTTLS"
@@ -2298,7 +2298,7 @@ msgstr "Apri il file .kobo/Kobo eReader.conf in un editore di testi e aggiungi (
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
-msgstr "Crea un rapporto di segnalazione di un problema"
+msgstr "Crea un rapporto di segnalazione di problema"
 
 #: cps/templates/http_error.html:45
 msgid "Return to Home"
@@ -2328,11 +2328,11 @@ msgstr "Avvio"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr ""
+msgstr "Libri in ordine alfabetico"
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr ""
+msgstr "Libri ordinati alfabeticamente"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
@@ -2910,86 +2910,86 @@ msgstr "Seleziona"
 #: cps/templates/user_table.html:101
 #, fuzzy
 msgid "Edit User"
-msgstr "Utente amministratore"
+msgstr "Modifica utente"
 
 #: cps/templates/user_table.html:104
 #, fuzzy
 msgid "Enter Username"
-msgstr "Scegli un nome utente"
+msgstr "Digita il nome utente"
 
 #: cps/templates/user_table.html:105
 #, fuzzy
 msgid "Enter E-mail Address"
-msgstr "Il tuo indirizzo e-mail"
+msgstr "Digita l'indirizzo e-mail"
 
 #: cps/templates/user_table.html:106
 #, fuzzy
 msgid "Enter Kindle E-mail Address"
-msgstr "Invia all'email di Kindle"
+msgstr "Digita l'email di Kindle"
 
 #: cps/templates/user_table.html:106
 #, fuzzy
 msgid "Kindle E-mail"
-msgstr "E-mail di test"
+msgstr "E-mail di Kindle"
 
 #: cps/templates/user_table.html:107
 #, fuzzy
 msgid "Locale"
-msgstr "Scala"
+msgstr "Locale"
 
 #: cps/templates/user_table.html:108
 msgid "Visible Book Languages"
-msgstr ""
+msgstr "Lingue dei libri visualizzabili"
 
 #: cps/templates/user_table.html:109
 #, fuzzy
 msgid "Edit Denied Tags"
-msgstr "Seleziona le categorie consentite/negate"
+msgstr "Modifica le categorie negate"
 
 #: cps/templates/user_table.html:109
 msgid "Denied Tags"
-msgstr ""
+msgstr "Categorie negate"
 
 #: cps/templates/user_table.html:110
 #, fuzzy
 msgid "Edit Allowed Tags"
-msgstr "Seleziona le categorie consentite/negate"
+msgstr "Modifica le categorie permesse"
 
 #: cps/templates/user_table.html:110
 msgid "Allowed Tags"
-msgstr ""
+msgstr "Categorie permesse"
 
 #: cps/templates/user_table.html:111
 #, fuzzy
 msgid "Edit Allowed Column Values"
-msgstr "Aggiungi valori personali permetti/nega nelle colonne"
+msgstr "Modifica i valori delle colonne permesse"
 
 #: cps/templates/user_table.html:111
 #, fuzzy
 msgid "Allowed Column Values"
-msgstr "Aggiungi valori personali permetti/nega nelle colonne"
+msgstr "Valori delle colonne permesse"
 
 #: cps/templates/user_table.html:112
 #, fuzzy
 msgid "Edit Denied Column Values"
-msgstr "Aggiungi valori personali permetti/nega nelle colonne"
+msgstr "Modifica i valori delle colonne negate"
 
 #: cps/templates/user_table.html:112
 #, fuzzy
 msgid "Denied Columns Values"
-msgstr "Aggiungi valori personali permetti/nega nelle colonne"
+msgstr "Valori delle colonne negate"
 
 #: cps/templates/user_table.html:117
 #, fuzzy
 msgid "Change Password"
-msgstr "Permetti la modifica della password"
+msgstr "Modifica la password"
 
 #: cps/templates/user_table.html:118
 #, fuzzy
 msgid "Edit Public Shelfs"
-msgstr "Scaffale pubblico"
+msgstr "Modifica scaffali pubblici"
 
 #: cps/templates/user_table.html:120
 msgid "View"
-msgstr ""
+msgstr "Visualizza"
 
