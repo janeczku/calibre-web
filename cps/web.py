@@ -26,6 +26,7 @@ from datetime import datetime
 import json
 import mimetypes
 import chardet  # dependency of requests
+import copy
 
 from babel.dates import format_date
 from babel import Locale as LC
@@ -830,9 +831,10 @@ def author_list():
         charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
-        for entry in entries:
+        autor_copy = copy.deepcopy(entries)
+        for entry in autor_copy:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+        return render_title_template('list.html', entries=autor_copy, folder='web.books_list', charlist=charlist,
                                      title=u"Authors", page="authorlist", data='author', order=order_no)
     else:
         abort(404)
