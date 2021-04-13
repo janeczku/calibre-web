@@ -831,6 +831,8 @@ def author_list():
         charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
+        # If not creating a copy, readonly databases can not display authornames with "|" in it as changing the name
+        # starts a change session
         autor_copy = copy.deepcopy(entries)
         for entry in autor_copy:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
