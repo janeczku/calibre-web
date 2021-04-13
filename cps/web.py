@@ -762,7 +762,6 @@ def list_books():
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
-
     if sort != "state" and order:
         order = [text(sort + " " + order)]
     elif not state:
