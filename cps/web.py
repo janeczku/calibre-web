@@ -756,7 +756,7 @@ def list_books():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or config.config_books_per_page)
     search = request.args.get("search")
-    sort = request.args.get("sort", "state")
+    sort = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
 

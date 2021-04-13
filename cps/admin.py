@@ -245,7 +245,7 @@ def list_users():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
-    sort = request.args.get("sort", "state")
+    sort = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
     if sort == "state":
@@ -254,7 +254,7 @@ def list_users():
     if sort != "state" and order:
         order = text(sort + " " + order)
     elif not state:
-        order = ub.User.name.desc()
+        order = ub.User.id.asc()
 
     all_user = ub.session.query(ub.User)
     if not config.config_anonbrowse:
@@ -371,7 +371,7 @@ def edit_list_user(param):
                                                         'message':_(u"No admin user remaining, can't remove admin role",
                                                                     nick=user.name)}), mimetype='application/json')
                     user.role &= ~int(vals['field_index'])
-            elif param == 'sidebar_view':
+            elif param.startswith('sidebar'):
                 if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
                     raise Exception(_("Guest can't have this view"))
                 if vals['value'] == 'true':
