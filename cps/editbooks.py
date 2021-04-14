@@ -324,19 +324,19 @@ def delete_book(book_id, book_format, jsonResponse):
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
                     if jsonResponse:
-                        return json.dumps({"location": url_for("editbook.edit_book"),
-                                           "type": "alert",
+                        return json.dumps([{"location": url_for("editbook.edit_book", book_id=book_id),
+                                           "type": "danger",
                                            "format": "",
-                                           "error": error}),
+                                           "message": error}])
                     else:
                         flash(error, category="error")
                         return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if error:
                     if jsonResponse:
-                        warning = {"location": url_for("editbook.edit_book"),
+                        warning = {"location": url_for("editbook.edit_book", book_id=book_id),
                                                 "type": "warning",
                                                 "format": "",
-                                                "error": error}
+                                                "message": error}
                     else:
                         flash(error, category="warning")
                 if not book_format:
@@ -348,6 +348,15 @@ def delete_book(book_id, book_format, jsonResponse):
             except Exception as ex:
                 log.debug_or_exception(ex)
                 calibre_db.session.rollback()
+                if jsonResponse:
+                    return json.dumps([{"location": url_for("editbook.edit_book", book_id=book_id),
+                                        "type": "danger",
+                                        "format": "",
+                                        "message": ex}])
+                else:
+                    flash(str(ex), category="error")
+                    return redirect(url_for('editbook.edit_book', book_id=book_id))
+
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
