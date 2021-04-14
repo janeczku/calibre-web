@@ -92,7 +92,7 @@
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
       <div class="row-fluid text-center" style="margin-top: -20px;">
-        <div id="flash_alert" class="alert alert-danger">{{ message[1] }}</div>
+        <div id="flash_danger" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
