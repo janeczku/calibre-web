@@ -358,7 +358,7 @@ def _migrate_table(session, orm_class):
         if column_name[0] != '_':
             try:
                 session.query(column).first()
-            except exc.OperationalError as err:
+            except OperationalError as err:
                 log.debug("%s: %s", column_name, err.args[0])
                 if column.default is not None:
                     if sys.version_info < (3, 0):
