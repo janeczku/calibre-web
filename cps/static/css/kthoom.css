@@ -84,13 +84,22 @@ body {
 #progress .bar-load,
 #progress .bar-read {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
   position: absolute;
   top: 0;
-  left: 0;
   bottom: 0;
   transition: width 150ms ease-in-out;
+}
+
+#progress .from-left {
+  left: 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+#progress .from-right {
+  right: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 #progress .bar-load {
