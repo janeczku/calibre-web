@@ -702,14 +702,21 @@ class CalibreDB():
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term):
+    def search_query(self, term, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        return self.session.query(Books).filter(self.common_filters(True)).filter(
+        query = self.session.query(Books)
+        if len(join) == 3:
+            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
+        elif len(join) == 2:
+            query = query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            query = query.outerjoin(join[0])
+        return query.filter(self.common_filters(True)).filter(
             or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                 Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                 Books.authors.any(and_(*q)),
@@ -718,10 +725,10 @@ class CalibreDB():
                 ))
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None):
+    def get_search_results(self, term, offset=None, order=None, limit=None, *join):
         order = order or [Books.sort]
         pagination = None
-        result = self.search_query(term).order_by(*order).all()
+        result = self.search_query(term, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)

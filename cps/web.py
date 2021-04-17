@@ -760,10 +760,26 @@ def list_books():
     sort = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
+    join = tuple()
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
-    if sort != "state" and order:
+    elif sort == "tags":
+        order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
+        join = db.books_tags_link,db.Books.id == db.books_tags_link.c.book, db.Tags
+    elif sort == "series":
+        order = [db.Series.name.asc()] if order == "asc" else [db.Series.name.desc()]
+        join = db.books_series_link,db.Books.id == db.books_series_link.c.book, db.Series
+    elif sort == "publishers":
+        order = [db.Publishers.name.asc()] if order == "asc" else [db.Publishers.name.desc()]
+        join = db.books_publishers_link,db.Books.id == db.books_publishers_link.c.book, db.Publishers
+    elif sort == "authors":
+        order = [db.Authors.name.asc()] if order == "asc" else [db.Authors.name.desc()]
+        join = db.books_authors_link,db.Books.id == db.books_authors_link.c.book, db.Authors
+    elif sort == "languages":
+        order = [db.Languages.lang_code.asc()] if order == "asc" else [db.Languages.lang_code.desc()]
+        join = db.books_languages_link,db.Books.id == db.books_languages_link.c.book, db.Languages
+    elif order and sort in ["sort", "title", "authors_sort", "series_index"]:
         order = [text(sort + " " + order)]
     elif not state:
         order = [db.Books.timestamp.desc()]
@@ -778,9 +794,9 @@ def list_books():
             books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit,order)
     elif search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit)
+        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *join)
     else:
-        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
+        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order, *join)
 
     for entry in entries:
         for index in range(0, len(entry.languages)):
