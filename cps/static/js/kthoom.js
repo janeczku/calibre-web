@@ -532,11 +532,11 @@ function keyHandler(evt) {
             if (evt.shiftKey && atTop) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showLeftPage();
+                showPrevPage();
             } else if (!evt.shiftKey && atBottom) {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showRightPage();
+                showNextPage();
                 container.scrollTop(0);
             }
             break;
