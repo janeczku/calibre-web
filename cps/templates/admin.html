@@ -26,7 +26,7 @@
         {% for user in allUser %}
           {% if not user.role_anonymous() or config.config_anonbrowse %}
           <tr>
-            <td><a href="{{url_for('admin.edit_user', user_id=user.id)}}">{{user.name}}</a></td>
+            <td><a class="session" href="{{url_for('admin.edit_user', user_id=user.id)}}">{{user.name}}</a></td>
             <td>{{user.email}}</td>
             <td>{{user.kindle_mail}}</td>
             <td>{{user.downloads.count()}}</td>
