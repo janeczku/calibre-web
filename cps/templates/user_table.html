@@ -137,6 +137,9 @@
         </tr>
       </thead>
     </table>
+    <div class="errorlink">
+      <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
+    </div>
 {% endblock %}
 {% block modal %}
 {{ delete_confirm_modal() }}

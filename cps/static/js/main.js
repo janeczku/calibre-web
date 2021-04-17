@@ -114,6 +114,20 @@ $(document).ready(function() {
   }
 });
 
+$(".session").click(function() {
+    window.sessionStorage.setItem("back", window.location.pathname);
+});
+
+$("#back").click(function() {
+   var loc = sessionStorage.getItem("back");
+   if (!loc) {
+       loc = $(this).data("back");
+   }
+   sessionStorage.removeItem("back");
+   window.location.href = loc;
+
+});
+
 function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     var $confirm = $("#" + dialogid);
     $confirm.modal('show');

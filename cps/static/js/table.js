@@ -600,7 +600,7 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<a class="btn btn-default" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
+    return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
 function checkboxFormatter(value, row, index){
@@ -741,6 +741,6 @@ function queryParams(params)
     return params;
 }
 
-function test(){
-    console.log("hello");
+function storeLocation() {
+    window.sessionStorage.setItem("back", window.location.pathname);
 }
