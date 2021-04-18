@@ -20,6 +20,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import sys
+import json
 
 from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
@@ -261,7 +262,6 @@ class _ConfigSQL(object):
         """
         new_value = dictionary.get(field, default)
         if new_value is None:
-            # log.debug("_ConfigSQL set_from_dictionary field '%s' not found", field)
             return False
 
         if field not in self.__dict__:
@@ -278,7 +278,6 @@ class _ConfigSQL(object):
         if current_value == new_value:
             return False
 
-        # log.debug("_ConfigSQL set_from_dictionary '%s' = %r (was %r)", field, new_value, current_value)
         setattr(self, field, new_value)
         return True
 
@@ -383,6 +382,9 @@ def _migrate_table(session, orm_class):
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
+            except json.decoder.JSONDecodeError as e:
+                log.error("Database corrupt column: {}".format(column_name))
+                log.debug(e)
 
     if changed:
         try:
