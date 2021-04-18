@@ -23,15 +23,17 @@
     data-visible="{{element.get(array_field)}}"
     data-column="{{value.get(array_field)}}"
     data-formatter="checkboxFormatter">
-    <div class="form-check">
+    <div  class="form-check">
+    <div>
       <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('false', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Deny')}}
+        <input type="radio" class="check_head" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
       </label>
     </div>
-    <div class="form-check">
+    <div>
       <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('true', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Allow')}}
+        <input type="radio" class="check_head" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
       </label>
+    </div>
     </div>
     {{show_text}}
 </th>
@@ -48,14 +50,13 @@
     data-editable-source={{url}}
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     <div>
-      <select id="select_{{ parameter }}" class="header_select" onchange="selectHeader(this, '{{parameter}}')" disabled="">
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
       <option value="all">{{ _('Show All') }}</option>
       {% for language in languages %}
         <option value="{{language.lang_code}}">{{language.name}}</option>
       {% endfor %}
       </select>
-    </div><br>
-
+    </div>
     {{ show_text }}
 </th>
 {%- endmacro %}
@@ -71,13 +72,13 @@
     data-editable-source={{url}}
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     <div>
-      <select id="select_{{ parameter }}" class="header_select" onchange="selectHeader(this, '{{parameter}}')" disabled="">
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
       <option value="None">{{_('Select...')}}</option>
       {% for translation in translations %}
         <option value="{{translation}}">{{translation.display_name|capitalize}}</option>
       {% endfor %}
     </select>
-    </div><br>
+    </div>
     {{ show_text }}
 </th>
 {%- endmacro %}

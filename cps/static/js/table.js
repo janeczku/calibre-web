@@ -177,7 +177,6 @@ $(function() {
         },
     });
 
-
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
         $("#domain_add_allow").ajaxForm();
@@ -388,7 +387,6 @@ $(function() {
          var target = $(e.relatedTarget).attr('id');
          var dataId;
          $(e.relatedTarget).one('focus', function(e){$(this).blur();});
-         //$(e.relatedTarget).blur();
          if ($(e.relatedTarget).hasClass("button_head")) {
              dataId = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
          } else {
@@ -454,18 +452,28 @@ $(function() {
                 $(this).next().text(elText);
             });
         },
-        onLoadSuccess: function () {
-            var guest = $(".editable[data-name='name'][data-value='Guest']");
-            guest.editable("disable");
-            $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
-            $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-            $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
+        onPostHeader () {
+            deactivateHeaderButtons();
         },
-        onSort: function(a, b) {
-            console.log("huh");
+        onLoadSuccess: function () {
+            loadSuccess();
+            var element = $(".header_select");
+            element.each(function() {
+                var item = $(this).parent();
+                var parent = item.parent().parent();
+                if (parent.prop('nodeName') === "TH") {
+                    item.prependTo(parent);
+                }
+            });
+            var element = $(".form-check");
+            element.each(function() {
+                var item = $(this).parent();
+                var parent = item.parent().parent();
+                if (parent.prop('nodeName') === "TH") {
+                    item.prependTo(parent);
+                }
+            });
+
         },
         onColumnSwitch: function () {
             var visible = $("#user-table").bootstrapTable("getVisibleColumns");
@@ -491,7 +499,18 @@ $(function() {
     $("#user_delete_selection").click(function() {
         $("#user-table").bootstrapTable("uncheckAll");
     });
-
+    $("#select_locale").on("change",function() {
+        selectHeader(this, "locale");
+    });
+    $("#select_default_language").on("change",function() {
+        selectHeader(this, "default_language");
+    });
+    $(".check_head").on("change",function() {
+        var val = $(this).val() === "on";
+        var name = $(this).data("name");
+        var data =  $(this).data("val");
+        checkboxHeader(val, name, data);
+    });
     function user_handle (userId) {
         $.ajax({
             method:"post",
@@ -505,6 +524,7 @@ $(function() {
             timeout: 900,
             success:function(data) {
                 $("#user-table").bootstrapTable("load", data);
+                loadSuccess();
             }
         });
     }
@@ -560,10 +580,6 @@ function TableActions (value, row) {
     ].join("");
 }
 
-function editEntry(param)
-{
-    console.log(param);
-}
 /* Function for deleting domain restrictions */
 function RestrictionActions (value, row) {
     return [
@@ -582,7 +598,7 @@ function EbookActions (value, row) {
     ].join("");
 }
 
-/* Function for deleting books */
+/* Function for deleting Users */
 function UserActions (value, row) {
     return [
         "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
@@ -610,33 +626,55 @@ function checkboxFormatter(value, row, index){
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
 
+function loadSuccess() {
+    var guest = $(".editable[data-name='name'][data-value='Guest']");
+    guest.editable("disable");
+    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
+    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").hide();
+    $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
+}
+
+function handleListServerResponse (data, disableButtons) {
+    $("#flash_success").remove();
+    $("#flash_danger").remove();
+    if (!jQuery.isEmptyObject(data)) {
+        $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+            '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
+            '</div>');
+    }
+    $.ajax({
+        method: "get",
+        url: window.location.pathname + "/../../ajax/listusers",
+        async: true,
+        timeout: 900,
+        success: function (data) {
+            $("#user-table").bootstrapTable("load", data);
+            if (disableButtons) {
+                deactivateHeaderButtons();
+            }
+            loadSuccess();
+        }
+    });
+}
+
+
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
         method: "post",
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
         data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
-        success: function (data) {
-            if (!jQuery.isEmptyObject(data)) {
-                $("#flash_success").remove();
-                $("#flash_danger").remove();
-                $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
-                    '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
-                    '</div>');
-            }
-            $.ajax({
-                method: "get",
-                url: window.location.pathname + "/../../ajax/listusers",
-                async: true,
-                timeout: 900,
-                success: function (data) {
-                    $("#user-table").bootstrapTable("load", data);
-                }
-            });
-        }
+        error: function(data) {
+            handleListServerResponse({type:"danger", message:data.responseText})
+        },
+        success: handleListServerResponse
     });
 }
 
-function deactivateHeaderButtons(e) {
+function deactivateHeaderButtons() {
     $("#user_delete_selection").addClass("disabled");
     $("#user_delete_selection").attr("aria-disabled", true);
     $(".check_head").attr("aria-disabled", true);
@@ -655,18 +693,10 @@ function selectHeader(element, field) {
                 method: "post",
                 url: window.location.pathname + "/../../ajax/editlistusers/" + field,
                 data: {"pk": result, "value": element.value},
-                success: function () {
-                    $.ajax({
-                        method: "get",
-                        url: window.location.pathname + "/../../ajax/listusers",
-                        async: true,
-                        timeout: 900,
-                        success: function (data) {
-                            $("#user-table").bootstrapTable("load", data);
-                            deactivateHeaderButtons();
-                        }
-                    });
-                }
+                error: function (data) {
+                    handleListServerResponse({type:"danger", message:data.responseText})
+                },
+                success: handleListServerResponse,
             });
         });
     }
@@ -679,25 +709,12 @@ function checkboxHeader(CheckboxState, field, field_index) {
             method: "post",
             url: window.location.pathname + "/../../ajax/editlistusers/" + field,
             data: {"pk": result, "field_index": field_index, "value": CheckboxState},
-            success: function () {
-                $.ajax({
-                    method: "get",
-                    url: window.location.pathname + "/../../ajax/listusers",
-                    async: true,
-                    timeout: 900,
-                    success: function (data) {
-                        $("#user-table").bootstrapTable("load", data);
-                        $("#user_delete_selection").addClass("disabled");
-                        $("#user_delete_selection").attr("aria-disabled", true);
-                        $(".check_head").attr("aria-disabled", true);
-                        $(".check_head").attr("disabled", true);
-                        $(".check_head").prop('checked', false);
-                        $(".button_head").attr("aria-disabled", true);
-                        $(".button_head").addClass("disabled");
-                        $(".header_select").attr("disabled", true);
-                    }
-                });
-            }
+            error: function (data) {
+                handleListServerResponse({type:"danger", message:data.responseText}, true)
+            },
+            success: function (data) {
+                handleListServerResponse (data, true)
+            },
         });
     });
 }
@@ -712,24 +729,10 @@ function deleteUser(a,b){
                 method:"post",
                 url: window.location.pathname + "/../../ajax/deleteuser",
                 data: {"userid":b},
-                success:function(data) {
-                    $("#flash_success").remove();
-                    $("#flash_danger").remove();
-                    if (!jQuery.isEmptyObject(data)) {
-                        $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
-                            '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
-                            '</div>');
-                    }
-                    $.ajax({
-                        method: "get",
-                        url: window.location.pathname + "/../../ajax/listusers",
-                        async: true,
-                        timeout: 900,
-                        success: function (data) {
-                            $("#user-table").bootstrapTable("load", data);
-                        }
-                    });
-                }
+                success: handleListServerResponse,
+                error: function (data) {
+                    handleListServerResponse({type:"danger", message:data.responseText})
+                },
             });
         }
     );
