@@ -121,6 +121,8 @@ class Identifiers(Base):
             return u"Douban"
         elif format_type == "goodreads":
             return u"Goodreads"
+        elif format_type == "babelio":
+            return u"Babelio"        
         elif format_type == "google":
             return u"Google Books"
         elif format_type == "kobo":
@@ -148,6 +150,8 @@ class Identifiers(Base):
             return u"https://dx.doi.org/{0}".format(self.val)
         elif format_type == "goodreads":
             return u"https://www.goodreads.com/book/show/{0}".format(self.val)
+        elif format_type == "babelio":
+            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)        
         elif format_type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
