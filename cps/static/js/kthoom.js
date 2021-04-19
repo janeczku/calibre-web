@@ -171,7 +171,10 @@ kthoom.ImageFile = function(file) {
 
 function initProgressClick() {
     $("#progress").click(function(e) {
-        var page = Math.max(1, Math.ceil((e.offsetX / $(this).width()) * totalImages)) - 1;
+        var offset = $(this).offset();
+        var x = e.pageX - offset.left;
+        var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
+        var page = Math.max(1, Math.ceil(rate * totalImages)) - 1;
         currentImage = page;
         updatePage();
     });
@@ -285,6 +288,22 @@ function updatePage() {
 }
 
 function updateProgress(loadPercentage) {
+    if (settings.direction === 0) {
+        $("#progress .bar-read")
+            .removeClass("from-right")
+            .addClass("from-left");
+        $("#progress .bar-load")
+            .removeClass("from-right")
+            .addClass("from-left");
+    } else {
+        $("#progress .bar-read")
+            .removeClass("from-left")
+            .addClass("from-right");
+        $("#progress .bar-load")
+            .removeClass("from-left")
+            .addClass("from-right");
+    }
+
     // Set the load/unzip progress if it's passed in
     if (loadPercentage) {
         $("#progress .bar-load").css({ width: loadPercentage + "%" });
@@ -526,18 +545,17 @@ function keyHandler(evt) {
             break;
         case kthoom.Key.SPACE:
             var container = $("#mainContent");
-            var atTop = container.scrollTop() === 0;
-            var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
+            // var atTop = container.scrollTop() === 0;
+            // var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
 
-            if (evt.shiftKey && atTop) {
+            if (evt.shiftKey) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showLeftPage();
-            } else if (!evt.shiftKey && atBottom) {
+                showPrevPage();
+            } else {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showRightPage();
-                container.scrollTop(0);
+                showNextPage();
             }
             break;
         default:
