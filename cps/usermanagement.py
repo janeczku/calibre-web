@@ -75,8 +75,9 @@ def load_user_from_auth_header(header_val):
     basic_username = basic_password = ''  # nosec
     try:
         header_val = base64.b64decode(header_val).decode('utf-8')
-        basic_username = header_val.split(':')[0]
-        basic_password = header_val.split(':')[1]
+        # Users with colon are invalid: rfc7617 page 4
+        basic_username = header_val.split(':', 1)[0]
+        basic_password = header_val.split(':', 1)[1]
     except (TypeError, UnicodeDecodeError, binascii.Error):
         pass
     user = _fetch_user_by_name(basic_username)

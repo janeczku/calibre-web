@@ -53,6 +53,7 @@ def setup_gmail(token):
             'expiry': creds.expiry.isoformat(),
             'email': user_info
         }
+    return {}
 
 def get_user_info(credentials):
     user_info_service = build(serviceName='oauth2', version='v2',credentials=credentials)
