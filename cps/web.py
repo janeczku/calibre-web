@@ -788,7 +788,7 @@ def list_books():
 
     if state:
         if search:
-            books = calibre_db.search_query(search)
+            books = calibre_db.search_query(search).all()
             filtered_count = len(books)
         else:
             books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
