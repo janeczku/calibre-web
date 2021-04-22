@@ -511,22 +511,36 @@ $(function() {
         var data =  $(this).data("val");
         checkboxHeader(val, name, data);
     });
+    $(".button_head").on("click",function() {
+        var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+        confirmDialog(
+        "btndeluser",
+            "GeneralDeleteModal",
+            0,
+            function() {
+                $.ajax({
+                    method:"post",
+                    url: window.location.pathname + "/../../ajax/deleteuser",
+                    data: {"userid": result},
+                    success: function (data) {
+                        selections = selections.filter( ( el ) => !result.includes( el ) );
+                        // selections = selections.filter(item => item !== userId);
+                        handleListServerResponse(data);
+                    },
+                    error: function (data) {
+                        handleListServerResponse({type:"danger", message:data.responseText})
+                    },
+                });
+            }
+        );
+    });
     function user_handle (userId) {
         $.ajax({
             method:"post",
             url: window.location.pathname + "/../../ajax/deleteuser",
             data: {"userid":userId}
         });
-        $.ajax({
-            method:"get",
-            url: window.location.pathname + "/../../ajax/listusers",
-            async: true,
-            timeout: 900,
-            success:function(data) {
-                $("#user-table").bootstrapTable("load", data);
-                loadSuccess();
-            }
-        });
+        $("#user-table").bootstrapTable("refresh");
     }
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
@@ -642,23 +656,13 @@ function handleListServerResponse (data, disableButtons) {
     $("#flash_success").remove();
     $("#flash_danger").remove();
     if (!jQuery.isEmptyObject(data)) {
-        $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
-            '<div id="flash_'+data.type+'" class="alert alert-'+data.type+'">'+data.message+'</div>' +
-            '</div>');
+        data.forEach(function(item) {
+            $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                '</div>');
+        });
     }
-    $.ajax({
-        method: "get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success: function (data) {
-            $("#user-table").bootstrapTable("load", data);
-            if (disableButtons) {
-                deactivateHeaderButtons();
-            }
-            loadSuccess();
-        }
-    });
+    $("#user-table").bootstrapTable("refresh");
 }
 
 
@@ -675,14 +679,16 @@ function checkboxChange(checkbox, userId, field, field_index) {
 }
 
 function deactivateHeaderButtons() {
-    $("#user_delete_selection").addClass("disabled");
-    $("#user_delete_selection").attr("aria-disabled", true);
-    $(".check_head").attr("aria-disabled", true);
-    $(".check_head").attr("disabled", true);
-    $(".check_head").prop('checked', false);
-    $(".button_head").attr("aria-disabled", true);
-    $(".button_head").addClass("disabled");
-    $(".header_select").attr("disabled", true);
+    if (selections.length < 1) {
+        $("#user_delete_selection").addClass("disabled");
+        $("#user_delete_selection").attr("aria-disabled", true);
+        $(".check_head").attr("aria-disabled", true);
+        $(".check_head").attr("disabled", true);
+        $(".check_head").prop('checked', false);
+        $(".button_head").attr("aria-disabled", true);
+        $(".button_head").addClass("disabled");
+        $(".header_select").attr("disabled", true);
+    }
 }
 
 function selectHeader(element, field) {
@@ -719,7 +725,7 @@ function checkboxHeader(CheckboxState, field, field_index) {
     });
 }
 
-function deleteUser(a,b){
+function deleteUser(a,id){
     confirmDialog(
     "btndeluser",
         "GeneralDeleteModal",
@@ -728,8 +734,12 @@ function deleteUser(a,b){
             $.ajax({
                 method:"post",
                 url: window.location.pathname + "/../../ajax/deleteuser",
-                data: {"userid":b},
-                success: handleListServerResponse,
+                data: {"userid":id},
+                success: function (data) {
+                    userId = parseInt(id, 10);
+                    selections = selections.filter(item => item !== userId);
+                    handleListServerResponse(data);
+                },
                 error: function (data) {
                     handleListServerResponse({type:"danger", message:data.responseText})
                 },

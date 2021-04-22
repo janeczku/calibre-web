@@ -289,15 +289,30 @@ def list_users():
 @login_required
 @admin_required
 def delete_user():
-    user_id = request.values.get('userid', -1)
-    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).one_or_none()
-    try:
-        message = _delete_user(content)
-        return Response(json.dumps({'type': "success", 'message': message}), mimetype='application/json')
-    except Exception as ex:
-        return Response(json.dumps({'type': "danger", 'message':str(ex)}), mimetype='application/json')
-    log.error("User not found")
-    return Response(json.dumps({'type': "danger", 'message':_("User not found")}), mimetype='application/json')
+    user_ids = request.form.to_dict(flat=False)
+    if "userid[]" in user_ids:
+        users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids['userid[]'])).all()
+    elif "userid" in user_ids:
+        users = ub.session.query(ub.User).filter(ub.User.id == user_ids['userid'][0]).all()
+    count = 0
+    errors = list()
+    success = list()
+    if not users:
+        log.error("User not found")
+        return Response(json.dumps({'type': "danger", 'message': _("User not found")}), mimetype='application/json')
+    for user in users:
+        try:
+            message = _delete_user(user)
+            count += 1
+        except Exception as ex:
+            errors.append({'type': "danger", 'message': str(ex)})
+
+    if count == 1:
+        success = [{'type': "success", 'message': message}]
+    elif count > 1:
+        success = [{'type': "success", 'message': _("{} users deleted successfully").format(count)}]
+    success.extend(errors)
+    return Response(json.dumps(success), mimetype='application/json')
 
 @admi.route("/ajax/getlocale")
 @login_required
@@ -367,9 +382,9 @@ def edit_list_user(param):
                         if not ub.session.query(ub.User).\
                                filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                       ub.User.id != user.id).count():
-                            return Response(json.dumps({'type': "danger",
+                            return Response(json.dumps([{'type': "danger",
                                                         'message':_(u"No admin user remaining, can't remove admin role",
-                                                                    nick=user.name)}), mimetype='application/json')
+                                                                    nick=user.name)}]), mimetype='application/json')
                     user.role &= ~int(vals['field_index'])
             elif param.startswith('sidebar'):
                 if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:

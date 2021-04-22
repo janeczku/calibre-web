@@ -178,6 +178,19 @@ $("#delete_confirm").click(function() {
 
                         }
                     });
+                    $("#books-table").bootstrapTable("refresh");
+                    /*$.ajax({
+                        method:"get",
+                        url: window.location.pathname + "/../../ajax/listbooks",
+                        async: true,
+                        timeout: 900,
+                        success:function(data) {
+
+
+                            $("#book-table").bootstrapTable("load", data);
+                            loadSuccess();
+                        }
+                    });*/
                 }
             });
         } else {
