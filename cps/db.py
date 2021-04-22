@@ -625,7 +625,10 @@ class CalibreDB():
         outcome = list()
         elementlist = {ele.id: ele for ele in inputlist}
         for entry in state:
-            outcome.append(elementlist[entry])
+            try:
+                outcome.append(elementlist[entry])
+            except KeyError:
+                pass
             del elementlist[entry]
         for entry in elementlist:
             outcome.append(elementlist[entry])

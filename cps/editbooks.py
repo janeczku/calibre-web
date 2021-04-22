@@ -1211,6 +1211,6 @@ def merge_list_book():
                                                         element.format,
                                                         element.uncompressed_size,
                                                         to_name))
-                    delete_book(from_book.id,"", True) # json_resp =
+                    delete_book(from_book.id,"", True)
                     return json.dumps({'success': True})
     return ""
