@@ -640,6 +640,7 @@ function checkboxFormatter(value, row, index){
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
 
+/* Do some hiding disabling after user list is loaded */
 function loadSuccess() {
     var guest = $(".editable[data-name='name'][data-value='Guest']");
     guest.editable("disable");
