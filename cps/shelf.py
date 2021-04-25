@@ -99,12 +99,14 @@ def add_to_shelf(shelf_id, book_id):
         ub.session.commit()
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
+        log.error("Settings DB is not Writeable")
         flash(_(u"Settings DB is not Writeable"), category="error")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
             return redirect(url_for('web.index'))
     if not xhr:
+        log.debug("Book has been added to shelf: {}".format(shelf.name))
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
@@ -123,6 +125,7 @@ def search_to_shelf(shelf_id):
         return redirect(url_for('web.index'))
 
     if not check_shelf_edit_permissions(shelf):
+        log.warning("You are not allowed to add a book to the the shelf: {}".format(shelf.name))
         flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
         return redirect(url_for('web.index'))
 
@@ -140,7 +143,7 @@ def search_to_shelf(shelf_id):
             books_for_shelf = ub.searched_ids[current_user.id]
 
         if not books_for_shelf:
-            log.error("Books are already part of %s", shelf.name)
+            log.error("Books are already part of {}".format(shelf.name))
             flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('web.index'))
 
@@ -156,8 +159,10 @@ def search_to_shelf(shelf_id):
             flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
     else:
+        log.error("Could not add books to shelf: {}".format(shelf.name))
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
     return redirect(url_for('web.index'))
 
@@ -168,7 +173,7 @@ def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
-        log.error("Invalid shelf specified: %s", shelf_id)
+        log.error("Invalid shelf specified: {}".format(shelf_id))
         if not xhr:
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
@@ -197,7 +202,8 @@ def remove_from_shelf(shelf_id, book_id):
             ub.session.commit()
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
             if "HTTP_REFERER" in request.environ:
                 return redirect(request.environ["HTTP_REFERER"])
             else:
@@ -211,6 +217,7 @@ def remove_from_shelf(shelf_id, book_id):
         return "", 204
     else:
         if not xhr:
+            log.warning("You are not allowed to remove a book from shelf: {}".format(shelf.name))
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
@@ -258,7 +265,8 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
             except (OperationalError, InvalidRequestError) as ex:
                 ub.session.rollback()
                 log.debug_or_exception(ex)
-                flash(_(u"Settings DB is not Writeable"), category="error")
+                log.error("Settings DB is not Writeable")
+                flash(_("Settings DB is not Writeable"), category="error")
             except Exception as ex:
                 ub.session.rollback()
                 log.debug_or_exception(ex)
@@ -278,6 +286,7 @@ def check_shelf_is_unique(shelf, to_save, shelf_id=False):
                                    .first() is None
 
         if not is_shelf_name_unique:
+            log.error("A public shelf with the name '{}' already exists.".format(to_save["title"]))
             flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
                   category="error")
     else:
@@ -288,6 +297,7 @@ def check_shelf_is_unique(shelf, to_save, shelf_id=False):
                                    .first() is None
 
         if not is_shelf_name_unique:
+            log.error("A private shelf with the name '{}' already exists.".format(to_save["title"]))
             flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
                   category="error")
     return is_shelf_name_unique
@@ -311,7 +321,8 @@ def delete_shelf(shelf_id):
         delete_shelf_helper(cur_shelf)
     except InvalidRequestError:
         ub.session.rollback()
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -345,7 +356,8 @@ def order_shelf(shelf_id):
             ub.session.commit()
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
@@ -415,7 +427,8 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                 ub.session.commit()
             except (OperationalError, InvalidRequestError):
                 ub.session.rollback()
-                flash(_(u"Settings DB is not Writeable"), category="error")
+                log.error("Settings DB is not Writeable")
+                flash(_("Settings DB is not Writeable"), category="error")
 
         return render_title_template(page,
                                      entries=result,

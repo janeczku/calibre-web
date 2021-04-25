@@ -103,20 +103,21 @@ class Updater(threading.Thread):
             time.sleep(2)
             return True
         except requests.exceptions.HTTPError as ex:
-            log.info(u'HTTP Error %s', ex)
+            log.error(u'HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            log.info(u'Connection error')
+            log.error(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            log.info(u'Timeout while establishing connection')
+            log.error(u'Timeout while establishing connection')
             self.status = 10
         except (requests.exceptions.RequestException, zipfile.BadZipFile):
             self.status = 11
-            log.info(u'General error')
-        except (IOError, OSError):
+            log.error(u'General error')
+        except (IOError, OSError) as ex:
             self.status = 12
-            log.info(u'Update File Could Not be Saved in Temp Dir')
+            log.error(u'Possible Reason for error: update file could not be saved in temp dir')
+            log.debug_or_exception(ex)
         self.pause()
         return False
 
@@ -182,39 +183,50 @@ class Updater(threading.Thread):
 
     @classmethod
     def moveallfiles(cls, root_src_dir, root_dst_dir):
-        change_permissions = True
         new_permissions = os.stat(root_dst_dir)
-        if sys.platform == "win32" or sys.platform == "darwin":
-            change_permissions = False
-        else:
-            log.debug('Update on OS-System : %s', sys.platform)
+        log.debug('Performing Update on OS-System: %s', sys.platform)
+        change_permissions = (sys.platform == "win32" or sys.platform == "darwin")
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
-                os.makedirs(dst_dir)
-                log.debug('Create-Dir: %s', dst_dir)
+                try:
+                    os.makedirs(dst_dir)
+                    log.debug('Create directory: {}', dst_dir)
+                except OSError as e:
+                    log.error('Failed creating folder: {} with error {}'.format(dst_dir, e))
                 if change_permissions:
-                    # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+                    try:
+                        os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+                    except OSError as e:
+                        old_permissions = os.stat(dst_dir)
+                        log.error('Failed changing permissions of %s. Before: %s:%s After %s:%s error: %s',
+                                  dst_dir, old_permissions.st_uid, old_permissions.st_gid,
+                                  new_permissions.st_uid, new_permissions.st_gid, e)
             for file_ in files:
                 src_file = os.path.join(src_dir, file_)
                 dst_file = os.path.join(dst_dir, file_)
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    log.debug('Remove file before copy: %s', dst_file)
-                    os.remove(dst_file)
+                    try:
+                        os.remove(dst_file)
+                        log.debug('Remove file before copy: %s', dst_file)
+                    except OSError as e:
+                        log.error('Failed removing file: {} with error {}'.format(dst_file, e))
                 else:
                     if change_permissions:
                         permission = new_permissions
-                shutil.move(src_file, dst_dir)
-                log.debug('Move File %s to %s', src_file, dst_dir)
+                try:
+                    shutil.move(src_file, dst_dir)
+                    log.debug('Move File %s to %s', src_file, dst_dir)
+                except OSError as ex:
+                    log.error('Failed moving file from {} to {} with error {}'.format(src_file, dst_dir, ex))
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except OSError as e:
                         old_permissions = os.stat(dst_file)
-                        log.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
+                        log.error('Failed changing permissions of %s. Before: %s:%s After %s:%s error: %s',
                                   dst_file, old_permissions.st_uid, old_permissions.st_gid,
                                   permission.st_uid, permission.st_gid, e)
         return
@@ -266,9 +278,8 @@ class Updater(threading.Thread):
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    log.debug("Delete file %s", item_path)
-                    # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
+                    log.debug("Delete file %s", item_path)
                 except OSError:
                     log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
@@ -283,11 +294,13 @@ class Updater(threading.Thread):
     @classmethod
     def _nightly_version_info(cls):
         if is_sha1(constants.NIGHTLY_VERSION[0]) and len(constants.NIGHTLY_VERSION[1]) > 0:
+            log.debug("Nightly version: {}, {}".format(constants.NIGHTLY_VERSION[0], constants.NIGHTLY_VERSION[1]))
             return {'version': constants.NIGHTLY_VERSION[0], 'datetime': constants.NIGHTLY_VERSION[1]}
         return False
 
     @classmethod
     def _stable_version_info(cls):
+        log.debug("Stable version: {}".format(constants.STABLE_VERSION))
         return constants.STABLE_VERSION  # Current version
 
     @staticmethod
@@ -381,6 +394,7 @@ class Updater(threading.Thread):
 
             # if 'committer' in update_data and 'message' in update_data:
             try:
+                log.debug("A new update is available.")
                 status['success'] = True
                 status['message'] = _(
                     u'A new update is available. Click on the button below to update to the latest version.')
@@ -401,6 +415,7 @@ class Updater(threading.Thread):
             except (IndexError, KeyError):
                 status['success'] = False
                 status['message'] = _(u'Could not fetch update information')
+                log.error("Could not fetch update information")
             return json.dumps(status)
         return ''
 
@@ -468,6 +483,7 @@ class Updater(threading.Thread):
             # we are already on newest version, no update available
             if 'tag_name' not in commit[0]:
                 status['message'] = _(u'Unexpected data while reading update information')
+                log.error("Unexpected data while reading update information")
                 return json.dumps(status)
             if commit[0]['tag_name'] == version:
                 status.update({
