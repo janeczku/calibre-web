@@ -693,6 +693,7 @@ def do_download_file(book, book_format, client, data, headers):
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
+        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
         return response
 
 ##################################
@@ -732,7 +733,6 @@ def json_serial(obj):
             'seconds': obj.seconds,
             'microseconds': obj.microseconds,
         }
-        # return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
 
@@ -830,6 +830,7 @@ def get_download_link(book_id, book_format, client):
     if book:
         data1 = calibre_db.get_book_format(book.id, book_format.upper())
     else:
+        log.error("Book id {} not found for downloading".format(book_id))
         abort(404)
     if data1:
         # collect downloaded books only for registered user and not for anonymous user

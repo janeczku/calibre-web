@@ -682,7 +682,7 @@ function move_header_elements() {
                         handleListServerResponse(data);
                     },
                     error: function (data) {
-                        handleListServerResponse({type:"danger", message:data.responseText})
+                        handleListServerResponse([{type:"danger", message:data.responseText}])
                     },
                 });
             }
@@ -721,7 +721,7 @@ function move_header_elements() {
                         handleListServerResponse(data);
                     },
                     error: function (data) {
-                        handleListServerResponse({type:"danger", message:data.responseText})
+                        handleListServerResponse([{type:"danger", message:data.responseText}])
                     },
                 });
             }
@@ -750,7 +750,7 @@ function checkboxChange(checkbox, userId, field, field_index) {
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
         data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
         error: function(data) {
-            handleListServerResponse({type:"danger", message:data.responseText})
+            handleListServerResponse([{type:"danger", message:data.responseText}])
         },
         success: handleListServerResponse
     });
@@ -765,7 +765,7 @@ function selectHeader(element, field) {
                 url: window.location.pathname + "/../../ajax/editlistusers/" + field,
                 data: {"pk": result, "value": element.value},
                 error: function (data) {
-                    handleListServerResponse({type:"danger", message:data.responseText})
+                    handleListServerResponse([{type:"danger", message:data.responseText}])
                 },
                 success: handleListServerResponse,
             });
@@ -783,7 +783,7 @@ function checkboxHeader(CheckboxState, field, field_index) {
             url: window.location.pathname + "/../../ajax/editlistusers/" + field,
             data: {"pk": result, "field_index": field_index, "value": CheckboxState},
             error: function (data) {
-                handleListServerResponse({type:"danger", message:data.responseText}, true)
+                handleListServerResponse([{type:"danger", message:data.responseText}])
             },
             success: function (data) {
                 handleListServerResponse (data, true)
@@ -812,7 +812,7 @@ function deleteUser(a,id){
                     handleListServerResponse(data);
                 },
                 error: function (data) {
-                    handleListServerResponse({type:"danger", message:data.responseText})
+                    handleListServerResponse([{type:"danger", message:data.responseText}])
                 },
             });
         }
