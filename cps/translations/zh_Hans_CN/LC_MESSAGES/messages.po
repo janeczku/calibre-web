@@ -82,7 +82,7 @@ msgstr "显示全部"
 
 #: cps/admin.py:353 cps/admin.py:1275
 msgid "Guest Name can't be changed"
-msgstr ""
+msgstr "访客名称无法更改"
 
 #: cps/admin.py:362
 msgid "Guest can't have this role"
@@ -1488,32 +1488,32 @@ msgstr "在书库"
 #: cps/templates/author.html:26 cps/templates/index.html:68
 #: cps/templates/search.html:29 cps/templates/shelf.html:16
 msgid "Sort according to book date, newest first"
-msgstr ""
+msgstr "按图书日期排序，最新优先"
 
 #: cps/templates/author.html:27 cps/templates/index.html:69
 #: cps/templates/search.html:30 cps/templates/shelf.html:17
 msgid "Sort according to book date, oldest first"
-msgstr ""
+msgstr "按图书日期排序，最旧优先"
 
 #: cps/templates/author.html:28 cps/templates/index.html:70
 #: cps/templates/search.html:31 cps/templates/shelf.html:18
 msgid "Sort title in alphabetical order"
-msgstr ""
+msgstr "按标题按字母顺序排序"
 
 #: cps/templates/author.html:29 cps/templates/index.html:71
 #: cps/templates/search.html:32 cps/templates/shelf.html:19
 msgid "Sort title in reverse alphabetical order"
-msgstr ""
+msgstr "按标题逆字母顺序排序"
 
 #: cps/templates/author.html:30 cps/templates/index.html:74
 #: cps/templates/search.html:35 cps/templates/shelf.html:22
 msgid "Sort according to publishing date, newest first"
-msgstr ""
+msgstr "按出版日期排序，最新优先"
 
 #: cps/templates/author.html:31 cps/templates/index.html:75
 #: cps/templates/search.html:36 cps/templates/shelf.html:23
 msgid "Sort according to publishing date, oldest first"
-msgstr ""
+msgstr "按出版日期排序，最旧优先"
 
 #: cps/templates/author.html:57 cps/templates/author.html:117
 #: cps/templates/discover.html:30 cps/templates/index.html:29
@@ -2044,7 +2044,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:344
 msgid "Autodetect"
-msgstr ""
+msgstr "自动检测"
 
 #: cps/templates/config_edit.html:345
 msgid "Custom Filter"

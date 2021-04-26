@@ -192,7 +192,7 @@ class _ConfigSQL(object):
 
     @staticmethod
     def get_config_ipaddress():
-        return cli.ipadress or ""
+        return cli.ip_address or ""
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
