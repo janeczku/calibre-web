@@ -1487,23 +1487,23 @@ def login():
                 log.info(error)
                 flash(_(u"Could not login: %(message)s", message=error), category="error")
             else:
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
+                ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
+                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
-            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+            ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
             if 'forgot' in form and form['forgot'] == 'forgot':
                 if user != None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")
-                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ipAdress)
+                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_Address)
                     else:
                         log.error(u"An unknown error occurred. Please try again later")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
-                    log.warning('Username missing for password reset IP-address: %s', ipAdress)
+                    log.warning('Username missing for password reset IP-address: %s', ip_Address)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
@@ -1512,7 +1512,7 @@ def login():
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
-                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
+                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
                     flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
