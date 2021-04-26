@@ -225,11 +225,23 @@ def edit_user_table():
     languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     allUser = ub.session.query(ub.User)
+    tags = calibre_db.session.query(db.Tags)\
+        .join(db.books_tags_link)\
+        .join(db.Books)\
+        .filter(calibre_db.common_filters()) \
+        .group_by(text('books_tags_link.tag'))\
+        .order_by(db.Tags.name).all()
+    if config.config_restricted_column:
+        custom_values = calibre_db.session.query(db.cc_classes[config.config_restricted_column]).all()
+    else:
+        custom_values = []
     if not config.config_anonbrowse:
         allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
 
     return render_title_template("user_table.html",
                                  users=allUser.all(),
+                                 tags=tags,
+                                 custom_values=custom_values,
                                  translations=translations,
                                  languages=languages,
                                  visiblility=visibility,
@@ -237,6 +249,7 @@ def edit_user_table():
                                  sidebar_settings=constants.sidebar_settings,
                                  title=_(u"Edit Users"),
                                  page="usertable")
+
 
 @admi.route("/ajax/listusers")
 @login_required
@@ -332,7 +345,7 @@ def table_get_locale():
 def table_get_default_lang():
     languages = calibre_db.speaking_language()
     ret = list()
-    ret.append({'value':'all','text':_('Show All')})
+    ret.append({'value': 'all', 'text': _('Show All')})
     for lang in languages:
         ret.append({'value': lang.lang_code, 'text': lang.name})
     return json.dumps(ret)
@@ -358,56 +371,55 @@ def edit_list_user(param):
         vals['field_index'] = vals['field_index'][0]
     if 'value' in vals:
         vals['value'] = vals['value'][0]
-    else:
+    elif not ('value[]' in vals):
         return ""
     for user in users:
         try:
-            vals['value'] = vals['value'].strip()
-            if param == 'name':
-                if user.name == "Guest":
-                    raise Exception(_("Guest Name can't be changed"))
-                user.name = check_username(vals['value'])
-            elif param =='email':
-                user.email = check_email(vals['value'])
-            elif param == 'kindle_mail':
-                user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
-            elif param.endswith('role'):
-                if user.name == "Guest" and int(vals['field_index']) in \
-                             [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
-                    raise Exception(_("Guest can't have this role"))
-                if vals['value'] == 'true':
-                    user.role |= int(vals['field_index'])
+            if param in ['denied_tags', 'allowed_tags', 'allowed_column_value', 'denied_column_value']:
+                if 'value[]' in vals:
+                    setattr(user, param, prepare_tags(user, vals['action'][0], param, vals['value[]']))
                 else:
-                    if int(vals['field_index']) == constants.ROLE_ADMIN:
-                        if not ub.session.query(ub.User).\
-                               filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
-                                      ub.User.id != user.id).count():
-                            return Response(json.dumps([{'type': "danger",
-                                                        'message':_(u"No admin user remaining, can't remove admin role",
-                                                                    nick=user.name)}]), mimetype='application/json')
-                    user.role &= ~int(vals['field_index'])
-            elif param.startswith('sidebar'):
-                if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
-                    raise Exception(_("Guest can't have this view"))
-                if vals['value'] == 'true':
-                    user.sidebar_view |= int(vals['field_index'])
-                else:
-                    user.sidebar_view &= ~int(vals['field_index'])
-            elif param == 'denied_tags':
-                    user.denied_tags = vals['value']
-            elif param == 'allowed_tags':
-                    user.allowed_tags = vals['value']
-            elif param == 'allowed_column_value':
-                user.allowed_column_value = vals['value']
-            elif param == 'denied_column_value':
-                user.denied_column_value = vals['value']
-            elif param == 'locale':
-                if user.name == "Guest":
-                    raise Exception(_("Guest's Locale is determined automatically and can't be set"))
-                user.locale = vals['value']
-            elif param == 'default_language':
-                user.default_language = vals['value']
+                    setattr(user, param, vals['value'].strip())
+            else:
+                vals['value'] = vals['value'].strip()
+                if param == 'name':
+                    if user.name == "Guest":
+                        raise Exception(_("Guest Name can't be changed"))
+                    user.name = check_username(vals['value'])
+                elif param =='email':
+                    user.email = check_email(vals['value'])
+                elif param == 'kindle_mail':
+                    user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
+                elif param.endswith('role'):
+                    if user.name == "Guest" and int(vals['field_index']) in \
+                                 [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                        raise Exception(_("Guest can't have this role"))
+                    if vals['value'] == 'true':
+                        user.role |= int(vals['field_index'])
+                    else:
+                        if int(vals['field_index']) == constants.ROLE_ADMIN:
+                            if not ub.session.query(ub.User).\
+                                   filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                          ub.User.id != user.id).count():
+                                return Response(json.dumps([{'type': "danger",
+                                                            'message':_(u"No admin user remaining, can't remove admin role",
+                                                                        nick=user.name)}]), mimetype='application/json')
+                        user.role &= ~int(vals['field_index'])
+                elif param.startswith('sidebar'):
+                    if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
+                        raise Exception(_("Guest can't have this view"))
+                    if vals['value'] == 'true':
+                        user.sidebar_view |= int(vals['field_index'])
+                    else:
+                        user.sidebar_view &= ~int(vals['field_index'])
+                elif param == 'locale':
+                    if user.name == "Guest":
+                        raise Exception(_("Guest's Locale is determined automatically and can't be set"))
+                    user.locale = vals['value']
+                elif param == 'default_language':
+                    user.default_language = vals['value']
         except Exception as ex:
+            log.debug_or_exception(ex)
             return str(ex), 400
     ub.session_commit()
     return ""
@@ -483,6 +495,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change visible book languages for selected user(s)?')
     elif element_id == "role":
         texts["main"] = _('Are you sure you want to change the selected role for the selected user(s)?')
+    elif element_id == "restrictions":
+        texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":
         texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
     return json.dumps(texts)
@@ -627,6 +641,22 @@ def restriction_deletion(element, list_func):
     if element['Element'] in elementlist:
         elementlist.remove(element['Element'])
     return ','.join(elementlist)
+
+
+def prepare_tags(user, action, tags_name, id_list):
+    if "tags" in tags_name:
+        tags = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(id_list)).all()
+        new_tags_list = [x.name for x in tags]
+    else:
+        tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column])\
+            .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        new_tags_list = [x.value for x in tags]
+    saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
+    if action == "remove":
+        saved_tags_list = [x for x in saved_tags_list if x not in new_tags_list]
+    else:
+        saved_tags_list.extend(x for x in new_tags_list if x not in saved_tags_list)
+    return ",".join(saved_tags_list)
 
 
 @admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
