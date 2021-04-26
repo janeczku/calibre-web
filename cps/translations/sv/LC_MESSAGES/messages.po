@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-04-18 12:03+0200\n"
+"POT-Creation-Date: 2021-04-26 19:04+0200\n"
 "PO-Revision-Date: 2020-03-14 09:30+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -48,7 +48,7 @@ msgstr ""
 
 #: cps/admin.py:175 cps/editbooks.py:668 cps/editbooks.py:682
 #: cps/editbooks.py:821 cps/editbooks.py:823 cps/editbooks.py:850
-#: cps/editbooks.py:866 cps/updater.py:539 cps/uploader.py:94
+#: cps/editbooks.py:866 cps/updater.py:555 cps/uploader.py:94
 #: cps/uploader.py:104
 msgid "Unknown"
 msgstr "Okänd"
@@ -61,328 +61,338 @@ msgstr "Administrationssida"
 msgid "UI Configuration"
 msgstr "Användargränssnitt konfiguration"
 
-#: cps/admin.py:238 cps/templates/admin.html:46
+#: cps/admin.py:250 cps/templates/admin.html:46
 #, fuzzy
 msgid "Edit Users"
 msgstr "Adminstratör användare"
 
-#: cps/admin.py:278
+#: cps/admin.py:291
 #, fuzzy
 msgid "all"
 msgstr "Alla"
 
-#: cps/admin.py:300 cps/admin.py:1389
+#: cps/admin.py:315 cps/admin.py:1451
 msgid "User not found"
 msgstr ""
 
-#: cps/admin.py:320 cps/templates/user_edit.html:44
-#: cps/templates/user_table.html:54
+#: cps/admin.py:329
+msgid "{} users deleted successfully"
+msgstr ""
+
+#: cps/admin.py:351 cps/templates/user_edit.html:44
+#: cps/templates/user_table.html:69
 msgid "Show All"
 msgstr "Visa alla"
 
-#: cps/admin.py:353 cps/admin.py:1275
+#: cps/admin.py:390 cps/admin.py:1333
 msgid "Guest Name can't be changed"
 msgstr ""
 
-#: cps/admin.py:362
+#: cps/admin.py:399
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:371 cps/admin.py:1240
+#: cps/admin.py:408 cps/admin.py:1298
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
-#: cps/admin.py:376
+#: cps/admin.py:413
 msgid "Guest can't have this view"
 msgstr ""
 
-#: cps/admin.py:391
+#: cps/admin.py:420
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr ""
 
-#: cps/admin.py:447 cps/admin.py:1132
+#: cps/admin.py:477 cps/admin.py:1183
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web konfiguration uppdaterad"
 
-#: cps/admin.py:458
+#: cps/admin.py:489
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Vill du verkligen ta bort Kobo-token?"
 
-#: cps/admin.py:460
+#: cps/admin.py:491
 msgid "Do you really want to delete this domain?"
 msgstr ""
 
-#: cps/admin.py:462
+#: cps/admin.py:493
 msgid "Do you really want to delete this user?"
 msgstr ""
 
-#: cps/admin.py:464 cps/templates/shelf.html:90
+#: cps/admin.py:495 cps/templates/shelf.html:90
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Är du säker på att du vill ta bort hyllan?"
 
-#: cps/admin.py:466
+#: cps/admin.py:497
 #, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Är du säker på att du vill ta bort hyllan?"
 
-#: cps/admin.py:468
+#: cps/admin.py:499
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:470
+#: cps/admin.py:501
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:472
+#: cps/admin.py:503
+#, fuzzy
+msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
+msgstr "Är du säker på att du vill ta bort hyllan?"
+
+#: cps/admin.py:505
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:718 cps/admin.py:724 cps/admin.py:734 cps/admin.py:744
-#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:29
+#: cps/admin.py:767 cps/admin.py:773 cps/admin.py:783 cps/admin.py:793
+#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:43
 msgid "Deny"
 msgstr "Förneka"
 
-#: cps/admin.py:720 cps/admin.py:726 cps/admin.py:736 cps/admin.py:746
-#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:34
+#: cps/admin.py:769 cps/admin.py:775 cps/admin.py:785 cps/admin.py:795
+#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:48
 msgid "Allow"
 msgstr "Tillåt"
 
-#: cps/admin.py:888
+#: cps/admin.py:938
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr ""
 
-#: cps/admin.py:930
+#: cps/admin.py:980
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:936
+#: cps/admin.py:986
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:966
+#: cps/admin.py:1016
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:981
+#: cps/admin.py:1031
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:984
+#: cps/admin.py:1034
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:989
+#: cps/admin.py:1039
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:992
+#: cps/admin.py:1042
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1000
+#: cps/admin.py:1050
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1003
+#: cps/admin.py:1053
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1011
+#: cps/admin.py:1061
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1037
+#: cps/admin.py:1087
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1043
+#: cps/admin.py:1093
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1113 cps/admin.py:1212 cps/admin.py:1299 cps/admin.py:1364
-#: cps/shelf.py:102 cps/shelf.py:159 cps/shelf.py:200 cps/shelf.py:261
-#: cps/shelf.py:314 cps/shelf.py:348 cps/shelf.py:418
+#: cps/admin.py:1164 cps/admin.py:1268 cps/admin.py:1360 cps/admin.py:1426
+#: cps/shelf.py:103 cps/shelf.py:163 cps/shelf.py:206 cps/shelf.py:269
+#: cps/shelf.py:325 cps/shelf.py:360 cps/shelf.py:431
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1125
+#: cps/admin.py:1176
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1129
+#: cps/admin.py:1180
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1168
+#: cps/admin.py:1221
 msgid "Basic Configuration"
 msgstr "Grundläggande konfiguration"
 
-#: cps/admin.py:1184 cps/web.py:1417
+#: cps/admin.py:1237 cps/web.py:1417
 msgid "Please fill out all fields!"
 msgstr "Fyll i alla fält!"
 
-#: cps/admin.py:1192
+#: cps/admin.py:1245
 msgid "E-mail is not from valid domain"
 msgstr "E-posten är inte från giltig domän"
 
-#: cps/admin.py:1196 cps/admin.py:1318
+#: cps/admin.py:1249 cps/admin.py:1379
 msgid "Add new user"
 msgstr "Lägg till ny användare"
 
-#: cps/admin.py:1205
+#: cps/admin.py:1258
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Användaren '%(user)s' skapad"
 
-#: cps/admin.py:1209
+#: cps/admin.py:1264
 #, fuzzy
 msgid "Found an existing account for this e-mail address or name."
 msgstr "Hittade ett befintligt konto för den här e-postadressen eller smeknamnet."
 
-#: cps/admin.py:1221
+#: cps/admin.py:1277
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Användaren '%(nick)s' borttagen"
 
-#: cps/admin.py:1223 cps/admin.py:1224
+#: cps/admin.py:1279 cps/admin.py:1280
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1227
+#: cps/admin.py:1283
 msgid "No admin user remaining, can't delete user"
 msgstr "Ingen adminstratörsanvändare kvar, kan inte ta bort användaren"
 
-#: cps/admin.py:1289 cps/admin.py:1407
+#: cps/admin.py:1348 cps/admin.py:1469
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Redigera användaren %(nick)s"
 
-#: cps/admin.py:1293
+#: cps/admin.py:1352
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Användaren '%(nick)s' uppdaterad"
 
-#: cps/admin.py:1296
-msgid "An unknown error occured."
+#: cps/admin.py:1356
+#, fuzzy
+msgid "An unknown error occurred."
 msgstr "Ett okänt fel uppstod."
 
-#: cps/admin.py:1327 cps/templates/admin.html:94
+#: cps/admin.py:1388 cps/templates/admin.html:94
 msgid "Edit E-mail Server Settings"
 msgstr "Ändra SMTP-inställningar"
 
-#: cps/admin.py:1346
+#: cps/admin.py:1407
 msgid "G-Mail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1371
+#: cps/admin.py:1433
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1374
+#: cps/admin.py:1436
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
 
-#: cps/admin.py:1376
+#: cps/admin.py:1438
 msgid "Please configure your e-mail address first..."
 msgstr "Vänligen konfigurera din e-postadress först..."
 
-#: cps/admin.py:1378
+#: cps/admin.py:1440
 msgid "E-mail server settings updated"
 msgstr "E-postserverinställningar uppdaterade"
 
-#: cps/admin.py:1419
+#: cps/admin.py:1481
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Lösenord för användaren %(user)s återställd"
 
-#: cps/admin.py:1422 cps/web.py:1442 cps/web.py:1503
+#: cps/admin.py:1484 cps/web.py:1442 cps/web.py:1503
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
-#: cps/admin.py:1425 cps/web.py:1382
+#: cps/admin.py:1487 cps/web.py:1382
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/admin.py:1436
+#: cps/admin.py:1498
 msgid "Logfile viewer"
 msgstr "Visaren för loggfil"
 
-#: cps/admin.py:1502
+#: cps/admin.py:1564
 msgid "Requesting update package"
 msgstr "Begär uppdateringspaketet"
 
-#: cps/admin.py:1503
+#: cps/admin.py:1565
 msgid "Downloading update package"
 msgstr "Hämtar uppdateringspaketet"
 
-#: cps/admin.py:1504
+#: cps/admin.py:1566
 msgid "Unzipping update package"
 msgstr "Packar upp uppdateringspaketet"
 
-#: cps/admin.py:1505
+#: cps/admin.py:1567
 msgid "Replacing files"
 msgstr "Ersätta filer"
 
-#: cps/admin.py:1506
+#: cps/admin.py:1568
 msgid "Database connections are closed"
 msgstr "Databasanslutningarna är stängda"
 
-#: cps/admin.py:1507
+#: cps/admin.py:1569
 msgid "Stopping server"
 msgstr "Stoppar server"
 
-#: cps/admin.py:1508
+#: cps/admin.py:1570
 msgid "Update finished, please press okay and reload page"
 msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
-#: cps/admin.py:1509 cps/admin.py:1510 cps/admin.py:1511 cps/admin.py:1512
-#: cps/admin.py:1513
+#: cps/admin.py:1571 cps/admin.py:1572 cps/admin.py:1573 cps/admin.py:1574
+#: cps/admin.py:1575
 msgid "Update failed:"
 msgstr "Uppdateringen misslyckades:"
 
-#: cps/admin.py:1509 cps/updater.py:343 cps/updater.py:550 cps/updater.py:552
+#: cps/admin.py:1571 cps/updater.py:356 cps/updater.py:566 cps/updater.py:568
 msgid "HTTP Error"
 msgstr "HTTP-fel"
 
-#: cps/admin.py:1510 cps/updater.py:345 cps/updater.py:554
+#: cps/admin.py:1572 cps/updater.py:358 cps/updater.py:570
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: cps/admin.py:1511 cps/updater.py:347 cps/updater.py:556
+#: cps/admin.py:1573 cps/updater.py:360 cps/updater.py:572
 msgid "Timeout while establishing connection"
 msgstr "Tiden ute när du etablerade anslutning"
 
-#: cps/admin.py:1512 cps/updater.py:349 cps/updater.py:558
+#: cps/admin.py:1574 cps/updater.py:362 cps/updater.py:574
 msgid "General error"
 msgstr "Allmänt fel"
 
-#: cps/admin.py:1513
+#: cps/admin.py:1575
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
-#: cps/admin.py:1574
+#: cps/admin.py:1636
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1587
+#: cps/admin.py:1649
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1591
+#: cps/admin.py:1653
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1624
+#: cps/admin.py:1686
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1626
+#: cps/admin.py:1688
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -630,11 +640,11 @@ msgstr ""
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Endast jpg/jpeg-filer stöds som omslagsfil"
 
-#: cps/helper.py:706
+#: cps/helper.py:707
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:720
+#: cps/helper.py:721
 msgid "Error excecuting UnRar"
 msgstr ""
 
@@ -778,7 +788,7 @@ msgid "Downloaded Books"
 msgstr ""
 
 #: cps/render_template.py:48 cps/render_template.py:53
-#: cps/templates/user_table.html:135
+#: cps/templates/user_table.html:151
 msgid "Show Downloaded Books"
 msgstr ""
 
@@ -786,7 +796,7 @@ msgstr ""
 msgid "Top Rated Books"
 msgstr "Bäst rankade böcker"
 
-#: cps/render_template.py:58 cps/templates/user_table.html:129
+#: cps/render_template.py:58 cps/templates/user_table.html:145
 msgid "Show Top Rated Books"
 msgstr "Visa böcker med bästa betyg"
 
@@ -812,8 +822,8 @@ msgstr "Visa olästa"
 msgid "Discover"
 msgstr "Upptäck"
 
-#: cps/render_template.py:68 cps/templates/user_table.html:127
-#: cps/templates/user_table.html:130
+#: cps/render_template.py:68 cps/templates/user_table.html:143
+#: cps/templates/user_table.html:146
 msgid "Show random books"
 msgstr "Visa slumpmässiga böcker"
 
@@ -822,7 +832,7 @@ msgstr "Visa slumpmässiga böcker"
 msgid "Categories"
 msgstr "Kategorier"
 
-#: cps/render_template.py:71 cps/templates/user_table.html:126
+#: cps/render_template.py:71 cps/templates/user_table.html:142
 msgid "Show category selection"
 msgstr "Visa kategorival"
 
@@ -832,7 +842,7 @@ msgstr "Visa kategorival"
 msgid "Series"
 msgstr "Serier"
 
-#: cps/render_template.py:74 cps/templates/user_table.html:125
+#: cps/render_template.py:74 cps/templates/user_table.html:141
 msgid "Show series selection"
 msgstr "Visa serieval"
 
@@ -841,7 +851,7 @@ msgstr "Visa serieval"
 msgid "Authors"
 msgstr "Författare"
 
-#: cps/render_template.py:77 cps/templates/user_table.html:128
+#: cps/render_template.py:77 cps/templates/user_table.html:144
 msgid "Show author selection"
 msgstr "Visa författarval"
 
@@ -850,7 +860,7 @@ msgstr "Visa författarval"
 msgid "Publishers"
 msgstr "Förlag"
 
-#: cps/render_template.py:81 cps/templates/user_table.html:131
+#: cps/render_template.py:81 cps/templates/user_table.html:147
 msgid "Show publisher selection"
 msgstr "Visa urval av förlag"
 
@@ -860,7 +870,7 @@ msgstr "Visa urval av förlag"
 msgid "Languages"
 msgstr "Språk"
 
-#: cps/render_template.py:85 cps/templates/user_table.html:123
+#: cps/render_template.py:85 cps/templates/user_table.html:139
 msgid "Show language selection"
 msgstr "Visa språkval"
 
@@ -868,7 +878,7 @@ msgstr "Visa språkval"
 msgid "Ratings"
 msgstr "Betyg"
 
-#: cps/render_template.py:88 cps/templates/user_table.html:132
+#: cps/render_template.py:88 cps/templates/user_table.html:148
 msgid "Show ratings selection"
 msgstr "Visa val av betyg"
 
@@ -876,7 +886,7 @@ msgstr "Visa val av betyg"
 msgid "File formats"
 msgstr "Filformat"
 
-#: cps/render_template.py:91 cps/templates/user_table.html:133
+#: cps/render_template.py:91 cps/templates/user_table.html:149
 msgid "Show file formats selection"
 msgstr "Visa val av filformat"
 
@@ -884,7 +894,7 @@ msgstr "Visa val av filformat"
 msgid "Archived Books"
 msgstr ""
 
-#: cps/render_template.py:95 cps/templates/user_table.html:134
+#: cps/render_template.py:95 cps/templates/user_table.html:150
 msgid "Show archived books"
 msgstr ""
 
@@ -892,11 +902,11 @@ msgstr ""
 msgid "Books List"
 msgstr ""
 
-#: cps/render_template.py:99 cps/templates/user_table.html:136
+#: cps/render_template.py:99 cps/templates/user_table.html:152
 msgid "Show Books List"
 msgstr ""
 
-#: cps/shelf.py:69 cps/shelf.py:122
+#: cps/shelf.py:69 cps/shelf.py:124
 msgid "Invalid shelf specified"
 msgstr "Ogiltig hylla specificerad"
 
@@ -910,113 +920,113 @@ msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "Boken är redan en del av hyllan: %(shelfname)s"
 
-#: cps/shelf.py:108
+#: cps/shelf.py:110
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Boken har lagts till i hyllan: %(sname)s"
 
-#: cps/shelf.py:126
+#: cps/shelf.py:129
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Du får inte lägga till en bok i hyllan: %(name)s"
 
-#: cps/shelf.py:144
+#: cps/shelf.py:147
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Böcker är redan en del av hyllan: %(name)s"
 
-#: cps/shelf.py:156
+#: cps/shelf.py:159
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Böcker har lagts till hyllan: %(sname)s"
 
-#: cps/shelf.py:161
+#: cps/shelf.py:166
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Kunde inte lägga till böcker till hyllan: %(sname)s"
 
-#: cps/shelf.py:206
+#: cps/shelf.py:212
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Boken har tagits bort från hyllan: %(sname)s"
 
-#: cps/shelf.py:214
+#: cps/shelf.py:221
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Tyvärr har du inte rätt att ta bort en bok från den här hyllan: %(sname)s"
 
-#: cps/shelf.py:224 cps/templates/layout.html:140
+#: cps/shelf.py:231 cps/templates/layout.html:140
 msgid "Create a Shelf"
 msgstr "skapa en hylla"
 
-#: cps/shelf.py:231
+#: cps/shelf.py:238
 msgid "Edit a shelf"
 msgstr "Redigera en hylla"
 
-#: cps/shelf.py:249
+#: cps/shelf.py:256
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Hyllan %(title)s skapad"
 
-#: cps/shelf.py:252
+#: cps/shelf.py:259
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Hyllan %(title)s ändrad"
 
-#: cps/shelf.py:265
+#: cps/shelf.py:273
 msgid "There was an error"
 msgstr "Det fanns ett fel"
 
-#: cps/shelf.py:281
+#: cps/shelf.py:290
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:291
+#: cps/shelf.py:301
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:358
+#: cps/shelf.py:370
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Ändra ordning på hyllan: '%(name)s'"
 
-#: cps/shelf.py:423
+#: cps/shelf.py:436
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Hylla: '%(name)s'"
 
-#: cps/shelf.py:427
+#: cps/shelf.py:440
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig"
 
-#: cps/updater.py:361 cps/updater.py:372 cps/updater.py:470 cps/updater.py:484
+#: cps/updater.py:374 cps/updater.py:385 cps/updater.py:485 cps/updater.py:500
 msgid "Unexpected data while reading update information"
 msgstr "Oväntade data vid läsning av uppdateringsinformation"
 
-#: cps/updater.py:368 cps/updater.py:476
+#: cps/updater.py:381 cps/updater.py:492
 msgid "No update available. You already have the latest version installed"
 msgstr "Ingen uppdatering tillgänglig. Du har redan den senaste versionen installerad"
 
-#: cps/updater.py:385
+#: cps/updater.py:399
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att uppdatera till den senaste versionen."
 
-#: cps/updater.py:403
+#: cps/updater.py:417
 msgid "Could not fetch update information"
 msgstr "Kunde inte hämta uppdateringsinformation"
 
-#: cps/updater.py:412
+#: cps/updater.py:427
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klicka på knappen nedan för att uppdatera till den senaste stabila versionen."
 
-#: cps/updater.py:421 cps/updater.py:435 cps/updater.py:446
+#: cps/updater.py:436 cps/updater.py:450 cps/updater.py:461
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att uppdatera till version: %(version)s"
 
-#: cps/updater.py:463
+#: cps/updater.py:478
 msgid "No release information available"
 msgstr "Ingen versionsinformation tillgänglig"
 
@@ -1251,12 +1261,12 @@ msgstr "Användarlista"
 
 #: cps/templates/admin.html:13 cps/templates/login.html:8
 #: cps/templates/login.html:9 cps/templates/register.html:8
-#: cps/templates/user_edit.html:9 cps/templates/user_table.html:105
+#: cps/templates/user_edit.html:9 cps/templates/user_table.html:121
 msgid "Username"
 msgstr "Smeknamn"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:13
-#: cps/templates/user_edit.html:14 cps/templates/user_table.html:106
+#: cps/templates/user_edit.html:14 cps/templates/user_table.html:122
 msgid "E-mail Address"
 msgstr "E-post"
 
@@ -1265,7 +1275,7 @@ msgid "Send to Kindle E-mail Address"
 msgstr "Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
-#: cps/templates/user_table.html:114
+#: cps/templates/user_table.html:130
 msgid "Admin"
 msgstr "Administratör"
 
@@ -1275,13 +1285,13 @@ msgid "Password"
 msgstr "Lösenord"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:66
-#: cps/templates/user_table.html:116
+#: cps/templates/user_table.html:132
 msgid "Upload"
 msgstr "Ladda upp"
 
 #: cps/templates/admin.html:20 cps/templates/detail.html:18
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
-#: cps/templates/user_table.html:117
+#: cps/templates/user_table.html:133
 msgid "Download"
 msgstr "Hämta"
 
@@ -1289,15 +1299,15 @@ msgstr "Hämta"
 msgid "View Books"
 msgstr "Visa e-böcker"
 
-#: cps/templates/admin.html:22 cps/templates/user_table.html:102
-#: cps/templates/user_table.html:119
+#: cps/templates/admin.html:22 cps/templates/user_table.html:118
+#: cps/templates/user_table.html:135
 msgid "Edit"
 msgstr "Redigera"
 
 #: cps/templates/admin.html:23 cps/templates/book_edit.html:16
 #: cps/templates/book_table.html:58 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:66
-#: cps/templates/user_table.html:120
+#: cps/templates/user_table.html:136
 msgid "Delete"
 msgstr "Ta bort"
 
@@ -1581,6 +1591,7 @@ msgid "Identifier Value"
 msgstr ""
 
 #: cps/templates/book_edit.html:72 cps/templates/book_edit.html:289
+#: cps/templates/user_table.html:23
 msgid "Remove"
 msgstr ""
 
@@ -1687,8 +1698,8 @@ msgid "No Result(s) found! Please try another keyword."
 msgstr "Inga resultat hittades! Försök med ett annat sökord."
 
 #: cps/templates/book_table.html:11 cps/templates/book_table.html:53
-#: cps/templates/user_table.html:13 cps/templates/user_table.html:51
-#: cps/templates/user_table.html:73
+#: cps/templates/user_table.html:13 cps/templates/user_table.html:65
+#: cps/templates/user_table.html:88
 msgid "This Field is Required"
 msgstr ""
 
@@ -1696,7 +1707,7 @@ msgstr ""
 msgid "Merge selected books"
 msgstr ""
 
-#: cps/templates/book_table.html:25 cps/templates/user_table.html:95
+#: cps/templates/book_table.html:25 cps/templates/user_table.html:111
 msgid "Remove Selections"
 msgstr ""
 
@@ -2175,7 +2186,7 @@ msgid "Default Visibilities for New Users"
 msgstr "Standardvisibiliteter för nya användare"
 
 #: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:82
-#: cps/templates/user_table.html:122
+#: cps/templates/user_table.html:138
 msgid "Show Random Books in Detail View"
 msgstr "Visa slumpmässiga böcker i detaljvyn"
 
@@ -2290,7 +2301,7 @@ msgid "Save and Send Test E-mail"
 msgstr "Spara inställningarna och skicka test-e-post"
 
 #: cps/templates/email_edit.html:69 cps/templates/layout.html:29
-#: cps/templates/shelf_order.html:41 cps/templates/user_table.html:142
+#: cps/templates/shelf_order.html:41 cps/templates/user_table.html:158
 msgid "Back"
 msgstr "Tillbaka"
 
@@ -2303,6 +2314,7 @@ msgid "Add Domain"
 msgstr "Lägg till domän"
 
 #: cps/templates/email_edit.html:79 cps/templates/email_edit.html:105
+#: cps/templates/user_table.html:26
 msgid "Add"
 msgstr "Lägg till"
 
@@ -2920,7 +2932,7 @@ msgstr "Skapa/Visa"
 msgid "Add allowed/Denied Custom Column Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
-#: cps/templates/user_edit.html:135 cps/templates/user_table.html:137
+#: cps/templates/user_edit.html:135 cps/templates/user_table.html:153
 msgid "Delete User"
 msgstr "Ta bort den här användaren"
 
@@ -2928,97 +2940,97 @@ msgstr "Ta bort den här användaren"
 msgid "Generate Kobo Auth URL"
 msgstr "Skapa Kobo Auth URL"
 
-#: cps/templates/user_table.html:76
+#: cps/templates/user_table.html:68 cps/templates/user_table.html:91
 msgid "Select..."
 msgstr ""
 
-#: cps/templates/user_table.html:102
+#: cps/templates/user_table.html:118
 #, fuzzy
 msgid "Edit User"
 msgstr "Adminstratör användare"
 
-#: cps/templates/user_table.html:105
+#: cps/templates/user_table.html:121
 #, fuzzy
 msgid "Enter Username"
 msgstr "Välj ett användarnamn"
 
-#: cps/templates/user_table.html:106
+#: cps/templates/user_table.html:122
 #, fuzzy
 msgid "Enter E-mail Address"
 msgstr "Din e-postadress"
 
-#: cps/templates/user_table.html:107
+#: cps/templates/user_table.html:123
 #, fuzzy
 msgid "Enter Kindle E-mail Address"
 msgstr "Kindle"
 
-#: cps/templates/user_table.html:107
+#: cps/templates/user_table.html:123
 #, fuzzy
 msgid "Kindle E-mail"
 msgstr "Test e-post"
 
-#: cps/templates/user_table.html:108
+#: cps/templates/user_table.html:124
 #, fuzzy
 msgid "Locale"
 msgstr "Skala"
 
-#: cps/templates/user_table.html:109
+#: cps/templates/user_table.html:125
 msgid "Visible Book Languages"
 msgstr ""
 
-#: cps/templates/user_table.html:110
+#: cps/templates/user_table.html:126
 #, fuzzy
 msgid "Edit Denied Tags"
 msgstr "Välj tillåtna/avvisade taggar"
 
-#: cps/templates/user_table.html:110
+#: cps/templates/user_table.html:126
 msgid "Denied Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:111
+#: cps/templates/user_table.html:127
 #, fuzzy
 msgid "Edit Allowed Tags"
 msgstr "Välj tillåtna/avvisade taggar"
 
-#: cps/templates/user_table.html:111
+#: cps/templates/user_table.html:127
 msgid "Allowed Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:112
+#: cps/templates/user_table.html:128
 #, fuzzy
 msgid "Edit Allowed Column Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
-#: cps/templates/user_table.html:112
+#: cps/templates/user_table.html:128
 #, fuzzy
 msgid "Allowed Column Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
-#: cps/templates/user_table.html:113
+#: cps/templates/user_table.html:129
 #, fuzzy
 msgid "Edit Denied Column Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
-#: cps/templates/user_table.html:113
+#: cps/templates/user_table.html:129
 #, fuzzy
 msgid "Denied Columns Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
-#: cps/templates/user_table.html:115
+#: cps/templates/user_table.html:131
 #, fuzzy
 msgid "Change Password"
 msgstr "Tillåt Ändra lösenord"
 
-#: cps/templates/user_table.html:118
+#: cps/templates/user_table.html:134
 msgid "View"
 msgstr ""
 
-#: cps/templates/user_table.html:121
+#: cps/templates/user_table.html:137
 #, fuzzy
 msgid "Edit Public Shelfs"
 msgstr "Redigera en hylla"
 
-#: cps/templates/user_table.html:124
+#: cps/templates/user_table.html:140
 #, fuzzy
 msgid "Show read/unread selection"
 msgstr "Visa serieval"

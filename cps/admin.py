@@ -318,11 +318,14 @@ def delete_user():
             message = _delete_user(user)
             count += 1
         except Exception as ex:
+            log.error(ex)
             errors.append({'type': "danger", 'message': str(ex)})
 
     if count == 1:
+        log.info("User {} deleted".format(user_ids))
         success = [{'type': "success", 'message': message}]
     elif count > 1:
+        log.info("Users {} deleted".format(user_ids))
         success = [{'type': "success", 'message': _("{} users deleted successfully").format(count)}]
     success.extend(errors)
     return Response(json.dumps(success), mimetype='application/json')
@@ -472,6 +475,7 @@ def update_view_configuration():
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
+    log.debug("Calibre-Web configuration updated")
     before_request()
 
     return view_configuration()
@@ -900,6 +904,7 @@ def pathchooser():
 def basic_configuration():
     logout_user()
     if request.method == "POST":
+        log.debug("Basic Configuration send")
         return _configuration_update_helper(configured=filepicker)
     return _configuration_result(configured=filepicker)
 
@@ -1155,7 +1160,8 @@ def _configuration_update_helper(configured):
                 return _configuration_result(unrar_status, gdrive_error, configured)
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
-        _configuration_result(_(u"Settings DB is not Writeable"), gdrive_error, configured)
+        log.error("Settings DB is not Writeable")
+        _configuration_result(_("Settings DB is not Writeable"), gdrive_error, configured)
 
     try:
         metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
@@ -1187,6 +1193,7 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
     if gdrive_error is None:
         gdrive_error = gdriveutils.get_error_text()
     if gdrive_error:
+        log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
     else:
         # if config.config_use_google_drive and\
@@ -1196,6 +1203,7 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
     show_back_button = current_user.is_authenticated
     show_login_button = config.db_configured and not current_user.is_authenticated
     if error_flash:
+        log.error(error_flash)
         config.load()
         flash(error_flash, category="error")
         show_login_button = False
@@ -1248,13 +1256,16 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.add(content)
         ub.session.commit()
         flash(_(u"User '%(user)s' created", user=content.name), category="success")
+        log.debug("User {} created".format(content.name))
         return redirect(url_for('admin.admin'))
     except IntegrityError:
         ub.session.rollback()
-        flash(_(u"Found an existing account for this e-mail address or name."), category="error")
+        log.error("Found an existing account for {} or {}".format(content.name, content.email))
+        flash(_("Found an existing account for this e-mail address or name."), category="error")
     except OperationalError:
         ub.session.rollback()
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
 
 def _delete_user(content):
     if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
@@ -1277,12 +1288,14 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         try:
             flash(_delete_user(content), category="success")
         except Exception as ex:
+            log.error(ex)
             flash(str(ex), category="error")
         return redirect(url_for('admin.admin'))
     else:
         if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                                 ub.User.id != content.id).count() and 'admin_role' not in to_save:
-            flash(_(u"No admin user remaining, can't remove admin role", nick=content.name), category="error")
+            log.warning("No admin user remaining, can't remove admin role from {}".format(content.name))
+            flash(_("No admin user remaining, can't remove admin role"), category="error")
             return redirect(url_for('admin.admin'))
         if to_save.get("password"):
             content.password = generate_password_hash(to_save["password"])
@@ -1322,6 +1335,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             if to_save.get("kindle_mail") != content.kindle_mail:
                 content.kindle_mail = valid_email(to_save["kindle_mail"]) if to_save["kindle_mail"] else ""
         except Exception as ex:
+            log.error(ex)
             flash(str(ex), category="error")
             return render_title_template("user_edit.html",
                                          translations=translations,
@@ -1336,12 +1350,14 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     try:
         ub.session_commit()
         flash(_(u"User '%(nick)s' updated", nick=content.name), category="success")
-    except IntegrityError:
+    except IntegrityError as ex:
         ub.session.rollback()
-        flash(_(u"An unknown error occured."), category="error")
+        log.error("An unknown error occurred while changing user: {}".format(str(ex)))
+        flash(_(u"An unknown error occurred."), category="error")
     except OperationalError:
         ub.session.rollback()
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
     return ""
 
 
@@ -1406,7 +1422,8 @@ def update_mailsettings():
         config.save()
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
         return edit_mailsettings()
 
     if to_save.get("test"):
