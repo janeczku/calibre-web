@@ -21,7 +21,6 @@
 var selections = [];
 
 $(function() {
-
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
         function (e, rowsAfter, rowsBefore) {
             var rows = rowsAfter;
@@ -453,27 +452,11 @@ $(function() {
             });
         },
         onPostHeader () {
-            deactivateHeaderButtons();
+            move_header_elements();
         },
         onLoadSuccess: function () {
             loadSuccess();
-            var element = $(".header_select");
-            element.each(function() {
-                var item = $(this).parent();
-                var parent = item.parent().parent();
-                if (parent.prop('nodeName') === "TH") {
-                    item.prependTo(parent);
-                }
-            });
-            var element = $(".form-check");
-            element.each(function() {
-                var item = $(this).parent();
-                var parent = item.parent().parent();
-                if (parent.prop('nodeName') === "TH") {
-                    item.prependTo(parent);
-                }
-            });
-
+            move_header_elements();
         },
         onColumnSwitch: function () {
             var visible = $("#user-table").bootstrapTable("getVisibleColumns");
@@ -493,55 +476,9 @@ $(function() {
                 url: window.location.pathname + "/../../ajax/user_table_settings",
                 data: "{" + st + "}",
             });
+            handle_header_buttons();
         },
     });
-
-    $("#user_delete_selection").click(function() {
-        $("#user-table").bootstrapTable("uncheckAll");
-    });
-    $("#select_locale").on("change",function() {
-        selectHeader(this, "locale");
-    });
-    $("#select_default_language").on("change",function() {
-        selectHeader(this, "default_language");
-    });
-    $(".check_head").on("change",function() {
-        var val = $(this).val() === "on";
-        var name = $(this).data("name");
-        var data =  $(this).data("val");
-        checkboxHeader(val, name, data);
-    });
-    $(".button_head").on("click",function() {
-        var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
-        confirmDialog(
-        "btndeluser",
-            "GeneralDeleteModal",
-            0,
-            function() {
-                $.ajax({
-                    method:"post",
-                    url: window.location.pathname + "/../../ajax/deleteuser",
-                    data: {"userid": result},
-                    success: function (data) {
-                        selections = selections.filter( ( el ) => !result.includes( el ) );
-                        // selections = selections.filter(item => item !== userId);
-                        handleListServerResponse(data);
-                    },
-                    error: function (data) {
-                        handleListServerResponse({type:"danger", message:data.responseText})
-                    },
-                });
-            }
-        );
-    });
-    function user_handle (userId) {
-        $.ajax({
-            method:"post",
-            url: window.location.pathname + "/../../ajax/deleteuser",
-            data: {"userid":userId}
-        });
-        $("#user-table").bootstrapTable("refresh");
-    }
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
@@ -562,7 +499,8 @@ $(function() {
         });
         var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
         selections = window._[func](selections, ids);
-        if (selections.length < 1) {
+        handle_header_buttons();
+        /*if (selections.length < 1) {
             $("#user_delete_selection").addClass("disabled");
             $("#user_delete_selection").attr("aria-disabled", true);
             $(".check_head").attr("aria-disabled", true);
@@ -570,6 +508,12 @@ $(function() {
             $(".check_head").prop('checked', false);
             $(".button_head").attr("aria-disabled", true);
             $(".button_head").addClass("disabled");
+            $(".multi_head").attr("aria-disabled", true);
+            $(".multi_head").addClass("hidden");
+            $(".multi_selector").attr("aria-disabled", true);
+            $(".multi_selector").attr("disabled", true);
+            $('.multi_selector').selectpicker('deselectAll');
+            $('.multi_selector').selectpicker('refresh');
             $(".header_select").attr("disabled", true);
         } else {
             $("#user_delete_selection").removeClass("disabled");
@@ -578,12 +522,47 @@ $(function() {
             $(".check_head").removeAttr("disabled");
             $(".button_head").attr("aria-disabled", false);
             $(".button_head").removeClass("disabled");
+            $(".multi_head").attr("aria-disabled", false);
+            $(".multi_head").removeClass("hidden");
+            $(".multi_selector").attr("aria-disabled", false);
+            $(".multi_selector").removeAttr("disabled");
+            $('.multi_selector').selectpicker('refresh');
             $(".header_select").removeAttr("disabled");
-        }
+        }*/
     });
 });
 
-
+function handle_header_buttons () {
+    if (selections.length < 1) {
+        $("#user_delete_selection").addClass("disabled");
+        $("#user_delete_selection").attr("aria-disabled", true);
+        $(".check_head").attr("aria-disabled", true);
+        $(".check_head").attr("disabled", true);
+        $(".check_head").prop('checked', false);
+        $(".button_head").attr("aria-disabled", true);
+        $(".button_head").addClass("disabled");
+        $(".multi_head").attr("aria-disabled", true);
+        $(".multi_head").addClass("hidden");
+        $(".multi_selector").attr("aria-disabled", true);
+        $(".multi_selector").attr("disabled", true);
+        $('.multi_selector').selectpicker('deselectAll');
+        $('.multi_selector').selectpicker('refresh');
+        $(".header_select").attr("disabled", true);
+    } else {
+        $("#user_delete_selection").removeClass("disabled");
+        $("#user_delete_selection").attr("aria-disabled", false);
+        $(".check_head").attr("aria-disabled", false);
+        $(".check_head").removeAttr("disabled");
+        $(".button_head").attr("aria-disabled", false);
+        $(".button_head").removeClass("disabled");
+        $(".multi_head").attr("aria-disabled", false);
+        $(".multi_head").removeClass("hidden");
+        $(".multi_selector").attr("aria-disabled", false);
+        $(".multi_selector").removeAttr("disabled");
+        $('.multi_selector').selectpicker('refresh');
+        $(".header_select").removeAttr("disabled");
+    }
+}
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
@@ -644,6 +623,12 @@ function checkboxFormatter(value, row, index){
 function loadSuccess() {
     var guest = $(".editable[data-name='name'][data-value='Guest']");
     guest.editable("disable");
+    $("input:radio.check_head:checked").each(function() {
+        $(this).prop('checked', false);
+    });
+    $(".header_select").each(function() {
+        $(this).prop("selectedIndex", 0);
+    });
     $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
     $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").hide();
     $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
@@ -653,7 +638,99 @@ function loadSuccess() {
     $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
 }
 
-function handleListServerResponse (data, disableButtons) {
+function move_header_elements() {
+    $(".header_select").each(function() {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".form-check").each(function() {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".multi_select").each(function() {
+        var item = $(this);
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+            item.addClass("myselect");
+        }
+    });
+    $(".multi_selector").selectpicker();
+
+    // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
+    $(".multi_head").on("click",function() {
+        var val = $(this).data("set");
+        var field = $(this).data("name");
+        var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+        var values = $("#" + field).val();
+        confirmDialog(
+        "restrictions",
+            "GeneralChangeModal",
+            0,
+            function() {
+                $.ajax({
+                    method:"post",
+                    url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                    data: {"pk": result, "value": values, "action": val},
+                    success: function (data) {
+                        handleListServerResponse(data);
+                    },
+                    error: function (data) {
+                        handleListServerResponse({type:"danger", message:data.responseText})
+                    },
+                });
+            }
+        );
+    });
+
+    $("#user_delete_selection").click(function() {
+        $("#user-table").bootstrapTable("uncheckAll");
+    });
+    $("#select_locale").on("change",function() {
+        selectHeader(this, "locale");
+    });
+    $("#select_default_language").on("change",function() {
+        selectHeader(this, "default_language");
+    });
+    $(".check_head").on("change",function() {
+        var val = $(this).data("set");
+        var name = $(this).data("name");
+        var data =  $(this).data("val");
+        checkboxHeader(val, name, data);
+    });
+
+    $(".button_head").on("click",function() {
+        var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+        confirmDialog(
+        "btndeluser",
+            "GeneralDeleteModal",
+            0,
+            function() {
+                $.ajax({
+                    method:"post",
+                    url: window.location.pathname + "/../../ajax/deleteuser",
+                    data: {"userid": result},
+                    success: function (data) {
+                        selections = selections.filter( ( el ) => !result.includes( el ) );
+                        handleListServerResponse(data);
+                    },
+                    error: function (data) {
+                        handleListServerResponse({type:"danger", message:data.responseText})
+                    },
+                });
+            }
+        );
+    });
+
+}
+
+function handleListServerResponse (data) {
     $("#flash_success").remove();
     $("#flash_danger").remove();
     if (!jQuery.isEmptyObject(data)) {
@@ -679,19 +756,6 @@ function checkboxChange(checkbox, userId, field, field_index) {
     });
 }
 
-function deactivateHeaderButtons() {
-    if (selections.length < 1) {
-        $("#user_delete_selection").addClass("disabled");
-        $("#user_delete_selection").attr("aria-disabled", true);
-        $(".check_head").attr("aria-disabled", true);
-        $(".check_head").attr("disabled", true);
-        $(".check_head").prop('checked', false);
-        $(".button_head").attr("aria-disabled", true);
-        $(".button_head").addClass("disabled");
-        $(".header_select").attr("disabled", true);
-    }
-}
-
 function selectHeader(element, field) {
     if (element.value !== "None") {
         confirmDialog(element.id, "GeneralChangeModal", 0, function () {
@@ -705,6 +769,8 @@ function selectHeader(element, field) {
                 },
                 success: handleListServerResponse,
             });
+        },function() {
+            $(element).prop("selectedIndex", 0);
         });
     }
 }
@@ -722,6 +788,10 @@ function checkboxHeader(CheckboxState, field, field_index) {
             success: function (data) {
                 handleListServerResponse (data, true)
             },
+        });
+    },function() {
+        $("input:radio.check_head:checked").each(function() {
+            $(this).prop('checked', false);
         });
     });
 }
@@ -757,4 +827,13 @@ function queryParams(params)
 
 function storeLocation() {
     window.sessionStorage.setItem("back", window.location.pathname);
+}
+
+function user_handle (userId) {
+    $.ajax({
+        method:"post",
+        url: window.location.pathname + "/../../ajax/deleteuser",
+        data: {"userid":userId}
+    });
+    $("#user-table").bootstrapTable("refresh");
 }

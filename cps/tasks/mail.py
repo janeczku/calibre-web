@@ -115,7 +115,6 @@ class TaskEmail(CalibreTask):
         self.results = dict()
 
     def prepare_message(self):
-        log.debug("prepare email message for sending")
         message = MIMEMultipart()
         message['to'] = self.recipent
         message['from'] = self.settings["mail_from"]
@@ -171,11 +170,10 @@ class TaskEmail(CalibreTask):
         # redirect output to logfile on python2 on python3 debugoutput is caught with overwritten
         # _print_debug function
         if sys.version_info < (3, 0):
-            log.debug("Redirect output on python2 for email")
             org_smtpstderr = smtplib.stderr
             smtplib.stderr = logger.StderrLogger('worker.smtp')
 
-        log.debug("Start send email")
+        log.debug("Start sending email")
         if use_ssl == 2:
             self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
                                        timeout=timeout)
@@ -188,7 +186,6 @@ class TaskEmail(CalibreTask):
         if use_ssl == 1:
             self.asyncSMTP.starttls()
         if self.settings["mail_password"]:
-            log.debug("Login to email server")
             self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password"]))
 
         # Convert message to something to send
@@ -196,7 +193,6 @@ class TaskEmail(CalibreTask):
         gen = Generator(fp, mangle_from_=False)
         gen.flatten(msg)
 
-        log.debug("Sending email")
         self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, fp.getvalue())
         self.asyncSMTP.quit()
         self._handleSuccess()
