@@ -130,16 +130,6 @@ $("#back").click(function() {
 
 function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     var $confirm = $("#" + dialogid);
-    $confirm.modal('show');
-    $.ajax({
-        method:"get",
-        dataType: "json",
-        url: getPath() + "/ajax/loaddialogtexts/" + id,
-        success: function success(data) {
-            $("#header-"+ dialogid).html(data.header);
-            $("#text-"+ dialogid).html(data.main);
-        }
-    });
     $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
         yesFn(dataValue);
         $confirm.modal("hide");
@@ -150,6 +140,16 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
         }
         $confirm.modal("hide");
     });
+    $.ajax({
+        method:"get",
+        dataType: "json",
+        url: getPath() + "/ajax/loaddialogtexts/" + id,
+        success: function success(data) {
+            $("#header-"+ dialogid).html(data.header);
+            $("#text-"+ dialogid).html(data.main);
+        }
+    });
+    $confirm.modal('show');
 }
 
 $("#delete_confirm").click(function() {
