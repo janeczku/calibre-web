@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-04-26 08:28:54</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-04-27 20:06:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-04-26 11:26:09</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-04-27 23:04:55</p>
             
         </div>
       </div>
@@ -1269,12 +1269,12 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">20</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">18</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 20)">Detail</a>
@@ -1292,11 +1292,34 @@
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id="ft13.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft13.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 354, in test_edit_author
+    self.assertEqual(u'Sigurd Lindgren & Leo Baskerville', author.get_attribute('value'))
+AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Baskerville'
+- Sigurd Lindgren & Leo Baskerville
+?                - -
++ Sigurd Lindgren&Leo Baskerville</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1418,11 +1441,31 @@
     
     
     
-        <tr id='pt13.16' class='hiddenRow bg-success'>
+        <tr id="et13.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et13.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 240, in test_edit_title
+    self.assertEqual(ele.text, u'Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters')
+AttributeError: 'bool' object has no attribute 'text'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2850,13 +2893,13 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestUserList</td>
         <td class="text-center">16</td>
-        <td class="text-center">13</td>
-        <td class="text-center">2</td>
+        <td class="text-center">16</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c31', 16)">Detail</a>
         </td>
@@ -2891,28 +2934,11 @@
     
     
     
-        <tr id="st31.4" class="none bg-warning">
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st31.4')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st31.4" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st31.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Not Implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2989,31 +3015,11 @@
     
     
     
-        <tr id="ft31.13" class="none bg-danger">
+        <tr id='pt31.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.13')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft31.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft31.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 488, in test_user_list_guest_edit
-    self.assertTrue(self.check_element_on_page((By.ID, 'flash_danger')))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3036,33 +3042,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft31.16" class="none bg-danger">
+        <tr id='pt31.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft31.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft31.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 452, in test_user_list_sort
-    self.assertEqual("muki9al@b.com", ul['table'][0]['E-mail Address']['text'])
-AssertionError: 'muki9al@b.com' != 'no@email'
-- muki9al@b.com
-+ no@email</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3769,10 +3753,10 @@ AssertionError: 'muki9al@b.com' != 'no@email'
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>331</td>
-        <td>322</td>
-        <td>2</td>
-        <td>0</td>
-        <td>7</td>
+        <td>323</td>
+        <td>1</td>
+        <td>1</td>
+        <td>6</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -4178,7 +4162,7 @@ AssertionError: 'muki9al@b.com' != 'no@email'
 </div>
 
 <script>
-    drawCircle(322, 2, 0, 7);
+    drawCircle(323, 1, 1, 6);
     showCase(5);
 </script>
 
