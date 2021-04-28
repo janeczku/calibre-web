@@ -31,12 +31,13 @@ import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
-from .web import render_title_template
+from .render_template import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 try:
+    # pylint: disable=unused-import
     import unidecode
     # _() necessary to make babel aware of string for translation
     unidecode_version = _(u'installed')
@@ -47,6 +48,11 @@ try:
     from flask_dance import __version__ as flask_danceVersion
 except ImportError:
     flask_danceVersion = None
+
+try:
+    from greenlet import __version__ as greenlet_Version
+except ImportError:
+    greenlet_Version = None
 
 from . import services
 
@@ -77,7 +83,8 @@ _VERSIONS = OrderedDict(
     python_LDAP = services.ldapVersion if bool(services.ldapVersion) else None,
     Goodreads = u'installed' if bool(services.goodreads_support) else None,
     jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else None,
-    flask_dance = flask_danceVersion
+    flask_dance = flask_danceVersion,
+    greenlet = greenlet_Version
 )
 _VERSIONS.update(uploader.get_versions())
 

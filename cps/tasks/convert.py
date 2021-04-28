@@ -9,7 +9,7 @@ from shutil import copyfile
 from sqlalchemy.exc import SQLAlchemyError
 
 from cps.services.worker import CalibreTask
-from cps import calibre_db, db
+from cps import db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
@@ -33,8 +33,9 @@ class TaskConvert(CalibreTask):
     def run(self, worker_thread):
         self.worker_thread = worker_thread
         if config.config_use_google_drive:
-            cur_book = calibre_db.get_book(self.bookid)
-            data = calibre_db.get_book_format(self.bookid, self.settings['old_book_format'])
+            worker_db = db.CalibreDB(expire_on_commit=False)
+            cur_book = worker_db.get_book(self.bookid)
+            data = worker_db.get_book_format(self.bookid, self.settings['old_book_format'])
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             if df:
@@ -44,10 +45,12 @@ class TaskConvert(CalibreTask):
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
+                worker_db.session.close()
             else:
                 error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
+                worker_db.session.close()
                 return error_message
 
         filename = self._convert_ebook_format()
@@ -63,29 +66,37 @@ class TaskConvert(CalibreTask):
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    worker_thread.add(self.user, TaskEmail(self.settings['subject'], self.results["path"],
-                               filename, self.settings, self.kindle_mail,
-                               self.settings['subject'], self.settings['body'], internal=True))
-                except Exception as e:
-                    return self._handleError(str(e))
+                    worker_thread.add(self.user, TaskEmail(self.settings['subject'],
+                                                           self.results["path"],
+                                                           filename,
+                                                           self.settings,
+                                                           self.kindle_mail,
+                                                           self.settings['subject'],
+                                                           self.settings['body'],
+                                                           internal=True)
+                                      )
+                except Exception as ex:
+                    return self._handleError(str(ex))
 
     def _convert_ebook_format(self):
         error_message = None
-        local_session = db.CalibreDB().session
+        local_db = db.CalibreDB(expire_on_commit=False)
         file_path = self.file_path
         book_id = self.bookid
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
         format_new_ext = u'.' + self.settings['new_book_format'].lower()
 
-        # check to see if destination format already exists -
+        # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
-        if os.path.isfile(file_path + format_new_ext):
+        if os.path.isfile(file_path + format_new_ext) or\
+            local_db.get_book_format(self.bookid, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
-            cur_book = calibre_db.get_book(book_id)
+            cur_book = local_db.get_book(book_id)
             self.results['path'] = file_path
             self.results['title'] = cur_book.title
             self._handleSuccess()
+            local_db.session.close()
             return os.path.basename(file_path + format_new_ext)
         else:
             log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
@@ -105,18 +116,18 @@ class TaskConvert(CalibreTask):
             check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext)
 
         if check == 0:
-            cur_book = calibre_db.get_book(book_id)
+            cur_book = local_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
-                # self.db_queue.join()
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 try:
-                    local_session.merge(new_format)
-                    local_session.commit()
+                    local_db.session.merge(new_format)
+                    local_db.session.commit()
                 except SQLAlchemyError as e:
-                    local_session.rollback()
+                    local_db.session.rollback()
                     log.error("Database error: %s", e)
+                    local_db.session.close()
                     return
                 self.results['path'] = cur_book.path
                 self.results['title'] = cur_book.title
@@ -125,6 +136,7 @@ class TaskConvert(CalibreTask):
                 return os.path.basename(file_path + format_new_ext)
             else:
                 error_message = _('%(format)s format not found on disk', format=format_new_ext.upper())
+        local_db.session.close()
         log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = _('Ebook converter failed with unknown error')

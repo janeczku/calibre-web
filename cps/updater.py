@@ -103,20 +103,21 @@ class Updater(threading.Thread):
             time.sleep(2)
             return True
         except requests.exceptions.HTTPError as ex:
-            log.info(u'HTTP Error %s', ex)
+            log.error(u'HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            log.info(u'Connection error')
+            log.error(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            log.info(u'Timeout while establishing connection')
+            log.error(u'Timeout while establishing connection')
             self.status = 10
         except (requests.exceptions.RequestException, zipfile.BadZipFile):
             self.status = 11
-            log.info(u'General error')
-        except (IOError, OSError):
+            log.error(u'General error')
+        except (IOError, OSError) as ex:
             self.status = 12
-            log.info(u'Update File Could Not be Saved in Temp Dir')
+            log.error(u'Possible Reason for error: update file could not be saved in temp dir')
+            log.debug_or_exception(ex)
         self.pause()
         return False
 
@@ -182,39 +183,50 @@ class Updater(threading.Thread):
 
     @classmethod
     def moveallfiles(cls, root_src_dir, root_dst_dir):
-        change_permissions = True
         new_permissions = os.stat(root_dst_dir)
-        if sys.platform == "win32" or sys.platform == "darwin":
-            change_permissions = False
-        else:
-            log.debug('Update on OS-System : %s', sys.platform)
+        log.debug('Performing Update on OS-System: %s', sys.platform)
+        change_permissions = (sys.platform == "win32" or sys.platform == "darwin")
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
-                os.makedirs(dst_dir)
-                log.debug('Create-Dir: %s', dst_dir)
+                try:
+                    os.makedirs(dst_dir)
+                    log.debug('Create directory: {}', dst_dir)
+                except OSError as e:
+                    log.error('Failed creating folder: {} with error {}'.format(dst_dir, e))
                 if change_permissions:
-                    # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+                    try:
+                        os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+                    except OSError as e:
+                        old_permissions = os.stat(dst_dir)
+                        log.error('Failed changing permissions of %s. Before: %s:%s After %s:%s error: %s',
+                                  dst_dir, old_permissions.st_uid, old_permissions.st_gid,
+                                  new_permissions.st_uid, new_permissions.st_gid, e)
             for file_ in files:
                 src_file = os.path.join(src_dir, file_)
                 dst_file = os.path.join(dst_dir, file_)
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    log.debug('Remove file before copy: %s', dst_file)
-                    os.remove(dst_file)
+                    try:
+                        os.remove(dst_file)
+                        log.debug('Remove file before copy: %s', dst_file)
+                    except OSError as e:
+                        log.error('Failed removing file: {} with error {}'.format(dst_file, e))
                 else:
                     if change_permissions:
                         permission = new_permissions
-                shutil.move(src_file, dst_dir)
-                log.debug('Move File %s to %s', src_file, dst_dir)
+                try:
+                    shutil.move(src_file, dst_dir)
+                    log.debug('Move File %s to %s', src_file, dst_dir)
+                except OSError as ex:
+                    log.error('Failed moving file from {} to {} with error {}'.format(src_file, dst_dir, ex))
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except OSError as e:
                         old_permissions = os.stat(dst_file)
-                        log.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
+                        log.error('Failed changing permissions of %s. Before: %s:%s After %s:%s error: %s',
                                   dst_file, old_permissions.st_uid, old_permissions.st_gid,
                                   permission.st_uid, permission.st_gid, e)
         return
@@ -227,11 +239,17 @@ class Updater(threading.Thread):
             os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
             os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
-            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so'
+            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
+            os.sep + 'gmail.json'
         )
         additional_path = self.is_venv()
         if additional_path:
             exclude = exclude + (additional_path,)
+
+        # check if we are in a package, rename cps.py to __init__.py
+        if constants.HOME_CONFIG:
+            shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
+
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
@@ -260,14 +278,14 @@ class Updater(threading.Thread):
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    log.debug("Delete file %s", item_path)
-                    # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
+                    log.debug("Delete file %s", item_path)
                 except OSError:
-                    logger.debug("Could not remove: %s", item_path)
+                    log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
-    def is_venv(self):
+    @staticmethod
+    def is_venv():
         if (hasattr(sys, 'real_prefix')) or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
             return os.sep + os.path.relpath(sys.prefix, constants.BASE_DIR)
         else:
@@ -276,12 +294,73 @@ class Updater(threading.Thread):
     @classmethod
     def _nightly_version_info(cls):
         if is_sha1(constants.NIGHTLY_VERSION[0]) and len(constants.NIGHTLY_VERSION[1]) > 0:
+            log.debug("Nightly version: {}, {}".format(constants.NIGHTLY_VERSION[0], constants.NIGHTLY_VERSION[1]))
             return {'version': constants.NIGHTLY_VERSION[0], 'datetime': constants.NIGHTLY_VERSION[1]}
         return False
 
     @classmethod
     def _stable_version_info(cls):
+        log.debug("Stable version: {}".format(constants.STABLE_VERSION))
         return constants.STABLE_VERSION  # Current version
+
+    @staticmethod
+    def _populate_parent_commits(update_data, status, locale, tz, parents):
+        try:
+            parent_commit = update_data['parents'][0]
+            # limit the maximum search depth
+            remaining_parents_cnt = 10
+        except (IndexError, KeyError):
+            remaining_parents_cnt = None
+
+        if remaining_parents_cnt is not None:
+            while True:
+                if remaining_parents_cnt == 0:
+                    break
+
+                # check if we are more than one update behind if so, go up the tree
+                if parent_commit['sha'] != status['current_commit_hash']:
+                    try:
+                        headers = {'Accept': 'application/vnd.github.v3+json'}
+                        r = requests.get(parent_commit['url'], headers=headers, timeout=10)
+                        r.raise_for_status()
+                        parent_data = r.json()
+
+                        parent_commit_date = datetime.datetime.strptime(
+                            parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
+                        parent_commit_date = format_datetime(
+                            parent_commit_date, format='short', locale=locale)
+
+                        parents.append([parent_commit_date,
+                                        parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
+                        parent_commit = parent_data['parents'][0]
+                        remaining_parents_cnt -= 1
+                    except Exception:
+                        # it isn't crucial if we can't get information about the parent
+                        break
+                else:
+                    # parent is our current version
+                    break
+        return parents
+
+    @staticmethod
+    def _load_nightly_data(repository_url, commit, status):
+        update_data = dict()
+        try:
+            headers = {'Accept': 'application/vnd.github.v3+json'}
+            r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'],
+                             headers=headers,
+                             timeout=10)
+            r.raise_for_status()
+            update_data = r.json()
+        except requests.exceptions.HTTPError as e:
+            status['message'] = _(u'HTTP Error') + ' ' + str(e)
+        except requests.exceptions.ConnectionError:
+            status['message'] = _(u'Connection error')
+        except requests.exceptions.Timeout:
+            status['message'] = _(u'Timeout while establishing connection')
+        except (requests.exceptions.RequestException, ValueError):
+            status['message'] = _(u'General error')
+        return status, update_data
 
     def _nightly_available_updates(self, request_method, locale):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
@@ -308,28 +387,14 @@ class Updater(threading.Thread):
 
             # a new update is available
             status['update'] = True
-
-            try:
-                headers = {'Accept': 'application/vnd.github.v3+json'}
-                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'],
-                                 headers=headers,
-                                 timeout=10)
-                r.raise_for_status()
-                update_data = r.json()
-            except requests.exceptions.HTTPError as e:
-                status['message'] = _(u'HTTP Error') + ' ' + str(e)
-            except requests.exceptions.ConnectionError:
-                status['message'] = _(u'Connection error')
-            except requests.exceptions.Timeout:
-                status['message'] = _(u'Timeout while establishing connection')
-            except (requests.exceptions.RequestException, ValueError):
-                status['message'] = _(u'General error')
+            status, update_data = self._load_nightly_data(repository_url, commit, status)
 
             if status['message'] != '':
                 return json.dumps(status)
 
             # if 'committer' in update_data and 'message' in update_data:
             try:
+                log.debug("A new update is available.")
                 status['success'] = True
                 status['message'] = _(
                     u'A new update is available. Click on the button below to update to the latest version.')
@@ -345,47 +410,60 @@ class Updater(threading.Thread):
                 )
                 # it only makes sense to analyze the parents if we know the current commit hash
                 if status['current_commit_hash'] != '':
-                    try:
-                        parent_commit = update_data['parents'][0]
-                        # limit the maximum search depth
-                        remaining_parents_cnt = 10
-                    except (IndexError, KeyError):
-                        remaining_parents_cnt = None
-
-                    if remaining_parents_cnt is not None:
-                        while True:
-                            if remaining_parents_cnt == 0:
-                                break
-
-                            # check if we are more than one update behind if so, go up the tree
-                            if parent_commit['sha'] != status['current_commit_hash']:
-                                try:
-                                    headers = {'Accept': 'application/vnd.github.v3+json'}
-                                    r = requests.get(parent_commit['url'], headers=headers, timeout=10)
-                                    r.raise_for_status()
-                                    parent_data = r.json()
-
-                                    parent_commit_date = datetime.datetime.strptime(
-                                        parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                                    parent_commit_date = format_datetime(
-                                        parent_commit_date, format='short', locale=locale)
-
-                                    parents.append([parent_commit_date,
-                                                    parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
-                                    parent_commit = parent_data['parents'][0]
-                                    remaining_parents_cnt -= 1
-                                except Exception:
-                                    # it isn't crucial if we can't get information about the parent
-                                    break
-                            else:
-                                # parent is our current version
-                                break
+                    parents = self._populate_parent_commits(update_data, status, locale, tz, parents)
                 status['history'] = parents[::-1]
             except (IndexError, KeyError):
                 status['success'] = False
                 status['message'] = _(u'Could not fetch update information')
+                log.error("Could not fetch update information")
             return json.dumps(status)
         return ''
+
+    def _stable_updater_set_status(self, i, newer, status, parents, commit):
+        if i == -1 and newer == False:
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(
+                    u'Click on the button below to update to the latest stable version.'),
+                'history': parents
+            })
+            self.updateFile = commit[0]['zipball_url']
+        elif i == -1 and newer == True:
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[0]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[0]['zipball_url']
+        return status
+
+    def _stable_updater_parse_major_version(self, commit, i, parents, current_version, status):
+        if int(commit[i + 1]['tag_name'].split('.')[1]) == current_version[1]:
+            parents.append([commit[i]['tag_name'],
+                            commit[i]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[i]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[i]['zipball_url']
+        else:
+            parents.append([commit[i + 1]['tag_name'],
+                            commit[i + 1]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
+            status.update({
+                'update': True,
+                'success': True,
+                'message': _(u'A new update is available. Click on the button below to '
+                             u'update to version: %(version)s', version=commit[i + 1]['tag_name']),
+                'history': parents
+            })
+            self.updateFile = commit[i + 1]['zipball_url']
+        return status, parents
 
     def _stable_available_updates(self, request_method):
         if request_method == "GET":
@@ -405,6 +483,7 @@ class Updater(threading.Thread):
             # we are already on newest version, no update available
             if 'tag_name' not in commit[0]:
                 status['message'] = _(u'Unexpected data while reading update information')
+                log.error("Unexpected data while reading update information")
                 return json.dumps(status)
             if commit[0]['tag_name'] == version:
                 status.update({
@@ -448,48 +527,14 @@ class Updater(threading.Thread):
                     # before major update
                     if i == (len(commit) - 1):
                         i -= 1
-                    if int(commit[i+1]['tag_name'].split('.')[1]) == current_version[1]:
-                        parents.append([commit[i]['tag_name'],
-                                        commit[i]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
-                        status.update({
-                            'update': True,
-                            'success': True,
-                            'message': _(u'A new update is available. Click on the button below to '
-                                         u'update to version: %(version)s', version=commit[i]['tag_name']),
-                            'history': parents
-                        })
-                        self.updateFile = commit[i]['zipball_url']
-                    else:
-                        parents.append([commit[i+1]['tag_name'],
-                                        commit[i+1]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
-                        status.update({
-                            'update': True,
-                            'success': True,
-                            'message': _(u'A new update is available. Click on the button below to '
-                                         u'update to version: %(version)s', version=commit[i+1]['tag_name']),
-                            'history': parents
-                        })
-                        self.updateFile = commit[i+1]['zipball_url']
+                    status, parents = self._stable_updater_parse_major_version(commit,
+                                                                               i,
+                                                                               parents,
+                                                                               current_version,
+                                                                               status)
                     break
-            if i == -1 and newer == False:
-                status.update({
-                    'update': True,
-                    'success': True,
-                    'message': _(
-                        u'Click on the button below to update to the latest stable version.'),
-                    'history': parents
-                })
-                self.updateFile = commit[0]['zipball_url']
-            elif i == -1 and newer == True:
-                status.update({
-                    'update': True,
-                    'success': True,
-                    'message': _(u'A new update is available. Click on the button below to '
-                                 u'update to version: %(version)s', version=commit[0]['tag_name']),
-                    'history': parents
-                })
-                self.updateFile = commit[0]['zipball_url']
 
+            status = self._stable_updater_set_status(i, newer, status, parents, commit)
         return json.dumps(status)
 
     def _get_request_path(self):

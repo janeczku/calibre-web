@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% macro user_table_row(parameter, edit_text, show_text, validate, elements=False) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
+    data-editable-type="text"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-title="{{ edit_text }}"
+    data-edit="true"
+    {% if not button %}
+    data-sortable="true"
+    {% endif %}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    {% if elements %}
+        <div class="multi_select">
+            <select class="multi_selector" id="{{ parameter }}" data-live-search="true" data-style="btn-default" data-dropup-auto="false" aria-disabled="true" multiple disabled>
+              {% for tag in elements %}
+              <option class="tags_click" value="{{tag.id}}">{% if tag.name %}{{tag.name}}{% else %}{{tag.value}}{% endif %}</option>
+              {% endfor %}
+            </select>
+            <div class="btn-group btn-group-justified" role="group">
+              <div class="btn-group" role="group">
+                  <div class="multi_head btn btn-default hidden" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
+              </div>
+              <div class="btn-group" role="group">
+                  <div class="multi_head btn btn-default hidden" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
+              </div>
+            </div>
+        </div>
+    {% endif %}
+    {{ show_text }}
+</th>
+{%- endmacro %}
+
+{% macro user_checkbox_row(parameter, array_field, show_text, element, value) -%}
+<th data-name="{{array_field}}" data-field="{{parameter}}"
+    data-visible="{{element.get(array_field)}}"
+    data-column="{{value.get(array_field)}}"
+    data-formatter="checkboxFormatter">
+    <div  class="form-check">
+    <div>
+
+        <input type="radio" class="check_head" data-set="false" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
+
+    </div>
+    <div>
+
+        <input type="radio" class="check_head" data-set="true" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
+
+    </div>
+    </div>
+    {{show_text}}
+</th>
+{%- endmacro %}
+
+{% macro user_select_languages(parameter, url, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
+    data-editable-type="select"
+    data-edit="true"
+    data-sortable="true"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-source={{url}}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    <div>
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
+      <option value="none">{{ _('Select...') }}</option>
+      <option value="all">{{ _('Show All') }}</option>
+      {% for language in languages %}
+        <option value="{{language.lang_code}}">{{language.name}}</option>
+      {% endfor %}
+      </select>
+    </div>
+    {{ show_text }}
+</th>
+{%- endmacro %}
+
+{% macro user_select_translations(parameter, url, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}"
+    data-name="{{ parameter }}"
+    data-visible="{{visiblility.get(parameter)}}"
+    data-editable-type="select"
+    data-edit="true"
+    data-sortable="true"
+    data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
+    data-editable-source={{url}}
+    {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
+    <div>
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
+      <option value="None">{{_('Select...')}}</option>
+      {% for translation in translations %}
+        <option value="{{translation}}">{{translation.display_name|capitalize}}</option>
+      {% endfor %}
+    </select>
+    </div>
+    {{ show_text }}
+</th>
+{%- endmacro %}
+
+
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
+{% endblock %}
+{% block body %}
+<h2 class="{{page}}">{{_(title)}}</h2>
+    <div class="col-xs-12 col-sm-12">
+        <div class="row">
+          <div class="btn btn-default disabled" id="user_delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
+        </div>
+    </div>
+    <table id="user-table" class="table table-no-bordered table-striped"
+           data-url="{{url_for('admin.list_users')}}">
+      <thead>
+        <tr>
+            <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
+            <th data-name="state" data-field="state" data-checkbox="true" data-visible="{{visiblility.get('state')}}" data-sortable="true"></th>
+            <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+            {{ user_table_row('name', _('Enter Username'), _('Username'), true) }}
+            {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
+            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), false) }}
+            {{ user_select_translations('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
+            {{ user_select_languages('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
+            {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), false, tags) }}
+            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}
+            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), false, custom_values) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), false, custom_values) }}
+            {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "passwd_role", _('Change Password'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "upload_role",_('Upload'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "download_role", _('Download'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "viewer_role", _('View'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "edit_role", _('Edit'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "delete_role", _('Delete'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelfs'), visiblility, all_roles)}}
+            {{ user_checkbox_row("sidebar_view", "detail_random", _('Show Random Books in Detail View'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show language selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show read/unread selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_series", _('Show series selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_category", _('Show category selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_random", _('Show random books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_author", _('Show author selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_best_rated", _('Show Top Rated Books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show random books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_publisher", _('Show publisher selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_rating", _('Show ratings selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_format", _('Show file formats selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show archived books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
+            <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="errorlink">
+      <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
+    </div>
+{% endblock %}
+{% block modal %}
+{{ delete_confirm_modal() }}
+{{ change_confirm_modal() }}
+{{ restrict_modal() }}
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+{% endblock %}
+

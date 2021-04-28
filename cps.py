@@ -31,7 +31,7 @@ else:
     sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
-from cps import create_app, config
+from cps import create_app
 from cps import web_server
 from cps.opds import opds
 from cps.web import web
@@ -41,6 +41,8 @@ from cps.shelf import shelf
 from cps.admin import admi
 from cps.gdrive import gdrive
 from cps.editbooks import editbook
+from cps.remotelogin import remotelogin
+from cps.error_handler import init_errorhandler
 
 try:
     from cps.kobo import kobo, get_kobo_activated
@@ -58,14 +60,18 @@ except ImportError:
 
 def main():
     app = create_app()
+
+    init_errorhandler()
+
     app.register_blueprint(web)
     app.register_blueprint(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
     app.register_blueprint(shelf)
     app.register_blueprint(admi)
-    if config.config_use_google_drive:
-        app.register_blueprint(gdrive)
+    app.register_blueprint(remotelogin)
+    # if config.config_use_google_drive:
+    app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
     if kobo_available:
         app.register_blueprint(kobo)

@@ -1,7 +1,7 @@
 /**
  * Created by SpeedProg on 05.04.2015.
  */
-/* global Bloodhound, language, Modernizr, tinymce */
+/* global Bloodhound, language, Modernizr, tinymce, getPath */
 
 if ($("#description").length) {
     tinymce.init({
@@ -78,10 +78,10 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
     });
 }
 
-function getPath() {
+/*function getPath() {
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
-}
+}*/
 
 var authors = new Bloodhound({
     name: "authors",
@@ -249,18 +249,26 @@ promisePublishers.done(function() {
     );
 });
 
-$("#search").on("change input.typeahead:selected", function() {
+$("#search").on("change input.typeahead:selected", function(event) {
+    if (event.target.type === "search" && event.target.tagName === "INPUT") {
+        return;
+    }
     var form = $("form").serialize();
     $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
         $(".tags_click").each(function() {
-            if ($.inArray(parseInt($(this).children("input").first().val(), 10), data.tags) === -1 ) {
-                if (!($(this).hasClass("active"))) {
-                    $(this).addClass("disabled");
+            if ($.inArray(parseInt($(this).val(), 10), data.tags) === -1) {
+                if (!$(this).prop("selected")) {
+                    $(this).prop("disabled", true);
                 }
             } else {
-                $(this).removeClass("disabled");
+                $(this).prop("disabled", false);
             }
         });
+        $("#include_tag option:selected").each(function () {
+            $("#exclude_tag").find("[value=" + $(this).val() + "]").prop("disabled", true);
+        });
+        $("#include_tag").selectpicker("refresh");
+        $("#exclude_tag").selectpicker("refresh");
     });
 });
 

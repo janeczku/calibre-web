@@ -55,6 +55,7 @@
             {% endif %}
           {% if reader_list and g.user.role_viewer() %}
               <div class="btn-group" role="group">
+              {% if reader_list|length > 1 %}
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}}
                   <span class="caret"></span>
@@ -64,15 +65,19 @@
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
                     {%endfor%}
                     </ul>
+                {% else %}
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}} - {{reader_list[0]}}</a>
+                {% endif %}
               </div>
             {% endif %}
             {% if audioentries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
+              {% if audioentries|length > 1 %}
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
                 </button>
-                    <ul class="dropdown-menu" aria-labelledby="read-in-browser">
+                    <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
                     {% for format in reader_list %}
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
                     {%endfor%}
@@ -85,11 +90,14 @@
                     {% endif %}
               {% endfor %}
                   </ul>
+                {% else %}
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=audioentries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{audioentries[0]}}</a>
+                {% endif %}
               </div>
             {% endif %}
         </div>
       </div>
-      <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
+      <h2 id="title">{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>

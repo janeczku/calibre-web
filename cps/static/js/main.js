@@ -15,6 +15,11 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+function getPath() {
+    var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
+    return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
+}
 // Generic control/related handler to show/hide fields based on a checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
@@ -33,10 +38,10 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
     var name = $this.data("control");
-    var showOrHide = parseInt($this.val());
+    var showOrHide = parseInt($this.val(), 10);
     // var showOrHideLast = $("#" + name + " option:last").val()
     for (var i = 0; i < $(this)[0].length; i++) {
-        var element = parseInt($(this)[0][i].value);
+        var element = parseInt($(this)[0][i].value, 10);
         if (element === showOrHide) {
             $("[data-related^=" + name + "][data-related*=-" + element + "]").show();
         } else {
@@ -50,7 +55,7 @@ $(document).on("change", "select[data-control]", function() {
 $(document).on("change", "select[data-controlall]", function() {
     var $this = $(this);
     var name = $this.data("controlall");
-    var showOrHide = parseInt($this.val());
+    var showOrHide = parseInt($this.val(), 10);
     if (showOrHide) {
         $("[data-related=" + name + "]").show();
     } else {
@@ -82,8 +87,7 @@ $(".container-fluid").bind('drop', function (e) {
         var files = e.originalEvent.dataTransfer.files;
         var test = $("#btn-upload")[0].accept;
         $(this).css('background', '');
-        // var final = [];
-        const dt = new DataTransfer()
+        const dt = new DataTransfer();
         jQuery.each(files, function (index, item) {
             if (test.indexOf(item.name.substr(item.name.lastIndexOf('.'))) !== -1) {
                 dt.items.add(item);
@@ -110,18 +114,54 @@ $(document).ready(function() {
   }
 });
 
+$(".session").click(function() {
+    window.sessionStorage.setItem("back", window.location.pathname);
+});
+
+$("#back").click(function() {
+   var loc = sessionStorage.getItem("back");
+   if (!loc) {
+       loc = $(this).data("back");
+   }
+   sessionStorage.removeItem("back");
+   window.location.href = loc;
+
+});
+
+function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
+    var $confirm = $("#" + dialogid);
+    $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
+        yesFn(dataValue);
+        $confirm.modal("hide");
+    });
+    $("#btnConfirmNo-"+ dialogid).off('click').click(function () {
+        if (typeof noFn !== 'undefined') {
+            noFn(dataValue);
+        }
+        $confirm.modal("hide");
+    });
+    $.ajax({
+        method:"get",
+        dataType: "json",
+        url: getPath() + "/ajax/loaddialogtexts/" + id,
+        success: function success(data) {
+            $("#header-"+ dialogid).html(data.header);
+            $("#text-"+ dialogid).html(data.main);
+        }
+    });
+    $confirm.modal('show');
+}
 
 $("#delete_confirm").click(function() {
     //get data-id attribute of the clicked element
-    var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
-    var path = src.substring(0, src.lastIndexOf("/"));
     var deleteId = $(this).data("delete-id");
     var bookFormat = $(this).data("delete-format");
+    var ajaxResponse = $(this).data("ajax");
     if (bookFormat) {
-        window.location.href = path + "/../../delete/" + deleteId + "/" + bookFormat;
+        window.location.href = getPath() + "/delete/" + deleteId + "/" + bookFormat;
     } else {
-        if ($(this).data("delete-format")) {
-            path = path + "/../../ajax/delete/" + deleteId;
+        if (ajaxResponse) {
+            path = getPath() + "/ajax/delete/" + deleteId;
             $.ajax({
                 method:"get",
                 url: path,
@@ -138,10 +178,23 @@ $("#delete_confirm").click(function() {
 
                         }
                     });
+                    $("#books-table").bootstrapTable("refresh");
+                    /*$.ajax({
+                        method:"get",
+                        url: window.location.pathname + "/../../ajax/listbooks",
+                        async: true,
+                        timeout: 900,
+                        success:function(data) {
+
+
+                            $("#book-table").bootstrapTable("load", data);
+                            loadSuccess();
+                        }
+                    });*/
                 }
             });
         } else {
-            window.location.href = path + "/../../delete/" + deleteId;
+            window.location.href = getPath() + "/delete/" + deleteId;
 
         }
     }
@@ -162,6 +215,7 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     }
     $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
+    $(e.currentTarget).find("#delete_confirm").data("ajax", $(e.relatedTarget).data("ajax"));
 });
 
 
@@ -213,6 +267,56 @@ $(function() {
         });
     }
 
+    function fillFileTable(path, type, folder, filt) {
+        if (window.location.pathname.endsWith("/basicconfig")) {
+            var request_path = "/../basicconfig/pathchooser/";
+        } else {
+            var request_path = "/../../ajax/pathchooser/";
+        }
+        $.ajax({
+            dataType: "json",
+            data: {
+                path: path,
+                folder: folder,
+                filter: filt
+            },
+            url: window.location.pathname + request_path,
+            success: function success(data) {
+                if ($("#element_selected").text() ==="") {
+                    $("#element_selected").text(data.cwd);
+                }
+                $("#file_table > tbody > tr").each(function () {
+                    if ($(this).attr("id") !== "parent") {
+                        $(this).closest("tr").remove();
+                    } else {
+                        if(data.absolute && data.parentdir !== "") {
+                           $(this)[0].attributes['data-path'].value  = data.parentdir;
+                        } else {
+                            $(this)[0].attributes['data-path'].value  = "..";
+                        }
+                    }
+                });
+                if (data.parentdir !== "") {
+                    $("#parent").removeClass('hidden')
+                } else {
+                    $("#parent").addClass('hidden')
+                }
+                // console.log(data);
+                data.files.forEach(function(entry) {
+                    if(entry.type === "dir") {
+                        var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
+                } else {
+                    var type = "";
+                }
+                    $("<tr class=\"tr-clickable\" data-type=\"" + entry.type + "\" data-path=\"" +
+                        entry.fullpath + "\"><td>" + type + "</td><td>" + entry.name + "</td><td>" +
+                        entry.size + "</td></tr>").appendTo($("#file_table"));
+                });
+            },
+            timeout: 2000
+        });
+    }
+
     $(".discover .row").isotope({
         // options
         itemSelector : ".book",
@@ -238,6 +342,8 @@ $(function() {
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
             if ($("body").hasClass("blur")) {
                 $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+                $(" a:not(.dropdown-toggle) ")
+                  .removeAttr("data-toggle");
             }
             $(".load-more .row").isotope( "appended", $(data), null );
         });
@@ -402,18 +508,98 @@ $(function() {
             $("#config_delete_kobo_token").show();
         });
 
-    $("#btndeletetoken").click(function() {
-        //get data-id attribute of the clicked element
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
-        var path = src.substring(0, src.lastIndexOf("/"));
-        // var domainId = $(this).value("domainId");
-        $.ajax({
-            method:"get",
-            url: path + "/../../kobo_auth/deleteauthtoken/" + this.value,
-        });
-        $("#modalDeleteToken").modal("hide");
-        $("#config_delete_kobo_token").hide();
+    $("#config_delete_kobo_token").click(function() {
+        confirmDialog(
+            $(this).attr('id'),
+            "GeneralDeleteModal",
+            $(this).data('value'),
+            function (value) {
+                $.ajax({
+                    method: "get",
+                    url: getPath() + "/kobo_auth/deleteauthtoken/" + value,
+                });
+                $("#config_delete_kobo_token").hide();
+            }
+        );
+    });
 
+    $("#toggle_order_shelf").click(function() {
+        $("#new").toggleClass("disabled");
+        $("#old").toggleClass("disabled");
+        $("#asc").toggleClass("disabled");
+        $("#desc").toggleClass("disabled");
+        $("#auth_az").toggleClass("disabled");
+        $("#auth_za").toggleClass("disabled");
+        $("#pub_new").toggleClass("disabled");
+        $("#pub_old").toggleClass("disabled");
+        var alternative_text = $("#toggle_order_shelf").data('alt-text');
+        $("#toggle_order_shelf")[0].attributes['data-alt-text'].value = $("#toggle_order_shelf").html();
+        $("#toggle_order_shelf").html(alternative_text);
+    });
+
+    $("#btndeluser").click(function() {
+        confirmDialog(
+            $(this).attr('id'),
+            "GeneralDeleteModal",
+            $(this).data('value'),
+            function(value){
+                var subform = $('#user_submit').closest("form");
+                subform.submit(function(eventObj) {
+                    $(this).append('<input type="hidden" name="delete" value="True" />');
+                    return true;
+                });
+                subform.submit();
+            }
+        );
+    });
+    $("#user_submit").click(function() {
+        this.closest("form").submit();
+    });
+
+    $("#delete_shelf").click(function() {
+        confirmDialog(
+            $(this).attr('id'),
+            "GeneralDeleteModal",
+            $(this).data('value'),
+            function(value){
+                window.location.href = window.location.pathname + "/../../shelf/delete/" + value
+            }
+        );
+
+    });
+
+
+    $("#fileModal").on("show.bs.modal", function(e) {
+        var target = $(e.relatedTarget);
+        var path = $("#" + target.data("link"))[0].value;
+        var folder = target.data("folderonly");
+        var filter = target.data("filefilter");
+        $("#element_selected").text(path);
+        $("#file_confirm")[0].attributes["data-link"].value = target.data("link");
+        $("#file_confirm")[0].attributes["data-folderonly"].value = (typeof folder === 'undefined') ? false : true;
+        $("#file_confirm")[0].attributes["data-filefilter"].value = (typeof filter === 'undefined') ? "" : filter;
+        $("#file_confirm")[0].attributes["data-newfile"].value = target.data("newfile");
+        fillFileTable(path,"dir", folder, filter);
+    });
+
+    $("#file_confirm").click(function() {
+        $("#" + $(this).data("link"))[0].value = $("#element_selected").text()
+    });
+
+    $(document).on("click", ".tr-clickable", function() {
+        var path = this.attributes["data-path"].value;
+        var type = this.attributes["data-type"].value;
+        var folder = $(file_confirm).data("folderonly");
+        var filter = $(file_confirm).data("filefilter");
+        var newfile = $(file_confirm).data("newfile");
+        if (newfile !== 'undefined') {
+            $("#element_selected").text(path + $("#new_file".text()));
+        } else {
+            $("#element_selected").text(path);
+        }
+        if(type === "dir") {
+            fillFileTable(path, type, folder, filter);
+        }
     });
 
     $(window).resize(function() {
@@ -425,12 +611,10 @@ $(function() {
         $("#DialogFinished").addClass("hidden");
         $("#DialogContent").html("");
         $("#spinner2").show();
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
-        var path = src.substring(0, src.lastIndexOf("/"));
         $.ajax({
             method:"get",
             dataType: "json",
-            url: path + "/../../import_ldap_users",
+            url: getPath() + "/import_ldap_users",
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);

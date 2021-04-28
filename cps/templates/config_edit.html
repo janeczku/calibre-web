@@ -16,12 +16,19 @@
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
        <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
-       <div class="form-group required input-group">
+       <div class="form-group required{% if filepicker %} input-group{% endif %}">
         <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
+       {% if filepicker %}
         <span class="input-group-btn">
-          <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+          <button type="button" data-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-target="#fileModal" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
         </span>
+       {% endif %}
       </div>
+      {% if not filepicker %}
+       <div class="form-group">
+        <label id="filepicker-hint">{{_('To activate serverside filepicker start Calibre-Web with -f option')}}</label>
+      </div>
+      {% endif %}
     {% if feature_support['gdrive']  %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
@@ -94,14 +101,14 @@
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_certfile" name="config_certfile" value="{% if config.config_certfile != None %}{{ config.config_certfile }}{% endif %}" autocomplete="off">
           <span class="input-group-btn">
-            <button type="button" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            <button type="button" data-toggle="modal" data-link="config_certfile" data-target="#fileModal" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
           </span>
         </div>
           <label for="config_calibre_dir" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
           <span class="input-group-btn">
-            <button type="button" id="keyfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            <button type="button" id="keyfile_path" data-toggle="modal" data-link="config_keyfile" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
           </span>
         </div>
         <div class="form-group">
@@ -268,21 +275,21 @@
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_cacert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_cert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_key_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
         </div>
@@ -384,7 +391,7 @@
            <div class="form-group input-group">
             <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="converter_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" data-toggle="modal" id="converter_modal_path" data-link="config_converterpath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
            </div>
            <div class="form-group">
@@ -395,7 +402,7 @@
            <div class="form-group input-group">
             <input type="text" class="form-control" id="config_kepubifypath" name="config_kepubifypath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="kepubify_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="kepubify_path" data-toggle="modal" data-link="config_kepubifypath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
         {% if feature_support['rar'] %}
@@ -403,7 +410,7 @@
            <div class="form-group input-group">
             <input type="text" class="form-control" id="config_rarfile_location" name="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="unrar_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="unrar_path" data-toggle="modal" data-link="config_rarfile_location" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
         {% endif %}
@@ -412,8 +419,6 @@
   </div>
   {% endif %}
 </div>
-
-
     <div class="col-sm-12">
     {% if not show_login_button %}
     <button type="submit" name="submit" class="btn btn-default">{{_('Save')}}</button>
@@ -427,6 +432,9 @@
     </div>
   </form>
 </div>
+{% endblock %}
+{% block modal %}
+{{ filechooser_modal() }}
 {% endblock %}
 {% block js %}
 <script type="text/javascript">

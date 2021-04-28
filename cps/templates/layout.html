@@ -1,4 +1,4 @@
-{% from 'modal_dialogs.html' import restrict_modal, delete_book %}
+{% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
 <!DOCTYPE html>
 <html lang="{{ g.user.locale }}">
   <head>
@@ -76,7 +76,7 @@
               {% if g.user.role_admin() %}
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
               {% endif %}
-              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{g.user.nickname}}</span></a></li>
+              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{g.user.name}}</span></a></li>
               {% if not g.user.is_anonymous %}
               <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
               {% endif %}
@@ -92,7 +92,7 @@
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
       <div class="row-fluid text-center" style="margin-top: -20px;">
-        <div id="flash_alert" class="alert alert-danger">{{ message[1] }}</div>
+        <div id="flash_danger" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
@@ -189,8 +189,6 @@
       </div>
     </div>
     {% block modal %}{% endblock %}
-
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -200,14 +198,7 @@
     <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
-    {% if g.current_theme == 1 %}
-      <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
-    {% endif %}
     <script type="text/javascript">
         $(function() {
             $("#form-upload").uploadprogress({
@@ -219,6 +210,13 @@
             });
         });
     </script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% if g.current_theme == 1 %}
+      <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
+    {% endif %}
     {% block js %}{% endblock %}
   </body>
 </html>
