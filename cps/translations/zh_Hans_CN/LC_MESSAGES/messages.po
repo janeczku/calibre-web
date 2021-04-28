@@ -77,7 +77,7 @@ msgstr "找不到用户"
 
 #: cps/admin.py:329
 msgid "{} users deleted successfully"
-msgstr ""
+msgstr "成功删除 {} 个用户"
 
 #: cps/admin.py:351 cps/templates/user_edit.html:44
 #: cps/templates/user_table.html:69
@@ -90,7 +90,7 @@ msgstr "访客名称无法更改"
 
 #: cps/admin.py:399
 msgid "Guest can't have this role"
-msgstr ""
+msgstr "游客无法拥有此角色"
 
 #: cps/admin.py:408 cps/admin.py:1298
 msgid "No admin user remaining, can't remove admin role"
@@ -98,11 +98,11 @@ msgstr "理员账户不存在，无法删除管理员角色"
 
 #: cps/admin.py:413
 msgid "Guest can't have this view"
-msgstr ""
+msgstr "游客无法拥有此视图"
 
 #: cps/admin.py:420
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr ""
+msgstr "游客的本地化是自动侦测而无法设置的"
 
 #: cps/admin.py:477 cps/admin.py:1183
 msgid "Calibre-Web configuration updated"
@@ -114,47 +114,45 @@ msgstr "您确定删除Kobo Token吗？"
 
 #: cps/admin.py:491
 msgid "Do you really want to delete this domain?"
-msgstr ""
+msgstr "您确定要删除此域吗？"
 
 #: cps/admin.py:493
 msgid "Do you really want to delete this user?"
-msgstr ""
+msgstr "您确定要删除此用户吗？"
 
 #: cps/admin.py:495 cps/templates/shelf.html:90
 msgid "Are you sure you want to delete this shelf?"
 msgstr "您确定要删除此书架吗？"
 
 #: cps/admin.py:497
-#, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "您确定要删除此书架吗？"
+msgstr "您确定要修改选定用户的本地化设置吗？"
 
 #: cps/admin.py:499
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr ""
+msgstr "您确定要修改选定用户的可见书籍语言吗？"
 
 #: cps/admin.py:501
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr ""
+msgstr "您确定要修改选定用户的选定角色吗？"
 
 #: cps/admin.py:503
-#, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "您确定要删除此书架吗？"
+msgstr "您确定要修改选定用户的选定限制吗？"
 
 #: cps/admin.py:505
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr ""
+msgstr "您确定要修改选定用户的选定可视化限制吗？"
 
 #: cps/admin.py:767 cps/admin.py:773 cps/admin.py:783 cps/admin.py:793
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:43
 msgid "Deny"
-msgstr "隐藏"
+msgstr "拒绝"
 
 #: cps/admin.py:769 cps/admin.py:775 cps/admin.py:785 cps/admin.py:795
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:48
 msgid "Allow"
-msgstr "显示"
+msgstr "允许"
 
 #: cps/admin.py:938
 msgid "client_secrets.json Is Not Configured For Web Application"
@@ -258,7 +256,7 @@ msgstr "用户“%(nick)s”已删除"
 
 #: cps/admin.py:1279 cps/admin.py:1280
 msgid "Can't delete Guest User"
-msgstr ""
+msgstr "无法删除游客用户"
 
 #: cps/admin.py:1283
 msgid "No admin user remaining, can't delete user"
@@ -285,7 +283,7 @@ msgstr "编辑邮件服务器设置"
 
 #: cps/admin.py:1407
 msgid "G-Mail Account Verification Successful"
-msgstr ""
+msgstr "G-Mail账号校验成功"
 
 #: cps/admin.py:1433
 #, python-format
@@ -394,7 +392,7 @@ msgstr "数据库中没有找到至少一个LDAP用户"
 
 #: cps/admin.py:1688
 msgid "{} User Successfully Imported"
-msgstr ""
+msgstr "{} 用户被成功导入"
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -614,7 +612,7 @@ msgstr "此用户名已被使用"
 
 #: cps/helper.py:529
 msgid "Invalid e-mail address format"
-msgstr ""
+msgstr "无效的邮件地址格式"
 
 #: cps/helper.py:602
 msgid "Error Downloading Cover"
@@ -634,7 +632,7 @@ msgstr "封面文件不是有效的图片文件，或者无法存储"
 
 #: cps/helper.py:642
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr ""
+msgstr "封面文件只支持jpg/jpeg/png/webp/bmp文件"
 
 #: cps/helper.py:655
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -732,7 +730,7 @@ msgstr "GitHub Oauth 错误，请重试。"
 
 #: cps/oauth_bb.py:336
 msgid "GitHub Oauth error: {}"
-msgstr ""
+msgstr "GitHub Oauth 错误: {}"
 
 #: cps/oauth_bb.py:357
 msgid "Google Oauth error, please retry later."
@@ -740,7 +738,7 @@ msgstr "Google Oauth 错误，请重试。"
 
 #: cps/oauth_bb.py:360
 msgid "Google Oauth error: {}"
-msgstr ""
+msgstr "Google Oauth 错误: {}"
 
 #: cps/opds.py:110 cps/opds.py:199 cps/opds.py:276 cps/opds.py:328
 #: cps/templates/grid.html:14 cps/templates/list.html:14
@@ -749,7 +747,7 @@ msgstr "全部"
 
 #: cps/opds.py:385
 msgid "{} Stars"
-msgstr ""
+msgstr "{} 星"
 
 #: cps/remotelogin.py:65 cps/web.py:1522
 msgid "login"
@@ -1418,7 +1416,7 @@ msgstr "管理"
 
 #: cps/templates/admin.html:160
 msgid "Download Debug Package"
-msgstr ""
+msgstr "下载Debug包"
 
 #: cps/templates/admin.html:161
 msgid "View Logs"
@@ -2051,7 +2049,7 @@ msgstr "LDAP组成员字段"
 
 #: cps/templates/config_edit.html:342
 msgid "LDAP Member User Filter Detection"
-msgstr ""
+msgstr "LDAP成员用户过滤器探测"
 
 #: cps/templates/config_edit.html:344
 msgid "Autodetect"
@@ -2059,11 +2057,11 @@ msgstr "自动检测"
 
 #: cps/templates/config_edit.html:345
 msgid "Custom Filter"
-msgstr ""
+msgstr "自定义过滤器"
 
 #: cps/templates/config_edit.html:350
 msgid "LDAP Member User Filter"
-msgstr ""
+msgstr "LDAP成员用户过滤器"
 
 #: cps/templates/config_edit.html:361
 #, python-format
@@ -2262,11 +2260,11 @@ msgstr "编辑元数据"
 
 #: cps/templates/email_edit.html:12
 msgid "Choose Server Type"
-msgstr ""
+msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:14
 msgid "Use Standard E-Mail Account"
-msgstr ""
+msgstr "使用标准电子邮件账号"
 
 #: cps/templates/email_edit.html:15
 msgid "Gmail Account with OAuth2 Verfification"
@@ -2576,27 +2574,27 @@ msgstr "必须先将书籍存档并同步设备，然后才能安全地删除书
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr ""
+msgstr "选择文件位置"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
-msgstr ""
+msgstr "类型"
 
 #: cps/templates/modal_dialogs.html:83
 msgid "name"
-msgstr ""
+msgstr "名称"
 
 #: cps/templates/modal_dialogs.html:84
 msgid "size"
-msgstr ""
+msgstr "大小"
 
 #: cps/templates/modal_dialogs.html:90
 msgid "Parent Directory"
-msgstr ""
+msgstr "父目录"
 
 #: cps/templates/modal_dialogs.html:98
 msgid "Select"
-msgstr ""
+msgstr "选择"
 
 #: cps/templates/modal_dialogs.html:134
 #, fuzzy
@@ -2765,7 +2763,7 @@ msgstr "出版日期到"
 
 #: cps/templates/search_form.html:35
 msgid "Read Status"
-msgstr ""
+msgstr "阅读状态"
 
 #: cps/templates/search_form.html:52
 msgid "Exclude Tags"
@@ -2776,9 +2774,8 @@ msgid "Exclude Series"
 msgstr "排除丛书"
 
 #: cps/templates/search_form.html:88
-#, fuzzy
 msgid "Exclude Shelves"
-msgstr "排除丛书"
+msgstr "排除书架"
 
 #: cps/templates/search_form.html:108
 msgid "Exclude Languages"
@@ -2806,7 +2803,7 @@ msgstr "删除此书架"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf Properties"
-msgstr ""
+msgstr "编辑书架属性"
 
 #: cps/templates/shelf.html:13
 msgid "Arrange books manually"
@@ -2858,7 +2855,7 @@ msgstr "套丛书在此书库中"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr ""
+msgstr "系统统计"
 
 #: cps/templates/stats.html:33
 msgid "Program Library"
@@ -2942,59 +2939,51 @@ msgstr "生成Kobo Auth 地址"
 
 #: cps/templates/user_table.html:68 cps/templates/user_table.html:91
 msgid "Select..."
-msgstr ""
+msgstr "选择..."
 
 #: cps/templates/user_table.html:118
-#, fuzzy
 msgid "Edit User"
-msgstr "管理员用户"
+msgstr "编辑用户"
 
 #: cps/templates/user_table.html:121
-#, fuzzy
 msgid "Enter Username"
-msgstr "选择一个用户名"
+msgstr "输入用户名"
 
 #: cps/templates/user_table.html:122
-#, fuzzy
 msgid "Enter E-mail Address"
-msgstr "您的邮箱地址"
+msgstr "输入邮箱地址"
 
 #: cps/templates/user_table.html:123
-#, fuzzy
 msgid "Enter Kindle E-mail Address"
-msgstr "接收书籍的Kindle邮箱地址"
+msgstr "输入Kindle邮箱地址"
 
 #: cps/templates/user_table.html:123
-#, fuzzy
 msgid "Kindle E-mail"
-msgstr "测试邮件"
+msgstr "Kindle邮箱"
 
 #: cps/templates/user_table.html:124
-#, fuzzy
 msgid "Locale"
-msgstr "缩放"
+msgstr "本地化"
 
 #: cps/templates/user_table.html:125
 msgid "Visible Book Languages"
 msgstr ""
 
 #: cps/templates/user_table.html:126
-#, fuzzy
 msgid "Edit Denied Tags"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "编辑拒绝标签"
 
 #: cps/templates/user_table.html:126
 msgid "Denied Tags"
-msgstr ""
+msgstr "拒绝标签"
 
 #: cps/templates/user_table.html:127
-#, fuzzy
 msgid "Edit Allowed Tags"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "编辑允许标签"
 
 #: cps/templates/user_table.html:127
 msgid "Allowed Tags"
-msgstr ""
+msgstr "允许标签"
 
 #: cps/templates/user_table.html:128
 #, fuzzy
@@ -3017,21 +3006,18 @@ msgid "Denied Columns Values"
 msgstr "添加显示或隐藏书籍的自定义栏目值"
 
 #: cps/templates/user_table.html:131
-#, fuzzy
 msgid "Change Password"
-msgstr "允许修改密码"
+msgstr "修改密码"
 
 #: cps/templates/user_table.html:134
 msgid "View"
 msgstr ""
 
 #: cps/templates/user_table.html:137
-#, fuzzy
 msgid "Edit Public Shelfs"
-msgstr "公共书架"
+msgstr "编辑公共书架"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Show read/unread selection"
-msgstr "显示丛书选择"
+msgstr "显示已读/未读选择"
 
