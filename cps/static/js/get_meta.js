@@ -138,8 +138,8 @@ $(function () {
                         seriesTitle = result.series.title;
                     }
                     var dateFomers = result.pubdate.split("-");
-                    var publishedYear = parseInt(dateFomers[0]);
-                    var publishedMonth = parseInt(dateFomers[1]);
+                    var publishedYear = parseInt(dateFomers[0], 10);
+                    var publishedMonth = parseInt(dateFomers[1], 10);
                     var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
                     publishedDate = formatDate(publishedDate);
@@ -194,8 +194,8 @@ $(function () {
                     } else {
                         dateFomers = result.date_added.split("-");
                     }
-                    var publishedYear = parseInt(dateFomers[0]);
-                    var publishedMonth = parseInt(dateFomers[1]);
+                    var publishedYear = parseInt(dateFomers[0], 10);
+                    var publishedMonth = parseInt(dateFomers[1], 10);
                     var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
                     publishedDate = formatDate(publishedDate);

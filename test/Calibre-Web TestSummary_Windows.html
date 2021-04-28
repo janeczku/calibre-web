@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-12-02 18:51:45</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-01-02 08:38:57</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-12-02 21:19:42</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-01-02 12:04:50</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 56 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 58 min</p>
         </div>
       </div>
       </div>
@@ -236,13 +236,13 @@
 
     <tr id="su" class="skipClass">
         <td>TestCli</td>
+        <td class="text-center">8</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c2', 7)">Detail</a>
+            <a onclick="showClassDetail('c2', 8)">Detail</a>
         </td>
     </tr>
 
@@ -327,13 +327,22 @@
         </tr>
     
     
+    
+        <tr id='pt2.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCoverEditBooks</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -343,31 +352,11 @@
 
     
     
-        <tr id="ft3.1" class="none bg-danger">
+        <tr id='pt3.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCoverEditBooks - test_upload_jpg</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft3.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft3.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_cover_edit_books.py", line 92, in test_upload_jpg
-    self.assertTrue(self.check_element_on_page((By.ID, 'flash_alert')), "BMP file is not detected")
-AssertionError: False is not true : BMP file is not detected</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -511,82 +500,134 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestEbookConvertCalibreGDrive</td>
-        <td class="text-center">6</td>
-        <td class="text-center">6</td>
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c6', 6)">Detail</a>
+            <a onclick="showClassDetail('c6', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt6.1' class='hiddenRow bg-success'>
+        <tr id="et6.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
+                <div class='testcase'>setUpClass (test_ebook_convert_gdrive)</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_ebook_convert_gdrive.py", line 35, in setUpClass
+    prepare_gdrive()
+  File "C:\Entwicklung\calibre-web-test\test\helper_gdrive.py", line 36, in prepare_gdrive
+    test = fs.makedir('test')
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\googledrivefs\googledrivefs.py", line 343, in makedir
+    raise DirectoryExists(path=path)
+fs.errors.DirectoryExists: directory 'test' exists</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt6.2' class='hiddenRow bg-success'>
+        <tr id="et6.2" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_failed_and_email</div>
+                <div class='testcase'>setUpClass (test_ebook_convert_kepubify_gdrive)</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.2" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_ebook_convert_kepubify_gdrive.py", line 32, in setUpClass
+    prepare_gdrive()
+  File "C:\Entwicklung\calibre-web-test\test\helper_gdrive.py", line 30, in prepare_gdrive
+    fs.removetree('test')
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\base.py", line 1232, in removetree
+    self.removedir(dir_path)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\fs\googledrivefs\googledrivefs.py", line 395, in removedir
+    raise DirectoryNotEmpty(path=path)
+fs.errors.DirectoryNotEmpty: directory 'test' is not empty</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt6.3' class='hiddenRow bg-success'>
+        <tr id="et6.3" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
+                <div class='testcase'>tearDownClass (test_updater)</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt6.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_parameter</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et6.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et6.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 39, in tearDownClass
+    cls.stop_calibre_web()
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 370, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+AttributeError: 'NoneType' object has no attribute 'find_element_by_id'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 41, in tearDownClass
+    cls.driver.get("http://127.0.0.1:8083")
+AttributeError: 'NoneType' object has no attribute 'get'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt6.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_failed</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt6.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c7', 3)">Detail</a>
         </td>
@@ -594,193 +635,49 @@ AssertionError: False is not true : BMP file is not detected</pre>
 
     
     
-        <tr id="st7.1" class="none bg-warning">
+        <tr id='pt7.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_deactivate</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.1')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st7.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st7.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="st7.2" class="none bg-warning">
+        <tr id='pt7.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.2')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st7.2" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st7.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="st7.3" class="none bg-warning">
+        <tr id='pt7.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_wrong_excecutable</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.3')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st7.3" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st7.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
     <tr id="su" class="skipClass">
-        <td>TestEbookConvertGDriveKepubify</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">3</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c8', 3)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="st8.1" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_deactivate</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.1')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st8.1" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st8.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="st8.2" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.2')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st8.2" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st8.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="st8.3" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.3')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st8.3" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st8.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping convert, kepubify not found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">13</td>
-        <td class="text-center">10</td>
+        <td class="text-center">11</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c9', 13)">Detail</a>
+            <a onclick="showClassDetail('c8', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt9.1' class='hiddenRow bg-success'>
+        <tr id='pt8.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
             </td>
@@ -789,7 +686,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.2' class='hiddenRow bg-success'>
+        <tr id='pt8.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_book</div>
             </td>
@@ -798,7 +695,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.3' class='hiddenRow bg-success'>
+        <tr id='pt8.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
@@ -807,7 +704,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.4' class='hiddenRow bg-success'>
+        <tr id='pt8.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
@@ -816,7 +713,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.5' class='hiddenRow bg-success'>
+        <tr id='pt8.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
@@ -825,7 +722,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.6' class='hiddenRow bg-success'>
+        <tr id='pt8.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
@@ -834,7 +731,7 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id='pt9.7' class='hiddenRow bg-success'>
+        <tr id='pt8.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
             </td>
@@ -843,38 +740,16 @@ AssertionError: False is not true : BMP file is not detected</pre>
     
     
     
-        <tr id="et9.8" class="none bg-info">
+        <tr id='pt8.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et9.8" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et9.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_additional_books.py", line 650, in test_title_sort
-    self.edit_book(1, content={'book_title': u'A bok'})
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 1397, in edit_book
-    ele.send_keys(Keys.CONTROL, "a")
-AttributeError: 'bool' object has no attribute 'send_keys'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt9.9' class='hiddenRow bg-success'>
+        <tr id='pt8.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
@@ -883,7 +758,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt9.10' class='hiddenRow bg-success'>
+        <tr id='pt8.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
@@ -892,7 +767,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt9.11' class='hiddenRow bg-success'>
+        <tr id='pt8.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
@@ -901,19 +776,19 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="st9.12" class="none bg-warning">
+        <tr id="st8.12" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.12')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.12')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st9.12" class="popup_window test_output" style="display:none;">
+                <div id="div_st8.12" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st9.12').style.display='none'"><span
+                                onclick='document.getElementById('div_st8.12').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -927,19 +802,19 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="st9.13" class="none bg-warning">
+        <tr id="st8.13" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.13')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.13')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st9.13" class="popup_window test_output" style="display:none;">
+                <div id="div_st8.13" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st9.13').style.display='none'"><span
+                                onclick='document.getElementById('div_st8.13').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -962,13 +837,13 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 33)">Detail</a>
+            <a onclick="showClassDetail('c9', 33)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt10.1' class='hiddenRow bg-success'>
+        <tr id='pt9.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_download_book</div>
             </td>
@@ -977,7 +852,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.2' class='hiddenRow bg-success'>
+        <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_author</div>
             </td>
@@ -986,7 +861,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.3' class='hiddenRow bg-success'>
+        <tr id='pt9.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_category</div>
             </td>
@@ -995,7 +870,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.4' class='hiddenRow bg-success'>
+        <tr id='pt9.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_comments</div>
             </td>
@@ -1004,7 +879,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.5' class='hiddenRow bg-success'>
+        <tr id='pt9.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_bool</div>
             </td>
@@ -1013,7 +888,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.6' class='hiddenRow bg-success'>
+        <tr id='pt9.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_categories</div>
             </td>
@@ -1022,7 +897,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.7' class='hiddenRow bg-success'>
+        <tr id='pt9.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
             </td>
@@ -1031,7 +906,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.8' class='hiddenRow bg-success'>
+        <tr id='pt9.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
             </td>
@@ -1040,7 +915,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.9' class='hiddenRow bg-success'>
+        <tr id='pt9.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
             </td>
@@ -1049,7 +924,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.10' class='hiddenRow bg-success'>
+        <tr id='pt9.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
             </td>
@@ -1058,7 +933,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.11' class='hiddenRow bg-success'>
+        <tr id='pt9.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
             </td>
@@ -1067,7 +942,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.12' class='hiddenRow bg-success'>
+        <tr id='pt9.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_language</div>
             </td>
@@ -1076,7 +951,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.13' class='hiddenRow bg-success'>
+        <tr id='pt9.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publisher</div>
             </td>
@@ -1085,19 +960,19 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="st10.14" class="none bg-warning">
+        <tr id="st9.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publishing_date</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st10.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st10.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st9.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st10.14').style.display='none'"><span
+                                onclick='document.getElementById('div_st9.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1111,7 +986,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.15' class='hiddenRow bg-success'>
+        <tr id='pt9.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_rating</div>
             </td>
@@ -1120,7 +995,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.16' class='hiddenRow bg-success'>
+        <tr id='pt9.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_series</div>
             </td>
@@ -1129,7 +1004,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.17' class='hiddenRow bg-success'>
+        <tr id='pt9.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_title</div>
             </td>
@@ -1138,19 +1013,19 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="st10.18" class="none bg-warning">
+        <tr id="st9.18" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st10.18')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.18')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st10.18" class="popup_window test_output" style="display:none;">
+                <div id="div_st9.18" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st10.18').style.display='none'"><span
+                                onclick='document.getElementById('div_st9.18').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1164,7 +1039,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.19' class='hiddenRow bg-success'>
+        <tr id='pt9.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_author</div>
             </td>
@@ -1173,7 +1048,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.20' class='hiddenRow bg-success'>
+        <tr id='pt9.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
             </td>
@@ -1182,7 +1057,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.21' class='hiddenRow bg-success'>
+        <tr id='pt9.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_language</div>
             </td>
@@ -1191,7 +1066,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.22' class='hiddenRow bg-success'>
+        <tr id='pt9.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
             </td>
@@ -1200,7 +1075,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.23' class='hiddenRow bg-success'>
+        <tr id='pt9.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_series</div>
             </td>
@@ -1209,7 +1084,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.24' class='hiddenRow bg-success'>
+        <tr id='pt9.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
             </td>
@@ -1218,7 +1093,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.25' class='hiddenRow bg-success'>
+        <tr id='pt9.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
@@ -1227,7 +1102,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.26' class='hiddenRow bg-success'>
+        <tr id='pt9.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1236,7 +1111,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.27' class='hiddenRow bg-success'>
+        <tr id='pt9.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1245,7 +1120,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.28' class='hiddenRow bg-success'>
+        <tr id='pt9.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1254,7 +1129,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.29' class='hiddenRow bg-success'>
+        <tr id='pt9.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1263,7 +1138,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.30' class='hiddenRow bg-success'>
+        <tr id='pt9.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1272,7 +1147,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.31' class='hiddenRow bg-success'>
+        <tr id='pt9.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1281,7 +1156,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.32' class='hiddenRow bg-success'>
+        <tr id='pt9.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1290,7 +1165,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt10.33' class='hiddenRow bg-success'>
+        <tr id='pt9.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
@@ -1308,13 +1183,13 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c11', 3)">Detail</a>
+            <a onclick="showClassDetail('c10', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt11.1' class='hiddenRow bg-success'>
+        <tr id='pt10.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_edit_books_list</div>
             </td>
@@ -1323,7 +1198,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt11.2' class='hiddenRow bg-success'>
+        <tr id='pt10.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
@@ -1332,7 +1207,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt11.3' class='hiddenRow bg-success'>
+        <tr id='pt10.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_merge_book</div>
             </td>
@@ -1345,18 +1220,18 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">2</td>
+        <td class="text-center">19</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 20)">Detail</a>
+            <a onclick="showClassDetail('c11', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt12.1' class='hiddenRow bg-success'>
+        <tr id='pt11.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
             </td>
@@ -1365,7 +1240,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.2' class='hiddenRow bg-success'>
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
@@ -1374,7 +1249,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.3' class='hiddenRow bg-success'>
+        <tr id='pt11.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
             </td>
@@ -1383,7 +1258,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.4' class='hiddenRow bg-success'>
+        <tr id='pt11.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
             </td>
@@ -1392,7 +1267,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.5' class='hiddenRow bg-success'>
+        <tr id='pt11.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
             </td>
@@ -1401,7 +1276,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.6' class='hiddenRow bg-success'>
+        <tr id='pt11.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
             </td>
@@ -1410,7 +1285,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.7' class='hiddenRow bg-success'>
+        <tr id='pt11.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
@@ -1419,7 +1294,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.8' class='hiddenRow bg-success'>
+        <tr id='pt11.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
@@ -1428,7 +1303,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.9' class='hiddenRow bg-success'>
+        <tr id='pt11.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
@@ -1437,7 +1312,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id='pt11.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
@@ -1446,7 +1321,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.11' class='hiddenRow bg-success'>
+        <tr id='pt11.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
@@ -1455,7 +1330,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.12' class='hiddenRow bg-success'>
+        <tr id='pt11.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
@@ -1464,7 +1339,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id='pt11.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
             </td>
@@ -1473,7 +1348,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.14' class='hiddenRow bg-success'>
+        <tr id='pt11.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
@@ -1482,7 +1357,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.15' class='hiddenRow bg-success'>
+        <tr id='pt11.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
@@ -1491,7 +1366,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.16' class='hiddenRow bg-success'>
+        <tr id='pt11.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
@@ -1500,7 +1375,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.17' class='hiddenRow bg-success'>
+        <tr id='pt11.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_epub</div>
             </td>
@@ -1509,7 +1384,7 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id='pt12.18' class='hiddenRow bg-success'>
+        <tr id='pt11.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
@@ -1518,26 +1393,26 @@ AttributeError: 'bool' object has no attribute 'send_keys'</pre>
     
     
     
-        <tr id="ft12.19" class="none bg-danger">
+        <tr id="ft11.19" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_cover_hdd</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.19')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.19')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft12.19" class="popup_window test_output" style="display:none;">
+                <div id="div_ft11.19" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft12.19').style.display='none'"><span
+                                onclick='document.getElementById('div_ft11.19').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_ebooks_gdrive.py", line 700, in test_upload_cover_hdd
-    self.assertGreater(diff('original.png', 'jpeg.png', delete_diff_file=True), 0.02)
-AssertionError: 0.0 not greater than 0.02</pre>
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_ebooks_gdrive.py", line 716, in test_upload_cover_hdd
+    self.assertGreater(diff('bmp.png', 'jpeg.png', delete_diff_file=True), 0.006)
+AssertionError: 0.003931532360116369 not greater than 0.006</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1547,31 +1422,11 @@ AssertionError: 0.0 not greater than 0.02</pre>
     
     
     
-        <tr id="ft12.20" class="none bg-danger">
+        <tr id='pt11.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.20')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.20" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft12.20').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_ebooks_gdrive.py", line 814, in test_watch_metadata
-    self.assertTrue(self.check_element_on_page((By.ID, "config_google_drive_watch_changes_response")))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1585,13 +1440,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 3)">Detail</a>
+            <a onclick="showClassDetail('c12', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
@@ -1600,7 +1455,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id='pt12.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
             </td>
@@ -1609,7 +1464,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id='pt12.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
@@ -1627,13 +1482,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 5)">Detail</a>
+            <a onclick="showClassDetail('c13', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt14.1' class='hiddenRow bg-success'>
+        <tr id='pt13.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -1642,7 +1497,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt14.2' class='hiddenRow bg-success'>
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -1651,7 +1506,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id='pt13.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
@@ -1660,7 +1515,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt14.4' class='hiddenRow bg-success'>
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
@@ -1669,7 +1524,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt14.5' class='hiddenRow bg-success'>
+        <tr id='pt13.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
@@ -1687,13 +1542,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 1)">Detail</a>
+            <a onclick="showClassDetail('c14', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -1711,13 +1566,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 3)">Detail</a>
+            <a onclick="showClassDetail('c15', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -1726,7 +1581,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -1735,7 +1590,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt15.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -1753,13 +1608,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 9)">Detail</a>
+            <a onclick="showClassDetail('c16', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -1768,7 +1623,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -1777,7 +1632,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -1786,7 +1641,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -1795,7 +1650,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -1804,7 +1659,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -1813,7 +1668,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt16.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -1822,7 +1677,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt16.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -1831,7 +1686,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt16.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -1843,19 +1698,19 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
-        <td class="text-center">12</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 12)">Detail</a>
+            <a onclick="showClassDetail('c17', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -1864,7 +1719,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -1873,7 +1728,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -1882,7 +1737,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.4' class='hiddenRow bg-success'>
+        <tr id='pt17.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -1891,7 +1746,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt17.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -1900,7 +1755,16 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt17.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -1909,7 +1773,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.7' class='hiddenRow bg-success'>
+        <tr id='pt17.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -1918,7 +1782,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.8' class='hiddenRow bg-success'>
+        <tr id='pt17.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -1927,7 +1791,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.9' class='hiddenRow bg-success'>
+        <tr id='pt17.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -1936,7 +1800,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.10' class='hiddenRow bg-success'>
+        <tr id='pt17.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -1945,7 +1809,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.11' class='hiddenRow bg-success'>
+        <tr id='pt17.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -1954,7 +1818,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt18.12' class='hiddenRow bg-success'>
+        <tr id='pt17.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -1972,13 +1836,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 7)">Detail</a>
+            <a onclick="showClassDetail('c18', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -1987,7 +1851,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -1996,7 +1860,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -2005,19 +1869,19 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="st19.4" class="none bg-warning">
+        <tr id="st18.4" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st19.4')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.4')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st19.4" class="popup_window test_output" style="display:none;">
+                <div id="div_st18.4" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st19.4').style.display='none'"><span
+                                onclick='document.getElementById('div_st18.4').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2031,7 +1895,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -2040,7 +1904,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -2049,7 +1913,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -2061,19 +1925,19 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="passClass">
         <td>TestLogin</td>
-        <td class="text-center">12</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 12)">Detail</a>
+            <a onclick="showClassDetail('c19', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -2082,7 +1946,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -2091,7 +1955,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -2100,7 +1964,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.4' class='hiddenRow bg-success'>
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -2109,7 +1973,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.5' class='hiddenRow bg-success'>
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -2118,7 +1982,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.6' class='hiddenRow bg-success'>
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -2127,7 +1991,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.7' class='hiddenRow bg-success'>
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -2136,7 +2000,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.8' class='hiddenRow bg-success'>
+        <tr id='pt19.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -2145,7 +2009,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.9' class='hiddenRow bg-success'>
+        <tr id='pt19.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -2154,7 +2018,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.10' class='hiddenRow bg-success'>
+        <tr id='pt19.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -2163,7 +2027,16 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.11' class='hiddenRow bg-success'>
+        <tr id='pt19.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLogin - test_magic_remote_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -2172,7 +2045,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt20.12' class='hiddenRow bg-success'>
+        <tr id='pt19.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2190,13 +2063,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 2)">Detail</a>
+            <a onclick="showClassDetail('c20', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -2205,7 +2078,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -2223,13 +2096,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 21)">Detail</a>
+            <a onclick="showClassDetail('c21', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -2238,7 +2111,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -2247,7 +2120,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -2256,7 +2129,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -2265,7 +2138,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -2274,7 +2147,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt21.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -2283,7 +2156,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.7' class='hiddenRow bg-success'>
+        <tr id='pt21.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -2292,7 +2165,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.8' class='hiddenRow bg-success'>
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -2301,7 +2174,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.9' class='hiddenRow bg-success'>
+        <tr id='pt21.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -2310,7 +2183,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.10' class='hiddenRow bg-success'>
+        <tr id='pt21.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -2319,7 +2192,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.11' class='hiddenRow bg-success'>
+        <tr id='pt21.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -2328,7 +2201,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.12' class='hiddenRow bg-success'>
+        <tr id='pt21.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -2337,7 +2210,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.13' class='hiddenRow bg-success'>
+        <tr id='pt21.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -2346,7 +2219,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.14' class='hiddenRow bg-success'>
+        <tr id='pt21.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -2355,7 +2228,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.15' class='hiddenRow bg-success'>
+        <tr id='pt21.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -2364,7 +2237,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.16' class='hiddenRow bg-success'>
+        <tr id='pt21.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -2373,7 +2246,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.17' class='hiddenRow bg-success'>
+        <tr id='pt21.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -2382,7 +2255,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.18' class='hiddenRow bg-success'>
+        <tr id='pt21.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -2391,7 +2264,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.19' class='hiddenRow bg-success'>
+        <tr id='pt21.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -2400,7 +2273,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.20' class='hiddenRow bg-success'>
+        <tr id='pt21.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -2409,7 +2282,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt22.21' class='hiddenRow bg-success'>
+        <tr id='pt21.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -2419,21 +2292,21 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestReader</td>
         <td class="text-center">5</td>
-        <td class="text-center">3</td>
-        <td class="text-center">2</td>
+        <td class="text-center">5</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 5)">Detail</a>
+            <a onclick="showClassDetail('c22', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -2442,7 +2315,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -2451,7 +2324,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -2460,65 +2333,20 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft23.4" class="none bg-danger">
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft23.4" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft23.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_reader.py", line 189, in test_sound_listener
-    self.sound_test('music.flac', 'Unknown - music', '0:02')
-  File "C:\Entwicklung\calibre-web-test\test\test_reader.py", line 176, in sound_test
-    self.assertEqual(title, title_item.text)
-AssertionError: 'Unknown - music' != '✖ ✖ Unknown - music'
-- Unknown - music
-+ ✖ ✖ Unknown - music
-? ++++</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft23.5" class="none bg-danger">
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft23.5" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft23.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_reader.py", line 59, in test_txt_reader
-    self.assertTrue('hörte' in content.text, 'Encoding of textfile viewer is not respected properly')
-AssertionError: False is not true : Encoding of textfile viewer is not respected properly</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2532,13 +2360,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 7)">Detail</a>
+            <a onclick="showClassDetail('c23', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -2547,7 +2375,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -2556,7 +2384,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -2565,7 +2393,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -2574,7 +2402,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -2583,7 +2411,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -2592,7 +2420,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt24.7' class='hiddenRow bg-success'>
+        <tr id='pt23.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -2610,13 +2438,13 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 11)">Detail</a>
+            <a onclick="showClassDetail('c24', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -2625,7 +2453,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -2634,7 +2462,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -2643,7 +2471,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -2652,7 +2480,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.5' class='hiddenRow bg-success'>
+        <tr id='pt24.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -2661,7 +2489,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.6' class='hiddenRow bg-success'>
+        <tr id='pt24.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -2670,7 +2498,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.7' class='hiddenRow bg-success'>
+        <tr id='pt24.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -2679,7 +2507,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.8' class='hiddenRow bg-success'>
+        <tr id='pt24.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -2688,7 +2516,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.9' class='hiddenRow bg-success'>
+        <tr id='pt24.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -2697,19 +2525,19 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id="st25.10" class="none bg-warning">
+        <tr id="st24.10" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.10')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st24.10')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st25.10" class="popup_window test_output" style="display:none;">
+                <div id="div_st24.10" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st25.10').style.display='none'"><span
+                                onclick='document.getElementById('div_st24.10').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2723,7 +2551,7 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
     
     
     
-        <tr id='pt25.11' class='hiddenRow bg-success'>
+        <tr id='pt24.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -2735,91 +2563,48 @@ AssertionError: False is not true : Encoding of textfile viewer is not respected
 
     <tr id="su" class="errorClass">
         <td>TestUpdater</td>
-        <td class="text-center">8</td>
-        <td class="text-center">6</td>
+        <td class="text-center">15</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">14</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 8)">Detail</a>
+            <a onclick="showClassDetail('c25', 15)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id="et25.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt26.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt26.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt26.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt26.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id="et26.6" class="none bg-info">
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
-            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et26.6')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et26.6" class="popup_window test_output" style="display:none;">
+                <div id="div_et25.1" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et26.6').style.display='none'"><span
+                                onclick='document.getElementById('div_et25.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 296, in test_perform_update_stable_errors
-    performUpdate.click()
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 80, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementNotInteractableException: Message: Element <div id="perform_update" class="btn btn-primary hidden"> could not be scrolled into view</pre>
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 206, in test_check_update_nightly_errors
+    self.fill_basic_config({'config_updatechannel': 'Nightly'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2829,19 +2614,448 @@ selenium.common.exceptions.ElementNotInteractableException: Message: Element <di
     
     
     
-        <tr id="st26.7" class="none bg-warning">
+        <tr id="et25.2" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.2" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.3" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 234, in test_check_update_nightly_request_errors
+    self.fill_basic_config({'config_updatechannel': 'Nightly'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.4" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.4" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.5" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.5" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 118, in test_check_update_stable_errors
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.6" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.6" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.7" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.7" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 146, in test_check_update_stable_versions
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.8" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.8" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.9" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.9" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 341, in test_perform_update
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.10" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.10" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.11" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.11" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 288, in test_perform_update_stable_errors
+    self.fill_basic_config({'config_updatechannel': 'Stable'})
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 282, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 198, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.12" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.12" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="st25.13" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.13')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st26.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st25.13" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st26.7').style.display='none'"><span
+                                onclick='document.getElementById('div_st25.13').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2855,9 +3069,94 @@ selenium.common.exceptions.ElementNotInteractableException: Message: Element <di
     
     
     
-        <tr id='pt26.8' class='hiddenRow bg-success'>
+        <tr id="et25.14" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.14')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.14" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 366, in test_reconnect_database
+    self.reconnect_database()
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 356, in reconnect_database
+    self.driver.find_element_by_id('restart_database').click()
+AttributeError: 'NoneType' object has no attribute 'find_element_by_id'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et25.15" class="none bg-info">
+            <td>
+                <div class='testcase'>TestUpdater - test_reconnect_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et25.15" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et25.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_updater.py", line 55, in tearDown
+    if not self.check_user_logged_in('admin'):
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 88, in check_user_logged_in
+    user_element = cls.check_element_on_page((By.ID, "top_user"))
+  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 633, in check_element_on_page
+    el = WebDriverWait(cls.driver, timeout).until(EC.presence_of_element_located(element))
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\wait.py", line 71, in until
+    value = method(self._driver)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 64, in __call__
+    return _find_element(driver, self.locator)
+  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 411, in _find_element
+    return driver.find_element(*by)
+AttributeError: 'NoneType' object has no attribute 'find_element'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestUserLoad</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c26', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt26.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3069,12 +3368,12 @@ selenium.common.exceptions.ElementNotInteractableException: Message: Element <di
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">33</td>
-        <td class="text-center">31</td>
+        <td class="text-center">33</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c28', 33)">Detail</a>
@@ -3200,72 +3499,20 @@ selenium.common.exceptions.ElementNotInteractableException: Message: Element <di
     
     
     
-        <tr id="et28.14" class="none bg-info">
+        <tr id='pt28.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.14" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_visiblilitys.py", line 342, in test_admin_change_visibility_rating
-    self.verify_order("nav_rate", 0, order=order)
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 1117, in verify_order
-    list_elements[index].click()
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 80, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "C:\Entwicklung\calibre-web-test\test\venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementNotInteractableException: Message: Element <a id="list_0" href="/ratings/new/1"> could not be scrolled into view</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et28.15" class="none bg-info">
+        <tr id='pt28.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et28.15" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et28.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_visiblilitys.py", line 229, in test_admin_change_visibility_read
-    self.verify_order("nav_unread", 0, order=order)
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 1113, in verify_order
-    if not len(list_elements):
-TypeError: object of type 'bool' has no len()</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3593,11 +3840,11 @@ TypeError: object of type 'bool' has no len()</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>290</td>
-        <td>267</td>
-        <td>5</td>
-        <td>4</td>
-        <td>14</td>
+        <td>295</td>
+        <td>269</td>
+        <td>1</td>
+        <td>17</td>
+        <td>8</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -3631,13 +3878,13 @@ TypeError: object of type 'bool' has no len()</pre>
           
             <tr>
               <th>Python</th>
-              <td>3.8.3</td>
+              <td>3.8.6</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Babel</th>
-              <td>2.8.0</td>
+              <td>2.8.1</td>
               <td>Basic</td>
             </tr>
           
@@ -3655,7 +3902,7 @@ TypeError: object of type 'bool' has no len()</pre>
           
             <tr>
               <th>Flask-Babel</th>
-              <td>1.0.0</td>
+              <td>2.0.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3684,24 +3931,6 @@ TypeError: object of type 'bool' has no len()</pre>
             </tr>
           
             <tr>
-              <th>natsort</th>
-              <td>7.0.1</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>pyasn1</th>
-              <td>0.4.8</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>pyasn1-modules</th>
-              <td>0.2.8</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
               <th>PyPDF2</th>
               <td>1.26.0</td>
               <td>Basic</td>
@@ -3709,19 +3938,13 @@ TypeError: object of type 'bool' has no len()</pre>
           
             <tr>
               <th>pytz</th>
-              <td>2020.1</td>
+              <td>2020.5</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>requests</th>
-              <td>2.23.0</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>rsa</th>
-              <td>4.6</td>
+              <td>2.24.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3739,31 +3962,25 @@ TypeError: object of type 'bool' has no len()</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.19</td>
+              <td>1.3.22</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>tornado</th>
-              <td>6.0.4</td>
+              <td>6.1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Unidecode</th>
-              <td>1.1.1</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>uritemplate</th>
-              <td>3.0.1</td>
+              <td>1.1.2</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Wand</th>
-              <td>0.5.9</td>
+              <td>0.6.5</td>
               <td>Basic</td>
             </tr>
           
@@ -3771,12 +3988,6 @@ TypeError: object of type 'bool' has no len()</pre>
               <th>Werkzeug</th>
               <td>1.0.1</td>
               <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestCoverEditBooks</td>
             </tr>
           
             <tr>
@@ -3804,14 +4015,8 @@ TypeError: object of type 'bool' has no len()</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEbookConvertCalibreGDrive</td>
-            </tr>
-          
-            <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3819,6 +4024,42 @@ TypeError: object of type 'bool' has no len()</pre>
               <th>PyYAML</th>
               <td>5.3.1</td>
               <td>TestEbookConvertCalibreGDrive</td>
+            </tr>
+          
+            <tr>
+              <th>google-api-python-client</th>
+              <td>1.12.8</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>httplib2</th>
+              <td>0.18.1</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.2</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>oauth2client</th>
+              <td>4.1.3</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
+              <td>TestEbookConvertGDriveKepubify</td>
+            </tr>
+          
+            <tr>
+              <th>PyYAML</th>
+              <td>5.3.1</td>
+              <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
@@ -3830,12 +4071,6 @@ TypeError: object of type 'bool' has no len()</pre>
             <tr>
               <th>lxml</th>
               <td>4.6.2</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -3852,12 +4087,6 @@ TypeError: object of type 'bool' has no len()</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEditBooks</td>
-            </tr>
-          
-            <tr>
               <th>google-api-python-client</th>
               <td>1.12.8</td>
               <td>TestEditBooksOnGdrive</td>
@@ -3882,14 +4111,8 @@ TypeError: object of type 'bool' has no len()</pre>
             </tr>
           
             <tr>
-              <th>Pillow</th>
-              <td>8.0.1</td>
-              <td>TestEditBooksOnGdrive</td>
-            </tr>
-          
-            <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -3918,8 +4141,8 @@ TypeError: object of type 'bool' has no len()</pre>
             </tr>
           
             <tr>
-              <th>PyDrive</th>
-              <td>1.3.1</td>
+              <th>PyDrive2</th>
+              <td>1.7.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -3973,7 +4196,7 @@ TypeError: object of type 'bool' has no len()</pre>
 </div>
 
 <script>
-    drawCircle(267, 5, 4, 14);
+    drawCircle(269, 1, 17, 8);
 </script>
 
 </div>

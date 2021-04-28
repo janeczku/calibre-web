@@ -8,7 +8,10 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+              <span class="img">
+                <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+                {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+              </span>
           </a>
       </div>
       <div class="meta">
@@ -82,7 +85,10 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+            <span class="img">
               <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/>
+              {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+            </span>
           </a>
       </div>
       <div class="meta">

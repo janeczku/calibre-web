@@ -45,6 +45,7 @@ mimetypes.add_type('application/fb2+zip', '.fb2')
 mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
 mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
 mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
 mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
@@ -94,9 +95,13 @@ def create_app():
         app.root_path = app.root_path.decode('utf-8')
         app.instance_path = app.instance_path.decode('utf-8')
 
-    cache_buster.init_cache_busting(app)
+    if os.environ.get('FLASK_DEBUG'):
+        cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
+    if sys.version_info < (3, 0):
+        log.info('Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2 please consider upgrading to Python3')
+        print('Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2 please consider upgrading to Python3')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
@@ -122,7 +127,7 @@ def get_locale():
     user = getattr(g, 'user', None)
     # user = None
     if user is not None and hasattr(user, "locale"):
-        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+        if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
 
     preferred = list()

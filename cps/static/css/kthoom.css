@@ -33,7 +33,6 @@ body {
   position: relative;
   cursor: pointer;
   padding: 4px;
-
   transition: all 0.2s ease;
 }
 
@@ -45,7 +44,7 @@ body {
 
 #sidebar a.active,
 #sidebar a.active img + span {
-  background-color: #45B29D;
+  background-color: #45b29d;
 }
 
 #sidebar li img {
@@ -85,13 +84,22 @@ body {
 #progress .bar-load,
 #progress .bar-read {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
   position: absolute;
   top: 0;
-  left: 0;
   bottom: 0;
   transition: width 150ms ease-in-out;
+}
+
+#progress .from-left {
+  left: 0;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+#progress .from-right {
+  right: 0;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 #progress .bar-load {
@@ -99,7 +107,7 @@ body {
   background-color: #ccc;
 }
 
-#progress .bar-read  {
+#progress .bar-read {
   color: #fff;
   background-color: #45b29d;
 }

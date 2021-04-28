@@ -45,6 +45,7 @@ parser.add_argument('-v', '--version', action='version', help='Shows version num
                     version=version_info())
 parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
+parser.add_argument('-f', action='store_true', help='Enables filepicker in unconfigured mode')
 args = parser.parse_args()
 
 if sys.version_info < (3, 0):
@@ -70,7 +71,7 @@ if args.c:
     if os.path.isfile(args.c):
         certfilepath = args.c
     else:
-        print("Certfilepath is invalid. Exiting...")
+        print("Certfile path is invalid. Exiting...")
         sys.exit(1)
 
 if args.c == "":
@@ -80,7 +81,7 @@ if args.k:
     if os.path.isfile(args.k):
         keyfilepath = args.k
     else:
-        print("Keyfilepath is invalid. Exiting...")
+        print("Keyfile path is invalid. Exiting...")
         sys.exit(1)
 
 if (args.k and not args.c) or (not args.k and args.c):
@@ -90,23 +91,29 @@ if (args.k and not args.c) or (not args.k and args.c):
 if args.k == "":
     keyfilepath = ""
 
-# handle and check ipadress argument
-ipadress = args.i or None
-if ipadress:
+# handle and check ip address argument
+ip_address = args.i or None
+if ip_address:
     try:
         # try to parse the given ip address with socket
         if hasattr(socket, 'inet_pton'):
-            if ':' in ipadress:
-                socket.inet_pton(socket.AF_INET6, ipadress)
+            if ':' in ip_address:
+                socket.inet_pton(socket.AF_INET6, ip_address)
             else:
-                socket.inet_pton(socket.AF_INET, ipadress)
+                socket.inet_pton(socket.AF_INET, ip_address)
         else:
             # on windows python < 3.4, inet_pton is not available
             # inet_atom only handles IPv4 addresses
-            socket.inet_aton(ipadress)
+            socket.inet_aton(ip_address)
     except socket.error as err:
-        print(ipadress, ':', err)
+        print(ip_address, ':', err)
         sys.exit(1)
 
 # handle and check user password argument
-user_password = args.s or None
+user_credentials = args.s or None
+if user_credentials and ":" not in user_credentials:
+    print("No valid 'username:password' format")
+    sys.exit(3)
+
+# Handles enabling of filepicker
+filepicker = args.f or None

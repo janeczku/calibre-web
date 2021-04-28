@@ -24,10 +24,7 @@ import io
 import mimetypes
 import re
 import shutil
-import glob
 import time
-import zipfile
-import json
 import unicodedata
 from datetime import datetime, timedelta
 from tempfile import gettempdir
@@ -35,10 +32,10 @@ from tempfile import gettempdir
 import requests
 from babel.dates import format_datetime
 from babel.units import format_unit
-from flask import send_from_directory, make_response, redirect, abort, url_for, send_file
+from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text
+from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 
@@ -53,13 +50,6 @@ try:
 except ImportError:
     use_unidecode = False
 
-try:
-    from PIL import Image as PILImage
-    from PIL import UnidentifiedImageError
-    use_PIL = True
-except ImportError:
-    use_PIL = False
-
 from . import calibre_db
 from .tasks.convert import TaskConvert
 from . import logger, config, get_locale, db, ub
@@ -69,8 +59,16 @@ from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.mail import TaskEmail
 
-
 log = logger.create()
+
+try:
+    from wand.image import Image
+    from wand.exceptions import MissingDelegateError
+    use_IM = True
+except (ImportError, RuntimeError) as e:
+    log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
+    use_IM = False
+    MissingDelegateError = BaseException
 
 
 # Convert existing book entry to new format
@@ -112,21 +110,21 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 def send_test_mail(kindle_mail, user_name):
     WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
                      config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
-                               _(u'This e-mail has been sent via Calibre-Web.')))
+                                          _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
 # Send registration email or password reset email, depending on parameter resend (False means welcome email)
 def send_registration_mail(e_mail, user_name, default_password, resend=False):
-    text = "Hello %s!\r\n" % user_name
+    txt = "Hello %s!\r\n" % user_name
     if not resend:
-        text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    text += "Please log in to your account using the following informations:\r\n"
-    text += "User name: %s\r\n" % user_name
-    text += "Password: %s\r\n" % default_password
-    text += "Don't forget to change your password after first login.\r\n"
-    text += "Sincerely\r\n\r\n"
-    text += "Your Calibre-Web team"
+        txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
+    txt += "Please log in to your account using the following informations:\r\n"
+    txt += "User name: %s\r\n" % user_name
+    txt += "Password: %s\r\n" % default_password
+    txt += "Don't forget to change your password after first login.\r\n"
+    txt += "Sincerely\r\n\r\n"
+    txt += "Your Calibre-Web team"
     WorkerThread.add(None, TaskEmail(
         subject=_(u'Get Started with Calibre-Web'),
         filepath=None,
@@ -134,64 +132,52 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         settings=config.get_mail_settings(),
         recipient=e_mail,
         taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
-        text=text
+        text=txt
     ))
-
     return
+
+
+def check_send_to_kindle_with_converter(formats):
+    bookformats = list()
+    if 'EPUB' in formats and 'MOBI' not in formats:
+        bookformats.append({'format': 'Mobi',
+                            'convert': 1,
+                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                      orig='Epub',
+                                      format='Mobi')})
+    if 'AZW3' in formats and not 'MOBI' in formats:
+        bookformats.append({'format': 'Mobi',
+                            'convert': 2,
+                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                      orig='Azw3',
+                                      format='Mobi')})
+    return bookformats
 
 
 def check_send_to_kindle(entry):
     """
         returns all available book formats for sending to Kindle
     """
+    formats = list()
+    bookformats = list()
     if len(entry.data):
-        bookformats = list()
-        if not config.config_converterpath:
-            # no converter - only for mobi and pdf formats
-            for ele in iter(entry.data):
-                if ele.uncompressed_size < config.mail_size:
-                    if 'MOBI' in ele.format:
-                        bookformats.append({'format': 'Mobi',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Mobi')})
-                    if 'PDF' in ele.format:
-                        bookformats.append({'format': 'Pdf',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Pdf')})
-                    if 'AZW' in ele.format:
-                        bookformats.append({'format': 'Azw',
-                                            'convert': 0,
-                                            'text': _('Send %(format)s to Kindle', format='Azw')})
-        else:
-            formats = list()
-            for ele in iter(entry.data):
-                if ele.uncompressed_size < config.mail_size:
-                    formats.append(ele.format)
-            if 'MOBI' in formats:
-                bookformats.append({'format': 'Mobi',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Mobi')})
-            if 'AZW' in formats:
-                bookformats.append({'format': 'Azw',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Azw')})
-            if 'PDF' in formats:
-                bookformats.append({'format': 'Pdf',
-                                    'convert': 0,
-                                    'text': _('Send %(format)s to Kindle', format='Pdf')})
-            if config.config_converterpath:
-                if 'EPUB' in formats and not 'MOBI' in formats:
-                    bookformats.append({'format': 'Mobi',
-                                        'convert':1,
-                                        'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                                  orig='Epub',
-                                                  format='Mobi')})
-                if 'AZW3' in formats and not 'MOBI' in formats:
-                    bookformats.append({'format': 'Mobi',
-                                        'convert': 2,
-                                        'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                                  orig='Azw3',
-                                                  format='Mobi')})
+        for ele in iter(entry.data):
+            if ele.uncompressed_size < config.mail_size:
+                formats.append(ele.format)
+        if 'MOBI' in formats:
+            bookformats.append({'format': 'Mobi',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Mobi')})
+        if 'PDF' in formats:
+            bookformats.append({'format': 'Pdf',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Pdf')})
+        if 'AZW' in formats:
+            bookformats.append({'format': 'Azw',
+                                'convert': 0,
+                                'text': _('Send %(format)s to Kindle', format='Azw')})
+        if config.config_converterpath:
+            bookformats.extend(check_send_to_kindle_with_converter(formats))
         return bookformats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
@@ -201,7 +187,7 @@ def check_send_to_kindle(entry):
 # Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
 # list with supported formats
 def check_read_formats(entry):
-    EXTENSIONS_READER = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR'}
+    EXTENSIONS_READER = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR', 'DJVU'}
     bookformats = list()
     if len(entry.data):
         for ele in iter(entry.data):
@@ -494,8 +480,8 @@ def reset_password(user_id):
         password = generate_random_password()
         existing_user.password = generate_password_hash(password)
         ub.session.commit()
-        send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-        return 1, existing_user.nickname
+        send_registration_mail(existing_user.email, existing_user.name, password, True)
+        return 1, existing_user.name
     except Exception:
         ub.session.rollback()
         return 0, None
@@ -512,10 +498,36 @@ def generate_random_password():
 
 def uniq(inpt):
     output = []
+    inpt = [ " ".join(inp.split()) for inp in inpt]
     for x in inpt:
         if x not in output:
             output.append(x)
     return output
+
+def check_email(email):
+    email = valid_email(email)
+    if ub.session.query(ub.User).filter(func.lower(ub.User.email) == email.lower()).first():
+        log.error(u"Found an existing account for this e-mail address")
+        raise Exception(_(u"Found an existing account for this e-mail address"))
+    return email
+
+
+def check_username(username):
+    username = username.strip()
+    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
+        log.error(u"This username is already taken")
+        raise Exception (_(u"This username is already taken"))
+    return username
+
+
+def valid_email(email):
+    email = email.strip()
+    # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+    if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                     email):
+        log.error(u"Invalid e-mail address format")
+        raise Exception(_(u"Invalid e-mail address format"))
+    return email
 
 # ################################# External interface #################################
 
@@ -564,9 +576,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
                     return get_cover_on_failure(use_generic_cover_on_failure)
-            except Exception as e:
-                log.exception(e)
-                # traceback.print_exc()
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
@@ -589,29 +600,35 @@ def save_cover_from_url(url, book_path):
             requests.exceptions.Timeout) as ex:
         log.info(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
-    except UnidentifiedImageError as ex:
+    except MissingDelegateError as ex:
         log.info(u'File Format Error %s', ex)
         return False, _("Cover Format Error")
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
-    if hasattr(img, '_content'):
-        f = open(os.path.join(filepath, saved_filename), "wb")
-        f.write(img._content)
-        f.close()
-    else:
-        # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-        if not os.path.exists(filepath):
-            try:
-                os.makedirs(filepath)
-            except OSError:
-                log.error(u"Failed to create path for cover")
-                return False, _(u"Failed to create path for cover")
+    # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+    if not os.path.exists(filepath):
         try:
-            img.save(os.path.join(filepath, saved_filename))
-        except (IOError, OSError):
-            log.error(u"Cover-file is not a valid image file, or could not be stored")
-            return False, _(u"Cover-file is not a valid image file, or could not be stored")
+            os.makedirs(filepath)
+        except OSError:
+            log.error(u"Failed to create path for cover")
+            return False, _(u"Failed to create path for cover")
+    try:
+        # upload of jgp file without wand
+        if isinstance(img, requests.Response):
+            with open(os.path.join(filepath, saved_filename), 'wb') as f:
+                f.write(img.content)
+        else:
+            if hasattr(img, "metadata"):
+                # upload of jpg/png... via url
+                img.save(filename=os.path.join(filepath, saved_filename))
+                img.close()
+            else:
+                # upload of jpg/png... from hdd
+                img.save(os.path.join(filepath, saved_filename))
+    except (IOError, OSError):
+        log.error(u"Cover-file is not a valid image file, or could not be stored")
+        return False, _(u"Cover-file is not a valid image file, or could not be stored")
     return True, None
 
 
@@ -619,31 +636,33 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
 def save_cover(img, book_path):
     content_type = img.headers.get('content-type')
 
-    if use_PIL:
-        if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
-            log.error("Only jpg/jpeg/png/webp files are supported as coverfile")
-            return False, _("Only jpg/jpeg/png/webp files are supported as coverfile")
+    if use_IM:
+        if content_type not in ('image/jpeg', 'image/png', 'image/webp', 'image/bmp'):
+            log.error("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
+            return False, _("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
-        if content_type in ('image/png', 'image/webp'):
+        if content_type != 'image/jpg':
             if hasattr(img, 'stream'):
-                imgc = PILImage.open(img.stream)
+                imgc = Image(blob=img.stream)
             else:
-                imgc = PILImage.open(io.BytesIO(img.content))
-            im = imgc.convert('RGB')
-            tmp_bytesio = io.BytesIO()
-            im.save(tmp_bytesio, format='JPEG')
-            img._content = tmp_bytesio.getvalue()
+                imgc = Image(blob=io.BytesIO(img.content))
+            imgc.format = 'jpeg'
+            imgc.transform_colorspace("rgb")
+            img = imgc
     else:
         if content_type not in 'image/jpeg':
             log.error("Only jpg/jpeg files are supported as coverfile")
             return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
-        tmpDir = gettempdir()
-        ret, message = save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img)
+        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+        ret, message = save_cover_from_filestorage(tmp_dir, "uploaded_cover.jpg", img)
         if ret is True:
-            gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
-                                        os.path.join(tmpDir, "uploaded_cover.jpg"))
+            gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg').replace("\\","/"),
+                                        os.path.join(tmp_dir, "uploaded_cover.jpg"))
             log.info("Cover is saved on Google Drive")
             return True, None
         else:
@@ -674,6 +693,7 @@ def do_download_file(book, book_format, client, data, headers):
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
+        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
         return response
 
 ##################################
@@ -697,7 +717,7 @@ def check_unrar(unrarLocation):
                 log.debug("unrar version %s", version)
                 break
     except (OSError, UnicodeDecodeError) as err:
-        log.exception(err)
+        log.debug_or_exception(err)
         return _('Error excecuting UnRar')
 
 
@@ -713,7 +733,6 @@ def json_serial(obj):
             'seconds': obj.seconds,
             'microseconds': obj.microseconds,
         }
-        # return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
 
@@ -737,8 +756,8 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for num, user, added, task in tasklist:
-        if user == current_user.nickname or current_user.role_admin():
+    for __, user, __, task in tasklist:
+        if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
                 ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
@@ -776,8 +795,8 @@ def tags_filters():
 # checks if domain is in database (including wildcards)
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
+# in all calls the email address is checked for validity
 def check_valid_domain(domain_text):
-    # domain_text = domain_text.split('@', 1)[-1].lower()
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     if not len(result):
@@ -811,6 +830,7 @@ def get_download_link(book_id, book_format, client):
     if book:
         data1 = calibre_db.get_book_format(book.id, book_format.upper())
     else:
+        log.error("Book id {} not found for downloading".format(book_id))
         abort(404)
     if data1:
         # collect downloaded books only for registered user and not for anonymous user
@@ -827,4 +847,3 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
-

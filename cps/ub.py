@@ -26,102 +26,39 @@ import uuid
 from flask import session as flask_session
 from binascii import hexlify
 
-from flask import g
-from flask_babel import gettext as _
 from flask_login import AnonymousUserMixin, current_user
-from werkzeug.local import LocalProxy
+
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
-except ImportError:
+except ImportError as e:
     # fails on flask-dance >1.3, due to renaming
     try:
         from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
         oauth_support = True
-    except ImportError:
+    except ImportError as e:
         oauth_support = False
-from sqlalchemy import create_engine, exc, exists, event
+from sqlalchemy import create_engine, exc, exists, event, text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy.orm import backref, relationship, sessionmaker, Session
+from sqlalchemy.sql.expression import func
+try:
+    # Compatibility with sqlalchemy 2.0
+    from sqlalchemy.orm import declarative_base
+except ImportError:
+    from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants
+from . import constants, logger, cli
 
+log = logger.create()
 
 session = None
 app_DB_path = None
 Base = declarative_base()
 searched_ids = {}
-
-
-def get_sidebar_config(kwargs=None):
-    kwargs = kwargs or []
-    if 'content' in kwargs:
-        content = kwargs['content']
-        content = isinstance(content, (User, LocalProxy)) and not content.role_anonymous()
-    else:
-        content = 'conf' in kwargs
-    sidebar = list()
-    sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
-                    "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
-                    "show_text": _('Show recent books'), "config_show":False})
-    sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
-                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
-                    "show_text": _('Show Hot Books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
-                    "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not g.user.is_anonymous),
-                    "page": "download", "show_text": _('Show Downloaded Books'),
-                    "config_show": content})
-    sidebar.append(
-        {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
-         "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
-         "show_text": _('Show Top Rated Books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
-                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous),
-                    "page": "read", "show_text": _('Show read and unread'), "config_show": content})
-    sidebar.append(
-        {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
-         "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
-         "show_text": _('Show unread'), "config_show": False})
-    sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
-                    "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
-                    "show_text": _('Show random books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
-                    "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category",
-                    "show_text": _('Show category selection'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
-                    "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series",
-                    "show_text": _('Show series selection'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
-                    "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author",
-                    "show_text": _('Show author selection'), "config_show": True})
-    sidebar.append(
-        {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
-         "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
-         "show_text": _('Show publisher selection'), "config_show":True})
-    sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
-                    "visibility": constants.SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
-                    "page": "language",
-                    "show_text": _('Show language selection'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
-                    "visibility": constants.SIDEBAR_RATING, 'public': True,
-                    "page": "rating", "show_text": _('Show ratings selection'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
-                    "visibility": constants.SIDEBAR_FORMAT, 'public': True,
-                    "page": "format", "show_text": _('Show file formats selection'), "config_show": True})
-    sidebar.append(
-        {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
-         "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
-         "show_text": _('Show archived books'), "config_show": content})
-    sidebar.append(
-        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
-         "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
-         "show_text": _('Show Books List'), "config_show": content})
-
-    return sidebar
 
 
 def store_ids(result):
@@ -205,15 +142,15 @@ class UserBase:
         mct = self.allowed_column_value or ""
         return [t.strip() for t in mct.split(",")]
 
-    def get_view_property(self, page, property):
+    def get_view_property(self, page, prop):
         if not self.view_settings.get(page):
             return None
-        return self.view_settings[page].get(property)
+        return self.view_settings[page].get(prop)
 
-    def set_view_property(self, page, property, value):
+    def set_view_property(self, page, prop, value):
         if not self.view_settings.get(page):
             self.view_settings[page] = dict()
-        self.view_settings[page][property] = value
+        self.view_settings[page][prop] = value
         try:
             flag_modified(self, "view_settings")
         except AttributeError:
@@ -225,7 +162,7 @@ class UserBase:
             # ToDo: Error message
 
     def __repr__(self):
-        return '<User %r>' % self.nickname
+        return '<User %r>' % self.name
 
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
@@ -235,7 +172,7 @@ class User(UserBase, Base):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
-    nickname = Column(String(64), unique=True)
+    name = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
     role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
@@ -245,7 +182,6 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
-    mature_content = Column(Boolean, default=True)
     denied_tags = Column(String, default="")
     allowed_tags = Column(String, default="")
     denied_column_value = Column(String, default="")
@@ -281,22 +217,18 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def loadSettings(self):
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\
             .first()  # type: User
-        self.nickname = data.nickname
+        self.name = data.name
         self.role = data.role
         self.id=data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        # self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
         self.denied_tags = data.denied_tags
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
-        # Initialize flask_session once
-        if 'view' not in flask_session:
-            flask_session['view']={}
 
 
     def role_admin(self):
@@ -315,14 +247,18 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return False
 
     def get_view_property(self, page, prop):
-        if not flask_session['view'].get(page):
-            return None
-        return flask_session['view'][page].get(prop)
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                return None
+            return flask_session['view'][page].get(prop)
+        return None
 
     def set_view_property(self, page, prop, value):
-        if not flask_session['view'].get(page):
-            flask_session['view'][page] = dict()
-        flask_session['view'][page][prop] = value
+        if 'view' in flask_session:
+            if not flask_session['view'].get(page):
+                flask_session['view'][page] = dict()
+            flask_session['view'][page][prop] = value
+        return None
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
@@ -503,11 +439,8 @@ class RemoteAuthToken(Base):
         return '<Token %r>' % self.id
 
 
-# Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
-# rows with SQL commands
-def migrate_Database(session):
-    engine = session.bind
+# Add missing tables during migration of database
+def add_missing_tables(engine, session):
     if not engine.dialect.has_table(engine.connect(), "book_read_link"):
         ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
@@ -521,10 +454,14 @@ def migrate_Database(session):
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
-        ReadBook.__table__.create(bind=engine)
+        Registration.__table__.create(bind=engine)
         with engine.connect() as conn:
             conn.execute("insert into registration (domain, allow) values('%.%',1)")
         session.commit()
+
+
+# migrate all settings missing in registration table
+def migrate_registration_table(engine, session):
     try:
         session.query(exists().where(Registration.allow)).scalar()
         session.commit()
@@ -534,27 +471,29 @@ def migrate_Database(session):
             conn.execute("update registration set 'allow' = 1")
         session.commit()
     try:
-        session.query(exists().where(RemoteAuthToken.token_type)).scalar()
-        session.commit()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
-        with engine.connect() as conn:
-            conn.execute("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0")
-            conn.execute("update remote_auth_token set 'token_type' = 0")
-        session.commit()
+        # Handle table exists, but no content
+        cnt = session.query(Registration).count()
+        if not cnt:
+            with engine.connect() as conn:
+                conn.execute("insert into registration (domain, allow) values('%.%',1)")
+            session.commit()
+    except exc.OperationalError:  # Database is not writeable
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
+
+
+# Remove login capability of user Guest
+def migrate_guest_password(engine, session):
     try:
-        session.query(exists().where(ReadBook.read_status)).scalar()
-    except exc.OperationalError:
         with engine.connect() as conn:
-            conn.execute("ALTER TABLE book_read_link ADD column 'read_status' INTEGER DEFAULT 0")
-            conn.execute("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read")
-            conn.execute("ALTER TABLE book_read_link ADD column 'last_modified' DATETIME")
-            conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
-            conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")
+            conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
         session.commit()
-    test = session.query(ReadBook).filter(ReadBook.last_modified == None).all()
-    for book in test:
-        book.last_modified = datetime.datetime.utcnow()
-    session.commit()
+    except exc.OperationalError:
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
+
+
+def migrate_shelfs(engine, session):
     try:
         session.query(exists().where(Shelf.uuid)).scalar()
     except exc.OperationalError:
@@ -570,18 +509,51 @@ def migrate_Database(session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
-    # Handle table exists, but no content
-    cnt = session.query(Registration).count()
-    if not cnt:
-        with engine.connect() as conn:
-            conn.execute("insert into registration (domain, allow) values('%.%',1)")
-        session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         with engine.connect() as conn:
             conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
         session.commit()
+
+
+def migrate_readBook(engine, session):
+    try:
+        session.query(exists().where(ReadBook.read_status)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+            conn.execute("ALTER TABLE book_read_link ADD column 'read_status' INTEGER DEFAULT 0")
+            conn.execute("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read")
+            conn.execute("ALTER TABLE book_read_link ADD column 'last_modified' DATETIME")
+            conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
+            conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")
+        session.commit()
+    test = session.query(ReadBook).filter(ReadBook.last_modified == None).all()
+    for book in test:
+        book.last_modified = datetime.datetime.utcnow()
+    session.commit()
+
+
+def migrate_remoteAuthToken(engine, session):
+    try:
+        session.query(exists().where(RemoteAuthToken.token_type)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        with engine.connect() as conn:
+            conn.execute("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0")
+            conn.execute("update remote_auth_token set 'token_type' = 0")
+        session.commit()
+
+# Migrate database to current version, has to be updated after every database change. Currently migration from
+# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
+# rows with SQL commands
+def migrate_Database(session):
+    engine = session.bind
+    add_missing_tables(engine, session)
+    migrate_registration_table(engine, session)
+    migrate_readBook(engine, session)
+    migrate_remoteAuthToken(engine, session)
+    migrate_shelfs(engine, session)
     try:
         create = False
         session.query(exists().where(User.sidebar_view)).scalar()
@@ -620,47 +592,43 @@ def migrate_Database(session):
         with engine.connect() as conn:
             conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
         session.commit()
-
-    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
-        is None:
-        create_anonymous_user(session)
     try:
-        # check if one table with autoincrement is existing (should be user table)
-        with engine.connect() as conn:
-            conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+        # check if name is in User table instead of nickname
+        session.query(exists().where(User.name)).scalar()
     except exc.OperationalError:
         # Create new table user_id and copy contents of table user into it
         with engine.connect() as conn:
-            conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                     "nickname VARCHAR(64),"
+            conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                     "name VARCHAR(64),"
                      "email VARCHAR(120),"
                      "role SMALLINT,"
                      "password VARCHAR,"
                      "kindle_mail VARCHAR(120),"
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
-                     "default_language VARCHAR(3),"
-                     # "series_view VARCHAR(10),"
-                     "view_settings VARCHAR,"                     
-                     "UNIQUE (nickname),"
-                     "UNIQUE (email))")
-            conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, view_settings) "
+                     "default_language VARCHAR(3),"                     
+                     "denied_tags VARCHAR,"
+                     "allowed_tags VARCHAR,"
+                     "denied_column_value VARCHAR,"
+                     "allowed_column_value VARCHAR,"
+                     "view_settings JSON,"         
+                     "UNIQUE (name),"
+                     "UNIQUE (email))"))
+            conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings)"
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                     "sidebar_view, default_language FROM user")
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings FROM user"))
             # delete old user table and rename new user_id table to user:
-            conn.execute("DROP TABLE user")
-            conn.execute("ALTER TABLE user_id RENAME TO user")
+            conn.execute(text("DROP TABLE user"))
+            conn.execute(text("ALTER TABLE user_id RENAME TO user"))
         session.commit()
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
+       is None:
+        create_anonymous_user(session)
 
-    # Remove login capability of user Guest
-    try:
-        with engine.connect() as conn:
-            conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
-        session.commit()
-    except exc.OperationalError:
-        print('Settings database is not writeable. Exiting...')
-        sys.exit(1)
+    migrate_guest_password(engine, session)
 
 
 def clean_database(session):
@@ -678,18 +646,24 @@ def update_download(book_id, user_id):
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
         session.add(new_download)
-        session.commit()
+        try:
+            session.commit()
+        except exc.OperationalError:
+            session.rollback()
 
 
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
-    session.commit()
+    try:
+        session.commit()
+    except exc.OperationalError:
+        session.rollback()
 
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
-    user.nickname = "Guest"
+    user.name = "Guest"
     user.email = 'no@email'
     user.role = constants.ROLE_ANONYMOUS
     user.password = ''
@@ -704,7 +678,7 @@ def create_anonymous_user(session):
 # Generate User admin with admin123 password, and access to everything
 def create_admin_user(session):
     user = User()
-    user.nickname = "admin"
+    user.name = "admin"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
@@ -725,7 +699,7 @@ def init_db(app_db_path):
     app_DB_path = app_db_path
     engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
 
-    Session = sessionmaker()
+    Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
     session = Session()
 
@@ -737,6 +711,24 @@ def init_db(app_db_path):
         Base.metadata.create_all(engine)
         create_admin_user(session)
         create_anonymous_user(session)
+
+    if cli.user_credentials:
+        username, password = cli.user_credentials.split(':', 1)
+        user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
+        if user:
+            if not password:
+                print("Empty password is not allowed")
+                sys.exit(4)
+            user.password = generate_password_hash(password)
+            if session_commit() == "":
+                print("Password for user '{}' changed".format(username))
+                sys.exit(0)
+            else:
+                print("Failed changing password")
+                sys.exit(3)
+        else:
+            print("Username '{}' not valid, can't change password".format(username))
+            sys.exit(3)
 
 
 def dispose():
@@ -754,3 +746,13 @@ def dispose():
                 old_session.bind.dispose()
             except Exception:
                 pass
+
+def session_commit(success=None):
+    try:
+        session.commit()
+        if success:
+            log.info(success)
+    except (exc.OperationalError, exc.InvalidRequestError) as e:
+        session.rollback()
+        log.debug_or_exception(e)
+    return ""

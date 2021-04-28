@@ -45,7 +45,7 @@ class ImprovedQueue(queue.Queue):
         with self.mutex:
             return list(self.queue)
 
-#Class for all worker tasks in the background
+# Class for all worker tasks in the background
 class WorkerThread(threading.Thread):
     _instance = None
 
@@ -69,6 +69,7 @@ class WorkerThread(threading.Thread):
     def add(cls, user, task):
         ins = cls.getInstance()
         ins.num += 1
+        log.debug("Add Task for user: {}: {}".format(user, task))
         ins.queue.put(QueuedTask(
             num=ins.num,
             user=user,
@@ -110,7 +111,7 @@ class WorkerThread(threading.Thread):
                 # We don't use a daemon here because we don't want the tasks to just be abruptly halted, leading to
                 # possible file / database corruption
                 item = self.queue.get(timeout=1)
-            except queue.Empty as ex:
+            except queue.Empty:
                 time.sleep(1)
                 continue
 
@@ -159,9 +160,9 @@ class CalibreTask:
         # catch any unhandled exceptions in a task and automatically fail it
         try:
             self.run(*args)
-        except Exception as e:
-            self._handleError(str(e))
-            log.exception(e)
+        except Exception as ex:
+            self._handleError(str(ex))
+            log.debug_or_exception(ex)
 
         self.end_time = datetime.now()
 
@@ -210,7 +211,6 @@ class CalibreTask:
         self._progress = x
 
     def _handleError(self, error_message):
-        log.exception(error_message)
         self.stat = STAT_FAIL
         self.progress = 1
         self.error = error_message
