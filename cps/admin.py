@@ -47,7 +47,7 @@ from .helper import check_valid_domain, send_test_mail, reset_password, generate
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
-from . import debug_info
+from . import debug_info, _BABEL_TRANSLATIONS
 
 try:
     from functools import wraps
@@ -369,13 +369,13 @@ def edit_list_user(param):
         if "pk[]" in vals:
             users = all_user.filter(ub.User.id.in_(vals['pk[]'])).all()
         else:
-            return ""
+            return _("Malformed request"), 400
     if 'field_index' in vals:
         vals['field_index'] = vals['field_index'][0]
     if 'value' in vals:
         vals['value'] = vals['value'][0]
     elif not ('value[]' in vals):
-        return ""
+        return _("Malformed request"), 400
     for user in users:
         try:
             if param in ['denied_tags', 'allowed_tags', 'allowed_column_value', 'denied_column_value']:
@@ -418,9 +418,23 @@ def edit_list_user(param):
                 elif param == 'locale':
                     if user.name == "Guest":
                         raise Exception(_("Guest's Locale is determined automatically and can't be set"))
-                    user.locale = vals['value']
+                    if vals['value'] in _BABEL_TRANSLATIONS:
+                        user.locale = vals['value']
+                    else:
+                        raise Exception(_("No Valid Locale Given"))
                 elif param == 'default_language':
-                    user.default_language = vals['value']
+                    languages = calibre_db.session.query(db.Languages) \
+                        .join(db.books_languages_link) \
+                        .join(db.Books) \
+                        .filter(calibre_db.common_filters()) \
+                        .group_by(text('books_languages_link.lang_code')).all()
+                    lang_codes = [lang.lang_code for lang in languages] + ["all"]
+                    if vals['value'] in lang_codes:
+                        user.default_language = vals['value']
+                    else:
+                        raise Exception(_("No Valid Book Language Given"))
+                else:
+                    return _("Parameter not found"), 400
         except Exception as ex:
             log.debug_or_exception(ex)
             return str(ex), 400
