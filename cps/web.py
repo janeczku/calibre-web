@@ -185,10 +185,11 @@ def toggle_read(book_id):
                 calibre_db.session.commit()
         except (KeyError, AttributeError):
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+            return "Custom Column No.{} is not exisiting in calibre database".format(config.config_read_column), 400
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: %e", e)
-
+            return "Read status could not set: {}".format(e), 400
     return ""
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
@@ -1117,12 +1118,19 @@ def adv_search_ratings(q, rating_high, rating_low):
 def adv_search_read_status(q, read_status):
     if read_status:
         if config.config_read_column:
-            if read_status == "True":
-                q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                    .filter(db.cc_classes[config.config_read_column].value == True)
-            else:
-                q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                    .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            try:
+                if read_status == "True":
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(db.cc_classes[config.config_read_column].value == True)
+                else:
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            except (KeyError, AttributeError):
+                log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                        column=config.config_read_column),
+                      category="error")
+                return q
         else:
             if read_status == "True":
                 q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
