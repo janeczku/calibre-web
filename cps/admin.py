@@ -38,7 +38,6 @@ from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
-# from sqlalchemy.func import field
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -977,7 +976,10 @@ def _configuration_gdrive_helper(to_save):
                         )
 
     # always show google drive settings, but in case of error deny support
-    config.config_use_google_drive = (not gdrive_error) and ("config_use_google_drive" in to_save)
+    new_gdrive_value = (not gdrive_error) and ("config_use_google_drive" in to_save)
+    if config.config_use_google_drive and not new_gdrive_value:
+        config.config_google_drive_watch_changes_response = {}
+    config.config_use_google_drive = new_gdrive_value
     if _config_string(to_save, "config_google_drive_folder"):
         gdriveutils.deleteDatabaseOnChange()
     return gdrive_error
@@ -1230,7 +1232,6 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
         log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
     else:
-        # if config.config_use_google_drive and\
         if not gdrive_authenticate and gdrive_support:
             gdrivefolders = gdriveutils.listRootFolders()
 
