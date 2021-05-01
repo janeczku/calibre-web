@@ -473,6 +473,21 @@ def update_table_settings():
         return "Invalid request", 400
     return ""
 
+def check_valid_read_column(column):
+    if column is not "0":
+        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
+              .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+def check_valid_restricted_column(column):
+    if column is not "0":
+        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
+              .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+
 
 @admi.route("/admin/viewconfig", methods=["POST"])
 @login_required
@@ -488,12 +503,23 @@ def update_view_configuration():
     if _config_string("config_title_regex"):
         calibre_db.update_title_sort(config)
 
+    if not check_valid_read_column(to_save.get("config_read_column", "0")):
+        flash(_(u"Invalid Read Column"), category="error")
+        log.debug("Invalid Read column")
+        return view_configuration()
     _config_int("config_read_column")
+
+    if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
+        flash(_(u"Invalid Restricted Column"), category="error")
+        log.debug("Invalid Restricted Column")
+        return view_configuration()
+    _config_int("config_restricted_column")
+
     _config_int("config_theme")
     _config_int("config_random_books")
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
-    _config_int("config_restricted_column")
+
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
