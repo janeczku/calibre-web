@@ -318,7 +318,6 @@ $(function() {
             },
             url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
             rowStyle: function(row) {
-                // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
                     return {classes: "bg-primary"};
                 } else {
@@ -613,30 +612,31 @@ function loadSuccess() {
 }
 
 function move_header_elements() {
-        $(".header_select").each(function () {
-            var item = $(this).parent();
-            var parent = item.parent().parent();
-            if (parent.prop('nodeName') === "TH") {
-                item.prependTo(parent);
-            }
-        });
-        $(".form-check").each(function () {
-            var item = $(this).parent();
-            var parent = item.parent().parent();
-            if (parent.prop('nodeName') === "TH") {
-                item.prependTo(parent);
-            }
-        });
-        $(".multi_select").each(function () {
-            var item = $(this);
-            var parent = item.parent().parent();
-            if (parent.prop('nodeName') === "TH") {
-                item.prependTo(parent);
-                item.addClass("myselect");
-            }
-        });
-        $(".multi_selector").selectpicker();
+    $(".header_select").each(function () {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".form-check").each(function () {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".multi_select").each(function () {
+        var item = $(this);
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+            item.addClass("myselect");
+        }
+    });
+    $(".multi_selector").selectpicker();
 
+    if (! $._data($(".multi_head").get(0), "events") ) {
         // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
         $(".multi_head").on("click", function () {
             var val = $(this).data("set");
@@ -662,23 +662,27 @@ function move_header_elements() {
                 }
             );
         });
+    }
 
-        $("#user_delete_selection").click(function () {
-            $("#user-table").bootstrapTable("uncheckAll");
-        });
-        $("#select_locale").on("change", function () {
-            selectHeader(this, "locale");
-        });
-        $("#select_default_language").on("change", function () {
-            selectHeader(this, "default_language");
-        });
+    $("#user_delete_selection").click(function () {
+        $("#user-table").bootstrapTable("uncheckAll");
+    });
+    $("#select_locale").on("change", function () {
+        selectHeader(this, "locale");
+    });
+    $("#select_default_language").on("change", function () {
+        selectHeader(this, "default_language");
+    });
+
+    if (! $._data($(".check_head").get(0), "events") ) {
         $(".check_head").on("change", function () {
             var val = $(this).data("set");
             var name = $(this).data("name");
             var data = $(this).data("val");
             checkboxHeader(val, name, data);
         });
-
+    }
+    if (! $._data($(".button_head").get(0), "events") ) {
         $(".button_head").on("click", function () {
             var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
             confirmDialog(
@@ -701,6 +705,7 @@ function move_header_elements() {
                 }
             );
         });
+    }
 }
 
 function handleListServerResponse (data) {
@@ -715,7 +720,6 @@ function handleListServerResponse (data) {
     }
     $("#user-table").bootstrapTable("refresh");
 }
-
 
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
