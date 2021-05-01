@@ -49,5 +49,5 @@ except ImportError as err:
 try:
     from . import gmail
 except ImportError as err:
-    log.debug("Cannot import Gmail, sending books via G-Mail Accounts will not work: %s", err)
+    log.debug("Cannot import gmail, sending books via Gmail Oauth2 Verification will not work: %s", err)
     gmail = None

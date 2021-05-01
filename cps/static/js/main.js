@@ -114,18 +114,22 @@ $(document).ready(function() {
   }
 });
 
+$(".session").click(function() {
+    window.sessionStorage.setItem("back", window.location.pathname);
+});
+
+$("#back").click(function() {
+   var loc = sessionStorage.getItem("back");
+   if (!loc) {
+       loc = $(this).data("back");
+   }
+   sessionStorage.removeItem("back");
+   window.location.href = loc;
+
+});
+
 function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     var $confirm = $("#" + dialogid);
-    $confirm.modal('show');
-    $.ajax({
-        method:"get",
-        dataType: "json",
-        url: getPath() + "/ajax/loaddialogtexts/" + id,
-        success: function success(data) {
-            $("#header-"+ dialogid).html(data.header);
-            $("#text-"+ dialogid).html(data.main);
-        }
-    });
     $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
         yesFn(dataValue);
         $confirm.modal("hide");
@@ -136,16 +140,27 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
         }
         $confirm.modal("hide");
     });
+    $.ajax({
+        method:"get",
+        dataType: "json",
+        url: getPath() + "/ajax/loaddialogtexts/" + id,
+        success: function success(data) {
+            $("#header-"+ dialogid).html(data.header);
+            $("#text-"+ dialogid).html(data.main);
+        }
+    });
+    $confirm.modal('show');
 }
 
 $("#delete_confirm").click(function() {
     //get data-id attribute of the clicked element
     var deleteId = $(this).data("delete-id");
     var bookFormat = $(this).data("delete-format");
+    var ajaxResponse = $(this).data("ajax");
     if (bookFormat) {
         window.location.href = getPath() + "/delete/" + deleteId + "/" + bookFormat;
     } else {
-        if ($(this).data("delete-format")) {
+        if (ajaxResponse) {
             path = getPath() + "/ajax/delete/" + deleteId;
             $.ajax({
                 method:"get",
@@ -163,6 +178,19 @@ $("#delete_confirm").click(function() {
 
                         }
                     });
+                    $("#books-table").bootstrapTable("refresh");
+                    /*$.ajax({
+                        method:"get",
+                        url: window.location.pathname + "/../../ajax/listbooks",
+                        async: true,
+                        timeout: 900,
+                        success:function(data) {
+
+
+                            $("#book-table").bootstrapTable("load", data);
+                            loadSuccess();
+                        }
+                    });*/
                 }
             });
         } else {
@@ -187,6 +215,7 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     }
     $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
+    $(e.currentTarget).find("#delete_confirm").data("ajax", $(e.relatedTarget).data("ajax"));
 });
 
 

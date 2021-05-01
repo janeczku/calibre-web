@@ -20,16 +20,18 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import sys
+import json
 
-from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
+from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.sql.expression import text
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
-from . import constants, cli, logger, ub
+from . import constants, cli, logger
 
 
 log = logger.create()
@@ -190,7 +192,7 @@ class _ConfigSQL(object):
 
     @staticmethod
     def get_config_ipaddress():
-        return cli.ipadress or ""
+        return cli.ip_address or ""
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -260,7 +262,6 @@ class _ConfigSQL(object):
         """
         new_value = dictionary.get(field, default)
         if new_value is None:
-            # log.debug("_ConfigSQL set_from_dictionary field '%s' not found", field)
             return False
 
         if field not in self.__dict__:
@@ -277,7 +278,6 @@ class _ConfigSQL(object):
         if current_value == new_value:
             return False
 
-        # log.debug("_ConfigSQL set_from_dictionary '%s' = %r (was %r)", field, new_value, current_value)
         setattr(self, field, new_value)
         return True
 
@@ -358,7 +358,7 @@ def _migrate_table(session, orm_class):
         if column_name[0] != '_':
             try:
                 session.query(column).first()
-            except exc.OperationalError as err:
+            except OperationalError as err:
                 log.debug("%s: %s", column_name, err.args[0])
                 if column.default is not None:
                     if sys.version_info < (3, 0):
@@ -368,20 +368,23 @@ def _migrate_table(session, orm_class):
                     column_default = ""
                 else:
                     if isinstance(column.default.arg, bool):
-                        column_default = ("DEFAULT %r" % int(column.default.arg))
+                        column_default = "DEFAULT {}".format(int(column.default.arg))
                     else:
-                        column_default = ("DEFAULT '%r'" % column.default.arg)
+                        column_default = "DEFAULT `{}`".format(column.default.arg)
                 if isinstance(column.type, JSON):
                     column_type = "JSON"
                 else:
                     column_type = column.type
-                alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
+                alter_table = text("ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
                                                                         column_name,
                                                                         column_type,
-                                                                        column_default)
+                                                                        column_default))
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
+            except json.decoder.JSONDecodeError as e:
+                log.error("Database corrupt column: {}".format(column_name))
+                log.debug(e)
 
     if changed:
         try:

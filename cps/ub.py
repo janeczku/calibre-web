@@ -44,7 +44,7 @@ from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, 
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.expression import func
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
@@ -713,9 +713,12 @@ def init_db(app_db_path):
         create_anonymous_user(session)
 
     if cli.user_credentials:
-        username, password = cli.user_credentials.split(':')
+        username, password = cli.user_credentials.split(':', 1)
         user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
         if user:
+            if not password:
+                print("Empty password is not allowed")
+                sys.exit(4)
             user.password = generate_password_hash(password)
             if session_commit() == "":
                 print("Password for user '{}' changed".format(username))

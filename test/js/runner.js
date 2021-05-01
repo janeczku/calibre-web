@@ -1,3 +1,4 @@
+
 output_list = Array();
 
 /* Level - 0: Summary; 1: Failed; 2: All; 3: Skipped 4: Error*/
@@ -24,9 +25,9 @@ function showCase(level) {
                 row.classList.add('hiddenRow');
             }
         }
-        // Show skipped if all or skipped or summary problems selected
+        // Show skipped if all or skipped selected
         if (id.substr(0,2) == 'st') {
-            if (level ==2 || level ==3 || level == 5) { 
+            if (level ==2 || level ==3) { 
                 row.classList.remove('hiddenRow');
             }
             else {

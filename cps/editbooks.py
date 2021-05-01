@@ -229,14 +229,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @editbook.route("/ajax/delete/<int:book_id>")
 @login_required
 def delete_book_from_details(book_id):
-    return Response(delete_book(book_id,"", True), mimetype='application/json')
+    return Response(delete_book(book_id, "", True), mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
 @editbook.route("/delete/<int:book_id>/<string:book_format>")
 @login_required
 def delete_book_ajax(book_id, book_format):
-    return delete_book(book_id,book_format, False)
+    return delete_book(book_id, book_format, False)
 
 
 def delete_whole_book(book_id, book):
@@ -315,19 +315,19 @@ def delete_book(book_id, book_format, jsonResponse):
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
                     if jsonResponse:
-                        return json.dumps({"location": url_for("editbook.edit_book"),
-                                           "type": "alert",
+                        return json.dumps([{"location": url_for("editbook.edit_book", book_id=book_id),
+                                           "type": "danger",
                                            "format": "",
-                                           "error": error}),
+                                           "message": error}])
                     else:
                         flash(error, category="error")
                         return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if error:
                     if jsonResponse:
-                        warning = {"location": url_for("editbook.edit_book"),
+                        warning = {"location": url_for("editbook.edit_book", book_id=book_id),
                                                 "type": "warning",
                                                 "format": "",
-                                                "error": error}
+                                                "message": error}
                     else:
                         flash(error, category="warning")
                 if not book_format:
@@ -339,6 +339,15 @@ def delete_book(book_id, book_format, jsonResponse):
             except Exception as ex:
                 log.debug_or_exception(ex)
                 calibre_db.session.rollback()
+                if jsonResponse:
+                    return json.dumps([{"location": url_for("editbook.edit_book", book_id=book_id),
+                                        "type": "danger",
+                                        "format": "",
+                                        "message": ex}])
+                else:
+                    flash(str(ex), category="error")
+                    return redirect(url_for('editbook.edit_book', book_id=book_id))
+
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
@@ -1176,6 +1185,6 @@ def merge_list_book():
                                                         element.format,
                                                         element.uncompressed_size,
                                                         to_name))
-                    delete_book(from_book.id,"", True) # json_resp =
+                    delete_book(from_book.id,"", True)
                     return json.dumps({'success': True})
     return ""

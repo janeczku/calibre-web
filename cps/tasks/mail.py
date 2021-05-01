@@ -134,9 +134,9 @@ class TaskEmail(CalibreTask):
         return message
 
     def run(self, worker_thread):
-        # create MIME message
-        msg = self.prepare_message()
         try:
+            # create MIME message
+            msg = self.prepare_message()
             if self.settings['mail_server_type'] == 0:
                 self.send_standard_email(msg)
             else:
@@ -173,6 +173,7 @@ class TaskEmail(CalibreTask):
             org_smtpstderr = smtplib.stderr
             smtplib.stderr = logger.StderrLogger('worker.smtp')
 
+        log.debug("Start sending email")
         if use_ssl == 2:
             self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
                                        timeout=timeout)
@@ -195,10 +196,10 @@ class TaskEmail(CalibreTask):
         self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, fp.getvalue())
         self.asyncSMTP.quit()
         self._handleSuccess()
+        log.debug("Email send successfully")
 
         if sys.version_info < (3, 0):
             smtplib.stderr = org_smtpstderr
-
 
     def send_gmail_email(self, message):
         return gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
@@ -258,3 +259,6 @@ class TaskEmail(CalibreTask):
     @property
     def name(self):
         return "Email"
+
+    def __str__(self):
+        return "{}, {}".format(self.name, self.subject)

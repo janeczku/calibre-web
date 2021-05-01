@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% macro user_table_row(parameter, edit_text, show_text, validate, button=False, id=0) -%}
+{% macro user_table_row(parameter, edit_text, show_text, validate, elements=False) -%}
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
     data-visible="{{visiblility.get(parameter)}}"
@@ -11,8 +11,22 @@
     data-sortable="true"
     {% endif %}
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
-    {% if button %}
-    <!--div><button data-id="{{id}}" data-toggle="modal" data-target="#restrictModal" class="btn btn-default button_head disabled" aria-disabled="true">{{edit_text}}</button></div--><br>
+    {% if elements %}
+        <div class="multi_select">
+            <select class="multi_selector" id="{{ parameter }}" data-live-search="true" data-style="btn-default" data-dropup-auto="false" aria-disabled="true" multiple disabled>
+              {% for tag in elements %}
+              <option class="tags_click" value="{{tag.id}}">{% if tag.name %}{{tag.name}}{% else %}{{tag.value}}{% endif %}</option>
+              {% endfor %}
+            </select>
+            <div class="btn-group btn-group-justified" role="group">
+              <div class="btn-group" role="group">
+                  <div class="multi_head btn btn-default hidden" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
+              </div>
+              <div class="btn-group" role="group">
+                  <div class="multi_head btn btn-default hidden" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
+              </div>
+            </div>
+        </div>
     {% endif %}
     {{ show_text }}
 </th>
@@ -23,15 +37,17 @@
     data-visible="{{element.get(array_field)}}"
     data-column="{{value.get(array_field)}}"
     data-formatter="checkboxFormatter">
-    <div class="form-check">
-      <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('false', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Deny')}}
-      </label>
+    <div  class="form-check">
+    <div>
+
+        <input type="radio" class="check_head" data-set="false" data-val={{value.get(array_field)}} name="options_{{array_field}}" id="false_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
+
     </div>
-    <div class="form-check">
-      <label>
-        <input type="radio" class="check_head" name="options_{{array_field}}" onchange="checkboxHeader('true', '{{parameter}}', {{value.get(array_field)}})" disabled>{{_('Allow')}}
-      </label>
+    <div>
+
+        <input type="radio" class="check_head" data-set="true" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
+
+    </div>
     </div>
     {{show_text}}
 </th>
@@ -48,14 +64,14 @@
     data-editable-source={{url}}
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     <div>
-      <select id="select_{{ parameter }}" class="header_select" onchange="selectHeader(this, '{{parameter}}')" disabled="">
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
+      <option value="none">{{ _('Select...') }}</option>
       <option value="all">{{ _('Show All') }}</option>
       {% for language in languages %}
         <option value="{{language.lang_code}}">{{language.name}}</option>
       {% endfor %}
       </select>
-    </div><br>
-
+    </div>
     {{ show_text }}
 </th>
 {%- endmacro %}
@@ -71,13 +87,13 @@
     data-editable-source={{url}}
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     <div>
-      <select id="select_{{ parameter }}" class="header_select" onchange="selectHeader(this, '{{parameter}}')" disabled="">
+      <select id="select_{{ parameter }}" class="header_select" disabled="">
       <option value="None">{{_('Select...')}}</option>
       {% for translation in translations %}
         <option value="{{translation}}">{{translation.display_name|capitalize}}</option>
       {% endfor %}
     </select>
-    </div><br>
+    </div>
     {{ show_text }}
 </th>
 {%- endmacro %}
@@ -86,6 +102,7 @@
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
@@ -106,20 +123,21 @@
             {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), false) }}
             {{ user_select_translations('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
             {{ user_select_languages('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
-            {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), false, true, 0) }}
-            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, true, 1) }}
-            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), false, true, 2) }}
-            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), false, true, 3) }}
+            {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), false, tags) }}
+            {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}
+            {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), false, custom_values) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), false, custom_values) }}
             {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "download_role",_('Upload'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "upload_role", _('Download'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "edit_role", _('Edit'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "passwd_role", _('Change Password'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelfs'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "delete_role", _('Delete'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "upload_role",_('Upload'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "download_role", _('Download'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "viewer_role", _('View'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "edit_role", _('Edit'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "delete_role", _('Delete'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelfs'), visiblility, all_roles)}}
             {{ user_checkbox_row("sidebar_view", "detail_random", _('Show Random Books in Detail View'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show language selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show read/unread selection'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_series", _('Show series selection'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_category", _('Show category selection'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_random", _('Show random books'), visiblility, sidebar_settings)}}
@@ -136,6 +154,9 @@
         </tr>
       </thead>
     </table>
+    <div class="errorlink">
+      <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
+    </div>
 {% endblock %}
 {% block modal %}
 {{ delete_confirm_modal() }}
@@ -146,7 +167,7 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
-<script>
-</script>
 {% endblock %}
+

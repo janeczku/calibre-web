@@ -26,6 +26,7 @@ from datetime import datetime
 import json
 import mimetypes
 import chardet  # dependency of requests
+import copy
 
 from babel.dates import format_date
 from babel import Locale as LC
@@ -183,11 +184,12 @@ def toggle_read(book_id):
                 calibre_db.session.add(new_cc)
                 calibre_db.session.commit()
         except (KeyError, AttributeError):
-            log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+            log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column), 400
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: %e", e)
-
+            return "Read status could not set: {}".format(e), 400
     return ""
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
@@ -753,20 +755,50 @@ def books_table():
 @web.route("/ajax/listbooks")
 @login_required
 def list_books():
-    off = request.args.get("offset") or 0
-    limit = request.args.get("limit") or config.config_books_per_page
-    # sort = request.args.get("sort")
-    if request.args.get("order") == 'desc':
-        order = [db.Books.timestamp.desc()]
-    else:
-        order = [db.Books.timestamp.asc()]
+    off = int(request.args.get("offset") or 0)
+    limit = int(request.args.get("limit") or config.config_books_per_page)
     search = request.args.get("search")
-    total_count = calibre_db.session.query(db.Books).count()
-    if search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit)
+    sort = request.args.get("sort", "id")
+    order = request.args.get("order", "").lower()
+    state = None
+    join = tuple()
+
+    if sort == "state":
+        state = json.loads(request.args.get("state", "[]"))
+    elif sort == "tags":
+        order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
+        join = db.books_tags_link,db.Books.id == db.books_tags_link.c.book, db.Tags
+    elif sort == "series":
+        order = [db.Series.name.asc()] if order == "asc" else [db.Series.name.desc()]
+        join = db.books_series_link,db.Books.id == db.books_series_link.c.book, db.Series
+    elif sort == "publishers":
+        order = [db.Publishers.name.asc()] if order == "asc" else [db.Publishers.name.desc()]
+        join = db.books_publishers_link,db.Books.id == db.books_publishers_link.c.book, db.Publishers
+    elif sort == "authors":
+        order = [db.Authors.name.asc()] if order == "asc" else [db.Authors.name.desc()]
+        join = db.books_authors_link,db.Books.id == db.books_authors_link.c.book, db.Authors
+    elif sort == "languages":
+        order = [db.Languages.lang_code.asc()] if order == "asc" else [db.Languages.lang_code.desc()]
+        join = db.books_languages_link,db.Books.id == db.books_languages_link.c.book, db.Languages
+    elif order and sort in ["sort", "title", "authors_sort", "series_index"]:
+        order = [text(sort + " " + order)]
+    elif not state:
+        order = [db.Books.timestamp.desc()]
+
+    total_count = filtered_count = calibre_db.session.query(db.Books).count()
+
+    if state:
+        if search:
+            books = calibre_db.search_query(search).all()
+            filtered_count = len(books)
+        else:
+            books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
+        entries = calibre_db.get_checkbox_sorted(books, state, off, limit,order)
+    elif search:
+        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *join)
     else:
-        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
-        filtered_count = total_count
+        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order, *join)
+
     for entry in entries:
         for index in range(0, len(entry.languages)):
             try:
@@ -816,9 +848,12 @@ def author_list():
         charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
-        for entry in entries:
+        # If not creating a copy, readonly databases can not display authornames with "|" in it as changing the name
+        # starts a change session
+        autor_copy = copy.deepcopy(entries)
+        for entry in autor_copy:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+        return render_title_template('list.html', entries=autor_copy, folder='web.books_list', charlist=charlist,
                                      title=u"Authors", page="authorlist", data='author', order=order_no)
     else:
         abort(404)
@@ -1083,12 +1118,19 @@ def adv_search_ratings(q, rating_high, rating_low):
 def adv_search_read_status(q, read_status):
     if read_status:
         if config.config_read_column:
-            if read_status == "True":
-                q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                    .filter(db.cc_classes[config.config_read_column].value == True)
-            else:
-                q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                    .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            try:
+                if read_status == "True":
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(db.cc_classes[config.config_read_column].value == True)
+                else:
+                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
+                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+            except (KeyError, AttributeError):
+                log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                        column=config.config_read_column),
+                      category="error")
+                return q
         else:
             if read_status == "True":
                 q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
@@ -1453,23 +1495,23 @@ def login():
                 log.info(error)
                 flash(_(u"Could not login: %(message)s", message=error), category="error")
             else:
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
+                ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
+                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
-            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+            ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
             if 'forgot' in form and form['forgot'] == 'forgot':
                 if user != None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")
-                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ipAdress)
+                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_Address)
                     else:
                         log.error(u"An unknown error occurred. Please try again later")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
-                    log.warning('Username missing for password reset IP-address: %s', ipAdress)
+                    log.warning('Username missing for password reset IP-address: %s', ip_Address)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
@@ -1478,7 +1520,7 @@ def login():
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
-                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
+                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
                     flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = request.args.get('next', default=url_for("web.index"), type=str)

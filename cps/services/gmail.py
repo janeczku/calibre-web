@@ -53,6 +53,7 @@ def setup_gmail(token):
             'expiry': creds.expiry.isoformat(),
             'email': user_info
         }
+    return {}
 
 def get_user_info(credentials):
     user_info_service = build(serviceName='oauth2', version='v2',credentials=credentials)
@@ -60,6 +61,7 @@ def get_user_info(credentials):
     return user_info.get('email', "")
 
 def send_messsage(token, msg):
+    log.debug("Start sending email via Gmail")
     creds = Credentials(
         token=token['token'],
         refresh_token=token['refresh_token'],
@@ -78,3 +80,4 @@ def send_messsage(token, msg):
     body = {'raw': raw}
 
     (service.users().messages().send(userId='me', body=body).execute())
+    log.debug("Email send successfully via Gmail")
