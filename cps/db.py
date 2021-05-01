@@ -33,7 +33,7 @@ from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import OperationalError
 try:
-    # Compability with sqlalchemy 2.0
+    # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
@@ -44,6 +44,7 @@ from flask_login import current_user
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
+from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
@@ -121,6 +122,8 @@ class Identifiers(Base):
             return u"Douban"
         elif format_type == "goodreads":
             return u"Goodreads"
+        elif format_type == "babelio":
+            return u"Babelio"
         elif format_type == "google":
             return u"Google Books"
         elif format_type == "kobo":
@@ -148,6 +151,8 @@ class Identifiers(Base):
             return u"https://dx.doi.org/{0}".format(self.val)
         elif format_type == "goodreads":
             return u"https://www.goodreads.com/book/show/{0}".format(self.val)
+        elif format_type == "babelio":
+            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)
         elif format_type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
@@ -393,7 +398,7 @@ class AlchemyEncoder(json.JSONEncoder):
         if isinstance(o.__class__, DeclarativeMeta):
             # an SQLAlchemy class
             fields = {}
-            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata']:
+            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata' and x!="password"]:
                 if field == 'books':
                     continue
                 data = o.__getattribute__(field)
@@ -602,19 +607,45 @@ class CalibreDB():
         neg_content_tags_filter = false() if negtags_list == [''] else Books.tags.any(Tags.name.in_(negtags_list))
         pos_content_tags_filter = true() if postags_list == [''] else Books.tags.any(Tags.name.in_(postags_list))
         if self.config.config_restricted_column:
-            pos_cc_list = current_user.allowed_column_value.split(',')
-            pos_content_cc_filter = true() if pos_cc_list == [''] else \
-                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
-            neg_cc_list = current_user.denied_column_value.split(',')
-            neg_content_cc_filter = false() if neg_cc_list == [''] else \
-                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+            try:
+                pos_cc_list = current_user.allowed_column_value.split(',')
+                pos_content_cc_filter = true() if pos_cc_list == [''] else \
+                    getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                        any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+                neg_cc_list = current_user.denied_column_value.split(',')
+                neg_content_cc_filter = false() if neg_cc_list == [''] else \
+                    getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                        any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+            except (KeyError, AttributeError):
+                pos_content_cc_filter = false()
+                neg_content_cc_filter = true()
+                log.error(u"Custom Column No.%d is not existing in calibre database",
+                          self.config.config_restricted_column)
+                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                        column=self.config.config_restricted_column),
+                      category="error")
+
         else:
             pos_content_cc_filter = true()
             neg_content_cc_filter = false()
         return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
+
+    @staticmethod
+    def get_checkbox_sorted(inputlist, state, offset, limit, order):
+        outcome = list()
+        elementlist = {ele.id: ele for ele in inputlist}
+        for entry in state:
+            try:
+                outcome.append(elementlist[entry])
+            except KeyError:
+                pass
+            del elementlist[entry]
+        for entry in elementlist:
+            outcome.append(elementlist[entry])
+        if order == "asc":
+            outcome.reverse()
+        return outcome[offset:offset + limit]
 
     # Fill indexpage with all requested data from database
     def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
@@ -689,23 +720,33 @@ class CalibreDB():
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None):
-        order = order or [Books.sort]
-        pagination = None
+    def search_query(self, term, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        result = self.session.query(Books).filter(self.common_filters(True)).filter(
+        query = self.session.query(Books)
+        if len(join) == 3:
+            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
+        elif len(join) == 2:
+            query = query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            query = query.outerjoin(join[0])
+        return query.filter(self.common_filters(True)).filter(
             or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                 Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                 Books.authors.any(and_(*q)),
                 Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
                 func.lower(Books.title).ilike("%" + term + "%")
-                )).order_by(*order).all()
+                ))
+
+    # read search results from calibre-database and return it (function is used for feed and simple search
+    def get_search_results(self, term, offset=None, order=None, limit=None, *join):
+        order = order or [Books.sort]
+        pagination = None
+        result = self.search_query(term, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)

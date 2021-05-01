@@ -15,6 +15,10 @@ body {
   overflow: hidden;
 }
 
+.myselect {
+    overflow: visible !important;
+}
+
 #main {
   position: absolute;
   width: 100%;

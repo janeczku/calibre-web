@@ -546,8 +546,8 @@ def check_auth(username, password):
     if bool(user and check_password_hash(str(user.password), password)):
         return True
     else:
-        ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ipAdress)
+        ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
+        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ip_Address)
         return False
 
 
