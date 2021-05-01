@@ -184,8 +184,8 @@ def toggle_read(book_id):
                 calibre_db.session.add(new_cc)
                 calibre_db.session.commit()
         except (KeyError, AttributeError):
-            log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
-            return "Custom Column No.{} is not exisiting in calibre database".format(config.config_read_column), 400
+            log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column), 400
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: %e", e)
@@ -1126,7 +1126,7 @@ def adv_search_read_status(q, read_status):
                     q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
                         .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
             except (KeyError, AttributeError):
-                log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+                log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
                 flash(_("Custom Column No.%(column)d is not existing in calibre database",
                         column=config.config_read_column),
                       category="error")
