@@ -749,10 +749,10 @@ def add_restriction(res_type, user_id):
             usr = current_user
         if 'submit_allow' in element:
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
-            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Changed allowed tags of user {} to {}".format(usr.name, usr.list_allowed_tags()))
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
-            ub.session_commit("Changed denied tags of user {} to {}".format(usr.name, usr.list_denied_tags))
+            ub.session_commit("Changed denied tags of user {} to {}".format(usr.name, usr.list_denied_tags()))
     if res_type == 3:  # CustomC per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -761,11 +761,11 @@ def add_restriction(res_type, user_id):
         if 'submit_allow' in element:
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
             ub.session_commit("Changed allowed columns of user {} to {}".format(usr.name,
-                                                                                usr.list_allowed_column_values))
+                                                                                usr.list_allowed_column_values()))
         elif 'submit_deny' in element:
             usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
             ub.session_commit("Changed denied columns of user {} to {}".format(usr.name,
-                                                                               usr.list_denied_column_values))
+                                                                               usr.list_denied_column_values()))
     return ""
 
 
