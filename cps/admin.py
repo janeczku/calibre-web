@@ -474,14 +474,14 @@ def update_table_settings():
     return ""
 
 def check_valid_read_column(column):
-    if column is not "0":
+    if column != "0":
         if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
               .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all():
             return False
     return True
 
 def check_valid_restricted_column(column):
-    if column is not "0":
+    if column != "0":
         if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
               .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all():
             return False
