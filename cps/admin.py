@@ -495,30 +495,30 @@ def check_valid_restricted_column(column):
 def update_view_configuration():
     to_save = request.form.to_dict()
 
-    _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
-    _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
+    # _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
+    # _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
 
-    _config_string("config_calibre_web_title")
-    _config_string("config_columns_to_ignore")
-    if _config_string("config_title_regex"):
+    _config_string(to_save, "config_calibre_web_title")
+    _config_string(to_save, "config_columns_to_ignore")
+    if _config_string(to_save, "config_title_regex"):
         calibre_db.update_title_sort(config)
 
     if not check_valid_read_column(to_save.get("config_read_column", "0")):
         flash(_(u"Invalid Read Column"), category="error")
         log.debug("Invalid Read column")
         return view_configuration()
-    _config_int("config_read_column")
+    _config_int(to_save, "config_read_column")
 
     if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
         flash(_(u"Invalid Restricted Column"), category="error")
         log.debug("Invalid Restricted Column")
         return view_configuration()
-    _config_int("config_restricted_column")
+    _config_int(to_save, "config_restricted_column")
 
-    _config_int("config_theme")
-    _config_int("config_random_books")
-    _config_int("config_books_per_page")
-    _config_int("config_authors_max")
+    _config_int(to_save, "config_theme")
+    _config_int(to_save, "config_random_books")
+    _config_int(to_save, "config_books_per_page")
+    _config_int(to_save, "config_authors_max")
 
 
     config.config_default_role = constants.selected_roles(to_save)

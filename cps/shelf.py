@@ -242,16 +242,9 @@ def edit_shelf(shelf_id):
 def create_edit_shelf(shelf, title, page, shelf_id=False):
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if "is_public" in to_save:
-            shelf.is_public = 1
-        else:
-            shelf.is_public = 0
-
+        shelf.is_public = 1 if to_save.get("is_public") else 0
         if config.config_kobo_sync:
-            if "kobo_sync" in to_save:
-                shelf.kobo_sync = True
-            else:
-                shelf.kobo_sync = False
+            shelf.kobo_sync = True if to_save.get("kobo_sync") else False
 
         if check_shelf_is_unique(shelf, to_save, shelf_id):
             shelf.name = to_save["title"]
