@@ -221,7 +221,7 @@ def listRootFolders():
         drive = getDrive(Gdrive.Instance().drive)
         folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
         fileList = drive.ListFile({'q': folder}).GetList()
-    except (ServerNotFoundError, ssl.SSLError) as e:
+    except (ServerNotFoundError, ssl.SSLError, RefreshError) as e:
         log.info("GDrive Error %s" % e)
         fileList = []
     return fileList

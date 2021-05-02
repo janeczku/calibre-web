@@ -38,7 +38,6 @@ from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
-# from sqlalchemy.func import field
 
 from . import constants, logger, helper, services
 from .cli import filepicker
@@ -303,6 +302,7 @@ def list_users():
 @admin_required
 def delete_user():
     user_ids = request.form.to_dict(flat=False)
+    users = None
     if "userid[]" in user_ids:
         users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids['userid[]'])).all()
     elif "userid" in user_ids:
@@ -394,27 +394,42 @@ def edit_list_user(param):
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
                 elif param.endswith('role'):
-                    if user.name == "Guest" and int(vals['field_index']) in \
+                    value = int(vals['field_index'])
+                    if user.name == "Guest" and value in \
                                  [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                         raise Exception(_("Guest can't have this role"))
-                    if vals['value'] == 'true':
-                        user.role |= int(vals['field_index'])
+                    # check for valid value, last on checks for power of 2 value
+                    if value > 0 and value <= constants.ROLE_VIEWER and (value & value-1 == 0 or value == 1):
+                        if vals['value'] == 'true':
+                            user.role |= value
+                        elif vals['value'] == 'false':
+                            if value == constants.ROLE_ADMIN:
+                                if not ub.session.query(ub.User).\
+                                       filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                              ub.User.id != user.id).count():
+                                    return Response(
+                                        json.dumps([{'type': "danger",
+                                                     'message':_(u"No admin user remaining, can't remove admin role",
+                                                                 nick=user.name)}]), mimetype='application/json')
+                            user.role &= ~value
+                        else:
+                            raise Exception(_("Value has to be true or false"))
                     else:
-                        if int(vals['field_index']) == constants.ROLE_ADMIN:
-                            if not ub.session.query(ub.User).\
-                                   filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
-                                          ub.User.id != user.id).count():
-                                return Response(json.dumps([{'type': "danger",
-                                                            'message':_(u"No admin user remaining, can't remove admin role",
-                                                                        nick=user.name)}]), mimetype='application/json')
-                        user.role &= ~int(vals['field_index'])
+                        raise Exception(_("Invalid role"))
                 elif param.startswith('sidebar'):
-                    if user.name == "Guest" and int(vals['field_index']) == constants.SIDEBAR_READ_AND_UNREAD:
+                    value = int(vals['field_index'])
+                    if user.name == "Guest" and value == constants.SIDEBAR_READ_AND_UNREAD:
                         raise Exception(_("Guest can't have this view"))
-                    if vals['value'] == 'true':
-                        user.sidebar_view |= int(vals['field_index'])
+                    # check for valid value, last on checks for power of 2 value
+                    if value > 0 and value <= constants.SIDEBAR_LIST and (value & value-1 == 0 or value == 1):
+                        if vals['value'] == 'true':
+                            user.sidebar_view |= value
+                        elif vals['value'] == 'false':
+                            user.sidebar_view &= ~value
+                        else:
+                            raise Exception(_("Value has to be true or false"))
                     else:
-                        user.sidebar_view &= ~int(vals['field_index'])
+                        raise Exception(_("Invalid view"))
                 elif param == 'locale':
                     if user.name == "Guest":
                         raise Exception(_("Guest's Locale is determined automatically and can't be set"))
@@ -664,6 +679,8 @@ def restriction_deletion(element, list_func):
 def prepare_tags(user, action, tags_name, id_list):
     if "tags" in tags_name:
         tags = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(id_list)).all()
+        if not tags:
+            raise Exception(_("Tag not found"))
         new_tags_list = [x.name for x in tags]
     else:
         tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column])\
@@ -672,8 +689,10 @@ def prepare_tags(user, action, tags_name, id_list):
     saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
     if action == "remove":
         saved_tags_list = [x for x in saved_tags_list if x not in new_tags_list]
-    else:
+    elif action == "add":
         saved_tags_list.extend(x for x in new_tags_list if x not in saved_tags_list)
+    else:
+        raise Exception(_("Invalid Action"))
     return ",".join(saved_tags_list)
 
 
@@ -957,7 +976,10 @@ def _configuration_gdrive_helper(to_save):
                         )
 
     # always show google drive settings, but in case of error deny support
-    config.config_use_google_drive = (not gdrive_error) and ("config_use_google_drive" in to_save)
+    new_gdrive_value = (not gdrive_error) and ("config_use_google_drive" in to_save)
+    if config.config_use_google_drive and not new_gdrive_value:
+        config.config_google_drive_watch_changes_response = {}
+    config.config_use_google_drive = new_gdrive_value
     if _config_string(to_save, "config_google_drive_folder"):
         gdriveutils.deleteDatabaseOnChange()
     return gdrive_error
@@ -1210,7 +1232,6 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
         log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
     else:
-        # if config.config_use_google_drive and\
         if not gdrive_authenticate and gdrive_support:
             gdrivefolders = gdriveutils.listRootFolders()
 
