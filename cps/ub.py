@@ -270,6 +270,7 @@ class Shelf(Base):
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
+    kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
     created = Column(DateTime, default=datetime.datetime.utcnow)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
@@ -502,6 +503,7 @@ def migrate_shelfs(engine, session):
             conn.execute("ALTER TABLE shelf ADD column 'created' DATETIME")
             conn.execute("ALTER TABLE shelf ADD column 'last_modified' DATETIME")
             conn.execute("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME")
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
         for shelf in session.query(Shelf).all():
             shelf.uuid = str(uuid.uuid4())
             shelf.created = datetime.datetime.now()
@@ -509,6 +511,15 @@ def migrate_shelfs(engine, session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
+
+    try:
+        session.query(exists().where(Shelf.kobo_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
+        session.commit()
+
     try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
