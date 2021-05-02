@@ -240,6 +240,8 @@ def edit_shelf(shelf_id):
 
 # if shelf ID is set, we are editing a shelf
 def create_edit_shelf(shelf, title, page, shelf_id=False):
+    sync_all_books = calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id)\
+                         .filter(ub.Shelf.kobo_sync).count()
     if request.method == "POST":
         to_save = request.form.to_dict()
         shelf.is_public = 1 if to_save.get("is_public") else 0
@@ -248,7 +250,6 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
 
         if check_shelf_is_unique(shelf, to_save, shelf_id):
             shelf.name = to_save["title"]
-            # shelf.last_modified = datetime.utcnow()
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
@@ -275,7 +276,8 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
                                  shelf=shelf,
                                  title=title,
                                  page=page,
-                                 kobo_sync_enabled=config.config_kobo_sync)
+                                 kobo_sync_enabled=config.config_kobo_sync,
+                                 sync_all_books=sync_all_books)
 
 
 def check_shelf_is_unique(shelf, to_save, shelf_id=False):
