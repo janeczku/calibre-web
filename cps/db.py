@@ -44,6 +44,7 @@ from flask_login import current_user
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
+from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
@@ -122,7 +123,7 @@ class Identifiers(Base):
         elif format_type == "goodreads":
             return u"Goodreads"
         elif format_type == "babelio":
-            return u"Babelio"        
+            return u"Babelio"
         elif format_type == "google":
             return u"Google Books"
         elif format_type == "kobo":
@@ -151,7 +152,7 @@ class Identifiers(Base):
         elif format_type == "goodreads":
             return u"https://www.goodreads.com/book/show/{0}".format(self.val)
         elif format_type == "babelio":
-            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)        
+            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)
         elif format_type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
@@ -606,14 +607,24 @@ class CalibreDB():
         neg_content_tags_filter = false() if negtags_list == [''] else Books.tags.any(Tags.name.in_(negtags_list))
         pos_content_tags_filter = true() if postags_list == [''] else Books.tags.any(Tags.name.in_(postags_list))
         if self.config.config_restricted_column:
-            pos_cc_list = current_user.allowed_column_value.split(',')
-            pos_content_cc_filter = true() if pos_cc_list == [''] else \
-                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
-            neg_cc_list = current_user.denied_column_value.split(',')
-            neg_content_cc_filter = false() if neg_cc_list == [''] else \
-                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+            try:
+                pos_cc_list = current_user.allowed_column_value.split(',')
+                pos_content_cc_filter = true() if pos_cc_list == [''] else \
+                    getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                        any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+                neg_cc_list = current_user.denied_column_value.split(',')
+                neg_content_cc_filter = false() if neg_cc_list == [''] else \
+                    getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                        any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+            except (KeyError, AttributeError):
+                pos_content_cc_filter = false()
+                neg_content_cc_filter = true()
+                log.error(u"Custom Column No.%d is not existing in calibre database",
+                          self.config.config_restricted_column)
+                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                        column=self.config.config_restricted_column),
+                      category="error")
+
         else:
             pos_content_cc_filter = true()
             neg_content_cc_filter = false()
