@@ -22,7 +22,21 @@ $(function() {
 });
 
 $("#have_read_cb").on("change", function() {
-    $(this).closest("form").submit();
+    $.post({
+        url: this.closest("form").action,
+        error: function(response) {
+            var data = [{type:"danger", message:response.responseText}]
+            $("#flash_success").remove();
+            $("#flash_danger").remove();
+            if (!jQuery.isEmptyObject(data)) {
+                data.forEach(function (item) {
+                    $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                        '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                        '</div>');
+                });
+            }
+        }
+    });
 });
 
 $(function() {
