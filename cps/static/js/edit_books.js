@@ -63,6 +63,7 @@ if (!Modernizr.inputtypes.date) {
     }).trigger("change");
 }
 
+
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
@@ -77,11 +78,6 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
         cb(matches);
     });
 }
-
-/*function getPath() {
-    var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
-    return jsFileLocation.substr(0, jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
-}*/
 
 var authors = new Bloodhound({
     name: "authors",

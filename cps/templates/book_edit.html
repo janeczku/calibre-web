@@ -149,6 +149,20 @@
               {% endif %}>
             {% endif %}
 
+            {% if c.datatype == 'datetime' %}
+
+              <div style="position: relative">
+                <input type="date" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+                  {% if book['custom_column_' ~ c.id]|length > 0 %}
+                    value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
+                  {% endif %}>
+                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden "
+                  {% if book['custom_column_' ~ c.id]|length > 0 %}
+                    value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
+                  {% endif %}>
+              </div>
+            {% endif %}
+
 
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">

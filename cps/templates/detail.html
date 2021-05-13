@@ -193,6 +193,8 @@
                 {% else %}
                 {% if c.datatype == 'float' %}
                   {{ column.value|formatfloat(2) }}
+                {% elif c.datatype == 'datetime' %}
+                  {{ column.value|formatdate }}
                 {% else %}
                 {% if c.datatype == 'series' %}
                   {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}

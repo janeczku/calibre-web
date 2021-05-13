@@ -501,6 +501,11 @@ def edit_cc_data_number(book_id, book, c, to_save, cc_db_value, cc_string):
         to_save[cc_string] = None
     elif c.datatype == 'bool':
         to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
+    elif c.datatype == 'datetime':
+        try:
+            to_save[cc_string] = datetime.strptime(to_save[cc_string], "%Y-%m-%d")
+        except ValueError:
+            to_save[cc_string] = db.Books.DEFAULT_PUBDATE
 
     if to_save[cc_string] != cc_db_value:
         if cc_db_value is not None:
@@ -559,7 +564,7 @@ def edit_cc_data(book_id, book, to_save):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
-                if c.datatype == 'int' or c.datatype == 'bool' or c.datatype == 'float':
+                if c.datatype in ['int', 'bool', 'float', "datetime"]:
                     changed, to_save = edit_cc_data_number(book_id, book, c, to_save, cc_db_value, cc_string)
                 else:
                     changed, to_save = edit_cc_data_string(book, c, to_save, cc_db_value, cc_string)
