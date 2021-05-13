@@ -59,7 +59,7 @@ except ImportError:
 
 log = logger.create()
 
-cc_exceptions = ['datetime', 'comments', 'composite', 'series']
+cc_exceptions = ['comments', 'composite', 'series']
 cc_classes = {}
 
 Base = declarative_base()
@@ -491,23 +491,25 @@ class CalibreDB():
                     ccdict['value'] = Column(Float)
                 elif row.datatype == 'int':
                     ccdict['value'] = Column(Integer)
+                elif row.datatype == 'datetime':
+                    ccdict['value'] = Column(TIMESTAMP)
                 elif row.datatype == 'bool':
                     ccdict['value'] = Column(Boolean)
                 else:
                     ccdict['value'] = Column(String)
-                if row.datatype in ['float', 'int', 'bool']:
+                if row.datatype in ['float', 'int', 'bool', 'datetime']:
                     ccdict['book'] = Column(Integer, ForeignKey('books.id'))
                 cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
+            if cc_id[1] in ['bool', 'int', 'float', 'datetime']:
                 setattr(Books,
                         'custom_column_' + str(cc_id[0]),
                         relationship(cc_classes[cc_id[0]],
                                      primaryjoin=(
                                          Books.id == cc_classes[cc_id[0]].book),
                                      backref='books'))
-            elif (cc_id[1] == 'series'):
+            elif cc_id[1] == 'series':
                 setattr(Books,
                         'custom_column_' + str(cc_id[0]),
                         relationship(books_custom_column_links[cc_id[0]],
