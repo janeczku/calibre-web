@@ -100,7 +100,7 @@
       <h2 id="title">{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -122,7 +122,7 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
@@ -151,7 +151,7 @@
         <span class="glyphicon glyphicon-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.books_list', data='category', sort_param='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
@@ -162,7 +162,7 @@
       <div class="publishers">
         <p>
           <span>{{_('Publisher')}}:
-              <a href="{{url_for('web.books_list', data='publisher', sort_param='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='stored', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
           </span>
         </p>
       </div>
