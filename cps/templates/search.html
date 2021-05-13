@@ -2,7 +2,7 @@
 {% block body %}
 <div class="discover">
     {% if entries|length < 1 %}
-      <h2>{{_('No Results Found')}} {{adv_searchterm}}</h2>
+      <h2>{{_('No Results Found')}}</h2>
       <p>{{_('Search Term:')}} {{adv_searchterm}}</p>
     {% else %}
       <h2>{{result_count}} {{_('Results for:')}} {{adv_searchterm}}</h2>
