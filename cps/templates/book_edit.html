@@ -150,7 +150,6 @@
             {% endif %}
 
             {% if c.datatype == 'datetime' %}
-
               <div style="position: relative">
                 <input type="date" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
@@ -163,7 +162,9 @@
               </div>
             {% endif %}
 
-
+            {% if c.datatype == 'comments' %}
+              <textarea class="form-control tiny_editor" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" rows="7">{% if book['custom_column_' ~ c.id]|length > 0 %}{{book['custom_column_' ~ c.id][0].value}}{%endif%}</textarea>
+            {% endif %}
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
                   <option></option>

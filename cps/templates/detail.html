@@ -195,12 +195,12 @@
                   {{ column.value|formatfloat(2) }}
                 {% elif c.datatype == 'datetime' %}
                   {{ column.value|formatdate }}
-                {% else %}
-                {% if c.datatype == 'series' %}
+                {% elif c.datatype == 'comments' %}
+                  {{column.value|safe}}
+                {% elif c.datatype == 'series' %}
                   {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                 {% else %}
                   {{ column.value }}
-                {% endif %}
                 {% endif %}
                 {% endif %}
               {% endif %}
