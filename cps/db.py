@@ -59,7 +59,7 @@ except ImportError:
 
 log = logger.create()
 
-cc_exceptions = ['comments', 'composite', 'series']
+cc_exceptions = ['composite', 'series']
 cc_classes = {}
 
 Base = declarative_base()
@@ -473,7 +473,7 @@ class CalibreDB():
                                  }
                     books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
                                                              (Base,), dicttable)
-                else:
+                if row.datatype in ['rating', 'text', 'enumeration']:
                     books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
                                                               Base.metadata,
                                                               Column('book', Integer, ForeignKey('books.id'),
@@ -497,12 +497,12 @@ class CalibreDB():
                     ccdict['value'] = Column(Boolean)
                 else:
                     ccdict['value'] = Column(String)
-                if row.datatype in ['float', 'int', 'bool', 'datetime']:
+                if row.datatype in ['float', 'int', 'bool', 'datetime', 'comments']:
                     ccdict['book'] = Column(Integer, ForeignKey('books.id'))
                 cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            if cc_id[1] in ['bool', 'int', 'float', 'datetime']:
+            if cc_id[1] in ['bool', 'int', 'float', 'datetime', 'comments']:
                 setattr(Books,
                         'custom_column_' + str(cc_id[0]),
                         relationship(cc_classes[cc_id[0]],

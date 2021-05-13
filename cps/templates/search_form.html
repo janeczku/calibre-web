@@ -186,7 +186,7 @@
       </div>
       {% endif %}
 
-      {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
+      {% if c.datatype in ['text', 'series', 'comments'] and not c.is_multiple %}
       <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
       {% endif %}
 

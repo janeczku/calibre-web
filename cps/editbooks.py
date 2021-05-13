@@ -495,7 +495,7 @@ def edit_book_publisher(publishers, book):
     return changed
 
 
-def edit_cc_data_number(book_id, book, c, to_save, cc_db_value, cc_string):
+def edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string):
     changed = False
     if to_save[cc_string] == 'None':
         to_save[cc_string] = None
@@ -564,8 +564,8 @@ def edit_cc_data(book_id, book, to_save):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
-                if c.datatype in ['int', 'bool', 'float', "datetime"]:
-                    changed, to_save = edit_cc_data_number(book_id, book, c, to_save, cc_db_value, cc_string)
+                if c.datatype in ['int', 'bool', 'float', "datetime", "comments"]:
+                    changed, to_save = edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string)
                 else:
                     changed, to_save = edit_cc_data_string(book, c, to_save, cc_db_value, cc_string)
             else:
