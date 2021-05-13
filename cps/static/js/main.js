@@ -533,7 +533,7 @@ $(function() {
         $("#pub_new").toggleClass("disabled");
         $("#pub_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
-        $("#toggle_order_shelf")[0].attributes['data-alt-text'].value = $("#toggle_order_shelf").html();
+        $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);
     });
 
