@@ -21,7 +21,6 @@ if ($(".tiny_editor").length) {
     });
 }
 
-tiny_editor
 if (!Modernizr.inputtypes.date) {
     $("#pubdate").datepicker({
         format: "yyyy-mm-dd",
