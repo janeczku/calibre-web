@@ -2,7 +2,7 @@
 {% block body %}
 <div class="discover">
     {% if entries|length < 1 %}
-      <h2>{{_('No Results Found')}} {{adv_searchterm}}</h2>
+      <h2>{{_('No Results Found')}}</h2>
       <p>{{_('Search Term:')}} {{adv_searchterm}}</p>
     {% else %}
       <h2>{{result_count}} {{_('Results for:')}} {{adv_searchterm}}</h2>
@@ -16,7 +16,7 @@
               </button>
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.shelves_access %}
-                  {% if not shelf.id in books_shelfs and ( not shelf.is_public or g.user.role_edit_shelfs() ) %}
+                  {% if not shelf.is_public or g.user.role_edit_shelfs() %}
                     <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                   {% endif %}
                 {%endfor%}
