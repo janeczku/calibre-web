@@ -1052,9 +1052,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        # flask_session['query'] = json.dumps(request.form)
         return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
-        # return render_search_results(term, 0, None, config.config_books_per_page)
     else:
         return render_title_template('search.html',
                                      searchterm="",
@@ -1067,8 +1065,8 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     values = dict(request.form)
-    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_shelf','exclude_shelf','include_language',
-              'exclude_language', 'include_extension', 'exclude_extension']
+    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_shelf', 'exclude_shelf',
+              'include_language', 'exclude_language', 'include_extension', 'exclude_extension']
     for param in params:
         values[param] = list(request.form.getlist(param))
     flask_session['query'] = json.dumps(values)
@@ -1077,20 +1075,30 @@ def advanced_search():
 
 def adv_search_custom_columns(cc, term, q):
     for c in cc:
-        custom_query = term.get('custom_column_' + str(c.id))
-        if custom_query != '' and custom_query is not None:
-            if c.datatype == 'bool':
+        if c.datatype == "datetime":
+            custom_start = term.get('custom_column_' + str(c.id) + '_start')
+            custom_end = term.get('custom_column_' + str(c.id) + '_end')
+            if custom_start:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value == (custom_query == "True")))
-            elif c.datatype == 'int' or c.datatype == 'float':
+                    db.cc_classes[c.id].value >= custom_start))
+            if custom_end:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value == custom_query))
-            elif c.datatype == 'rating':
-                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value == int(float(custom_query) * 2)))
-            else:
-                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
+                    db.cc_classes[c.id].value <= custom_end))
+        else:
+            custom_query = term.get('custom_column_' + str(c.id))
+            if custom_query != '' and custom_query is not None:
+                if c.datatype == 'bool':
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        db.cc_classes[c.id].value == (custom_query == "True")))
+                elif c.datatype == 'int' or c.datatype == 'float':
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        db.cc_classes[c.id].value == custom_query))
+                elif c.datatype == 'rating':
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
+                else:
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
     return q
 
 
@@ -1262,9 +1270,27 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     searchterm = []
     cc_present = False
     for c in cc:
-        if term.get('custom_column_' + str(c.id)):
-            searchterm.extend([(u"%s: %s" % (c.name, term.get('custom_column_' + str(c.id))))])
+        if c.datatype == "datetime":
+            column_start = term.get('custom_column_' + str(c.id) + '_start')
+            column_end = term.get('custom_column_' + str(c.id) + '_end')
+            if column_start:
+                searchterm.extend([u"{} >= {}".format(c.name,
+                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d"),
+                                                                      format='medium',
+                                                                      locale=get_locale())
+                                                      )])
+                cc_present = True
+            if column_end:
+                searchterm.extend([u"{} <= {}".format(c.name,
+                                                      format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
+                                                                      format='medium',
+                                                                      locale=get_locale())
+                                                      )])
+                cc_present = True
+        elif term.get('custom_column_' + str(c.id)):
+            searchterm.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
             cc_present = True
+
 
     if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
        or rating_high or description or cc_present or read_status:
