@@ -1052,9 +1052,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        # flask_session['query'] = json.dumps(request.form)
         return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
-        # return render_search_results(term, 0, None, config.config_books_per_page)
     else:
         return render_title_template('search.html',
                                      searchterm="",
