@@ -152,8 +152,8 @@ def HandleSyncRequest():
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
 
-    only_kobo_shelves = calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id)\
-        .filter(ub.Shelf.kobo_sync).count() > 0
+    only_kobo_shelves = current_user.kobo_only_shelves_sync
+    # calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id).filter(ub.Shelf.kobo_sync).count() > 0
 
     if only_kobo_shelves:
         changed_entries = (

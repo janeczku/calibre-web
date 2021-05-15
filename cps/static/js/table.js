@@ -580,12 +580,19 @@ function singleUserFormatter(value, row) {
     return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
-function checkboxFormatter(value, row, index){
+function checkboxFormatter(value, row){
     if(value & this.column)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+function singlecheckboxFormatter(value, row){
+    if(value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+}
+
 
 /* Do some hiding disabling after user list is loaded */
 function loadSuccess() {
