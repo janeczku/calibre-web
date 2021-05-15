@@ -1052,9 +1052,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        # flask_session['query'] = json.dumps(request.form)
         return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
-        # return render_search_results(term, 0, None, config.config_books_per_page)
     else:
         return render_title_template('search.html',
                                      searchterm="",
@@ -1276,10 +1274,18 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_start = term.get('custom_column_' + str(c.id) + '_start')
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
-                searchterm.extend([u"{} >= {}".format(c.name, column_start)])
+                searchterm.extend([u"{} >= {}".format(c.name,
+                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d"),
+                                                                      format='medium',
+                                                                      locale=get_locale())
+                                                      )])
                 cc_present = True
             if column_end:
-                searchterm.extend([u"{} <= {}".format(c.name, column_end)])
+                searchterm.extend([u"{} <= {}".format(c.name,
+                                                      format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
+                                                                      format='medium',
+                                                                      locale=get_locale())
+                                                      )])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
             searchterm.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])

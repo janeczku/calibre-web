@@ -105,12 +105,13 @@
       </div>
       {% endif %}
     {% endif %}
-    <div class="form-group">
-      <label for="pubdate">{{_('Published Date')}}</label>
-      <div style="position: relative">
-        <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
-        <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
-      </div>
+    <label for="pubdate">{{_('Published Date')}}</label>
+    <div class="form-group input-group">
+       <input type="text" style="position: static;"  class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+       <input type="text" style="position: absolute;" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
+      <span class="input-group-btn">
+        <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+      </span>
     </div>
     <div class="form-group">
       <label for="publisher">{{_('Publisher')}}</label>
@@ -150,15 +151,18 @@
             {% endif %}
 
             {% if c.datatype == 'datetime' %}
-              <div style="position: relative">
-                <input type="date" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              <div class="input-group">
+                <input type="text" style="position: static;"  class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
                   {% endif %}>
-                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden "
+                <input type="text" style="position: absolute;" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
                   {% endif %}>
+                <span class="input-group-btn">
+                  <button type="button" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                </span>
               </div>
             {% endif %}
 
