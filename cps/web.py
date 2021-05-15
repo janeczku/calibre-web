@@ -1080,10 +1080,10 @@ def adv_search_custom_columns(cc, term, q):
             custom_end = term.get('custom_column_' + str(c.id) + '_end')
             if custom_start:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value >= custom_start))
+                    func.datetime(db.cc_classes[c.id].value) >= func.datetime(custom_start)))
             if custom_end:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value <= custom_end))
+                    func.datetime(db.cc_classes[c.id].value) <= func.datetime(custom_end)))
         else:
             custom_query = term.get('custom_column_' + str(c.id))
             if custom_query != '' and custom_query is not None:
@@ -1254,8 +1254,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     author_name = term.get("author_name")
     book_title = term.get("book_title")
     publisher = term.get("publisher")
-    pub_start = term.get("Publishstart")
-    pub_end = term.get("Publishend")
+    pub_start = term.get("publishstart")
+    pub_end = term.get("publishend")
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
     description = term.get("comment")
@@ -1310,9 +1310,9 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         if book_title:
             q = q.filter(func.lower(db.Books.title).ilike("%" + book_title + "%"))
         if pub_start:
-            q = q.filter(db.Books.pubdate >= pub_start)
+            q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
         if pub_end:
-            q = q.filter(db.Books.pubdate <= pub_end)
+            q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
         q = adv_search_read_status(q, read_status)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
