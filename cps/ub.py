@@ -188,7 +188,7 @@ class User(UserBase, Base):
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
-
+    kobo_only_shelves_sync = Column(Integer, default=1)
 
 
 if oauth_support:
@@ -229,6 +229,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
+        self.kobo_only_shelves_sync = data.kobo_only_shelves_sync
 
 
     def role_admin(self):
@@ -604,6 +605,13 @@ def migrate_Database(session):
             conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
         session.commit()
     try:
+        session.query(exists().where(User.kobo_only_shelves_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+            conn.execute("ALTER TABLE user ADD column `kobo_only_shelves_sync` SMALLINT DEFAULT 0")
+        session.commit()
+
+    try:
         # check if name is in User table instead of nickname
         session.query(exists().where(User.name)).scalar()
     except exc.OperationalError:
@@ -622,15 +630,16 @@ def migrate_Database(session):
                      "allowed_tags VARCHAR,"
                      "denied_column_value VARCHAR,"
                      "allowed_column_value VARCHAR,"
-                     "view_settings JSON,"         
+                     "view_settings JSON,"
+                     "kobo_only_shelves_sync SMALLINT,"                              
                      "UNIQUE (name),"
                      "UNIQUE (email))"))
             conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
                      "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings)"
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync)"
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings FROM user"))
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync FROM user"))
             # delete old user table and rename new user_id table to user:
             conn.execute(text("DROP TABLE user"))
             conn.execute(text("ALTER TABLE user_id RENAME TO user"))

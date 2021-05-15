@@ -236,7 +236,7 @@ def edit_user_table():
         custom_values = []
     if not config.config_anonbrowse:
         allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
-
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("user_table.html",
                                  users=allUser.all(),
                                  tags=tags,
@@ -245,6 +245,7 @@ def edit_user_table():
                                  languages=languages,
                                  visiblility=visibility,
                                  all_roles=constants.ALL_ROLES,
+                                 kobo_support=kobo_support,
                                  sidebar_settings=constants.sidebar_settings,
                                  title=_(u"Edit Users"),
                                  page="usertable")
@@ -391,6 +392,8 @@ def edit_list_user(param):
                     user.name = check_username(vals['value'])
                 elif param =='email':
                     user.email = check_email(vals['value'])
+                elif param =='kobo_only_shelves_sync':
+                    user.kobo_only_shelves_sync = int(vals['value'] == 'true')
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
                 elif param.endswith('role'):
@@ -558,6 +561,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":
         texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
+    elif element_id == "kobo_only_shelves_sync":
+        texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     return json.dumps(texts)
 
 
@@ -1314,6 +1319,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
+        content.kobo_only_shelves_sync = 0  # No default value for kobo sync shelf setting
         ub.session.add(content)
         ub.session.commit()
         flash(_(u"User '%(user)s' created", user=content.name), category="success")
@@ -1380,6 +1386,8 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             content.sidebar_view |= constants.DETAIL_RANDOM
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
+
+        content.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
 
         if to_save.get("default_language"):
             content.default_language = to_save["default_language"]

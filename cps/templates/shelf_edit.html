@@ -14,14 +14,10 @@
         </label>
       </div>
     {% endif %}
-    {% if kobo_sync_enabled %}
+    {% if kobo_sync_enabled and sync_only_selected_shelves %}
       <div class="checkbox">
-          <label>
-              <input type="checkbox" name="kobo_sync"
-                     {% if shelf.kobo_sync == 1 %}checked{% endif %}>
-            {% if shelf.kobo_sync == 1 and sync_all_books == 1 %}{{ _('Sync with Kobo device - If this option is turned off, all books and shelves will be synced with Kobo') }}
-            {% elif sync_all_books == 0 and shelf.kobo_sync == 0 %}{{ _('Only sync books from selected shelves to Kobo instead of all books and shelves') }}
-            {% else %}{{ _('Sync with Kobo device') }}{% endif %}
+          <label> <input type="checkbox" name="kobo_sync" {% if shelf.kobo_sync == 1 %}checked{% endif %}>
+              {{ _('Sync this shelf with Kobo device') }}
           </label>
       </div>
     {% endif %}
