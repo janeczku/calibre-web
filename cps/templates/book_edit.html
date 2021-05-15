@@ -161,7 +161,7 @@
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
                   {% endif %}>
                 <span class="input-group-btn">
-                  <button type="button" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                  <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
                 </span>
               </div>
             {% endif %}

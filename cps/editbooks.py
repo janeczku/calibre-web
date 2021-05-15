@@ -501,6 +501,8 @@ def edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string):
         to_save[cc_string] = None
     elif c.datatype == 'bool':
         to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
+    elif c.datatype == 'comments':
+        to_save[cc_string] = Markup(to_save[cc_string]).unescape()
     elif c.datatype == 'datetime':
         try:
             to_save[cc_string] = datetime.strptime(to_save[cc_string], "%Y-%m-%d")
@@ -772,7 +774,7 @@ def edit_book(book_id):
             # Add default series_index to book
             modif_date |= edit_book_series_index(to_save["series_index"], book)
             # Handle book comments/description
-            modif_date |= edit_book_comments(to_save["description"], book)
+            modif_date |= edit_book_comments(Markup(to_save['description']).unescape(), book)
             # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
             modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
