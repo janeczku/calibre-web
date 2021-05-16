@@ -69,7 +69,9 @@ var settings = {
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
     theme: "light",
-    direction: 0 // 0 = Left to Right, 1 = Right to Left
+    direction: 0, // 0 = Left to Right, 1 = Right to Left
+	nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
+	scrollbar: 1 // 0 = Hide Scrollbar, 1 = Show Scrollbar
 };
 
 kthoom.saveSettings = function() {
@@ -253,6 +255,7 @@ function updatePage() {
     }
 
     $("body").toggleClass("dark-theme", settings.theme === "dark");
+	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -409,6 +412,9 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     }
 }
 
@@ -419,6 +425,9 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     }
 }
 
@@ -600,6 +609,9 @@ function init(filename) {
     $("#thumbnails").on("click", "a", function() {
         currentImage = $(this).data("page") - 1;
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     });
 
     // Fullscreen mode
