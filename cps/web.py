@@ -1442,20 +1442,20 @@ def register():
         return redirect(url_for('web.index'))
     if not config.get_mail_server_configured():
         flash(_(u"E-Mail server is not configured, please contact your administrator!"), category="error")
-        return render_title_template('register.html', title=_(u"register"), page="register")
+        return render_title_template('register.html', title=_("Register"), page="register")
 
     if request.method == "POST":
         to_save = request.form.to_dict()
         nickname = to_save["email"].strip() if config.config_register_email else to_save.get('name')
         if not nickname or not to_save.get("email"):
             flash(_(u"Please fill out all fields!"), category="error")
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
         try:
             nickname = check_username(nickname)
             email = check_email(to_save["email"])
         except Exception as ex:
             flash(str(ex), category="error")
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
 
         content = ub.User()
         if check_valid_domain(email):
@@ -1474,17 +1474,17 @@ def register():
             except Exception:
                 ub.session.rollback()
                 flash(_(u"An unknown error occurred. Please try again later."), category="error")
-                return render_title_template('register.html', title=_(u"register"), page="register")
+                return render_title_template('register.html', title=_("Register"), page="register")
         else:
             flash(_(u"Your e-mail is not allowed to register"), category="error")
             log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
         flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
         return redirect(url_for('web.login'))
 
     if feature_support['oauth']:
         register_user_with_oauth()
-    return render_title_template('register.html', config=config, title=_(u"register"), page="register")
+    return render_title_template('register.html', config=config, title=_("Register"), page="register")
 
 
 @web.route('/login', methods=['GET', 'POST'])
@@ -1553,7 +1553,7 @@ def login():
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
     return render_title_template('login.html',
-                                 title=_(u"login"),
+                                 title=_(u"Login"),
                                  next_url=next_url,
                                  config=config,
                                  oauth_check=oauth_check,
@@ -1614,8 +1614,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         log.debug(u"Profile updated")
     except IntegrityError:
         ub.session.rollback()
-        flash(_(u"Found an existing account for this e-mail address."), category="error")
-        log.debug(u"Found an existing account for this e-mail address.")
+        flash(_(u"Found an existing account for this e-mail address"), category="error")
+        log.debug(u"Found an existing account for this e-mail address")
     except OperationalError as e:
         ub.session.rollback()
         log.error("Database error: %s", e)
@@ -1658,8 +1658,8 @@ def profile():
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
     if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
 
     # check if book has bookmark
@@ -1693,8 +1693,8 @@ def read_book(book_id, book_format):
                 log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileExt)
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
 
@@ -1764,6 +1764,7 @@ def show_book(book_id):
                                      reader_list=reader_list,
                                      page="book")
     else:
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+              category="error")
         return redirect(url_for("web.index"))
