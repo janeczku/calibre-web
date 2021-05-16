@@ -27,6 +27,15 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
+# Improve this to check if scholarly is available in a global way, like other pythonic libraries
+have_scholar = True
+try:
+    from scholarly import scholarly
+except ImportError:
+    have_scholar = False
+    pass
+
+
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
@@ -1058,6 +1067,23 @@ def convert_bookformat(book_id):
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
 
+@editbook.route("/scholarsearch/<query>",methods=['GET'])
+@login_required_if_no_ano
+@edit_required
+def scholar_search(query):
+    if have_scholar:
+        scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
+        i=0
+        result = []
+        for publication in scholar_gen:
+            del publication['source']
+            result.append(publication)
+            i+=1
+            if(i>=10):
+                break
+        return Response(json.dumps(result),mimetype='application/json')
+    else:
+        return []
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano

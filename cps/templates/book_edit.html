@@ -246,6 +246,10 @@
 
           <input type="checkbox" id="show-comics" class="pill" data-control="comicvine" checked>
           <label for="show-comics">ComicVine <span class="glyphicon glyphicon-ok"></span></label>
+
+          <input type="checkbox" id="show-googlescholar" class="pill" data-control="googlescholar" checked>
+          <label for="show-googlescholar">Google Scholar <span class="glyphicon glyphicon-ok"></span></label>
+
         </div>
 
         <div id="meta-info">
@@ -267,7 +271,7 @@
     <img class="pull-left img-responsive"
          data-toggle="modal"
          data-target="#metaModal"
-         src="<%= cover %>"
+         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}"  %>"
          alt="Cover"
     >
     <div class="media-body">
