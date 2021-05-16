@@ -227,3 +227,14 @@ th {
 .dark-theme .overlay {
   background-color: rgba(0, 0, 0, 0.8);
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.disabled-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.disabled-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
