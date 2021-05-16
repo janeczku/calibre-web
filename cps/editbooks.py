@@ -358,7 +358,7 @@ def render_edit_book(book_id):
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
     for lang in book.languages:
@@ -728,7 +728,7 @@ def edit_book(book_id):
 
     # Book not found
     if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
     meta = upload_single_file(request, book, book_id)
