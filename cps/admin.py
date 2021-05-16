@@ -288,7 +288,7 @@ def list_users():
 
     for user in users:
         if user.default_language == "all":
-            user.default = _("all")
+            user.default = _("All")
         else:
             user.default = LC.parse(user.default_language).get_language_name(get_locale())
 
@@ -1422,7 +1422,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     except IntegrityError as ex:
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
-        flash(_(u"An unknown error occurred."), category="error")
+        flash(_(u"An unknown error occurred. Please try again later."), category="error")
     except OperationalError:
         ub.session.rollback()
         log.error("Settings DB is not Writeable")
@@ -1473,7 +1473,7 @@ def update_mailsettings():
     elif to_save.get("gmail"):
         try:
             config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"G-Mail Account Verification Successful"), category="success")
+            flash(_(u"Gmail Account Verification Successful"), category="success")
         except Exception as ex:
             flash(str(ex), category="error")
             log.error(ex)
