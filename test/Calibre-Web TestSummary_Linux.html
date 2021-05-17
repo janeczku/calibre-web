@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-04-27 20:06:09</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-05-16 21:15:08</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-04-27 23:04:55</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-05-17 00:22:56</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 24 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 32 min</p>
         </div>
       </div>
       </div>
@@ -669,12 +669,12 @@
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
+        <td class="text-center">6</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c10', 13)">Detail</a>
@@ -683,11 +683,31 @@
 
     
     
-        <tr id='pt10.1' class='hiddenRow bg-success'>
+        <tr id="et10.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 118, in test_change_upload_formats
+    upload.send_keys(upload_file)
+AttributeError: 'bool' object has no attribute 'send_keys'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -701,11 +721,31 @@
     
     
     
-        <tr id='pt10.3' class='hiddenRow bg-success'>
+        <tr id="ft10.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft10.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft10.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft10.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 615, in test_delete_role
+    self.assertTrue(self.delete_book_format(12, 'FB2'))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -746,38 +786,138 @@
     
     
     
-        <tr id='pt10.8' class='hiddenRow bg-success'>
+        <tr id="et10.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 636, in test_title_sort
+    self.fill_view_config({'config_title_regex': '^(Beta)\s+'})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 321, in fill_view_config
+    accordions[o].click()
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt10.9' class='hiddenRow bg-success'>
+        <tr id="et10.9" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 498, in test_upload_edit_role
+    self.fill_basic_config({'config_uploading': 1})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 288, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 201, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt10.10' class='hiddenRow bg-success'>
+        <tr id="et10.10" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 53, in test_upload_metadata_cbr
+    self.fill_basic_config({'config_uploading': 1})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 288, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 201, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt10.11' class='hiddenRow bg-success'>
+        <tr id="et10.11" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 87, in test_upload_metadata_cbt
+    self.fill_basic_config({'config_uploading': 1})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 288, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 201, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -808,31 +948,111 @@
     
     
     
-        <tr id='pt10.13' class='hiddenRow bg-success'>
+        <tr id="et10.13" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et10.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 226, in test_writeonly_path
+    self.fill_basic_config({'config_rarfile_location': unrar_path()})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 288, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 201, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="skipClass">
-        <td>TestEditBooks</td>
-        <td class="text-center">33</td>
-        <td class="text-center">31</td>
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c11', 33)">Detail</a>
+            <a onclick="showClassDetail('c11', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt11.1' class='hiddenRow bg-success'>
+        <tr id="et11.1" class="none bg-info">
+            <td>
+                <div class='testcase'>tearDownClass (test_edit_additional_books)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et11.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et11.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 39, in tearDownClass
+    cls.stop_calibre_web()
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 376, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 360, in find_element_by_id
+    return self.find_element(by=By.ID, value=id_)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 976, in find_element
+    return self.execute(Command.FIND_ELEMENT, {
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="admin_stop"]</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>TestEditBooks</td>
+        <td class="text-center">35</td>
+        <td class="text-center">33</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c12', 35)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_download_book</div>
             </td>
@@ -841,7 +1061,7 @@
     
     
     
-        <tr id='pt11.2' class='hiddenRow bg-success'>
+        <tr id='pt12.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_author</div>
             </td>
@@ -850,7 +1070,7 @@
     
     
     
-        <tr id='pt11.3' class='hiddenRow bg-success'>
+        <tr id='pt12.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_category</div>
             </td>
@@ -859,7 +1079,7 @@
     
     
     
-        <tr id='pt11.4' class='hiddenRow bg-success'>
+        <tr id='pt12.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_comments</div>
             </td>
@@ -868,7 +1088,7 @@
     
     
     
-        <tr id='pt11.5' class='hiddenRow bg-success'>
+        <tr id='pt12.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_bool</div>
             </td>
@@ -877,7 +1097,7 @@
     
     
     
-        <tr id='pt11.6' class='hiddenRow bg-success'>
+        <tr id='pt12.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_categories</div>
             </td>
@@ -886,7 +1106,25 @@
     
     
     
-        <tr id='pt11.7' class='hiddenRow bg-success'>
+        <tr id='pt12.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_comment</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooks - test_edit_custom_date</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
             </td>
@@ -895,7 +1133,7 @@
     
     
     
-        <tr id='pt11.8' class='hiddenRow bg-success'>
+        <tr id='pt12.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
             </td>
@@ -904,7 +1142,7 @@
     
     
     
-        <tr id='pt11.9' class='hiddenRow bg-success'>
+        <tr id='pt12.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
             </td>
@@ -913,7 +1151,7 @@
     
     
     
-        <tr id='pt11.10' class='hiddenRow bg-success'>
+        <tr id='pt12.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
             </td>
@@ -922,7 +1160,7 @@
     
     
     
-        <tr id='pt11.11' class='hiddenRow bg-success'>
+        <tr id='pt12.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
             </td>
@@ -931,7 +1169,7 @@
     
     
     
-        <tr id='pt11.12' class='hiddenRow bg-success'>
+        <tr id='pt12.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_language</div>
             </td>
@@ -940,7 +1178,7 @@
     
     
     
-        <tr id='pt11.13' class='hiddenRow bg-success'>
+        <tr id='pt12.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publisher</div>
             </td>
@@ -949,33 +1187,16 @@
     
     
     
-        <tr id="st11.14" class="none bg-warning">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publishing_date</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.14')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st11.14" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st11.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Not Implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt11.15' class='hiddenRow bg-success'>
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_rating</div>
             </td>
@@ -984,7 +1205,7 @@
     
     
     
-        <tr id='pt11.16' class='hiddenRow bg-success'>
+        <tr id='pt12.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_series</div>
             </td>
@@ -993,7 +1214,7 @@
     
     
     
-        <tr id='pt11.17' class='hiddenRow bg-success'>
+        <tr id='pt12.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_title</div>
             </td>
@@ -1002,19 +1223,19 @@
     
     
     
-        <tr id="st11.18" class="none bg-warning">
+        <tr id="st12.20" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.18')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.20')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st11.18" class="popup_window test_output" style="display:none;">
+                <div id="div_st12.20" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st11.18').style.display='none'"><span
+                                onclick='document.getElementById('div_st12.20').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1028,7 +1249,7 @@
     
     
     
-        <tr id='pt11.19' class='hiddenRow bg-success'>
+        <tr id='pt12.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_author</div>
             </td>
@@ -1037,7 +1258,7 @@
     
     
     
-        <tr id='pt11.20' class='hiddenRow bg-success'>
+        <tr id='pt12.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
             </td>
@@ -1046,7 +1267,7 @@
     
     
     
-        <tr id='pt11.21' class='hiddenRow bg-success'>
+        <tr id='pt12.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_language</div>
             </td>
@@ -1055,7 +1276,7 @@
     
     
     
-        <tr id='pt11.22' class='hiddenRow bg-success'>
+        <tr id='pt12.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
             </td>
@@ -1064,7 +1285,7 @@
     
     
     
-        <tr id='pt11.23' class='hiddenRow bg-success'>
+        <tr id='pt12.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_series</div>
             </td>
@@ -1073,7 +1294,7 @@
     
     
     
-        <tr id='pt11.24' class='hiddenRow bg-success'>
+        <tr id='pt12.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
             </td>
@@ -1082,16 +1303,36 @@
     
     
     
-        <tr id='pt11.25' class='hiddenRow bg-success'>
+        <tr id="et12.27" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.27')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.27" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et12.27').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_books.py", line 953, in test_upload_book_cbr
+    upload.send_keys(upload_file)
+AttributeError: 'bool' object has no attribute 'send_keys'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.26' class='hiddenRow bg-success'>
+        <tr id='pt12.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1100,7 +1341,7 @@
     
     
     
-        <tr id='pt11.27' class='hiddenRow bg-success'>
+        <tr id='pt12.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1109,7 +1350,7 @@
     
     
     
-        <tr id='pt11.28' class='hiddenRow bg-success'>
+        <tr id='pt12.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1118,7 +1359,7 @@
     
     
     
-        <tr id='pt11.29' class='hiddenRow bg-success'>
+        <tr id='pt12.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1127,7 +1368,7 @@
     
     
     
-        <tr id='pt11.30' class='hiddenRow bg-success'>
+        <tr id='pt12.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1136,7 +1377,7 @@
     
     
     
-        <tr id='pt11.31' class='hiddenRow bg-success'>
+        <tr id='pt12.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1145,7 +1386,7 @@
     
     
     
-        <tr id='pt11.32' class='hiddenRow bg-success'>
+        <tr id='pt12.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1154,7 +1395,7 @@
     
     
     
-        <tr id='pt11.33' class='hiddenRow bg-success'>
+        <tr id='pt12.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
@@ -1172,13 +1413,13 @@
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 10)">Detail</a>
+            <a onclick="showClassDetail('c13', 10)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt12.1' class='hiddenRow bg-success'>
+        <tr id='pt13.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
             </td>
@@ -1187,7 +1428,7 @@
     
     
     
-        <tr id='pt12.2' class='hiddenRow bg-success'>
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
             </td>
@@ -1196,7 +1437,7 @@
     
     
     
-        <tr id='pt12.3' class='hiddenRow bg-success'>
+        <tr id='pt13.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
             </td>
@@ -1205,7 +1446,7 @@
     
     
     
-        <tr id='pt12.4' class='hiddenRow bg-success'>
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
             </td>
@@ -1214,7 +1455,7 @@
     
     
     
-        <tr id='pt12.5' class='hiddenRow bg-success'>
+        <tr id='pt13.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
             </td>
@@ -1223,7 +1464,7 @@
     
     
     
-        <tr id='pt12.6' class='hiddenRow bg-success'>
+        <tr id='pt13.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
             </td>
@@ -1232,7 +1473,7 @@
     
     
     
-        <tr id='pt12.7' class='hiddenRow bg-success'>
+        <tr id='pt13.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
             </td>
@@ -1241,7 +1482,7 @@
     
     
     
-        <tr id='pt12.8' class='hiddenRow bg-success'>
+        <tr id='pt13.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
@@ -1250,7 +1491,7 @@
     
     
     
-        <tr id='pt12.9' class='hiddenRow bg-success'>
+        <tr id='pt13.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
             </td>
@@ -1259,7 +1500,7 @@
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id='pt13.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
@@ -1269,21 +1510,21 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">1</td>
+        <td class="text-center">19</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 20)">Detail</a>
+            <a onclick="showClassDetail('c14', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
             </td>
@@ -1292,29 +1533,30 @@
     
     
     
-        <tr id="ft13.2" class="none bg-danger">
+        <tr id="ft14.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.2')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
+                <div id="div_ft14.2" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft13.2').style.display='none'"><span
+                                onclick='document.getElementById('div_ft14.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 354, in test_edit_author
-    self.assertEqual(u'Sigurd Lindgren & Leo Baskerville', author.get_attribute('value'))
-AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Baskerville'
-- Sigurd Lindgren & Leo Baskerville
-?                - -
-+ Sigurd Lindgren&Leo Baskerville</pre>
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 371, in test_edit_author
+    self.assertEqual(u'Pipo, Pipe', author.get_attribute('value'))
+AssertionError: 'Pipo, Pipe' != 'Pipo| Pipe'
+- Pipo, Pipe
+?     ^
++ Pipo| Pipe
+?     ^</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1324,7 +1566,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id='pt14.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
             </td>
@@ -1333,7 +1575,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.4' class='hiddenRow bg-success'>
+        <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
             </td>
@@ -1342,7 +1584,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.5' class='hiddenRow bg-success'>
+        <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
             </td>
@@ -1351,7 +1593,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.6' class='hiddenRow bg-success'>
+        <tr id='pt14.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
             </td>
@@ -1360,7 +1602,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.7' class='hiddenRow bg-success'>
+        <tr id='pt14.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
@@ -1369,7 +1611,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.8' class='hiddenRow bg-success'>
+        <tr id='pt14.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
@@ -1378,7 +1620,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.9' class='hiddenRow bg-success'>
+        <tr id='pt14.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
@@ -1387,7 +1629,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.10' class='hiddenRow bg-success'>
+        <tr id='pt14.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
@@ -1396,7 +1638,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.11' class='hiddenRow bg-success'>
+        <tr id='pt14.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
@@ -1405,7 +1647,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.12' class='hiddenRow bg-success'>
+        <tr id='pt14.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
@@ -1414,7 +1656,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.13' class='hiddenRow bg-success'>
+        <tr id='pt14.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
             </td>
@@ -1423,7 +1665,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.14' class='hiddenRow bg-success'>
+        <tr id='pt14.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
@@ -1432,7 +1674,7 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id='pt13.15' class='hiddenRow bg-success'>
+        <tr id='pt14.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
@@ -1441,36 +1683,16 @@ AssertionError: 'Sigurd Lindgren & Leo Baskerville' != 'Sigurd Lindgren&Leo Bask
     
     
     
-        <tr id="et13.16" class="none bg-info">
+        <tr id='pt14.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et13.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et13.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 240, in test_edit_title
-    self.assertEqual(ele.text, u'Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters')
-AttributeError: 'bool' object has no attribute 'text'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt13.17' class='hiddenRow bg-success'>
+        <tr id='pt14.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_epub</div>
             </td>
@@ -1479,7 +1701,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt13.18' class='hiddenRow bg-success'>
+        <tr id='pt14.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
@@ -1488,7 +1710,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt13.19' class='hiddenRow bg-success'>
+        <tr id='pt14.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_cover_hdd</div>
             </td>
@@ -1497,7 +1719,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt13.20' class='hiddenRow bg-success'>
+        <tr id='pt14.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
@@ -1515,13 +1737,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 3)">Detail</a>
+            <a onclick="showClassDetail('c15', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt14.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
@@ -1530,7 +1752,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt14.2' class='hiddenRow bg-success'>
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
             </td>
@@ -1539,7 +1761,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id='pt15.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
@@ -1557,13 +1779,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 6)">Detail</a>
+            <a onclick="showClassDetail('c16', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -1572,7 +1794,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt15.2' class='hiddenRow bg-success'>
+        <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -1581,7 +1803,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt15.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
@@ -1590,7 +1812,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt15.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
@@ -1599,7 +1821,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt15.5' class='hiddenRow bg-success'>
+        <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
@@ -1608,7 +1830,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt15.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
@@ -1619,49 +1841,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
 
 
     <tr id="su" class="passClass">
-        <td>TestFilePicker</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c16', 3)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt16.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestFilePicker - test_filepicker_all_file</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="passClass">
-        <td>TestSetupGdrive</td>
+        <td>TestErrorReadColumn</td>
         <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
@@ -1675,6 +1855,106 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
         <tr id='pt17.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestFilePicker</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c18', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="st18.1" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestFilePicker - test_filepicker_all_file</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.1')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st18.1" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st18.3" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.3')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st18.3" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_st18.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSetupGdrive</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c19', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -1692,13 +1972,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 3)">Detail</a>
+            <a onclick="showClassDetail('c20', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -1707,7 +1987,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -1716,7 +1996,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt20.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -1728,19 +2008,19 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
 
     <tr id="su" class="passClass">
         <td>TestKoboSync</td>
-        <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 9)">Detail</a>
+            <a onclick="showClassDetail('c21', 10)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -1749,7 +2029,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -1758,7 +2038,16 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -1767,7 +2056,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.4' class='hiddenRow bg-success'>
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -1776,7 +2065,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt21.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -1785,7 +2074,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt21.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -1794,7 +2083,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -1803,7 +2092,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.8' class='hiddenRow bg-success'>
+        <tr id='pt21.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -1812,7 +2101,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt19.9' class='hiddenRow bg-success'>
+        <tr id='pt21.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -1822,21 +2111,21 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLdapLogin</td>
         <td class="text-center">13</td>
-        <td class="text-center">13</td>
-        <td class="text-center">0</td>
+        <td class="text-center">12</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 13)">Detail</a>
+            <a onclick="showClassDetail('c22', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -1845,7 +2134,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -1854,7 +2143,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -1863,7 +2152,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -1872,7 +2161,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -1881,7 +2170,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.6' class='hiddenRow bg-success'>
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -1890,7 +2179,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.7' class='hiddenRow bg-success'>
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -1899,7 +2188,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.8' class='hiddenRow bg-success'>
+        <tr id='pt22.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -1908,16 +2197,36 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.9' class='hiddenRow bg-success'>
+        <tr id="ft22.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft22.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft22.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_ldap.py", line 741, in test_ldap_about
+    self.assertTrue(self.goto_page('nav_about'))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.10' class='hiddenRow bg-success'>
+        <tr id='pt22.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -1926,7 +2235,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.11' class='hiddenRow bg-success'>
+        <tr id='pt22.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -1935,7 +2244,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.12' class='hiddenRow bg-success'>
+        <tr id='pt22.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -1944,7 +2253,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt20.13' class='hiddenRow bg-success'>
+        <tr id='pt22.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -1962,13 +2271,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 7)">Detail</a>
+            <a onclick="showClassDetail('c23', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -1977,7 +2286,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -1986,7 +2295,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt21.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -1995,19 +2304,19 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id="st21.4" class="none bg-warning">
+        <tr id="st23.4" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st21.4')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st23.4')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st21.4" class="popup_window test_output" style="display:none;">
+                <div id="div_st23.4" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st21.4').style.display='none'"><span
+                                onclick='document.getElementById('div_st23.4').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2021,7 +2330,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt21.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -2030,7 +2339,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt21.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -2039,7 +2348,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt21.7' class='hiddenRow bg-success'>
+        <tr id='pt23.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -2049,21 +2358,21 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLogin</td>
         <td class="text-center">14</td>
-        <td class="text-center">14</td>
-        <td class="text-center">0</td>
+        <td class="text-center">13</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 14)">Detail</a>
+            <a onclick="showClassDetail('c24', 14)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -2072,7 +2381,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -2081,7 +2390,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -2090,7 +2399,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -2099,7 +2408,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt24.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -2108,7 +2417,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt24.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -2117,7 +2426,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.7' class='hiddenRow bg-success'>
+        <tr id='pt24.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -2126,7 +2435,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.8' class='hiddenRow bg-success'>
+        <tr id='pt24.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -2135,7 +2444,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.9' class='hiddenRow bg-success'>
+        <tr id='pt24.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -2144,7 +2453,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.10' class='hiddenRow bg-success'>
+        <tr id='pt24.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -2153,7 +2462,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.11' class='hiddenRow bg-success'>
+        <tr id='pt24.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -2162,7 +2471,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.12' class='hiddenRow bg-success'>
+        <tr id='pt24.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -2171,16 +2480,36 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt22.13' class='hiddenRow bg-success'>
+        <tr id="ft24.13" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft24.13')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft24.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft24.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_login.py", line 342, in test_proxy_login
+    self.assertTrue("Calibre-Web | login" in resp.text)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt22.14' class='hiddenRow bg-success'>
+        <tr id='pt24.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -2198,13 +2527,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 2)">Detail</a>
+            <a onclick="showClassDetail('c25', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -2213,7 +2542,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_merge_book</div>
             </td>
@@ -2231,13 +2560,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 2)">Detail</a>
+            <a onclick="showClassDetail('c26', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -2246,7 +2575,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -2264,13 +2593,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 23)">Detail</a>
+            <a onclick="showClassDetail('c27', 23)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -2279,7 +2608,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt27.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -2288,7 +2617,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -2297,7 +2626,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.4' class='hiddenRow bg-success'>
+        <tr id='pt27.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -2306,7 +2635,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.5' class='hiddenRow bg-success'>
+        <tr id='pt27.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -2315,7 +2644,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.6' class='hiddenRow bg-success'>
+        <tr id='pt27.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -2324,7 +2653,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.7' class='hiddenRow bg-success'>
+        <tr id='pt27.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -2333,7 +2662,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.8' class='hiddenRow bg-success'>
+        <tr id='pt27.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -2342,7 +2671,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.9' class='hiddenRow bg-success'>
+        <tr id='pt27.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -2351,7 +2680,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.10' class='hiddenRow bg-success'>
+        <tr id='pt27.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -2360,7 +2689,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.11' class='hiddenRow bg-success'>
+        <tr id='pt27.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -2369,7 +2698,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.12' class='hiddenRow bg-success'>
+        <tr id='pt27.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -2378,7 +2707,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.13' class='hiddenRow bg-success'>
+        <tr id='pt27.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -2387,7 +2716,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.14' class='hiddenRow bg-success'>
+        <tr id='pt27.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -2396,7 +2725,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.15' class='hiddenRow bg-success'>
+        <tr id='pt27.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -2405,7 +2734,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.16' class='hiddenRow bg-success'>
+        <tr id='pt27.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -2414,7 +2743,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.17' class='hiddenRow bg-success'>
+        <tr id='pt27.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -2423,7 +2752,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.18' class='hiddenRow bg-success'>
+        <tr id='pt27.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -2432,7 +2761,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.19' class='hiddenRow bg-success'>
+        <tr id='pt27.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -2441,7 +2770,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.20' class='hiddenRow bg-success'>
+        <tr id='pt27.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -2450,7 +2779,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.21' class='hiddenRow bg-success'>
+        <tr id='pt27.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -2459,7 +2788,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.22' class='hiddenRow bg-success'>
+        <tr id='pt27.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -2468,7 +2797,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt25.23' class='hiddenRow bg-success'>
+        <tr id='pt27.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -2478,25 +2807,47 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestUploadPDF</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 1)">Detail</a>
+            <a onclick="showClassDetail('c28', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id="et28.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et28.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et28.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_pdf_metadata.py", line 127, in test_upload_invalid_pdf
+    self.check_uploaded_pdf({'author': "Mani Mücks",
+  File "/home/ozzie/Development/calibre-web-test/test/test_pdf_metadata.py", line 55, in check_uploaded_pdf
+    upload.send_keys(upload_file)
+AttributeError: 'bool' object has no attribute 'send_keys'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2510,13 +2861,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 5)">Detail</a>
+            <a onclick="showClassDetail('c29', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -2525,7 +2876,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt27.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -2534,7 +2885,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -2543,7 +2894,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt27.4' class='hiddenRow bg-success'>
+        <tr id='pt29.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -2552,7 +2903,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt27.5' class='hiddenRow bg-success'>
+        <tr id='pt29.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -2570,13 +2921,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 8)">Detail</a>
+            <a onclick="showClassDetail('c30', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -2585,7 +2936,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -2594,7 +2945,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -2603,7 +2954,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -2612,7 +2963,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -2621,7 +2972,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -2630,7 +2981,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -2639,7 +2990,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt28.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -2649,21 +3000,21 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestShelf</td>
         <td class="text-center">12</td>
-        <td class="text-center">11</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">9</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 12)">Detail</a>
+            <a onclick="showClassDetail('c31', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -2672,7 +3023,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -2681,7 +3032,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -2690,7 +3041,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -2699,7 +3050,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -2708,7 +3059,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -2717,7 +3068,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt31.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -2726,7 +3077,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt31.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -2735,7 +3086,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt31.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -2744,28 +3095,48 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id="et31.10" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et31.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et31.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et31.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_shelf.py", line 359, in test_shelf_anonymous
+    self.get_book_details(int(books[1][2]['id']))
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id="st29.11" class="none bg-warning">
+        <tr id="st31.11" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st29.11')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st31.11')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st29.11" class="popup_window test_output" style="display:none;">
+                <div id="div_st31.11" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st29.11').style.display='none'"><span
+                                onclick='document.getElementById('div_st31.11').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2779,11 +3150,31 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt29.12' class='hiddenRow bg-success'>
+        <tr id="ft31.12" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft31.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_shelf.py", line 290, in test_shelf_long_name
+    self.assertTrue(self.list_shelfs('Halllalalalal1l1ll2332434llsfllsdfgls[..]'))
+AssertionError: None is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2797,13 +3188,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 8)">Detail</a>
+            <a onclick="showClassDetail('c32', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -2812,7 +3203,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -2821,7 +3212,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt32.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -2830,7 +3221,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt32.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -2839,7 +3230,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id='pt32.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -2848,7 +3239,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt32.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -2857,19 +3248,19 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id="st30.7" class="none bg-warning">
+        <tr id="st32.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st30.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st32.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st30.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st32.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_st30.7').style.display='none'"><span
+                                onclick='document.getElementById('div_st32.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2883,7 +3274,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt30.8' class='hiddenRow bg-success'>
+        <tr id='pt32.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -2893,30 +3284,112 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestUserList</td>
-        <td class="text-center">16</td>
-        <td class="text-center">16</td>
+    <tr id="su" class="errorClass">
+        <td>TestUploadEPubs</td>
+        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 16)">Detail</a>
+            <a onclick="showClassDetail('c33', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="et33.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestUserList - test_list_visibility</div>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et33.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et33.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et33.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py", line 79, in test_upload_epub_duplicate
+    upload.send_keys(epub_file)
+AttributeError: 'bool' object has no attribute 'send_keys'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt33.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="failClass">
+        <td>TestUserList</td>
+        <td class="text-center">18</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c34', 18)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt34.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id="ft34.2" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUserList - test_list_visibility</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft34.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft34.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft34.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 157, in test_list_visibility
+    self.assertEqual(34, len(ul['table'][0]))
+AssertionError: 34 != 35</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt34.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -2925,7 +3398,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt34.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -2934,7 +3407,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt34.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -2943,7 +3416,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt34.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -2952,7 +3425,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt34.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -2961,7 +3434,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.7' class='hiddenRow bg-success'>
+        <tr id='pt34.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -2970,7 +3443,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.8' class='hiddenRow bg-success'>
+        <tr id='pt34.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -2979,7 +3452,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.9' class='hiddenRow bg-success'>
+        <tr id='pt34.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -2988,7 +3461,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.10' class='hiddenRow bg-success'>
+        <tr id='pt34.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -2997,7 +3470,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.11' class='hiddenRow bg-success'>
+        <tr id='pt34.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -3006,7 +3479,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.12' class='hiddenRow bg-success'>
+        <tr id='pt34.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -3015,7 +3488,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.13' class='hiddenRow bg-success'>
+        <tr id='pt34.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -3024,7 +3497,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.14' class='hiddenRow bg-success'>
+        <tr id='pt34.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -3033,7 +3506,16 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.15' class='hiddenRow bg-success'>
+        <tr id='pt34.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUserList - test_user_list_requests</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt34.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -3042,7 +3524,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt31.16' class='hiddenRow bg-success'>
+        <tr id='pt34.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -3060,13 +3542,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 1)">Detail</a>
+            <a onclick="showClassDetail('c35', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -3084,13 +3566,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 21)">Detail</a>
+            <a onclick="showClassDetail('c36', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -3099,7 +3581,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -3108,7 +3590,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.3' class='hiddenRow bg-success'>
+        <tr id='pt36.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -3117,7 +3599,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id='pt36.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -3126,7 +3608,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.5' class='hiddenRow bg-success'>
+        <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -3135,7 +3617,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.6' class='hiddenRow bg-success'>
+        <tr id='pt36.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -3144,7 +3626,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.7' class='hiddenRow bg-success'>
+        <tr id='pt36.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -3153,7 +3635,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.8' class='hiddenRow bg-success'>
+        <tr id='pt36.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -3162,7 +3644,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.9' class='hiddenRow bg-success'>
+        <tr id='pt36.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -3171,7 +3653,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.10' class='hiddenRow bg-success'>
+        <tr id='pt36.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -3180,7 +3662,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.11' class='hiddenRow bg-success'>
+        <tr id='pt36.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -3189,7 +3671,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.12' class='hiddenRow bg-success'>
+        <tr id='pt36.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -3198,7 +3680,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.13' class='hiddenRow bg-success'>
+        <tr id='pt36.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -3207,7 +3689,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.14' class='hiddenRow bg-success'>
+        <tr id='pt36.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -3216,7 +3698,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.15' class='hiddenRow bg-success'>
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -3225,7 +3707,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.16' class='hiddenRow bg-success'>
+        <tr id='pt36.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -3234,7 +3716,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.17' class='hiddenRow bg-success'>
+        <tr id='pt36.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -3243,7 +3725,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.18' class='hiddenRow bg-success'>
+        <tr id='pt36.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -3252,7 +3734,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.19' class='hiddenRow bg-success'>
+        <tr id='pt36.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -3261,7 +3743,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.20' class='hiddenRow bg-success'>
+        <tr id='pt36.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -3270,7 +3752,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt33.21' class='hiddenRow bg-success'>
+        <tr id='pt36.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -3282,19 +3764,19 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
 
     <tr id="su" class="passClass">
         <td>TestCalibreWebVisibilitys</td>
-        <td class="text-center">33</td>
-        <td class="text-center">33</td>
+        <td class="text-center">34</td>
+        <td class="text-center">34</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 33)">Detail</a>
+            <a onclick="showClassDetail('c37', 34)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -3303,7 +3785,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt37.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -3312,7 +3794,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt37.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -3321,7 +3803,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt37.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -3330,7 +3812,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.5' class='hiddenRow bg-success'>
+        <tr id='pt37.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -3339,7 +3821,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.6' class='hiddenRow bg-success'>
+        <tr id='pt37.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -3348,7 +3830,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id='pt37.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -3357,7 +3839,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id='pt37.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -3366,7 +3848,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id='pt37.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -3375,7 +3857,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.10' class='hiddenRow bg-success'>
+        <tr id='pt37.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -3384,7 +3866,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.11' class='hiddenRow bg-success'>
+        <tr id='pt37.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -3393,7 +3875,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.12' class='hiddenRow bg-success'>
+        <tr id='pt37.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -3402,7 +3884,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.13' class='hiddenRow bg-success'>
+        <tr id='pt37.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -3411,7 +3893,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.14' class='hiddenRow bg-success'>
+        <tr id='pt37.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -3420,7 +3902,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.15' class='hiddenRow bg-success'>
+        <tr id='pt37.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -3429,7 +3911,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.16' class='hiddenRow bg-success'>
+        <tr id='pt37.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -3438,7 +3920,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.17' class='hiddenRow bg-success'>
+        <tr id='pt37.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -3447,7 +3929,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.18' class='hiddenRow bg-success'>
+        <tr id='pt37.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -3456,7 +3938,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.19' class='hiddenRow bg-success'>
+        <tr id='pt37.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -3465,7 +3947,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.20' class='hiddenRow bg-success'>
+        <tr id='pt37.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -3474,7 +3956,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.21' class='hiddenRow bg-success'>
+        <tr id='pt37.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -3483,7 +3965,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.22' class='hiddenRow bg-success'>
+        <tr id='pt37.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -3492,7 +3974,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.23' class='hiddenRow bg-success'>
+        <tr id='pt37.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -3501,7 +3983,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.24' class='hiddenRow bg-success'>
+        <tr id='pt37.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -3510,7 +3992,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.25' class='hiddenRow bg-success'>
+        <tr id='pt37.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -3519,7 +4001,16 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.26' class='hiddenRow bg-success'>
+        <tr id='pt37.26' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -3528,7 +4019,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.27' class='hiddenRow bg-success'>
+        <tr id='pt37.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -3537,7 +4028,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.28' class='hiddenRow bg-success'>
+        <tr id='pt37.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -3546,7 +4037,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.29' class='hiddenRow bg-success'>
+        <tr id='pt37.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -3555,7 +4046,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.30' class='hiddenRow bg-success'>
+        <tr id='pt37.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -3564,7 +4055,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.31' class='hiddenRow bg-success'>
+        <tr id='pt37.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -3573,7 +4064,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.32' class='hiddenRow bg-success'>
+        <tr id='pt37.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -3582,7 +4073,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt34.33' class='hiddenRow bg-success'>
+        <tr id='pt37.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -3600,13 +4091,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 16)">Detail</a>
+            <a onclick="showClassDetail('c38', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -3615,7 +4106,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -3624,7 +4115,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id='pt38.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -3633,7 +4124,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.4' class='hiddenRow bg-success'>
+        <tr id='pt38.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -3642,7 +4133,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.5' class='hiddenRow bg-success'>
+        <tr id='pt38.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -3651,7 +4142,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.6' class='hiddenRow bg-success'>
+        <tr id='pt38.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -3660,7 +4151,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.7' class='hiddenRow bg-success'>
+        <tr id='pt38.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -3669,7 +4160,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.8' class='hiddenRow bg-success'>
+        <tr id='pt38.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -3678,7 +4169,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.9' class='hiddenRow bg-success'>
+        <tr id='pt38.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -3687,7 +4178,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.10' class='hiddenRow bg-success'>
+        <tr id='pt38.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -3696,7 +4187,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.11' class='hiddenRow bg-success'>
+        <tr id='pt38.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -3705,7 +4196,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.12' class='hiddenRow bg-success'>
+        <tr id='pt38.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -3714,7 +4205,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.13' class='hiddenRow bg-success'>
+        <tr id='pt38.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -3723,7 +4214,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.14' class='hiddenRow bg-success'>
+        <tr id='pt38.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -3732,7 +4223,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.15' class='hiddenRow bg-success'>
+        <tr id='pt38.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -3741,7 +4232,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
     
     
     
-        <tr id='pt35.16' class='hiddenRow bg-success'>
+        <tr id='pt38.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -3752,11 +4243,11 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>331</td>
-        <td>323</td>
-        <td>1</td>
-        <td>1</td>
+        <td>341</td>
+        <td>317</td>
         <td>6</td>
+        <td>11</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -3784,7 +4275,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.8.0-50-generic #56~20.04.1-Ubuntu SMP Mon Apr 12 21:46:35 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.8.0-53-generic #60~20.04.1-Ubuntu SMP Thu May 6 09:52:46 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -3796,7 +4287,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Babel</th>
-              <td>2.8.1</td>
+              <td>2.9.1</td>
               <td>Basic</td>
             </tr>
           
@@ -3808,7 +4299,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Flask</th>
-              <td>1.1.2</td>
+              <td>2.0.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3831,6 +4322,12 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
             </tr>
           
             <tr>
+              <th>greenlet</th>
+              <td>1.1.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>iso-639</th>
               <td>0.4.5</td>
               <td>Basic</td>
@@ -3838,7 +4335,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Jinja2</th>
-              <td>2.11.3</td>
+              <td>3.0.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3861,20 +4358,8 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
             </tr>
           
             <tr>
-              <th>singledispatch</th>
-              <td>3.4.0.4</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>six</th>
-              <td>1.15.0</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.24</td>
+              <td>1.4.15</td>
               <td>Basic</td>
             </tr>
           
@@ -3886,7 +4371,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Unidecode</th>
-              <td>1.1.2</td>
+              <td>1.2.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3898,13 +4383,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>1.0.1</td>
+              <td>2.0.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.2.0</td>
+              <td>2.4.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -3940,7 +4425,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.2.0</td>
+              <td>2.4.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -3976,7 +4461,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.2.0</td>
+              <td>2.4.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4036,7 +4521,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.2.0</td>
+              <td>2.4.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4072,7 +4557,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.2.0</td>
+              <td>2.4.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4138,13 +4623,13 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
           
             <tr>
               <th>Flask-Dance</th>
-              <td>4.0.0</td>
+              <td>5.0.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.37.0</td>
+              <td>0.37.3</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -4152,6 +4637,12 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
               <th>lxml</th>
               <td>4.6.3</td>
               <td>TestUploadPDF</td>
+            </tr>
+          
+            <tr>
+              <th>lxml</th>
+              <td>4.6.3</td>
+              <td>TestUploadEPubs</td>
             </tr>
           
           </tbody>
@@ -4162,7 +4653,7 @@ AttributeError: 'bool' object has no attribute 'text'</pre>
 </div>
 
 <script>
-    drawCircle(323, 1, 1, 6);
+    drawCircle(317, 6, 11, 7);
     showCase(5);
 </script>
 
