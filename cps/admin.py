@@ -985,11 +985,14 @@ def _config_string(to_save, x):
 
 
 def _configuration_gdrive_helper(to_save):
+    gdrive_error = None
+    gdrive_secrets = {}
+
     if not os.path.isfile(gdriveutils.SETTINGS_YAML):
         config.config_use_google_drive = False
 
-    gdrive_secrets = {}
-    gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
+    if gdrive_support:
+        gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
     if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdrive_error:
         with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             gdrive_secrets = json.load(settings)['web']
@@ -1254,7 +1257,7 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
     gdrivefolders = []
     if gdrive_error is None:
         gdrive_error = gdriveutils.get_error_text()
-    if gdrive_error:
+    if gdrive_error and gdrive_support:
         log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
     else:
