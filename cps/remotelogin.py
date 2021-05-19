@@ -62,7 +62,7 @@ def remote_login():
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
-    return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
+    return render_title_template('remote_login.html', title=_(u"Login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")
 
 

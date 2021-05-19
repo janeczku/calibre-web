@@ -158,6 +158,24 @@
               </div>
             </td>
           </tr>
+	        <tr>
+            <th>{{_('Next Page')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="resetToTop"><input type="radio" id="resetToTop" name="nextPage" value="0" /> {{_('Reset to Top')}}</label>
+                <label for="rememberPosition"><input type="radio" id="rememberPosition" name="nextPage" value="1" /> {{_('Remember Position')}}</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Scrollbar')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="showScrollbar"><input type="radio" id="showScrollbar" name="scrollbar" value="1" /> {{_('Show')}}</label>
+                <label for="hideScrollbar"><input type="radio" id="hideScrollbar" name="scrollbar" value="0" /> {{_('Hide')}}</label>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>

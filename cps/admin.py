@@ -287,7 +287,7 @@ def list_users():
 
     for user in users:
         if user.default_language == "all":
-            user.default = _("all")
+            user.default = _("All")
         else:
             user.default = LC.parse(user.default_language).get_language_name(get_locale())
 
@@ -985,11 +985,14 @@ def _config_string(to_save, x):
 
 
 def _configuration_gdrive_helper(to_save):
+    gdrive_error = None
+    gdrive_secrets = {}
+
     if not os.path.isfile(gdriveutils.SETTINGS_YAML):
         config.config_use_google_drive = False
 
-    gdrive_secrets = {}
-    gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
+    if gdrive_support:
+        gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
     if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdrive_error:
         with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             gdrive_secrets = json.load(settings)['web']
@@ -1254,7 +1257,7 @@ def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
     gdrivefolders = []
     if gdrive_error is None:
         gdrive_error = gdriveutils.get_error_text()
-    if gdrive_error:
+    if gdrive_error and gdrive_support:
         log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
     else:
@@ -1414,7 +1417,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     except IntegrityError as ex:
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
-        flash(_(u"An unknown error occurred."), category="error")
+        flash(_(u"An unknown error occurred. Please try again later."), category="error")
     except OperationalError:
         ub.session.rollback()
         log.error("Settings DB is not Writeable")
@@ -1465,7 +1468,7 @@ def update_mailsettings():
     elif to_save.get("gmail"):
         try:
             config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"G-Mail Account Verification Successful"), category="success")
+            flash(_(u"Gmail Account Verification Successful"), category="success")
         except Exception as ex:
             flash(str(ex), category="error")
             log.error(ex)

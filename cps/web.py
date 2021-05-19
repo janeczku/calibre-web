@@ -1080,10 +1080,10 @@ def adv_search_custom_columns(cc, term, q):
             custom_end = term.get('custom_column_' + str(c.id) + '_end')
             if custom_start:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value >= custom_start))
+                    func.datetime(db.cc_classes[c.id].value) >= func.datetime(custom_start)))
             if custom_end:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value <= custom_end))
+                    func.datetime(db.cc_classes[c.id].value) <= func.datetime(custom_end)))
         else:
             custom_query = term.get('custom_column_' + str(c.id))
             if custom_query != '' and custom_query is not None:
@@ -1254,8 +1254,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     author_name = term.get("author_name")
     book_title = term.get("book_title")
     publisher = term.get("publisher")
-    pub_start = term.get("Publishstart")
-    pub_end = term.get("Publishend")
+    pub_start = term.get("publishstart")
+    pub_end = term.get("publishend")
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
     description = term.get("comment")
@@ -1310,9 +1310,9 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         if book_title:
             q = q.filter(func.lower(db.Books.title).ilike("%" + book_title + "%"))
         if pub_start:
-            q = q.filter(db.Books.pubdate >= pub_start)
+            q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
         if pub_end:
-            q = q.filter(db.Books.pubdate <= pub_end)
+            q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
         q = adv_search_read_status(q, read_status)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
@@ -1442,20 +1442,20 @@ def register():
         return redirect(url_for('web.index'))
     if not config.get_mail_server_configured():
         flash(_(u"E-Mail server is not configured, please contact your administrator!"), category="error")
-        return render_title_template('register.html', title=_(u"register"), page="register")
+        return render_title_template('register.html', title=_("Register"), page="register")
 
     if request.method == "POST":
         to_save = request.form.to_dict()
         nickname = to_save["email"].strip() if config.config_register_email else to_save.get('name')
         if not nickname or not to_save.get("email"):
             flash(_(u"Please fill out all fields!"), category="error")
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
         try:
             nickname = check_username(nickname)
             email = check_email(to_save["email"])
         except Exception as ex:
             flash(str(ex), category="error")
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
 
         content = ub.User()
         if check_valid_domain(email):
@@ -1474,17 +1474,17 @@ def register():
             except Exception:
                 ub.session.rollback()
                 flash(_(u"An unknown error occurred. Please try again later."), category="error")
-                return render_title_template('register.html', title=_(u"register"), page="register")
+                return render_title_template('register.html', title=_("Register"), page="register")
         else:
             flash(_(u"Your e-mail is not allowed to register"), category="error")
             log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
-            return render_title_template('register.html', title=_(u"register"), page="register")
+            return render_title_template('register.html', title=_("Register"), page="register")
         flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
         return redirect(url_for('web.login'))
 
     if feature_support['oauth']:
         register_user_with_oauth()
-    return render_title_template('register.html', config=config, title=_(u"register"), page="register")
+    return render_title_template('register.html', config=config, title=_("Register"), page="register")
 
 
 @web.route('/login', methods=['GET', 'POST'])
@@ -1553,7 +1553,7 @@ def login():
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
     return render_title_template('login.html',
-                                 title=_(u"login"),
+                                 title=_(u"Login"),
                                  next_url=next_url,
                                  config=config,
                                  oauth_check=oauth_check,
@@ -1614,8 +1614,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         log.debug(u"Profile updated")
     except IntegrityError:
         ub.session.rollback()
-        flash(_(u"Found an existing account for this e-mail address."), category="error")
-        log.debug(u"Found an existing account for this e-mail address.")
+        flash(_(u"Found an existing account for this e-mail address"), category="error")
+        log.debug(u"Found an existing account for this e-mail address")
     except OperationalError as e:
         ub.session.rollback()
         log.error("Database error: %s", e)
@@ -1658,8 +1658,8 @@ def profile():
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
     if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
 
     # check if book has bookmark
@@ -1693,8 +1693,8 @@ def read_book(book_id, book_format):
                 log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileExt)
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
 
@@ -1764,6 +1764,7 @@ def show_book(book_id):
                                      reader_list=reader_list,
                                      page="book")
     else:
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+              category="error")
         return redirect(url_for("web.index"))
