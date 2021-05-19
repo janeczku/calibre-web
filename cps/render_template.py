@@ -65,7 +65,7 @@ def get_sidebar_config(kwargs=None):
          "show_text": _('Show unread'), "config_show": False})
     sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
                     "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
-                    "show_text": _('Show random books'), "config_show": True})
+                    "show_text": _('Show Random Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
                     "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category",
                     "show_text": _('Show category selection'), "config_show": True})
