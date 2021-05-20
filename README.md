@@ -1,6 +1,10 @@
+
+
 # About
 
 Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+
+![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github) [![Discord](https://img.shields.io/discord/838810113564344381?label=Discord&logo=discord)](https://discord.gg/h2VsJ2NEfB)
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
