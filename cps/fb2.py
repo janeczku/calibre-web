@@ -29,7 +29,7 @@ def get_fb2_info(tmp_file_path, original_file_extension):
         'l': 'http://www.w3.org/1999/xlink',
     }
 
-    fb2_file = open(tmp_file_path)
+    fb2_file = open(tmp_file_path, encoding="utf-8")
     tree = etree.fromstring(fb2_file.read().encode())
 
     authors = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:author', namespaces=ns)
