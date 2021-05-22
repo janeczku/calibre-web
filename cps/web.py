@@ -1593,6 +1593,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
             current_user.default_language = to_save["default_language"]
         if to_save.get("locale"):
             current_user.locale = to_save["locale"]
+        current_user.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
+
     except Exception as ex:
         flash(str(ex), category="error")
         return render_title_template("user_edit.html", content=current_user,

@@ -124,15 +124,24 @@
         error: function(xhr) {
             this.$modalTitle.text(this.options.modalTitleFailed);
 
+            this.setProgress(100);
             this.$modalBar.removeClass("progress-bar-success");
             this.$modalBar.addClass("progress-bar-danger");
             this.$modalFooter.show();
 
             var contentType = xhr.getResponseHeader("Content-Type");
             // Write the error response to the document.
-            if (contentType || xhr.status === 422) {
+            if (xhr.status === 502 || xhr.status === 0) {
+                if (xhr.statusText) {
+                    this.$modalBar.text(xhr.statusText + ": File size may be too big");
+                } else {
+                    this.$modalBar.text("Error: File size may be too big");
+                }
+
+            }
+            else if (contentType || xhr.status === 422) {
                 var responseText = xhr.responseText;
-                if (contentType.indexOf("text/plain") !== -1) {
+                if (contentType.indexOf("text/plain") === -1) {
                     responseText = "<pre>" + responseText + "</pre>";
                     document.write(responseText);
                 } else {

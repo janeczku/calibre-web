@@ -14,6 +14,13 @@
         </label>
       </div>
     {% endif %}
+    {% if kobo_sync_enabled and sync_only_selected_shelves %}
+      <div class="checkbox">
+          <label> <input type="checkbox" name="kobo_sync" {% if shelf.kobo_sync == 1 %}checked{% endif %}>
+              {{ _('Sync this shelf with Kobo device') }}
+          </label>
+      </div>
+    {% endif %}
     <button type="submit" class="btn btn-default" id="submit">{{_('Save')}}</button>
     {% if shelf.id != None %}
       <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
