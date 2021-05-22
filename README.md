@@ -2,7 +2,7 @@
 
 Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
-![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web) ![GitHub Downloads](https://img.shields.io/github/downloads/janeczku/calibre-web/total) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github) [![Discord](https://img.shields.io/discord/838810113564344381?label=Discord&logo=discord)](https://discord.gg/h2VsJ2NEfB)
+![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web) ![GitHub Downloads](https://img.shields.io/github/downloads/janeczku/calibre-web/total) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github) 
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
@@ -82,7 +82,9 @@ Pre-built Docker images are available in these Docker Hub repositories:
    + The "path to convertertool" should be set to `/usr/bin/ebook-convert`
    + The "path to unrar" should be set to `/usr/bin/unrar`
 
-# Wiki
+# Contact
+
+Just reach us out on [Discord](https://discord.gg/h2VsJ2NEfB)
 
 For further information, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)
 
