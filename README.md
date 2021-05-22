@@ -34,12 +34,19 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
+#### Install via pip
+1. Install calibre web via pip with the command `pip install calibreweb`.
+2. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
+3. Calibre-Web can be started afterwards by typing `cps` or `python3 -m cps` 
+
+#### Manual installation
 1. Install dependencies by running `pip3 install --target vendor -r requirements.txt` (python3.x). Alternativly set up a python virtual environment.
 2. Execute the command: `python3 cps.py` (or `nohup python3 cps.py` - recommended if you want to exit the terminal window)
-3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
-4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button\
-   Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration)
-5. Go to Login page
+   
+Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
+Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button\
+Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration)
+Go to Login page
 
 **Default admin login:**\
 *Username:* admin\
