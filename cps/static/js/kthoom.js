@@ -15,7 +15,7 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
-/* global screenfull, bitjs, Uint8Array, opera */
+/* global screenfull, bitjs, Uint8Array, opera, loadArchiveFormats, archiveOpenFile */
 /* exported init, event */
 
 
@@ -173,27 +173,23 @@ function initProgressClick() {
         var offset = $(this).offset();
         var x = e.pageX - offset.left;
         var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
-        var page = Math.max(1, Math.ceil(rate * totalImages)) - 1;
-        currentImage = page;
+        currentImage = Math.max(1, Math.ceil(rate * totalImages)) - 1;
         updatePage();
     });
 }
 
 function loadFromArrayBuffer(ab) {
-    var start = (new Date).getTime();
-    var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/archive/";
     var lastCompletion = 0;
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
-        archiveOpenFile(ab, function (archive, err) {
+        archiveOpenFile(ab, function (archive) {
             if (archive) {
                 totalImages = archive.entries.length
                 console.info('Uncompressing ' + archive.archive_type + ' ...');
                 archive.entries.forEach(function(e, i) {
                     updateProgress( (i + 1)/ totalImages * 100);
                     if (e.is_file) {
-                        var f = e.readData(function(d) {
+                        e.readData(function(d) {
                             // add any new pages based on the filename
                             if (imageFilenames.indexOf(e.name) === -1) {
                                 let data = {filename: e.name, fileData: d};
@@ -523,10 +519,6 @@ function keyHandler(evt) {
             updateScale(false);
             break;
         case kthoom.Key.SPACE:
-            var container = $("#mainContent");
-            // var atTop = container.scrollTop() === 0;
-            // var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
-
             if (evt.shiftKey) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
@@ -547,9 +539,7 @@ function init(filename) {
     var request = new XMLHttpRequest();
     request.open("GET", filename);
     request.responseType = "arraybuffer";
-    request.setRequestHeader("X-Test", "test1");
-    request.setRequestHeader("X-Test", "test2");
-    request.addEventListener("load", function(event) {
+    request.addEventListener("load", function() {
         if (request.status >= 200 && request.status < 300) {
             loadFromArrayBuffer(request.response);
         } else {
