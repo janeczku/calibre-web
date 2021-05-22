@@ -122,9 +122,12 @@ def formatfloat(value, decimals=1):
 @jinjia.app_template_filter('formatseriesindex')
 def formatseriesindex_filter(series_index):
     if series_index:
-        if int(series_index) - series_index == 0:
-            return int(series_index)
-        else:
+        try:
+            if int(series_index) - series_index == 0:
+                return int(series_index)
+            else:
+                return series_index
+        except ValueError:
             return series_index
     return 0
 
