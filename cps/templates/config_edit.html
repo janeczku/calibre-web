@@ -1,97 +1,24 @@
 {% extends "layout.html" %}
+{% block flash %}
+<div id="spinning_success" class="row-fluid text-center" style="margin-top: -20px; display:none;">
+    <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
+</div>
+{% endblock %}
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  <form role="form" method="POST" autocomplete="off">
+<form role="form" method="POST" autocomplete="off">
 <div class="panel-group col-md-10 col-lg-6">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
-          <span class="glyphicon glyphicon-minus"></span>
-          {{_('Library Configuration')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
-      <div class="panel-body">
-       <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
-       <div class="form-group required{% if filepicker %} input-group{% endif %}">
-        <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
-       {% if filepicker %}
-        <span class="input-group-btn">
-          <button type="button" data-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-target="#fileModal" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-        </span>
-       {% endif %}
-      </div>
-      {% if not filepicker %}
-       <div class="form-group">
-        <label id="filepicker-hint">{{_('To activate serverside filepicker start Calibre-Web with -f option')}}</label>
-      </div>
-      {% endif %}
-    {% if feature_support['gdrive']  %}
-    <div class="form-group required">
-      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
-      <label for="config_use_google_drive">{{_('Use Google Drive?')}}</label>
-    </div>
-    <div data-related="gdrive_settings">
-      {% if gdriveError %}
-        <div class="form-group">
-          <label id="gdrive_error">
-            {{_('Google Drive config problem')}}: {{ gdriveError }}
-          </label>
-        </div>
-      {% else %}
-        {% if show_authenticate_google_drive and g.user.is_authenticated and config.config_use_google_drive %}
-          <div class="form-group required">
-            <a href="{{ url_for('gdrive.authenticate_google_drive') }}" id="gdrive_auth" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
-          </div>
-        {% else %}
-            {% if show_authenticate_google_drive and g.user.is_authenticated and not config.config_use_google_drive %}
-            <div >{{_('Please hit save to continue with setup')}}</div>
-            {% endif %}
-          {% if not g.user.is_authenticated and show_login_button %}
-          <div >{{_('Please finish Google Drive setup after login')}}</div>
-            {% endif %}
-          {% if g.user.is_authenticated %}
-            {% if not show_authenticate_google_drive %}
-          <div class="form-group required">
-            <label for="config_google_drive_folder">{{_('Google Drive Calibre folder')}}</label>
-              <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
-                {%  for gdrivefolder in gdrivefolders %}
-                <option value="{{ gdrivefolder.title }}" {% if gdrivefolder.title == config.config_google_drive_folder %}selected{% endif %}>{{ gdrivefolder.title }}</option>
-                {% endfor %}
-              </select>
-          </div>
-          {% if config.config_google_drive_watch_changes_response %}
-            <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
-            <div class="form-group input-group required">
-              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ config.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
-              <span class="input-group-btn"><a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" id="watch_revoke" class="btn btn-primary">{{_('Revoke')}}</a></span>
-            </div>
-          {% else %}
-            <a href="{{ url_for('gdrive.watch_gdrive') }}" id="enable_gdrive_watch" class="btn btn-primary">Enable watch of metadata.db</a>
-          {% endif %}
-          {% endif %}
-          {% endif %}
-        {% endif %}
-      {% endif %}
-    </div>
-    {% endif %}
-      </div>
-    </div>
-  </div>
-    {% if show_back_button %}
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseone">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Server Configuration')}}
         </a>
       </h4>
     </div>
-    <div id="collapsetwo" class="panel-collapse collapse">
+    <div id="collapseone" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="form-group">
           <label for="config_port">{{_('Server Port')}}</label>
@@ -124,13 +51,13 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsethree">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Logfile Configuration')}}
         </a>
       </h4>
     </div>
-    <div id="collapsethree" class="panel-collapse collapse">
+    <div id="collapsetwo" class="panel-collapse collapse">
       <div class="panel-body">
         <div class="form-group">
         <label for="config_log_level">{{_('Log Level')}}</label>
@@ -159,13 +86,13 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Feature Configuration')}}
         </a>
       </h4>
     </div>
-    <div id="collapsefive" class="panel-collapse collapse">
+    <div id="collapsefour" class="panel-collapse collapse">
       <div class="panel-body">
     <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
@@ -379,13 +306,13 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapseeight">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
           <span class="glyphicon glyphicon-plus"></span>
            {{_('External binaries')}}
         </a>
       </h4>
     </div>
-    <div id="collapseeight" class="panel-collapse collapse">
+    <div id="collapsefive" class="panel-collapse collapse">
       <div class="panel-body">
            <label for="config_converterpath">{{_('Path to Calibre E-Book Converter')}}</label>
            <div class="form-group input-group">
@@ -417,34 +344,14 @@
       </div>
     </div>
   </div>
-  {% endif %}
 </div>
     <div class="col-sm-12">
-    {% if not show_login_button %}
-    <button type="submit" name="submit" class="btn btn-default">{{_('Save')}}</button>
-    {% endif %}
-    {% if show_back_button %}
-      <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Cancel')}}</a>
-    {% endif %}
-    {% if show_login_button %}
-      <a href="{{ url_for('web.login') }}" name="login" class="btn btn-default">{{_('Login')}}</a>
-    {% endif %}
+    <button type="button" name="submit" id="config_submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>
     </div>
   </form>
 </div>
 {% endblock %}
 {% block modal %}
 {{ filechooser_modal() }}
-{% endblock %}
-{% block js %}
-<script type="text/javascript">
-    $(document).on('change', '#config_use_google_drive', function() {
-        $('#config_google_drive_folder').prop('required', $(this).prop('checked'));
-    });
-    $('.collapse').on('shown.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-    }).on('hidden.bs.collapse', function(){
-    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-    });
-</script>
 {% endblock %}

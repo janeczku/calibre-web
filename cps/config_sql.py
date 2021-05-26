@@ -347,7 +347,7 @@ class _ConfigSQL(object):
             log.error(error)
         log.warning("invalidating configuration")
         self.db_configured = False
-        self.config_calibre_dir = None
+        # self.config_calibre_dir = None
         self.save()
 
 

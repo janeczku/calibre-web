@@ -188,7 +188,7 @@ class User(UserBase, Base):
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
-    kobo_only_shelves_sync = Column(Integer, default=1)
+    kobo_only_shelves_sync = Column(Integer, default=0)
 
 
 if oauth_support:
