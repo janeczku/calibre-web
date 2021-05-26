@@ -417,3 +417,9 @@ div.log {
   white-space: nowrap;
   padding: 0.5em;
 }
+
+#detailcover { cursor:zoom-in; }
+#detailcover:-webkit-full-screen { cursor:zoom-out; }
+#detailcover:-moz-full-screen { cursor:zoom-out; }
+#detailcover:-ms-fullscreen { cursor:zoom-out; }
+#detailcover:fullscreen { cursor:zoom-out; }
