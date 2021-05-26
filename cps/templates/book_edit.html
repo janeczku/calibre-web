@@ -53,6 +53,10 @@
       <label for="book_title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="book_title" id="book_title" value="{{book.title}}">
     </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
+    </div>
+
     <div class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
