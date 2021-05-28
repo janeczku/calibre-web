@@ -1148,11 +1148,15 @@ def edit_list_book(param):
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
     book.last_modified = datetime.utcnow()
-    calibre_db.session.commit()
-    # revert change for sort if automatic fields link is deactivated
-    if param == 'title' and vals.get('checkT') == "false":
-        book.sort = sort
+    try:
         calibre_db.session.commit()
+        # revert change for sort if automatic fields link is deactivated
+        if param == 'title' and vals.get('checkT') == "false":
+            book.sort = sort
+            calibre_db.session.commit()
+    except (OperationalError, IntegrityError) as e:
+        calibre_db.session.rollback()
+        log.error("Database error: %s", e)
     return ret
 
 
@@ -1223,4 +1227,44 @@ def merge_list_book():
                                                         to_name))
                     delete_book(from_book.id,"", True)
                     return json.dumps({'success': True})
+    return ""
+
+@editbook.route("/ajax/xchange", methods=['POST'])
+@login_required
+@edit_required
+def table_xchange_author_title():
+    vals = request.get_json().get('xchange')
+    if vals:
+        for val in vals:
+            modif_date = False
+            book = calibre_db.get_book(val)
+            authors = book.title
+            entries = calibre_db.order_authors(book)
+            author_names = []
+            for authr in entries.authors:
+                author_names.append(authr.name.replace('|', ','))
+
+            title_change = handle_title_on_edit(book, " ".join(author_names))
+            input_authors, authorchange = handle_author_on_edit(book, authors)
+            if authorchange or title_change:
+                edited_books_id = book.id
+                modif_date = True
+
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
+
+            if edited_books_id:
+                helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
+            if modif_date:
+                book.last_modified = datetime.utcnow()
+            try:
+                calibre_db.session.commit()
+            except (OperationalError, IntegrityError) as e:
+                calibre_db.session.rollback()
+                log.error("Database error: %s", e)
+                return json.dumps({'success': False})
+
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
+        return json.dumps({'success': True})
     return ""
