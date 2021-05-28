@@ -97,5 +97,9 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+{% if not g.user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/locale/bootstrap-table-' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
+
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

@@ -136,10 +136,11 @@ $(function() {
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
+        pageList: "[10, 25, 50, 100]",
         queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
-        paginationDetailHAlign: " hidden",
+        paginationDetailHAlign: "right",
         paginationHAlign: "left",
         idField: "id",
         uniqueId: "id",
