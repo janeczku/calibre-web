@@ -46,9 +46,14 @@ $(function() {
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
+                $("#table_xchange").addClass("disabled");
+                $("#table_xchange").attr("aria-disabled", true);
             } else {
                 $("#delete_selection").removeClass("disabled");
                 $("#delete_selection").attr("aria-disabled", false);
+                $("#table_xchange").removeClass("disabled");
+                $("#table_xchange").attr("aria-disabled", false);
+
             }
         });
     $("#delete_selection").click(function() {
@@ -82,6 +87,20 @@ $(function() {
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
+            }
+        });
+    });
+
+    $("#table_xchange").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/xchange",
+            data: JSON.stringify({"xchange":selections}),
+            success: function success() {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
