@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-05-19 20:16:09</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-05-27 20:44:36</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-05-19 23:20:56</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-05-28 00:00:32</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 32 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 37 min</p>
         </div>
       </div>
       </div>
@@ -1270,12 +1270,12 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">20</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 20)">Detail</a>
@@ -1293,11 +1293,35 @@
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id="ft13.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_ft13.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 373, in test_edit_author
+    self.assertEqual(u'Pipo, Pipe', author.get_attribute('value'))
+AssertionError: 'Pipo, Pipe' != 'Pipo| Pipe'
+- Pipo, Pipe
+?     ^
++ Pipo| Pipe
+?     ^</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1419,20 +1443,74 @@
     
     
     
-        <tr id='pt13.16' class='hiddenRow bg-success'>
+        <tr id="et13.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et13.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 238, in test_edit_title
+    self.edit_book(content={'book_title': u'Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters'})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1610, in edit_book
+    submit.click()
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 80, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
+    return self._parent.execute(command, params)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.StaleElementReferenceException: Message: The element reference of <button id="submit" class="btn btn-default" type="submit"> is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.17' class='hiddenRow bg-success'>
+        <tr id="et13.17" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_epub</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.17')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.17" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick='document.getElementById('div_et13.17').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 831, in test_upload_book_epub
+    self.fill_basic_config({'config_uploading':1})
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 333, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 290, in _fill_basic_config
+    accordions[o].click()
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2074,11 +2152,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLogin</td>
         <td class="text-center">14</td>
-        <td class="text-center">13</td>
-        <td class="text-center">1</td>
+        <td class="text-center">14</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2196,31 +2274,11 @@
     
     
     
-        <tr id="ft23.13" class="none bg-danger">
+        <tr id='pt23.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.13')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft23.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft23.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_login.py", line 342, in test_proxy_login
-    self.assertTrue("Calibre-Web | login" in resp.text)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3858,9 +3916,9 @@ AssertionError: False is not true</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>340</td>
-        <td>332</td>
+        <td>330</td>
         <td>1</td>
-        <td>0</td>
+        <td>2</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -3913,7 +3971,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Flask</th>
-              <td>1.1.4</td>
+              <td>2.0.1</td>
               <td>Basic</td>
             </tr>
           
@@ -3997,13 +4055,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>1.0.1</td>
+              <td>2.0.1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.4.0</td>
+              <td>2.6.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4027,7 +4085,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.8.2</td>
+              <td>1.8.3</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4039,7 +4097,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.4.0</td>
+              <td>2.6.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4063,7 +4121,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.8.2</td>
+              <td>1.8.3</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4075,7 +4133,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.4.0</td>
+              <td>2.6.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4099,7 +4157,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.8.2</td>
+              <td>1.8.3</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4135,7 +4193,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.4.0</td>
+              <td>2.6.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4159,7 +4217,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.8.2</td>
+              <td>1.8.3</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4171,7 +4229,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.4.0</td>
+              <td>2.6.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4189,7 +4247,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.8.2</td>
+              <td>1.8.3</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4243,7 +4301,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.37.3</td>
+              <td>0.37.4</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -4267,7 +4325,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(332, 1, 0, 7);
+    drawCircle(330, 1, 2, 7);
     showCase(5);
 </script>
 

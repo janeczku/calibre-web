@@ -111,6 +111,7 @@
       </div>
       {%endif%}
     {% endfor %}
+    {% block flash %}{% endblock %}
     {% if g.current_theme == 1 %}
       <div id="loader" hidden="true">
         <center>
