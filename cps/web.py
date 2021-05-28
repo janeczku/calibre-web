@@ -1381,10 +1381,14 @@ def serve_book(book_id, book_format, anyname):
         return "File not in Database"
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
-        headers = Headers()
-        headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-        df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
+        try:
+            headers = Headers()
+            headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
+            df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+            return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
+        except AttributeError as ex:
+            log.debug_or_exception(ex)
+            return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
             try:
@@ -1394,9 +1398,9 @@ def serve_book(book_id, book_format, anyname):
                 return make_response(
                     rawdata.decode(result['encoding']).encode('utf-8'))
             except FileNotFoundError:
+                log.error("File Not Found")
                 return "File Not Found"
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
-
 
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
@@ -1489,9 +1493,9 @@ def register():
 
 @web.route('/login', methods=['GET', 'POST'])
 def login():
-    if not config.db_configured:
-        log.debug(u"Redirect to initial configuration")
-        return redirect(url_for('admin.basic_configuration'))
+    #if not config.db_configured:
+    #    log.debug(u"Redirect to initial configuration")
+    #    return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:

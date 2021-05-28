@@ -6,8 +6,8 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  <form role="form" method="POST" autocomplete="off" class="col-md-10 col-lg-6">
-<div class="panel-group">
+  <form role="form" method="POST" autocomplete="off" >
+<div class="panel-group class="col-md-10 col-lg-6">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -71,7 +71,6 @@
         </div>
       </div>
     </div>
-  </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -146,6 +145,7 @@
       </div>
     </div>
   </div>
+</div>
     <div class="col-sm-12">
     <button type="submit" name="submit" class="btn btn-default">{{_('Save')}}</button>
     <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Cancel')}}</a>
@@ -157,13 +157,6 @@
 {{ restrict_modal() }}
 {% endblock %}
 {% block js %}
-<script type="text/javascript">
-        $('.collapse').on('shown.bs.collapse', function(){
-            $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-        }).on('hidden.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-        });
-</script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>

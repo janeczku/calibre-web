@@ -47,7 +47,7 @@
             {% endfor %}
         </select>
     </div>
-    {% if registered_oauth.keys()| length > 0 and not new_user %}
+    {% if registered_oauth.keys()| length > 0 and not new_user and profile %}
       {% for id, name in registered_oauth.items() %}
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>

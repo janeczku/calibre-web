@@ -141,7 +141,7 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
         $confirm.modal("hide");
     });
     $.ajax({
-        method:"get",
+        method:"post",
         dataType: "json",
         url: getPath() + "/ajax/loaddialogtexts/" + id,
         success: function success(data) {
@@ -179,18 +179,6 @@ $("#delete_confirm").click(function() {
                         }
                     });
                     $("#books-table").bootstrapTable("refresh");
-                    /*$.ajax({
-                        method:"get",
-                        url: window.location.pathname + "/../../ajax/listbooks",
-                        async: true,
-                        timeout: 900,
-                        success:function(data) {
-
-
-                            $("#book-table").bootstrapTable("load", data);
-                            loadSuccess();
-                        }
-                    });*/
                 }
             });
         } else {
@@ -217,8 +205,6 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
     $(e.currentTarget).find("#delete_confirm").data("ajax", $(e.relatedTarget).data("ajax"));
 });
-
-
 
 $(function() {
     var updateTimerID;
@@ -556,6 +542,86 @@ $(function() {
         this.closest("form").submit();
     });
 
+    function handle_response(data) {
+        if (!jQuery.isEmptyObject(data)) {
+            data.forEach(function (item) {
+                $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                    '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                    '</div>');
+            });
+        }
+    }
+
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hidden.bs.collapse', function(){
+    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+
+    function changeDbSettings() {
+        $("#db_submit").closest('form').submit();
+    }
+
+    $("#db_submit").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.blur();
+        $.ajax({
+            method:"post",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/simulatedbchange",
+            data: {config_calibre_dir: $("#config_calibre_dir").val()},
+            success: function success(data) {
+                if ( data.change ) {
+                    if ( data.valid ) {
+                        confirmDialog(
+                        "db_submit",
+                    "GeneralChangeModal",
+                            0,
+                            changeDbSettings
+                        );
+                    }
+                    else {
+                        $("#InvalidDialog").modal('show');
+                    }
+                } else {                	
+                    changeDbSettings();
+                }
+            }
+        });
+    });
+
+    $("#config_submit").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.blur();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        var request_path = "/../../admin/ajaxconfig";
+        var loader = "/../..";
+        $("#flash_success").remove();
+        $("#flash_danger").remove();
+        $.post(window.location.pathname + request_path, $(this).closest("form").serialize(), function(data) {
+            $('#config_upload_formats').val(data.config_upload);
+            if(data.reboot) {
+                $("#spinning_success").show();
+                var rebootInterval = setInterval(function(){
+                    $.get({
+                        url:window.location.pathname + "/../../admin/alive",
+                        success: function (d, statusText, xhr) {
+                            if (xhr.status < 400) {
+                                $("#spinning_success").hide();
+                                clearInterval(rebootInterval);
+                                handle_response(data.result);
+                            }
+                        },
+                    });
+                }, 1000);
+            } else {
+                handle_response(data.result);
+            }
+        });
+    });
+
     $("#delete_shelf").click(function() {
         confirmDialog(
             $(this).attr('id'),
@@ -567,7 +633,6 @@ $(function() {
         );
 
     });
-
 
     $("#fileModal").on("show.bs.modal", function(e) {
         var target = $(e.relatedTarget);
@@ -632,7 +697,6 @@ $(function() {
 
     $(".update-view").click(function(e) {
         var view = $(this).data("view");
-
         e.preventDefault();
         e.stopPropagation();
         $.ajax({
