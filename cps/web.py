@@ -1211,7 +1211,7 @@ def extend_search_term(searchterm,
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
-        tag_names = calibre_db.session.query(db_element).filter(db.Tags.id.in_(tags['exclude_' + key])).all()
+        tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['exclude_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
     language_names = calibre_db.session.query(db.Languages). \
         filter(db.Languages.id.in_(tags['include_language'])).all()
