@@ -1327,7 +1327,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
-        q = adv_search_custom_columns(cc, term, q)
+        try:
+            q = adv_search_custom_columns(cc, term, q)
+        except AttributeError as ex:
+            log.debug_or_exception(ex)
+            flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
 
     q = q.order_by(*order).all()
     flask_session['query'] = json.dumps(term)
