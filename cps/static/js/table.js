@@ -65,7 +65,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/mergebooks",
+            url: window.location.pathname + "/../ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
                 $("#books-table").bootstrapTable("refresh");
@@ -79,7 +79,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/simulatemerge",
+            url: window.location.pathname + "/../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success(booTitles) {
                 $.each(booTitles.from, function(i, item) {
@@ -96,7 +96,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/xchange",
+            url: window.location.pathname + "/../ajax/xchange",
             data: JSON.stringify({"xchange":selections}),
             success: function success() {
                 $("#books-table").bootstrapTable("refresh");
@@ -163,7 +163,7 @@ $(function() {
                 $.ajax({
                     method:"get",
                     dataType: "json",
-                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
+                    url: window.location.pathname + "/../ajax/sort_value/" + field + "/" + row.id,
                     success: function success(data) {
                         var key = Object.keys(data)[0];
                         $("#books-table").bootstrapTable("updateCellByUniqueId", {
@@ -191,7 +191,7 @@ $(function() {
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: window.location.pathname + "/../../ajax/table_settings",
+                url: window.location.pathname + "/../ajax/table_settings",
                 data: "{" + st + "}",
             });
         },
