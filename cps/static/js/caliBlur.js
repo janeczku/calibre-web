@@ -412,7 +412,7 @@ if($("body.advsearch").length > 0) {
     $("#add-to-shelves").toggle();
   });
   $('#add-to-shelf').height("40px");
-  function dropdownToggle() {
+  function search_dropdownToggle() {
       topPos = $("#add-to-shelf").offset().top-20;
       if ($('div[aria-label="Add to shelves"]').length > 0) {
 
@@ -428,10 +428,10 @@ if($("body.advsearch").length > 0) {
       }
   }
 
-  dropdownToggle();
+  search_dropdownToggle();
 
   $(window).on("resize", function () {
-      dropdownToggle();
+      search_dropdownToggle();
   });
 
 }
