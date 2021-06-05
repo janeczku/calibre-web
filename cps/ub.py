@@ -485,11 +485,12 @@ def migrate_registration_table(engine, session):
 
 
 # Remove login capability of user Guest
-def migrate_guest_password(engine, session):
+def migrate_guest_password(engine):
     try:
         with engine.connect() as conn:
+            trans = conn.begin()
             conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
-        session.commit()
+            trans.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
         sys.exit(2)
@@ -648,7 +649,7 @@ def migrate_Database(session):
        is None:
         create_anonymous_user(session)
 
-    migrate_guest_password(engine, session)
+    migrate_guest_password(engine)
 
 
 def clean_database(session):

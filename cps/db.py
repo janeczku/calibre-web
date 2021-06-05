@@ -584,7 +584,7 @@ class CalibreDB():
 
         if not cc_classes:
             try:
-                cc = conn.execute("SELECT id, datatype FROM custom_columns")
+                cc = conn.execute(text("SELECT id, datatype FROM custom_columns"))
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
                 log.debug_or_exception(e)
