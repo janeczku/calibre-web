@@ -34,6 +34,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError
+from sqlalchemy.sql.expression import text
 
 try:
     from apiclient import errors
@@ -168,7 +169,7 @@ class PermissionAdded(Base):
 def migrate():
     if not engine.dialect.has_table(engine.connect(), "permissions_added"):
         PermissionAdded.__table__.create(bind = engine)
-    for sql in session.execute("select sql from sqlite_master where type='table'"):
+    for sql in session.execute(text("select sql from sqlite_master where type='table'")):
         if 'CREATE TABLE gdrive_ids' in sql[0]:
             currUniqueConstraint = 'UNIQUE (gdrive_id)'
             if currUniqueConstraint in sql[0]:
