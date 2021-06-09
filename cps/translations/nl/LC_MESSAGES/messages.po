@@ -78,7 +78,7 @@ msgstr "Gebruiker niet gevonden"
 
 #: cps/admin.py:329
 msgid "{} users deleted successfully"
-msgstr ""
+msgstr "{} gebruikers succesvol verwijderd"
 
 #: cps/admin.py:351 cps/templates/user_edit.html:44
 #: cps/templates/user_table.html:69
@@ -87,15 +87,15 @@ msgstr "Alle talen"
 
 #: cps/admin.py:372 cps/admin.py:378
 msgid "Malformed request"
-msgstr ""
+msgstr "Misvormd verzoek"
 
 #: cps/admin.py:390 cps/admin.py:1394
 msgid "Guest Name can't be changed"
-msgstr ""
+msgstr "Gast naam kan niet worden veranderd"
 
 #: cps/admin.py:400
 msgid "Guest can't have this role"
-msgstr ""
+msgstr "Gast kan deze rol niet hebben"
 
 #: cps/admin.py:412 cps/admin.py:1359
 msgid "No admin user remaining, can't remove admin role"
@@ -103,43 +103,44 @@ msgstr "Kan systeembeheerder rol niet verwijderen van de laatste systeembeheerde
 
 #: cps/admin.py:416 cps/admin.py:430
 msgid "Value has to be true or false"
-msgstr ""
+msgstr "Waarde moet Waar of Onwaar zijn"
 
 #: cps/admin.py:418
 msgid "Invalid role"
-msgstr ""
+msgstr "Ongeldige rol"
 
 #: cps/admin.py:422
 msgid "Guest can't have this view"
-msgstr ""
+msgstr "Gast kan dit niet bekijken"
 
 #: cps/admin.py:432
 msgid "Invalid view"
-msgstr ""
+
+msgstr "Ongeldige waarde"
 
 #: cps/admin.py:435
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr ""
+msgstr "Gast's locatie is automatisch bepaald en kan niet handmatig worden ingesteld"
 
 #: cps/admin.py:439
 msgid "No Valid Locale Given"
-msgstr ""
+msgstr "Geen geldige locatie is opgegeven"
 
 #: cps/admin.py:450
 msgid "No Valid Book Language Given"
-msgstr ""
+msgstr "Geen geldige boek taal is opgegeven"
 
 #: cps/admin.py:452
 msgid "Parameter not found"
-msgstr ""
+msgstr "Parameter is niet gevonden"
 
 #: cps/admin.py:507
 msgid "Invalid Read Column"
-msgstr ""
+msgstr "Ongeldig gelezen kolom"
 
 #: cps/admin.py:513
 msgid "Invalid Restricted Column"
-msgstr ""
+msgstr "Ongeldig beperkt kolom"
 
 #: cps/admin.py:532 cps/admin.py:1245
 msgid "Calibre-Web configuration updated"
@@ -151,11 +152,11 @@ msgstr "Wil je werkelijk je Kobo Token verwijderen?"
 
 #: cps/admin.py:546
 msgid "Do you really want to delete this domain?"
-msgstr ""
+msgstr "Wil je dit domein echt verwijderen?"
 
 #: cps/admin.py:548
 msgid "Do you really want to delete this user?"
-msgstr ""
+msgstr "Wil je deze gebruiker echt verwijderen?"
 
 #: cps/admin.py:550 cps/templates/shelf.html:90
 msgid "Are you sure you want to delete this shelf?"
@@ -168,11 +169,11 @@ msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
 
 #: cps/admin.py:554
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr ""
+msgstr "Weet je zeker dat je de zichtbaarheidstalen wil veranderen voor de geselecteerde gebruiker(s)?"
 
 #: cps/admin.py:556
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr ""
+msgstr "Weet je zeker dat je de geselecteerde rol wil veranderen voor de geselecteerde gebruiker(s)?"
 
 #: cps/admin.py:558
 #, fuzzy
@@ -181,15 +182,15 @@ msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
 
 #: cps/admin.py:560
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr ""
+msgstr "Weet je zeker dat je de geselecteerde zichtbaarheidsbeperkingen wilt verwijderen"
 
 #: cps/admin.py:709
 msgid "Tag not found"
-msgstr ""
+msgstr "Tag niet gevonden"
 
 #: cps/admin.py:721
 msgid "Invalid Action"
-msgstr ""
+msgstr "Ongeldige actie"
 
 #: cps/admin.py:826 cps/admin.py:832 cps/admin.py:842 cps/admin.py:852
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:43
@@ -215,38 +216,38 @@ msgstr "De locatie vam het toegangslog is onjuist, voer een geldige locatie in"
 
 #: cps/admin.py:1078
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr ""
+msgstr "Voer alsjeblieft een LDAP leverancier, Port, DN en User Object Identifier in"
 
 #: cps/admin.py:1093
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP Groep Object Filter Moet Een \"%s\" Formaat Identificiatie hebben"
 
 #: cps/admin.py:1096
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP Groep Object Filter Heeft Een Ongelijk Haakje"
 
 #: cps/admin.py:1101
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP Gebruiker Object Filter moet \"%s\" Formaat Identificatie hebben"
 
 #: cps/admin.py:1104
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP Gebruiker Filter heeft een ongelijk haakje"
 
 #: cps/admin.py:1112
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP Lid Gebruiker Filter moet een \"%s\" Formaat Identificatie hebben"
 
 #: cps/admin.py:1115
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP Lid Gebruiker Filter heeft een ongelijk haakje"
 
 #: cps/admin.py:1123
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "LDAP CACertficaat, Certificaat of Sleutel Locatie is ongeldig. Voer alsjeblieft een geldig pad in."
 
 #: cps/admin.py:1149
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
@@ -303,7 +304,7 @@ msgstr "Gebruiker '%(nick)s' verwijderd"
 
 #: cps/admin.py:1340 cps/admin.py:1341
 msgid "Can't delete Guest User"
-msgstr ""
+msgstr "Kan Gast gebruiker niet verwijderen"
 
 #: cps/admin.py:1344
 msgid "No admin user remaining, can't delete user"
@@ -329,12 +330,12 @@ msgstr "SMTP-instellingen bewerken"
 
 #: cps/admin.py:1468
 msgid "Gmail Account Verification Successful"
-msgstr ""
+msgstr "Gmail Account succesvol geverifieerd"
 
 #: cps/admin.py:1494
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr ""
+msgstr "Test E-Mail wordt verzonden naar %(email)s, controleer de taken voor het resultaat"
 
 #: cps/admin.py:1497
 #, python-format
@@ -417,7 +418,7 @@ msgstr "Geüpload bestand kon niet opgeslagen worden in de tijdelijke map"
 
 #: cps/admin.py:1697
 msgid "Failed to Create at Least One LDAP User"
-msgstr ""
+msgstr "Mislukt om minstens een LDAP gebruiker aan te maken"
 
 #: cps/admin.py:1710
 #, python-format
@@ -430,11 +431,11 @@ msgstr "Fout: No user returned in response of LDAP server"
 
 #: cps/admin.py:1747
 msgid "At Least One LDAP User Not Found in Database"
-msgstr ""
+msgstr "Minstens een LDAP Gebruiker is niet gevonden in de Database"
 
 #: cps/admin.py:1749
 msgid "{} User Successfully Imported"
-msgstr ""
+msgstr "{} Gebruiker succesvol geïmporteerd"
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -447,7 +448,7 @@ msgstr "Kan programma niet uitvoeren"
 #: cps/db.py:626 cps/web.py:642 cps/web.py:1138
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr ""
+msgstr "Aangepaste kolom Nr.%(column)d bestaat niet in de Calibre Database"
 
 #: cps/editbooks.py:294 cps/editbooks.py:296
 msgid "Book Format Successfully Deleted"
@@ -616,7 +617,7 @@ msgstr "Het opgevraagde bestand kan niet worden uitgelezen. Ben je hiertoe gemac
 #: cps/helper.py:318
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "Het verwijderen van de boekenmap voor boek %(id)s is mislukt, het pad heeft submappen: %(path)s"
 
 #: cps/helper.py:324
 #, python-format
@@ -626,7 +627,7 @@ msgstr "Verwijderen van boek %(id)s mislukt: %(message)s"
 #: cps/helper.py:334
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
-msgstr ""
+msgstr "Verwijderen van boek %(id)s, boek pad is ongeldig: %(path)s"
 
 #: cps/helper.py:389
 #, python-format
@@ -659,7 +660,7 @@ msgstr "Deze gebruikersnaam is al in gebruik"
 
 #: cps/helper.py:529
 msgid "Invalid e-mail address format"
-msgstr ""
+msgstr "Ongeldig E-Mail adres"
 
 #: cps/helper.py:602
 msgid "Error Downloading Cover"
@@ -679,7 +680,7 @@ msgstr "Omslag-bestand is geen afbeelding of kon niet opgeslagen worden"
 
 #: cps/helper.py:642
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr ""
+msgstr "Alleen jpg/jpeg/png/webp/bmp bestanden worden ondersteund als voorblad"
 
 #: cps/helper.py:655
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -753,7 +754,7 @@ msgstr "Ontkoppelen van %(oauth)s mislukt"
 #: cps/oauth_bb.py:206
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr ""
+msgstr "Niet gelinkt aan %(oauth)s"
 
 #: cps/oauth_bb.py:262
 msgid "Failed to log in with GitHub."
@@ -777,7 +778,7 @@ msgstr "GitHub OAuth fout, probeer het later nog eens."
 
 #: cps/oauth_bb.py:336
 msgid "GitHub Oauth error: {}"
-msgstr ""
+msgstr "Github OAuth foutmelding: {}"
 
 #: cps/oauth_bb.py:357
 msgid "Google Oauth error, please retry later."
@@ -785,11 +786,11 @@ msgstr "Google OAuth fout, probeer het later nog eens."
 
 #: cps/oauth_bb.py:360
 msgid "Google Oauth error: {}"
-msgstr ""
+msgstr "Google OAuth foutmelding: {}"
 
 #: cps/opds.py:385
 msgid "{} Stars"
-msgstr ""
+msgstr "{} sterren"
 
 #: cps/remotelogin.py:65 cps/templates/config_edit.html:430
 #: cps/templates/layout.html:85 cps/templates/login.html:4
@@ -1168,7 +1169,7 @@ msgstr "Beoordeling >= %(rating)s"
 #: cps/web.py:1231
 #, python-format
 msgid "Read Status = %(status)s"
-msgstr ""
+msgstr "Lees Status = %(status)s"
 
 #: cps/web.py:1421
 #, python-format
@@ -1209,7 +1210,7 @@ msgstr "Kan de LDAP authenticatie niet activeren"
 #: cps/web.py:1516
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr ""
+msgstr "Terugvallen op login: '%(nickname)s', LDAP Server is onbereikbaar, of de gebruiker is onbekend"
 
 #: cps/web.py:1522
 #, python-format
@@ -1249,31 +1250,31 @@ msgstr "Lees een boek"
 
 #: cps/services/gmail.py:41
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr ""
+msgstr "Geen geldig gmail.json bestand gevonden met OAuth informatie"
 
 #: cps/tasks/convert.py:114
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr ""
+msgstr "Calibre ebook-convert %(tool)s niet gevonden"
 
 #: cps/tasks/convert.py:138
 #, python-format
 msgid "%(format)s format not found on disk"
-msgstr ""
+msgstr "%(format)s formaat is niet gevonden op de schijf"
 
 #: cps/tasks/convert.py:142
 msgid "Ebook converter failed with unknown error"
-msgstr ""
+msgstr "E-Book converter mislukt met een onbekende foutmelding"
 
 #: cps/tasks/convert.py:152
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr ""
+msgstr "Kepubify-converteerder mislukt: %(error)s"
 
 #: cps/tasks/convert.py:176
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr ""
+msgstr "Omgezette bestand is niet gevonden of meer dan een bestand in map %(folder)s"
 
 #: cps/tasks/convert.py:199
 #, python-format
@@ -1283,7 +1284,7 @@ msgstr "E-boek-conversie mislukt: %(error)s"
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Calibre failed with error: %(error)s"
-msgstr ""
+msgstr "Calibre mislukt met foutmelding: %(error)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1380,11 +1381,11 @@ msgstr "Van e-mail"
 
 #: cps/templates/admin.html:84
 msgid "E-Mail Service"
-msgstr ""
+msgstr "E-Mail Service"
 
 #: cps/templates/admin.html:85
 msgid "Gmail via Oauth2"
-msgstr ""
+msgstr "Gmail via OAuth2"
 
 #: cps/templates/admin.html:100
 msgid "Configuration"
@@ -1760,47 +1761,47 @@ msgstr "Titel"
 
 #: cps/templates/book_table.html:48
 msgid "Enter Title Sort"
-msgstr ""
+msgstr "Voer Titel sorteer volgorde in"
 
 #: cps/templates/book_table.html:48
 msgid "Title Sort"
-msgstr ""
+msgstr "Titel sorteren"
 
 #: cps/templates/book_table.html:49
 msgid "Enter Author Sort"
-msgstr ""
+msgstr "Voer Auteur sorteer volgorde in"
 
 #: cps/templates/book_table.html:49
 msgid "Author Sort"
-msgstr ""
+msgstr "Auteur sorteren"
 
 #: cps/templates/book_table.html:50
 msgid "Enter Authors"
-msgstr ""
+msgstr "Voer Auteurs in"
 
 #: cps/templates/book_table.html:51
 msgid "Enter Categories"
-msgstr ""
+msgstr "Voer categorieën in"
 
 #: cps/templates/book_table.html:52
 msgid "Enter Series"
-msgstr ""
+msgstr "Voer serie in"
 
 #: cps/templates/book_table.html:53
 msgid "Series Index"
-msgstr ""
+msgstr "Serie index"
 
 #: cps/templates/book_table.html:54
 msgid "Enter Languages"
-msgstr ""
+msgstr "Voer talen in"
 
 #: cps/templates/book_table.html:55
 msgid "Publishing Date"
-msgstr ""
+msgstr "Voer publicatiedatum in"
 
 #: cps/templates/book_table.html:56
 msgid "Enter Publishers"
-msgstr ""
+msgstr "Voer Uitgevers in"
 
 #: cps/templates/book_table.html:71 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
@@ -1808,11 +1809,11 @@ msgstr "Weet je het zeker?"
 
 #: cps/templates/book_table.html:75
 msgid "Books with Title will be merged from:"
-msgstr ""
+msgstr "Boeken met de Titel zullen worden samengevoegd van:"
 
 #: cps/templates/book_table.html:79
 msgid "Into Book with Title:"
-msgstr ""
+msgstr "In boek met Titel:"
 
 #: cps/templates/book_table.html:84
 msgid "Merge"
@@ -1828,7 +1829,7 @@ msgstr "Locatie van de Calibre-database"
 
 #: cps/templates/config_edit.html:29
 msgid "To activate serverside filepicker start Calibre-Web with -f option"
-msgstr ""
+msgstr "Om de serverkant bestandskiezer te activeren, start Calibre-Web met de -f optie"
 
 #: cps/templates/config_edit.html:35
 msgid "Use Google Drive?"
@@ -1944,7 +1945,7 @@ msgstr "Proxy onbekende verzoeken naar Kobo winkel"
 
 #: cps/templates/config_edit.html:209
 msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
+msgstr "Server Externe Port (voor port doorgestuurde API oproepen)"
 
 #: cps/templates/config_edit.html:217
 msgid "Use Goodreads"
@@ -2009,15 +2010,15 @@ msgstr "SSL"
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP CACertificataat Path (Alleen nodig voor Client Certificaat Autorisatie)"
 
 #: cps/templates/config_edit.html:281
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP Certificaat Pad (Alleen nodig voor Client Certificaat Autorisatie)"
 
 #: cps/templates/config_edit.html:288
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP SleutelBestand Pad (alleen nodig voor Client Certificaat Autorisatie)"
 
 #: cps/templates/config_edit.html:297
 msgid "LDAP Authentication"
@@ -2057,11 +2058,11 @@ msgstr "LDAP Server is OpenLDAP?"
 
 #: cps/templates/config_edit.html:328
 msgid "Following Settings are Needed For User Import"
-msgstr ""
+msgstr "De volgende instellingen zijn nodig voor het importeren van gebruikers:"
 
 #: cps/templates/config_edit.html:330
 msgid "LDAP Group Object Filter"
-msgstr ""
+msgstr "LDAP Groep Object Filter"
 
 #: cps/templates/config_edit.html:334
 msgid "LDAP Group Name"
@@ -2073,7 +2074,7 @@ msgstr "LDAP groepleden veld"
 
 #: cps/templates/config_edit.html:342
 msgid "LDAP Member User Filter Detection"
-msgstr ""
+msgstr "LDAP Lid Gebruiker Filter Detectie"
 
 #: cps/templates/config_edit.html:344
 msgid "Autodetect"
@@ -2081,11 +2082,11 @@ msgstr "Automatisch detecteren"
 
 #: cps/templates/config_edit.html:345
 msgid "Custom Filter"
-msgstr ""
+msgstr "Aangepast Filter"
 
 #: cps/templates/config_edit.html:350
 msgid "LDAP Member User Filter"
-msgstr ""
+msgstr "LDAP Lid Gebruiker Filter"
 
 #: cps/templates/config_edit.html:361
 #, python-format
@@ -2108,15 +2109,15 @@ msgstr "Externe programma's"
 
 #: cps/templates/config_edit.html:390
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Pad naar Calibre E-Book Converteerder"
 
 #: cps/templates/config_edit.html:398
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Calibre E-Book omzet instellingen"
 
 #: cps/templates/config_edit.html:401
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Pad naar Kepubify E-book Converteerder"
 
 #: cps/templates/config_edit.html:409
 msgid "Location of Unrar binary"
@@ -2279,23 +2280,23 @@ msgstr "Metagegevens bewerken"
 
 #: cps/templates/email_edit.html:12
 msgid "Choose Server Type"
-msgstr ""
+msgstr "Kies Server Type"
 
 #: cps/templates/email_edit.html:14
 msgid "Use Standard E-Mail Account"
-msgstr ""
+msgstr "Gebruik Standaard E-Mail Account"
 
 #: cps/templates/email_edit.html:15
 msgid "Gmail Account with OAuth2 Verification"
-msgstr ""
+msgstr "Gmail Account met OAuth2 Verificatie"
 
 #: cps/templates/email_edit.html:21
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr ""
+msgstr "Gmail Account opzetten als E-Mail Server"
 
 #: cps/templates/email_edit.html:23
 msgid "Revoke Gmail Access"
-msgstr ""
+msgstr "Gmail toegang intrekken"
 
 #: cps/templates/email_edit.html:41
 msgid "STARTTLS"
@@ -2311,7 +2312,7 @@ msgstr "SMTP-wachtwoord"
 
 #: cps/templates/email_edit.html:57
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Bijlage bestandsgrootte limiet"
 
 #: cps/templates/email_edit.html:65
 msgid "Save and Send Test E-mail"
@@ -2371,11 +2372,11 @@ msgstr "Auteurs sorteren op omgekeerde alfabetische volgorde"
 
 #: cps/templates/index.html:77
 msgid "Sort ascending according to series index"
-msgstr ""
+msgstr "Sorteer oplopend volgens de serie index"
 
 #: cps/templates/index.html:78
 msgid "Sort descending according to series index"
-msgstr ""
+msgstr "Sorteer aflopend volgens de serie index"
 
 #: cps/templates/index.xml:6
 msgid "Start"
@@ -2383,11 +2384,11 @@ msgstr "Starten"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr ""
+msgstr "Alfabetische Boeken"
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr ""
+msgstr "Boeken Alfabetisch gesorteerd"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
@@ -2577,35 +2578,35 @@ msgstr "en van de harde schijf"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr ""
+msgstr "Belangrijke Kobo Opmerking: Verwijderde boeken zullen op alle gekoppelde Kobo Apparaten blijven."
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr ""
+msgstr "Boeken moeten eerst worden gearchiveerd en het apparaat moet worden gesynchroniseerd, voordat een boek veilig kan worden verwijderd."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr ""
+msgstr "Kies bestandslocatie"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
-msgstr ""
+msgstr "type"
 
 #: cps/templates/modal_dialogs.html:83
 msgid "name"
-msgstr ""
+msgstr "naam"
 
 #: cps/templates/modal_dialogs.html:84
 msgid "size"
-msgstr ""
+msgstr "grootte"
 
 #: cps/templates/modal_dialogs.html:90
 msgid "Parent Directory"
-msgstr ""
+msgstr "Bovenliggende map"
 
 #: cps/templates/modal_dialogs.html:98
 msgid "Select"
-msgstr ""
+msgstr "Selecteer"
 
 #: cps/templates/modal_dialogs.html:134
 #, fuzzy
@@ -2774,7 +2775,7 @@ msgstr "Publicatiedatum tot"
 
 #: cps/templates/search_form.html:41
 msgid "Read Status"
-msgstr ""
+msgstr "Lees Status"
 
 #: cps/templates/search_form.html:58
 msgid "Exclude Tags"
@@ -2811,11 +2812,11 @@ msgstr "Met beoordeling lager dan"
 
 #: cps/templates/search_form.html:179
 msgid "From:"
-msgstr ""
+msgstr "Van:"
 
 #: cps/templates/search_form.html:189
 msgid "To:"
-msgstr ""
+msgstr "Naar:"
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
@@ -2823,19 +2824,19 @@ msgstr "Boekenplank verwijderen"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf Properties"
-msgstr ""
+msgstr "Bewerk boekenplank eigenschappen"
 
 #: cps/templates/shelf.html:13
 msgid "Arrange books manually"
-msgstr ""
+msgstr "Regel boeken handmatig"
 
 #: cps/templates/shelf.html:14
 msgid "Disable Change order"
-msgstr ""
+msgstr "Schakel verandering van de volgorde uit"
 
 #: cps/templates/shelf.html:14
 msgid "Enable Change order"
-msgstr ""
+msgstr "Schakel verandering van de volgorde in"
 
 #: cps/templates/shelf.html:93
 msgid "Shelf will be deleted for all users"
@@ -2959,7 +2960,7 @@ msgstr "Genereer Kobo Auth URL"
 
 #: cps/templates/user_table.html:68 cps/templates/user_table.html:91
 msgid "Select..."
-msgstr ""
+msgstr "Selecteer..."
 
 #: cps/templates/user_table.html:118
 #, fuzzy
@@ -2993,7 +2994,7 @@ msgstr "Schaal"
 
 #: cps/templates/user_table.html:125
 msgid "Visible Book Languages"
-msgstr ""
+msgstr "Zichtbare Boek Talen"
 
 #: cps/templates/user_table.html:126
 #, fuzzy
@@ -3002,7 +3003,7 @@ msgstr "Selecteer toegestane/geweigerde tags"
 
 #: cps/templates/user_table.html:126
 msgid "Allowed Tags"
-msgstr ""
+msgstr "Toegestaande Tags"
 
 #: cps/templates/user_table.html:127
 #, fuzzy
@@ -3011,7 +3012,7 @@ msgstr "Selecteer toegestane/geweigerde tags"
 
 #: cps/templates/user_table.html:127
 msgid "Denied Tags"
-msgstr ""
+msgstr "Verboden Tags"
 
 #: cps/templates/user_table.html:128
 #, fuzzy
@@ -3040,7 +3041,7 @@ msgstr "Wachtwoord wijzigen toestaan"
 
 #: cps/templates/user_table.html:134
 msgid "View"
-msgstr ""
+msgstr "Geef weer"
 
 #: cps/templates/user_table.html:137
 #, fuzzy
@@ -3055,4 +3056,3 @@ msgstr "Boekenreeksenkeuze tonen"
 #: cps/templates/user_table.html:143
 msgid "Show random books"
 msgstr "Willekeurige boeken tonen"
-
