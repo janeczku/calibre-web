@@ -74,9 +74,8 @@ msgid "User not found"
 msgstr "Utente non trovato"
 
 #: cps/admin.py:329
-#, fuzzy
 msgid "{} users deleted successfully"
-msgstr "{} utente importato con successo"
+msgstr "{} utente eliminato con successo"
 
 #: cps/admin.py:351 cps/templates/user_edit.html:44
 #: cps/templates/user_table.html:69
@@ -85,7 +84,7 @@ msgstr "tutte le lingue presenti"
 
 #: cps/admin.py:372 cps/admin.py:378
 msgid "Malformed request"
-msgstr ""
+msgstr "Richiesta non formulata correttamente"
 
 #: cps/admin.py:390 cps/admin.py:1394
 msgid "Guest Name can't be changed"
@@ -101,19 +100,19 @@ msgstr "Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruol
 
 #: cps/admin.py:416 cps/admin.py:430
 msgid "Value has to be true or false"
-msgstr ""
+msgstr "Il valore deve essere o vero o flaso"
 
 #: cps/admin.py:418
 msgid "Invalid role"
-msgstr ""
+msgstr "Ruolo non valido"
 
 #: cps/admin.py:422
 msgid "Guest can't have this view"
-msgstr " L'utente Guest (ospite) non può avere questa schermata"
+msgstr "L'utente Guest (ospite) non può avere questa schermata"
 
 #: cps/admin.py:432
 msgid "Invalid view"
-msgstr ""
+msgstr "Visualizzazione invalida"
 
 #: cps/admin.py:435
 msgid "Guest's Locale is determined automatically and can't be set"
@@ -121,23 +120,23 @@ msgstr "Le impostazioni locali dell'utente Guest (ospite) sono determinate autom
 
 #: cps/admin.py:439
 msgid "No Valid Locale Given"
-msgstr ""
+msgstr "Nessuna lingua valida indicata"
 
 #: cps/admin.py:450
 msgid "No Valid Book Language Given"
-msgstr ""
+msgstr "Nessuna lingua valida per il libro"
 
 #: cps/admin.py:452
 msgid "Parameter not found"
-msgstr ""
+msgstr "Parametro non trovato"
 
 #: cps/admin.py:507
 msgid "Invalid Read Column"
-msgstr ""
+msgstr "Colonna di lettura non valida"
 
 #: cps/admin.py:513
 msgid "Invalid Restricted Column"
-msgstr ""
+msgstr "Colonna con restrizioni non valida"
 
 #: cps/admin.py:532 cps/admin.py:1245
 msgid "Calibre-Web configuration updated"
@@ -182,11 +181,11 @@ msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visu
 
 #: cps/admin.py:709
 msgid "Tag not found"
-msgstr ""
+msgstr "Etichetta non trovata"
 
 #: cps/admin.py:721
 msgid "Invalid Action"
-msgstr ""
+msgstr "Azione non valida"
 
 #: cps/admin.py:826 cps/admin.py:832 cps/admin.py:842 cps/admin.py:852
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:43
@@ -324,9 +323,8 @@ msgid "Edit E-mail Server Settings"
 msgstr "Modifica le impostazioni del server e-mail"
 
 #: cps/admin.py:1468
-#, fuzzy
 msgid "Gmail Account Verification Successful"
-msgstr "L'account g-mail è stato verificato con successo"
+msgstr "L'account Gmail è stato verificato con successo"
 
 #: cps/admin.py:1494
 #, python-format
@@ -2284,16 +2282,16 @@ msgstr "Utilizza un account e-mail standard"
 #: cps/templates/email_edit.html:15
 #, fuzzy
 msgid "Gmail Account with OAuth2 Verification"
-msgstr "Utilizza un account g-mail con la verifica OAuth2"
+msgstr "Utilizza un account Gmail con la verifica OAuth2"
 
 #: cps/templates/email_edit.html:21
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr "Configura l'account gmail quale server e-mail"
+msgstr "Configura l'account Gmail quale server e-mail"
 
 #: cps/templates/email_edit.html:23
 #, fuzzy
 msgid "Revoke Gmail Access"
-msgstr "Revoca l'accesso g-mail"
+msgstr "Revoca l'accesso Gmail"
 
 #: cps/templates/email_edit.html:41
 msgid "STARTTLS"
@@ -2807,11 +2805,11 @@ msgstr "Valutazione inferiore a"
 
 #: cps/templates/search_form.html:179
 msgid "From:"
-msgstr ""
+msgstr "Da:"
 
 #: cps/templates/search_form.html:189
 msgid "To:"
-msgstr ""
+msgstr "A:"
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
