@@ -1307,6 +1307,8 @@ def _db_configuration_result(error_flash=None, gdrive_error=None):
         log.error(error_flash)
         config.load()
         flash(error_flash, category="error")
+    elif request.method == "POST" and not gdrive_error:
+        flash(_("Database Settings updated"), category="success")
 
     return render_title_template("config_db.html",
                                  config=config,
