@@ -83,7 +83,9 @@ log = logger.create()
 
 from . import services
 
-db.CalibreDB.setup_db(config, cli.settingspath)
+db.CalibreDB.update_config(config)
+db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
+
 
 calibre_db = db.CalibreDB()
 

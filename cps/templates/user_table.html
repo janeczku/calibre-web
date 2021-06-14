@@ -32,6 +32,21 @@
 </th>
 {%- endmacro %}
 
+{% macro user_single_checkbox_row(parameter, show_text) -%}
+<th data-name="{{parameter}}" data-field="{{parameter}}"
+    data-formatter="singlecheckboxFormatter">
+    <div class="form-check">
+    <div>
+        <input type="radio" class="check_head" data-set="false" data-val="0" name="{{parameter}}" id="false_{{parameter}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
+    </div>
+    <div>
+        <input type="radio" class="check_head" data-set="true" data-val="1" name="{{parameter}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
+    </div>
+    </div>
+    {{show_text}}
+</th>
+{%- endmacro %}
+
 {% macro user_checkbox_row(parameter, array_field, show_text, element, value) -%}
 <th data-name="{{array_field}}" data-field="{{parameter}}"
     data-visible="{{element.get(array_field)}}"
@@ -39,14 +54,10 @@
     data-formatter="checkboxFormatter">
     <div  class="form-check">
     <div>
-
-        <input type="radio" class="check_head" data-set="false" data-val={{value.get(array_field)}} name="options_{{array_field}}" id="false_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
-
+        <input type="radio" class="check_head" data-set="false" data-val="{{value.get(array_field)}}" name="options_{{array_field}}" id="false_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
     </div>
     <div>
-
-        <input type="radio" class="check_head" data-set="true" data-val={{value.get(array_field)}} name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
-
+        <input type="radio" class="check_head" data-set="true" data-val="{{value.get(array_field)}}" name="options_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Allow')}}
     </div>
     </div>
     {{show_text}}
@@ -134,7 +145,10 @@
             {{ user_checkbox_row("role", "viewer_role", _('View'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "edit_role", _('Edit'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "delete_role", _('Delete'), visiblility, all_roles)}}
-            {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelfs'), visiblility, all_roles)}}
+            {{ user_checkbox_row("role", "edit_shelf_role", _('Edit Public Shelves'), visiblility, all_roles)}}
+            {%  if kobo_support %}
+            {{ user_single_checkbox_row("kobo_only_shelves_sync", _('Sync Selected Shelves with Kobo'))}}
+            {%  endif %}
             {{ user_checkbox_row("sidebar_view", "detail_random", _('Show Random Books in Detail View'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show language selection'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show read/unread selection'), visiblility, sidebar_settings)}}

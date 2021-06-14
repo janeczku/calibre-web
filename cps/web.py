@@ -1211,7 +1211,7 @@ def extend_search_term(searchterm,
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
-        tag_names = calibre_db.session.query(db_element).filter(db.Tags.id.in_(tags['exclude_' + key])).all()
+        tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['exclude_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
     language_names = calibre_db.session.query(db.Languages). \
         filter(db.Languages.id.in_(tags['include_language'])).all()
@@ -1327,7 +1327,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
-        q = adv_search_custom_columns(cc, term, q)
+        try:
+            q = adv_search_custom_columns(cc, term, q)
+        except AttributeError as ex:
+            log.debug_or_exception(ex)
+            flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
 
     q = q.order_by(*order).all()
     flask_session['query'] = json.dumps(term)
@@ -1381,10 +1385,14 @@ def serve_book(book_id, book_format, anyname):
         return "File not in Database"
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
-        headers = Headers()
-        headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-        df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
+        try:
+            headers = Headers()
+            headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
+            df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+            return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
+        except AttributeError as ex:
+            log.debug_or_exception(ex)
+            return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
             try:
@@ -1394,9 +1402,9 @@ def serve_book(book_id, book_format, anyname):
                 return make_response(
                     rawdata.decode(result['encoding']).encode('utf-8'))
             except FileNotFoundError:
+                log.error("File Not Found")
                 return "File Not Found"
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
-
 
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
@@ -1489,9 +1497,9 @@ def register():
 
 @web.route('/login', methods=['GET', 'POST'])
 def login():
-    if not config.db_configured:
-        log.debug(u"Redirect to initial configuration")
-        return redirect(url_for('admin.basic_configuration'))
+    #if not config.db_configured:
+    #    log.debug(u"Redirect to initial configuration")
+    #    return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
@@ -1593,6 +1601,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
             current_user.default_language = to_save["default_language"]
         if to_save.get("locale"):
             current_user.locale = to_save["locale"]
+        current_user.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
+
     except Exception as ex:
         flash(str(ex), category="error")
         return render_title_template("user_edit.html", content=current_user,
