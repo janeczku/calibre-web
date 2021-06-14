@@ -46,9 +46,14 @@ $(function() {
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
+                $("#table_xchange").addClass("disabled");
+                $("#table_xchange").attr("aria-disabled", true);
             } else {
                 $("#delete_selection").removeClass("disabled");
                 $("#delete_selection").attr("aria-disabled", false);
+                $("#table_xchange").removeClass("disabled");
+                $("#table_xchange").attr("aria-disabled", false);
+
             }
         });
     $("#delete_selection").click(function() {
@@ -82,6 +87,20 @@ $(function() {
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
+            }
+        });
+    });
+
+    $("#table_xchange").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/xchange",
+            data: JSON.stringify({"xchange":selections}),
+            success: function success() {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
@@ -580,12 +599,19 @@ function singleUserFormatter(value, row) {
     return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
-function checkboxFormatter(value, row, index){
+function checkboxFormatter(value, row){
     if(value & this.column)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+function singlecheckboxFormatter(value, row){
+    if(value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+}
+
 
 /* Do some hiding disabling after user list is loaded */
 function loadSuccess() {

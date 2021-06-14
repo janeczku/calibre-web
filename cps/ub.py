@@ -188,7 +188,7 @@ class User(UserBase, Base):
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
-
+    kobo_only_shelves_sync = Column(Integer, default=0)
 
 
 if oauth_support:
@@ -229,6 +229,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
+        self.kobo_only_shelves_sync = data.kobo_only_shelves_sync
 
 
     def role_admin(self):
@@ -270,6 +271,7 @@ class Shelf(Base):
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
+    kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
     created = Column(DateTime, default=datetime.datetime.utcnow)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
@@ -483,11 +485,12 @@ def migrate_registration_table(engine, session):
 
 
 # Remove login capability of user Guest
-def migrate_guest_password(engine, session):
+def migrate_guest_password(engine):
     try:
         with engine.connect() as conn:
+            trans = conn.begin()
             conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
-        session.commit()
+            trans.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
         sys.exit(2)
@@ -502,6 +505,7 @@ def migrate_shelfs(engine, session):
             conn.execute("ALTER TABLE shelf ADD column 'created' DATETIME")
             conn.execute("ALTER TABLE shelf ADD column 'last_modified' DATETIME")
             conn.execute("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME")
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
         for shelf in session.query(Shelf).all():
             shelf.uuid = str(uuid.uuid4())
             shelf.created = datetime.datetime.now()
@@ -509,6 +513,15 @@ def migrate_shelfs(engine, session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
+
+    try:
+        session.query(exists().where(Shelf.kobo_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
+        session.commit()
+
     try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
@@ -593,6 +606,13 @@ def migrate_Database(session):
             conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
         session.commit()
     try:
+        session.query(exists().where(User.kobo_only_shelves_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+            conn.execute("ALTER TABLE user ADD column `kobo_only_shelves_sync` SMALLINT DEFAULT 0")
+        session.commit()
+
+    try:
         # check if name is in User table instead of nickname
         session.query(exists().where(User.name)).scalar()
     except exc.OperationalError:
@@ -611,15 +631,16 @@ def migrate_Database(session):
                      "allowed_tags VARCHAR,"
                      "denied_column_value VARCHAR,"
                      "allowed_column_value VARCHAR,"
-                     "view_settings JSON,"         
+                     "view_settings JSON,"
+                     "kobo_only_shelves_sync SMALLINT,"                              
                      "UNIQUE (name),"
                      "UNIQUE (email))"))
             conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
                      "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings)"
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync)"
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings FROM user"))
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync FROM user"))
             # delete old user table and rename new user_id table to user:
             conn.execute(text("DROP TABLE user"))
             conn.execute(text("ALTER TABLE user_id RENAME TO user"))
@@ -628,7 +649,7 @@ def migrate_Database(session):
        is None:
         create_anonymous_user(session)
 
-    migrate_guest_password(engine, session)
+    migrate_guest_password(engine)
 
 
 def clean_database(session):

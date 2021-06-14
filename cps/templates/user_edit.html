@@ -47,7 +47,7 @@
             {% endfor %}
         </select>
     </div>
-    {% if registered_oauth.keys()| length > 0 and not new_user %}
+    {% if registered_oauth.keys()| length > 0 and not new_user and profile %}
       {% for id, name in registered_oauth.items() %}
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>
@@ -66,7 +66,6 @@
       <div class="btn btn-danger" id="config_delete_kobo_token" data-value="{{ content.id }}" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
     </div>
     {% endif %}
-    </div>
     <div class="col-sm-6">
         {% for element in sidebar %}
           {% if element['config_show'] %}
@@ -124,6 +123,12 @@
           <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
         </div>
       {% endif %}
+    {% endif %}
+    {% if kobo_support and not content.role_anonymous() %}
+    <div class="form-group">
+      <input type="checkbox" name="kobo_only_shelves_sync" id="kobo_only_shelves_sync" {% if content.kobo_only_shelves_sync %}checked{% endif %}>
+      <label for="kobo_only_shelves_sync">{{_('Sync only books in selected shelves with Kobo')}}</label>
+    </div>
     {% endif %}
     </div>
       <div class="col-sm-12">

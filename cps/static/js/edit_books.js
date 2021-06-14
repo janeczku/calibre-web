@@ -263,3 +263,9 @@ $("#btn-upload-cover").on("change", function () {
     $("#upload-cover").html(filename);
 });
 
+$("#xchange").click(function () {
+    this.blur();
+    var title = $("#book_title").val();
+    $("#book_title").val($("#bookAuthor").val());
+    $("#bookAuthor").val(title);
+});

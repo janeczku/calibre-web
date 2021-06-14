@@ -40,7 +40,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
-from .cli import filepicker
+# from .cli import filepicker
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
@@ -97,19 +97,6 @@ def admin_required(f):
     return inner
 
 
-def unconfigured(f):
-    """
-    Checks if calibre-web instance is not configured
-    """
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if not config.db_configured:
-            return f(*args, **kwargs)
-        abort(403)
-
-    return inner
-
-
 @admi.before_app_request
 def before_request():
     if current_user.is_authenticated:
@@ -124,10 +111,14 @@ def before_request():
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if '/static/' not in request.path and not config.db_configured and \
-        request.endpoint not in ('admin.basic_configuration',
-                                 'login',
-                                 'admin.config_pathchooser'):
-        return redirect(url_for('admin.basic_configuration'))
+        request.endpoint not in ('admin.ajax_db_config',
+                                 'admin.simulatedbchange',
+                                 'admin.db_configuration',
+                                 'web.login',
+                                 'web.logout',
+                                 'admin.load_dialogtexts',
+                                 'admin.ajax_pathchooser'):
+        return redirect(url_for('admin.db_configuration'))
 
 
 @admi.route("/admin")
@@ -194,15 +185,45 @@ def admin():
                                  feature_support=feature_support, kobo_support=kobo_support,
                                  title=_(u"Admin page"), page="admin")
 
+@admi.route("/admin/dbconfig", methods=["GET", "POST"])
+@login_required
+@admin_required
+def db_configuration():
+    if request.method == "POST":
+        return _db_configuration_update_helper()
+    return _db_configuration_result()
 
-@admi.route("/admin/config", methods=["GET", "POST"])
+
+@admi.route("/admin/config", methods=["GET"])
 @login_required
 @admin_required
 def configuration():
-    if request.method == "POST":
-        return _configuration_update_helper(True)
-    return _configuration_result()
+    return render_title_template("config_edit.html",
+                                 config=config,
+                                 provider=oauthblueprints,
+                                 feature_support=feature_support,
+                                 title=_(u"Basic Configuration"), page="config")
 
+
+@admi.route("/admin/ajaxconfig", methods=["POST"])
+@login_required
+@admin_required
+def ajax_config():
+    return _configuration_update_helper()
+
+
+@admi.route("/admin/ajaxdbconfig", methods=["POST"])
+@login_required
+@admin_required
+def ajax_db_config():
+    return _db_configuration_update_helper()
+
+
+@admi.route("/admin/alive", methods=["GET"])
+@login_required
+@admin_required
+def calibreweb_alive():
+    return "", 200
 
 @admi.route("/admin/viewconfig")
 @login_required
@@ -236,7 +257,7 @@ def edit_user_table():
         custom_values = []
     if not config.config_anonbrowse:
         allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
-
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("user_table.html",
                                  users=allUser.all(),
                                  tags=tags,
@@ -245,6 +266,7 @@ def edit_user_table():
                                  languages=languages,
                                  visiblility=visibility,
                                  all_roles=constants.ALL_ROLES,
+                                 kobo_support=kobo_support,
                                  sidebar_settings=constants.sidebar_settings,
                                  title=_(u"Edit Users"),
                                  page="usertable")
@@ -391,6 +413,8 @@ def edit_list_user(param):
                     user.name = check_username(vals['value'])
                 elif param =='email':
                     user.email = check_email(vals['value'])
+                elif param =='kobo_only_shelves_sync':
+                    user.kobo_only_shelves_sync = int(vals['value'] == 'true')
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
                 elif param.endswith('role'):
@@ -495,30 +519,30 @@ def check_valid_restricted_column(column):
 def update_view_configuration():
     to_save = request.form.to_dict()
 
-    _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
-    _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
+    # _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
+    # _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
 
-    _config_string("config_calibre_web_title")
-    _config_string("config_columns_to_ignore")
-    if _config_string("config_title_regex"):
+    _config_string(to_save, "config_calibre_web_title")
+    _config_string(to_save, "config_columns_to_ignore")
+    if _config_string(to_save, "config_title_regex"):
         calibre_db.update_title_sort(config)
 
     if not check_valid_read_column(to_save.get("config_read_column", "0")):
         flash(_(u"Invalid Read Column"), category="error")
         log.debug("Invalid Read column")
         return view_configuration()
-    _config_int("config_read_column")
+    _config_int(to_save, "config_read_column")
 
     if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
         flash(_(u"Invalid Restricted Column"), category="error")
         log.debug("Invalid Restricted Column")
         return view_configuration()
-    _config_int("config_restricted_column")
+    _config_int(to_save, "config_restricted_column")
 
-    _config_int("config_theme")
-    _config_int("config_random_books")
-    _config_int("config_books_per_page")
-    _config_int("config_authors_max")
+    _config_int(to_save, "config_theme")
+    _config_int(to_save, "config_random_books")
+    _config_int(to_save, "config_books_per_page")
+    _config_int(to_save, "config_authors_max")
 
 
     config.config_default_role = constants.selected_roles(to_save)
@@ -536,10 +560,10 @@ def update_view_configuration():
     return view_configuration()
 
 
-@admi.route("/ajax/loaddialogtexts/<element_id>")
+@admi.route("/ajax/loaddialogtexts/<element_id>", methods=['POST'])
 @login_required
 def load_dialogtexts(element_id):
-    texts = {"header": "", "main": ""}
+    texts = {"header": "", "main": "", "valid": 1}
     if element_id == "config_delete_kobo_token":
         texts["main"] = _('Do you really want to delete the Kobo Token?')
     elif element_id == "btndeletedomain":
@@ -558,6 +582,10 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":
         texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
+    elif element_id == "kobo_only_shelves_sync":
+        texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
+    elif element_id == "db_submit":
+        texts["main"] = _('Are you sure you want to change Calibre libray location?')
     return json.dumps(texts)
 
 
@@ -862,14 +890,6 @@ def list_restriction(res_type, user_id):
     return response
 
 
-@admi.route("/basicconfig/pathchooser/")
-@unconfigured
-def config_pathchooser():
-    if filepicker:
-        return pathchooser()
-    abort(403)
-
-
 @admi.route("/ajax/pathchooser/")
 @login_required
 @admin_required
@@ -958,16 +978,6 @@ def pathchooser():
     return json.dumps(context)
 
 
-@admi.route("/basicconfig", methods=["GET", "POST"])
-@unconfigured
-def basic_configuration():
-    logout_user()
-    if request.method == "POST":
-        log.debug("Basic Configuration send")
-        return _configuration_update_helper(configured=filepicker)
-    return _configuration_result(configured=filepicker)
-
-
 def _config_int(to_save, x, func=int):
     return config.set_from_dictionary(to_save, x, func)
 
@@ -986,23 +996,24 @@ def _config_string(to_save, x):
 
 def _configuration_gdrive_helper(to_save):
     gdrive_error = None
-    gdrive_secrets = {}
+    if to_save.get("config_use_google_drive"):
+        gdrive_secrets = {}
 
-    if not os.path.isfile(gdriveutils.SETTINGS_YAML):
-        config.config_use_google_drive = False
+        if not os.path.isfile(gdriveutils.SETTINGS_YAML):
+            config.config_use_google_drive = False
 
-    if gdrive_support:
-        gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
-    if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdrive_error:
-        with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
-            gdrive_secrets = json.load(settings)['web']
-        if not gdrive_secrets:
-            return _configuration_result(_('client_secrets.json Is Not Configured For Web Application'))
-        gdriveutils.update_settings(
-                            gdrive_secrets['client_id'],
-                            gdrive_secrets['client_secret'],
-                            gdrive_secrets['redirect_uris'][0]
-                        )
+        if gdrive_support:
+            gdrive_error = gdriveutils.get_error_text(gdrive_secrets)
+        if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdrive_error:
+            with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
+                gdrive_secrets = json.load(settings)['web']
+            if not gdrive_secrets:
+                return _configuration_result(_('client_secrets.json Is Not Configured For Web Application'))
+            gdriveutils.update_settings(
+                                gdrive_secrets['client_id'],
+                                gdrive_secrets['client_secret'],
+                                gdrive_secrets['redirect_uris'][0]
+                            )
 
     # always show google drive settings, but in case of error deny support
     new_gdrive_value = (not gdrive_error) and ("config_use_google_drive" in to_save)
@@ -1036,23 +1047,23 @@ def _configuration_oauth_helper(to_save):
     return reboot_required
 
 
-def _configuration_logfile_helper(to_save, gdrive_error):
+def _configuration_logfile_helper(to_save):
     reboot_required = False
     reboot_required |= _config_int(to_save, "config_log_level")
     reboot_required |= _config_string(to_save, "config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
         return reboot_required, \
-               _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdrive_error)
+               _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'))
 
     reboot_required |= _config_checkbox_int(to_save, "config_access_log")
     reboot_required |= _config_string(to_save, "config_access_logfile")
     if not logger.is_valid_logfile(config.config_access_logfile):
         return reboot_required, \
-               _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdrive_error)
+               _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'))
     return reboot_required, None
 
 
-def _configuration_ldap_helper(to_save, gdrive_error):
+def _configuration_ldap_helper(to_save):
     reboot_required = False
     reboot_required |= _config_string(to_save, "config_ldap_provider_url")
     reboot_required |= _config_int(to_save, "config_ldap_port")
@@ -1079,44 +1090,37 @@ def _configuration_ldap_helper(to_save, gdrive_error):
         or not config.config_ldap_dn \
         or not config.config_ldap_user_object:
         return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
-                                                        'Port, DN and User Object Identifier'), gdrive_error)
+                                                        'Port, DN and User Object Identifier'))
 
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
             if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
-                return reboot_required, _configuration_result('Please Enter a LDAP Service Account and Password',
-                                                              gdrive_error)
+                return reboot_required, _configuration_result(_('Please Enter a LDAP Service Account and Password'))
         else:
             if not config.config_ldap_serv_username:
-                return reboot_required, _configuration_result('Please Enter a LDAP Service Account', gdrive_error)
+                return reboot_required, _configuration_result(_('Please Enter a LDAP Service Account'))
 
     if config.config_ldap_group_object_filter:
         if config.config_ldap_group_object_filter.count("%s") != 1:
             return reboot_required, \
-                   _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
-                                         gdrive_error)
+                   _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'))
         if config.config_ldap_group_object_filter.count("(") != config.config_ldap_group_object_filter.count(")"):
-            return reboot_required, _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
-                                                          gdrive_error)
+            return reboot_required, _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'))
 
     if config.config_ldap_user_object.count("%s") != 1:
         return reboot_required, \
-               _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
-                                     gdrive_error)
+               _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'))
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
-        return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
-                                                      gdrive_error)
+        return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'))
 
     if to_save.get("ldap_import_user_filter") == '0':
         config.config_ldap_member_user_object = ""
     else:
         if config.config_ldap_member_user_object.count("%s") != 1:
             return reboot_required, \
-                   _configuration_result(_('LDAP Member User Filter needs to Have One "%s" Format Identifier'),
-                                         gdrive_error)
+                   _configuration_result(_('LDAP Member User Filter needs to Have One "%s" Format Identifier'))
         if config.config_ldap_member_user_object.count("(") != config.config_ldap_member_user_object.count(")"):
-            return reboot_required, _configuration_result(_('LDAP Member User Filter Has Unmatched Parenthesis'),
-                                                          gdrive_error)
+            return reboot_required, _configuration_result(_('LDAP Member User Filter Has Unmatched Parenthesis'))
 
     if config.config_ldap_cacert_path or config.config_ldap_cert_path or config.config_ldap_key_path:
         if not (os.path.isfile(config.config_ldap_cacert_path) and
@@ -1124,13 +1128,31 @@ def _configuration_ldap_helper(to_save, gdrive_error):
                 os.path.isfile(config.config_ldap_key_path)):
             return reboot_required, \
                    _configuration_result(_('LDAP CACertificate, Certificate or Key Location is not Valid, '
-                                           'Please Enter Correct Path'),
-                                         gdrive_error)
+                                           'Please Enter Correct Path'))
     return reboot_required, None
 
 
-def _configuration_update_helper(configured):
-    reboot_required = False
+@admi.route("/ajax/simulatedbchange", methods=['POST'])
+@login_required
+@admin_required
+def simulatedbchange():
+    db_change, db_valid = _db_simulate_change()
+    return Response(json.dumps({"change": db_change, "valid": db_valid}), mimetype='application/json')
+
+
+def _db_simulate_change():
+    param = request.form.to_dict()
+    to_save = {}
+    to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
+                                           '',
+                                           param['config_calibre_dir'],
+                                           flags=re.IGNORECASE).strip()
+    db_change = config.config_calibre_dir != to_save["config_calibre_dir"] and config.config_calibre_dir
+    db_valid = calibre_db.check_valid_db(to_save["config_calibre_dir"], ub.app_DB_path)
+    return db_change, db_valid
+
+
+def _db_configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
     gdrive_error = None
@@ -1140,24 +1162,47 @@ def _configuration_update_helper(configured):
                                            to_save['config_calibre_dir'],
                                            flags=re.IGNORECASE)
     try:
-        db_change |= _config_string(to_save, "config_calibre_dir")
+        db_change, db_valid = _db_simulate_change()
 
         # gdrive_error drive setup
         gdrive_error = _configuration_gdrive_helper(to_save)
+    except (OperationalError, InvalidRequestError):
+        ub.session.rollback()
+        log.error("Settings DB is not Writeable")
+        _db_configuration_result(_("Settings DB is not Writeable"), gdrive_error)
+    try:
+        metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
+        if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
+            gdriveutils.downloadFile(None, "metadata.db", metadata_db)
+            db_change = True
+    except Exception as ex:
+        return _db_configuration_result('{}'.format(ex), gdrive_error)
 
+    if db_change or not db_valid or not config.db_configured:
+        if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
+            return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
+                                            gdrive_error)
+        _config_string(to_save, "config_calibre_dir")
+        calibre_db.update_config(config)
+        if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
+            flash(_(u"DB is not Writeable"), category="warning")
+            # warning = {'type': "warning", 'message': _(u"DB is not Writeable")}
+    config.save()
+    return _db_configuration_result(None, gdrive_error)
+
+def _configuration_update_helper():
+    reboot_required = False
+    to_save = request.form.to_dict()
+    try:
         reboot_required |= _config_int(to_save, "config_port")
 
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
-            return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'),
-                                         gdrive_error,
-                                         configured)
+            return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'))
 
         reboot_required |= _config_string(to_save, "config_certfile")
         if config.config_certfile and not os.path.isfile(config.config_certfile):
-            return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'),
-                                         gdrive_error,
-                                         configured)
+            return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'))
 
         _config_checkbox_int(to_save, "config_uploading")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
@@ -1181,15 +1226,14 @@ def _configuration_update_helper(configured):
 
         reboot_required |= _config_int(to_save, "config_login_type")
 
-        # LDAP configurator,
+        # LDAP configurator
         if config.config_login_type == constants.LOGIN_LDAP:
-            reboot, message = _configuration_ldap_helper(to_save, gdrive_error)
+            reboot, message = _configuration_ldap_helper(to_save)
             if message:
                 return message
             reboot_required |= reboot
 
         # Remote login configuration
-
         _config_checkbox(to_save, "config_remote_login")
         if not config.config_remote_login:
             ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type == 0).delete()
@@ -1213,7 +1257,7 @@ def _configuration_update_helper(configured):
         if config.config_login_type == constants.LOGIN_OAUTH:
             reboot_required |= _configuration_oauth_helper(to_save)
 
-        reboot, message = _configuration_logfile_helper(to_save, gdrive_error)
+        reboot, message = _configuration_logfile_helper(to_save)
         if message:
             return message
         reboot_required |= reboot
@@ -1222,67 +1266,55 @@ def _configuration_update_helper(configured):
         if "config_rarfile_location" in to_save:
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
-                return _configuration_result(unrar_status, gdrive_error, configured)
+                return _configuration_result(unrar_status)
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
         log.error("Settings DB is not Writeable")
-        _configuration_result(_("Settings DB is not Writeable"), gdrive_error, configured)
-
-    try:
-        metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
-        if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
-            gdriveutils.downloadFile(None, "metadata.db", metadata_db)
-            db_change = True
-    except Exception as ex:
-        return _configuration_result('%s' % ex, gdrive_error, configured)
-
-    if db_change:
-        if not calibre_db.setup_db(config, ub.app_DB_path):
-            return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
-                                         gdrive_error,
-                                         configured)
-        if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
-            flash(_(u"DB is not Writeable"), category="warning")
+        _configuration_result(_("Settings DB is not Writeable"))
 
     config.save()
-    flash(_(u"Calibre-Web configuration updated"), category="success")
     if reboot_required:
         web_server.stop(True)
 
-    return _configuration_result(None, gdrive_error, configured)
+    return _configuration_result(None, reboot_required)
+
+def _configuration_result(error_flash=None, reboot=False):
+    resp = {}
+    if error_flash:
+        log.error(error_flash)
+        config.load()
+        resp['result'] = [{'type': "danger", 'message': error_flash}]
+    else:
+        resp['result'] = [{'type': "success", 'message':_(u"Calibre-Web configuration updated")}]
+    resp['reboot'] = reboot
+    resp['config_upload']= config.config_upload_formats
+    return Response(json.dumps(resp), mimetype='application/json')
 
 
-def _configuration_result(error_flash=None, gdrive_error=None, configured=True):
+def _db_configuration_result(error_flash=None, gdrive_error=None):
     gdrive_authenticate = not is_gdrive_ready()
     gdrivefolders = []
-    if gdrive_error is None:
+    if not gdrive_error and config.config_use_google_drive:
         gdrive_error = gdriveutils.get_error_text()
     if gdrive_error and gdrive_support:
         log.error(gdrive_error)
         gdrive_error = _(gdrive_error)
+        flash(gdrive_error, category="error")
     else:
         if not gdrive_authenticate and gdrive_support:
             gdrivefolders = gdriveutils.listRootFolders()
-
-    show_back_button = current_user.is_authenticated
-    show_login_button = config.db_configured and not current_user.is_authenticated
     if error_flash:
         log.error(error_flash)
         config.load()
         flash(error_flash, category="error")
-        show_login_button = False
 
-    return render_title_template("config_edit.html",
+    return render_title_template("config_db.html",
                                  config=config,
-                                 provider=oauthblueprints,
-                                 show_back_button=show_back_button,
-                                 show_login_button=show_login_button,
                                  show_authenticate_google_drive=gdrive_authenticate,
-                                 filepicker=configured,
                                  gdriveError=gdrive_error,
                                  gdrivefolders=gdrivefolders,
                                  feature_support=feature_support,
-                                 title=_(u"Basic Configuration"), page="config")
+                                 title=_(u"Database Configuration"), page="dbconfig")
 
 
 def _handle_new_user(to_save, content, languages, translations, kobo_support):
@@ -1317,6 +1349,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
+        content.kobo_only_shelves_sync = 0  # No default value for kobo sync shelf setting
         ub.session.add(content)
         ub.session.commit()
         flash(_(u"User '%(user)s' created", user=content.name), category="success")
@@ -1383,6 +1416,8 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             content.sidebar_view |= constants.DETAIL_RANDOM
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
+
+        content.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
 
         if to_save.get("default_language"):
             content.default_language = to_save["default_language"]
