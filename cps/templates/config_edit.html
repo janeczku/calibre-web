@@ -31,7 +31,7 @@
             <button type="button" data-toggle="modal" data-link="config_certfile" data-target="#fileModal" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
           </span>
         </div>
-          <label for="config_calibre_dir" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
+          <label for="config_keyfile" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
           <span class="input-group-btn">

@@ -9,7 +9,7 @@
   <form role="form" class="col-md-10 col-lg-6" method="POST">
     {% if feature_support['gmail'] %}
     <div class="form-group">
-      <label for="mail_server_type">{{_('Choose Server Type')}}</label>
+      <label for="config_email_type">{{_('Choose Server Type')}}</label>
       <select name="mail_server_type" id="config_email_type" class="form-control" data-control="email-settings">
        <option value="0" {% if content.mail_server_type == 0 %}selected{% endif %}>{{_('Use Standard E-Mail Account')}}</option>
        <option value="1" {% if content.mail_server_type == 1 %}selected{% endif %}>{{_('Gmail Account with OAuth2 Verification')}}</option>
