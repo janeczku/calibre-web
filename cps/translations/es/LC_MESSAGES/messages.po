@@ -362,7 +362,7 @@ msgstr "Verificación de cuenta de Gmail exitosa"
 #: cps/admin.py:1532
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "Ubicaciones del certificado de la CA del LDAP, del certificado o de la clave no válidos. Por favor introduce la ruta correcta"
+msgstr "Puesto en cola un correo electrónico de prueba enviado a %(email)s, por favor, comprueba el resultado en Tareas"
 
 #: cps/admin.py:1535
 #, python-format
@@ -475,7 +475,7 @@ msgstr "Faltan permisos de ejecución"
 #: cps/db.py:651 cps/web.py:642 cps/web.py:1138
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr "Columna personalizad No.%(column)d no existe en la base de datos calibre"
+msgstr "Columna personalizada No.%(column)d no existe en la base de datos calibre"
 
 #: cps/editbooks.py:303 cps/editbooks.py:305
 msgid "Book Format Successfully Deleted"
@@ -1204,7 +1204,7 @@ msgstr "Estado de lectura = $(status)s"
 
 #: cps/web.py:1334
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "Error en la búsqueda de columnas personalizads, por favor reinicie Calibre-Web"
+msgstr "Error en la búsqueda de columnas personalizadas, por favor reinicia Calibre-Web"
 
 #: cps/web.py:1429
 #, python-format
@@ -1834,7 +1834,7 @@ msgstr "Introduce las series"
 
 #: cps/templates/book_table.html:56
 msgid "Series Index"
-msgstr "índice de la seria"
+msgstr "Índice de la serie"
 
 #: cps/templates/book_table.html:57
 msgid "Enter Languages"
@@ -2593,7 +2593,7 @@ msgstr "Seleccionar etiquetas de usuario Permitido/Denegado"
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Seleccionar columnas personalizads de usuario Permitido/Denegado"
+msgstr "Seleccionar columnas personalizadas de usuario Permitido/Denegado"
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
