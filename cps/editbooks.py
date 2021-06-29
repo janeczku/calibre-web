@@ -1086,7 +1086,7 @@ def scholar_search(query):
                 break
         return Response(json.dumps(result),mimetype='application/json')
     else:
-        return []
+        return "[]"
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
