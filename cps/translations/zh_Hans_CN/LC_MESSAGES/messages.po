@@ -191,7 +191,7 @@ msgstr "您确定要修改选定用户的选定角色吗？"
 
 #: cps/admin.py:588
 #, fuzzy
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr "您确定要关闭吗？"
 
 #: cps/admin.py:737

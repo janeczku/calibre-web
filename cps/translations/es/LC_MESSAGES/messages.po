@@ -196,7 +196,7 @@ msgstr "¿Realmente quiere eliminar este estante?"
 
 #: cps/admin.py:588
 #, fuzzy
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr "¿Realmente quiere detener?"
 
 #: cps/admin.py:737

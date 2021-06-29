@@ -585,7 +585,7 @@ def load_dialogtexts(element_id):
     elif element_id == "kobo_only_shelves_sync":
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
-        texts["main"] = _('Are you sure you want to change Calibre libray location?')
+        texts["main"] = _('Are you sure you want to change Calibre library location?')
     return json.dumps(texts)
 
 
