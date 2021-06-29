@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-12 08:51+0200\n"
+"POT-Creation-Date: 2021-06-29 18:30+0200\n"
 "PO-Revision-Date: 2020-06-07 06:47+0200\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language: fr\n"
@@ -277,7 +277,7 @@ msgstr "Le filtre objet de l'utilisateur LDAP a une parenthèse non gérée"
 #: cps/admin.py:1121
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr "Le filtre utilisateur des membres LDAP doit avoir un identificateur de format \"%s\ »"
+msgstr "Le filtre utilisateur des membres LDAP doit avoir un identificateur de format \"%s\\ »"
 
 #: cps/admin.py:1123
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
@@ -661,7 +661,7 @@ msgstr "Le fichier demandé n’a pu être lu. Problème de permission d’accè
 #: cps/helper.py:318
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "Échec de la suppression du dossier de livre pour le livre %(id)s, le chemin d’accès comporte des sous-dossiers : %(chemin)s"
+msgstr "Échec de la suppression du dossier de livre pour le livre %(id)s, le chemin d’accès comporte des sous-dossiers : %(path)s"
 
 #: cps/helper.py:324
 #, python-format
@@ -1331,7 +1331,7 @@ msgstr "La commande ebook-convert a échouée : %(error)s"
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Calibre failed with error: %(error)s"
-msgstr "Calibre a échoué avec l’erreur : %(erreur)s"
+msgstr "Calibre a échoué avec l’erreur : %(error)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
