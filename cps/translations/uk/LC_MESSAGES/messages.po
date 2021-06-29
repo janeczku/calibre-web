@@ -192,7 +192,7 @@ msgstr "Ви справді хочете видалити книжкову по�
 
 #: cps/admin.py:588
 #, fuzzy
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr "Ви справді хочете видалити книжкову полицю?"
 
 #: cps/admin.py:737

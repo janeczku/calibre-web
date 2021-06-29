@@ -188,7 +188,7 @@ msgid "Are you sure you want to change shelf sync behavior for the selected user
 msgstr ""
 
 #: cps/admin.py:588
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr ""
 
 #: cps/admin.py:737
