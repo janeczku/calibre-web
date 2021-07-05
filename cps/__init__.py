@@ -148,6 +148,8 @@ def get_timezone():
     user = getattr(g, 'user', None)
     return user.timezone if user else None
 
+from . import search_metadata
+
 from .updater import Updater
 updater_thread = Updater()
 updater_thread.start()
