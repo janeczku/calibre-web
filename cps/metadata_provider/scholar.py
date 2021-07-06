@@ -16,12 +16,35 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from scholarly import scholarly
 
-class Metadata():
-    __name__ = "Generic"
+import json
+from cps.services.Metadata import Metadata
+#try:
 
-    def __init__(self):
-        self.active = True
+#except ImportError:
+#    have_scholar = False
+#    pass
 
-    def set_status(self, state):
-        self.active = state
+
+
+class scholar(Metadata):
+    __name__ = "ComicVine"
+
+    def search(self, query):
+        if self.active:
+            if True:
+                scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
+                i = 0
+                result = []
+                for publication in scholar_gen:
+                    del publication['source']
+                    result.append(publication)
+                    i += 1
+                    if (i >= 10):
+                        break
+                return json.dumps(result)
+        return "[]"
+
+
+
