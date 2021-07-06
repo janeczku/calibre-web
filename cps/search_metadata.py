@@ -17,49 +17,45 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-import sys
-import datetime
-from functools import wraps
+from cps.services.Metadata import Metadata
 import os
 
-from flask import Blueprint, request, render_template, Response, g, make_response, abort
+from flask import Blueprint
 from flask_login import login_required
-from flask_login import current_user
-from sqlalchemy.sql.expression import func, text, or_, and_, true
-from werkzeug.security import check_password_hash
 
-from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
-# from .metadata_provider
+from . import constants, logger
+from os.path import basename, isfile
+import importlib
+import sys, inspect
 
 opds = Blueprint('metadata', __name__)
 
 log = logger.create()
 
-
-#for module in os.listdir(os.join(constants.BASE_DIR, "metadata_provider")):
-#    if module == '__init__.py' or module[-3:] != '.py':
-#        continue
-#    __import__(module[:-3], locals(), globals())
-#del module
-
-from os.path import basename, isfile
-# import glob
+new_list = list()
 meta_dir = os.path.join(constants.BASE_DIR, "cps", "metadata_provider")
 modules = os.listdir(os.path.join(constants.BASE_DIR, "cps", "metadata_provider")) #glob.glob(join(dirname(__file__), "*.py"))
-__all__ = [ basename(f)[:-3] for f in modules if isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py')]
+for f in modules:
+    if isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py'):
+        a = basename(f)[:-3]
+        try:
+            importlib.import_module("cps.metadata_provider." + a)
+            new_list.append(a)
+        except ImportError:
+            log.error("Import error for metadata source: {}".format(a))
+            pass
 
-import importlib
-for a in __all__:
-    importlib.import_module("cps.metadata_provider." + a)
+def list_classes(provider_list):
+    classes = list()
+    for element in provider_list:
+        for name, obj in inspect.getmembers(sys.modules["cps.metadata_provider." + element]):
+            if inspect.isclass(obj) and name != "Metadata" and issubclass(obj, Metadata):
+                classes.append(obj())
+    return classes
 
-import sys, inspect
-def print_classes():
-    for a in __all__:
-        for name, obj in inspect.getmembers(sys.modules["cps.metadata_provider." + a]):
-            if inspect.isclass(obj):
-                print(obj)
-
-print_classes()
+cl = list_classes(new_list)
+for c in cl:
+    print(c.search("Walking"))
 
 @opds.route("/metadata/provider")
 @login_required

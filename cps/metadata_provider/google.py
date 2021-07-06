@@ -17,11 +17,15 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-class Metadata():
-    __name__ = "Generic"
+import requests
+from cps.services.Metadata import Metadata
 
-    def __init__(self):
-        self.active = True
+class Google(Metadata):
+    __name__ = "Google"
 
-    def set_status(self, state):
-        self.active = state
+    def search(self, query):
+        if self.active:
+            result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))
+            return [result.json()['items']]
+
+

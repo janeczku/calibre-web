@@ -20,12 +20,18 @@
 import requests
 from cps.services.Metadata import Metadata
 
-class Toogle(Metadata):
-    __name__ = "Google"
+apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
+
+class ComicVine(Metadata):
+    __name__ = "ComicVine"
 
     def search(self, query):
         if self.active:
-            return [1]
-        return []
+            headers = {
+                'User-Agent': 'Not Evil Browser' # ,
+            }
+            result = requests.get("https://comicvine.gamespot.com/api/search?api_key="
+                                  + apikey + "&resources=issue&query=" + query + "&sort=name:desc&format=json", headers=headers)
+            return [result.json()['results']]
 
 
