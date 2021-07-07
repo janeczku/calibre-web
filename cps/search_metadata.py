@@ -19,8 +19,9 @@
 from __future__ import division, print_function, unicode_literals
 from cps.services.Metadata import Metadata
 import os
+import json
 
-from flask import Blueprint
+from flask import Blueprint, request, Response
 from flask_login import login_required
 
 from . import constants, logger
@@ -28,7 +29,7 @@ from os.path import basename, isfile
 import importlib
 import sys, inspect
 
-opds = Blueprint('metadata', __name__)
+meta = Blueprint('metadata', __name__)
 
 log = logger.create()
 
@@ -54,20 +55,25 @@ def list_classes(provider_list):
     return classes
 
 cl = list_classes(new_list)
-for c in cl:
-    print(c.search("Walking"))
+#for c in cl:
+#     print(c.search("Walking"))
 
-@opds.route("/metadata/provider")
+@meta.route("/metadata/provider")
 @login_required
 def metadata_provider():
     return ""
 
-@opds.route("/metadata/search")
+@meta.route("/metadata/search", methods=['POST'])
 @login_required
 def metadata_search():
-    return ""
+    query = request.form.to_dict().get('query')
+    data = list()
+    if query:
+        for c in cl:
+            data.extend(c.search(query))
+    return Response(json.dumps(data), mimetype='application/json')
 
-@opds.route("/metadata/replace/<id>")
+@meta.route("/metadata/replace/<id>")
 @login_required
-def metadata_provider(id):
+def metadata_replace(id):
     return ""

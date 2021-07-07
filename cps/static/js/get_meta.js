@@ -20,7 +20,7 @@
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
  * ComicVine api document: https://comicvine.gamespot.com/api/documentation
  */
-/* global _, i18nMsg, tinymce */
+/* global _, i18nMsg, tinymce, getPatch */
 var dbResults = [];
 var ggResults = [];
 var cvResults = [];
@@ -80,7 +80,7 @@ $(function () {
     if (showFlag === 1) {
       $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
     }
-    if ((ggDone === 3 || (ggDone === 1 && ggResults.length === 0)) &&
+    /*if ((ggDone === 3 || (ggDone === 1 && ggResults.length === 0)) &&
       (dbDone === 3 || (dbDone === 1 && dbResults.length === 0)) &&
       (cvDone === 3 || (cvDone === 1 && cvResults.length === 0)) &&
       (gsDone === 3 || (gsDone === 1 && gsResults.length === 0))) {
@@ -102,6 +102,7 @@ $(function () {
 
       return [year, month, day].join("-");
     }
+
     function generateID (title) {
       return title.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0).toString().substr(0,12);
     }
@@ -118,8 +119,7 @@ $(function () {
             publishedDate: result.volumeInfo.publishedDate || "",
             tags: result.volumeInfo.categories || [],
             rating: result.volumeInfo.averageRating || 0,
-            cover: result.volumeInfo.imageLinks ?
-            result.volumeInfo.imageLinks.thumbnail : location + "/../../../static/generic_cover.jpg",
+            cover: result.volumeInfo.imageLinks ? result.volumeInfo.imageLinks.thumbnail : location + "/../../../static/generic_cover.jpg",
             url: "https://books.google.com/books?id=" + result.id,
             source: {
               id: "google",
@@ -277,10 +277,10 @@ $(function () {
       } else {
         cvDone = 3;
       }
-    }
+    }*/
   }
 
-  function ggSearchBook (title) {
+  /*function ggSearchBook (title) {
     $.ajax({
       url: google + ggSearch + "?q=" + title.replace(/\s+/gm, "+"),
       type: "GET",
@@ -355,11 +355,38 @@ $(function () {
         showResult();
         $("#show-googlescholar").trigger("change");
       }
-    })
-  }
+    });
+  }*/
 
-  function doSearch (keyword) {
-    showFlag = 0;
+    function doSearch (keyword) {
+        if (keyword) {
+            $("#meta-info").text(msg.loading);
+            $.ajax({
+                url: getPath() + "/metadata/search",
+                type: "POST",
+                data: {"query": keyword},
+                dataType: "json",
+                success: function success(data) {
+                    console.log(data);
+                    data.forEach(function(book) {
+                        var $book = $(templates.bookResult(book));
+                        $book.find("img").on("click", function () {
+                            populateForm(book);
+                        });
+                        $("#book-list").append($book);
+                    });
+                },
+                error: function error() {
+                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+                },
+                complete: function complete() {
+                    showResult();
+                    // $("#show-douban").trigger("change");
+                }
+            });
+        }
+    }
+    /*showFlag = 0;
     dbDone = ggDone = cvDone = 0;
     dbResults = [];
     ggResults = [];
@@ -371,23 +398,21 @@ $(function () {
       ggSearchBook(keyword);
       cvSearchBook(keyword);
       gsSearchBook(keyword);
-    }
-  }
+    }*/
 
-  $("#meta-search").on("submit", function (e) {
-    e.preventDefault();
-    var keyword = $("#keyword").val();
-    if (keyword) {
-      doSearch(keyword);
-    }
-  });
 
-  $("#get_meta").click(function () {
-    var bookTitle = $("#book_title").val();
-    if (bookTitle) {
-      $("#keyword").val(bookTitle);
-      doSearch(bookTitle);
-    }
-  });
+    $("#meta-search").on("submit", function (e) {
+        e.preventDefault();
+        var keyword = $("#keyword").val();
+        doSearch(keyword);
+    });
+
+    $("#get_meta").click(function () {
+        var bookTitle = $("#book_title").val();
+        if (bookTitle) {
+          $("#keyword").val(bookTitle);
+          doSearch(bookTitle);
+        }
+    });
 
 });

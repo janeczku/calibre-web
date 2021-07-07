@@ -25,7 +25,28 @@ class Google(Metadata):
 
     def search(self, query):
         if self.active:
+            val = list()
             result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))
-            return [result.json()['items']]
+            for r in result.json()['items']:
+                v = dict()
+                v['id'] = r['id']
+                v['title'] = r['volumeInfo']['title']
+                v['authors'] = r['volumeInfo'].get('authors', [])
+                v['description'] = r['volumeInfo'].get('description', "")
+                v['publisher'] = r['volumeInfo'].get('publisher', "")
+                v['publishedDate'] = r['volumeInfo'].get('publishedDate', "")
+                v['tags'] = r['volumeInfo'].get('categories', [])
+                v['rating'] = r['volumeInfo'].get('averageRating', 0)
+                if r['volumeInfo'].get('imageLinks'):
+                    v['cover'] = r['volumeInfo']['imageLinks']['thumbnail']
+                else:
+                    v['cover'] = "/../../../static/generic_cover.jpg"
+                v['source'] = {
+                    "id": "google",
+                    "description": "Google Books",
+                    "link": "https://books.google.com/"}
+                v['url'] = ""
+                val.append(v)
+            return val
 
 
