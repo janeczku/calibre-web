@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# Google Books api document: https://developers.google.com/books/docs/v1/using
+
 
 import requests
 from cps.services.Metadata import Metadata

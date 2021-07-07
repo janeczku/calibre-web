@@ -127,7 +127,6 @@ def create_app():
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
-    # user = None
     if user is not None and hasattr(user, "locale"):
         if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
@@ -148,7 +147,6 @@ def get_timezone():
     user = getattr(g, 'user', None)
     return user.timezone if user else None
 
-from . import search_metadata
 
 from .updater import Updater
 updater_thread = Updater()

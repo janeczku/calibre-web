@@ -17,17 +17,17 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-from cps.services.Metadata import Metadata
 import os
 import json
+import importlib
+import sys
+import inspect
 
 from flask import Blueprint, request, Response
 from flask_login import login_required
 
 from . import constants, logger
-from os.path import basename, isfile
-import importlib
-import sys, inspect
+from cps.services.Metadata import Metadata
 
 meta = Blueprint('metadata', __name__)
 
@@ -37,8 +37,8 @@ new_list = list()
 meta_dir = os.path.join(constants.BASE_DIR, "cps", "metadata_provider")
 modules = os.listdir(os.path.join(constants.BASE_DIR, "cps", "metadata_provider")) #glob.glob(join(dirname(__file__), "*.py"))
 for f in modules:
-    if isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py'):
-        a = basename(f)[:-3]
+    if os.path.isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py'):
+        a = os.path.basename(f)[:-3]
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
@@ -55,8 +55,6 @@ def list_classes(provider_list):
     return classes
 
 cl = list_classes(new_list)
-#for c in cl:
-#     print(c.search("Walking"))
 
 @meta.route("/metadata/provider")
 @login_required
@@ -72,8 +70,3 @@ def metadata_search():
         for c in cl:
             data.extend(c.search(query))
     return Response(json.dumps(data), mimetype='application/json')
-
-@meta.route("/metadata/replace/<id>")
-@login_required
-def metadata_replace(id):
-    return ""

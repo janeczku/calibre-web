@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# ComicVine api document: https://comicvine.gamespot.com/api/documentation
 
 import requests
 from cps.services.Metadata import Metadata
