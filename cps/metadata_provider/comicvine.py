@@ -26,12 +26,38 @@ class ComicVine(Metadata):
     __name__ = "ComicVine"
 
     def search(self, query):
+        val = list()
         if self.active:
             headers = {
                 'User-Agent': 'Not Evil Browser' # ,
             }
+
             result = requests.get("https://comicvine.gamespot.com/api/search?api_key="
                                   + apikey + "&resources=issue&query=" + query + "&sort=name:desc&format=json", headers=headers)
-            return [result.json()['results']]
+            for r in result.json()['results']:
+                seriesTitle = r['volume'].get('name', "")
+                if r.get('store_date'):
+                    dateFomers = r.get('store_date')
+                else:
+                    dateFomers = r.get('date_added')
+                v = dict()
+                v['id'] = r['id']
+                v['title'] = seriesTitle + " #" + r.get('issue_number', "0") + " - " + ( r.get('name', "") or "")
+                v['authors'] = r.get('authors', [])
+                v['description'] = r.get('description', "")
+                v['publisher'] = ""
+                v['publishedDate'] = dateFomers
+                v['tags'] = ["Comics", seriesTitle]
+                v['rating'] = 0
+                v['series'] = seriesTitle
+                v['cover'] = r['image'].get('original_url')
+                v['source'] = {
+                    "id": "comicvine",
+                    "description": "ComicVine Books",
+                    "link": "https://comicvine.gamespot.com/"
+                }
+                v['url'] = ""
+                val.append(v)
+        return val
 
 

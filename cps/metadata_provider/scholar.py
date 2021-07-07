@@ -32,19 +32,36 @@ class scholar(Metadata):
     __name__ = "ComicVine"
 
     def search(self, query):
+        val = list()
         if self.active:
-            if True:
-                scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
-                i = 0
-                result = []
-                for publication in scholar_gen:
-                    del publication['source']
-                    result.append(publication)
-                    i += 1
-                    if (i >= 10):
-                        break
-                return json.dumps(result)
-        return "[]"
+            scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
+            i = 0
+            for publication in scholar_gen:
+                v = dict()
+                v['id'] = "1234" # publication['bib'].get('title')
+                v['title'] = publication['bib'].get('title')
+                v['authors'] = publication['bib'].get('author', [])
+                v['description'] = publication['bib'].get('abstract', "")
+                v['publisher'] = publication['bib'].get('venue', "")
+                if publication['bib'].get('pub_year'):
+                    v['publishedDate'] = publication['bib'].get('pub_year')+"-01-01"
+                else:
+                    v['publishedDate'] = ""
+                v['tags'] = ""
+                v['ratings'] = 0
+                v['series'] = ""
+                v['cover'] = "/../../../static/generic_cover.jpg"
+                v['url'] = ""
+                v['source'] = {
+                    "id": "googlescholar",
+                    "description": "Google Scholar",
+                    "link": "https://scholar.google.com/"
+                }
+                val.append(v)
+                i += 1
+                if (i >= 10):
+                    break
+        return val
 
 
 
