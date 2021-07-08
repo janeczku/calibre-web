@@ -24,6 +24,7 @@ import sys
 import inspect
 
 from flask import Blueprint, request, Response
+from flask_login import current_user
 from flask_login import login_required
 
 from . import constants, logger
@@ -59,14 +60,29 @@ cl = list_classes(new_list)
 @meta.route("/metadata/provider")
 @login_required
 def metadata_provider():
-    return ""
+    active = current_user.view_settings.get('metadata', {})
+    provider = list()
+    for c in cl:
+        provider.append({"name": c.__name__, "active": active.get(c.__name__, True), "id": c.__id__})
+    return Response(json.dumps(provider), mimetype='application/json')
+
+@meta.route("/metadata/provider", methods=['POST'])
+@login_required
+def metadata_change_active_provider():
+    active = current_user.view_settings.get('metadata', {})
+    provider = list()
+    for c in cl:
+        provider.append({"name": c.__name__, "active": active.get(c.__name__, True), "id": c.__id__})
+    return Response(json.dumps(provider), mimetype='application/json')
 
 @meta.route("/metadata/search", methods=['POST'])
 @login_required
 def metadata_search():
     query = request.form.to_dict().get('query')
     data = list()
+    active = current_user.view_settings.get('metadata', {})
     if query:
         for c in cl:
-            data.extend(c.search(query))
+            if active.get(c.__name__, True):
+                data.extend(c.search(query))
     return Response(json.dumps(data), mimetype='application/json')

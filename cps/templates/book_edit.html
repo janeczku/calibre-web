@@ -241,21 +241,12 @@
         <div class="text-center"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
       </div>
       <div class="modal-body">
-        <div class="text-center padded-bottom">
-          <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
-          <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-comics" class="pill" data-control="comicvine" checked>
-          <label for="show-comics">ComicVine <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-googlescholar" class="pill" data-control="googlescholar" checked>
-          <label for="show-googlescholar">Google Scholar <span class="glyphicon glyphicon-ok"></span></label>
+        <div class="text-center padded-bottom" id="metadata_provider">
         </div>
 
         <div id="meta-info">
           {{_("Loading...")}}
         </div>
-          <!--ul id="book-list" class="media-list"></ul-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>

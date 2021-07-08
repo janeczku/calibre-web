@@ -21,13 +21,14 @@
 import requests
 from cps.services.Metadata import Metadata
 
-apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
 
 class ComicVine(Metadata):
     __name__ = "ComicVine"
+    __id__ = "comicvine"
 
     def search(self, query):
         val = list()
+        apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
         if self.active:
             headers = {
                 'User-Agent': 'Not Evil Browser' # ,
@@ -53,7 +54,7 @@ class ComicVine(Metadata):
                 v['series'] = seriesTitle
                 v['cover'] = r['image'].get('original_url')
                 v['source'] = {
-                    "id": "comicvine",
+                    "id": self.__id__,
                     "description": "ComicVine Books",
                     "link": "https://comicvine.gamespot.com/"
                 }
