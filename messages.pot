@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-06-12 08:51+0200\n"
+"POT-Creation-Date: 2021-06-29 18:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -187,7 +187,7 @@ msgid "Are you sure you want to change shelf sync behavior for the selected user
 msgstr ""
 
 #: cps/admin.py:588
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr ""
 
 #: cps/admin.py:737

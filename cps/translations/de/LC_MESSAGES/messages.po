@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-06-12 08:51+0200\n"
+"POT-Creation-Date: 2021-06-29 18:30+0200\n"
 "PO-Revision-Date: 2021-05-16 09:36+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -190,7 +190,7 @@ msgstr "Möchten Sie wirklich die ausgewählte Rolle für die ausgewählten Benu
 
 #: cps/admin.py:588
 #, fuzzy
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr "Calibre-Web wirklich anhalten?"
 
 #: cps/admin.py:737

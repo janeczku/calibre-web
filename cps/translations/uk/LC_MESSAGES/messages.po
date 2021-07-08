@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2021-06-12 08:51+0200\n"
+"POT-Creation-Date: 2021-06-29 18:30+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -192,7 +192,7 @@ msgstr "Ви справді хочете видалити книжкову по�
 
 #: cps/admin.py:588
 #, fuzzy
-msgid "Are you sure you want to change Calibre libray location?"
+msgid "Are you sure you want to change Calibre library location?"
 msgstr "Ви справді хочете видалити книжкову полицю?"
 
 #: cps/admin.py:737

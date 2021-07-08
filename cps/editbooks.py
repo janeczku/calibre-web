@@ -1018,7 +1018,7 @@ def upload():
                                                    config.config_calibre_dir,
                                                    input_authors[0],
                                                    meta.file_path,
-                                                   title_dir + meta.extension)
+                                                   title_dir + meta.extension.lower())
 
                 move_coverfile(meta, db_book)
 
@@ -1086,7 +1086,7 @@ def scholar_search(query):
                 break
         return Response(json.dumps(result),mimetype='application/json')
     else:
-        return []
+        return "[]"
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano

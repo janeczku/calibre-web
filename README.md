@@ -40,7 +40,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 ## Quick start
 
 #### Install via pip
-1. Install calibre web via pip with the command `pip install calibreweb`.
+1. Install calibre web via pip with the command `pip install calibreweb` (Depending on your OS and or distro the command could also be `pip3`). 
 2. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
 3. Calibre-Web can be started afterwards by typing `cps` or `python3 -m cps` 
 
