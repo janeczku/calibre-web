@@ -24,6 +24,7 @@ from cps.services.Metadata import Metadata
 
 class Google(Metadata):
     __name__ = "Google"
+    __id__ = "google"
 
     def search(self, query):
         if self.active:
@@ -44,7 +45,7 @@ class Google(Metadata):
                 else:
                     v['cover'] = "/../../../static/generic_cover.jpg"
                 v['source'] = {
-                    "id": "google",
+                    "id": self.__id__,
                     "description": "Google Books",
                     "link": "https://books.google.com/"}
                 v['url'] = ""

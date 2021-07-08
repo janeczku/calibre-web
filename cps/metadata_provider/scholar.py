@@ -29,7 +29,8 @@ from cps.services.Metadata import Metadata
 
 
 class scholar(Metadata):
-    __name__ = "ComicVine"
+    __name__ = "Google Scholar"
+    __id__ = "googlescholar"
 
     def search(self, query):
         val = list()
@@ -53,7 +54,7 @@ class scholar(Metadata):
                 v['cover'] = "/../../../static/generic_cover.jpg"
                 v['url'] = ""
                 v['source'] = {
-                    "id": "googlescholar",
+                    "id": self.__id__,
                     "description": "Google Scholar",
                     "link": "https://scholar.google.com/"
                 }

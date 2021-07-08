@@ -73,6 +73,28 @@ $(function () {
         }
     }
 
+    function populate_provider() {
+        $("#metadata_provider").empty();
+        $.ajax({
+            url: getPath() + "/metadata/provider",
+            type: "get",
+            dataType: "json",
+            success: function success(data) {
+                console.log(data);
+                data.forEach(function(provider) {
+                    //$("#metadata_provider").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
+                    var checked = "";
+                    if (provider.active) {
+                        checked = "checked";
+                    }
+                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <span class="glyphicon glyphicon-ok"></span></label>'
+                    $("#metadata_provider").append($provider_button);
+                });
+            },
+        });
+    }
+
+
     $("#meta-search").on("submit", function (e) {
         e.preventDefault();
         var keyword = $("#keyword").val();
@@ -80,10 +102,9 @@ $(function () {
     });
 
     $("#get_meta").click(function () {
+        populate_provider();
         var bookTitle = $("#book_title").val();
-        if (bookTitle) {
-          $("#keyword").val(bookTitle);
-          doSearch(bookTitle);
-        }
+        $("#keyword").val(bookTitle);
+        doSearch(bookTitle);
     });
 });
