@@ -1349,7 +1349,8 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
         content.denied_column_value = config.config_denied_column_value
-        content.kobo_only_shelves_sync = 0  # No default value for kobo sync shelf setting
+        # No default value for kobo sync shelf setting
+        content.kobo_only_shelves_sync = to_save.get("kobo_only_shelves_sync", 0) == "on"
         ub.session.add(content)
         ub.session.commit()
         flash(_(u"User '%(user)s' created", user=content.name), category="success")
@@ -1368,6 +1369,13 @@ def _delete_user(content):
     if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                         ub.User.id != content.id).count():
         if content.name != "Guest":
+            # Delete all books in shelfs belonging to user, all shelfs of user, downloadstat of user, read status
+            # and user itself
+            ub.session.query(ub.ReadBook).filter(ub.User.id == ub.ReadBook.user_id).delete()
+            ub.session.query(ub.Downloads).filter(ub.User.id == ub.Downloads.user_id).delete()
+            for us in ub.session.query(ub.Shelf).filter(ub.User.id == ub.Shelf.user_id):
+                ub.session.query(ub.BookShelf).filter(us.id == ub.BookShelf.shelf).delete()
+            ub.session.query(ub.Shelf).filter(ub.User.id == ub.Shelf.user_id).delete()
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
             ub.session_commit()
             log.info(u"User {} deleted".format(content.name))
