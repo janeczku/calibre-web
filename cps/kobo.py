@@ -169,6 +169,7 @@ def HandleSyncRequest():
                 .order_by(ub.ArchivedBook.last_modified)
                 .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                 .join(ub.Shelf)
+                .filter(ub.Shelf.user_id == current_user.id)
                 .filter(ub.Shelf.kobo_sync)
                 .distinct()
         )
@@ -247,10 +248,11 @@ def HandleSyncRequest():
         changed_reading_states = changed_reading_states.join(ub.BookShelf,
                                                              ub.KoboReadingState.book_id == ub.BookShelf.book_id)\
             .join(ub.Shelf)\
+            .filter(current_user.id == ub.Shelf.user_id)\
             .filter(ub.Shelf.kobo_sync,
                     or_(
                         func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
-                        ub.BookShelf.date_added > sync_token.books_last_modified
+                        func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified
                     )).distinct()
     else:
         changed_reading_states = changed_reading_states.filter(
@@ -668,10 +670,10 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
 
     for shelf in ub.session.query(ub.Shelf).outerjoin(ub.BookShelf).filter(
         or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
-            ub.BookShelf.date_added > sync_token.tags_last_modified),
+            func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
         ub.Shelf.user_id == current_user.id,
         *extra_filters
-    ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc()):
+    ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc()): # .columns(ub.Shelf):
         if not shelf_lib.check_shelf_view_permissions(shelf):
             continue
 
