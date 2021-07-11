@@ -52,10 +52,11 @@ def process_wait(command, serr=subprocess.PIPE, pattern=""):
     p.wait()
     for line in p.stdout.readlines():
         if isinstance(line, bytes):
-            line = line.decode('utf-8')
+            line = line.decode('utf-8', errors="ignore")
         match = re.search(pattern, line, re.IGNORECASE)
         if match and ret_val == "":
             ret_val = match
+            break
     p.stdout.close()
     p.stderr.close()
     return ret_val
