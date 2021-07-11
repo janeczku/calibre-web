@@ -711,12 +711,11 @@ def check_unrar(unrarLocation):
         if sys.version_info < (3, 0):
             unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
         unrarLocation = [unrarLocation]
-        for lines in process_wait(unrarLocation):
-            value = re.search('UNRAR (.*) freeware', lines, re.IGNORECASE)
-            if value:
-                version = value.group(1)
-                log.debug("unrar version %s", version)
-                break
+        value = process_wait(unrarLocation, pattern='UNRAR (.*) freeware')
+        if value:
+            version = value.group(1)
+            log.debug("unrar version %s", version)
+
     except (OSError, UnicodeDecodeError) as err:
         log.debug_or_exception(err)
         return _('Error excecuting UnRar')
