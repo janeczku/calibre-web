@@ -113,10 +113,7 @@ def yesno(value, yes, no):
 
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
-    formatedstring = '%d' % value
-    if (value % 1) != 0:
-        formatedstring = ('%s.%d' % (formatedstring, (value % 1) * 10**decimals)).rstrip('0')
-    return formatedstring
+    return ('{0:.' + str(decimals) + 'g}').format(value)
 
 
 @jinjia.app_template_filter('formatseriesindex')
