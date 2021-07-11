@@ -329,11 +329,12 @@ def delete_book_file(book, calibrepath, book_format=None):
                     except (IOError, OSError) as e:
                         log.error("Deleting authorpath for book %s failed: %s", book.id, e)
                 return True, None
-            else:
-                log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
-                return True, _("Deleting book %(id)s, book path not valid: %(path)s",
-                               id=book.id,
-                               path=book.path)
+
+    log.error("Deleting book %s from database only, book path in database not valid: %s",
+              book.id, book.path)
+    return True, _("Deleting book %(id)s from database only, book path in database not valid: %(path)s",
+                   id=book.id,
+                   path=book.path)
 
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
@@ -382,7 +383,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                             # os.unlink(os.path.normcase(os.path.join(dir_name, file)))
             # change location in database to new author/title path
             localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
-        except OSError as ex:
+        except (OSError) as ex:
             log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
@@ -397,7 +398,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                 file_format.name = new_name
             if not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
                 shutil.rmtree(os.path.dirname(path))
-        except OSError as ex:
+        except (OSError) as ex:
             log.error("Rename file in path %s to %s: %s", new_path, new_name, ex)
             log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
