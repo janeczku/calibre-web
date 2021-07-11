@@ -39,9 +39,7 @@ def _get_command_version(path, pattern, argument=None):
         if argument:
             command.append(argument)
         try:
-            for line in process_wait(command):
-                if re.search(pattern, line):
-                    return line
+            return process_wait(command, pattern=pattern).string
         except Exception as ex:
             log.warning("%s: %s", path, ex)
             return _EXECUTION_ERROR
