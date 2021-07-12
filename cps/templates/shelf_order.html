@@ -9,9 +9,9 @@
             <div class="row">
               <div class="col-lg-2 col-sm-4 hidden-xs">
                 {% if entry['visible'] %}
-                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
+                  <img title="{{entry.title}}" class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
                 {% else %}
-                  <img class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
+                  <img title="{{entry.title}}" class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
                 {% endif %}
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">

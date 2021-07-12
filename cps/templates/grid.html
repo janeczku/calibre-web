@@ -29,14 +29,14 @@
                   <div class="cover">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
                           <span class="img">
-                              <img src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
+                              <img title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
                               <span class="badge">{{entry.count}}</span>
                             </span>
                       </a>
                   </div>
                   <div class="meta">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
-                          <p class="title">{{entry[0].series[0].name|shortentitle}}</p>
+                          <p title="{{entry[0].series[0].name|shortentitle}}" class="title">{{entry[0].series[0].name|shortentitle}}</p>
                       </a>
                   </div>
               </div>
