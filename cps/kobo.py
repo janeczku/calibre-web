@@ -139,6 +139,7 @@ def convert_to_kobo_timestamp_string(timestamp):
 def HandleSyncRequest():
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
+    log.debug("SyncToken: {}".format(sync_token))
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
@@ -330,6 +331,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
         extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
 
+    log.debug("Kobo Sync Content: {}".format(sync_results))
     response = make_response(jsonify(sync_results), extra_headers)
 
     return response
