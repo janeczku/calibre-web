@@ -1704,7 +1704,7 @@ def read_book(book_id, book_format):
                 if len(book.series):
                     title = title + " - " + book.series[0].name
                     if book.series_index:
-                        title = title + " #" + '{0:.2g}'.format(book.series_index)
+                        title = title + " #" + '{0:.2f}'.format(book.series_index).rstrip('0').rstrip('.')
                 log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=title,
                                              extension=fileExt)
