@@ -3291,7 +3291,6 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     transform-origin: center top;
     border: 0;
     left: 0 !important;
-    max-height: 80%;
     overflow-y: auto;
 }
 

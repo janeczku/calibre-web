@@ -3,7 +3,7 @@
 {% if book %}
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-        <img id="detailcover" src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/>
+        <img id="detailcover" title="{{book.title}}" src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/>
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">

@@ -20,7 +20,7 @@ from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import subprocess
-
+import re
 
 def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subprocess.PIPE, newlines=True):
     # Linux py2.7 encode as list without quotes no empty element for parameters
@@ -44,12 +44,19 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
     return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=newlines, env=env) # nosec
 
 
-def process_wait(command, serr=subprocess.PIPE):
+def process_wait(command, serr=subprocess.PIPE, pattern=""):
     # Run command, wait for process to terminate, and return an iterator over lines of its output.
     newlines = os.name != 'nt'
+    ret_val = ""
     p = process_open(command, serr=serr, newlines=newlines)
     p.wait()
     for line in p.stdout.readlines():
         if isinstance(line, bytes):
-            line = line.decode('utf-8')
-        yield line
+            line = line.decode('utf-8', errors="ignore")
+        match = re.search(pattern, line, re.IGNORECASE)
+        if match and ret_val == "":
+            ret_val = match
+            break
+    p.stdout.close()
+    p.stderr.close()
+    return ret_val
