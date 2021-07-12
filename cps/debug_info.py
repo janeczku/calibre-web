@@ -22,10 +22,6 @@ import glob
 import zipfile
 import json
 from io import BytesIO
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 import os
 
@@ -38,9 +34,9 @@ log = logger.create()
 
 def assemble_logfiles(file_name):
     log_list = sorted(glob.glob(file_name + '*'), reverse=True)
-    wfd = StringIO()
+    wfd = BytesIO()
     for f in log_list:
-        with open(f, 'r') as fd:
+        with open(f, 'rb') as fd:
             shutil.copyfileobj(fd, wfd)
     wfd.seek(0)
     if int(__version__.split('.')[0]) < 2:
