@@ -235,6 +235,8 @@ def create_shelf():
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if not shelf.user_id == int(current_user.id):
+        return "Sorry you are not allowed to edit this shelf", 403
     return create_edit_shelf(shelf, title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
 
