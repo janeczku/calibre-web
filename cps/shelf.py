@@ -72,10 +72,9 @@ def add_to_shelf(shelf_id, book_id):
 
     if not check_shelf_edit_permissions(shelf):
         if not xhr:
-            flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
-                  category="error")
+            flash(_(u"Sorry you are not allowed to add a book to the the shelf"), category="error")
             return redirect(url_for('web.index'))
-        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+        return "Sorry you are not allowed to add a book to the that shelf", 403
 
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                           ub.BookShelf.book_id == book_id).first()
@@ -236,7 +235,7 @@ def create_shelf():
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not check_shelf_edit_permissions(shelf):
-        flash(_(u"Sorry you are not allowed to edit this shelf: "),category="error")
+        flash(_(u"Sorry you are not allowed to edit this shelf"), category="error")
         return redirect(url_for('web.index'))
     return create_edit_shelf(shelf, title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
