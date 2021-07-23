@@ -1580,7 +1580,7 @@ def logout():
 
 
 # ################################### Users own configuration #########################################################
-def change_profile(kobo_support, local_oauth_check, oauth_status):
+def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
     to_save = request.form.to_dict()
     current_user.random_books = 0
     if current_user.role_passwd() or current_user.role_admin():
@@ -1592,8 +1592,6 @@ def change_profile(kobo_support, local_oauth_check, oauth_status):
         if to_save.get("email", current_user.email) != current_user.email:
             current_user.email = check_email(to_save["email"])
         if current_user.role_admin():
-            if to_save.get("allowed_tags", current_user.allowed_tags) != current_user.allowed_tags:
-                current_user.allowed_tags = to_save["allowed_tags"].strip()
             if to_save.get("name", current_user.name) != current_user.name:
                 # Query User name, if not existing, change
                 current_user.name = check_username(to_save["name"])
@@ -1606,10 +1604,16 @@ def change_profile(kobo_support, local_oauth_check, oauth_status):
 
     except Exception as ex:
         flash(str(ex), category="error")
-        return render_title_template("user_edit.html", content=current_user,
-                                     title=_(u"%(name)s's profile", name=current_user.name), page="me",
+        return render_title_template("user_edit.html",
+                                     content=current_user,
+                                     translations=translations,
+                                     profile=1,
+                                     languages=languages,
+                                     title=_(u"%(name)s's profile", name=current_user.name),
+                                     page="me",
                                      kobo_support=kobo_support,
-                                     registered_oauth=local_oauth_check, oauth_status=oauth_status)
+                                     registered_oauth=local_oauth_check,
+                                     oauth_status=oauth_status)
 
     val = 0
     for key, __ in to_save.items():
@@ -1647,7 +1651,7 @@ def profile():
         local_oauth_check = {}
 
     if request.method == "POST":
-        change_profile(kobo_support, local_oauth_check, oauth_status)
+        change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages)
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  profile=1,
