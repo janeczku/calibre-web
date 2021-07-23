@@ -661,33 +661,34 @@ function move_header_elements() {
         }
     });
     $(".multi_selector").selectpicker();
-
-    if (! $._data($(".multi_head").get(0), "events") ) {
-        // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
-        $(".multi_head").on("click", function () {
-            var val = $(this).data("set");
-            var field = $(this).data("name");
-            var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
-            var values = $("#" + field).val();
-            confirmDialog(
-                "restrictions",
-                "GeneralChangeModal",
-                0,
-                function () {
-                    $.ajax({
-                        method: "post",
-                        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-                        data: {"pk": result, "value": values, "action": val},
-                        success: function (data) {
-                            handleListServerResponse(data);
-                        },
-                        error: function (data) {
-                            handleListServerResponse([{type: "danger", message: data.responseText}])
-                        },
-                    });
-                }
-            );
-        });
+    if ($(".multi_head").length) {
+        if (!$._data($(".multi_head").get(0), "events")) {
+            // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
+            $(".multi_head").on("click", function () {
+                var val = $(this).data("set");
+                var field = $(this).data("name");
+                var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+                var values = $("#" + field).val();
+                confirmDialog(
+                    "restrictions",
+                    "GeneralChangeModal",
+                    0,
+                    function () {
+                        $.ajax({
+                            method: "post",
+                            url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                            data: {"pk": result, "value": values, "action": val},
+                            success: function (data) {
+                                handleListServerResponse(data);
+                            },
+                            error: function (data) {
+                                handleListServerResponse([{type: "danger", message: data.responseText}])
+                            },
+                        });
+                    }
+                );
+            });
+        }
     }
 
     $("#user_delete_selection").click(function () {
@@ -699,38 +700,41 @@ function move_header_elements() {
     $("#select_default_language").on("change", function () {
         selectHeader(this, "default_language");
     });
-
-    if (! $._data($(".check_head").get(0), "events") ) {
-        $(".check_head").on("change", function () {
-            var val = $(this).data("set");
-            var name = $(this).data("name");
-            var data = $(this).data("val");
-            checkboxHeader(val, name, data);
-        });
+    if ($(".check_head").length) {
+        if (!$._data($(".check_head").get(0), "events")) {
+            $(".check_head").on("change", function () {
+                var val = $(this).data("set");
+                var name = $(this).data("name");
+                var data = $(this).data("val");
+                checkboxHeader(val, name, data);
+            });
+        }
     }
-    if (! $._data($(".button_head").get(0), "events") ) {
-        $(".button_head").on("click", function () {
-            var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
-            confirmDialog(
-                "btndeluser",
-                "GeneralDeleteModal",
-                0,
-                function () {
-                    $.ajax({
-                        method: "post",
-                        url: window.location.pathname + "/../../ajax/deleteuser",
-                        data: {"userid": result},
-                        success: function (data) {
-                            selections = selections.filter((el) => !result.includes(el));
-                            handleListServerResponse(data);
-                        },
-                        error: function (data) {
-                            handleListServerResponse([{type: "danger", message: data.responseText}])
-                        },
-                    });
-                }
-            );
-        });
+    if ($(".button_head").length) {
+        if (!$._data($(".button_head").get(0), "events")) {
+            $(".button_head").on("click", function () {
+                var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+                confirmDialog(
+                    "btndeluser",
+                    "GeneralDeleteModal",
+                    0,
+                    function () {
+                        $.ajax({
+                            method: "post",
+                            url: window.location.pathname + "/../../ajax/deleteuser",
+                            data: {"userid": result},
+                            success: function (data) {
+                                selections = selections.filter((el) => !result.includes(el));
+                                handleListServerResponse(data);
+                            },
+                            error: function (data) {
+                                handleListServerResponse([{type: "danger", message: data.responseText}])
+                            },
+                        });
+                    }
+                );
+            });
+        }
     }
 }
 
