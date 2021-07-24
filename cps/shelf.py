@@ -249,18 +249,18 @@ def create_edit_shelf(shelf, title, page, shelf_id=False):
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False
 
         if check_shelf_is_unique(shelf, to_save, shelf_id):
-            shelf.name = to_save["title"]
+            shelf.name = to_save.get("title", "")
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
                 shelf_action = "created"
-                flash_text = _(u"Shelf %(title)s created", title=to_save["title"])
+                flash_text = _(u"Shelf %(title)s created", title=to_save.get("title", ""))
             else:
                 shelf_action = "changed"
-                flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
+                flash_text = _(u"Shelf %(title)s changed", title=to_save.get("title", ""))
             try:
                 ub.session.commit()
-                log.info(u"Shelf {} {}".format(to_save["title"], shelf_action))
+                log.info(u"Shelf {} {}".format(to_save.get("title", ""), shelf_action))
                 flash(flash_text, category="success")
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
             except (OperationalError, InvalidRequestError) as ex:
@@ -297,7 +297,7 @@ def check_shelf_is_unique(shelf, to_save, shelf_id=False):
                   category="error")
     else:
         is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                                   .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                                   .filter((ub.Shelf.name == to_save.get("title", "")) & (ub.Shelf.is_public == 0) &
                                            (ub.Shelf.user_id == int(current_user.id))) \
                                    .filter(ident) \
                                    .first() is None
