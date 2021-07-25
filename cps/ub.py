@@ -60,6 +60,24 @@ app_DB_path = None
 Base = declarative_base()
 searched_ids = {}
 
+logged_in = dict()
+
+def store_user_session():
+    if flask_session.get('_user_id', ""):
+        if logged_in.get(flask_session.get('_user_id', "")):
+            logged_in[flask_session.get('_user_id', "")].append(flask_session.get('_id', ""))
+        else:
+            logged_in[flask_session.get('_user_id', "")] = [flask_session.get('_id', "")]
+        log.info(flask_session.get('_id', ""))
+
+def delete_user_session(user_id, session_key):
+    try:
+        logged_in.get(str(user_id), []).remove(session_key)
+    except ValueError:
+        pass
+
+def check_user_session(user_id, session_key):
+    return session_key in logged_in.get(str(user_id), [])
 
 def store_ids(result):
     ids = list()
@@ -72,7 +90,7 @@ class UserBase:
 
     @property
     def is_authenticated(self):
-        return True
+        return self.is_active
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.role, role_flag)

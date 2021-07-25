@@ -34,6 +34,7 @@ from babel.dates import format_datetime
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
+from flask import session as flask_session
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
@@ -98,8 +99,10 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    if current_user.is_authenticated:
-        confirm_login()
+    if not ub.check_user_session(current_user.id, flask_session.get('_id')):
+        logout_user()
+    # if current_user.is_authenticated:
+    # confirm_login()
     g.constants = constants
     g.user = current_user
     g.allow_registration = config.config_public_reg
