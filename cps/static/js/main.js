@@ -611,7 +611,10 @@ $(function() {
                             if (xhr.status < 400) {
                                 $("#spinning_success").hide();
                                 clearInterval(rebootInterval);
-                                handle_response(data.result);
+                                if (data.result) {
+                                    handle_response(data.result);
+                                    data.result = "";
+                                }
                             }
                         },
                     });
