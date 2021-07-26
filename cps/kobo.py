@@ -44,11 +44,11 @@ from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
 from sqlalchemy.exc import StatementError
-from sqlalchemy import __version__ as sql_version
 from sqlalchemy.sql import select
 import requests
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub
+from .constants import sqlalchemy_version2
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
 from .web import download_required
@@ -66,7 +66,6 @@ kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
 
-sql2 = ([int(x) for x in sql_version.split('.')] >= [2,0,0])
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
@@ -159,7 +158,7 @@ def HandleSyncRequest():
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
     if only_kobo_shelves:
-        if sql2:
+        if sqlalchemy_version2:
             changed_entries = select(db.Books,
                                      ub.ArchivedBook.last_modified,
                                      ub.BookShelf.date_added,
@@ -183,7 +182,7 @@ def HandleSyncRequest():
                 .distinct()
         )
     else:
-        if sql2:
+        if sqlalchemy_version2:
             changed_entries = select(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
         else:
             changed_entries = calibre_db.session.query(db.Books,
@@ -202,7 +201,7 @@ def HandleSyncRequest():
         changed_entries = changed_entries.filter(db.Books.id > sync_token.books_last_id)
 
     reading_states_in_new_entitlements = []
-    if sql2:
+    if sqlalchemy_version2:
         books = calibre_db.session.execute(changed_entries.limit(SYNC_ITEM_LIMIT))
     else:
         books = changed_entries.limit(SYNC_ITEM_LIMIT)
@@ -246,7 +245,7 @@ def HandleSyncRequest():
 
         new_books_last_created = max(ts_created, new_books_last_created)
 
-    if sql2:
+    if sqlalchemy_version2:
         max_change = calibre_db.session.execute(changed_entries
                                                 .filter(ub.ArchivedBook.is_archived)
                                                 .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()))\
@@ -260,7 +259,7 @@ def HandleSyncRequest():
     new_archived_last_modified = max(new_archived_last_modified, max_change)
 
     # no. of books returned
-    if sql2:
+    if sqlalchemy_version2:
         entries = calibre_db.session.execute(changed_entries).all()
         book_count = len(entries)
     else:
@@ -697,7 +696,7 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
             })
         extra_filters.append(ub.Shelf.kobo_sync)
 
-    if sql2:
+    if sqlalchemy_version2:
         shelflist = ub.session.execute(select(ub.Shelf).outerjoin(ub.BookShelf).filter(
             or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
                 func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
