@@ -380,7 +380,9 @@ def order_shelf(shelf_id):
 
 
 def change_shelf_order(shelf_id, order):
-    result = calibre_db.session.query(db.Books).join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id) \
+    result = calibre_db.session.query(db.Books).outerjoin(db.books_series_link,
+                                                          db.Books.id == db.books_series_link.c.book)\
+        .outerjoin(db.Series).join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id) \
         .filter(ub.BookShelf.shelf == shelf_id).order_by(*order).all()
     for index, entry in enumerate(result):
         book = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
@@ -410,9 +412,11 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             if sort_param == 'old':
                 change_shelf_order(shelf_id, [db.Books.timestamp])
             if sort_param == 'authaz':
-                change_shelf_order(shelf_id, [db.Books.author_sort.asc()])
+                change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
             if sort_param == 'authza':
-                change_shelf_order(shelf_id, [db.Books.author_sort.desc()])
+                change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
+                                              db.Series.name.desc(),
+                                              db.Books.series_index.desc()])
             page = "shelf.html"
             pagesize = 0
         else:
