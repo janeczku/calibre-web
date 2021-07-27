@@ -83,7 +83,6 @@
       <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
       <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
       {% endif %}
-      </div>
     </div>
       <div class="col-sm-6">
     {% if g.user and g.user.role_admin() and not profile %}
@@ -139,6 +138,7 @@
       {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
         <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
       {% endif %}
+    </div>
     </div>
   </form>
 </div>
