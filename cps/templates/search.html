@@ -44,7 +44,7 @@
         {% if entry.has_cover is defined %}
            <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             <span class="img">
-                <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+                <img title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
                 {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
           </a>
@@ -52,7 +52,7 @@
       </div>
       <div class="meta">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-          <p class="title">{{entry.title|shortentitle}}</p>
+          <p title="{{entry.title}}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}

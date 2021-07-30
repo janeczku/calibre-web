@@ -5,7 +5,7 @@
 {% if author is not none %}
 <section class="author-bio">
   {%if author.image_url is not none %}
-  <img src="{{author.image_url}}" alt="{{author.name|safe}}" class="author-photo pull-left">
+  <img title="{{author.name|safe}}" src="{{author.image_url}}" alt="{{author.name|safe}}" class="author-photo pull-left">
   {% endif %}
 
   {%if author.about is not none %}
@@ -37,14 +37,14 @@
       <div class="cover">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
             <span class="img">
-              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" />
+              <img title="{{author.name|safe}}" src="{{ url_for('web.get_cover', book_id=entry.id) }}" />
               {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
         </a>
       </div>
       <div class="meta">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
-          <p class="title">{{entry.title|shortentitle}}</p>
+          <p title="{{ entry.title }}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}
@@ -104,11 +104,11 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         <a href="https://www.goodreads.com/book/show/{{ entry.gid['#text'] }}" target="_blank" rel="noopener">
-          <img src="{{ entry.image_url }}" />
+          <img title="{{entry.title}}" src="{{ entry.image_url }}" />
         </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <p title="{{ entry.title }}" class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
 		  {% for author in entry.authors %}
 			{% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}

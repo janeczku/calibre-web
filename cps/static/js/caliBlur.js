@@ -413,7 +413,11 @@ if($("body.advsearch").length > 0) {
   });
   $('#add-to-shelf').height("40px");
   function search_dropdownToggle() {
-      topPos = $("#add-to-shelf").offset().top-20;
+      if( $("#add-to-shelf").length) {
+          topPos = $("#add-to-shelf").offset().top - 20;
+      } else {
+          topPos = 0
+      }
       if ($('div[aria-label="Add to shelves"]').length > 0) {
 
           position = $('div[aria-label="Add to shelves"]').offset().left
