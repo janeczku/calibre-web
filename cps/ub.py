@@ -27,6 +27,8 @@ from flask import session as flask_session
 from binascii import hexlify
 
 from flask_login import AnonymousUserMixin, current_user
+from flask_login import user_logged_in
+from contextlib import contextmanager
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -61,6 +63,36 @@ Base = declarative_base()
 searched_ids = {}
 
 
+def signal_store_user_session(object, user):
+    store_user_session()
+
+def store_user_session():
+    if flask_session.get('_user_id', ""):
+        try:
+            if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):
+                user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
+                session.add(user_session)
+                session.commit()
+        except (exc.OperationalError, exc.InvalidRequestError):
+            session.rollback()
+        # log.debug(flask_session.get('_id', ""))
+
+def delete_user_session(user_id, session_key):
+    try:
+        # log.debug(session_key)
+        session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                            User_Sessions.session_key==session_key).delete()
+        session.commit()
+    except (exc.OperationalError, exc.InvalidRequestError):
+        session.rollback()
+
+
+def check_user_session(user_id, session_key):
+    return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                                   User_Sessions.session_key==session_key).one_or_none())
+
+user_logged_in.connect(signal_store_user_session)
+
 def store_ids(result):
     ids = list()
     for element in result:
@@ -72,7 +104,7 @@ class UserBase:
 
     @property
     def is_authenticated(self):
-        return True
+        return self.is_active
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.role, role_flag)
@@ -260,6 +292,17 @@ class Anonymous(AnonymousUserMixin, UserBase):
                 flask_session['view'][page] = dict()
             flask_session['view'][page][prop] = value
         return None
+
+class User_Sessions(Base):
+    __tablename__ = 'user_session'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    session_key = Column(String, default="")
+
+    def __init__(self, user_id, session_key):
+        self.user_id = user_id
+        self.session_key = session_key
 
 
 # Baseclass representing Shelfs in calibre-web in app.db

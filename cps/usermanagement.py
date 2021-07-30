@@ -21,7 +21,8 @@ import binascii
 
 from sqlalchemy.sql.expression import func
 from werkzeug.security import check_password_hash
-from flask_login import login_required
+from flask_login import login_required, login_user
+
 
 from . import lm, ub, config, constants, services
 
@@ -58,6 +59,7 @@ def load_user_from_request(request):
             if rp_header_username:
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
+                    login_user(user)
                     return user
 
     auth_header = request.headers.get("Authorization")
