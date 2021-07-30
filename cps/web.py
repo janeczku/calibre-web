@@ -1523,6 +1523,7 @@ def login():
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
                 login_user(user, remember=bool(form.get('remember_me')))
+                #ub.store_user_session()
                 log.debug(u"You are now logged in as: '%s'", user.name)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
                       category="success")
@@ -1530,6 +1531,7 @@ def login():
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
+                #ub.store_user_session()
                 log.info("Local Fallback Login as: '%s'", user.name)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.name),
@@ -1559,6 +1561,7 @@ def login():
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
+                    # ub.store_user_session()
                     log.debug(u"You are now logged in as: '%s'", user.name)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
                     config.config_is_initial = False
@@ -1582,6 +1585,7 @@ def login():
 @login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
+        # ub.delete_user_session(current_user.id, flask_session.get('_id',""))
         logout_user()
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
