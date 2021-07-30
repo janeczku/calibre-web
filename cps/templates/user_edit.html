@@ -67,15 +67,14 @@
     </div>
     {% endif %}
     <div class="col-sm-6">
-        {% for element in sidebar %}
-          {% if element['config_show'] %}
-            <div class="form-group">
-              <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.check_visibility(element['visibility']) %}checked{% endif %}>
-              <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
-            </div>
-          {% endif %}
-        {% endfor %}
-
+    {% for element in sidebar %}
+      {% if element['config_show'] %}
+        <div class="form-group">
+          <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.check_visibility(element['visibility']) %}checked{% endif %}>
+          <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
+        </div>
+      {% endif %}
+    {% endfor %}
       <div class="form-group">
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
@@ -131,32 +130,33 @@
     </div>
     {% endif %}
     </div>
-      <div class="col-sm-12">
-    <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
-    {% if not profile %}
-      <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Cancel')}}</div>
-    {% endif %}
-    {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
-      <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
-    {% endif %}
+    <div class="col-sm-12">
+      <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
+      {% if not profile %}
+        <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Cancel')}}</div>
+      {% endif %}
+      {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
+        <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
+      {% endif %}
+    </div>
     </div>
   </form>
 </div>
 
-    <div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="kobo_tokenModalLabel">{{_('Generate Kobo Auth URL')}}</h4>
-          </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" id="kobo_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
-          </div>
-        </div>
+<div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="kobo_tokenModalLabel">{{_('Generate Kobo Auth URL')}}</h4>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" id="kobo_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
+  </div>
+</div>
 
 {% endblock %}
 {% block modal %}

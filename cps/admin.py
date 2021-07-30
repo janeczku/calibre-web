@@ -99,10 +99,11 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    if not ub.check_user_session(current_user.id, flask_session.get('_id')):
+    # make remember me function work
+    if current_user.is_authenticated:
+        confirm_login()
+    if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
         logout_user()
-    # if current_user.is_authenticated:
-    # confirm_login()
     g.constants = constants
     g.user = current_user
     g.allow_registration = config.config_public_reg
@@ -1375,11 +1376,11 @@ def _delete_user(content):
         if content.name != "Guest":
             # Delete all books in shelfs belonging to user, all shelfs of user, downloadstat of user, read status
             # and user itself
-            ub.session.query(ub.ReadBook).filter(ub.User.id == ub.ReadBook.user_id).delete()
-            ub.session.query(ub.Downloads).filter(ub.User.id == ub.Downloads.user_id).delete()
-            for us in ub.session.query(ub.Shelf).filter(ub.User.id == ub.Shelf.user_id):
+            ub.session.query(ub.ReadBook).filter(content.id == ub.ReadBook.user_id).delete()
+            ub.session.query(ub.Downloads).filter(content.id == ub.Downloads.user_id).delete()
+            for us in ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id):
                 ub.session.query(ub.BookShelf).filter(us.id == ub.BookShelf.shelf).delete()
-            ub.session.query(ub.Shelf).filter(ub.User.id == ub.Shelf.user_id).delete()
+            ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id).delete()
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
             ub.session_commit()
             log.info(u"User {} deleted".format(content.name))

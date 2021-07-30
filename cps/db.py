@@ -690,6 +690,8 @@ class CalibreDB():
             randm = false()
         off = int(int(pagesize) * (page - 1))
         query = self.session.query(database)
+        if len(join) == 6:
+            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
         elif len(join) == 2:
@@ -755,6 +757,8 @@ class CalibreDB():
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
         query = self.session.query(Books)
+        if len(join) == 6:
+            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
         elif len(join) == 2:
