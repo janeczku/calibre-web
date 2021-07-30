@@ -1803,7 +1803,7 @@ def import_ldap_users():
 
 
 def extract_user_data_from_field(user, field):
-    match = re.search(field + r"=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    match = re.search(field + r"=([\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:
