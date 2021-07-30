@@ -102,8 +102,9 @@ def create_app():
 
     log.info('Starting Calibre Web...')
     if sys.version_info < (3, 0):
-        log.info('Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2 please consider upgrading to Python3')
-        print('Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2 please consider upgrading to Python3')
+        log.info('*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        print('*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        sys.exit(5)
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
