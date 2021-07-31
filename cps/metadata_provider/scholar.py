@@ -17,8 +17,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from scholarly import scholarly
+from flask import url_for
 
-import json
 from cps.services.Metadata import Metadata
 #try:
 
@@ -51,7 +51,7 @@ class scholar(Metadata):
                 v['tags'] = ""
                 v['ratings'] = 0
                 v['series'] = ""
-                v['cover'] = "/../../../static/generic_cover.jpg"
+                v['cover'] = url_for('static', filename='generic_cover.jpg')
                 v['url'] = ""
                 v['source'] = {
                     "id": self.__id__,
