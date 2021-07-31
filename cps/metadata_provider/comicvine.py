@@ -58,7 +58,7 @@ class ComicVine(Metadata):
                     "description": "ComicVine Books",
                     "link": "https://comicvine.gamespot.com/"
                 }
-                v['url'] = ""
+                v['url'] = r.get('site_detail_url', "")
                 val.append(v)
         return val
 

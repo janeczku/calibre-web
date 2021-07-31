@@ -84,7 +84,7 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    # resp.headers['Content-Security-Policy']= "script-src 'self' https://www.googleapis.com https://api.douban.com https://comicvine.gamespot.com;"
+    resp.headers['Content-Security-Policy']= "script-src 'self'"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'

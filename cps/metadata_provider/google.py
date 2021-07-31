@@ -48,7 +48,7 @@ class Google(Metadata):
                     "id": self.__id__,
                     "description": "Google Books",
                     "link": "https://books.google.com/"}
-                v['url'] = ""
+                v['url'] = "https://books.google.com/books?id=" + r['id']
                 val.append(v)
             return val
 
