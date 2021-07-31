@@ -107,4 +107,9 @@ $(function () {
         $("#keyword").val(bookTitle);
         doSearch(bookTitle);
     });
+    $("#metaModal").on("show.bs.modal", function(e) {
+        $(e.relatedTarget).one('focus', function (e) {
+            $(this).blur();
+        });
+    });
 });

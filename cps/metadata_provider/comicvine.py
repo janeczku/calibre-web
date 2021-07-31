@@ -31,7 +31,7 @@ class ComicVine(Metadata):
         apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
         if self.active:
             headers = {
-                'User-Agent': 'Not Evil Browser' # ,
+                'User-Agent': 'Not Evil Browser'
             }
 
             result = requests.get("https://comicvine.gamespot.com/api/search?api_key="
