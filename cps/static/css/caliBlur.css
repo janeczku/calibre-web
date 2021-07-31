@@ -3293,6 +3293,10 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     left: 0 !important;
     overflow-y: auto;
 }
+#add-to-shelves {
+  max-height: calc(100% - 120px);
+  overflow-y: auto;
+}
 
 .dropdown-menu > li > a {
     color: hsla(0, 0%, 100%, .7);
