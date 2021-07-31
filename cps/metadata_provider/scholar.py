@@ -52,7 +52,7 @@ class scholar(Metadata):
                 v['ratings'] = 0
                 v['series'] = ""
                 v['cover'] = url_for('static', filename='generic_cover.jpg')
-                v['url'] = ""
+                v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
                 v['source'] = {
                     "id": self.__id__,
                     "description": "Google Scholar",

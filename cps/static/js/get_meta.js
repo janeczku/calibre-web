@@ -80,7 +80,7 @@ $(function () {
             type: "get",
             dataType: "json",
             success: function success(data) {
-                console.log(data);
+                // console.log(data);
                 data.forEach(function(provider) {
                     //$("#metadata_provider").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
                     var checked = "";
