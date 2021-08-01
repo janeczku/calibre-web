@@ -74,7 +74,12 @@ $(function() {
         });
     });
 
-    $("#merge_books").click(function() {
+    $("#merge_books").click(function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#mergeModal').modal("show");
+        }
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
