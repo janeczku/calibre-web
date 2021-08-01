@@ -172,7 +172,7 @@ $("#delete_confirm").click(function() {
                             if (item.format != "") {
                                 $("button[data-delete-format='"+item.format+"']").addClass('hidden');
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
 
@@ -543,7 +543,7 @@ $(function() {
     function handle_response(data) {
         if (!jQuery.isEmptyObject(data)) {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                $(".navbar").after('<div class="row-fluid text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });

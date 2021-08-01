@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block flash %}
-<div id="spinning_success" class="row-fluid text-center" style="margin-top: -20px; display:none;">
+<div id="spinning_success" class="row-fluid text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
 </div>
 {% endblock %}
@@ -94,6 +94,10 @@
     </div>
     <div id="collapsefour" class="panel-collapse collapse">
       <div class="panel-body">
+    <div class="form-group">
+      <input type="checkbox" id="config_unicode_filename" name="config_unicode_filename" {% if config.config_unicode_filename %}checked{% endif %}>
+      <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
+    </div>
     <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}}</label>
