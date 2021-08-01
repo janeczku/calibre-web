@@ -122,7 +122,8 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index|formatfloat(2)}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=("<a href='" + url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id) + "'>" + entry.series[0].name + "</a>")|safe) }}</p>
+
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
