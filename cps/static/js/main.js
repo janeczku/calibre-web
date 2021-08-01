@@ -706,7 +706,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/view",
+            url: window.location.pathname + "/../ajax/view",
             data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();
