@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-01 17:26+0200\n"
+"POT-Creation-Date: 2021-08-01 17:30+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_CN\n"
@@ -90,7 +90,7 @@ msgstr "显示全部"
 
 #: cps/admin.py:397 cps/admin.py:403
 msgid "Malformed request"
-msgstr ""
+msgstr "格式错误的请求"
 
 #: cps/admin.py:415 cps/admin.py:1443
 msgid "Guest Name can't be changed"
@@ -106,11 +106,11 @@ msgstr "理员账户不存在，无法删除管理员角色"
 
 #: cps/admin.py:443 cps/admin.py:457
 msgid "Value has to be true or false"
-msgstr ""
+msgstr "值必须是 true 或 false"
 
 #: cps/admin.py:445
 msgid "Invalid role"
-msgstr ""
+msgstr "无效角色"
 
 #: cps/admin.py:449
 msgid "Guest can't have this view"
@@ -118,7 +118,7 @@ msgstr "游客无法拥有此视图"
 
 #: cps/admin.py:459
 msgid "Invalid view"
-msgstr ""
+msgstr "无效视图"
 
 #: cps/admin.py:462
 msgid "Guest's Locale is determined automatically and can't be set"
@@ -126,23 +126,23 @@ msgstr "游客的本地化是自动侦测而无法设置的"
 
 #: cps/admin.py:466
 msgid "No Valid Locale Given"
-msgstr ""
+msgstr "无可用本地化"
 
 #: cps/admin.py:477
 msgid "No Valid Book Language Given"
-msgstr ""
+msgstr "无有效书籍语言"
 
 #: cps/admin.py:479
 msgid "Parameter not found"
-msgstr ""
+msgstr "参数未找到"
 
 #: cps/admin.py:534
 msgid "Invalid Read Column"
-msgstr ""
+msgstr "无效的阅读列"
 
 #: cps/admin.py:540
 msgid "Invalid Restricted Column"
-msgstr ""
+msgstr "无效的限制列"
 
 #: cps/admin.py:559 cps/admin.py:1291
 msgid "Calibre-Web configuration updated"
@@ -196,11 +196,11 @@ msgstr "您确定要关闭吗？"
 
 #: cps/admin.py:740
 msgid "Tag not found"
-msgstr ""
+msgstr "标签未找到"
 
 #: cps/admin.py:752
 msgid "Invalid Action"
-msgstr ""
+msgstr "无效的动作"
 
 #: cps/admin.py:857 cps/admin.py:863 cps/admin.py:873 cps/admin.py:883
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:40
@@ -358,7 +358,7 @@ msgstr "G-Mail账号校验成功"
 #: cps/admin.py:1543
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr ""
+msgstr "发送给%(email)s的测试邮件已进入队列。请检查任务结果"
 
 #: cps/admin.py:1546
 #, python-format
@@ -493,7 +493,7 @@ msgstr "编辑元数据"
 #: cps/editbooks.py:452
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr ""
+msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
 
 #: cps/editbooks.py:485
 #, python-format
@@ -655,7 +655,7 @@ msgstr "删除书籍 %(id)s失败：%(message)s"
 #: cps/helper.py:335
 #, fuzzy, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "删除书籍 %(id)s失败，书籍路径无效：%(path)s"
+msgstr "仅从数据库中删除书籍 %(id)s，书籍路径在数据库中无效： %(path)s"
 
 #: cps/helper.py:390
 #, python-format
@@ -1032,7 +1032,7 @@ msgstr "创建书架"
 #: cps/shelf.py:238
 #, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "对不起，您没有从书架 %(sname)s 中删除书籍的权限"
+msgstr "对不起，您没有编辑书架的权限"
 
 #: cps/shelf.py:240
 msgid "Edit a shelf"
@@ -1201,11 +1201,11 @@ msgstr "评分 >= %(rating)s"
 #: cps/web.py:1249
 #, python-format
 msgid "Read Status = %(status)s"
-msgstr ""
+msgstr "阅读状态 = %(status)s"
 
 #: cps/web.py:1354
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr ""
+msgstr "搜索自定义列时出错，请重启 Calibre-Web"
 
 #: cps/web.py:1449
 #, python-format
@@ -1412,7 +1412,7 @@ msgstr "发件人邮箱"
 
 #: cps/templates/admin.html:84
 msgid "E-Mail Service"
-msgstr ""
+msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:85
 msgid "Gmail via Oauth2"
@@ -1777,11 +1777,11 @@ msgstr "合并选中的书籍"
 
 #: cps/templates/book_table.html:25 cps/templates/user_table.html:122
 msgid "Remove Selections"
-msgstr "删除选中的书籍"
+msgstr "删除所选项"
 
 #: cps/templates/book_table.html:28
 msgid "Exchange author and title"
-msgstr ""
+msgstr "交换作者和标题"
 
 #: cps/templates/book_table.html:34
 msgid "Update Title Sort automatically"
@@ -2311,11 +2311,11 @@ msgstr "使用标准电子邮件账号"
 
 #: cps/templates/email_edit.html:15
 msgid "Gmail Account with OAuth2 Verification"
-msgstr ""
+msgstr "使用Gmail账号"
 
 #: cps/templates/email_edit.html:21
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr ""
+msgstr "设置Gmail账号作为电子邮件服务"
 
 #: cps/templates/email_edit.html:23
 msgid "Revoke Gmail Access"
@@ -2390,25 +2390,25 @@ msgstr "回到首页"
 
 #: cps/templates/http_error.html:50
 msgid "Logout User"
-msgstr ""
+msgstr "登出账号"
 
 #: cps/templates/index.html:72 cps/templates/search.html:33
 #: cps/templates/shelf.html:20
 msgid "Sort authors in alphabetical order"
-msgstr ""
+msgstr "按作者字母顺序排序"
 
 #: cps/templates/index.html:73 cps/templates/search.html:34
 #: cps/templates/shelf.html:21
 msgid "Sort authors in reverse alphabetical order"
-msgstr ""
+msgstr "按作者逆字母顺序排序"
 
 #: cps/templates/index.html:77
 msgid "Sort ascending according to series index"
-msgstr ""
+msgstr "按丛书编号排序"
 
 #: cps/templates/index.html:78
 msgid "Sort descending according to series index"
-msgstr ""
+msgstr "按丛书编号逆排序"
 
 #: cps/templates/index.xml:6
 msgid "Start"
@@ -2566,11 +2566,11 @@ msgstr "显示访问日志： "
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr ""
+msgstr "下载Calibre-Web日志"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
-msgstr ""
+msgstr "下载访问日志"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
@@ -2652,7 +2652,7 @@ msgstr "Caliebre-Web电子书路径"
 #: cps/templates/read.html:6
 #, fuzzy
 msgid "epub Reader"
-msgstr "PDF阅读器"
+msgstr "epub阅读器"
 
 #: cps/templates/read.html:74
 msgid "Reflow text when sidebars are open."
@@ -2661,7 +2661,7 @@ msgstr "打开侧栏时重排文本。"
 #: cps/templates/readcbr.html:7
 #, fuzzy
 msgid "Comic Reader"
-msgstr "PDF阅读器"
+msgstr "Comic阅读器"
 
 #: cps/templates/readcbr.html:89
 msgid "Keyboard Shortcuts"
@@ -2761,28 +2761,28 @@ msgstr "从右到左"
 
 #: cps/templates/readcbr.html:165
 msgid "Reset to Top"
-msgstr ""
+msgstr "重置为顶部"
 
 #: cps/templates/readcbr.html:166
 msgid "Remember Position"
-msgstr ""
+msgstr "记住位置"
 
 #: cps/templates/readcbr.html:171
 msgid "Scrollbar"
-msgstr ""
+msgstr "工具栏"
 
 #: cps/templates/readcbr.html:174
 msgid "Show"
-msgstr ""
+msgstr "显示"
 
 #: cps/templates/readcbr.html:175
 msgid "Hide"
-msgstr ""
+msgstr "隐藏"
 
 #: cps/templates/readdjvu.html:10
 #, fuzzy
 msgid "DJVU Reader"
-msgstr "PDF阅读器"
+msgstr "DJVU阅读器"
 
 #: cps/templates/readpdf.html:29
 #, fuzzy
@@ -2792,7 +2792,7 @@ msgstr "PDF阅读器"
 #: cps/templates/readtxt.html:6
 #, fuzzy
 msgid "txt Reader"
-msgstr "PDF阅读器"
+msgstr "txt阅读器"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -2896,19 +2896,19 @@ msgstr "编辑书架属性"
 
 #: cps/templates/shelf.html:13
 msgid "Arrange books manually"
-msgstr ""
+msgstr "手动排列书籍排列顺序"
 
 #: cps/templates/shelf.html:14
 msgid "Disable Change order"
-msgstr ""
+msgstr "禁止改变顺序"
 
 #: cps/templates/shelf.html:14
 msgid "Enable Change order"
-msgstr ""
+msgstr "允许改变顺序"
 
 #: cps/templates/shelf.html:93
 msgid "Shelf will be deleted for all users"
-msgstr "书架将会重所有用户中删除"
+msgstr "书架将会从所有用户中删除"
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
@@ -2916,7 +2916,7 @@ msgstr "书架将被公开"
 
 #: cps/templates/shelf_edit.html:20
 msgid "Sync this shelf with Kobo device"
-msgstr ""
+msgstr "同步这个书架到 Kobo device"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -3024,7 +3024,7 @@ msgstr "添加显示或隐藏书籍的自定义栏目值"
 
 #: cps/templates/user_edit.html:129
 msgid "Sync only books in selected shelves with Kobo"
-msgstr ""
+msgstr "仅同步所选书架中的书籍到 Kobo"
 
 #: cps/templates/user_edit.html:139 cps/templates/user_table.html:167
 msgid "Delete User"
@@ -3064,7 +3064,7 @@ msgstr "本地化"
 
 #: cps/templates/user_table.html:136
 msgid "Visible Book Languages"
-msgstr ""
+msgstr "可见数据语言"
 
 #: cps/templates/user_table.html:137
 msgid "Edit Allowed Tags"
@@ -3108,7 +3108,7 @@ msgstr "修改密码"
 
 #: cps/templates/user_table.html:145
 msgid "View"
-msgstr ""
+msgstr "查看书籍"
 
 #: cps/templates/user_table.html:148
 #, fuzzy
@@ -3116,8 +3116,9 @@ msgid "Edit Public Shelves"
 msgstr "编辑公共书架"
 
 #: cps/templates/user_table.html:150
+#, fuzzy
 msgid "Sync selected Shelves with Kobo"
-msgstr ""
+msgstr "同步所选书架到 Kobo"
 
 #: cps/templates/user_table.html:154
 msgid "Show read/unread selection"
