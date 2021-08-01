@@ -82,7 +82,6 @@ $(function () {
             success: function success(data) {
                 // console.log(data);
                 data.forEach(function(provider) {
-                    //$("#metadata_provider").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
                     var checked = "";
                     if (provider.active) {
                         checked = "checked";
@@ -94,6 +93,17 @@ $(function () {
         });
     }
 
+    $(document).on("change", ".pill", function () {
+        var id = $(this).data("control");
+        var val = $(this).prop('checked');
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/metadata/provider",
+            data: JSON.stringify({id : id, value: val}),
+        });
+    });
 
     $("#meta-search").on("submit", function (e) {
         e.preventDefault();

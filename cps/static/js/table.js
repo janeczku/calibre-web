@@ -744,7 +744,7 @@ function handleListServerResponse (data) {
     $("#flash_danger").remove();
     if (!jQuery.isEmptyObject(data)) {
         data.forEach(function(item) {
-            $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+            $(".navbar").after('<div class="row-fluid text-center">' +
                 '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                 '</div>');
         });

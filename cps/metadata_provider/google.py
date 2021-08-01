@@ -41,7 +41,7 @@ class Google(Metadata):
                 v['tags'] = r['volumeInfo'].get('categories', [])
                 v['rating'] = r['volumeInfo'].get('averageRating', 0)
                 if r['volumeInfo'].get('imageLinks'):
-                    v['cover'] = r['volumeInfo']['imageLinks']['thumbnail']
+                    v['cover'] = r['volumeInfo']['imageLinks']['thumbnail'].replace("http://", "https://")
                 else:
                     v['cover'] = "/../../../static/generic_cover.jpg"
                 v['source'] = {

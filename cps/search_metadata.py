@@ -26,8 +26,10 @@ import inspect
 from flask import Blueprint, request, Response
 from flask_login import current_user
 from flask_login import login_required
+from sqlalchemy.orm.attributes import flag_modified
+from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import constants, logger
+from . import constants, logger, ub
 from cps.services.Metadata import Metadata
 
 meta = Blueprint('metadata', __name__)
@@ -63,17 +65,29 @@ def metadata_provider():
     active = current_user.view_settings.get('metadata', {})
     provider = list()
     for c in cl:
-        provider.append({"name": c.__name__, "active": active.get(c.__name__, True), "id": c.__id__})
+        provider.append({"name": c.__name__, "active": active.get(c.__id__, True), "id": c.__id__})
     return Response(json.dumps(provider), mimetype='application/json')
 
 @meta.route("/metadata/provider", methods=['POST'])
 @login_required
 def metadata_change_active_provider():
+    new_state = request.get_json()
     active = current_user.view_settings.get('metadata', {})
+    active[new_state['id']] = new_state['value']
+    current_user.view_settings['metadata'] = active
+    try:
+        try:
+            flag_modified(current_user, "view_settings")
+        except AttributeError:
+            pass
+        ub.session.commit()
+    except (InvalidRequestError, OperationalError):
+        log.error("Invalid request received: {}".format(request))
+        return "Invalid request", 400
     provider = list()
     for c in cl:
-        provider.append({"name": c.__name__, "active": active.get(c.__name__, True), "id": c.__id__})
-    return Response(json.dumps(provider), mimetype='application/json')
+        provider.append({"name": c.__name__, "active": active.get(c.__id__, True), "id": c.__id__})
+    return "" # Response(json.dumps(provider), mimetype='application/json')
 
 @meta.route("/metadata/search", methods=['POST'])
 @login_required
@@ -83,6 +97,6 @@ def metadata_search():
     active = current_user.view_settings.get('metadata', {})
     if query:
         for c in cl:
-            if active.get(c.__name__, True):
+            if active.get(c.__id__, True):
                 data.extend(c.search(query))
     return Response(json.dumps(data), mimetype='application/json')
