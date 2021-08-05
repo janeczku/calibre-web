@@ -423,7 +423,11 @@ def render_rated_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.ratings.any(db.Ratings.rating > 9),
-                                                                order)
+                                                                order,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
+
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      id=book_id, title=_(u"Top Rated Books"), page="rated")
     else:
@@ -629,6 +633,9 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                                                 db.Books,
                                                                 db_filter,
                                                                 order,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series,
                                                                 ub.ReadBook, db.Books.id == ub.ReadBook.book_id)
     else:
         try:
@@ -640,6 +647,9 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                                                     db.Books,
                                                                     db_filter,
                                                                     order,
+                                                                    db.books_series_link,
+                                                                    db.Books.id == db.books_series_link.c.book,
+                                                                    db.Series,
                                                                     db.cc_classes[config.config_read_column])
         except (KeyError, AttributeError):
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
@@ -787,7 +797,7 @@ def list_books():
                db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
     elif sort == "languages":
         order = [db.Languages.lang_code.asc()] if order == "asc" else [db.Languages.lang_code.desc()]
-        join = db.books_languages_link,db.Books.id == db.books_languages_link.c.book, db.Languages
+        join = db.books_languages_link, db.Books.id == db.books_languages_link.c.book, db.Languages
     elif order and sort in ["sort", "title", "authors_sort", "series_index"]:
         order = [text(sort + " " + order)]
     elif not state:
@@ -1582,6 +1592,7 @@ def login():
 @login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
+        ub.delete_user_session(current_user.id, flask_session.get('_id',""))
         logout_user()
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
