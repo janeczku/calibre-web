@@ -20,7 +20,7 @@
         <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
         <label for="config_use_google_drive">{{_('Use Google Drive?')}}</label>
       </div>
-      {% if not gdriveError %}
+      {% if not gdriveError and config.config_use_google_drive %}
         {% if show_authenticate_google_drive and config.config_use_google_drive %}
           <div class="form-group required">
             <a href="{{ url_for('gdrive.authenticate_google_drive') }}" id="gdrive_auth" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>

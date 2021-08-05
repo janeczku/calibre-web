@@ -15,10 +15,10 @@
   <div class="row">
     <div class="col-xs-6 col-sm-7">
       {% if log_enable %}
-      <a class="btn btn-default" id="log_file" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a>
+      <a class="btn btn-default" id="log_file_0" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a>
       {% endif %}
       {% if accesslog_enable %}
-      <a class="btn btn-default" id="log_file" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a>
+      <a class="btn btn-default" id="log_file_1" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a>
       {% endif %}
     </div>
   </div>
