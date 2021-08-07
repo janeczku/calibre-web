@@ -41,6 +41,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     window.addEventListener('webviewerloaded', function() {
         PDFViewerApplicationOptions.set('disableAutoFetch', true);
         PDFViewerApplicationOptions.set('disableRange', true);
+        PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
