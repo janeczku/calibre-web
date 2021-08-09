@@ -28,7 +28,8 @@ See https://github.com/adobe-type-tools/cmap-resources
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{_('PDF Reader')}} | {{title}}</title>
 
-
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/viewer.css') }}">
 
 
@@ -38,6 +39,9 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <script type="text/javascript">
     window.addEventListener('webviewerloaded', function() {
+        PDFViewerApplicationOptions.set('disableAutoFetch', true);
+        PDFViewerApplicationOptions.set('disableRange', true);
+        PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
@@ -405,4 +409,3 @@ See https://github.com/adobe-type-tools/cmap-resources
     <div id="printContainer"></div>
   </body>
 </html>
-
