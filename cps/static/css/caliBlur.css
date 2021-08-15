@@ -6490,7 +6490,9 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 150px;
         margin-bottom: 0
     }
-
+    .container-fluid .book .cover img {
+    width: 100px !important;
+    }
     #books .cover img, #books_rand .cover img, .book.isotope-item .cover img {
         width: 100px !important
     }
