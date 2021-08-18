@@ -45,6 +45,7 @@ parser.add_argument('-v', '--version', action='version', help='Shows version num
                     version=version_info())
 parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
+parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
 args = parser.parse_args()
 
 if sys.version_info < (3, 0):
@@ -113,3 +114,6 @@ user_credentials = args.s or None
 if user_credentials and ":" not in user_credentials:
     print("No valid 'username:password' format")
     sys.exit(3)
+
+if args.f:
+    print("Warning: -f flag is depreciated and will be removed in next version")
