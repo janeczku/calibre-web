@@ -91,23 +91,34 @@ def store_user_session():
                 user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
                 session.add(user_session)
                 session.commit()
-        except (exc.OperationalError, exc.InvalidRequestError):
+                log.info("Login and store session : " + flask_session.get('_id', ""))
+            else:
+                log.info("Found stored session : " + flask_session.get('_id', ""))
+        except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
-        # log.debug(flask_session.get('_id', ""))
+            log.exception(e)
+    else:
+        log.error("No user id in session")
 
 def delete_user_session(user_id, session_key):
     try:
-        # log.debug(session_key)
+        log.info("Deleted session_key : " + session_key)
         session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
                                             User_Sessions.session_key==session_key).delete()
         session.commit()
     except (exc.OperationalError, exc.InvalidRequestError):
         session.rollback()
+        log.exception(e)
 
 
 def check_user_session(user_id, session_key):
-    return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                                   User_Sessions.session_key==session_key).one_or_none())
+    try:
+        return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                                       User_Sessions.session_key==session_key).one_or_none())
+    except (exc.OperationalError, exc.InvalidRequestError):
+        session.rollback()
+        log.exception(e)
+
 
 user_logged_in.connect(signal_store_user_session)
 
