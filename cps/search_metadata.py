@@ -38,7 +38,7 @@ log = logger.create()
 
 new_list = list()
 meta_dir = os.path.join(constants.BASE_DIR, "cps", "metadata_provider")
-modules = os.listdir(os.path.join(constants.BASE_DIR, "cps", "metadata_provider")) #glob.glob(join(dirname(__file__), "*.py"))
+modules = os.listdir(os.path.join(constants.BASE_DIR, "cps", "metadata_provider"))
 for f in modules:
     if os.path.isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py'):
         a = os.path.basename(f)[:-3]
@@ -65,12 +65,14 @@ def metadata_provider():
     active = current_user.view_settings.get('metadata', {})
     provider = list()
     for c in cl:
-        provider.append({"name": c.__name__, "active": active.get(c.__id__, True), "id": c.__id__})
+        ac = active.get(c.__id__, True)
+        provider.append({"name": c.__name__, "active": ac, "initial": ac, "id": c.__id__})
     return Response(json.dumps(provider), mimetype='application/json')
 
 @meta.route("/metadata/provider", methods=['POST'])
+@meta.route("/metadata/provider/<prov_name>", methods=['POST'])
 @login_required
-def metadata_change_active_provider():
+def metadata_change_active_provider(prov_name):
     new_state = request.get_json()
     active = current_user.view_settings.get('metadata', {})
     active[new_state['id']] = new_state['value']
@@ -84,10 +86,13 @@ def metadata_change_active_provider():
     except (InvalidRequestError, OperationalError):
         log.error("Invalid request received: {}".format(request))
         return "Invalid request", 400
-    provider = list()
-    for c in cl:
-        provider.append({"name": c.__name__, "active": active.get(c.__id__, True), "id": c.__id__})
-    return "" # Response(json.dumps(provider), mimetype='application/json')
+    if "initial" in new_state and prov_name:
+        for c in cl:
+            if c.__id__ == prov_name:
+                data = c.search(new_state.get('query', ""))
+                break
+        return Response(json.dumps(data), mimetype='application/json')
+    return ""
 
 @meta.route("/metadata/search", methods=['POST'])
 @login_required

@@ -18,6 +18,7 @@
 
 $(function () {
     var msg = i18nMsg;
+    var keyword = ""
 
     var templates = {
         bookResult: _.template(
@@ -56,7 +57,6 @@ $(function () {
                 data: {"query": keyword},
                 dataType: "json",
                 success: function success(data) {
-                    // console.log(data);
                     $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
                     data.forEach(function(book) {
                         var $book = $(templates.bookResult(book));
@@ -80,13 +80,12 @@ $(function () {
             type: "get",
             dataType: "json",
             success: function success(data) {
-                // console.log(data);
                 data.forEach(function(provider) {
                     var checked = "";
                     if (provider.active) {
                         checked = "checked";
                     }
-                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <span class="glyphicon glyphicon-ok"></span></label>'
+                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-initial="' + provider.initial + '" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <span class="glyphicon glyphicon-ok"></span></label>'
                     $("#metadata_provider").append($provider_button);
                 });
             },
@@ -94,20 +93,42 @@ $(function () {
     }
 
     $(document).on("change", ".pill", function () {
-        var id = $(this).data("control");
-        var val = $(this).prop('checked');
+        var element = $(this);
+        var id = element.data("control");
+        var initial = element.data("initial");
+        var val = element.prop('checked');
+        var params = {id : id, value: val};
+        if (!initial) {
+            params['initial'] = initial;
+            params['query'] = keyword;
+        }
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: getPath() + "/metadata/provider",
-            data: JSON.stringify({id : id, value: val}),
+            url: getPath() + "/metadata/provider/" + id,
+            data: JSON.stringify(params),
+            success: function success(data) {
+                element.data("initial", "true");
+                data.forEach(function(book) {
+                    var $book = $(templates.bookResult(book));
+                    $book.find("img").on("click", function () {
+                        populateForm(book);
+                    });
+                    $("#book-list").append($book);
+                });
+            }
         });
     });
 
     $("#meta-search").on("submit", function (e) {
         e.preventDefault();
-        var keyword = $("#keyword").val();
+        keyword = $("#keyword").val();
+        $('.pill').each(function(){
+            // console.log($(this).data('control'));
+            $(this).data("initial", $(this).prop('checked'));
+            // console.log($(this).data('initial'));
+        });
         doSearch(keyword);
     });
 
@@ -115,6 +136,7 @@ $(function () {
         populate_provider();
         var bookTitle = $("#book_title").val();
         $("#keyword").val(bookTitle);
+        keyword = bookTitle;
         doSearch(bookTitle);
     });
     $("#metaModal").on("show.bs.modal", function(e) {

@@ -20,12 +20,6 @@ from scholarly import scholarly
 from flask import url_for
 
 from cps.services.Metadata import Metadata
-#try:
-
-#except ImportError:
-#    have_scholar = False
-#    pass
-
 
 
 class scholar(Metadata):
