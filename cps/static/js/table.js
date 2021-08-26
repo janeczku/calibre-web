@@ -610,6 +610,7 @@ function checkboxFormatter(value, row){
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+
 function singlecheckboxFormatter(value, row){
     if(value)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
