@@ -869,7 +869,7 @@ msgstr "Mostra l'opzione per la selezione dei libri meglio valutati"
 #: cps/render_template.py:59 cps/templates/index.xml:54
 #: cps/templates/index.xml:58 cps/web.py:666
 msgid "Read Books"
-msgstr "Libri da leggere"
+msgstr "Libri letti"
 
 #: cps/render_template.py:61
 msgid "Show read and unread"
@@ -2265,7 +2265,7 @@ msgstr "Marca come letto"
 
 #: cps/templates/detail.html:220
 msgid "Read"
-msgstr "da leggere"
+msgstr "Letto"
 
 #: cps/templates/detail.html:228
 msgid "Restore from archive"
@@ -3119,4 +3119,3 @@ msgstr "Mostra l'opzione per la selezione dello stato letto/non letto"
 #: cps/templates/user_table.html:157
 msgid "Show random books"
 msgstr "Mostra l'opzione per presentare libri aleatoriamente"
-
