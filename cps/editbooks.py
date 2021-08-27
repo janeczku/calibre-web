@@ -26,7 +26,11 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
-from lxml.html.clean import clean_html
+try:
+    from lxml.html.clean import clean_html
+except ImportError:
+    pass
+
 
 # Improve this to check if scholarly is available in a global way, like other pythonic libraries
 try:

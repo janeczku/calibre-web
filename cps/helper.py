@@ -38,6 +38,7 @@ from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
+from markupsafe import escape
 
 try:
     from urllib.parse import quote
@@ -97,10 +98,11 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
     else:
         settings = dict()
-    txt = (u"%s -> %s: %s" % (
+    link = '<a href="{}">{}</a>"'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
+    txt = u"{} -> {}: {}".format(
            old_book_format,
            new_book_format,
-           "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + book.title + "</a>"))
+           link)
     settings['old_book_format'] = old_book_format
     settings['new_book_format'] = new_book_format
     WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
@@ -778,7 +780,7 @@ def render_task_status(tasklist):
 
             ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
             ret['progress'] = "{} %".format(int(task.progress * 100))
-            ret['user'] = user
+            ret['user'] = escape(user)  # prevent xss
             renderedtasklist.append(ret)
 
     return renderedtasklist
