@@ -26,15 +26,14 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
+from lxml.html.clean import clean_html
 
 # Improve this to check if scholarly is available in a global way, like other pythonic libraries
-have_scholar = True
 try:
     from scholarly import scholarly
+    have_scholar = True
 except ImportError:
     have_scholar = False
-    pass
-
 
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
@@ -55,6 +54,8 @@ try:
     from functools import wraps
 except ImportError:
     pass  # We're not using Python 3
+
+
 
 
 editbook = Blueprint('editbook', __name__)
@@ -459,9 +460,11 @@ def edit_book_series_index(series_index, book):
 # Handle book comments/description
 def edit_book_comments(comments, book):
     modif_date = False
+    if comments:
+        comments = clean_html(comments)
     if len(book.comments):
         if book.comments[0].text != comments:
-            book.comments[0].text = comments
+            book.comments[0].text = clean_html(comments)
             modif_date = True
     else:
         if comments:
@@ -515,6 +518,8 @@ def edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string):
         to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
     elif c.datatype == 'comments':
         to_save[cc_string] = Markup(to_save[cc_string]).unescape()
+        if to_save[cc_string]:
+            to_save[cc_string] = clean_html(to_save[cc_string])
     elif c.datatype == 'datetime':
         try:
             to_save[cc_string] = datetime.strptime(to_save[cc_string], "%Y-%m-%d")

@@ -73,9 +73,9 @@ def store_user_session():
                 user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
                 session.add(user_session)
                 session.commit()
-                log.info("Login and store session : " + flask_session.get('_id', ""))
+                log.debug("Login and store session : " + flask_session.get('_id', ""))
             else:
-                log.info("Found stored session : " + flask_session.get('_id', ""))
+                log.debug("Found stored session: " + flask_session.get('_id', ""))
         except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
             log.exception(e)
@@ -84,7 +84,7 @@ def store_user_session():
 
 def delete_user_session(user_id, session_key):
     try:
-        log.info("Deleted session_key : " + session_key)
+        log.debug("Deleted session_key: " + session_key)
         session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
                                             User_Sessions.session_key==session_key).delete()
         session.commit()
