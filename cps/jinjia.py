@@ -28,7 +28,6 @@ import mimetypes
 from uuid import uuid4
 
 from babel.dates import format_date
-from flask_babel import gettext as _
 from flask import Blueprint, request, url_for
 from flask_babel import get_locale
 from flask_login import current_user
