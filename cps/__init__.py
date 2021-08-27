@@ -37,6 +37,11 @@ from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 
+try:
+    import lxml
+    lxml_present = True
+except ImportError:
+    lxml_present = False
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -90,6 +95,16 @@ db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
 calibre_db = db.CalibreDB()
 
 def create_app():
+    if sys.version_info < (3, 0):
+        log.info(
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        print(
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        sys.exit(5)
+    if not lxml_present:
+        log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        sys.exit(6)
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
@@ -99,12 +114,8 @@ def create_app():
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
-
     log.info('Starting Calibre Web...')
-    if sys.version_info < (3, 0):
-        log.info('*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
-        print('*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
-        sys.exit(5)
+
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
