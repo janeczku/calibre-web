@@ -888,7 +888,7 @@ def list_restriction(res_type, user_id):
     else:
         json_dumps = ""
     js = json.dumps(json_dumps)
-    response = make_response(js.replace("'", '"'))
+    response = make_response(js) #.replace("'", '"')
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 

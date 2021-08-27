@@ -72,7 +72,6 @@ def main():
     app.register_blueprint(admi)
     app.register_blueprint(remotelogin)
     app.register_blueprint(meta)
-    # if config.config_use_google_drive:
     app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
     if kobo_available:

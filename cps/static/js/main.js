@@ -20,6 +20,15 @@ function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
 }
+
+function elementSorter(a, b) {
+    a = +a.slice(0, -2);
+    b = +b.slice(0, -2);
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+}
+
 // Generic control/related handler to show/hide fields based on a checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
@@ -712,3 +721,4 @@ $(function() {
         });
     });
 });
+
