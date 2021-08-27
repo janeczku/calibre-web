@@ -28,10 +28,11 @@ import mimetypes
 from uuid import uuid4
 
 from babel.dates import format_date
+from flask_babel import gettext as _
 from flask import Blueprint, request, url_for
 from flask_babel import get_locale
 from flask_login import current_user
-
+from markupsafe import escape
 from . import logger
 
 
@@ -128,6 +129,10 @@ def formatseriesindex_filter(series_index):
         except ValueError:
             return series_index
     return 0
+
+@jinjia.app_template_filter('escapedlink')
+def escapedlink_filter(url, text):
+    return "<a href='{}'>{}</a>".format(url, escape(text))
 
 @jinjia.app_template_filter('uuidfilter')
 def uuidfilter(var):
