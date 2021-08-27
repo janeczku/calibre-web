@@ -22,6 +22,26 @@ var selections = [];
 var reload = false;
 
 $(function() {
+    $('#tasktable').bootstrapTable({
+        formatNoMatches: function () {
+            return '';
+        },
+        striped: true
+    });
+    if ($('#tasktable').length) {
+        setInterval(function () {
+            $.ajax({
+                method: "get",
+                url: getPath() + "/ajax/emailstat",
+                async: true,
+                timeout: 900,
+                success: function (data) {
+                    $('#table').bootstrapTable("load", data);
+                }
+            });
+        }, 2000);
+    }
+
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
         function (e, rowsAfter, rowsBefore) {
             var rows = rowsAfter;
