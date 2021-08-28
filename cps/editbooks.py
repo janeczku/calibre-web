@@ -468,7 +468,7 @@ def edit_book_comments(comments, book):
         comments = clean_html(comments)
     if len(book.comments):
         if book.comments[0].text != comments:
-            book.comments[0].text = clean_html(comments)
+            book.comments[0].text = comments
             modif_date = True
     else:
         if comments:
