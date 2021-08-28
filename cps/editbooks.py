@@ -26,6 +26,7 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
+from markupsafe import escape
 try:
     from lxml.html.clean import clean_html
 except ImportError:
@@ -468,7 +469,7 @@ def edit_book_comments(comments, book):
         comments = clean_html(comments)
     if len(book.comments):
         if book.comments[0].text != comments:
-            book.comments[0].text = clean_html(comments)
+            book.comments[0].text = comments
             modif_date = True
     else:
         if comments:
@@ -663,9 +664,9 @@ def upload_single_file(request, book, book_id):
                     return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
-            uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            WorkerThread.add(current_user.name, TaskUpload(
-                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>"))
+            link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
+            uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
+            WorkerThread.add(current_user.name, TaskUpload(uploadText))
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
@@ -1038,9 +1039,9 @@ def upload():
                     gdriveutils.updateGdriveCalibreFromLocal()
                 if error:
                     flash(error, category="error")
-                uploadText=_(u"File %(file)s uploaded", file=title)
-                WorkerThread.add(current_user.name, TaskUpload(
-                    "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>"))
+                link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
+                uploadText = _(u"File %(file)s uploaded", file=link)
+                WorkerThread.add(current_user.name, TaskUpload(uploadText))
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
