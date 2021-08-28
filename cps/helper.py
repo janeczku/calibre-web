@@ -98,7 +98,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
     else:
         settings = dict()
-    link = '<a href="{}">{}</a>"'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
+    link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
     txt = u"{} -> {}: {}".format(
            old_book_format,
            new_book_format,
