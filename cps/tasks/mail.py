@@ -143,7 +143,7 @@ class TaskEmail(CalibreTask):
                 self.send_gmail_email(msg)
         except MemoryError as e:
             log.debug_or_exception(e)
-            self._handleError(u'MemoryError sending email: {}'.format(str(e)))
+            self._handleError(u'MemoryError sending e-mail: {}'.format(str(e)))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             log.debug_or_exception(e)
             if hasattr(e, "smtp_error"):
@@ -154,13 +154,13 @@ class TaskEmail(CalibreTask):
                 text = '\n'.join(e.args)
             else:
                 text = ''
-            self._handleError(u'Smtplib Error sending email: {}'.format(text))
+            self._handleError(u'Smtplib Error sending e-mail: {}'.format(text))
         except socket.error as e:
             log.debug_or_exception(e)
-            self._handleError(u'Socket Error sending email: {}'.format(e.strerror))
+            self._handleError(u'Socket Error sending e-mail: {}'.format(e.strerror))
         except Exception as ex:
             log.debug_or_exception(ex)
-            self._handleError(u'Error sending email: {}'.format(ex))
+            self._handleError(u'Error sending e-mail: {}'.format(ex))
 
 
     def send_standard_email(self, msg):
@@ -173,7 +173,7 @@ class TaskEmail(CalibreTask):
             org_smtpstderr = smtplib.stderr
             smtplib.stderr = logger.StderrLogger('worker.smtp')
 
-        log.debug("Start sending email")
+        log.debug("Start sending e-mail")
         if use_ssl == 2:
             self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
                                        timeout=timeout)
@@ -196,7 +196,7 @@ class TaskEmail(CalibreTask):
         self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, fp.getvalue())
         self.asyncSMTP.quit()
         self._handleSuccess()
-        log.debug("Email send successfully")
+        log.debug("E-mail send successfully")
 
         if sys.version_info < (3, 0):
             smtplib.stderr = org_smtpstderr
@@ -258,7 +258,7 @@ class TaskEmail(CalibreTask):
 
     @property
     def name(self):
-        return "Email"
+        return "E-mail"
 
     def __str__(self):
         return "{}, {}".format(self.name, self.subject)

@@ -100,8 +100,8 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         settings = dict()
     link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
     txt = u"{} -> {}: {}".format(
-           old_book_format,
-           new_book_format,
+           old_book_format.upper(),
+           new_book_format.upper(),
            link)
     settings['old_book_format'] = old_book_format
     settings['new_book_format'] = new_book_format
@@ -216,9 +216,11 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
+            link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
+            EmailText = _(u"%(book)s send to Kindle", book=link)
             WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
                              config.get_mail_settings(), kindle_mail,
-                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.')))
+                             EmailText, _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
