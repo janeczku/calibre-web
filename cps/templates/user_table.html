@@ -2,6 +2,7 @@
 {% macro user_table_row(parameter, edit_text, show_text, validate, elements=False) -%}
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
+    data-escape="true"
     data-visible="{{visiblility.get(parameter)}}"
     data-editable-type="text"
     data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
@@ -68,7 +69,7 @@
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     data-name="{{ parameter }}"
     data-visible="{{visiblility.get(parameter)}}"
-    data-editable-type="select"
+    data-escape="true"
     data-edit="true"
     data-sortable="true"
     data-editable-url="{{ url_for('admin.edit_list_user', param=parameter)}}"
