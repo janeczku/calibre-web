@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-08-01 17:26+0200\n"
+"POT-Creation-Date: 2021-08-29 13:30+0200\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -46,9 +46,9 @@ msgstr ""
 msgid "Unknown command"
 msgstr ""
 
-#: cps/admin.py:168 cps/editbooks.py:687 cps/editbooks.py:701
-#: cps/editbooks.py:840 cps/editbooks.py:842 cps/editbooks.py:869
-#: cps/editbooks.py:885 cps/updater.py:555 cps/uploader.py:94
+#: cps/admin.py:168 cps/editbooks.py:697 cps/editbooks.py:711
+#: cps/editbooks.py:850 cps/editbooks.py:852 cps/editbooks.py:879
+#: cps/editbooks.py:895 cps/updater.py:555 cps/uploader.py:94
 #: cps/uploader.py:104
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -84,7 +84,7 @@ msgid "{} users deleted successfully"
 msgstr ""
 
 #: cps/admin.py:376 cps/templates/user_edit.html:44
-#: cps/templates/user_table.html:80
+#: cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "Näytä kaikki"
 
@@ -205,14 +205,14 @@ msgid "Invalid Action"
 msgstr ""
 
 #: cps/admin.py:857 cps/admin.py:863 cps/admin.py:873 cps/admin.py:883
-#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:40
-#: cps/templates/user_table.html:57
+#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
+#: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr ""
 
 #: cps/admin.py:859 cps/admin.py:865 cps/admin.py:875 cps/admin.py:885
-#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:43
-#: cps/templates/user_table.html:60
+#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
+#: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr ""
 
@@ -473,103 +473,103 @@ msgstr ""
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr ""
 
-#: cps/editbooks.py:303 cps/editbooks.py:305
+#: cps/editbooks.py:309 cps/editbooks.py:311
 msgid "Book Format Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:312 cps/editbooks.py:314
+#: cps/editbooks.py:318 cps/editbooks.py:320
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:370 cps/editbooks.py:743 cps/web.py:516 cps/web.py:1697
+#: cps/editbooks.py:376 cps/editbooks.py:753 cps/web.py:516 cps/web.py:1697
 #: cps/web.py:1738 cps/web.py:1809
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Virhe eKirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla:"
 
-#: cps/editbooks.py:404
+#: cps/editbooks.py:410
 msgid "edit metadata"
 msgstr "muokkaa metadataa"
 
-#: cps/editbooks.py:452
+#: cps/editbooks.py:458
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:485
+#: cps/editbooks.py:493
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s ei ole kelvollinen kieli"
 
-#: cps/editbooks.py:614 cps/editbooks.py:955
+#: cps/editbooks.py:624 cps/editbooks.py:965
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
 
-#: cps/editbooks.py:618 cps/editbooks.py:959
+#: cps/editbooks.py:628 cps/editbooks.py:969
 msgid "File to be uploaded must have an extension"
 msgstr "Ladattavalla tiedostolla on oltava tiedostopääte"
 
-#: cps/editbooks.py:630
+#: cps/editbooks.py:640
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Polun %(path)s luonti epäonnistui (Ei oikeutta)."
 
-#: cps/editbooks.py:635
+#: cps/editbooks.py:645
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Tiedoston %(file)s tallennus epäonnistui."
 
-#: cps/editbooks.py:653 cps/editbooks.py:1046 cps/web.py:1658
+#: cps/editbooks.py:663 cps/editbooks.py:1056 cps/web.py:1658
 #, python-format
 msgid "Database error: %(error)s."
 msgstr ""
 
-#: cps/editbooks.py:657
+#: cps/editbooks.py:668
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Tiedostoformaatti %(ext)s lisätty %(book)s"
 
-#: cps/editbooks.py:794
+#: cps/editbooks.py:804
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:826
+#: cps/editbooks.py:836
 msgid "Metadata successfully updated"
 msgstr "Metadata päivitetty onnistuneesti"
 
-#: cps/editbooks.py:835
+#: cps/editbooks.py:845
 msgid "Error editing book, please check logfile for details"
 msgstr "Kirjan editoinnissa tapahtui virhe, tarkista virheilmoitus lokista"
 
-#: cps/editbooks.py:873
+#: cps/editbooks.py:883
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr ""
 
-#: cps/editbooks.py:967
+#: cps/editbooks.py:977
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr ""
 
-#: cps/editbooks.py:986
+#: cps/editbooks.py:996
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:1032
+#: cps/editbooks.py:1043
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Tiedosto %(file)s tallennettu"
 
-#: cps/editbooks.py:1058
+#: cps/editbooks.py:1068
 msgid "Source or destination format for conversion missing"
 msgstr "Lähteen tai kohteen tiedostomuoto puuttuu"
 
-#: cps/editbooks.py:1066
+#: cps/editbooks.py:1076
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kirja lisätty muutosjonoon muotoon %(book_format)s"
 
-#: cps/editbooks.py:1070
+#: cps/editbooks.py:1080
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Kirjan muunnoksessa tapahtui virhe: %(res)s"
@@ -582,163 +582,163 @@ msgstr "Google Drive asetukset ei ole valmiit. Koita poistaa Google Drive käyt�
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Paluuosoitteen domain ei ole varmistettu, seuraa ohjeita vamistaaksesi sen googlen kehittäjäkonsolissa"
 
-#: cps/helper.py:80
+#: cps/helper.py:81
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s tiedostomuotoa ei löytynyt kirjalle: %(book)d"
 
-#: cps/helper.py:86 cps/tasks/convert.py:52
+#: cps/helper.py:87 cps/tasks/convert.py:56
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s ei löytynyt Google Drivesta: %(fn)s"
 
-#: cps/helper.py:91
+#: cps/helper.py:92
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s ei löydy: %(fn)s"
 
-#: cps/helper.py:96 cps/helper.py:217 cps/templates/detail.html:41
+#: cps/helper.py:97 cps/helper.py:221 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr "Lähetä Kindleen"
 
-#: cps/helper.py:97 cps/helper.py:113 cps/helper.py:219
+#: cps/helper.py:98 cps/helper.py:115 cps/helper.py:223
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Tämä sähköposti on lähetetty Calibre-Web:sta."
 
-#: cps/helper.py:111
+#: cps/helper.py:113
 msgid "Calibre-Web test e-mail"
 msgstr "Calibre-Web testisähköposti"
 
-#: cps/helper.py:112
+#: cps/helper.py:114
 msgid "Test e-mail"
 msgstr "Testi sähköposti"
 
-#: cps/helper.py:129
+#: cps/helper.py:131
 msgid "Get Started with Calibre-Web"
 msgstr "Aloita Calibre-Web:in käyttö"
 
-#: cps/helper.py:134
+#: cps/helper.py:136
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "Rekiströintisähköposti käyttäjälle: %(name)s"
 
-#: cps/helper.py:145 cps/helper.py:151
+#: cps/helper.py:147 cps/helper.py:153
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr "Muunna %(orig)s muotoon %(format)s ja lähetä Kindleen"
 
-#: cps/helper.py:170 cps/helper.py:174 cps/helper.py:178
+#: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr "Lähetä %(format)s Kindleen"
 
-#: cps/helper.py:219
-#, python-format
-msgid "E-mail: %(book)s"
-msgstr "Sähköposti: %(book)s"
+#: cps/helper.py:220 cps/tasks/convert.py:73
+#, fuzzy, python-format
+msgid "%(book)s send to Kindle"
+msgstr "Lähetä Kindleen"
 
-#: cps/helper.py:221
+#: cps/helper.py:225
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Haettua tiedostoa ei pystytty lukemaan. Ehkä vaäärät oikeudet?"
 
-#: cps/helper.py:318
+#: cps/helper.py:322
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:324
+#: cps/helper.py:328
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:335
+#: cps/helper.py:339
 #, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:390
+#: cps/helper.py:394
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Tiedon muuttaminen arvosta: '%(src)s' arvoon '%(dest)s' epäonnistui virheeseen: %(error)s"
 
-#: cps/helper.py:405
+#: cps/helper.py:409
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Tiedoston nimeäminen polusta '%(src)s' polkuun '%(dest)s' epäonnistui virheeseen: %(error)s"
 
-#: cps/helper.py:430 cps/helper.py:440 cps/helper.py:448
+#: cps/helper.py:434 cps/helper.py:444 cps/helper.py:452
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Tiedostoa %(file)s ei löytynyt Google Drivesta"
 
-#: cps/helper.py:469
+#: cps/helper.py:473
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Kirjan polkua %(path)s ei löytynyt Google Drivesta"
 
-#: cps/helper.py:512 cps/web.py:1653
+#: cps/helper.py:516 cps/web.py:1653
 #, fuzzy
 msgid "Found an existing account for this e-mail address"
 msgstr "Tälle sähköpostiosoitteelle läytyi jo käyttäjätunnus."
 
-#: cps/helper.py:520
+#: cps/helper.py:524
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/helper.py:530
+#: cps/helper.py:534
 msgid "Invalid e-mail address format"
 msgstr ""
 
-#: cps/helper.py:603
+#: cps/helper.py:607
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:606
+#: cps/helper.py:610
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:616
+#: cps/helper.py:620
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:632
+#: cps/helper.py:636
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:643
+#: cps/helper.py:647
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:656
+#: cps/helper.py:660
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:708
+#: cps/helper.py:712
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:721
+#: cps/helper.py:725
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:769
+#: cps/helper.py:773
 msgid "Waiting"
 msgstr "Odottaa"
 
-#: cps/helper.py:771
+#: cps/helper.py:775
 msgid "Failed"
 msgstr "Epäonnistui"
 
-#: cps/helper.py:773
+#: cps/helper.py:777
 msgid "Started"
 msgstr "Aloitettu"
 
-#: cps/helper.py:775
+#: cps/helper.py:779
 msgid "Finished"
 msgstr "Valmistui"
 
-#: cps/helper.py:777
+#: cps/helper.py:781
 msgid "Unknown Status"
 msgstr "Tuntematon tila"
 
@@ -858,7 +858,7 @@ msgid "Downloaded Books"
 msgstr ""
 
 #: cps/render_template.py:48 cps/render_template.py:53
-#: cps/templates/user_table.html:165
+#: cps/templates/user_table.html:166
 msgid "Show Downloaded Books"
 msgstr ""
 
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Top Rated Books"
 msgstr "Parhaiten arvioidut kirjat"
 
-#: cps/render_template.py:58 cps/templates/user_table.html:159
+#: cps/render_template.py:58 cps/templates/user_table.html:160
 msgid "Show Top Rated Books"
 msgstr "Näytä parhaiten arvioidut kirjat"
 
@@ -893,54 +893,54 @@ msgid "Discover"
 msgstr "Löydä"
 
 #: cps/render_template.py:68 cps/templates/index.xml:50
-#: cps/templates/user_table.html:160
+#: cps/templates/user_table.html:161
 msgid "Show Random Books"
 msgstr "Näytä satunnausia kirjoja"
 
-#: cps/render_template.py:69 cps/templates/book_table.html:54
+#: cps/render_template.py:69 cps/templates/book_table.html:55
 #: cps/templates/index.xml:83 cps/web.py:1043
 msgid "Categories"
 msgstr "Kategoriat"
 
-#: cps/render_template.py:71 cps/templates/user_table.html:156
+#: cps/render_template.py:71 cps/templates/user_table.html:157
 msgid "Show category selection"
 msgstr "Näytä kategoriavalinta"
 
 #: cps/render_template.py:72 cps/templates/book_edit.html:88
-#: cps/templates/book_table.html:55 cps/templates/index.xml:90
+#: cps/templates/book_table.html:56 cps/templates/index.xml:90
 #: cps/templates/search_form.html:68 cps/web.py:940 cps/web.py:950
 msgid "Series"
 msgstr "Sarjat"
 
-#: cps/render_template.py:74 cps/templates/user_table.html:155
+#: cps/render_template.py:74 cps/templates/user_table.html:156
 msgid "Show series selection"
 msgstr "Näytä sarjavalinta"
 
-#: cps/render_template.py:75 cps/templates/book_table.html:53
+#: cps/render_template.py:75 cps/templates/book_table.html:54
 #: cps/templates/index.xml:69
 msgid "Authors"
 msgstr "Kirjailijat"
 
-#: cps/render_template.py:77 cps/templates/user_table.html:158
+#: cps/render_template.py:77 cps/templates/user_table.html:159
 msgid "Show author selection"
 msgstr "Näytä kirjailijavalinta"
 
-#: cps/render_template.py:79 cps/templates/book_table.html:59
+#: cps/render_template.py:79 cps/templates/book_table.html:60
 #: cps/templates/index.xml:76 cps/web.py:917
 msgid "Publishers"
 msgstr "Julkaisijat"
 
-#: cps/render_template.py:81 cps/templates/user_table.html:161
+#: cps/render_template.py:81 cps/templates/user_table.html:162
 msgid "Show publisher selection"
 msgstr "Näytä julkaisijavalinta"
 
-#: cps/render_template.py:82 cps/templates/book_table.html:57
+#: cps/render_template.py:82 cps/templates/book_table.html:58
 #: cps/templates/index.xml:97 cps/templates/search_form.html:106
 #: cps/web.py:1020
 msgid "Languages"
 msgstr "Kielet"
 
-#: cps/render_template.py:85 cps/templates/user_table.html:153
+#: cps/render_template.py:85 cps/templates/user_table.html:154
 msgid "Show language selection"
 msgstr "Näytä keilivalinta"
 
@@ -948,7 +948,7 @@ msgstr "Näytä keilivalinta"
 msgid "Ratings"
 msgstr "Arvostelut"
 
-#: cps/render_template.py:88 cps/templates/user_table.html:162
+#: cps/render_template.py:88 cps/templates/user_table.html:163
 msgid "Show ratings selection"
 msgstr "Näytä arvosteluvalinta"
 
@@ -956,7 +956,7 @@ msgstr "Näytä arvosteluvalinta"
 msgid "File formats"
 msgstr "Tiedotomuodot"
 
-#: cps/render_template.py:91 cps/templates/user_table.html:163
+#: cps/render_template.py:91 cps/templates/user_table.html:164
 msgid "Show file formats selection"
 msgstr "Näytä tiedostomuotovalinta"
 
@@ -964,7 +964,7 @@ msgstr "Näytä tiedostomuotovalinta"
 msgid "Archived Books"
 msgstr ""
 
-#: cps/render_template.py:95 cps/templates/user_table.html:164
+#: cps/render_template.py:95 cps/templates/user_table.html:165
 msgid "Show archived books"
 msgstr ""
 
@@ -972,7 +972,7 @@ msgstr ""
 msgid "Books List"
 msgstr ""
 
-#: cps/render_template.py:99 cps/templates/user_table.html:166
+#: cps/render_template.py:99 cps/templates/user_table.html:167
 msgid "Show Books List"
 msgstr ""
 
@@ -1283,36 +1283,36 @@ msgstr "Profiili päivitetty"
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr ""
 
-#: cps/tasks/convert.py:114
+#: cps/tasks/convert.py:120
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
 msgstr ""
 
-#: cps/tasks/convert.py:138
+#: cps/tasks/convert.py:145
 #, python-format
 msgid "%(format)s format not found on disk"
 msgstr ""
 
-#: cps/tasks/convert.py:142
+#: cps/tasks/convert.py:149
 msgid "Ebook converter failed with unknown error"
 msgstr ""
 
-#: cps/tasks/convert.py:152
+#: cps/tasks/convert.py:159
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:176
+#: cps/tasks/convert.py:183
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""
 
-#: cps/tasks/convert.py:199
+#: cps/tasks/convert.py:206
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "E-kirjan muunnos epäonnistui: %(error)s"
 
-#: cps/tasks/convert.py:224
+#: cps/tasks/convert.py:231
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr ""
@@ -1323,12 +1323,12 @@ msgstr "Käyttäjälista"
 
 #: cps/templates/admin.html:13 cps/templates/login.html:8
 #: cps/templates/login.html:9 cps/templates/register.html:8
-#: cps/templates/user_edit.html:9 cps/templates/user_table.html:132
+#: cps/templates/user_edit.html:9 cps/templates/user_table.html:133
 msgid "Username"
 msgstr "Lempinimi"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:13
-#: cps/templates/user_edit.html:14 cps/templates/user_table.html:133
+#: cps/templates/user_edit.html:14 cps/templates/user_table.html:134
 msgid "E-mail Address"
 msgstr "Sähköposti"
 
@@ -1337,7 +1337,7 @@ msgid "Send to Kindle E-mail Address"
 msgstr "Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
-#: cps/templates/user_table.html:141
+#: cps/templates/user_table.html:142
 msgid "Admin"
 msgstr "Ylläpito"
 
@@ -1347,13 +1347,13 @@ msgid "Password"
 msgstr "Salasana"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:66
-#: cps/templates/user_table.html:143
+#: cps/templates/user_table.html:144
 msgid "Upload"
 msgstr "Lähetä"
 
 #: cps/templates/admin.html:20 cps/templates/detail.html:18
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
-#: cps/templates/user_table.html:144
+#: cps/templates/user_table.html:145
 msgid "Download"
 msgstr "Lataa"
 
@@ -1361,15 +1361,15 @@ msgstr "Lataa"
 msgid "View Books"
 msgstr "Näytä ekirjat"
 
-#: cps/templates/admin.html:22 cps/templates/user_table.html:129
-#: cps/templates/user_table.html:146
+#: cps/templates/admin.html:22 cps/templates/user_table.html:130
+#: cps/templates/user_table.html:147
 msgid "Edit"
 msgstr "Muokkaa"
 
 #: cps/templates/admin.html:23 cps/templates/book_edit.html:16
-#: cps/templates/book_table.html:61 cps/templates/modal_dialogs.html:63
+#: cps/templates/book_table.html:62 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:66
-#: cps/templates/user_table.html:147
+#: cps/templates/user_table.html:148
 msgid "Delete"
 msgstr "Poista"
 
@@ -1538,7 +1538,7 @@ msgid "OK"
 msgstr "Ok"
 
 #: cps/templates/admin.html:210 cps/templates/admin.html:224
-#: cps/templates/book_edit.html:215 cps/templates/book_table.html:88
+#: cps/templates/book_edit.html:215 cps/templates/book_table.html:89
 #: cps/templates/config_db.html:53 cps/templates/config_edit.html:350
 #: cps/templates/config_view_edit.html:151 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
@@ -1659,7 +1659,7 @@ msgid "Identifier Value"
 msgstr ""
 
 #: cps/templates/book_edit.html:76 cps/templates/book_edit.html:316
-#: cps/templates/user_table.html:23
+#: cps/templates/user_table.html:24
 msgid "Remove"
 msgstr ""
 
@@ -1692,12 +1692,12 @@ msgid "Published Date"
 msgstr "Julkaisupäivä"
 
 #: cps/templates/book_edit.html:121 cps/templates/book_edit.html:287
-#: cps/templates/book_edit.html:304 cps/templates/detail.html:165
+#: cps/templates/book_edit.html:304 cps/templates/detail.html:164
 #: cps/templates/search_form.html:15
 msgid "Publisher"
 msgstr "Julkaisija"
 
-#: cps/templates/book_edit.html:125 cps/templates/detail.html:132
+#: cps/templates/book_edit.html:125 cps/templates/detail.html:131
 #: cps/templates/user_edit.html:32
 msgid "Language"
 msgstr "Kieli"
@@ -1765,98 +1765,98 @@ msgstr "Hakuvirhe!"
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Ei osumia! Kokeile jotain tosita hakusanaa."
 
-#: cps/templates/book_table.html:11 cps/templates/book_table.html:56
-#: cps/templates/user_table.html:13 cps/templates/user_table.html:76
-#: cps/templates/user_table.html:99
+#: cps/templates/book_table.html:12 cps/templates/book_table.html:57
+#: cps/templates/user_table.html:14 cps/templates/user_table.html:77
+#: cps/templates/user_table.html:100
 msgid "This Field is Required"
 msgstr ""
 
-#: cps/templates/book_table.html:24
+#: cps/templates/book_table.html:25
 msgid "Merge selected books"
 msgstr ""
 
-#: cps/templates/book_table.html:25 cps/templates/user_table.html:122
+#: cps/templates/book_table.html:26 cps/templates/user_table.html:123
 msgid "Remove Selections"
 msgstr ""
 
-#: cps/templates/book_table.html:28
+#: cps/templates/book_table.html:29
 msgid "Exchange author and title"
 msgstr ""
 
-#: cps/templates/book_table.html:34
+#: cps/templates/book_table.html:35
 msgid "Update Title Sort automatically"
 msgstr ""
 
-#: cps/templates/book_table.html:38
+#: cps/templates/book_table.html:39
 msgid "Update Author Sort automatically"
 msgstr ""
 
-#: cps/templates/book_table.html:50 cps/templates/book_table.html:56
+#: cps/templates/book_table.html:51 cps/templates/book_table.html:57
 msgid "Enter Title"
 msgstr ""
 
-#: cps/templates/book_table.html:50 cps/templates/config_view_edit.html:23
+#: cps/templates/book_table.html:51 cps/templates/config_view_edit.html:23
 #: cps/templates/shelf_edit.html:7
 msgid "Title"
 msgstr "Otsikko"
 
-#: cps/templates/book_table.html:51
+#: cps/templates/book_table.html:52
 msgid "Enter Title Sort"
 msgstr ""
 
-#: cps/templates/book_table.html:51
+#: cps/templates/book_table.html:52
 msgid "Title Sort"
 msgstr ""
 
-#: cps/templates/book_table.html:52
+#: cps/templates/book_table.html:53
 msgid "Enter Author Sort"
 msgstr ""
 
-#: cps/templates/book_table.html:52
+#: cps/templates/book_table.html:53
 msgid "Author Sort"
 msgstr ""
 
-#: cps/templates/book_table.html:53
+#: cps/templates/book_table.html:54
 msgid "Enter Authors"
 msgstr ""
 
-#: cps/templates/book_table.html:54
+#: cps/templates/book_table.html:55
 msgid "Enter Categories"
 msgstr ""
 
-#: cps/templates/book_table.html:55
+#: cps/templates/book_table.html:56
 msgid "Enter Series"
 msgstr ""
 
-#: cps/templates/book_table.html:56
+#: cps/templates/book_table.html:57
 msgid "Series Index"
 msgstr ""
 
-#: cps/templates/book_table.html:57
+#: cps/templates/book_table.html:58
 msgid "Enter Languages"
 msgstr ""
 
-#: cps/templates/book_table.html:58
+#: cps/templates/book_table.html:59
 msgid "Publishing Date"
 msgstr ""
 
-#: cps/templates/book_table.html:59
+#: cps/templates/book_table.html:60
 msgid "Enter Publishers"
 msgstr ""
 
-#: cps/templates/book_table.html:74 cps/templates/modal_dialogs.html:46
+#: cps/templates/book_table.html:75 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
 msgstr "Oletko aivan varma?"
 
-#: cps/templates/book_table.html:78
+#: cps/templates/book_table.html:79
 msgid "Books with Title will be merged from:"
 msgstr ""
 
-#: cps/templates/book_table.html:82
+#: cps/templates/book_table.html:83
 msgid "Into Book with Title:"
 msgstr ""
 
-#: cps/templates/book_table.html:87
+#: cps/templates/book_table.html:88
 msgid "Merge"
 msgstr ""
 
@@ -2229,7 +2229,7 @@ msgid "Default Visibilities for New Users"
 msgstr "Oletusnäkymä uusille käyttäjille"
 
 #: cps/templates/config_view_edit.html:141 cps/templates/user_edit.html:80
-#: cps/templates/user_table.html:152
+#: cps/templates/user_table.html:153
 msgid "Show Random Books in Detail View"
 msgstr "Näytä satunnaisia kirjoja näkymässä"
 
@@ -2249,54 +2249,54 @@ msgstr "Lue selaimessa"
 msgid "Listen in Browser"
 msgstr "Kuuntele selaimessa"
 
-#: cps/templates/detail.html:125
+#: cps/templates/detail.html:124
 #, python-format
 msgid "Book %(index)s of %(range)s"
 msgstr ""
 
-#: cps/templates/detail.html:174
+#: cps/templates/detail.html:173
 msgid "Published"
 msgstr ""
 
-#: cps/templates/detail.html:219
+#: cps/templates/detail.html:218
 msgid "Mark As Unread"
 msgstr "Merkitse lukemattomaksi"
 
-#: cps/templates/detail.html:219
+#: cps/templates/detail.html:218
 msgid "Mark As Read"
 msgstr "Merkitse luetuksi"
 
-#: cps/templates/detail.html:220
+#: cps/templates/detail.html:219
 msgid "Read"
 msgstr "Luettu"
 
-#: cps/templates/detail.html:228
+#: cps/templates/detail.html:227
 msgid "Restore from archive"
 msgstr ""
 
-#: cps/templates/detail.html:228
+#: cps/templates/detail.html:227
 msgid "Add to archive"
 msgstr ""
 
-#: cps/templates/detail.html:229
+#: cps/templates/detail.html:228
 msgid "Archived"
 msgstr ""
 
-#: cps/templates/detail.html:240
+#: cps/templates/detail.html:239
 msgid "Description:"
 msgstr "Kuvaus:"
 
-#: cps/templates/detail.html:253 cps/templates/search.html:14
+#: cps/templates/detail.html:252 cps/templates/search.html:14
 msgid "Add to shelf"
 msgstr "Lisää hyllyyn"
 
-#: cps/templates/detail.html:264 cps/templates/detail.html:281
+#: cps/templates/detail.html:263 cps/templates/detail.html:280
 #: cps/templates/feed.xml:79 cps/templates/layout.html:138
 #: cps/templates/search.html:20
 msgid "(Public)"
 msgstr ""
 
-#: cps/templates/detail.html:295
+#: cps/templates/detail.html:294
 msgid "Edit Metadata"
 msgstr "Muokkaa metadataa"
 
@@ -2341,7 +2341,7 @@ msgid "Save and Send Test E-mail"
 msgstr "Tallenna asetukset ja testaa sähköpostia"
 
 #: cps/templates/email_edit.html:69 cps/templates/layout.html:29
-#: cps/templates/shelf_order.html:41 cps/templates/user_table.html:172
+#: cps/templates/shelf_order.html:41 cps/templates/user_table.html:173
 msgid "Back"
 msgstr "Palaa"
 
@@ -2354,7 +2354,7 @@ msgid "Add Domain"
 msgstr "Lisää domain"
 
 #: cps/templates/email_edit.html:79 cps/templates/email_edit.html:105
-#: cps/templates/user_table.html:26
+#: cps/templates/user_table.html:27
 msgid "Add"
 msgstr "Lisää"
 
@@ -3025,7 +3025,7 @@ msgstr ""
 msgid "Sync only books in selected shelves with Kobo"
 msgstr ""
 
-#: cps/templates/user_edit.html:139 cps/templates/user_table.html:167
+#: cps/templates/user_edit.html:139 cps/templates/user_table.html:168
 msgid "Delete User"
 msgstr "Poista tämä käyttäjä"
 
@@ -3033,100 +3033,100 @@ msgstr "Poista tämä käyttäjä"
 msgid "Generate Kobo Auth URL"
 msgstr ""
 
-#: cps/templates/user_table.html:79 cps/templates/user_table.html:102
+#: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
 msgstr ""
 
-#: cps/templates/user_table.html:129
+#: cps/templates/user_table.html:130
 #, fuzzy
 msgid "Edit User"
 msgstr "Pääkäyttäjä"
 
-#: cps/templates/user_table.html:132
+#: cps/templates/user_table.html:133
 #, fuzzy
 msgid "Enter Username"
 msgstr "Valitse käyttäjänimi"
 
-#: cps/templates/user_table.html:133
+#: cps/templates/user_table.html:134
 #, fuzzy
 msgid "Enter E-mail Address"
 msgstr "Sähköpostiosoitteesi"
 
-#: cps/templates/user_table.html:134
+#: cps/templates/user_table.html:135
 #, fuzzy
 msgid "Enter Kindle E-mail Address"
 msgstr "Kindle"
 
-#: cps/templates/user_table.html:134
+#: cps/templates/user_table.html:135
 #, fuzzy
 msgid "Kindle E-mail"
 msgstr "Testi sähköposti"
 
-#: cps/templates/user_table.html:135
+#: cps/templates/user_table.html:136
 #, fuzzy
 msgid "Locale"
 msgstr "Skaalaa"
 
-#: cps/templates/user_table.html:136
+#: cps/templates/user_table.html:137
 msgid "Visible Book Languages"
 msgstr ""
 
-#: cps/templates/user_table.html:137
+#: cps/templates/user_table.html:138
 msgid "Edit Allowed Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:137
+#: cps/templates/user_table.html:138
 msgid "Allowed Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:138
+#: cps/templates/user_table.html:139
 msgid "Edit Denied Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:138
+#: cps/templates/user_table.html:139
 msgid "Denied Tags"
 msgstr ""
 
-#: cps/templates/user_table.html:139
+#: cps/templates/user_table.html:140
 msgid "Edit Allowed Column Values"
 msgstr ""
 
-#: cps/templates/user_table.html:139
+#: cps/templates/user_table.html:140
 msgid "Allowed Column Values"
 msgstr ""
 
-#: cps/templates/user_table.html:140
+#: cps/templates/user_table.html:141
 msgid "Edit Denied Column Values"
 msgstr ""
 
-#: cps/templates/user_table.html:140
+#: cps/templates/user_table.html:141
 msgid "Denied Columns Values"
 msgstr ""
 
-#: cps/templates/user_table.html:142
+#: cps/templates/user_table.html:143
 #, fuzzy
 msgid "Change Password"
 msgstr "Salli sananan vaihto"
 
-#: cps/templates/user_table.html:145
+#: cps/templates/user_table.html:146
 msgid "View"
 msgstr ""
 
-#: cps/templates/user_table.html:148
+#: cps/templates/user_table.html:149
 #, fuzzy
 msgid "Edit Public Shelves"
 msgstr "Muokkaa hyllyä"
 
-#: cps/templates/user_table.html:150
+#: cps/templates/user_table.html:151
 msgid "Sync selected Shelves with Kobo"
 msgstr ""
 
-#: cps/templates/user_table.html:154
+#: cps/templates/user_table.html:155
 #, fuzzy
 msgid "Show read/unread selection"
 msgstr "Näytä sarjavalinta"
 
-#: cps/templates/user_table.html:157
+#: cps/templates/user_table.html:158
 msgid "Show random books"
 msgstr "Näytä satunnaisia kirjoja"
 
