@@ -104,15 +104,11 @@ def metadata_search():
     data = list()
     active = current_user.view_settings.get('metadata', {})
     if query:
-        a = datetime.datetime.now()
         static_cover = url_for('static', filename='generic_cover.jpg')
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             meta = {executor.submit(c.search, query, static_cover): c for c in cl if active.get(c.__id__, True)}
             for future in concurrent.futures.as_completed(meta):
                 data.extend(future.result())
-        b = datetime.datetime.now()
-        c = b - a
-        log.info(c.total_seconds())
     return Response(json.dumps(data), mimetype='application/json')
 
 
