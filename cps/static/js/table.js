@@ -36,10 +36,10 @@ $(function() {
                 async: true,
                 timeout: 900,
                 success: function (data) {
-                    $('#table').bootstrapTable("load", data);
+                    $('#tasktable').bootstrapTable("load", data);
                 }
             });
-        }, 2000);
+        }, 1000);
     }
 
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
