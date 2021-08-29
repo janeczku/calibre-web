@@ -26,7 +26,7 @@ class Google(Metadata):
     __name__ = "Google"
     __id__ = "google"
 
-    def search(self, query):
+    def search(self, query, __):
         if self.active:
             val = list()
             result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))

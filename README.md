@@ -62,7 +62,7 @@ Please note that running the above install command can fail on some versions of 
 
 ## Requirements
 
-python 3.x+
+python 3.5+
 
 Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-kindle feature, or during editing of ebooks metadata:
 

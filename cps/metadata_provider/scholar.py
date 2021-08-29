@@ -17,7 +17,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from scholarly import scholarly
-from flask import url_for
 
 from cps.services.Metadata import Metadata
 
@@ -26,7 +25,7 @@ class scholar(Metadata):
     __name__ = "Google Scholar"
     __id__ = "googlescholar"
 
-    def search(self, query):
+    def search(self, query, generic_cover=""):
         val = list()
         if self.active:
             scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
@@ -45,7 +44,7 @@ class scholar(Metadata):
                 v['tags'] = ""
                 v['ratings'] = 0
                 v['series'] = ""
-                v['cover'] = url_for('static', filename='generic_cover.jpg')
+                v['cover'] = generic_cover
                 v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
                 v['source'] = {
                     "id": self.__id__,

@@ -22,8 +22,10 @@ import json
 import importlib
 import sys
 import inspect
+import datetime
+import concurrent.futures
 
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, url_for
 from flask_login import current_user
 from flask_login import login_required
 from sqlalchemy.orm.attributes import flag_modified
@@ -31,6 +33,7 @@ from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 from . import constants, logger, ub
 from cps.services.Metadata import Metadata
+
 
 meta = Blueprint('metadata', __name__)
 
@@ -101,7 +104,19 @@ def metadata_search():
     data = list()
     active = current_user.view_settings.get('metadata', {})
     if query:
-        for c in cl:
-            if active.get(c.__id__, True):
-                data.extend(c.search(query))
+        a = datetime.datetime.now()
+        static_cover = url_for('static', filename='generic_cover.jpg')
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            meta = {executor.submit(c.search, query, static_cover): c for c in cl if active.get(c.__id__, True)}
+            for future in concurrent.futures.as_completed(meta):
+                data.extend(future.result())
+        b = datetime.datetime.now()
+        c = b - a
+        log.info(c.total_seconds())
     return Response(json.dumps(data), mimetype='application/json')
+
+
+
+
+
+
