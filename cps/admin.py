@@ -1702,7 +1702,13 @@ def get_updater_status():
 def ldap_import_create_user(user, user_data):
     user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
 
-    username = user_data[user_login_field][0].decode('utf-8')
+    try:
+        username = user_data[user_login_field][0].decode('utf-8')
+    except KeyError as ex:
+        log.error("Failed to extract LDAP user: %s - %s", user, ex)
+        message = _(u'Failed to extract at least One LDAP User')
+        return 0, message
+
     # check for duplicate username
     if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first():
         # if ub.session.query(ub.User).filter(ub.User.name == username).first():
