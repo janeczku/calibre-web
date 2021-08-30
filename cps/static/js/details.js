@@ -69,7 +69,7 @@ $("#archived_cb").on("change", function() {
                             templates.remove({
                                 add: this.href,
                                 remove: $this.data("remove-href"),
-                                content: this.textContent
+                                content: $("<div>").text(this.textContent).html()
                             })
                         );
                         break;
@@ -78,7 +78,7 @@ $("#archived_cb").on("change", function() {
                             templates.add({
                                 add: $this.data("add-href"),
                                 remove: this.href,
-                                content: this.textContent
+                                content: $("<div>").text(this.textContent).html(),
                             })
                         );
                         break;
