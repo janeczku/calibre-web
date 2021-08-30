@@ -3,6 +3,7 @@
 <th data-field="{{ parameter }}" id="{{ parameter }}"
     {% if sort %}data-sortable="true" {% endif %}
     data-visible = "{{visiblility.get(parameter)}}"
+    data-escape="true"
     {% if g.user.role_edit() %}
         data-editable-type="text"
         data-editable-url="{{ url_for('editbook.edit_list_book', param=parameter)}}"
