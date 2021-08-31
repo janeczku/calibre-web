@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-08-29 19:10:57</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-08-30 20:29:58</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-08-29 22:03:18</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-08-30 23:51:39</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 14 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 41 min</p>
         </div>
       </div>
       </div>
@@ -402,51 +402,133 @@
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestEbookConvertCalibre</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c6', 1)">Detail</a>
+            <a onclick="showClassDetail('c6', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et6.1" class="none bg-info">
+        <tr id='pt6.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_ebook_convert</div>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_deactivate</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et6.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et6.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_ebook_convert
-Traceback (most recent call last):
-  File "/usr/lib/python3.8/unittest/loader.py", line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File "/usr/lib/python3.8/unittest/loader.py", line 377, in _get_module_from_name
-    __import__(name)
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py", line 561
-    test_convert_email        self.assertEqual(ret[-1]['result'], 'Finished')
-                              ^
-SyntaxError: invalid syntax</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_email</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_failed_and_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_parameter</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_wrong_excecutable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_convert_xss</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_email_failed</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_email_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_kindle_send_not_configured</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_ssl_smtp_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_starttls_smtp_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt6.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibre - test_user_convert_xss</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -605,12 +687,12 @@ SyntaxError: invalid syntax</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">15</td>
-        <td class="text-center">11</td>
-        <td class="text-center">1</td>
-        <td class="text-center">2</td>
+        <td class="text-center">14</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c10', 15)">Detail</a>
@@ -744,99 +826,39 @@ SyntaxError: invalid syntax</pre>
     
     
     
-        <tr id="ft10.13" class="none bg-danger">
+        <tr id='pt10.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft10.13')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft10.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft10.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 295, in test_writeonly_path
-    self.assertTrue(os.path.isdir(book_path))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et10.14" class="none bg-info">
+        <tr id='pt10.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et10.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 673, in test_xss_comment_edit
-    self.check_element_on_page((By.ID, "edit_book")).click()
-AttributeError: 'bool' object has no attribute 'click'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et10.15" class="none bg-info">
+        <tr id='pt10.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et10.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 691, in test_xss_custom_comment_edit
-    self.check_element_on_page((By.ID, "edit_book")).click()
-AttributeError: 'bool' object has no attribute 'click'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
         <td class="text-center">35</td>
-        <td class="text-center">32</td>
-        <td class="text-center">2</td>
+        <td class="text-center">34</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -855,31 +877,11 @@ AttributeError: 'bool' object has no attribute 'click'</pre>
     
     
     
-        <tr id="ft11.2" class="none bg-danger">
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft11.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft11.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_books.py", line 180, in test_edit_author
-    self.assertTrue(os.path.isdir(os.path.join(TEST_DB, 'O0u Zhi', 'book8 (8)')))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1028,31 +1030,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft11.19" class="none bg-danger">
+        <tr id='pt11.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.19')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft11.19" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft11.19').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_books.py", line 77, in test_edit_title
-    self.assertTrue(os.path.isdir(os.path.join(TEST_DB, values['author'][0], 'O0u Zhi (4)')))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1324,11 +1306,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">2</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1347,31 +1329,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft13.2" class="none bg-danger">
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft13.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 296, in test_edit_author
-    self.assertTrue(gdrive_path)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1493,31 +1455,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft13.16" class="none bg-danger">
+        <tr id='pt13.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft13.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 142, in test_edit_title
-    self.assertTrue(gdrive_path)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2732,11 +2674,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestRegister</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">1</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2809,31 +2751,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft30.8" class="none bg-danger">
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft30.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft30.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_register.py", line 189, in test_user_change_password
-    self.assertTrue(self.edit_user(u'upasswd', { 'resend_password': 1}))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2883,13 +2805,13 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="skipClass">
         <td>TestShelf</td>
+        <td class="text-center">13</td>
         <td class="text-center">12</td>
-        <td class="text-center">11</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 12)">Detail</a>
+            <a onclick="showClassDetail('c32', 13)">Detail</a>
         </td>
     </tr>
 
@@ -3014,6 +2936,15 @@ AssertionError: False is not true</pre>
         <tr id='pt32.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt32.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3167,12 +3098,12 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">17</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c35', 18)">Detail</a>
@@ -3181,581 +3112,137 @@ AssertionError: False is not true</pre>
 
     
     
-        <tr id="et35.1" class="none bg-info">
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 811, in test_edit_user_email
-    self.assertEqual("low@de.de", user_data['email'])
-TypeError: 'bool' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.2" class="none bg-info">
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 156, in test_list_visibility
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.3" class="none bg-info">
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.3')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 423, in test_user_list_admin_role
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.4" class="none bg-info">
+        <tr id='pt35.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 605, in test_user_list_check_sort
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.5" class="none bg-info">
+        <tr id='pt35.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 361, in test_user_list_denied_tags
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.6" class="none bg-info">
+        <tr id='pt35.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 451, in test_user_list_download_role
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.7" class="none bg-info">
+        <tr id='pt35.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 146, in test_user_list_edit_button
-    self.assertEqual("3_no", ul['table'][0]['Username']['text'])
-TypeError: 'bool' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.8" class="none bg-info">
+        <tr id='pt35.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 231, in test_user_list_edit_email
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.9" class="none bg-info">
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.9')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 257, in test_user_list_edit_kindle
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.10" class="none bg-info">
+        <tr id='pt35.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.10')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 319, in test_user_list_edit_language
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.11" class="none bg-info">
+        <tr id='pt35.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.11')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 274, in test_user_list_edit_locale
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.12" class="none bg-info">
+        <tr id='pt35.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.12')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 208, in test_user_list_edit_name
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.13" class="none bg-info">
+        <tr id='pt35.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 491, in test_user_list_edit_visiblility
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.14" class="none bg-info">
+        <tr id='pt35.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 584, in test_user_list_guest_edit
-    self.assertEqual(3, len(ul['table']))
-TypeError: 'bool' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.15" class="none bg-info">
+        <tr id='pt35.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 439, in test_user_list_remove_admin
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3769,84 +3256,20 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
     
     
-        <tr id="et35.17" class="none bg-info">
+        <tr id='pt35.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 534, in test_user_list_search
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et35.18" class="none bg-info">
+        <tr id='pt35.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et35.18')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et35.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et35.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 542, in test_user_list_sort
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3876,12 +3299,12 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestUserTemplate</td>
         <td class="text-center">21</td>
-        <td class="text-center">20</td>
+        <td class="text-center">21</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c37', 21)">Detail</a>
@@ -4034,43 +3457,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
     
     
     
-        <tr id="et37.17" class="none bg-info">
+        <tr id='pt37.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et37.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et37.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et37.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_template.py", line 65, in test_random_user_template
-    ul = self.get_user_table(1)
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1825, in get_user_table
-    header_edit[cnt]['sort'] = head.find_element_by_xpath("./div[starts-with(@class, 'th-inner')]")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 351, in find_element_by_xpath
-    return self.find_element(by=By.XPATH, value=xpath)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 658, in find_element
-    return self._execute(Command.FIND_CHILD_ELEMENT,
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webelement.py", line 633, in _execute
-    return self._parent.execute(command, params)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: ./div[starts-with(@class, 'th-inner')]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4527,7 +3918,7 @@ selenium.common.exceptions.NoSuchElementException: Message: Unable to locate ele
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 40, in test_check_chinese_Characters
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 44, in test_check_chinese_Characters
     self.assertEqual(helper.get_valid_filename(u'执一'), u'Zhi Yi')
 AssertionError: '执一' != 'Zhi Yi'
 - 执一
@@ -4558,7 +3949,7 @@ AssertionError: '执一' != 'Zhi Yi'
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 61, in test_check_deg_eur_replacement
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 71, in test_check_deg_eur_replacement
     self.assertEqual(helper.get_valid_filename(u'°€'), u'degEUR')
 AssertionError: '°€' != 'degEUR'
 - °€
@@ -4589,7 +3980,7 @@ AssertionError: '°€' != 'degEUR'
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 34, in test_check_doubleS
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 36, in test_check_doubleS
     self.assertEqual(helper.get_valid_filename(u'§ß'), u'SSss')
 AssertionError: '§ß' != 'SSss'
 - §ß
@@ -4629,7 +4020,7 @@ AssertionError: '§ß' != 'SSss'
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 31, in test_check_high23
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 32, in test_check_high23
     self.assertEqual(helper.get_valid_filename(u'²³'), u'23')
 AssertionError: '²³' != '23'
 - ²³
@@ -4660,7 +4051,7 @@ AssertionError: '²³' != '23'
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 37, in test_check_umlauts
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 40, in test_check_umlauts
     self.assertEqual(helper.get_valid_filename(u'ÄÜÖäöü'), u'AUOaou')
 AssertionError: 'ÄÜÖäöü' != 'AUOaou'
 - ÄÜÖäöü
@@ -4703,10 +4094,10 @@ AssertionError: 'ÄÜÖäöü' != 'AUOaou'
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>340</td>
-        <td>301</td>
-        <td>11</td>
-        <td>21</td>
+        <td>353</td>
+        <td>341</td>
+        <td>5</td>
+        <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5101,7 +4492,7 @@ AssertionError: 'ÄÜÖäöü' != 'AUOaou'
 </div>
 
 <script>
-    drawCircle(301, 11, 21, 7);
+    drawCircle(341, 5, 0, 7);
     showCase(5);
 </script>
 
