@@ -37,7 +37,7 @@ msgstr "De server is herstart, vernieuw de pagina"
 
 #: cps/admin.py:147
 msgid "Performing shutdown of server, please close window"
-msgstr "Bezig met afsluiten van de server, sluit het venster"
+msgstr "Bezig met het afsluiten van de server, sluit het venster"
 
 #: cps/admin.py:155
 msgid "Reconnect successful"
@@ -60,7 +60,7 @@ msgstr "Systeembeheer"
 
 #: cps/admin.py:208
 msgid "Basic Configuration"
-msgstr "Basis configuratie"
+msgstr "Basisconfiguratie"
 
 #: cps/admin.py:241
 msgid "UI Configuration"
@@ -123,11 +123,11 @@ msgstr "Ongeldige waarde"
 
 #: cps/admin.py:462
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr "Gast's locatie is automatisch bepaald en kan niet handmatig worden ingesteld"
+msgstr "Gasts locale is automatisch bepaald en kan niet handmatig worden ingesteld"
 
 #: cps/admin.py:466
 msgid "No Valid Locale Given"
-msgstr "Geen geldige locatie is opgegeven"
+msgstr "Geen geldige locale is opgegeven"
 
 #: cps/admin.py:477
 msgid "No Valid Book Language Given"
@@ -139,11 +139,11 @@ msgstr "Parameter is niet gevonden"
 
 #: cps/admin.py:534
 msgid "Invalid Read Column"
-msgstr "Ongeldig gelezen kolom"
+msgstr "Ongeldige gelezen kolom"
 
 #: cps/admin.py:540
 msgid "Invalid Restricted Column"
-msgstr "Ongeldig beperkt kolom"
+msgstr "Ongeldige beperkte kolom"
 
 #: cps/admin.py:559 cps/admin.py:1291
 msgid "Calibre-Web configuration updated"
@@ -151,7 +151,7 @@ msgstr "Calibre-Web-configuratie bijgewerkt"
 
 #: cps/admin.py:571
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "Wil je werkelijk je Kobo Token verwijderen?"
+msgstr "Wil je je Kobo Token echt verwijderen?"
 
 #: cps/admin.py:573
 msgid "Do you really want to delete this domain?"
@@ -168,34 +168,34 @@ msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
 #: cps/admin.py:579
 #, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
+msgstr "Weet je zeker dat je de locales van de geselecteerde gebruiker(s) wil veranderen?"
 
 #: cps/admin.py:581
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Weet je zeker dat je de zichtbaarheidstalen wil veranderen voor de geselecteerde gebruiker(s)?"
+msgstr "Weet je zeker dat je de zichtbare talen voor de geselecteerde gebruiker(s) wil veranderen?"
 
 #: cps/admin.py:583
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde rol wil veranderen voor de geselecteerde gebruiker(s)?"
+msgstr "Weet je zeker dat je de geselecteerde rol van de geselecteerde gebruiker(s) wil veranderen?"
 
 #: cps/admin.py:585
 #, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
+msgstr "Weet je zeker dat je de geselecteerde beperkingen voor de geselecteerde gebruikers(s) wil verwijderen?"
 
 #: cps/admin.py:587
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde zichtbaarheidsbeperkingen wilt verwijderen"
+msgstr "Weet je zeker dat je de geselecteerde zichtbaarheidsbeperkingen voor de geselecteerde gebruiker(s) wil veranderen?"
 
 #: cps/admin.py:589
 #, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde rol wil veranderen voor de geselecteerde gebruiker(s)?"
+msgstr "Weet je zeker dat je de synchronisatiegedrag van boekenplanken voor de geselecteerde gebruiker(s) wil veranderen?"
 
 #: cps/admin.py:591
 #, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "Weet je zeker dat je Calibre-Web wilt stoppen?"
+msgstr "Weet je zeker dat je de locatie van de Calibre-bibliotheek wil veranderen?"
 
 #: cps/admin.py:740
 msgid "Tag not found"
@@ -231,16 +231,15 @@ msgstr "De locatie vam het toegangslog is onjuist, voer een geldige locatie in"
 
 #: cps/admin.py:1095
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "Voer alsjeblieft een LDAP leverancier, Port, DN en User Object Identifier in"
+msgstr "Voer alsjeblieft een LDAP Provider, Port, DN en User Object Identifier in"
 
 #: cps/admin.py:1101
-#, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "Geef een geldige gebruikersnaam op om je wachtwoord te herstellen"
+msgstr "Voer een geldig LDAP Service Account en wachtwoord in"
 
 #: cps/admin.py:1104
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
+msgstr "Voer een LDAP Service Account in"
 
 #: cps/admin.py:1109
 #, python-format
@@ -249,7 +248,7 @@ msgstr "LDAP Groep Object Filter Moet Een \"%s\" Formaat Identificiatie hebben"
 
 #: cps/admin.py:1111
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP Groep Object Filter Heeft Een Ongelijk Haakje"
+msgstr "LDAP Groep Object Filter heeft een niet-gebalanceerd haakje"
 
 #: cps/admin.py:1115
 #, python-format
@@ -258,7 +257,7 @@ msgstr "LDAP Gebruiker Object Filter moet \"%s\" Formaat Identificatie hebben"
 
 #: cps/admin.py:1117
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP Gebruiker Filter heeft een ongelijk haakje"
+msgstr "LDAP Gebruiker Filter heeft een niet-gebalanceerd haakje"
 
 #: cps/admin.py:1124
 #, python-format
@@ -267,7 +266,7 @@ msgstr "LDAP Lid Gebruiker Filter moet een \"%s\" Formaat Identificatie hebben"
 
 #: cps/admin.py:1126
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr "LDAP Lid Gebruiker Filter heeft een ongelijk haakje"
+msgstr "LDAP Lid Gebruiker Filter heeft een niet-gebalanceerd haakje"
 
 #: cps/admin.py:1133
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
@@ -277,7 +276,7 @@ msgstr "LDAP CACertficaat, Certificaat of Sleutel Locatie is ongeldig. Voer alsj
 #: cps/admin.py:1536 cps/shelf.py:102 cps/shelf.py:162 cps/shelf.py:205
 #: cps/shelf.py:272 cps/shelf.py:333 cps/shelf.py:368 cps/shelf.py:443
 msgid "Settings DB is not Writeable"
-msgstr "Instellingen niet opgeslagen"
+msgstr "DB-instellingen niet opgeslagen"
 
 #: cps/admin.py:1186
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -289,16 +288,16 @@ msgstr "Kan niet schrijven naar database"
 
 #: cps/admin.py:1204
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr "SSL-sleutellocatie is niet geldig, voer een geldige locatie in"
+msgstr "SSL-sleutellocatie is niet geldig, voer een geldig pad in"
 
 #: cps/admin.py:1208
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "SSL-certificaatlocatie is niet geldig, voer een geldige locatie in"
+msgstr "SSL-certificaatlocatie is niet geldig, voer een geldig pad in"
 
 #: cps/admin.py:1320
 #, fuzzy
 msgid "Database Configuration"
-msgstr "Geavanceerde opties"
+msgstr "Databaseconfiguratie"
 
 #: cps/admin.py:1336 cps/web.py:1479
 msgid "Please fill out all fields!"
@@ -443,7 +442,7 @@ msgstr "Geüpload bestand kon niet opgeslagen worden in de tijdelijke map"
 
 #: cps/admin.py:1746
 msgid "Failed to Create at Least One LDAP User"
-msgstr "Mislukt om minstens een LDAP gebruiker aan te maken"
+msgstr "Het is niet gelukt tenminste een LDAP gebruiker aan te maken"
 
 #: cps/admin.py:1759
 #, python-format
@@ -495,7 +494,7 @@ msgstr "metagegevens bewerken"
 #: cps/editbooks.py:458
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr ""
+msgstr "%(seriesindex)s is geen geldig nummer, sla het over"
 
 #: cps/editbooks.py:493
 #, python-format
@@ -638,11 +637,11 @@ msgstr "%(format)s versturen naar Kindle"
 #: cps/helper.py:220 cps/tasks/convert.py:73
 #, fuzzy, python-format
 msgid "%(book)s send to Kindle"
-msgstr "Versturen naar Kindle"
+msgstr "%(book)s verzonden naar Kindle"
 
 #: cps/helper.py:225
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "Het opgevraagde bestand kan niet worden uitgelezen. Ben je hiertoe gemachtigd?"
+msgstr "Het opgevraagde bestand kan niet worden gelezen. Ben je hiertoe gemachtigd?"
 
 #: cps/helper.py:322
 #, python-format
@@ -657,12 +656,12 @@ msgstr "Verwijderen van boek %(id)s mislukt: %(message)s"
 #: cps/helper.py:339
 #, fuzzy, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "Verwijderen van boek %(id)s, boek pad is ongeldig: %(path)s"
+msgstr "Verwijder boek %(id)s alleen uit database, boek pad is ongeldig: %(path)s"
 
 #: cps/helper.py:394
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Kan de naam '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
+msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
 
 #: cps/helper.py:409
 #, python-format
@@ -698,7 +697,7 @@ msgstr "Fout bij downloaden omslag"
 
 #: cps/helper.py:610
 msgid "Cover Format Error"
-msgstr "Onjuist omslag formaat"
+msgstr "Onjuist omslagformaat"
 
 #: cps/helper.py:620
 msgid "Failed to create path for cover"
@@ -710,7 +709,7 @@ msgstr "Omslag-bestand is geen afbeelding of kon niet opgeslagen worden"
 
 #: cps/helper.py:647
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "Alleen jpg/jpeg/png/webp/bmp bestanden worden ondersteund als voorblad"
+msgstr "Alleen jpg/jpeg/png/webp/bmp bestanden worden ondersteund als omslag"
 
 #: cps/helper.py:660
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -1034,7 +1033,7 @@ msgstr "Boekenplank maken"
 #: cps/shelf.py:238
 #, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Je bent niet gemachtigd om boeken te verwijderen van boekenplank: %(sname)s"
+msgstr "Je bent niet gemachtigd deze boekenplank aan te passen"
 
 #: cps/shelf.py:240
 msgid "Edit a shelf"
@@ -1067,7 +1066,7 @@ msgstr "Een persoonlijke boekenplank met de naam '%(title)s' bestaat al."
 #: cps/shelf.py:378
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Volgorde bewerken van boekenplank: '%(name)s'"
+msgstr "Volgorde van boekenplank veranderen: '%(name)s'"
 
 #: cps/shelf.py:448
 #, python-format
@@ -1096,7 +1095,7 @@ msgstr "De update-informatie kan niet worden opgehaald"
 
 #: cps/updater.py:427
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Klik op onderstaande knop om de laatste stabiele versie te installeren."
+msgstr "Klik op de onderstaande knop om de laatste stabiele versie te installeren."
 
 #: cps/updater.py:436 cps/updater.py:450 cps/updater.py:461
 #, python-format
@@ -1207,7 +1206,7 @@ msgstr "Lees Status = %(status)s"
 
 #: cps/web.py:1354
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr ""
+msgstr "Fout tijdens het zoeken van aangepaste kolommen, start Calibre-Web opnieuw op"
 
 #: cps/web.py:1449
 #, python-format
@@ -1275,7 +1274,7 @@ msgstr "Je bent ingelogd als: '%(nickname)s'"
 #: cps/web.py:1633 cps/web.py:1682
 #, python-format
 msgid "%(name)s's profile"
-msgstr "%(name)s's profiel"
+msgstr "%(name)ss profiel"
 
 #: cps/web.py:1649
 msgid "Profile updated"
@@ -1321,7 +1320,7 @@ msgstr "Calibre mislukt met foutmelding: %(error)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
-msgstr "Gebruikerslijst"
+msgstr "Gebruikers"
 
 #: cps/templates/admin.html:13 cps/templates/login.html:8
 #: cps/templates/login.html:9 cps/templates/register.html:8
@@ -1471,11 +1470,11 @@ msgstr "Reverse proxy header naam"
 #: cps/templates/admin.html:153
 #, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Bewerk basis configuratie"
+msgstr "Bewerk Calibre databaseconfiguratie"
 
 #: cps/templates/admin.html:154
 msgid "Edit Basic Configuration"
-msgstr "Bewerk basis configuratie"
+msgstr "Bewerk basisconfiguratie"
 
 #: cps/templates/admin.html:155
 msgid "Edit UI Configuration"
@@ -1783,7 +1782,7 @@ msgstr "Geselecteerde boeken verwijderen"
 
 #: cps/templates/book_table.html:29
 msgid "Exchange author and title"
-msgstr ""
+msgstr "Auteur en titel omwisselen"
 
 #: cps/templates/book_table.html:35
 msgid "Update Title Sort automatically"
@@ -1804,7 +1803,7 @@ msgstr "Titel"
 
 #: cps/templates/book_table.html:52
 msgid "Enter Title Sort"
-msgstr "Voer Titel sorteer volgorde in"
+msgstr "Voer Titel sorteervolgorde in"
 
 #: cps/templates/book_table.html:52
 msgid "Title Sort"
@@ -1812,7 +1811,7 @@ msgstr "Titel sorteren"
 
 #: cps/templates/book_table.html:53
 msgid "Enter Author Sort"
-msgstr "Voer Auteur sorteer volgorde in"
+msgstr "Voer Auteur sorteervolgorde in"
 
 #: cps/templates/book_table.html:53
 msgid "Author Sort"
@@ -1844,7 +1843,7 @@ msgstr "Voer publicatiedatum in"
 
 #: cps/templates/book_table.html:60
 msgid "Enter Publishers"
-msgstr "Voer Uitgevers in"
+msgstr "Voer uitgevers in"
 
 #: cps/templates/book_table.html:75 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
@@ -1852,11 +1851,11 @@ msgstr "Weet je het zeker?"
 
 #: cps/templates/book_table.html:79
 msgid "Books with Title will be merged from:"
-msgstr "Boeken met de Titel zullen worden samengevoegd van:"
+msgstr "Boeken met de titel zullen worden samengevoegd van:"
 
 #: cps/templates/book_table.html:83
 msgid "Into Book with Title:"
-msgstr "In boek met Titel:"
+msgstr "In boek met titel:"
 
 #: cps/templates/book_table.html:88
 msgid "Merge"
@@ -1889,7 +1888,7 @@ msgstr "Intrekken"
 #: cps/templates/config_db.html:67
 #, fuzzy
 msgid "New db location is invalid, please enter valid path"
-msgstr "Database niet gevonden, voer de juiste locatie in"
+msgstr "Database niet gevonden, voer een geldig pad in"
 
 #: cps/templates/config_edit.html:17
 msgid "Server Configuration"
@@ -1945,7 +1944,7 @@ msgstr "Uploaden inschakelen"
 
 #: cps/templates/config_edit.html:103
 msgid "Allowed Upload Fileformats"
-msgstr "Toegelaten upload formaten"
+msgstr "Toegelaten upload bestandsformaten"
 
 #: cps/templates/config_edit.html:109
 msgid "Enable Anonymous Browsing"
@@ -1981,7 +1980,7 @@ msgstr "Gebruik Goodreads"
 
 #: cps/templates/config_edit.html:145
 msgid "Create an API Key"
-msgstr "API-sleutel verkrijgen"
+msgstr "Maak API-sleutel aan"
 
 #: cps/templates/config_edit.html:149
 msgid "Goodreads API Key"
@@ -2242,7 +2241,7 @@ msgstr "Voeg toegestane/geweigerde tags toe"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied custom column values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Voeg toegestane/geweigerde aangepaste kolomwaarden toe"
 
 #: cps/templates/detail.html:60 cps/templates/detail.html:69
 msgid "Read in Browser"
@@ -2255,7 +2254,7 @@ msgstr "Luisteren in webbrowser"
 #: cps/templates/detail.html:124
 #, fuzzy, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "Boek %(index)s van %(range)s"
 
 #: cps/templates/detail.html:173
 msgid "Published"
@@ -2392,7 +2391,7 @@ msgstr "Terug naar startpagina"
 
 #: cps/templates/http_error.html:50
 msgid "Logout User"
-msgstr ""
+msgstr "Gebruiker uitloggen"
 
 #: cps/templates/index.html:72 cps/templates/search.html:33
 #: cps/templates/shelf.html:20
@@ -2479,7 +2478,7 @@ msgstr "Boekenplanken"
 
 #: cps/templates/index.xml:123
 msgid "Books organized in shelves"
-msgstr "Boeken onderdeel van boekenplanken"
+msgstr "Boeken georganiseerd op boekenplanken"
 
 #: cps/templates/layout.html:29
 msgid "Home"
@@ -2645,7 +2644,7 @@ msgstr "Selecteer"
 #: cps/templates/modal_dialogs.html:134
 #, fuzzy
 msgid "Ok"
-msgstr "Boek"
+msgstr "Oké"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2663,7 +2662,7 @@ msgstr "Tekstindeling automatisch aanpassen als het zijpaneel geopend is."
 #: cps/templates/readcbr.html:7
 #, fuzzy
 msgid "Comic Reader"
-msgstr "PDF lezer"
+msgstr "Comic Reader"
 
 #: cps/templates/readcbr.html:89
 msgid "Keyboard Shortcuts"
@@ -2763,23 +2762,23 @@ msgstr "Rechts-naar-links"
 
 #: cps/templates/readcbr.html:165
 msgid "Reset to Top"
-msgstr ""
+msgstr "Terugzetten naar bovenkant"
 
 #: cps/templates/readcbr.html:166
 msgid "Remember Position"
-msgstr ""
+msgstr "Positie onthouden"
 
 #: cps/templates/readcbr.html:171
 msgid "Scrollbar"
-msgstr ""
+msgstr "Schuifbalk"
 
 #: cps/templates/readcbr.html:174
 msgid "Show"
-msgstr ""
+msgstr "Toon"
 
 #: cps/templates/readcbr.html:175
 msgid "Hide"
-msgstr ""
+msgstr "Verberg"
 
 #: cps/templates/readdjvu.html:10
 #, fuzzy
@@ -2818,7 +2817,7 @@ msgstr "Meld je aan op een ander apparaat en ga naar:"
 
 #: cps/templates/remote_login.html:10
 msgid "Once verified, you will automatically be logged in on this device."
-msgstr "Daarna wordt je automatisch op dit apparaat ingelogd."
+msgstr "Na controle wordt je automatisch op dit apparaat ingelogd."
 
 #: cps/templates/remote_login.html:13
 msgid "This verification link will expire in 10 minutes."
@@ -2887,11 +2886,11 @@ msgstr "Van:"
 
 #: cps/templates/search_form.html:189
 msgid "To:"
-msgstr "Naar:"
+msgstr "Tot:"
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
-msgstr "Boekenplank verwijderen"
+msgstr "Deze boekenplank verwijderen"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf Properties"
@@ -2899,7 +2898,7 @@ msgstr "Bewerk boekenplank eigenschappen"
 
 #: cps/templates/shelf.html:13
 msgid "Arrange books manually"
-msgstr "Regel boeken handmatig"
+msgstr "Boeken handmatig rangschikken"
 
 #: cps/templates/shelf.html:14
 msgid "Disable Change order"
@@ -2915,11 +2914,11 @@ msgstr "Boekenplank wordt permanent verwijderd voor iedereen"
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
-msgstr "Zichtbaar voor iedereen"
+msgstr "Delen met iedereen"
 
 #: cps/templates/shelf_edit.html:20
 msgid "Sync this shelf with Kobo device"
-msgstr ""
+msgstr "Synchroniseer deze boekenplank met een Kobo-apparaat"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -2951,7 +2950,7 @@ msgstr "Boekenreeksen in deze bibliotheek"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr "Systeem informatie"
+msgstr "Systeeminformatie"
 
 #: cps/templates/stats.html:33
 msgid "Program Library"
@@ -2959,7 +2958,7 @@ msgstr "Programmabibliotheek"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
-msgstr "Versie"
+msgstr "Geïnstalleerde Versie"
 
 #: cps/templates/tasks.html:12
 msgid "User"
@@ -3019,19 +3018,19 @@ msgstr "Kobo Sync Token"
 
 #: cps/templates/user_edit.html:65
 msgid "Create/View"
-msgstr "Aanmaken/Bekijk"
+msgstr "Aanmaken/Bekijken"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Voeg toegestane/geweigerde aangepaste kolomwaarden toe"
 
 #: cps/templates/user_edit.html:129
 msgid "Sync only books in selected shelves with Kobo"
-msgstr ""
+msgstr "Synchroniseer alleen boeken op geselecteerde boekenplanken met Kobo"
 
 #: cps/templates/user_edit.html:139 cps/templates/user_table.html:168
 msgid "Delete User"
-msgstr "Deze gebruiker verwijderen"
+msgstr "Gebruiker verwijderen"
 
 #: cps/templates/user_edit.html:151
 msgid "Generate Kobo Auth URL"
@@ -3042,99 +3041,87 @@ msgid "Select..."
 msgstr "Selecteer..."
 
 #: cps/templates/user_table.html:130
-#, fuzzy
 msgid "Edit User"
-msgstr "Systeembeheerder"
+msgstr "Gebruiker Bewerken"
 
 #: cps/templates/user_table.html:133
-#, fuzzy
 msgid "Enter Username"
-msgstr "Kies een gebruikersnaam"
+msgstr "Voer gebruikersnaam in"
 
 #: cps/templates/user_table.html:134
-#, fuzzy
 msgid "Enter E-mail Address"
-msgstr "Je e-mailadres"
+msgstr "Voer e-mailadres in"
 
 #: cps/templates/user_table.html:135
-#, fuzzy
 msgid "Enter Kindle E-mail Address"
-msgstr "Kindle-e-mailadres"
+msgstr "Voer Kindle-e-mailadres in"
 
 #: cps/templates/user_table.html:135
-#, fuzzy
 msgid "Kindle E-mail"
-msgstr "Test-e-mail"
+msgstr "Kindle-e-mail"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Locale"
-msgstr "Schaal"
+msgstr "Locale"
 
 #: cps/templates/user_table.html:137
 msgid "Visible Book Languages"
 msgstr "Zichtbare Boek Talen"
 
 #: cps/templates/user_table.html:138
-#, fuzzy
 msgid "Edit Allowed Tags"
-msgstr "Selecteer toegestane/geweigerde tags"
+msgstr "Toegestaande labels bewerken"
 
 #: cps/templates/user_table.html:138
 msgid "Allowed Tags"
-msgstr "Toegestaande Tags"
+msgstr "Toegestaande Labels"
 
 #: cps/templates/user_table.html:139
-#, fuzzy
 msgid "Edit Denied Tags"
-msgstr "Selecteer toegestane/geweigerde tags"
+msgstr "Verboden labels bewerken"
 
 #: cps/templates/user_table.html:139
 msgid "Denied Tags"
-msgstr "Verboden Tags"
+msgstr "Verboden Labels"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Edit Allowed Column Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Toegestane kolomwaarden bewerken"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Allowed Column Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Toegestane kolomwaarden"
 
 #: cps/templates/user_table.html:141
 #, fuzzy
 msgid "Edit Denied Column Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Geweigerde kolomwaarden bewerken"
 
 #: cps/templates/user_table.html:141
 #, fuzzy
 msgid "Denied Columns Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolom waarden toe"
+msgstr "Geweigerde kolomwaarden"
 
 #: cps/templates/user_table.html:143
 #, fuzzy
 msgid "Change Password"
-msgstr "Wachtwoord wijzigen toestaan"
+msgstr "Wachtwoord wijzigen"
 
 #: cps/templates/user_table.html:146
 msgid "View"
-msgstr "Geef weer"
+msgstr "Toon"
 
 #: cps/templates/user_table.html:149
-#, fuzzy
 msgid "Edit Public Shelves"
-msgstr "Openbare boekenplank"
+msgstr "Openbare boekenplank bewerken"
 
 #: cps/templates/user_table.html:151
 msgid "Sync selected Shelves with Kobo"
-msgstr ""
+msgstr "Synchroniseer geselecteerde boekenplanken met Kobo"
 
 #: cps/templates/user_table.html:155
-#, fuzzy
 msgid "Show read/unread selection"
-msgstr "Boekenreeksenkeuze tonen"
+msgstr "Toon gelezen/niet gelezen selectie"
 
 #: cps/templates/user_table.html:158
 msgid "Show random books"
