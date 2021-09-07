@@ -1258,6 +1258,7 @@ def _configuration_update_helper():
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_converterpath")
         _config_string(to_save, "config_kepubifypath")
+        _config_string(to_save, "config_epub2websitepath")
 
         reboot_required |= _config_int(to_save, "config_login_type")
 

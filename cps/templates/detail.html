@@ -63,10 +63,27 @@
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                     {% for format in reader_list %}
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
+                      {% if config.config_epub2websitepath != None %}
+                      {% if format == "epub" %}
+                      <li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>
+                      {% endif %}
+                      {% endif %}
                     {%endfor%}
                     </ul>
                 {% else %}
-                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-book"></span> {{_('Read in Browser')}} - {{reader_list[0]}}</a>
+                  {% if reader_list[0] == "epub" %}
+                  <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}}
+                    <span class="caret"></span>
+                  </button>
+                    <ul class="dropdown-menu" aria-labelledby="read-in-browser">
+                      <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=reader_list[0]) }}">{{reader_list[0]}}</a></li>
+                      {% if config.config_epub2websitepath != None %}<li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>{% endif %}
+                    </ul>
+                  {% else %}
+                    <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button">
+                      <span class="glyphicon glyphicon-book"></span> {{_('Read in Browser')}} - {{reader_list[0]}}</a>
+                  {% endif %}
                 {% endif %}
               </div>
             {% endif %}

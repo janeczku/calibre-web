@@ -19,6 +19,7 @@
 import os
 import sys
 import json
+import shutil
 
 from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
@@ -133,7 +134,8 @@ class _Settings(_Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
-    config_unicode_filename =Column(Boolean, default=False)
+    config_unicode_filename = Column(Boolean, default=False)
+    config_epub2websitepath = Column(String, default=None)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
@@ -167,6 +169,11 @@ class _ConfigSQL(object):
         if self.config_rarfile_location == None:  # pylint: disable=access-member-before-definition
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
+
+        if self.config_epub2websitepath == None:  # pylint: disable=access-member-before-definition
+            change = True
+            self.config_epub2websitepath = shutil.which("epub2website")
+
         if change:
             self.save()
 
