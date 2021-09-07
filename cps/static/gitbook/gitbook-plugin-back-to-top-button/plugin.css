@@ -1,0 +1,55 @@
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    display: none;
+}
+.back-to-top i {
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 15px;
+    top: 14px;
+    font-size: 22px;
+}
+.back-to-top:hover {
+    background: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+.book.color-theme-1 .back-to-top {
+    background: rgba(112, 66, 20, 0.5);
+}
+.book.color-theme-1 .back-to-top i {
+    color: #f3eacb;
+}
+.book.color-theme-1 .back-to-top:hover {
+    background: rgba(112, 66, 20, 0.9);
+}
+.book.color-theme-2 .back-to-top {
+    background: rgba(189, 202, 219, 0.5);
+}
+.book.color-theme-2 .back-to-top i {
+    color: #1C1F2B;
+}
+.book.color-theme-2 .back-to-top:hover {
+    background: rgba(189, 202, 219, 0.9);
+}
+
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 480px)
+and (-webkit-min-device-pixel-ratio: 2)
+and (orientation: portrait) {
+    .back-to-top {
+        bottom: 10px;
+        right: 10px;
+    }
+}

@@ -1,0 +1,106 @@
+.page-toc-button {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 35px;
+    display: block;
+    position: fixed;
+    top: 68px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+}
+.page-toc-button i {
+    color: #fff;
+    margin: 0;
+    position: relative;
+    left: 15px;
+    top: 14px;
+    font-size: 22px;
+}
+.page-toc-button .page-toc-menu {
+    display: none;
+    text-align: left;
+}
+.page-toc-button:hover {
+    background: rgba(0, 0, 0, 0.9);
+    border-radius: 0;
+    cursor: pointer;	
+    top: 68px;
+    right: 25px;
+    width: auto;
+    height: auto;
+    max-height: 70%;
+    font-size: 14px;
+    text-align: right;
+    white-space: nowrap;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.page-toc-button:hover i {
+    display: none;
+}
+.page-toc-button:hover .page-toc-menu {
+    display: block;
+}
+.page-toc-menu li {
+    color: #fff;
+    padding-left: 5px;
+    padding-right: 25px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.page-toc-menu a {
+    color: #fff;
+}
+.page-toc-menu a:hover {
+    text-decoration: underline;
+}
+.book.color-theme-1 .page-toc-button {
+    background: rgba(112, 66, 20, 0.5);
+}
+.book.color-theme-1 .page-toc-button i {
+    color: #f3eacb;
+}
+.book.color-theme-1 .page-toc-button:hover {
+    background: rgba(112, 66, 20, 0.9);
+}
+.book.color-theme-1 .page-toc-menu li {
+    color: #f3eacb;
+}
+.book.color-theme-1 .page-toc-menu a {
+    color: #f3eacb;
+}
+.book.color-theme-2 .page-toc-button {
+    background: rgba(189, 202, 219, 0.5);
+}
+.book.color-theme-2 .page-toc-button i {
+    color: #1C1F2B
+}
+.book.color-theme-2 .page-toc-button:hover {
+    background: rgba(189, 202, 219, 0.9);
+}
+.book.color-theme-2 .page-toc-menu li {
+    color: #fff;
+}
+.book.color-theme-2 .page-toc-menu a {
+    color: #fff;
+}
+
+@media only screen 
+  and (max-height: 240px) {
+	.page-toc-button {
+		display: none;
+	}
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+	.page-toc-button {
+		display: none;
+	}
+}
