@@ -1,5 +1,6 @@
-{% macro book_cover_image(book, thumbnails) -%}
+{% macro book_cover_image(book, thumbnails, title) -%}
     {%- set book_title = book.title if book.title else book.name -%}
+    {%- set book_title = title if title else book_title -%}
     {% set srcset = thumbnails|get_book_thumbnail_srcset if thumbnails|length else '' %}
     {%- if srcset|length -%}
         <img
