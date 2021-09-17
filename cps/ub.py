@@ -532,7 +532,7 @@ class Thumbnail(Base):
     resolution = Column(SmallInteger, default=1)
     filename = Column(String, default=filename)
     generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
-    expiration = Column(DateTime, default=lambda: datetime.datetime.utcnow() + datetime.timedelta(days=30))
+    expiration = Column(DateTime, default=lambda: datetime.datetime.utcnow() + datetime.timedelta(days=90))
 
 
 # Add missing tables during migration of database

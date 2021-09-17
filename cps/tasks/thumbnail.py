@@ -37,6 +37,7 @@ except (ImportError, RuntimeError) as e:
 
 THUMBNAIL_RESOLUTION_1X = 1
 THUMBNAIL_RESOLUTION_2X = 2
+THUMBNAIL_RESOLUTION_3X = 3
 
 
 class TaskGenerateCoverThumbnails(CalibreTask):
