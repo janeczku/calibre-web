@@ -69,6 +69,7 @@ class WorkerThread(threading.Thread):
     def add(cls, user, task):
         ins = cls.getInstance()
         ins.num += 1
+        log.debug("Add Task for user: {}: {}".format(user, task))
         ins.queue.put(QueuedTask(
             num=ins.num,
             user=user,
@@ -164,9 +165,9 @@ class CalibreTask:
         # catch any unhandled exceptions in a task and automatically fail it
         try:
             self.run(*args)
-        except Exception as e:
-            self._handleError(str(e))
-            log.debug_or_exception(e)
+        except Exception as ex:
+            self._handleError(str(ex))
+            log.debug_or_exception(ex)
 
         self.end_time = datetime.now()
 
@@ -209,10 +210,13 @@ class CalibreTask:
         # By default, we're good to clean a task if it's "Done"
         return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL)
 
-    @progress.setter
-    def progress(self, x):
-        # todo: throw error if outside of [0,1]
-        self._progress = x
+    '''@progress.setter
+    def progress(self, x):        
+        if x > 1: 
+            x = 1
+        if x < 0: 
+            x = 0
+        self._progress = x'''
 
     @property
     def self_cleanup(self):

@@ -10,58 +10,38 @@ if ($("#description").length) {
         menubar: "edit view format",
         language: language
     });
+}
 
-    if (!Modernizr.inputtypes.date) {
-        $("#pubdate").datepicker({
-            format: "yyyy-mm-dd",
-            language: language
-        }).on("change", function () {
-            // Show localized date over top of the standard YYYY-MM-DD date
-            var pubDate;
-            var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
-            if (results) {
-                pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
-                $("#fake_pubdate")
-                    .val(pubDate.toLocaleDateString(language))
-                    .removeClass("hidden");
-            }
-        }).trigger("change");
+if ($(".tiny_editor").length) {
+    tinymce.init({
+        selector: ".tiny_editor",
+        branding: false,
+        menubar: "edit view format",
+        language: language
+    });
+}
+
+$(".datepicker").datepicker({
+    format: "yyyy-mm-dd",
+    language: language
+}).on("change", function () {
+    // Show localized date over top of the standard YYYY-MM-DD date
+    var pubDate;
+    var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+    if (results) {
+        pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
+        $(this).next('input')
+            .val(pubDate.toLocaleDateString(language))
+            .removeClass("hidden");
     }
-}
+}).trigger("change");
 
-if (!Modernizr.inputtypes.date) {
-    $("#Publishstart").datepicker({
-        format: "yyyy-mm-dd",
-        language: language
-    }).on("change", function () {
-        // Show localized date over top of the standard YYYY-MM-DD date
-        var pubDate;
-        var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
-        if (results) {
-            pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
-            $("#fake_Publishstart")
-                .val(pubDate.toLocaleDateString(language))
-                .removeClass("hidden");
-        }
-    }).trigger("change");
-}
+$(".datepicker_delete").click(function() {
+    var inputs = $(this).parent().siblings('input');
+    $(inputs[0]).data('datepicker').clearDates();
+    $(inputs[1]).addClass('hidden');
+});
 
-if (!Modernizr.inputtypes.date) {
-    $("#Publishend").datepicker({
-        format: "yyyy-mm-dd",
-        language: language
-    }).on("change", function () {
-        // Show localized date over top of the standard YYYY-MM-DD date
-        var pubDate;
-        var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
-        if (results) {
-            pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
-            $("#fake_Publishend")
-                .val(pubDate.toLocaleDateString(language))
-                .removeClass("hidden");
-        }
-    }).trigger("change");
-}
 
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
@@ -77,11 +57,6 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
         cb(matches);
     });
 }
-
-/*function getPath() {
-    var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
-    return jsFileLocation.substr(0, jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
-}*/
 
 var authors = new Bloodhound({
     name: "authors",
@@ -286,5 +261,12 @@ $("#btn-upload-cover").on("change", function () {
         filename = filename.substring(12);
     } // Remove c:\fake at beginning from localhost chrome
     $("#upload-cover").html(filename);
+});
+
+$("#xchange").click(function () {
+    this.blur();
+    var title = $("#book_title").val();
+    $("#book_title").val($("#bookAuthor").val());
+    $("#bookAuthor").val(title);
 });
 

@@ -37,6 +37,11 @@ from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 
+try:
+    import lxml
+    lxml_present = True
+except ImportError:
+    lxml_present = False
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -83,11 +88,23 @@ log = logger.create()
 
 from . import services
 
-db.CalibreDB.setup_db(config, cli.settingspath)
+db.CalibreDB.update_config(config)
+db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
+
 
 calibre_db = db.CalibreDB()
 
 def create_app():
+    if sys.version_info < (3, 0):
+        log.info(
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        print(
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        sys.exit(5)
+    if not lxml_present:
+        log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        sys.exit(6)
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
@@ -97,11 +114,9 @@ def create_app():
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
+        cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
-    if sys.version_info < (3, 0):
-        log.info('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
-        print('Python2 is EOL since end of 2019, this version of Calibre-Web supporting Python2 please consider upgrading to Python3')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
@@ -126,9 +141,8 @@ def create_app():
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
-    # user = None
     if user is not None and hasattr(user, "locale"):
-        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+        if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
 
     preferred = list()
@@ -146,6 +160,7 @@ def get_locale():
 def get_timezone():
     user = getattr(g, 'user', None)
     return user.timezone if user else None
+
 
 from .updater import Updater
 updater_thread = Updater()

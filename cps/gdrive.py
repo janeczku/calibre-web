@@ -74,7 +74,7 @@ def google_drive_callback():
             f.write(credentials.to_json())
     except (ValueError, AttributeError) as error:
         log.error(error)
-    return redirect(url_for('admin.configuration'))
+    return redirect(url_for('admin.db_configuration'))
 
 
 @gdrive.route("/watch/subscribe")
@@ -99,7 +99,7 @@ def watch_gdrive():
             else:
                 flash(reason['message'], category="error")
 
-    return redirect(url_for('admin.configuration'))
+    return redirect(url_for('admin.db_configuration'))
 
 
 @gdrive.route("/watch/revoke")
@@ -115,7 +115,7 @@ def revoke_watch_gdrive():
             pass
         config.config_google_drive_watch_changes_response = {}
         config.save()
-    return redirect(url_for('admin.configuration'))
+    return redirect(url_for('admin.db_configuration'))
 
 
 @gdrive.route("/watch/callback", methods=['GET', 'POST'])
@@ -155,6 +155,6 @@ def on_received_watch_confirmation():
                 # prevent error on windows, as os.rename does on existing files, also allow cross hdd move
                 move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                 calibre_db.reconnect_db(config, ub.app_DB_path)
-    except Exception as e:
-        log.debug_or_exception(e)
+    except Exception as ex:
+        log.debug_or_exception(ex)
     return ''

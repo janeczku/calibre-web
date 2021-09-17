@@ -31,7 +31,7 @@ from babel.dates import format_date
 from flask import Blueprint, request, url_for
 from flask_babel import get_locale
 from flask_login import current_user
-
+from markupsafe import escape
 from . import logger
 
 
@@ -82,7 +82,7 @@ def formatdate_filter(val):
     except AttributeError as e:
         log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
                   current_user.locale,
-                  current_user.nickname
+                  current_user.name
                   )
         return val
 
@@ -113,21 +113,25 @@ def yesno(value, yes, no):
 
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
-    formatedstring = '%d' % value
-    if (value % 1) != 0:
-        formatedstring = ('%s.%d' % (formatedstring, (value % 1) * 10**decimals)).rstrip('0')
-    return formatedstring
+    value = 0 if not value else value
+    return ('{0:.' + str(decimals) + 'f}').format(value).rstrip('0').rstrip('.')
 
 
 @jinjia.app_template_filter('formatseriesindex')
 def formatseriesindex_filter(series_index):
     if series_index:
-        if int(series_index) - series_index == 0:
-            return int(series_index)
-        else:
+        try:
+            if int(series_index) - series_index == 0:
+                return int(series_index)
+            else:
+                return series_index
+        except ValueError:
             return series_index
     return 0
 
+@jinjia.app_template_filter('escapedlink')
+def escapedlink_filter(url, text):
+    return "<a href='{}'>{}</a>".format(url, escape(text))
 
 @jinjia.app_template_filter('uuidfilter')
 def uuidfilter(var):

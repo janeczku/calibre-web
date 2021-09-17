@@ -20,6 +20,9 @@ from __future__ import division, print_function, unicode_literals
 import sys
 import os
 from collections import namedtuple
+from sqlalchemy import __version__ as sql_version
+
+sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2,0,0])
 
 # if installed via pip this variable is set to true (empty file with name .HOMEDIR present)
 HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.HOMEDIR'))
@@ -155,7 +158,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages, publisher')
 
-STABLE_VERSION = {'version': '0.6.12 Beta'}
+STABLE_VERSION = {'version': '0.6.13 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'

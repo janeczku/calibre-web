@@ -28,16 +28,18 @@ from flask import session as flask_session
 from binascii import hexlify
 
 from flask_login import AnonymousUserMixin, current_user
+from flask_login import user_logged_in
+from contextlib import contextmanager
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
-except ImportError:
+except ImportError as e:
     # fails on flask-dance >1.3, due to renaming
     try:
         from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
         oauth_support = True
-    except ImportError:
+    except ImportError as e:
         oauth_support = False
 from sqlalchemy import create_engine, exc, exists, event, text
 from sqlalchemy import Column, ForeignKey
@@ -61,6 +63,65 @@ app_DB_path = None
 Base = declarative_base()
 searched_ids = {}
 
+logged_in = dict()
+
+def store_user_session():
+    if flask_session.get('_user_id', ""):
+        if logged_in.get(flask_session.get('_user_id', "")):
+            logged_in[flask_session.get('_user_id', "")].append(flask_session.get('_id', ""))
+        else:
+            logged_in[flask_session.get('_user_id', "")] = [flask_session.get('_id', "")]
+        log.info(flask_session.get('_id', ""))
+
+def delete_user_session(user_id, session_key):
+    try:
+        logged_in.get(str(user_id), []).remove(session_key)
+    except ValueError:
+        pass
+
+def check_user_session(user_id, session_key):
+    return session_key in logged_in.get(str(user_id), [])
+
+def signal_store_user_session(object, user):
+    store_user_session()
+
+def store_user_session():
+    if flask_session.get('_user_id', ""):
+        try:
+            if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):
+                user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
+                session.add(user_session)
+                session.commit()
+                log.debug("Login and store session : " + flask_session.get('_id', ""))
+            else:
+                log.debug("Found stored session: " + flask_session.get('_id', ""))
+        except (exc.OperationalError, exc.InvalidRequestError) as e:
+            session.rollback()
+            log.exception(e)
+    else:
+        log.error("No user id in session")
+
+def delete_user_session(user_id, session_key):
+    try:
+        log.debug("Deleted session_key: " + session_key)
+        session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                            User_Sessions.session_key==session_key).delete()
+        session.commit()
+    except (exc.OperationalError, exc.InvalidRequestError):
+        session.rollback()
+        log.exception(e)
+
+
+def check_user_session(user_id, session_key):
+    try:
+        return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                                       User_Sessions.session_key==session_key).one_or_none())
+    except (exc.OperationalError, exc.InvalidRequestError):
+        session.rollback()
+        log.exception(e)
+
+
+user_logged_in.connect(signal_store_user_session)
 
 def store_ids(result):
     ids = list()
@@ -73,7 +134,7 @@ class UserBase:
 
     @property
     def is_authenticated(self):
-        return True
+        return self.is_active
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.role, role_flag)
@@ -163,7 +224,7 @@ class UserBase:
             # ToDo: Error message
 
     def __repr__(self):
-        return '<User %r>' % self.nickname
+        return '<User %r>' % self.name
 
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
@@ -173,7 +234,7 @@ class User(UserBase, Base):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
-    nickname = Column(String(64), unique=True)
+    name = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
     role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
@@ -183,14 +244,13 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
-    mature_content = Column(Boolean, default=True)
     denied_tags = Column(String, default="")
     allowed_tags = Column(String, default="")
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
-
+    kobo_only_shelves_sync = Column(Integer, default=0)
 
 
 if oauth_support:
@@ -219,19 +279,19 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def loadSettings(self):
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\
             .first()  # type: User
-        self.nickname = data.nickname
+        self.name = data.name
         self.role = data.role
         self.id=data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        # self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
         self.denied_tags = data.denied_tags
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
+        self.kobo_only_shelves_sync = data.kobo_only_shelves_sync
 
 
     def role_admin(self):
@@ -263,6 +323,17 @@ class Anonymous(AnonymousUserMixin, UserBase):
             flask_session['view'][page][prop] = value
         return None
 
+class User_Sessions(Base):
+    __tablename__ = 'user_session'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    session_key = Column(String, default="")
+
+    def __init__(self, user_id, session_key):
+        self.user_id = user_id
+        self.session_key = session_key
+
 
 # Baseclass representing Shelfs in calibre-web in app.db
 class Shelf(Base):
@@ -273,6 +344,7 @@ class Shelf(Base):
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
+    kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
     created = Column(DateTime, default=datetime.datetime.utcnow)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
@@ -509,11 +581,12 @@ def migrate_registration_table(engine, session):
 
 
 # Remove login capability of user Guest
-def migrate_guest_password(engine, session):
+def migrate_guest_password(engine):
     try:
         with engine.connect() as conn:
-            conn.execute(text("UPDATE user SET password='' where nickname = 'Guest' and password !=''"))
-        session.commit()
+            trans = conn.begin()
+            conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
+            trans.commit()
     except exc.OperationalError:
         print('Settings database is not writeable. Exiting...')
         sys.exit(2)
@@ -528,6 +601,7 @@ def migrate_shelfs(engine, session):
             conn.execute("ALTER TABLE shelf ADD column 'created' DATETIME")
             conn.execute("ALTER TABLE shelf ADD column 'last_modified' DATETIME")
             conn.execute("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME")
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
         for shelf in session.query(Shelf).all():
             shelf.uuid = str(uuid.uuid4())
             shelf.created = datetime.datetime.now()
@@ -535,6 +609,15 @@ def migrate_shelfs(engine, session):
         for book_shelf in session.query(BookShelf).all():
             book_shelf.date_added = datetime.datetime.now()
         session.commit()
+
+    try:
+        session.query(exists().where(Shelf.kobo_sync)).scalar()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+
+            conn.execute("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false")
+        session.commit()
+
     try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
@@ -618,38 +701,51 @@ def migrate_Database(session):
         with engine.connect() as conn:
             conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
         session.commit()
-
-    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
-        is None:
-        create_anonymous_user(session)
     try:
-        # check if one table with autoincrement is existing (should be user table)
+        session.query(exists().where(User.kobo_only_shelves_sync)).scalar()
+    except exc.OperationalError:
         with engine.connect() as conn:
-            conn.execute(text("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'"))
+            conn.execute("ALTER TABLE user ADD column `kobo_only_shelves_sync` SMALLINT DEFAULT 0")
+        session.commit()
+
+    try:
+        # check if name is in User table instead of nickname
+        session.query(exists().where(User.name)).scalar()
     except exc.OperationalError:
         # Create new table user_id and copy contents of table user into it
         with engine.connect() as conn:
             conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                     "nickname VARCHAR(64),"
+                     "name VARCHAR(64),"
                      "email VARCHAR(120),"
                      "role SMALLINT,"
                      "password VARCHAR,"
                      "kindle_mail VARCHAR(120),"
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
-                     "default_language VARCHAR(3),"
-                     "view_settings VARCHAR,"
-                     "UNIQUE (nickname),"
+                     "default_language VARCHAR(3),"                     
+                     "denied_tags VARCHAR,"
+                     "allowed_tags VARCHAR,"
+                     "denied_column_value VARCHAR,"
+                     "allowed_column_value VARCHAR,"
+                     "view_settings JSON,"
+                     "kobo_only_shelves_sync SMALLINT,"                              
+                     "UNIQUE (name),"
                      "UNIQUE (email))"))
-            conn.execute(text("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, view_settings) "
+            conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync)"
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                     "sidebar_view, default_language FROM user"))
+                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
+                     "allowed_column_value, view_settings, kobo_only_shelves_sync FROM user"))
             # delete old user table and rename new user_id table to user:
             conn.execute(text("DROP TABLE user"))
             conn.execute(text("ALTER TABLE user_id RENAME TO user"))
         session.commit()
-    migrate_guest_password(engine, session)
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
+       is None:
+        create_anonymous_user(session)
+
+    migrate_guest_password(engine)
 
 
 def clean_database(session):
@@ -684,7 +780,7 @@ def delete_download(book_id):
 # Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
-    user.nickname = "Guest"
+    user.name = "Guest"
     user.email = 'no@email'
     user.role = constants.ROLE_ANONYMOUS
     user.password = ''
@@ -699,7 +795,7 @@ def create_anonymous_user(session):
 # Generate User admin with admin123 password, and access to everything
 def create_admin_user(session):
     user = User()
-    user.nickname = "admin"
+    user.name = "admin"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
@@ -734,9 +830,12 @@ def init_db(app_db_path):
         create_anonymous_user(session)
 
     if cli.user_credentials:
-        username, password = cli.user_credentials.split(':')
-        user = session.query(User).filter(func.lower(User.nickname) == username.lower()).first()
+        username, password = cli.user_credentials.split(':', 1)
+        user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
         if user:
+            if not password:
+                print("Empty password is not allowed")
+                sys.exit(4)
             user.password = generate_password_hash(password)
             if session_commit() == "":
                 print("Password for user '{}' changed".format(username))

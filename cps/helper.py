@@ -35,9 +35,10 @@ from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text
+from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
+from markupsafe import escape
 
 try:
     from urllib.parse import quote
@@ -98,10 +99,11 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
     else:
         settings = dict()
-    txt = (u"%s -> %s: %s" % (
-           old_book_format,
-           new_book_format,
-           "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + book.title + "</a>"))
+    link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
+    txt = u"{} -> {}: {}".format(
+           old_book_format.upper(),
+           new_book_format.upper(),
+           link)
     settings['old_book_format'] = old_book_format
     settings['new_book_format'] = new_book_format
     WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
@@ -215,9 +217,11 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
+            link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
+            EmailText = _(u"%(book)s send to Kindle", book=link)
             WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
                              config.get_mail_settings(), kindle_mail,
-                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.')))
+                             EmailText, _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
@@ -231,16 +235,14 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        value = (unidecode.unidecode(value))
+        if not config.config_unicode_filename:
+            value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
         value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile(r'[\W\s-]', re.UNICODE)
-        if isinstance(value, str):  # Python3 str, Python2 unicode
-            value = re_slugify.sub('', value)
-        else:
-            value = unicode(re_slugify.sub('', value))
+        value = re_slugify.sub('', value)
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
         value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
@@ -249,10 +251,7 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128].strip()
     if not value:
         raise ValueError("Filename cannot be empty")
-    if sys.version_info.major == 3:
-        return value
-    else:
-        return value.decode('utf-8')
+    return value
 
 
 def split_authors(values):
@@ -330,11 +329,12 @@ def delete_book_file(book, calibrepath, book_format=None):
                     except (IOError, OSError) as e:
                         log.error("Deleting authorpath for book %s failed: %s", book.id, e)
                 return True, None
-            else:
-                log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
-                return True, _("Deleting book %(id)s, book path not valid: %(path)s",
-                               id=book.id,
-                               path=book.path)
+
+    log.error("Deleting book %s from database only, book path in database not valid: %s",
+              book.id, book.path)
+    return True, _("Deleting book %(id)s from database only, book path in database not valid: %(path)s",
+                   id=book.id,
+                   path=book.path)
 
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
@@ -383,7 +383,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                             # os.unlink(os.path.normcase(os.path.join(dir_name, file)))
             # change location in database to new author/title path
             localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
-        except OSError as ex:
+        except (OSError) as ex:
             log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
@@ -398,7 +398,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                 file_format.name = new_name
             if not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
                 shutil.rmtree(os.path.dirname(path))
-        except OSError as ex:
+        except (OSError) as ex:
             log.error("Rename file in path %s to %s: %s", new_path, new_name, ex)
             log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
@@ -481,8 +481,8 @@ def reset_password(user_id):
         password = generate_random_password()
         existing_user.password = generate_password_hash(password)
         ub.session.commit()
-        send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-        return 1, existing_user.nickname
+        send_registration_mail(existing_user.email, existing_user.name, password, True)
+        return 1, existing_user.name
     except Exception:
         ub.session.rollback()
         return 0, None
@@ -499,10 +499,36 @@ def generate_random_password():
 
 def uniq(inpt):
     output = []
+    inpt = [ " ".join(inp.split()) for inp in inpt]
     for x in inpt:
         if x not in output:
             output.append(x)
     return output
+
+def check_email(email):
+    email = valid_email(email)
+    if ub.session.query(ub.User).filter(func.lower(ub.User.email) == email.lower()).first():
+        log.error(u"Found an existing account for this e-mail address")
+        raise Exception(_(u"Found an existing account for this e-mail address"))
+    return email
+
+
+def check_username(username):
+    username = username.strip()
+    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
+        log.error(u"This username is already taken")
+        raise Exception (_(u"This username is already taken"))
+    return username
+
+
+def valid_email(email):
+    email = email.strip()
+    # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+    if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                     email):
+        log.error(u"Invalid e-mail address format")
+        raise Exception(_(u"Invalid e-mail address format"))
+    return email
 
 # ################################# External interface #################################
 
@@ -740,6 +766,7 @@ def do_download_file(book, book_format, client, data, headers):
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
+        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
         return response
 
 ##################################
@@ -756,12 +783,11 @@ def check_unrar(unrarLocation):
         if sys.version_info < (3, 0):
             unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
         unrarLocation = [unrarLocation]
-        for lines in process_wait(unrarLocation):
-            value = re.search('UNRAR (.*) freeware', lines, re.IGNORECASE)
-            if value:
-                version = value.group(1)
-                log.debug("unrar version %s", version)
-                break
+        value = process_wait(unrarLocation, pattern='UNRAR (.*) freeware')
+        if value:
+            version = value.group(1)
+            log.debug("unrar version %s", version)
+
     except (OSError, UnicodeDecodeError) as err:
         log.debug_or_exception(err)
         return _('Error excecuting UnRar')
@@ -779,7 +805,6 @@ def json_serial(obj):
             'seconds': obj.seconds,
             'microseconds': obj.microseconds,
         }
-        # return obj.isoformat()
     raise TypeError("Type %s not serializable" % type(obj))
 
 
@@ -804,7 +829,7 @@ def format_runtime(runtime):
 def render_task_status(tasklist):
     renderedtasklist = list()
     for __, user, __, task in tasklist:
-        if user == current_user.nickname or current_user.role_admin():
+        if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
                 ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
@@ -825,7 +850,7 @@ def render_task_status(tasklist):
 
             ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
             ret['progress'] = "{} %".format(int(task.progress * 100))
-            ret['user'] = user
+            ret['user'] = escape(user)  # prevent xss
             renderedtasklist.append(ret)
 
     return renderedtasklist
@@ -842,8 +867,8 @@ def tags_filters():
 # checks if domain is in database (including wildcards)
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
+# in all calls the email address is checked for validity
 def check_valid_domain(domain_text):
-    # domain_text = domain_text.split('@', 1)[-1].lower()
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     if not len(result):
@@ -877,6 +902,7 @@ def get_download_link(book_id, book_format, client):
     if book:
         data1 = calibre_db.get_book_format(book.id, book_format.upper())
     else:
+        log.error("Book id {} not found for downloading".format(book_id))
         abort(404)
     if data1:
         # collect downloaded books only for registered user and not for anonymous user
@@ -884,8 +910,8 @@ def get_download_link(book_id, book_format, client):
             ub.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '_' + file_name
-        file_name = get_valid_filename(file_name)
+            file_name = file_name + ' - ' + book.authors[0].name
+        file_name = get_valid_filename(file_name, replace_whitespace=False)
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (

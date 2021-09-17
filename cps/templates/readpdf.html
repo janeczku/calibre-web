@@ -26,12 +26,12 @@ See https://github.com/adobe-type-tools/cmap-resources
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{_('PDF reader')}}</title>
+    <title>{{_('PDF Reader')}} | {{title}}</title>
 
-
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/viewer.css') }}">
 
-    <!--script src="{{ url_for('static', filename='js/libs/compatibility.js') }}"></script-->
 
 	  <!-- This snippet is used in production (included from viewer.html) -->
 	  <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
@@ -39,6 +39,9 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <script type="text/javascript">
     window.addEventListener('webviewerloaded', function() {
+        PDFViewerApplicationOptions.set('disableAutoFetch', true);
+        PDFViewerApplicationOptions.set('disableRange', true);
+        PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
@@ -65,6 +68,9 @@ See https://github.com/adobe-type-tools/cmap-resources
             <button id="viewAttachments" class="toolbarButton" title="Show Attachments" tabindex="4" data-l10n-id="attachments">
                <span data-l10n-id="attachments_label">Attachments</span>
             </button>
+            <button id="viewLayers" class="toolbarButton" title="Show Layers (double-click to reset all layers to the default state)" tabindex="5" data-l10n-id="layers">
+               <span data-l10n-id="layers_label">Layers</span>
+            </button>
           </div>
         </div>
         <div id="sidebarContent">
@@ -73,6 +79,8 @@ See https://github.com/adobe-type-tools/cmap-resources
           <div id="outlineView" class="hidden">
           </div>
           <div id="attachmentsView" class="hidden">
+          </div>
+          <div id="layersView" class="hidden">
           </div>
         </div>
         <div id="sidebarResizer" class="hidden"></div>
@@ -123,6 +131,7 @@ See https://github.com/adobe-type-tools/cmap-resources
             <button id="secondaryPrint" class="secondaryToolbarButton print visibleMediumView" title="Print" tabindex="53" data-l10n-id="print">
               <span data-l10n-id="print_label">Print</span>
             </button>
+
             <button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView" title="Download" tabindex="54" data-l10n-id="download">
               <span data-l10n-id="download_label">Download</span>
             </button>
@@ -210,7 +219,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                     <span data-l10n-id="next_label">Next</span>
                   </button>
                 </div>
-                <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15" data-l10n-id="page">
+                <input type="number" id="pageNumber" class="toolbarField pageNumber" title="Page" value="1" size="4" min="1" tabindex="15" data-l10n-id="page" autocomplete="off">
                 <span id="numPages" class="toolbarLabel"></span>
               </div>
               <div id="toolbarViewerRight">
@@ -225,6 +234,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                 <button id="print" class="toolbarButton print hiddenMediumView" title="Print" tabindex="33" data-l10n-id="print">
                   <span data-l10n-id="print_label">Print</span>
                 </button>
+
                 <button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download">
                   <span data-l10n-id="download_label">Download</span>
                 </button>
@@ -399,4 +409,3 @@ See https://github.com/adobe-type-tools/cmap-resources
     <div id="printContainer"></div>
   </body>
 </html>
-

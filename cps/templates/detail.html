@@ -5,6 +5,7 @@
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
           {{ book_cover_image(entry, entry.id|get_book_thumbnails(thumbnails)) }}
+          <!-- <img id="detailcover" title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" /> -->
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
@@ -57,7 +58,7 @@
               <div class="btn-group" role="group">
               {% if reader_list|length > 1 %}
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}}
+                  <span class="glyphicon glyphicon-book"></span> {{_('Read in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -66,7 +67,7 @@
                     {%endfor%}
                     </ul>
                 {% else %}
-                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}} - {{reader_list[0]}}</a>
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-book"></span> {{_('Read in Browser')}} - {{reader_list[0]}}</a>
                 {% endif %}
               </div>
             {% endif %}
@@ -100,7 +101,7 @@
       <h2 id="title">{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -120,9 +121,9 @@
         </p>
         </div>
       {% endif %}
-
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('web.books_list', data='series', sort_param='abc', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index | formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
+
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
@@ -151,7 +152,7 @@
         <span class="glyphicon glyphicon-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.books_list', data='category', sort_param='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
@@ -162,7 +163,7 @@
       <div class="publishers">
         <p>
           <span>{{_('Publisher')}}:
-              <a href="{{url_for('web.books_list', data='publisher', sort_param='new', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='stored', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
           </span>
         </p>
       </div>
@@ -193,12 +194,14 @@
                 {% else %}
                 {% if c.datatype == 'float' %}
                   {{ column.value|formatfloat(2) }}
-                {% else %}
-                {% if c.datatype == 'series' %}
+                {% elif c.datatype == 'datetime' %}
+                  {{ column.value|formatdate }}
+                {% elif c.datatype == 'comments' %}
+                  {{column.value|safe}}
+                {% elif c.datatype == 'series' %}
                   {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                 {% else %}
                   {{ column.value }}
-                {% endif %}
                 {% endif %}
                 {% endif %}
               {% endif %}
@@ -314,4 +317,5 @@
   </a>
 </script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
 {% endblock %}

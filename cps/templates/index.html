@@ -11,13 +11,14 @@
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
               <span class="img">
                 {{ book_cover_image(entry, entry.id|get_book_thumbnails(thumbnails)) }}
+                <!-- <img title="{{ entry.title }}" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" /> -->
                 {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
               </span>
           </a>
       </div>
       <div class="meta">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-          <p class="title">{{entry.title|shortentitle}}</p>
+          <p title="{{entry.title}}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}
@@ -64,7 +65,7 @@
 </div>
 {% endif %}
 <div class="discover load-more">
-  <h2 class="{{title}}">{{_(title)}}</h2>
+  <h2 class="{{title}}">{{title}}</h2>
     <div class="filterheader hidden-xs hidden-sm">
       <a data-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
       <a data-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort_param='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
@@ -88,13 +89,14 @@
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             <span class="img">
               {{ book_cover_image(entry, entry.id|get_book_thumbnails(thumbnails)) }}
+              <!-- <img title="{{ entry.title }}" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/> -->
               {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
           </a>
       </div>
       <div class="meta">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-          <p class="title">{{entry.title|shortentitle}}</p>
+          <p title="{{ entry.title }}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}

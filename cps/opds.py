@@ -27,7 +27,7 @@ from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
-from sqlalchemy.sql.expression import func, text, or_, and_
+from sqlalchemy.sql.expression import func, text, or_, and_, true
 from werkzeug.security import check_password_hash
 
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
@@ -94,7 +94,45 @@ def feed_cc_search(query):
 @opds.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
 def feed_normal_search():
-    return feed_search(request.args.get("query").strip())
+    return feed_search(request.args.get("query", "").strip())
+
+
+@opds.route("/opds/books")
+@requires_basic_auth_if_no_ano
+def feed_booksindex():
+    shift = 0
+    off = int(request.args.get("offset") or 0)
+    entries = calibre_db.session.query(func.upper(func.substr(db.Books.sort, 1, 1)).label('id'))\
+        .filter(calibre_db.common_filters()).group_by(func.upper(func.substr(db.Books.sort, 1, 1))).all()
+
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+        shift = 1
+    for entry in entries[
+                 off + shift - 1:
+                 int(off + int(config.config_books_per_page) - shift)]:
+        elements.append({'id': entry.id, 'name': entry.id})
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries) + 1)
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_books',
+                               pagination=pagination)
+
+
+@opds.route("/opds/books/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_books(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Books.sort).startswith(book_id)
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
+                                                        db.Books,
+                                                        letter,
+                                                        [db.Books.sort])
+
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/new")
@@ -150,14 +188,41 @@ def feed_hot():
 @opds.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
-    off = request.args.get("offset") or 0
-    entries = calibre_db.session.query(db.Authors).join(db.books_authors_link).join(db.Books)\
-        .filter(calibre_db.common_filters())\
-        .group_by(text('books_authors_link.author'))\
-        .order_by(db.Authors.sort).limit(config.config_books_per_page)\
-        .offset(off)
+    shift = 0
+    off = int(request.args.get("offset") or 0)
+    entries = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('id'))\
+        .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters())\
+        .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
+
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+        shift = 1
+    for entry in entries[
+                 off + shift - 1:
+                 int(off + int(config.config_books_per_page) - shift)]:
+        elements.append({'id': entry.id, 'name': entry.id})
+
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(calibre_db.session.query(db.Authors).all()))
+                            len(entries) + 1)
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_author',
+                               pagination=pagination)
+
+
+@opds.route("/opds/author/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_author(book_id):
+    off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Authors.sort).startswith(book_id)
+    entries = calibre_db.session.query(db.Authors).join(db.books_authors_link).join(db.Books)\
+        .filter(calibre_db.common_filters()).filter(letter)\
+        .group_by(text('books_authors_link.author'))\
+        .order_by(db.Authors.sort)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            entries.count())
+    entries = entries.limit(config.config_books_per_page).offset(off).all()
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination)
 
 
@@ -201,17 +266,41 @@ def feed_publisher(book_id):
 @opds.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
+    shift = 0
+    off = int(request.args.get("offset") or 0)
+    entries = calibre_db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('id'))\
+        .join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters())\
+        .group_by(func.upper(func.substr(db.Tags.name, 1, 1))).all()
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+        shift = 1
+    for entry in entries[
+                 off + shift - 1:
+                 int(off + int(config.config_books_per_page) - shift)]:
+        elements.append({'id': entry.id, 'name': entry.id})
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries) + 1)
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_category',
+                               pagination=pagination)
+
+@opds.route("/opds/category/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_category(book_id):
     off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Tags.name).startswith(book_id)
     entries = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\
         .join(db.Books)\
-        .filter(calibre_db.common_filters())\
+        .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_tags_link.tag'))\
-        .order_by(db.Tags.name)\
-        .offset(off)\
-        .limit(config.config_books_per_page)
+        .order_by(db.Tags.name)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(calibre_db.session.query(db.Tags).all()))
+                            entries.count())
+    entries = entries.offset(off).limit(config.config_books_per_page).all()
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination)
 
 
@@ -229,16 +318,40 @@ def feed_category(book_id):
 @opds.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
+    shift = 0
+    off = int(request.args.get("offset") or 0)
+    entries = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('id'))\
+        .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters())\
+        .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name':_("All")})
+        shift = 1
+    for entry in entries[
+                 off + shift - 1:
+                 int(off + int(config.config_books_per_page) - shift)]:
+        elements.append({'id': entry.id, 'name': entry.id})
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries) + 1)
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder='opds.feed_letter_series',
+                               pagination=pagination)
+
+@opds.route("/opds/series/letter/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_letter_series(book_id):
     off = request.args.get("offset") or 0
+    letter = true() if book_id == "00" else func.upper(db.Series.sort).startswith(book_id)
     entries = calibre_db.session.query(db.Series)\
         .join(db.books_series_link)\
         .join(db.Books)\
-        .filter(calibre_db.common_filters())\
+        .filter(calibre_db.common_filters()).filter(letter)\
         .group_by(text('books_series_link.series'))\
-        .order_by(db.Series.sort)\
-        .offset(off).all()
+        .order_by(db.Series.sort)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(calibre_db.session.query(db.Series).all()))
+                            entries.count())
+    entries = entries.offset(off).limit(config.config_books_per_page).all()
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination)
 
 
@@ -269,7 +382,7 @@ def feed_ratingindex():
                             len(entries))
     element = list()
     for entry in entries:
-        element.append(FeedObject(entry[0].id, "{} Stars".format(entry.name)))
+        element.append(FeedObject(entry[0].id, _("{} Stars").format(entry.name)))
     return render_xml_template('feed.xml', listelements=element, folder='opds.feed_ratings', pagination=pagination)
 
 
@@ -428,13 +541,13 @@ def check_auth(username, password):
             username = username.encode('windows-1252')
         except UnicodeEncodeError:
             username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
                                             username.decode('utf-8').lower()).first()
     if bool(user and check_password_hash(str(user.password), password)):
         return True
     else:
-        ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ipAdress)
+        ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
+        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ip_Address)
         return False
 
 

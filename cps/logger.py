@@ -62,11 +62,11 @@ class _Logger(logging.Logger):
 
 
     def debug_no_auth(self, message, *args, **kwargs):
+        message = message.strip("\r\n")
         if message.startswith("send: AUTH"):
-            self.debug(message[:16], stacklevel=2, *args, **kwargs)
+            self.debug(message[:16], *args, **kwargs)
         else:
-            self.debug(message, stacklevel=2, *args, **kwargs)
-
+            self.debug(message, *args, **kwargs)
 
 
 def get(name=None):
@@ -153,11 +153,11 @@ def setup(log_file, log_level=None):
             file_handler.baseFilename = log_file
     else:
         try:
-            file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2, encoding='utf-8')
+            file_handler = RotatingFileHandler(log_file, maxBytes=100000, backupCount=2, encoding='utf-8')
         except IOError:
             if log_file == DEFAULT_LOG_FILE:
                 raise
-            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2, encoding='utf-8')
+            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=100000, backupCount=2, encoding='utf-8')
             log_file = ""
     file_handler.setFormatter(FORMATTER)
 

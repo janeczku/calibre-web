@@ -577,10 +577,6 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     color: hsla(0, 0%, 100%, .7)
 }
 
-div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > .downloadBtn {
-    border-left: 2px solid rgba(0, 0, 0, .15)
-}
-
 div[aria-label="Edit/Delete book"] > .btn {
     width: 50px;
     height: 60px;
@@ -1502,7 +1498,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
 }
 
 #books > .cover > a:hover, #books_rand > .cover > a:hover, .book.isotope-item > .cover > a:hover, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a:hover {
-    outline: solid var(--color-secondary);
+    /* outline: solid var(--color-secondary); */
     font-size: 50px;
     -o-transition: outline 0s;
     transition: outline 0s;
@@ -2936,8 +2932,9 @@ body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-
 }
 
 #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover {
-    margin: 0;
+    margin: auto;
     width: 100%;
+    max-width: 200px;
 }
 
 #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img {
@@ -3136,7 +3133,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     float: left
 }
 
-#add-to-shelf, #btnGroupDrop1, #read-in-browser, #sendbtn, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type, .book-meta .btn-toolbar > .btn-group > .btn-warning, .btn-toolbar > .btn-group > #btnGroupDrop2, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 {
+#add-to-shelf, #btnGroupDrop1, #readbtn,  #sendbtn, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type, .book-meta .btn-toolbar > .btn-group > .btn-warning, .btn-toolbar > .btn-group > #btnGroupDrop2, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 {
     background: 0 0;
     color: transparent;
     width: 50px;
@@ -3150,11 +3147,11 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     padding-bottom: 5px
 }
 
-#add-to-shelf > span, #btnGroupDrop1 > span, #read-in-browser > span, #sendbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span, .btn-toolbar > .btn-group > #btnGroupDrop2 > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span {
+#add-to-shelf > span, #btnGroupDrop1 > span, #readbtn > span, #sendbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span, .btn-toolbar > .btn-group > #btnGroupDrop2 > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span {
     color: hsla(0, 0%, 100%, .7)
 }
 
-#add-to-shelf:hover span, #btnGroupDrop1:hover > span, #read-in-browser:hover > span, #sendbtn:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-warning:hover > span, .btn-toolbar > .btn-group > #btnGroupDrop2:hover > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2:hover > span {
+#add-to-shelf:hover span, #btnGroupDrop1:hover > span, #readbtn:hover > span, #sendbtn:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-warning:hover > span, .btn-toolbar > .btn-group > #btnGroupDrop2:hover > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2:hover > span {
     color: #fff
 }
 
@@ -3164,13 +3161,13 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     font-size: 18px
 }
 
-#sendbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span.glyphicon-edit {
+#sendbtn > span, #readbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span.glyphicon-edit {
     font-size: 16px;
     line-height: 54px;
     width: 100%
 }
 
-#read-in-browser > span.glyphicon-eye-open:before, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.glyphicon-eye-open:before {
+#readbtn > span.glyphicon-book:before, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.glyphicon-book:before {
     content: "\e352";
     font-family: Glyphicons Regular, serif;
     font-size: 18px;
@@ -3293,7 +3290,12 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
-    left: 0 !important
+    left: 0 !important;
+    overflow-y: auto;
+}
+#add-to-shelves {
+  max-height: calc(100% - 120px);
+  overflow-y: auto;
 }
 
 .dropdown-menu > li > a {
@@ -5162,11 +5164,11 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     right: 5px
 }
 
-#read-in-browser[aria-expanded=true], #shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
+#shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
     pointer-events: none
 }
 
-#btnGroupDrop1[aria-expanded=true] > span, #read-in-browser[aria-expanded=true] > span, #shelf-actions > .btn-group.open > #add-to-shelf > span {
+#btnGroupDrop1[aria-expanded=true] > span, #shelf-actions > .btn-group.open > #add-to-shelf > span {
     color: #fff
 }
 
@@ -6540,7 +6542,9 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 150px;
         margin-bottom: 0
     }
-
+    .container-fluid .book .cover img {
+    width: 100px !important;
+    }
     #books .cover img, #books_rand .cover img, .book.isotope-item .cover img {
         width: 100px !important
     }
@@ -7535,14 +7539,14 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     margin-left: 8px
 }
 
-#read-in-browser > span.caret, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret {
+.btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret {
     position: absolute;
     margin-left: 0;
     left: 33px;
     top: 28px
 }
 
-#read-in-browser > span.glyphicon-eye-open:before, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.glyphicon-eye-open:before {
+.btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.glyphicon-eye-open:before {
     margin-left: 8px
 }
 
@@ -7943,7 +7947,7 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     }
 }
 
-#sendbtn2 {
+#sendbtn2, #read-in-browser {
     background: 0 0;
     color: transparent;
     width: 50px;
@@ -7953,15 +7957,15 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     padding: 0
 }
 
-#sendbtn2 > span {
+#sendbtn2 > span, #read-in-browser > span {
     color: hsla(0, 0%, 100%, .7)
 }
 
-#sendbtn2 > span.glyphicon-send:before {
+#sendbtn2 > span.glyphicon-send:before, #read-in-browser > span.glyphicon-book:before  {
     margin-left: 8px
 }
 
-#sendbtn2 > span.caret {
+#sendbtn2> span.caret, #read-in-browser > span.caret {
     position: absolute;
     margin-left: 0;
     left: 33px;
@@ -7969,11 +7973,11 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     padding-bottom: 5px
 }
 
-#sendbtn2:focus span, #sendbtn2:hover span {
+#sendbtn2:focus span, #sendbtn2:hover span, #read-in-browser:focus span, #read-in-browser:hover span {
     color: #fff
 }
 
-#sendbtn2[aria-expanded=true] {
+#sendbtn2[aria-expanded=true], #read-in-browser[aria-expanded=true] {
     pointer-events: none
 }
 

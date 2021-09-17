@@ -412,8 +412,12 @@ if($("body.advsearch").length > 0) {
     $("#add-to-shelves").toggle();
   });
   $('#add-to-shelf').height("40px");
-  function dropdownToggle() {
-      topPos = $("#add-to-shelf").offset().top-20;
+  function search_dropdownToggle() {
+      if( $("#add-to-shelf").length) {
+          topPos = $("#add-to-shelf").offset().top - 20;
+      } else {
+          topPos = 0
+      }
       if ($('div[aria-label="Add to shelves"]').length > 0) {
 
           position = $('div[aria-label="Add to shelves"]').offset().left
@@ -428,10 +432,10 @@ if($("body.advsearch").length > 0) {
       }
   }
 
-  dropdownToggle();
+  search_dropdownToggle();
 
   $(window).on("resize", function () {
-      dropdownToggle();
+      search_dropdownToggle();
   });
 
 }
