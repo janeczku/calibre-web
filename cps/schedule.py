@@ -18,6 +18,7 @@
 
 from __future__ import division, print_function, unicode_literals
 
+from datetime import datetime
 from .services.background_scheduler import BackgroundScheduler
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskSyncCoverThumbnailCache, TaskGenerateCoverThumbnails
@@ -26,8 +27,10 @@ from .tasks.thumbnail import TaskSyncCoverThumbnailCache, TaskGenerateCoverThumb
 def register_jobs():
     scheduler = BackgroundScheduler()
 
-    # Generate 100 book cover thumbnails every 5 minutes
-    scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=100), trigger='cron', minute='*/5')
+    # Generate up to 1000 book covers daily
+    generate_thumbnails_task = scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=1000),
+                                                  trigger='interval', days=1)
+    generate_thumbnails_task.modify(next_run_time=datetime.now())
 
     # Cleanup book cover cache every 6 hours
     scheduler.add_task(user=None, task=lambda: TaskSyncCoverThumbnailCache(), trigger='cron', minute='15', hour='*/6')

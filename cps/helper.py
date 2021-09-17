@@ -554,12 +554,13 @@ def get_thumbnails_for_books(books):
     cache = fs.FileSystem()
     thumbnail_files = cache.list_cache_files(fs.CACHE_TYPE_THUMBNAILS)
 
-    return ub.session\
+    thumbnails = ub.session\
         .query(ub.Thumbnail)\
         .filter(ub.Thumbnail.book_id.in_(book_ids))\
-        .filter(ub.Thumbnail.filename.in_(thumbnail_files))\
         .filter(ub.Thumbnail.expiration > datetime.utcnow())\
         .all()
+
+    return list(filter(lambda t: t.filename in thumbnail_files, thumbnails))
 
 
 def get_thumbnails_for_book_series(series):

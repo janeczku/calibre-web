@@ -41,7 +41,7 @@ class BackgroundScheduler:
         return cls._instance
 
     def add(self, func, trigger, **trigger_args):
-        self.scheduler.add_job(func=func, trigger=trigger, **trigger_args)
+        return self.scheduler.add_job(func=func, trigger=trigger, **trigger_args)
 
     def add_task(self, user, task, trigger, **trigger_args):
         def scheduled_task():
@@ -49,4 +49,4 @@ class BackgroundScheduler:
             self.log.info('Running scheduled task in background: ' + worker_task.name + ': ' + worker_task.message)
             WorkerThread.add(user, worker_task)
 
-        self.add(func=scheduled_task, trigger=trigger, **trigger_args)
+        return self.add(func=scheduled_task, trigger=trigger, **trigger_args)

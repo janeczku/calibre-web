@@ -129,9 +129,11 @@ def formatseriesindex_filter(series_index):
             return series_index
     return 0
 
+
 @jinjia.app_template_filter('escapedlink')
 def escapedlink_filter(url, text):
     return "<a href='{}'>{}</a>".format(url, escape(text))
+
 
 @jinjia.app_template_filter('uuidfilter')
 def uuidfilter(var):
