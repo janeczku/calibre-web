@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block flash %}
+<div id="spinning_success" class="row-fluid text-center" style="display:none;">
+    <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
+</div>
+{% endblock %}
+{% block body %}
+<div class="discover">
+  <h2>{{title}}</h2>
+  <form role="form" method="POST" class="col-md-10 col-lg-6" action="{{ url_for('admin.db_configuration') }}" autocomplete="off">
+       <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
+       <div class="form-group required input-group">
+        <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
+        <span class="input-group-btn">
+          <button type="button" data-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-target="#fileModal" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+        </span>
+      </div>
+    {% if feature_support['gdrive'] %}
+      <div class="form-group required">
+        <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
+        <label for="config_use_google_drive">{{_('Use Google Drive?')}}</label>
+      </div>
+      {% if not gdriveError and config.config_use_google_drive %}
+        {% if show_authenticate_google_drive and config.config_use_google_drive %}
+          <div class="form-group required">
+            <a href="{{ url_for('gdrive.authenticate_google_drive') }}" id="gdrive_auth" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
+          </div>
+        {% else %}
+            {% if not show_authenticate_google_drive %}
+            <div class="form-group required">
+              <label for="config_google_drive_folder">{{_('Google Drive Calibre folder')}}</label>
+              <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
+                {%  for gdrivefolder in gdrivefolders %}
+                <option value="{{ gdrivefolder.title }}" {% if gdrivefolder.title == config.config_google_drive_folder %}selected{% endif %}>{{ gdrivefolder.title }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% if config.config_google_drive_watch_changes_response %}
+              <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
+              <div class="form-group input-group required">
+                <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ config.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
+                <span class="input-group-btn"><a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" id="watch_revoke" class="btn btn-primary">{{_('Revoke')}}</a></span>
+              </div>
+            {% else %}
+              <a href="{{ url_for('gdrive.watch_gdrive') }}" id="enable_gdrive_watch" class="btn btn-primary">Enable watch of metadata.db</a>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+    <div class="col-sm-12">
+      <div id="db_submit" name="submit" class="btn btn-default">{{_('Save')}}</div>
+      <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block modal %}
+{{ filechooser_modal() }}
+{{ change_confirm_modal() }}
+<div id="InvalidDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info"></div>
+      <div class="modal-body text-center">
+        <p>{{_('New db location is invalid, please enter valid path')}}</p>
+          <p></p>
+        <button type="button" class="btn btn-default" id="invalid_confirm" data-dismiss="modal">{{_('OK')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

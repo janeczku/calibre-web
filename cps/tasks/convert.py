@@ -5,6 +5,7 @@ import re
 
 from glob import glob
 from shutil import copyfile
+from markupsafe import escape
 
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -13,6 +14,7 @@ from cps import db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
+from flask import url_for
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
@@ -24,6 +26,7 @@ class TaskConvert(CalibreTask):
         super(TaskConvert, self).__init__(taskMessage)
         self.file_path = file_path
         self.bookid = bookid
+        self.title = ""
         self.settings = settings
         self.kindle_mail = kindle_mail
         self.user = user
@@ -35,6 +38,7 @@ class TaskConvert(CalibreTask):
         if config.config_use_google_drive:
             worker_db = db.CalibreDB(expire_on_commit=False)
             cur_book = worker_db.get_book(self.bookid)
+            self.title = cur_book.title
             data = worker_db.get_book_format(self.bookid, self.settings['old_book_format'])
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
@@ -66,17 +70,18 @@ class TaskConvert(CalibreTask):
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
+                    EmailText = _(u"%(book)s send to Kindle", book=escape(self.title))
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
                                                            self.settings,
                                                            self.kindle_mail,
-                                                           self.settings['subject'],
+                                                           EmailText,
                                                            self.settings['body'],
                                                            internal=True)
                                       )
-                except Exception as e:
-                    return self._handleError(str(e))
+                except Exception as ex:
+                    return self._handleError(str(ex))
 
     def _convert_ebook_format(self):
         error_message = None
@@ -93,8 +98,9 @@ class TaskConvert(CalibreTask):
             local_db.get_book_format(self.bookid, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
             cur_book = local_db.get_book(book_id)
+            self.title = cur_book.title
             self.results['path'] = file_path
-            self.results['title'] = cur_book.title
+            self.results['title'] = self.title
             self._handleSuccess()
             local_db.session.close()
             return os.path.basename(file_path + format_new_ext)
@@ -130,7 +136,8 @@ class TaskConvert(CalibreTask):
                     local_db.session.close()
                     return
                 self.results['path'] = cur_book.path
-                self.results['title'] = cur_book.title
+                self.title = cur_book.title
+                self.results['title'] = self.title
                 if not config.config_use_google_drive:
                     self._handleSuccess()
                 return os.path.basename(file_path + format_new_ext)

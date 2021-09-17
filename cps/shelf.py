@@ -21,19 +21,19 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-from datetime import datetime
+
 import sys
+from datetime import datetime
 
-from flask import Blueprint, request, flash, redirect, url_for
+from flask import Blueprint, flash, redirect, request, url_for
 from flask_babel import gettext as _
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
-from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import logger, ub, calibre_db, db
+from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
-
 
 shelf = Blueprint('shelf', __name__)
 log = logger.create()
@@ -72,10 +72,9 @@ def add_to_shelf(shelf_id, book_id):
 
     if not check_shelf_edit_permissions(shelf):
         if not xhr:
-            flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
-                  category="error")
+            flash(_(u"Sorry you are not allowed to add a book to that shelf"), category="error")
             return redirect(url_for('web.index'))
-        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+        return "Sorry you are not allowed to add a book to the that shelf", 403
 
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                           ub.BookShelf.book_id == book_id).first()
@@ -99,12 +98,14 @@ def add_to_shelf(shelf_id, book_id):
         ub.session.commit()
     except (OperationalError, InvalidRequestError):
         ub.session.rollback()
+        log.error("Settings DB is not Writeable")
         flash(_(u"Settings DB is not Writeable"), category="error")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
             return redirect(url_for('web.index'))
     if not xhr:
+        log.debug("Book has been added to shelf: {}".format(shelf.name))
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
@@ -123,6 +124,7 @@ def search_to_shelf(shelf_id):
         return redirect(url_for('web.index'))
 
     if not check_shelf_edit_permissions(shelf):
+        log.warning("You are not allowed to add a book to the the shelf: {}".format(shelf.name))
         flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
         return redirect(url_for('web.index'))
 
@@ -140,7 +142,7 @@ def search_to_shelf(shelf_id):
             books_for_shelf = ub.searched_ids[current_user.id]
 
         if not books_for_shelf:
-            log.error("Books are already part of %s", shelf.name)
+            log.error("Books are already part of {}".format(shelf.name))
             flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('web.index'))
 
@@ -156,8 +158,10 @@ def search_to_shelf(shelf_id):
             flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
     else:
+        log.error("Could not add books to shelf: {}".format(shelf.name))
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
     return redirect(url_for('web.index'))
 
@@ -168,7 +172,7 @@ def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
-        log.error("Invalid shelf specified: %s", shelf_id)
+        log.error("Invalid shelf specified: {}".format(shelf_id))
         if not xhr:
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
@@ -197,7 +201,8 @@ def remove_from_shelf(shelf_id, book_id):
             ub.session.commit()
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
             if "HTTP_REFERER" in request.environ:
                 return redirect(request.environ["HTTP_REFERER"])
             else:
@@ -211,6 +216,7 @@ def remove_from_shelf(shelf_id, book_id):
         return "", 204
     else:
         if not xhr:
+            log.warning("You are not allowed to remove a book from shelf: {}".format(shelf.name))
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
@@ -221,74 +227,86 @@ def remove_from_shelf(shelf_id, book_id):
 @login_required
 def create_shelf():
     shelf = ub.Shelf()
-    return create_edit_shelf(shelf, title=_(u"Create a Shelf"), page="shelfcreate")
+    return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    return create_edit_shelf(shelf, title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
+    if not check_shelf_edit_permissions(shelf):
+        flash(_(u"Sorry you are not allowed to edit this shelf"), category="error")
+        return redirect(url_for('web.index'))
+    return create_edit_shelf(shelf, page_title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
 
 # if shelf ID is set, we are editing a shelf
-def create_edit_shelf(shelf, title, page, shelf_id=False):
+def create_edit_shelf(shelf, page_title, page, shelf_id=False):
+    sync_only_selected_shelves = current_user.kobo_only_shelves_sync
+    # calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id).filter(ub.Shelf.kobo_sync).count()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if "is_public" in to_save:
-            shelf.is_public = 1
-        else:
-            shelf.is_public = 0
-        if check_shelf_is_unique(shelf, to_save, shelf_id):
-            shelf.name = to_save["title"]
-            # shelf.last_modified = datetime.utcnow()
+        shelf.is_public = 1 if to_save.get("is_public") else 0
+        if config.config_kobo_sync:
+            shelf.kobo_sync = True if to_save.get("kobo_sync") else False
+        shelf_title = to_save.get("title", "")
+        if check_shelf_is_unique(shelf, shelf_title, shelf_id):
+            shelf.name = shelf_title
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
                 shelf_action = "created"
-                flash_text = _(u"Shelf %(title)s created", title=to_save["title"])
+                flash_text = _(u"Shelf %(title)s created", title=shelf_title)
             else:
                 shelf_action = "changed"
-                flash_text = _(u"Shelf %(title)s changed", title=to_save["title"])
+                flash_text = _(u"Shelf %(title)s changed", title=shelf_title)
             try:
                 ub.session.commit()
-                log.info(u"Shelf {} {}".format(to_save["title"], shelf_action))
+                log.info(u"Shelf {} {}".format(shelf_title, shelf_action))
                 flash(flash_text, category="success")
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
-            except (OperationalError, InvalidRequestError) as e:
+            except (OperationalError, InvalidRequestError) as ex:
                 ub.session.rollback()
-                log.debug_or_exception(e)
-                flash(_(u"Settings DB is not Writeable"), category="error")
-            except Exception as e:
+                log.debug_or_exception(ex)
+                log.error("Settings DB is not Writeable")
+                flash(_("Settings DB is not Writeable"), category="error")
+            except Exception as ex:
                 ub.session.rollback()
-                log.debug_or_exception(e)
+                log.debug_or_exception(ex)
                 flash(_(u"There was an error"), category="error")
-    return render_title_template('shelf_edit.html', shelf=shelf, title=title, page=page)
+    return render_title_template('shelf_edit.html',
+                                 shelf=shelf,
+                                 title=page_title,
+                                 page=page,
+                                 kobo_sync_enabled=config.config_kobo_sync,
+                                 sync_only_selected_shelves=sync_only_selected_shelves)
 
 
-def check_shelf_is_unique(shelf, to_save, shelf_id=False):
+def check_shelf_is_unique(shelf, title, shelf_id=False):
     if shelf_id:
         ident = ub.Shelf.id != shelf_id
     else:
         ident = true()
     if shelf.is_public == 1:
         is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                                   .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1)) \
+                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 1)) \
                                    .filter(ident) \
                                    .first() is None
 
         if not is_shelf_name_unique:
-            flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+            log.error("A public shelf with the name '{}' already exists.".format(title))
+            flash(_(u"A public shelf with the name '%(title)s' already exists.", title=title),
                   category="error")
     else:
         is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                                   .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 0) &
                                            (ub.Shelf.user_id == int(current_user.id))) \
                                    .filter(ident) \
                                    .first() is None
 
         if not is_shelf_name_unique:
-            flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+            log.error("A private shelf with the name '{}' already exists.".format(title))
+            flash(_(u"A private shelf with the name '%(title)s' already exists.", title=title),
                   category="error")
     return is_shelf_name_unique
 
@@ -311,7 +329,8 @@ def delete_shelf(shelf_id):
         delete_shelf_helper(cur_shelf)
     except InvalidRequestError:
         ub.session.rollback()
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -345,13 +364,14 @@ def order_shelf(shelf_id):
             ub.session.commit()
         except (OperationalError, InvalidRequestError):
             ub.session.rollback()
-            flash(_(u"Settings DB is not Writeable"), category="error")
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
     if shelf and check_shelf_view_permissions(shelf):
-        result = calibre_db.session.query(db.Books)\
-            .join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id , isouter=True) \
+        result = calibre_db.session.query(db.Books) \
+            .join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .add_columns(calibre_db.common_filters().label("visible")) \
             .filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
     return render_title_template('shelf_order.html', entries=result,
@@ -360,7 +380,9 @@ def order_shelf(shelf_id):
 
 
 def change_shelf_order(shelf_id, order):
-    result = calibre_db.session.query(db.Books).join(ub.BookShelf,ub.BookShelf.book_id == db.Books.id)\
+    result = calibre_db.session.query(db.Books).outerjoin(db.books_series_link,
+                                                          db.Books.id == db.books_series_link.c.book)\
+        .outerjoin(db.Series).join(ub.BookShelf, ub.BookShelf.book_id == db.Books.id) \
         .filter(ub.BookShelf.shelf == shelf_id).order_by(*order).all()
     for index, entry in enumerate(result):
         book = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
@@ -390,9 +412,11 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             if sort_param == 'old':
                 change_shelf_order(shelf_id, [db.Books.timestamp])
             if sort_param == 'authaz':
-                change_shelf_order(shelf_id, [db.Books.author_sort.asc()])
+                change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
             if sort_param == 'authza':
-                change_shelf_order(shelf_id, [db.Books.author_sort.desc()])
+                change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
+                                              db.Series.name.desc(),
+                                              db.Books.series_index.desc()])
             page = "shelf.html"
             pagesize = 0
         else:
@@ -400,13 +424,13 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             page = 'shelfdown.html'
 
         result, __, pagination = calibre_db.fill_indexpage(page_no, pagesize,
-                                                            db.Books,
-                                                            ub.BookShelf.shelf == shelf_id,
-                                                            [ub.BookShelf.order.asc()],
-                                                            ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
+                                                           db.Books,
+                                                           ub.BookShelf.shelf == shelf_id,
+                                                           [ub.BookShelf.order.asc()],
+                                                           ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
-        wrong_entries = calibre_db.session.query(ub.BookShelf)\
-            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True)\
+        wrong_entries = calibre_db.session.query(ub.BookShelf) \
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .filter(db.Books.id == None).all()
         for entry in wrong_entries:
             log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
@@ -415,7 +439,8 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                 ub.session.commit()
             except (OperationalError, InvalidRequestError):
                 ub.session.rollback()
-                flash(_(u"Settings DB is not Writeable"), category="error")
+                log.error("Settings DB is not Writeable")
+                flash(_("Settings DB is not Writeable"), category="error")
 
         return render_title_template(page,
                                      entries=result,

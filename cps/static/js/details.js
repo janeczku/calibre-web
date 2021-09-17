@@ -22,7 +22,21 @@ $(function() {
 });
 
 $("#have_read_cb").on("change", function() {
-    $(this).closest("form").submit();
+    $.post({
+        url: this.closest("form").action,
+        error: function(response) {
+            var data = [{type:"danger", message:response.responseText}]
+            $("#flash_success").remove();
+            $("#flash_danger").remove();
+            if (!jQuery.isEmptyObject(data)) {
+                data.forEach(function (item) {
+                    $(".navbar").after('<div class="row-fluid text-center" >' +
+                        '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                        '</div>');
+                });
+            }
+        }
+    });
 });
 
 $(function() {
@@ -55,7 +69,7 @@ $("#archived_cb").on("change", function() {
                             templates.remove({
                                 add: this.href,
                                 remove: $this.data("remove-href"),
-                                content: this.textContent
+                                content: $("<div>").text(this.textContent).html()
                             })
                         );
                         break;
@@ -64,7 +78,7 @@ $("#archived_cb").on("change", function() {
                             templates.add({
                                 add: $this.data("add-href"),
                                 remove: this.href,
-                                content: this.textContent
+                                content: $("<div>").text(this.textContent).html(),
                             })
                         );
                         break;

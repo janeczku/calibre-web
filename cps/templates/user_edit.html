@@ -4,10 +4,10 @@
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
     <div class="col-md-10 col-lg-8">
-    {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
+    {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
-      <label for="nickname">{{_('Username')}}</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
+      <label for="name">{{_('Username')}}</label>
+      <input type="text" class="form-control" name="name" id="name" value="{{ content.name if content.name != None }}" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">
@@ -16,7 +16,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+        <a class="btn btn-default" id="resend_password" href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
@@ -47,14 +47,14 @@
             {% endfor %}
         </select>
     </div>
-    {% if registered_oauth.keys()| length > 0 and not new_user %}
+    {% if registered_oauth.keys()| length > 0 and not new_user and profile %}
       {% for id, name in registered_oauth.items() %}
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>
         {% if id not in oauth_status %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
+        <a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a>
         {% else %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
+        <a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a>
         {% endif %}
       {% endfor %}
     </div>
@@ -66,17 +66,15 @@
       <div class="btn btn-danger" id="config_delete_kobo_token" data-value="{{ content.id }}" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
     </div>
     {% endif %}
-    </div>
     <div class="col-sm-6">
-        {% for element in sidebar %}
-          {% if element['config_show'] %}
-            <div class="form-group">
-              <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.check_visibility(element['visibility']) %}checked{% endif %}>
-              <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
-            </div>
-          {% endif %}
-        {% endfor %}
-
+    {% for element in sidebar %}
+      {% if element['config_show'] %}
+        <div class="form-group">
+          <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.check_visibility(element['visibility']) %}checked{% endif %}>
+          <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
+        </div>
+      {% endif %}
+    {% endfor %}
       <div class="form-group">
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
@@ -125,33 +123,40 @@
         </div>
       {% endif %}
     {% endif %}
+    {% if kobo_support and not content.role_anonymous() %}
+    <div class="form-group">
+      <input type="checkbox" name="kobo_only_shelves_sync" id="kobo_only_shelves_sync" {% if content.kobo_only_shelves_sync %}checked{% endif %}>
+      <label for="kobo_only_shelves_sync">{{_('Sync only books in selected shelves with Kobo')}}</label>
     </div>
-      <div class="col-sm-12">
-    <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
-    {% if not profile %}
-      <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Cancel')}}</a>
     {% endif %}
-    {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
-      <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
-    {% endif %}
+    </div>
+    <div class="col-sm-12">
+      <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
+      {% if not profile %}
+        <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Cancel')}}</div>
+      {% endif %}
+      {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
+        <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
+      {% endif %}
+    </div>
     </div>
   </form>
 </div>
 
-    <div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="kobo_tokenModalLabel">{{_('Generate Kobo Auth URL')}}</h4>
-          </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" id="kobo_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
-          </div>
-        </div>
+<div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="kobo_tokenModalLabel">{{_('Generate Kobo Auth URL')}}</h4>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" id="kobo_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
+  </div>
+</div>
 
 {% endblock %}
 {% block modal %}

@@ -30,6 +30,7 @@ from flask_babel import gettext as _
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
+from oauthlib.oauth2 import TokenExpiredError, InvalidGrantError
 from flask_login import login_user, current_user, login_required
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -42,6 +43,7 @@ except NameError:
 
 
 oauth_check = {}
+oauthblueprints = []
 oauth = Blueprint('oauth', __name__)
 log = logger.create()
 
@@ -87,7 +89,7 @@ def register_user_with_oauth(user=None):
             except NoResultFound:
                 # no found, return error
                 return
-            ub.session_commit("User {} with OAuth for provider {} registered".format(user.nickname, oauth_key))
+            ub.session_commit("User {} with OAuth for provider {} registered".format(user.name, oauth_key))
 
 
 def logout_oauth_user():
@@ -133,8 +135,8 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
         # already bind with user, just login
         if oauth_entry.user:
             login_user(oauth_entry.user)
-            log.debug(u"You are now logged in as: '%s'", oauth_entry.user.nickname)
-            flash(_(u"you are now logged in as: '%(nickname)s'", nickname= oauth_entry.user.nickname),
+            log.debug(u"You are now logged in as: '%s'", oauth_entry.user.name)
+            flash(_(u"you are now logged in as: '%(nickname)s'", nickname= oauth_entry.user.name),
                   category="success")
             return redirect(url_for('web.index'))
         else:
@@ -145,9 +147,10 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
                     ub.session.add(oauth_entry)
                     ub.session.commit()
                     flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
+                    log.info("Link to {} Succeeded".format(provider_name))
                     return redirect(url_for('web.profile'))
-                except Exception as e:
-                    log.debug_or_exception(e)
+                except Exception as ex:
+                    log.debug_or_exception(ex)
                     ub.session.rollback()
             else:
                 flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
@@ -193,8 +196,9 @@ def unlink_oauth(provider):
                 ub.session.commit()
                 logout_oauth_user()
                 flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
-            except Exception as e:
-                log.debug_or_exception(e)
+                log.info("Unlink to {} Succeeded".format(oauth_check[provider]))
+            except Exception as ex:
+                log.debug_or_exception(ex)
                 ub.session.rollback()
                 flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
     except NoResultFound:
@@ -203,7 +207,6 @@ def unlink_oauth(provider):
     return redirect(url_for('web.profile'))
 
 def generate_oauth_blueprints():
-    oauthblueprints = []
     if not ub.session.query(ub.OAuthProvider).count():
         for provider in ("github", "google"):
             oauthProvider = ub.OAuthProvider()
@@ -257,11 +260,13 @@ if ub.oauth_support:
     def github_logged_in(blueprint, token):
         if not token:
             flash(_(u"Failed to log in with GitHub."), category="error")
+            log.error("Failed to log in with GitHub")
             return False
 
         resp = blueprint.session.get("/user")
         if not resp.ok:
             flash(_(u"Failed to fetch user info from GitHub."), category="error")
+            log.error("Failed to fetch user info from GitHub")
             return False
 
         github_info = resp.json()
@@ -273,11 +278,13 @@ if ub.oauth_support:
     def google_logged_in(blueprint, token):
         if not token:
             flash(_(u"Failed to log in with Google."), category="error")
+            log.error("Failed to log in with Google")
             return False
 
         resp = blueprint.session.get("/oauth2/v2/userinfo")
         if not resp.ok:
             flash(_(u"Failed to fetch user info from Google."), category="error")
+            log.error("Failed to fetch user info from Google")
             return False
 
         google_info = resp.json()
@@ -299,39 +306,6 @@ if ub.oauth_support:
         )  # ToDo: Translate
         flash(msg, category="error")
 
-
-    @oauth.route('/link/github')
-    @oauth_required
-    def github_login():
-        if not github.authorized:
-            return redirect(url_for('github.login'))
-        account_info = github.get('/user')
-        if account_info.ok:
-            account_info_json = account_info.json()
-            return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login', 'github')
-        flash(_(u"GitHub Oauth error, please retry later."), category="error")
-        return redirect(url_for('web.login'))
-
-
-    @oauth.route('/unlink/github', methods=["GET"])
-    @login_required
-    def github_login_unlink():
-        return unlink_oauth(oauthblueprints[0]['id'])
-
-
-    @oauth.route('/link/google')
-    @oauth_required
-    def google_login():
-        if not google.authorized:
-            return redirect(url_for("google.login"))
-        resp = google.get("/oauth2/v2/userinfo")
-        if resp.ok:
-            account_info_json = resp.json()
-            return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login', 'google')
-        flash(_(u"Google Oauth error, please retry later."), category="error")
-        return redirect(url_for('web.login'))
-
-
     @oauth_error.connect_via(oauthblueprints[1]['blueprint'])
     def google_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
@@ -346,7 +320,49 @@ if ub.oauth_support:
         flash(msg, category="error")
 
 
-    @oauth.route('/unlink/google', methods=["GET"])
-    @login_required
-    def google_login_unlink():
-        return unlink_oauth(oauthblueprints[1]['id'])
+@oauth.route('/link/github')
+@oauth_required
+def github_login():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+    try:
+        account_info = github.get('/user')
+        if account_info.ok:
+            account_info_json = account_info.json()
+            return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login', 'github')
+        flash(_(u"GitHub Oauth error, please retry later."), category="error")
+        log.error("GitHub Oauth error, please retry later")
+    except (InvalidGrantError, TokenExpiredError) as e:
+        flash(_(u"GitHub Oauth error: {}").format(e), category="error")
+        log.error(e)
+    return redirect(url_for('web.login'))
+
+
+@oauth.route('/unlink/github', methods=["GET"])
+@login_required
+def github_login_unlink():
+    return unlink_oauth(oauthblueprints[0]['id'])
+
+
+@oauth.route('/link/google')
+@oauth_required
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    try:
+        resp = google.get("/oauth2/v2/userinfo")
+        if resp.ok:
+            account_info_json = resp.json()
+            return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login', 'google')
+        flash(_(u"Google Oauth error, please retry later."), category="error")
+        log.error("Google Oauth error, please retry later")
+    except (InvalidGrantError, TokenExpiredError) as e:
+        flash(_(u"Google Oauth error: {}").format(e), category="error")
+        log.error(e)
+    return redirect(url_for('web.login'))
+
+
+@oauth.route('/unlink/google', methods=["GET"])
+@login_required
+def google_login_unlink():
+    return unlink_oauth(oauthblueprints[1]['id'])

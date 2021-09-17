@@ -63,7 +63,7 @@ def get_language_codes(locale, language_names, remainder=None):
         if v in language_names:
             lang.append(k)
             language_names.remove(v)
-    if remainder is not None:
+    if remainder is not None and language_names:
         remainder.extend(language_names)
     return lang
 

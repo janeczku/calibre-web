@@ -45,3 +45,9 @@ except ImportError as err:
     log.debug("Cannot import SyncToken, syncing books with Kobo Devices will not work: %s", err)
     kobo = None
     SyncToken = None
+
+try:
+    from . import gmail
+except ImportError as err:
+    log.debug("Cannot import gmail, sending books via Gmail Oauth2 Verification will not work: %s", err)
+    gmail = None

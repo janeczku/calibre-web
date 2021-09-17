@@ -19,8 +19,28 @@
 /* global getPath, confirmDialog */
 
 var selections = [];
+var reload = false;
 
 $(function() {
+    $('#tasktable').bootstrapTable({
+        formatNoMatches: function () {
+            return '';
+        },
+        striped: true
+    });
+    if ($('#tasktable').length) {
+        setInterval(function () {
+            $.ajax({
+                method: "get",
+                url: getPath() + "/ajax/emailstat",
+                async: true,
+                timeout: 900,
+                success: function (data) {
+                    $('#tasktable').bootstrapTable("load", data);
+                }
+            });
+        }, 1000);
+    }
 
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
         function (e, rowsAfter, rowsBefore) {
@@ -46,9 +66,14 @@ $(function() {
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
+                $("#table_xchange").addClass("disabled");
+                $("#table_xchange").attr("aria-disabled", true);
             } else {
                 $("#delete_selection").removeClass("disabled");
                 $("#delete_selection").attr("aria-disabled", false);
+                $("#table_xchange").removeClass("disabled");
+                $("#table_xchange").attr("aria-disabled", false);
+
             }
         });
     $("#delete_selection").click(function() {
@@ -60,7 +85,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/mergebooks",
+            url: window.location.pathname + "/../ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
                 $("#books-table").bootstrapTable("refresh");
@@ -69,12 +94,17 @@ $(function() {
         });
     });
 
-    $("#merge_books").click(function() {
+    $("#merge_books").click(function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#mergeModal').modal("show");
+        }
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/simulatemerge",
+            url: window.location.pathname + "/../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success(booTitles) {
                 $.each(booTitles.from, function(i, item) {
@@ -82,6 +112,20 @@ $(function() {
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
+            }
+        });
+    });
+
+    $("#table_xchange").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/xchange",
+            data: JSON.stringify({"xchange":selections}),
+            success: function success() {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
@@ -94,23 +138,34 @@ $(function() {
                 editable: {
                     mode: "inline",
                     emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    success: function (response, __) {
+                        if (!response.success) return response.msg;
+                        return {newValue: response.newValue};
+                    },
+                    params: function (params) {
+                        params.checkA = $('#autoupdate_authorsort').prop('checked');
+                        params.checkT = $('#autoupdate_titlesort').prop('checked');
+                        return params
+                    }
                 }
             };
-        }
-        var validateText = $(this).attr("data-edit-validate");
-        if (validateText) {
-            element.editable.validate = function (value) {
-                if ($.trim(value) === "") return validateText;
-            };
+            var validateText = $(this).attr("data-edit-validate");
+            if (validateText) {
+                element.editable.validate = function (value) {
+                    if ($.trim(value) === "") return validateText;
+                };
+            }
         }
         column.push(element);
     });
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
+        pageList: "[10, 25, 50, 100]",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
-        paginationDetailHAlign: " hidden",
+        paginationDetailHAlign: "right",
         paginationHAlign: "left",
         idField: "id",
         uniqueId: "id",
@@ -128,11 +183,12 @@ $(function() {
         },
         // eslint-disable-next-line no-unused-vars
         onEditableSave: function (field, row, oldvalue, $el) {
-            if (field === "title" || field === "authors") {
+            if ($.inArray(field, [ "title", "sort" ]) !== -1 && $('#autoupdate_titlesort').prop('checked')
+                || $.inArray(field, [ "authors", "author_sort" ]) !== -1 && $('#autoupdate_authorsort').prop('checked')) {
                 $.ajax({
                     method:"get",
                     dataType: "json",
-                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
+                    url: window.location.pathname + "/../ajax/sort_value/" + field + "/" + row.id,
                     success: function success(data) {
                         var key = Object.keys(data)[0];
                         $("#books-table").bootstrapTable("updateCellByUniqueId", {
@@ -140,7 +196,6 @@ $(function() {
                             field: key,
                             value: data[key]
                         });
-                        // console.log(data);
                     }
                 });
             }
@@ -161,12 +216,11 @@ $(function() {
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: window.location.pathname + "/../../ajax/table_settings",
+                url: window.location.pathname + "/../ajax/table_settings",
                 data: "{" + st + "}",
             });
         },
     });
-
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -309,7 +363,6 @@ $(function() {
             },
             url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
             rowStyle: function(row) {
-                // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
                     return {classes: "bg-primary"};
                 } else {
@@ -378,7 +431,6 @@ $(function() {
          var target = $(e.relatedTarget).attr('id');
          var dataId;
          $(e.relatedTarget).one('focus', function(e){$(this).blur();});
-         //$(e.relatedTarget).blur();
          if ($(e.relatedTarget).hasClass("button_head")) {
              dataId = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
          } else {
@@ -413,6 +465,7 @@ $(function() {
 
     $("#user-table").bootstrapTable({
         sidePagination: "server",
+        queryParams: queryParams,
         pagination: true,
         paginationLoop: false,
         paginationDetailHAlign: " hidden",
@@ -443,27 +496,13 @@ $(function() {
                 $(this).next().text(elText);
             });
         },
-        // eslint-disable-next-line no-unused-vars
-        /*onEditableSave: function (field, row, oldvalue, $el) {
-            if (field === "title" || field === "authors") {
-                $.ajax({
-                    method:"get",
-                    dataType: "json",
-                    url: window.location.pathname + "/../../ajax/sort_value/" + field + "/" + row.id,
-                    success: function success(data) {
-                        var key = Object.keys(data)[0];
-                        $("#books-table").bootstrapTable("updateCellByUniqueId", {
-                            id: row.id,
-                            field: key,
-                            value: data[key]
-                        });
-                        // console.log(data);
-                    }
-                });
-            }
-        },*/
-        // eslint-disable-next-line no-unused-vars
-        onColumnSwitch: function (field, checked) {
+        onPostHeader () {
+            move_header_elements();
+        },
+        onLoadSuccess: function () {
+            loadSuccess();
+        },
+        onColumnSwitch: function () {
             var visible = $("#user-table").bootstrapTable("getVisibleColumns");
             var hidden  = $("#user-table").bootstrapTable("getHiddenColumns");
             var st = "";
@@ -481,30 +520,9 @@ $(function() {
                 url: window.location.pathname + "/../../ajax/user_table_settings",
                 data: "{" + st + "}",
             });
+            handle_header_buttons();
         },
     });
-
-    $("#user_delete_selection").click(function() {
-        $("#user-table").bootstrapTable("uncheckAll");
-    });
-
-    function user_handle (userId) {
-        $.ajax({
-            method:"post",
-            url: window.location.pathname + "/../../ajax/deleteuser",
-            data: {"userid":userId}
-        });
-        $.ajax({
-            method:"get",
-            url: window.location.pathname + "/../../ajax/listusers",
-            async: true,
-            timeout: 900,
-            success:function(data) {
-                $("#user-table").bootstrapTable("load", data);
-            }
-        });
-    }
-
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
@@ -525,29 +543,39 @@ $(function() {
         });
         var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
         selections = window._[func](selections, ids);
-        if (selections.length < 1) {
-            $("#user_delete_selection").addClass("disabled");
-            $("#user_delete_selection").attr("aria-disabled", true);
-            $(".check_head").attr("aria-disabled", true);
-            $(".check_head").attr("disabled", true);
-            $(".check_head").prop('checked', false);
-            $(".button_head").attr("aria-disabled", true);
-            $(".button_head").addClass("disabled");
-            $(".header_select").attr("disabled", true);
-        } else {
-            $("#user_delete_selection").removeClass("disabled");
-            $("#user_delete_selection").attr("aria-disabled", false);
-            $(".check_head").attr("aria-disabled", false);
-            $(".check_head").removeAttr("disabled");
-            $(".button_head").attr("aria-disabled", false);
-            $(".button_head").removeClass("disabled");
-            $(".header_select").removeAttr("disabled");
-        }
-
+        handle_header_buttons();
     });
 });
 
-
+function handle_header_buttons () {
+    if (selections.length < 1) {
+        $("#user_delete_selection").addClass("disabled");
+        $("#user_delete_selection").attr("aria-disabled", true);
+        $(".check_head").attr("aria-disabled", true);
+        $(".check_head").attr("disabled", true);
+        $(".check_head").prop('checked', false);
+        $(".button_head").attr("aria-disabled", true);
+        $(".button_head").addClass("disabled");
+        $(".multi_head").attr("aria-disabled", true);
+        $(".multi_head").addClass("hidden");
+        $(".multi_selector").attr("aria-disabled", true);
+        $(".multi_selector").attr("disabled", true);
+        $(".header_select").attr("disabled", true);
+    } else {
+        $("#user_delete_selection").removeClass("disabled");
+        $("#user_delete_selection").attr("aria-disabled", false);
+        $(".check_head").attr("aria-disabled", false);
+        $(".check_head").removeAttr("disabled");
+        $(".button_head").attr("aria-disabled", false);
+        $(".button_head").removeClass("disabled");
+        $(".multi_head").attr("aria-disabled", false);
+        $(".multi_head").removeClass("hidden");
+        $(".multi_selector").attr("aria-disabled", false);
+        $(".multi_selector").removeAttr("disabled");
+        $('.multi_selector').selectpicker('refresh');
+        $(".header_select").removeAttr("disabled");
+    }
+}
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
@@ -557,7 +585,6 @@ function TableActions (value, row) {
         "</a>"
     ].join("");
 }
-
 
 /* Function for deleting domain restrictions */
 function RestrictionActions (value, row) {
@@ -577,10 +604,10 @@ function EbookActions (value, row) {
     ].join("");
 }
 
-/* Function for deleting books */
+/* Function for deleting Users */
 function UserActions (value, row) {
     return [
-        "<div class=\"user-remove\" data-target=\"#GeneralDeleteModal\" title=\"Remove\">",
+        "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
@@ -595,41 +622,172 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<button type="button" className="btn btn-default"><a href="/admin/user/' + row.id + '">' + this.buttontext + '</a></button>'
+    return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
-function checkboxFormatter(value, row, index){
+function checkboxFormatter(value, row){
     if(value & this.column)
-        return '<input type="checkbox" class="chk" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
-        return '<input type="checkbox" class="chk" onchange="checkboxChange(this, ' + row.id + ', \'' + this.field + '\', ' + this.column + ')">';
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
+}
+
+function singlecheckboxFormatter(value, row){
+    if(value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+}
+
+
+/* Do some hiding disabling after user list is loaded */
+function loadSuccess() {
+    var guest = $(".editable[data-name='name'][data-value='Guest']");
+    guest.editable("disable");
+    $("input:radio.check_head:checked").each(function() {
+        $(this).prop('checked', false);
+    });
+    $(".header_select").each(function() {
+        $(this).prop("selectedIndex", 0);
+    });
+    $(".header_select").each(function() {
+        $(this).prop("selectedIndex", 0);
+    });
+    $('.multi_selector').selectpicker('deselectAll');
+    $('.multi_selector').selectpicker('refresh');
+    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
+    $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").hide();
+    $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
+    $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
+}
+
+function move_header_elements() {
+    $(".header_select").each(function () {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".form-check").each(function () {
+        var item = $(this).parent();
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+        }
+    });
+    $(".multi_select").each(function () {
+        var item = $(this);
+        var parent = item.parent().parent();
+        if (parent.prop('nodeName') === "TH") {
+            item.prependTo(parent);
+            item.addClass("myselect");
+        }
+    });
+    $(".multi_selector").selectpicker();
+    if ($(".multi_head").length) {
+        if (!$._data($(".multi_head").get(0), "events")) {
+            // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
+            $(".multi_head").on("click", function () {
+                var val = $(this).data("set");
+                var field = $(this).data("name");
+                var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+                var values = $("#" + field).val();
+                confirmDialog(
+                    "restrictions",
+                    "GeneralChangeModal",
+                    0,
+                    function () {
+                        $.ajax({
+                            method: "post",
+                            url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                            data: {"pk": result, "value": values, "action": val},
+                            success: function (data) {
+                                handleListServerResponse(data);
+                            },
+                            error: function (data) {
+                                handleListServerResponse([{type: "danger", message: data.responseText}])
+                            },
+                        });
+                    }
+                );
+            });
+        }
+    }
+
+    $("#user_delete_selection").click(function () {
+        $("#user-table").bootstrapTable("uncheckAll");
+    });
+    $("#select_locale").on("change", function () {
+        selectHeader(this, "locale");
+    });
+    $("#select_default_language").on("change", function () {
+        selectHeader(this, "default_language");
+    });
+    if ($(".check_head").length) {
+        if (!$._data($(".check_head").get(0), "events")) {
+            $(".check_head").on("change", function () {
+                var val = $(this).data("set");
+                var name = $(this).data("name");
+                var data = $(this).data("val");
+                checkboxHeader(val, name, data);
+            });
+        }
+    }
+    if ($(".button_head").length) {
+        if (!$._data($(".button_head").get(0), "events")) {
+            $(".button_head").on("click", function () {
+                var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
+                confirmDialog(
+                    "btndeluser",
+                    "GeneralDeleteModal",
+                    0,
+                    function () {
+                        $.ajax({
+                            method: "post",
+                            url: window.location.pathname + "/../../ajax/deleteuser",
+                            data: {"userid": result},
+                            success: function (data) {
+                                selections = selections.filter((el) => !result.includes(el));
+                                handleListServerResponse(data);
+                            },
+                            error: function (data) {
+                                handleListServerResponse([{type: "danger", message: data.responseText}])
+                            },
+                        });
+                    }
+                );
+            });
+        }
+    }
+}
+
+function handleListServerResponse (data) {
+    $("#flash_success").remove();
+    $("#flash_danger").remove();
+    if (!jQuery.isEmptyObject(data)) {
+        data.forEach(function(item) {
+            $(".navbar").after('<div class="row-fluid text-center">' +
+                '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                '</div>');
+        });
+    }
+    $("#user-table").bootstrapTable("refresh");
 }
 
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
-        method:"post",
+        method: "post",
         url: window.location.pathname + "/../../ajax/editlistusers/" + field,
-        data: {"pk":userId, "field_index":field_index, "value": checkbox.checked}
+        data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
+        error: function(data) {
+            handleListServerResponse([{type:"danger", message:data.responseText}])
+        },
+        success: handleListServerResponse
     });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
-        }
-    });
-}
-function deactivateHeaderButtons(e) {
-    $("#user_delete_selection").addClass("disabled");
-    $("#user_delete_selection").attr("aria-disabled", true);
-    $(".check_head").attr("aria-disabled", true);
-    $(".check_head").attr("disabled", true);
-    $(".check_head").prop('checked', false);
-    $(".button_head").attr("aria-disabled", true);
-    $(".button_head").addClass("disabled");
-    $(".header_select").attr("disabled", true);
 }
 
 function selectHeader(element, field) {
@@ -640,19 +798,13 @@ function selectHeader(element, field) {
                 method: "post",
                 url: window.location.pathname + "/../../ajax/editlistusers/" + field,
                 data: {"pk": result, "value": element.value},
-                success: function () {
-                    $.ajax({
-                        method: "get",
-                        url: window.location.pathname + "/../../ajax/listusers",
-                        async: true,
-                        timeout: 900,
-                        success: function (data) {
-                            $("#user-table").bootstrapTable("load", data);
-                            deactivateHeaderButtons();
-                        }
-                    });
-                }
+                error: function (data) {
+                    handleListServerResponse([{type:"danger", message:data.responseText}])
+                },
+                success: handleListServerResponse,
             });
+        },function() {
+            $(element).prop("selectedIndex", 0);
         });
     }
 }
@@ -664,27 +816,51 @@ function checkboxHeader(CheckboxState, field, field_index) {
             method: "post",
             url: window.location.pathname + "/../../ajax/editlistusers/" + field,
             data: {"pk": result, "field_index": field_index, "value": CheckboxState},
-            success: function () {
-                $.ajax({
-                    method: "get",
-                    url: window.location.pathname + "/../../ajax/listusers",
-                    async: true,
-                    timeout: 900,
-                    success: function (data) {
-                        $("#user-table").bootstrapTable("load", data);
-                        $("#user_delete_selection").addClass("disabled");
-                        $("#user_delete_selection").attr("aria-disabled", true);
-                        $(".check_head").attr("aria-disabled", true);
-                        $(".check_head").attr("disabled", true);
-                        $(".check_head").prop('checked', false);
-                        $(".button_head").attr("aria-disabled", true);
-                        $(".button_head").addClass("disabled");
-                        $(".header_select").attr("disabled", true);
-                    }
-                });
-            }
+            error: function (data) {
+                handleListServerResponse([{type:"danger", message:data.responseText}])
+            },
+            success: function (data) {
+                handleListServerResponse (data, true)
+            },
+        });
+    },function() {
+        $("input:radio.check_head:checked").each(function() {
+            $(this).prop('checked', false);
         });
     });
+}
+
+function deleteUser(a,id){
+    confirmDialog(
+    "btndeluser",
+        "GeneralDeleteModal",
+        0,
+        function() {
+            $.ajax({
+                method:"post",
+                url: window.location.pathname + "/../../ajax/deleteuser",
+                data: {"userid":id},
+                success: function (data) {
+                    userId = parseInt(id, 10);
+                    selections = selections.filter(item => item !== userId);
+                    handleListServerResponse(data);
+                },
+                error: function (data) {
+                    handleListServerResponse([{type:"danger", message:data.responseText}])
+                },
+            });
+        }
+    );
+}
+
+function queryParams(params)
+{
+    params.state = JSON.stringify(selections);
+    return params;
+}
+
+function storeLocation() {
+    window.sessionStorage.setItem("back", window.location.pathname);
 }
 
 function user_handle (userId) {
@@ -693,17 +869,5 @@ function user_handle (userId) {
         url: window.location.pathname + "/../../ajax/deleteuser",
         data: {"userid":userId}
     });
-    $.ajax({
-        method:"get",
-        url: window.location.pathname + "/../../ajax/listusers",
-        async: true,
-        timeout: 900,
-        success:function(data) {
-            $("#user-table").bootstrapTable("load", data);
-        }
-    });
-}
-
-function test(){
-    console.log("hello");
+    $("#user-table").bootstrapTable("refresh");
 }

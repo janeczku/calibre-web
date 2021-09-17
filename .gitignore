@@ -6,6 +6,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.python-version
 env/
 venv/
 eggs/
@@ -31,4 +32,4 @@ cps/cache
 settings.yaml
 gdrive_credentials
 client_secrets.json
-
+gmail.json

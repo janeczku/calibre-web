@@ -20,6 +20,15 @@ function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
 }
+
+function elementSorter(a, b) {
+    a = +a.slice(0, -2);
+    b = +b.slice(0, -2);
+    if (a > b) return 1;
+    if (a < b) return -1;
+    return 0;
+}
+
 // Generic control/related handler to show/hide fields based on a checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
@@ -114,18 +123,22 @@ $(document).ready(function() {
   }
 });
 
+$(".session").click(function() {
+    window.sessionStorage.setItem("back", window.location.pathname);
+});
+
+$("#back").click(function() {
+   var loc = sessionStorage.getItem("back");
+   if (!loc) {
+       loc = $(this).data("back");
+   }
+   sessionStorage.removeItem("back");
+   window.location.href = loc;
+
+});
+
 function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     var $confirm = $("#" + dialogid);
-    $confirm.modal('show');
-    $.ajax({
-        method:"get",
-        dataType: "json",
-        url: getPath() + "/ajax/loaddialogtexts/" + id,
-        success: function success(data) {
-            $("#header-"+ dialogid).html(data.header);
-            $("#text-"+ dialogid).html(data.main);
-        }
-    });
     $("#btnConfirmYes-"+ dialogid).off('click').click(function () {
         yesFn(dataValue);
         $confirm.modal("hide");
@@ -136,16 +149,27 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
         }
         $confirm.modal("hide");
     });
+    $.ajax({
+        method:"post",
+        dataType: "json",
+        url: getPath() + "/ajax/loaddialogtexts/" + id,
+        success: function success(data) {
+            $("#header-"+ dialogid).html(data.header);
+            $("#text-"+ dialogid).html(data.main);
+        }
+    });
+    $confirm.modal('show');
 }
 
 $("#delete_confirm").click(function() {
     //get data-id attribute of the clicked element
     var deleteId = $(this).data("delete-id");
     var bookFormat = $(this).data("delete-format");
+    var ajaxResponse = $(this).data("ajax");
     if (bookFormat) {
         window.location.href = getPath() + "/delete/" + deleteId + "/" + bookFormat;
     } else {
-        if ($(this).data("delete-format")) {
+        if (ajaxResponse) {
             path = getPath() + "/ajax/delete/" + deleteId;
             $.ajax({
                 method:"get",
@@ -157,12 +181,13 @@ $("#delete_confirm").click(function() {
                             if (item.format != "") {
                                 $("button[data-delete-format='"+item.format+"']").addClass('hidden');
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
 
                         }
                     });
+                    $("#books-table").bootstrapTable("refresh");
                 }
             });
         } else {
@@ -187,9 +212,8 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     }
     $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
+    $(e.currentTarget).find("#delete_confirm").data("ajax", $(e.relatedTarget).data("ajax"));
 });
-
-
 
 $(function() {
     var updateTimerID;
@@ -222,16 +246,15 @@ $(function() {
     function updateTimer() {
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/get_updater_status",
+            url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
-                // console.log(data.status);
                 $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
                     cleanUp();
                 }
             },
             error: function error() {
-                $("#DialogContent").html(updateText[7]);
+                $("#DialogContent").html(updateText[11]);
                 cleanUp();
             },
             timeout: 2000
@@ -313,6 +336,8 @@ $(function() {
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
             if ($("body").hasClass("blur")) {
                 $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+                $(" a:not(.dropdown-toggle) ")
+                  .removeAttr("data-toggle");
             }
             $(".load-more .row").isotope( "appended", $(data), null );
         });
@@ -425,7 +450,6 @@ $(function() {
             success: function success(data) {
                 updateText = data.text;
                 $("#DialogContent").html(updateText[data.status]);
-                // console.log(data.status);
                 updateTimerID = setInterval(updateTimer, 2000);
             }
         });
@@ -514,7 +538,7 @@ $(function() {
         $("#pub_new").toggleClass("disabled");
         $("#pub_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
-        $("#toggle_order_shelf")[0].attributes['data-alt-text'].value = $("#toggle_order_shelf").html();
+        $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);
     });
 
@@ -537,6 +561,89 @@ $(function() {
         this.closest("form").submit();
     });
 
+    function handle_response(data) {
+        if (!jQuery.isEmptyObject(data)) {
+            data.forEach(function (item) {
+                $(".navbar").after('<div class="row-fluid text-center">' +
+                    '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                    '</div>');
+            });
+        }
+    }
+
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hidden.bs.collapse', function(){
+    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+    });
+
+    function changeDbSettings() {
+        $("#db_submit").closest('form').submit();
+    }
+
+    $("#db_submit").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.blur();
+        $.ajax({
+            method:"post",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/simulatedbchange",
+            data: {config_calibre_dir: $("#config_calibre_dir").val()},
+            success: function success(data) {
+                if ( data.change ) {
+                    if ( data.valid ) {
+                        confirmDialog(
+                        "db_submit",
+                    "GeneralChangeModal",
+                            0,
+                            changeDbSettings
+                        );
+                    }
+                    else {
+                        $("#InvalidDialog").modal('show');
+                    }
+                } else {                	
+                    changeDbSettings();
+                }
+            }
+        });
+    });
+
+    $("#config_submit").click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.blur();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        var request_path = "/../../admin/ajaxconfig";
+        var loader = "/../..";
+        $("#flash_success").remove();
+        $("#flash_danger").remove();
+        $.post(window.location.pathname + request_path, $(this).closest("form").serialize(), function(data) {
+            $('#config_upload_formats').val(data.config_upload);
+            if(data.reboot) {
+                $("#spinning_success").show();
+                var rebootInterval = setInterval(function(){
+                    $.get({
+                        url:window.location.pathname + "/../../admin/alive",
+                        success: function (d, statusText, xhr) {
+                            if (xhr.status < 400) {
+                                $("#spinning_success").hide();
+                                clearInterval(rebootInterval);
+                                if (data.result) {
+                                    handle_response(data.result);
+                                    data.result = "";
+                                }
+                            }
+                        },
+                    });
+                }, 1000);
+            } else {
+                handle_response(data.result);
+            }
+        });
+    });
+
     $("#delete_shelf").click(function() {
         confirmDialog(
             $(this).attr('id'),
@@ -548,7 +655,6 @@ $(function() {
         );
 
     });
-
 
     $("#fileModal").on("show.bs.modal", function(e) {
         var target = $(e.relatedTarget);
@@ -613,14 +719,13 @@ $(function() {
 
     $(".update-view").click(function(e) {
         var view = $(this).data("view");
-
         e.preventDefault();
         e.stopPropagation();
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/view",
+            url: window.location.pathname + "/../ajax/view",
             data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();
@@ -628,3 +733,4 @@ $(function() {
         });
     });
 });
+

@@ -62,7 +62,7 @@ def remote_login():
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
-    return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
+    return render_title_template('remote_login.html', title=_(u"Login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")
 
 
@@ -126,11 +126,11 @@ def token_verified():
         login_user(user)
 
         ub.session.delete(auth_token)
-        ub.session_commit("User {} logged in via remotelogin, token deleted".format(user.nickname))
+        ub.session_commit("User {} logged in via remotelogin, token deleted".format(user.name))
 
         data['status'] = 'success'
         log.debug(u"Remote Login for userid %s succeded", user.id)
-        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
 
     response = make_response(json.dumps(data, ensure_ascii=False))
     response.headers["Content-Type"] = "application/json; charset=utf-8"

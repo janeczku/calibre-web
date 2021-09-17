@@ -123,6 +123,10 @@ table .bg-dark-danger a { color: #fff; }
   flex-wrap: wrap;
 }
 
+.row-fluid.text-center {
+    margin-top: -20px;
+}
+
 .container-fluid img {
   display: block;
   max-width: 100%;
@@ -164,6 +168,10 @@ table .bg-dark-danger a { color: #fff; }
   -webkit-box-shadow: 0 5px 8px -6px #777;
   -moz-box-shadow: 0 5px 8px -6px #777;
   box-shadow: 0 5px 8px -6px #777;
+}
+
+.datepicker.form-control {
+    position: static;
 }
 
 .container-fluid .book .cover span img {
@@ -322,7 +330,7 @@ table .bg-dark-danger:hover { background-color: #c9302c; }
 table .bg-primary:hover { background-color: #1c5484; }
 .block-label { display: block; }
 
-.fake-input {
+.form-control.fake-input {
   position: absolute;
   pointer-events: none;
   top: 0;
@@ -417,3 +425,9 @@ div.log {
   white-space: nowrap;
   padding: 0.5em;
 }
+
+#detailcover { cursor:zoom-in; }
+#detailcover:-webkit-full-screen { cursor:zoom-out; }
+#detailcover:-moz-full-screen { cursor:zoom-out; }
+#detailcover:-ms-fullscreen { cursor:zoom-out; }
+#detailcover:fullscreen { cursor:zoom-out; }

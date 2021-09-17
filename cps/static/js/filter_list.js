@@ -15,7 +15,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var direction = 0;  // Descending order
+var direction = $("#asc").data('order');  // 0=Descending order; 1= ascending order
 var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {

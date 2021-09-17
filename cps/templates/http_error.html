@@ -27,6 +27,9 @@
   </div>
   <div class="row">
     <div class="col-md-offset-4 text-left">
+        {% if unconfigured %}
+            <div>{{_('Calibre-Web Instance is unconfigured, please contact your administrator')}}</div>
+        {% endif %}
       {% for element in error_stack %}
         <div>{{ element }}</div>
       {% endfor %}
@@ -39,13 +42,15 @@
     </div>
       </div>
     {% endif %}
-
-  <div class="row">
-    <div class="col errorlink">
+    <div class="row">
+      <div class="col errorlink">
+      {% if not unconfigured %}
         <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
+      {% else %}
+        <a href="{{url_for('web.logout')}}" title="{{ _('Logout User') }}">{{ _('Logout User') }}</a>
+      {% endif %}
+      </div>
     </div>
-  </div>
-
   </div>
   </body>
 </html>

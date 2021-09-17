@@ -5,6 +5,7 @@
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
         {{ book_cover_image(book, book.id|get_book_thumbnails(thumbnails)) }}
+        <!-- <img id="detailcover" title="{{book.title}}" src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/> -->
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
@@ -54,6 +55,10 @@
       <label for="book_title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="book_title" id="book_title" value="{{book.title}}">
     </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
+    </div>
+
     <div class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
@@ -106,12 +111,13 @@
       </div>
       {% endif %}
     {% endif %}
-    <div class="form-group">
-      <label for="pubdate">{{_('Published Date')}}</label>
-      <div style="position: relative">
-        <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
-        <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
-      </div>
+    <label for="pubdate">{{_('Published Date')}}</label>
+    <div class="form-group input-group">
+       <input type="text" class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+       <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
+      <span class="input-group-btn">
+        <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+      </span>
     </div>
     <div class="form-group">
       <label for="publisher">{{_('Publisher')}}</label>
@@ -150,7 +156,25 @@
               {% endif %}>
             {% endif %}
 
+            {% if c.datatype == 'datetime' %}
+              <div class="input-group">
+                <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+                  {% if book['custom_column_' ~ c.id]|length > 0 %}
+                    value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
+                  {% endif %}>
+                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate_{{ c.id }}"
+                  {% if book['custom_column_' ~ c.id]|length > 0 %}
+                    value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
+                  {% endif %}>
+                <span class="input-group-btn">
+                  <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                </span>
+              </div>
+            {% endif %}
 
+            {% if c.datatype == 'comments' %}
+              <textarea class="form-control tiny_editor" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" rows="7">{% if book['custom_column_' ~ c.id]|length > 0 %}{{book['custom_column_' ~ c.id][0].value}}{%endif%}</textarea>
+            {% endif %}
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
                   <option></option>
@@ -210,7 +234,7 @@
         <form class="padded-bottom" id="meta-search">
           <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
-            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_(" Search keyword ")}}">
+            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_("Search keyword")}}">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-primary" id="do-search">{{_("Search")}}</button>
             </span>
@@ -219,21 +243,12 @@
         <div class="text-center"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
       </div>
       <div class="modal-body">
-        <div class="text-center padded-bottom">
-          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
-          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
-          <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-comics" class="pill" data-control="comicvine" checked>
-          <label for="show-comics">ComicVine <span class="glyphicon glyphicon-ok"></span></label>
+        <div class="text-center padded-bottom" id="metadata_provider">
         </div>
 
         <div id="meta-info">
           {{_("Loading...")}}
         </div>
-        <ul id="book-list" class="media-list"></ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
@@ -249,7 +264,7 @@
     <img class="pull-left img-responsive"
          data-toggle="modal"
          data-target="#metaModal"
-         src="<%= cover %>"
+         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
          alt="Cover"
     >
     <div class="media-body">
@@ -305,6 +320,7 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
 {% endblock %}
 {% block header %}
 <meta name="referrer" content="never">

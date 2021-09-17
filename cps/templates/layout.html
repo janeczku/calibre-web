@@ -77,7 +77,7 @@
               {% if g.user.role_admin() %}
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
               {% endif %}
-              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{g.user.nickname}}</span></a></li>
+              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{g.user.name}}</span></a></li>
               {% if not g.user.is_anonymous %}
               <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
               {% endif %}
@@ -92,26 +92,27 @@
     </div>
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
-      <div class="row-fluid text-center" style="margin-top: -20px;">
-        <div id="flash_alert" class="alert alert-danger">{{ message[1] }}</div>
+      <div class="row-fluid text-center" >
+        <div id="flash_danger" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
-      <div class="row-fluid text-center" style="margin-top: -20px;">
+      <div class="row-fluid text-center">
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "warning" %}
-      <div class="row-fluid text-center" style="margin-top: -20px;">
+      <div class="row-fluid text-center">
         <div id="flash_warning" class="alert alert-warning">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "success" %}
-      <div class="row-fluid text-center" style="margin-top: -20px;">
+      <div class="row-fluid text-center">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>
       {%endif%}
     {% endfor %}
+    {% block flash %}{% endblock %}
     {% if g.current_theme == 1 %}
       <div id="loader" hidden="true">
         <center>
@@ -129,7 +130,7 @@
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if g.user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort_param='stored')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort_param='stored')}}"><span class="glyphicon {{element['glyph']}}"></span> {{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
               {% if g.user.is_authenticated or g.allow_anonymous %}
@@ -194,11 +195,11 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/underscore-min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/underscore-umd-min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     <script type="text/javascript">
         $(function() {

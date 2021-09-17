@@ -17,17 +17,23 @@
     </div>
     <div class="row">
       <div class="form-group col-sm-6">
-        <label for="Publishstart">{{_('Published Date From')}}</label>
-        <div style="position: relative">
-          <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
-          <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
+        <label for="publishstart">{{_('Published Date From')}}</label>
+        <div class="input-group">
+          <input type="text" class="datepicker form-control" name="publish_start" id="publishstart" value="">
+          <input type="text" class="form-control fake-input hidden" id="fake_publishstart" value="">
+          <span class="input-group-btn">
+            <button type="button" id="publishstart_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+          </span>
         </div>
       </div>
       <div class="form-group col-sm-6">
-        <label for="Publishend">{{_('Published Date To')}}</label>
-        <div style="position: relative">
-          <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
-          <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
+        <label for="publishend">{{_('Published Date To')}}</label>
+        <div class="input-group ">
+          <input type="text" class="datepicker form-control" name="publishend" id="publishend" value="">
+          <input type="text" class="form-control fake-input hidden" id="fake_publishend" value="">
+          <span class="input-group-btn">
+            <button type="button" id="publishend_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+          </span>
         </div>
       </div>
     </div>
@@ -167,7 +173,32 @@
       <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
       {% endif %}
 
-      {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
+      {% if c.datatype == 'datetime' %}
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="{{ 'custom_column_' ~ c.id }}">{{_('From:')}}</label>
+          <div class="input-group">
+            <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}_start" id="{{ 'custom_column_' ~ c.id }}_start" value="">
+            <input type="text" class="form-control fake-input hidden" id="fake_{{ 'custom_column_' ~ c.id }}_start" value="">
+            <span class="input-group-btn">
+              <button type="button" id="{{ 'custom_column_' ~ c.id }}_start_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="{{ 'custom_column_' ~ c.id }}">{{_('To:')}}</label>
+          <div class="input-group ">
+            <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}_end" id="{{ 'custom_column_' ~ c.id }}_end" value="">
+            <input type="text" class="form-control fake-input hidden" id="fake_{{ 'custom_column_' ~ c.id }}_end" value="">
+            <span class="input-group-btn">
+              <button type="button" id="{{ 'custom_column_' ~ c.id }}_end_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+            </span>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if c.datatype in ['text', 'series', 'comments'] and not c.is_multiple %}
       <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
       {% endif %}
 

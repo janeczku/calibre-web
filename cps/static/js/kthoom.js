@@ -15,7 +15,7 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
-/* global screenfull, bitjs, Uint8Array, opera */
+/* global screenfull, bitjs, Uint8Array, opera, loadArchiveFormats, archiveOpenFile */
 /* exported init, event */
 
 
@@ -69,7 +69,9 @@ var settings = {
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
     theme: "light",
-    direction: 0 // 0 = Left to Right, 1 = Right to Left
+    direction: 0, // 0 = Left to Right, 1 = Right to Left
+	nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
+	scrollbar: 1 // 0 = Hide Scrollbar, 1 = Show Scrollbar
 };
 
 kthoom.saveSettings = function() {
@@ -102,9 +104,8 @@ kthoom.setSettings = function() {
 };
 
 var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset;
+    var offset = 0; // array.byteOffset;
     var len = array.byteLength;
-    // var url;
     var blob;
 
     if (mimeType === "image/xml+svg") {
@@ -164,90 +165,61 @@ kthoom.ImageFile = function(file) {
     }
     if ( this.mimeType !== undefined) {
         this.dataURI = createURLFromArray(file.fileData, this.mimeType);
-        this.data = file;
     }
 };
 
-
 function initProgressClick() {
     $("#progress").click(function(e) {
-        var page = Math.max(1, Math.ceil((e.offsetX / $(this).width()) * totalImages)) - 1;
-        currentImage = page;
+        var offset = $(this).offset();
+        var x = e.pageX - offset.left;
+        var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
+        currentImage = Math.max(1, Math.ceil(rate * totalImages)) - 1;
         updatePage();
     });
 }
 
 function loadFromArrayBuffer(ab) {
-    var start = (new Date).getTime();
-    var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/archive/";
     var lastCompletion = 0;
-    if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
-        unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
-    } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
-        unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
-    } else if (h[0] === 255 && h[1] === 216) { // JPEG
-        // ToDo: check
-        updateProgress(100);
-        lastCompletion = 100;
-        return;
-    } else { // Try with tar
-        unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
-    }
-    // Listen for UnarchiveEvents.
-    if (unarchiver) {
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.PROGRESS,
-            function(e) {
-                var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
-                if (totalImages === 0) {
-                    totalImages = e.totalFilesInArchive;
-                }
-                updateProgress(percentage * 100);
-                lastCompletion = percentage * 100;
-            });
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.INFO,
-            function(e) {
-                // console.log(e.msg);  // Enable debug output here
-            });
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
-            function(e) {
-                // convert DecompressedFile into a bunch of ImageFiles
-                if (e.unarchivedFile) {
-                    var f = e.unarchivedFile;
-                    // add any new pages based on the filename
-                    if (imageFilenames.indexOf(f.filename) === -1) {
-                        var test = new kthoom.ImageFile(f);
-                        if ( test.mimeType !== undefined) {
-                            imageFilenames.push(f.filename);
-                            imageFiles.push(test);
-                            // add thumbnails to the TOC list
-                            $("#thumbnails").append(
-                                "<li>" +
-                                    "<a data-page='" + imageFiles.length + "'>" +
+    loadArchiveFormats(['rar', 'zip', 'tar'], function() {
+        // Open the file as an archive
+        archiveOpenFile(ab, function (archive) {
+            if (archive) {
+                totalImages = archive.entries.length
+                console.info('Uncompressing ' + archive.archive_type + ' ...');
+                archive.entries.forEach(function(e, i) {
+                    updateProgress( (i + 1)/ totalImages * 100);
+                    if (e.is_file) {
+                        e.readData(function(d) {
+                            // add any new pages based on the filename
+                            if (imageFilenames.indexOf(e.name) === -1) {
+                                let data = {filename: e.name, fileData: d};
+                                var test = new kthoom.ImageFile(data);
+                                if (test.mimeType !== undefined) {
+                                    imageFilenames.push(e.name);
+                                    imageFiles.push(test);
+                                    // add thumbnails to the TOC list
+                                    $("#thumbnails").append(
+                                        "<li>" +
+                                        "<a data-page='" + imageFiles.length + "'>" +
                                         "<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
                                         "<span>" + imageFiles.length + "</span>" +
-                                    "</a>" +
-                                "</li>"
-                            );
-                            // display first page if we haven't yet
-                            if (imageFiles.length === currentImage + 1) {
-                                updatePage(lastCompletion);
+                                        "</a>" +
+                                        "</li>"
+                                    );
+                                    // display first page if we haven't yet
+                                    if (imageFiles.length === currentImage + 1) {
+                                        updatePage(lastCompletion);
+                                    }
+                                } else {
+                                    totalImages--;
+                                }
                             }
-                        } else {
-                            totalImages--;
-                        }
+                        });
                     }
-                }
-            });
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
-            function() {
-                var diff = ((new Date).getTime() - start) / 1000;
-                console.log("Unarchiving done in " + diff + "s");
-            });
-        unarchiver.start();
-    } else {
-        alert("Some error");
-    }
+                });
+            }
+        });
+    });
 }
 
 function scrollTocToActive() {
@@ -279,12 +251,29 @@ function updatePage() {
     }
 
     $("body").toggleClass("dark-theme", settings.theme === "dark");
+	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 
     kthoom.setSettings();
     kthoom.saveSettings();
 }
 
 function updateProgress(loadPercentage) {
+    if (settings.direction === 0) {
+        $("#progress .bar-read")
+            .removeClass("from-right")
+            .addClass("from-left");
+        $("#progress .bar-load")
+            .removeClass("from-right")
+            .addClass("from-left");
+    } else {
+        $("#progress .bar-read")
+            .removeClass("from-left")
+            .addClass("from-right");
+        $("#progress .bar-load")
+            .removeClass("from-left")
+            .addClass("from-right");
+    }
+
     // Set the load/unzip progress if it's passed in
     if (loadPercentage) {
         $("#progress .bar-load").css({ width: loadPercentage + "%" });
@@ -295,7 +284,6 @@ function updateProgress(loadPercentage) {
                 .find(".load").text("");
         }
     }
-
     // Set page progress bar
     $("#progress .bar-read").css({ width: totalImages === 0 ? 0 : Math.round((currentImage + 1) / totalImages * 100) + "%"});
 }
@@ -420,6 +408,9 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     }
 }
 
@@ -430,6 +421,9 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     }
 }
 
@@ -525,19 +519,14 @@ function keyHandler(evt) {
             updateScale(false);
             break;
         case kthoom.Key.SPACE:
-            var container = $("#mainContent");
-            var atTop = container.scrollTop() === 0;
-            var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
-
-            if (evt.shiftKey && atTop) {
+            if (evt.shiftKey) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showLeftPage();
-            } else if (!evt.shiftKey && atBottom) {
+                showPrevPage();
+            } else {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showRightPage();
-                container.scrollTop(0);
+                showNextPage();
             }
             break;
         default:
@@ -546,33 +535,11 @@ function keyHandler(evt) {
     }
 }
 
-/*function ImageLoadCallback() {
-    var jso = this.response;
-    // Unable to decompress file, or no response from server
-    if (jso === null) {
-        setImage("error");
-    } else {
-        // IE 11 sometimes sees the response as a string
-        if (typeof jso !== "object") {
-            jso = JSON.parse(jso);
-        }
-
-        if (jso.page !== jso.last) {
-            this.open("GET", this.fileid + "/" + (jso.page + 1));
-            this.addEventListener("load", ImageLoadCallback);
-            this.send();
-        }
-
-        loadFromArrayBuffer(jso);
-    }
-}*/
 function init(filename) {
     var request = new XMLHttpRequest();
     request.open("GET", filename);
     request.responseType = "arraybuffer";
-    request.setRequestHeader("X-Test", "test1");
-    request.setRequestHeader("X-Test", "test2");
-    request.addEventListener("load", function(event) {
+    request.addEventListener("load", function() {
         if (request.status >= 200 && request.status < 300) {
             loadFromArrayBuffer(request.response);
         } else {
@@ -632,6 +599,9 @@ function init(filename) {
     $("#thumbnails").on("click", "a", function() {
         currentImage = $(this).data("page") - 1;
         updatePage();
+		if (settings.nextPage === 0) {
+			$("#mainContent").scrollTop(0);
+		}
     });
 
     // Fullscreen mode

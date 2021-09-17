@@ -14,37 +14,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * Get Metadata from Douban Books api and Google Books api and ComicVine
- * Google Books api document: https://developers.google.com/books/docs/v1/using
- * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
- * ComicVine api document: https://comicvine.gamespot.com/api/documentation
-*/
-/* global _, i18nMsg, tinymce */
-var dbResults = [];
-var ggResults = [];
-var cvResults = [];
+/* global _, i18nMsg, tinymce, getPath */
 
 $(function () {
     var msg = i18nMsg;
-    var douban = "https://api.douban.com";
-    var dbSearch = "/v2/book/search";
-    var dbDone = 0;
-
-    var google = "https://www.googleapis.com";
-    var ggSearch = "/books/v1/volumes";
-    var ggDone = 0;
-
-    var comicvine = "https://comicvine.gamespot.com";
-    var cvSearch = "/api/search/";
-    var cvDone = 0;
-
-    var showFlag = 0;
+    var keyword = ""
 
     var templates = {
         bookResult: _.template(
             $("#template-book-result").html()
-        )
+       )
     };
 
     function populateForm (book) {
@@ -53,14 +32,15 @@ $(function () {
         $.each(book.tags, function(i, el) {
             if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
         });
-
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
         $("#bookAuthor").val(ampSeparatedAuthors);
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(","));
         $("#rating").data("rating").setValue(Math.round(book.rating));
-        $(".cover img").attr("src", book.cover);
-        $("#cover_url").val(book.cover);
+        if(book.cover !== null){
+            $(".cover img").attr("src", book.cover);
+            $("#cover_url").val(book.cover);
+        }
         $("#pubdate").val(book.publishedDate);
         $("#publisher").val(book.publisher);
         if (typeof book.series !== "undefined") {
@@ -68,261 +48,100 @@ $(function () {
         }
     }
 
-    function showResult () {
-        showFlag++;
-        if (showFlag === 1) {
-            $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
-        }
-        if ((ggDone === 3 || (ggDone === 1 && ggResults.length === 0)) &&
-            (dbDone === 3 || (dbDone === 1 && dbResults.length === 0)) &&
-            (cvDone === 3 || (cvDone === 1 && cvResults.length === 0))) {
-            $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
-            return;
-        }
-        function formatDate (date) {
-            var d = new Date(date),
-                month = "" + (d.getMonth() + 1),
-                day = "" + d.getDate(),
-                year = d.getFullYear();
-
-            if (month.length < 2) {
-                month = "0" + month;
-            }
-            if (day.length < 2) {
-                day = "0" + day;
-            }
-
-            return [year, month, day].join("-");
-        }
-
-        if (ggResults.length > 0) {
-            if (ggDone < 2) {
-                ggResults.forEach(function(result) {
-                    var book = {
-                        id: result.id,
-                        title: result.volumeInfo.title,
-                        authors: result.volumeInfo.authors || [],
-                        description: result.volumeInfo.description || "",
-                        publisher: result.volumeInfo.publisher || "",
-                        publishedDate: result.volumeInfo.publishedDate || "",
-                        tags: result.volumeInfo.categories || [],
-                        rating: result.volumeInfo.averageRating || 0,
-                        cover: result.volumeInfo.imageLinks ?
-                            result.volumeInfo.imageLinks.thumbnail : location + "/../../../static/generic_cover.jpg",
-                        url: "https://books.google.com/books?id=" + result.id,
-                        source: {
-                            id: "google",
-                            description: "Google Books",
-                            url: "https://books.google.com/"
-                        }
-                    };
-
-                    var $book = $(templates.bookResult(book));
-                    $book.find("img").on("click", function () {
-                        populateForm(book);
-                    });
-
-                    $("#book-list").append($book);
-                });
-                ggDone = 2;
-            } else {
-                ggDone = 3;
-            }
-        }
-
-        if (dbResults.length > 0) {
-            if (dbDone < 2) {
-                dbResults.forEach(function(result) {
-                    var seriesTitle = "";
-                    if (result.series) {
-                        seriesTitle = result.series.title;
-                    }
-                    var dateFomers = result.pubdate.split("-");
-                    var publishedYear = parseInt(dateFomers[0], 10);
-                    var publishedMonth = parseInt(dateFomers[1], 10);
-                    var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
-
-                    publishedDate = formatDate(publishedDate);
-
-                    var book = {
-                        id: result.id,
-                        title: result.title,
-                        authors: result.author || [],
-                        description: result.summary,
-                        publisher: result.publisher || "",
-                        publishedDate: publishedDate || "",
-                        tags: result.tags.map(function(tag) {
-                            return tag.title.toLowerCase().replace(/,/g, "_");
-                        }),
-                        rating: result.rating.average || 0,
-                        series: seriesTitle || "",
-                        cover: result.image,
-                        url: "https://book.douban.com/subject/" + result.id,
-                        source: {
-                            id: "douban",
-                            description: "Douban Books",
-                            url: "https://book.douban.com/"
-                        }
-                    };
-
-                    if (book.rating > 0) {
-                        book.rating /= 2;
-                    }
-
-                    var $book = $(templates.bookResult(book));
-                    $book.find("img").on("click", function () {
-                        populateForm(book);
-                    });
-
-                    $("#book-list").append($book);
-                });
-                dbDone = 2;
-            } else {
-                dbDone = 3;
-            }
-        }
-        if (cvResults.length > 0) {
-            if (cvDone < 2) {
-                cvResults.forEach(function(result) {
-                    var seriesTitle = "";
-                    if (result.volume.name) {
-                        seriesTitle = result.volume.name;
-                    }
-                    var dateFomers = "";
-                    if (result.store_date) {
-                        dateFomers = result.store_date.split("-");
-                    } else {
-                        dateFomers = result.date_added.split("-");
-                    }
-                    var publishedYear = parseInt(dateFomers[0], 10);
-                    var publishedMonth = parseInt(dateFomers[1], 10);
-                    var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
-
-                    publishedDate = formatDate(publishedDate);
-
-                    var book = {
-                        id: result.id,
-                        title: seriesTitle + " #" + ("00" + result.issue_number).slice(-3) + " - " + result.name,
-                        authors: result.author || [],
-                        description: result.description,
-                        publisher: "",
-                        publishedDate: publishedDate || "",
-                        tags: ["Comics", seriesTitle],
-                        rating: 0,
-                        series: seriesTitle || "",
-                        cover: result.image.original_url,
-                        url: result.site_detail_url,
-                        source: {
-                            id: "comicvine",
-                            description: "ComicVine Books",
-                            url: "https://comicvine.gamespot.com/"
-                        }
-                    };
-
-                    var $book = $(templates.bookResult(book));
-                    $book.find("img").on("click", function () {
-                        populateForm(book);
-                    });
-
-                    $("#book-list").append($book);
-                });
-                cvDone = 2;
-            } else {
-                cvDone = 3;
-            }
-        }
-    }
-
-    function ggSearchBook (title) {
-        $.ajax({
-            url: google + ggSearch + "?q=" + title.replace(/\s+/gm, "+"),
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "callback",
-            success: function success(data) {
-                if ("items" in data) {
-                    ggResults = data.items;
-                }
-            },
-            complete: function complete() {
-                ggDone = 1;
-                showResult();
-                $("#show-google").trigger("change");
-            }
-        });
-    }
-
-    function dbSearchBook (title) {
-        var apikey = "054022eaeae0b00e0fc068c0c0a2102a";
-        $.ajax({
-            url: douban + dbSearch + "?apikey=" + apikey + "&q=" + title + "&fields=all&count=10",
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "callback",
-            success: function success(data) {
-                dbResults = data.books;
-            },
-            error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
-            },
-            complete: function complete() {
-                dbDone = 1;
-                showResult();
-                $("#show-douban").trigger("change");
-            }
-        });
-    }
-
-    function cvSearchBook (title) {
-        var apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6";
-        title = encodeURIComponent(title);
-        $.ajax({
-            url: comicvine + cvSearch + "?api_key=" + apikey + "&resources=issue&query=" + title + "&sort=name:desc&format=jsonp",
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "json_callback",
-            success: function success(data) {
-                cvResults = data.results;
-            },
-            error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
-            },
-            complete: function complete() {
-                cvDone = 1;
-                showResult();
-                $("#show-comics").trigger("change");
-            }
-        });
-    }
-
     function doSearch (keyword) {
-        showFlag = 0;
-        dbDone = ggDone = cvDone = 0;
-        dbResults = [];
-        ggResults = [];
-        cvResults = [];
-        $("#meta-info").text(msg.loading);
         if (keyword) {
-            dbSearchBook(keyword);
-            ggSearchBook(keyword);
-            cvSearchBook(keyword);
+            $("#meta-info").text(msg.loading);
+            $.ajax({
+                url: getPath() + "/metadata/search",
+                type: "POST",
+                data: {"query": keyword},
+                dataType: "json",
+                success: function success(data) {
+                    $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
+                    data.forEach(function(book) {
+                        var $book = $(templates.bookResult(book));
+                        $book.find("img").on("click", function () {
+                            populateForm(book);
+                        });
+                        $("#book-list").append($book);
+                    });
+                },
+                error: function error() {
+                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+                },
+            });
         }
     }
+
+    function populate_provider() {
+        $("#metadata_provider").empty();
+        $.ajax({
+            url: getPath() + "/metadata/provider",
+            type: "get",
+            dataType: "json",
+            success: function success(data) {
+                data.forEach(function(provider) {
+                    var checked = "";
+                    if (provider.active) {
+                        checked = "checked";
+                    }
+                    var $provider_button = '<input type="checkbox" id="show-' + provider.name + '" class="pill" data-initial="' + provider.initial + '" data-control="' + provider.id + '" ' + checked + '><label for="show-' + provider.name + '">' + provider.name + ' <span class="glyphicon glyphicon-ok"></span></label>'
+                    $("#metadata_provider").append($provider_button);
+                });
+            },
+        });
+    }
+
+    $(document).on("change", ".pill", function () {
+        var element = $(this);
+        var id = element.data("control");
+        var initial = element.data("initial");
+        var val = element.prop('checked');
+        var params = {id : id, value: val};
+        if (!initial) {
+            params['initial'] = initial;
+            params['query'] = keyword;
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/metadata/provider/" + id,
+            data: JSON.stringify(params),
+            success: function success(data) {
+                element.data("initial", "true");
+                data.forEach(function(book) {
+                    var $book = $(templates.bookResult(book));
+                    $book.find("img").on("click", function () {
+                        populateForm(book);
+                    });
+                    $("#book-list").append($book);
+                });
+            }
+        });
+    });
 
     $("#meta-search").on("submit", function (e) {
         e.preventDefault();
-        var keyword = $("#keyword").val();
-        if (keyword) {
-            doSearch(keyword);
-        }
+        keyword = $("#keyword").val();
+        $('.pill').each(function(){
+            // console.log($(this).data('control'));
+            $(this).data("initial", $(this).prop('checked'));
+            // console.log($(this).data('initial'));
+        });
+        doSearch(keyword);
     });
 
     $("#get_meta").click(function () {
+        populate_provider();
         var bookTitle = $("#book_title").val();
-        if (bookTitle) {
-            $("#keyword").val(bookTitle);
-            doSearch(bookTitle);
-        }
+        $("#keyword").val(bookTitle);
+        keyword = bookTitle;
+        doSearch(bookTitle);
     });
-
+    $("#metaModal").on("show.bs.modal", function(e) {
+        $(e.relatedTarget).one('focus', function (e) {
+            $(this).blur();
+        });
+    });
 });

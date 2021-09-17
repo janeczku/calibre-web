@@ -21,7 +21,8 @@ import binascii
 
 from sqlalchemy.sql.expression import func
 from werkzeug.security import check_password_hash
-from flask_login import login_required
+from flask_login import login_required, login_user
+
 
 from . import lm, ub, config, constants, services
 
@@ -41,7 +42,7 @@ def login_required_if_no_ano(func):
 
 
 def _fetch_user_by_name(username):
-    return ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+    return ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first()
 
 
 @lm.user_loader
@@ -58,6 +59,7 @@ def load_user_from_request(request):
             if rp_header_username:
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
+                    login_user(user)
                     return user
 
     auth_header = request.headers.get("Authorization")
@@ -75,8 +77,9 @@ def load_user_from_auth_header(header_val):
     basic_username = basic_password = ''  # nosec
     try:
         header_val = base64.b64decode(header_val).decode('utf-8')
-        basic_username = header_val.split(':')[0]
-        basic_password = header_val.split(':')[1]
+        # Users with colon are invalid: rfc7617 page 4
+        basic_username = header_val.split(':', 1)[0]
+        basic_password = header_val.split(':', 1)[1]
     except (TypeError, UnicodeDecodeError, binascii.Error):
         pass
     user = _fetch_user_by_name(basic_username)
