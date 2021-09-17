@@ -415,7 +415,8 @@ def render_books_list(data, sort, book_id, page):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        thumbnails = get_thumbnails_for_books(entries + random)
+
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Books"), page=website, thumbnails=thumbnails)
 
@@ -466,7 +467,7 @@ def render_hot_books(page):
                 ub.delete_download(book.Downloads.book_id)
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Hot Books (Most Downloaded)"), page="hot", thumbnails=thumbnails)
     else:
@@ -497,7 +498,7 @@ def render_downloaded_books(page, order, user_id):
                 ub.delete_download(book.id)
         user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
 
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html',
                                      random=random,
                                      entries=entries,
@@ -550,7 +551,7 @@ def render_publisher_books(page, book_id, order):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher",
                                      thumbnails=thumbnails)
@@ -565,7 +566,7 @@ def render_series_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.series.any(db.Series.id == book_id),
                                                                 [order[0]])
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Series: %(serie)s", serie=name.name), page="series",
                                      thumbnails=thumbnails)
@@ -580,7 +581,7 @@ def render_ratings_books(page, book_id, order):
                                                             db.Books.ratings.any(db.Ratings.id == book_id),
                                                             [order[0]])
     if name and name.rating <= 10:
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings",
                                      thumbnails=thumbnails)
@@ -595,7 +596,7 @@ def render_formats_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.data.any(db.Data.format == book_id.upper()),
                                                                 [order[0]])
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format), page="formats",
                                      thumbnails=thumbnails)
@@ -613,7 +614,7 @@ def render_category_books(page, book_id, order):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Category: %(name)s", name=name.name), page="category",
                                      thumbnails=thumbnails)
@@ -634,7 +635,7 @@ def render_language_books(page, name, order):
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
                                                             [order[0]])
-    thumbnails = get_thumbnails_for_books(entries + random)
+    thumbnails = get_thumbnails_for_books(entries + random if random else entries)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language", thumbnails=thumbnails)
 
@@ -687,7 +688,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "unread"
 
-        thumbnails = get_thumbnails_for_books(entries + random)
+        thumbnails = get_thumbnails_for_books(entries + random if random else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=name, page=pagename, thumbnails=thumbnails)
 
@@ -712,7 +713,7 @@ def render_archived_books(page, order):
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     pagename = "archived"
-    thumbnails = get_thumbnails_for_books(entries + random)
+    thumbnails = get_thumbnails_for_books(entries + random if random else entries)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=pagename, thumbnails=thumbnails)
 
@@ -1392,11 +1393,12 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         offset = 0
         limit_all = result_count
 
+    entries = q[offset:limit_all]
     thumbnails = get_thumbnails_for_books(entries)
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
-                                 entries=q[offset:limit_all],
+                                 entries=entries,
                                  result_count=result_count,
                                  title=_(u"Advanced Search"),
                                  page="advsearch",
