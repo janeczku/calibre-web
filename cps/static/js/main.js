@@ -652,10 +652,10 @@ $(function() {
         var folder = target.data("folderonly");
         var filter = target.data("filefilter");
         $("#element_selected").text(path);
-        $("#file_confirm")[0].attributes["data-link"].value = target.data("link");
-        $("#file_confirm")[0].attributes["data-folderonly"].value = (typeof folder === 'undefined') ? false : true;
-        $("#file_confirm")[0].attributes["data-filefilter"].value = (typeof filter === 'undefined') ? "" : filter;
-        $("#file_confirm")[0].attributes["data-newfile"].value = target.data("newfile");
+        $("#file_confirm").data("link", target.data("link"));
+        $("#file_confirm").data("folderonly", (typeof folder === 'undefined') ? false : true);
+        $("#file_confirm").data("filefilter", (typeof filter === 'undefined') ? "" : filter);
+        $("#file_confirm").data("newfile", target.data("newfile"));
         fillFileTable(path,"dir", folder, filter);
     });
 
@@ -669,7 +669,7 @@ $(function() {
         var folder = $(file_confirm).data("folderonly");
         var filter = $(file_confirm).data("filefilter");
         var newfile = $(file_confirm).data("newfile");
-        if (newfile !== 'undefined') {
+        if (newfile !== "") {
             $("#element_selected").text(path + $("#new_file".text()));
         } else {
             $("#element_selected").text(path);
