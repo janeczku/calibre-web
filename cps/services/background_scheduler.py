@@ -21,13 +21,23 @@ import atexit
 
 from .. import logger
 from .worker import WorkerThread
-from apscheduler.schedulers.background import BackgroundScheduler as BScheduler
+
+try:
+    from apscheduler.schedulers.background import BackgroundScheduler as BScheduler
+    use_APScheduler = True
+except (ImportError, RuntimeError) as e:
+    use_APScheduler = False
+    log = logger.create()
+    log.info(f'APScheduler not found. Unable to schedule tasks.')
 
 
 class BackgroundScheduler:
     _instance = None
 
     def __new__(cls):
+        if not use_APScheduler:
+            return False
+
         if cls._instance is None:
             cls._instance = super(BackgroundScheduler, cls).__new__(cls)
 
@@ -41,12 +51,14 @@ class BackgroundScheduler:
         return cls._instance
 
     def add(self, func, trigger, **trigger_args):
-        return self.scheduler.add_job(func=func, trigger=trigger, **trigger_args)
+        if use_APScheduler:
+            return self.scheduler.add_job(func=func, trigger=trigger, **trigger_args)
 
     def add_task(self, user, task, trigger, **trigger_args):
-        def scheduled_task():
-            worker_task = task()
-            self.log.info('Running scheduled task in background: ' + worker_task.name + ': ' + worker_task.message)
-            WorkerThread.add(user, worker_task)
+        if use_APScheduler:
+            def scheduled_task():
+                worker_task = task()
+                self.log.info('Running scheduled task in background: ' + worker_task.name + ': ' + worker_task.message)
+                WorkerThread.add(user, worker_task)
 
-        return self.add(func=scheduled_task, trigger=trigger, **trigger_args)
+            return self.add(func=scheduled_task, trigger=trigger, **trigger_args)

@@ -40,7 +40,10 @@ else:
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
-CACHE_DIR           = os.path.join(BASE_DIR, 'cps', 'cache')
+
+# Cache dir - use CACHE_DIR environment variable, otherwise use the default directory: cps/cache
+DEFAULT_CACHE_DIR   = os.path.join(BASE_DIR, 'cps', 'cache')
+CACHE_DIR           = os.environ.get("CACHE_DIR", DEFAULT_CACHE_DIR)
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")
