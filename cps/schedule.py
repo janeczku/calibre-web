@@ -27,13 +27,12 @@ from .tasks.thumbnail import TaskSyncCoverThumbnailCache, TaskGenerateCoverThumb
 def register_jobs():
     scheduler = BackgroundScheduler()
 
-    # Generate up to 1000 book covers daily
-    generate_thumbnails_task = scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(limit=1000),
-                                                  trigger='interval', days=1)
-    generate_thumbnails_task.modify(next_run_time=datetime.now())
+    if scheduler:
+        # Reconnect metadata.db once every 12 hours
+        scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='interval', hours=12)
 
-    # Cleanup book cover cache every 6 hours
-    scheduler.add_task(user=None, task=lambda: TaskSyncCoverThumbnailCache(), trigger='cron', minute='15', hour='*/6')
+        # Cleanup book cover cache once every 24 hours
+        scheduler.add_task(user=None, task=lambda: TaskSyncCoverThumbnailCache(), trigger='interval', days=1)
 
-    # Reconnect metadata.db every 4 hours
-    scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', minute='5', hour='*/4')
+        # Generate all missing book cover thumbnails once every 24 hours
+        scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(), trigger='interval', days=1)

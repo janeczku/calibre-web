@@ -50,6 +50,14 @@ class FileSystem:
         path = self.get_cache_dir(cache_type)
         return [file for file in listdir(path) if isfile(join(path, file))]
 
+    def list_existing_cache_files(self, filenames, cache_type=None):
+        path = self.get_cache_dir(cache_type)
+        return [file for file in listdir(path) if isfile(join(path, file)) and file in filenames]
+
+    def list_missing_cache_files(self, filenames, cache_type=None):
+        path = self.get_cache_dir(cache_type)
+        return [file for file in listdir(path) if isfile(join(path, file)) and file not in filenames]
+
     def delete_cache_dir(self, cache_type=None):
         if not cache_type and isdir(self._cache_dir):
             rmtree(self._cache_dir)

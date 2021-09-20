@@ -405,6 +405,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                      src=new_path, dest=new_name, error=str(ex))
     return False
 
+
 def update_dir_structure_gdrive(book_id, first_author):
     error = False
     book = calibre_db.get_book(book_id)
@@ -504,6 +505,7 @@ def uniq(inpt):
         if x not in output:
             output.append(x)
     return output
+
 
 def check_email(email):
     email = valid_email(email)
