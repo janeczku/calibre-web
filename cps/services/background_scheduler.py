@@ -28,7 +28,7 @@ try:
 except (ImportError, RuntimeError) as e:
     use_APScheduler = False
     log = logger.create()
-    log.info(f'APScheduler not found. Unable to schedule tasks.')
+    log.info('APScheduler not found. Unable to schedule tasks.')
 
 
 class BackgroundScheduler:
@@ -58,7 +58,7 @@ class BackgroundScheduler:
         if use_APScheduler:
             def scheduled_task():
                 worker_task = task()
-                self.log.info('Running scheduled task in background: ' + worker_task.name + ': ' + worker_task.message)
+                self.log.info(f'Running scheduled task in background: {worker_task.name} - {worker_task.message}')
                 WorkerThread.add(user, worker_task)
 
             return self.add(func=scheduled_task, trigger=trigger, **trigger_args)
