@@ -1420,7 +1420,7 @@ def serve_book(book_id, book_format, anyname):
                                "rb").read()
                 result = chardet.detect(rawdata)
                 return make_response(
-                    rawdata.decode(result['encoding']).encode('utf-8'))
+                    rawdata.decode(result['encoding'], 'surrogatepass').encode('utf-8', 'surrogatepass'))
             except FileNotFoundError:
                 log.error("File Not Found")
                 return "File Not Found"
