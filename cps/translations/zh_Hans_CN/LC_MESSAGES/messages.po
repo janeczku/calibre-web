@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-29 13:30+0200\n"
+"POT-Creation-Date: 2021-09-22 20:32+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_CN\n"
@@ -439,24 +439,29 @@ msgstr "一般错误"
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "更新文件无法保存在临时目录中"
 
-#: cps/admin.py:1746
+#: cps/admin.py:1709
+#, fuzzy
+msgid "Failed to extract at least One LDAP User"
+msgstr "创建至少一个LDAP用户失败"
+
+#: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
 msgstr "创建至少一个LDAP用户失败"
 
-#: cps/admin.py:1759
+#: cps/admin.py:1765
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "错误：%(ldaperror)s"
 
-#: cps/admin.py:1763
+#: cps/admin.py:1769
 msgid "Error: No user returned in response of LDAP server"
 msgstr "错误：在LDAP服务器的响应中没有返回用户"
 
-#: cps/admin.py:1796
+#: cps/admin.py:1802
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "数据库中没有找到至少一个LDAP用户"
 
-#: cps/admin.py:1798
+#: cps/admin.py:1804
 msgid "{} User Successfully Imported"
 msgstr "{} 用户被成功导入"
 

@@ -972,6 +972,8 @@ LANGUAGE_NAMES = {
         "gor": "Gorontalo",
         "got": "Γοτθικά",
         "grb": "Grebo",
+        "grc": "Ελληνικά; Αρχαία (to 1453)",
+        "ell": "Ελληνικά; Μοντέρνα (1453-)",
         "grn": "Guarani",
         "guj": "Gujarati",
         "gwi": "Gwichʼin",
