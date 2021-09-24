@@ -21,7 +21,7 @@ from __future__ import division, print_function, unicode_literals
 from .services.background_scheduler import BackgroundScheduler
 from .services.worker import WorkerThread
 from .tasks.database import TaskReconnectDatabase
-from .tasks.thumbnail import TaskSyncCoverThumbnailCache, TaskGenerateCoverThumbnails
+from .tasks.thumbnail import TaskGenerateCoverThumbnails
 
 
 def register_jobs():
@@ -30,9 +30,6 @@ def register_jobs():
     if scheduler:
         # Reconnect metadata.db once every 12 hours
         scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', hour='4,16')
-
-        # Cleanup book cover cache once every 24 hours
-        scheduler.add_task(user=None, task=lambda: TaskSyncCoverThumbnailCache(), trigger='cron', hour=4)
 
         # Generate all missing book cover thumbnails once every 24 hours
         scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(), trigger='cron', hour=4)

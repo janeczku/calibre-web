@@ -57,17 +57,9 @@ class FileSystem:
     def get_cache_file_path(self, filename, cache_type=None):
         return join(self.get_cache_dir(cache_type), filename) if filename else None
 
-    def list_cache_files(self, cache_type=None):
-        path = self.get_cache_dir(cache_type)
-        return [file for file in listdir(path) if isfile(join(path, file))]
-
-    def list_existing_cache_files(self, filenames, cache_type=None):
-        path = self.get_cache_dir(cache_type)
-        return [file for file in listdir(path) if isfile(join(path, file)) and file in filenames]
-
-    def list_missing_cache_files(self, filenames, cache_type=None):
-        path = self.get_cache_dir(cache_type)
-        return [file for file in listdir(path) if isfile(join(path, file)) and file not in filenames]
+    def get_cache_file_exists(self, filename, cache_type=None):
+        path = self.get_cache_file_path(filename, cache_type)
+        return isfile(path)
 
     def delete_cache_dir(self, cache_type=None):
         if not cache_type and isdir(self._cache_dir):

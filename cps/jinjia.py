@@ -33,6 +33,7 @@ from flask_babel import get_locale
 from flask_login import current_user
 from markupsafe import escape
 from . import logger
+from .tasks.thumbnail import THUMBNAIL_RESOLUTION_1X, THUMBNAIL_RESOLUTION_2X, THUMBNAIL_RESOLUTION_3X
 
 
 jinjia = Blueprint('jinjia', __name__)
@@ -140,24 +141,17 @@ def uuidfilter(var):
     return uuid4()
 
 
-@jinjia.app_template_filter('book_cover_cache_id')
-def book_cover_cache_id(book, resolution=None):
+@jinjia.app_template_filter('last_modified')
+def book_cover_cache_id(book):
     timestamp = int(book.last_modified.timestamp() * 1000)
-    cache_bust = str(book.uuid) + '_' + str(timestamp)
-    return cache_bust if not resolution else cache_bust + '_' + str(resolution)
+    return str(timestamp)
 
 
-@jinjia.app_template_filter('get_book_thumbnails')
-def get_book_thumbnails(book_id, thumbnails=None):
-    return list(filter(lambda t: t.book_id == book_id, thumbnails)) if book_id > -1 and thumbnails else list()
-
-
-@jinjia.app_template_filter('get_book_thumbnail_srcset')
-def get_book_thumbnail_srcset(thumbnails):
+@jinjia.app_template_filter('get_cover_srcset')
+def get_cover_srcset(book):
     srcset = list()
-    for thumbnail in thumbnails:
-        timestamp = int(thumbnail.generated_at.timestamp() * 1000)
-        cache_id = str(thumbnail.uuid) + '_' + str(timestamp)
-        url = url_for('web.get_cached_cover_thumbnail', cache_id=cache_id)
-        srcset.append(url + ' ' + str(thumbnail.resolution) + 'x')
+    for resolution in [THUMBNAIL_RESOLUTION_1X, THUMBNAIL_RESOLUTION_2X, THUMBNAIL_RESOLUTION_3X]:
+        timestamp = int(book.last_modified.timestamp() * 1000)
+        url = url_for('web.get_cover', book_id=book.id, resolution=resolution, cache_bust=str(timestamp))
+        srcset.append(f'{url} {resolution}x')
     return ', '.join(srcset)
