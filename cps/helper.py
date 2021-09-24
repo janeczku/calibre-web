@@ -35,7 +35,7 @@ from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text, func
+from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
@@ -550,26 +550,6 @@ def delete_book(book, calibrepath, book_format):
         return delete_book_file(book, calibrepath, book_format)
 
 
-def get_thumbnails_for_books(books):
-    books_with_covers = list(filter(lambda b: b.has_cover, books))
-    book_ids = list(map(lambda b: b.id, books_with_covers))
-    cache = fs.FileSystem()
-    thumbnail_files = cache.list_cache_files(fs.CACHE_TYPE_THUMBNAILS)
-
-    thumbnails = ub.session\
-        .query(ub.Thumbnail)\
-        .filter(ub.Thumbnail.book_id.in_(book_ids))\
-        .filter(ub.Thumbnail.expiration > datetime.utcnow())\
-        .all()
-
-    return list(filter(lambda t: t.filename in thumbnail_files, thumbnails))
-
-
-def get_thumbnails_for_book_series(series):
-    books = list(map(lambda s: s[0], series))
-    return get_thumbnails_for_books(books)
-
-
 def get_cover_on_failure(use_generic_cover):
     if use_generic_cover:
         return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
@@ -577,45 +557,14 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 
-def get_book_cover(book_id):
+def get_book_cover(book_id, resolution=None):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
 def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
     book = calibre_db.get_book_by_uuid(book_uuid)
     return get_book_cover_internal(book, use_generic_cover_on_failure)
-
-
-def get_cached_book_cover(cache_id):
-    parts = cache_id.split('_')
-    book_uuid = parts[0] if len(parts) else None
-    resolution = parts[2] if len(parts) > 2 else None
-    book = calibre_db.get_book_by_uuid(book_uuid) if book_uuid else None
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
-
-
-def get_cached_book_cover_thumbnail(cache_id):
-    parts = cache_id.split('_')
-    thumbnail_uuid = parts[0] if len(parts) else None
-    thumbnail = None
-    if thumbnail_uuid:
-        thumbnail = ub.session\
-            .query(ub.Thumbnail)\
-            .filter(ub.Thumbnail.uuid == thumbnail_uuid)\
-            .first()
-
-    if thumbnail and thumbnail.expiration > datetime.utcnow():
-        cache = fs.FileSystem()
-        if cache.get_cache_file_path(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
-            return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
-
-    elif thumbnail:
-        book = calibre_db.get_book(thumbnail.book_id)
-        return get_book_cover_internal(book, use_generic_cover_on_failure=True)
-
-    else:
-        return get_cover_on_failure(True)
 
 
 def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
@@ -626,7 +575,7 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
             thumbnail = get_book_cover_thumbnail(book, resolution)
             if thumbnail:
                 cache = fs.FileSystem()
-                if cache.get_cache_file_path(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
+                if cache.get_cache_file_exists(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
                     return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
 
         # Send the book cover from Google Drive if configured
@@ -661,7 +610,7 @@ def get_book_cover_thumbnail(book, resolution):
             .query(ub.Thumbnail)\
             .filter(ub.Thumbnail.book_id == book.id)\
             .filter(ub.Thumbnail.resolution == resolution)\
-            .filter(ub.Thumbnail.expiration > datetime.utcnow())\
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow()))\
             .first()
 
 

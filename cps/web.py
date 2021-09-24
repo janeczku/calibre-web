@@ -51,7 +51,6 @@ from . import babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, check_email, check_username, \
-    get_cached_book_cover, get_cached_book_cover_thumbnail, get_thumbnails_for_books, get_thumbnails_for_book_series, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email
 from .pagination import Pagination
@@ -415,10 +414,8 @@ def render_books_list(data, sort, book_id, page):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Books"), page=website, thumbnails=thumbnails)
+                                     title=_(u"Books"), page=website)
 
 
 def render_rated_books(page, book_id, order):
@@ -467,9 +464,8 @@ def render_hot_books(page):
                 ub.delete_download(book.Downloads.book_id)
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (Most Downloaded)"), page="hot", thumbnails=thumbnails)
+                                     title=_(u"Hot Books (Most Downloaded)"), page="hot")
     else:
         abort(404)
 
@@ -497,16 +493,13 @@ def render_downloaded_books(page, order, user_id):
                              .filter(db.Books.id == book.id).first():
                 ub.delete_download(book.id)
         user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
-
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html',
                                      random=random,
                                      entries=entries,
                                      pagination=pagination,
                                      id=user_id,
                                      title=_(u"Downloaded books by %(user)s",user=user.name),
-                                     page="download",
-                                     thumbnails=thumbnails)
+                                     page="download")
     else:
         abort(404)
 
@@ -535,10 +528,9 @@ def render_author_books(page, author_id, order):
         author_info = services.goodreads_support.get_author_info(author_name)
         other_books = services.goodreads_support.get_other_books(author_info, entries)
 
-    thumbnails = get_thumbnails_for_books(entries)
     return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
                                  title=_(u"Author: %(name)s", name=author_name), author=author_info,
-                                 other_books=other_books, page="author", thumbnails=thumbnails)
+                                 other_books=other_books, page="author")
 
 
 def render_publisher_books(page, book_id, order):
@@ -551,10 +543,8 @@ def render_publisher_books(page, book_id, order):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
-                                     title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher",
-                                     thumbnails=thumbnails)
+                                     title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
     else:
         abort(404)
 
@@ -566,10 +556,8 @@ def render_series_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.series.any(db.Series.id == book_id),
                                                                 [order[0]])
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_(u"Series: %(serie)s", serie=name.name), page="series",
-                                     thumbnails=thumbnails)
+                                     title=_(u"Series: %(serie)s", serie=name.name), page="series")
     else:
         abort(404)
 
@@ -581,10 +569,8 @@ def render_ratings_books(page, book_id, order):
                                                             db.Books.ratings.any(db.Ratings.id == book_id),
                                                             [order[0]])
     if name and name.rating <= 10:
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings",
-                                     thumbnails=thumbnails)
+                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings")
     else:
         abort(404)
 
@@ -596,10 +582,8 @@ def render_formats_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.data.any(db.Data.format == book_id.upper()),
                                                                 [order[0]])
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_(u"File format: %(format)s", format=name.format), page="formats",
-                                     thumbnails=thumbnails)
+                                     title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
         abort(404)
 
@@ -614,10 +598,8 @@ def render_category_books(page, book_id, order):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
-                                     title=_(u"Category: %(name)s", name=name.name), page="category",
-                                     thumbnails=thumbnails)
+                                     title=_(u"Category: %(name)s", name=name.name), page="category")
     else:
         abort(404)
 
@@ -635,9 +617,8 @@ def render_language_books(page, name, order):
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
                                                             [order[0]])
-    thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
-                                 title=_(u"Language: %(name)s", name=lang_name), page="language", thumbnails=thumbnails)
+                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
 def render_read_books(page, are_read, as_xml=False, order=None):
@@ -687,10 +668,8 @@ def render_read_books(page, are_read, as_xml=False, order=None):
         else:
             name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "unread"
-
-        thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=name, page=pagename, thumbnails=thumbnails)
+                                     title=name, page=pagename)
 
 
 def render_archived_books(page, order):
@@ -713,9 +692,8 @@ def render_archived_books(page, order):
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     pagename = "archived"
-    thumbnails = get_thumbnails_for_books(entries + random if type(random) is list else entries)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=name, page=pagename, thumbnails=thumbnails)
+                                 title=name, page=pagename)
 
 
 def render_prepare_search_form(cc):
@@ -752,7 +730,6 @@ def render_prepare_search_form(cc):
 def render_search_results(term, offset=None, order=None, limit=None):
     join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
     entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit, *join)
-    thumbnails = get_thumbnails_for_books(entries)
     return render_title_template('search.html',
                                  searchterm=term,
                                  pagination=pagination,
@@ -761,8 +738,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                  entries=entries,
                                  result_count=result_count,
                                  title=_(u"Search"),
-                                 page="search",
-                                 thumbnails=thumbnails)
+                                 page="search")
 
 
 # ################################### View Books list ##################################################################
@@ -973,10 +949,9 @@ def series_list():
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
 
-            thumbnails = get_thumbnails_for_book_series(entries)
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=charlist,
                                          title=_(u"Series"), page="serieslist", data="series", bodyClass="grid-view",
-                                         order=order_no, thumbnails=thumbnails)
+                                         order=order_no)
     else:
         abort(404)
 
@@ -1392,17 +1367,13 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     else:
         offset = 0
         limit_all = result_count
-
-    entries = q[offset:limit_all]
-    thumbnails = get_thumbnails_for_books(entries)
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
-                                 entries=entries,
+                                 entries=q[offset:limit_all],
                                  result_count=result_count,
                                  title=_(u"Advanced Search"),
-                                 page="advsearch",
-                                 thumbnails=thumbnails)
+                                 page="advsearch")
 
 
 @web.route("/advsearch", methods=['GET'])
@@ -1417,21 +1388,11 @@ def advanced_search_form():
 
 
 @web.route("/cover/<int:book_id>")
+@web.route("/cover/<int:book_id>/<int:resolution>")
+@web.route("/cover/<int:book_id>/<int:resolution>/<string:cache_bust>")
 @login_required_if_no_ano
-def get_cover(book_id):
-    return get_book_cover(book_id)
-
-
-@web.route("/cached-cover/<string:cache_id>")
-@login_required_if_no_ano
-def get_cached_cover(cache_id):
-    return get_cached_book_cover(cache_id)
-
-
-@web.route("/cached-cover-thumbnail/<string:cache_id>")
-@login_required_if_no_ano
-def get_cached_cover_thumbnail(cache_id):
-    return get_cached_book_cover_thumbnail(cache_id)
+def get_cover(book_id, resolution=None, cache_bust=None):
+    return get_book_cover(book_id, resolution)
 
 
 @web.route("/robots.txt")
@@ -1841,7 +1802,6 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 audioentries.append(media_format.format.lower())
 
-        thumbnails = get_thumbnails_for_books([entries])
         return render_title_template('detail.html',
                                      entry=entries,
                                      audioentries=audioentries,
@@ -1853,8 +1813,7 @@ def show_book(book_id):
                                      is_archived=is_archived,
                                      kindle_list=kindle_list,
                                      reader_list=reader_list,
-                                     page="book",
-                                     thumbnails=thumbnails)
+                                     page="book")
     else:
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
