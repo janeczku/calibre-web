@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block flash %}
-<div id="spinning_success" class="row-fluid text-center" style="margin-top: -20px; display:none;">
+<div id="spinning_success" class="row-fluid text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
 </div>
 {% endblock %}
@@ -8,7 +8,7 @@
 <div class="discover">
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
-<div class="panel-group col-md-10 col-lg-6">
+<div class="panel-group col-md-10 col-lg-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -31,7 +31,7 @@
             <button type="button" data-toggle="modal" data-link="config_certfile" data-target="#fileModal" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
           </span>
         </div>
-          <label for="config_calibre_dir" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
+          <label for="config_keyfile" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
           <span class="input-group-btn">
@@ -94,6 +94,10 @@
     </div>
     <div id="collapsefour" class="panel-collapse collapse">
       <div class="panel-body">
+    <div class="form-group">
+      <input type="checkbox" id="config_unicode_filename" name="config_unicode_filename" {% if config.config_unicode_filename %}checked{% endif %}>
+      <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
+    </div>
     <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}}</label>

@@ -84,7 +84,7 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    # resp.headers['Content-Security-Policy']= "script-src 'self'" https://www.googleapis.com https://api.douban.com https://comicvine.gamespot.com;"
+    resp.headers['Content-Security-Policy']= "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src * data:"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
@@ -1533,6 +1533,7 @@ def login():
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
                 login_user(user, remember=bool(form.get('remember_me')))
+                ub.store_user_session()
                 log.debug(u"You are now logged in as: '%s'", user.name)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
                       category="success")
@@ -1540,6 +1541,7 @@ def login():
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
+                ub.store_user_session()
                 log.info("Local Fallback Login as: '%s'", user.name)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.name),
@@ -1569,6 +1571,7 @@ def login():
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
+                    ub.store_user_session()
                     log.debug(u"You are now logged in as: '%s'", user.name)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
                     config.config_is_initial = False

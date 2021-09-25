@@ -1208,6 +1208,7 @@ def _configuration_update_helper():
             return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'))
 
         _config_checkbox_int(to_save, "config_uploading")
+        _config_checkbox_int(to_save, "config_unicode_filename")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
         reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
                              and config.config_login_type == constants.LOGIN_LDAP)
@@ -1310,6 +1311,8 @@ def _db_configuration_result(error_flash=None, gdrive_error=None):
         log.error(error_flash)
         config.load()
         flash(error_flash, category="error")
+    elif request.method == "POST" and not gdrive_error:
+        flash(_("Database Settings updated"), category="success")
 
     return render_title_template("config_db.html",
                                  config=config,
@@ -1682,7 +1685,8 @@ def get_updater_status():
                     "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
                     "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
                     "11": _(u'Update failed:') + u' ' + _(u'General error'),
-                    "12": _(u'Update failed:') + u' ' + _(u'Update File Could Not be Saved in Temp Dir')
+                    "12": _(u'Update failed:') + u' ' + _(u'Update file could not be saved in temp dir'),
+                    "13": _(u'Update failed:') + u' ' + _(u'Files could not be replaced during update')
                 }
                 status['text'] = text
                 updater_thread.status = 0

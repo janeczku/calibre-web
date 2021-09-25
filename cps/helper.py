@@ -234,16 +234,14 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        value = (unidecode.unidecode(value))
+        if not config.config_unicode_filename:
+            value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
         value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile(r'[\W\s-]', re.UNICODE)
-        if isinstance(value, str):  # Python3 str, Python2 unicode
-            value = re_slugify.sub('', value)
-        else:
-            value = unicode(re_slugify.sub('', value))
+        value = re_slugify.sub('', value)
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
         value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
@@ -252,10 +250,7 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128].strip()
     if not value:
         raise ValueError("Filename cannot be empty")
-    if sys.version_info.major == 3:
-        return value
-    else:
-        return value.decode('utf-8')
+    return value
 
 
 def split_authors(values):
@@ -842,8 +837,8 @@ def get_download_link(book_id, book_format, client):
             ub.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '_' + file_name
-        file_name = get_valid_filename(file_name)
+            file_name = file_name + ' - ' + book.authors[0].name
+        file_name = get_valid_filename(file_name, replace_whitespace=False)
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (

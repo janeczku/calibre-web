@@ -205,10 +205,13 @@ class CalibreTask:
         # By default, we're good to clean a task if it's "Done"
         return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL)
 
-    @progress.setter
-    def progress(self, x):
-        # todo: throw error if outside of [0,1]
-        self._progress = x
+    '''@progress.setter
+    def progress(self, x):        
+        if x > 1: 
+            x = 1
+        if x < 0: 
+            x = 0
+        self._progress = x'''
 
     def _handleError(self, error_message):
         self.stat = STAT_FAIL
