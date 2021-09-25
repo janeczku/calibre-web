@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-08-28 21:08:29</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-09-23 19:58:16</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-08-29 10:59:50</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-09-23 23:23:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>13h 7 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>2h 40 min</p>
         </div>
       </div>
       </div>
@@ -534,11 +534,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -548,31 +548,11 @@
 
     
     
-        <tr id="ft7.1" class="none bg-danger">
+        <tr id='pt7.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft7.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft7.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py", line 193, in test_convert_email
-    self.assertTrue("Email" in ret[-1]['task'])
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -707,12 +687,12 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">15</td>
-        <td class="text-center">12</td>
+        <td class="text-center">14</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c10', 15)">Detail</a>
@@ -855,92 +835,20 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="et10.14" class="none bg-info">
+        <tr id='pt10.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et10.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/switch_to.py", line 82, in frame
-    frame_reference = self._driver.find_element(By.ID, frame_reference)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 976, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="description_ifr"]
-
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/switch_to.py", line 85, in frame
-    frame_reference = self._driver.find_element(By.NAME, frame_reference)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 976, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
-    self.error_handler.check_response(response)
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [name="description_ifr"]
-
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 673, in test_xss_comment_edit
-    self.edit_book(1, content={'description': ''})
-  File "/home/ozzie/Development/calibre-web-test/test/helper_ui.py", line 1615, in edit_book
-    cls.driver.switch_to.frame("description_ifr")
-  File "/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/switch_to.py", line 87, in frame
-    raise NoSuchFrameException(frame_reference)
-selenium.common.exceptions.NoSuchFrameException: Message: description_ifr</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et10.15" class="none bg-info">
+        <tr id='pt10.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et10.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py", line 689, in test_xss_custom_comment_edit
-    self.check_element_on_page((By.ID, "edit_book")).click()
-AttributeError: 'bool' object has no attribute 'click'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1398,11 +1306,11 @@ AttributeError: 'bool' object has no attribute 'click'</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">2</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1421,35 +1329,11 @@ AttributeError: 'bool' object has no attribute 'click'</pre>
     
     
     
-        <tr id="ft13.2" class="none bg-danger">
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft13.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 373, in test_edit_author
-    self.assertEqual(u'Pipo, Pipe', author.get_attribute('value'))
-AssertionError: 'Pipo, Pipe' != 'Pipo| Pipe'
-- Pipo, Pipe
-?     ^
-+ Pipo| Pipe
-?     ^</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1571,33 +1455,11 @@ AssertionError: 'Pipo, Pipe' != 'Pipo| Pipe'
     
     
     
-        <tr id="ft13.16" class="none bg-danger">
+        <tr id='pt13.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft13.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py", line 242, in test_edit_title
-    self.assertEqual(ele.text, u'Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters')
-AssertionError: 'Pipo|;.:' != 'Very long extra super turbo cool title wi[54 chars]ters'
-- Pipo|;.:
-+ Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1940,11 +1802,11 @@ AssertionError: 'Pipo|;.:' != 'Very long extra super turbo cool title wi[54 char
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">10</td>
-        <td class="text-center">9</td>
-        <td class="text-center">1</td>
+        <td class="text-center">10</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2017,31 +1879,11 @@ AssertionError: 'Pipo|;.:' != 'Very long extra super turbo cool title wi[54 char
     
     
     
-        <tr id="ft21.8" class="none bg-danger">
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft21.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py", line 352, in test_sync_shelf
-    self.assertEqual(1, len(data), data)
-AssertionError: 1 != 0 : []</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2963,13 +2805,13 @@ AssertionError: 1 != 0 : []</pre>
 
     <tr id="su" class="skipClass">
         <td>TestShelf</td>
+        <td class="text-center">13</td>
         <td class="text-center">12</td>
-        <td class="text-center">11</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 12)">Detail</a>
+            <a onclick="showClassDetail('c32', 13)">Detail</a>
         </td>
     </tr>
 
@@ -3094,6 +2936,15 @@ AssertionError: 1 != 0 : []</pre>
         <tr id='pt32.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt32.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3267,11 +3118,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">16</td>
-        <td class="text-center">2</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3362,33 +3213,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft35.10" class="none bg-danger">
+        <tr id='pt35.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.10')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft35.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 320, in test_user_list_edit_language
-    self.assertEqual("Show All", ul['table'][1]['Visible Book Languages']['text'])
-AssertionError: 'Show All' != 'all'
-- Show All
-+ all</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3456,33 +3285,11 @@ AssertionError: 'Show All' != 'all'
     
     
     
-        <tr id="ft35.18" class="none bg-danger">
+        <tr id='pt35.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_ft35.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_user_list.py", line 575, in test_user_list_sort
-    self.assertEqual("Show All", ul['table'][0]['Visible Book Languages']['text'])
-AssertionError: 'Show All' != 'all'
-- Show All
-+ all</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4037,12 +3844,12 @@ AssertionError: 'Show All' != 'all'
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestCalibreHelper</td>
         <td class="text-center">16</td>
         <td class="text-center">15</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c39', 16)">Detail</a>
@@ -4114,26 +3921,28 @@ AssertionError: 'Show All' != 'all'
     
     
     
-        <tr id="et39.8" class="none bg-info">
+        <tr id="ft39.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et39.8')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.8')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et39.8" class="popup_window test_output" style="display:block;">
+                <div id="div_ft39.8" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et39.8').style.display='none'"><span
+                                onclick='document.getElementById('div_ft39.8').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 41, in test_check_chinese_Characters
-    self.assertEqual(helper.get_valid_filename(u'执一',unicode_filename=True), u'执一')
-TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_filename'</pre>
+  File "/home/ozzie/Development/calibre-web-test/test/test_zz_helper.py", line 46, in test_check_chinese_Characters
+    self.assertEqual(helper.get_valid_filename(u'执一'), u'执一')
+AssertionError: 'Zhi Yi' != '执一'
+- Zhi Yi
++ 执一</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4217,10 +4026,10 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>352</td>
-        <td>335</td>
-        <td>7</td>
-        <td>3</td>
+        <td>353</td>
+        <td>344</td>
+        <td>2</td>
+        <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -4249,7 +4058,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.11.0-27-generic #29~20.04.1-Ubuntu SMP Wed Aug 11 15:58:17 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.11.0-36-generic #40~20.04.1-Ubuntu SMP Sat Sep 18 02:14:19 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -4369,7 +4178,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.23</td>
+              <td>1.4.25</td>
               <td>Basic</td>
             </tr>
           
@@ -4399,7 +4208,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.18.0</td>
+              <td>2.22.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4417,7 +4226,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.9.1</td>
+              <td>1.10.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4429,7 +4238,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.18.0</td>
+              <td>2.22.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4447,7 +4256,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.9.1</td>
+              <td>1.10.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4459,7 +4268,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.18.0</td>
+              <td>2.22.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4477,7 +4286,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.9.1</td>
+              <td>1.10.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4501,7 +4310,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.18.0</td>
+              <td>2.22.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4519,7 +4328,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.9.1</td>
+              <td>1.10.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4531,7 +4340,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.18.0</td>
+              <td>2.22.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4549,7 +4358,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.9.1</td>
+              <td>1.10.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4615,7 +4424,7 @@ TypeError: get_valid_filename() got an unexpected keyword argument 'unicode_file
 </div>
 
 <script>
-    drawCircle(335, 7, 3, 7);
+    drawCircle(344, 2, 0, 7);
     showCase(5);
 </script>
 
