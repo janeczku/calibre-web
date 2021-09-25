@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-22 20:32+0200\n"
+"POT-Creation-Date: 2021-09-25 08:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -2273,7 +2273,7 @@ msgstr "Marcar como lido"
 
 #: cps/templates/detail.html:219
 msgid "Read"
-msgstr "Leia"
+msgstr "Lido"
 
 #: cps/templates/detail.html:227
 msgid "Restore from archive"
