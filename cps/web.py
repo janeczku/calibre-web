@@ -1224,7 +1224,7 @@ def extend_search_term(searchterm,
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                            format='medium', locale=get_locale())])
         except ValueError:
-            pub_start = u""
+            pub_end = u""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
@@ -1295,7 +1295,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
                 searchterm.extend([u"{} >= {}".format(c.name,
-                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d"),
+                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
                                                                       format='medium',
                                                                       locale=get_locale())
                                                       )])
