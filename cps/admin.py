@@ -166,7 +166,7 @@ def clear_cache():
     cache_type = request.args.get('cache_type'.strip())
     showtext = {}
 
-    if cache_type == fs.CACHE_TYPE_THUMBNAILS:
+    if cache_type == constants.CACHE_TYPE_THUMBNAILS:
         log.info('clearing cover thumbnail cache')
         showtext['text'] = _(u'Cleared cover thumbnail cache')
         helper.clear_cover_thumbnail_cache()

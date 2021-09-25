@@ -19,11 +19,9 @@
 from __future__ import division, print_function, unicode_literals
 from . import logger
 from .constants import CACHE_DIR
-from os import listdir, makedirs, remove
+from os import makedirs, remove
 from os.path import isdir, isfile, join
 from shutil import rmtree
-
-CACHE_TYPE_THUMBNAILS = 'thumbnails'
 
 
 class FileSystem:
@@ -54,8 +52,19 @@ class FileSystem:
 
         return path if cache_type else self._cache_dir
 
+    def get_cache_file_dir(self, filename, cache_type=None):
+        path = join(self.get_cache_dir(cache_type), filename[:2])
+        if not isdir(path):
+            try:
+                makedirs(path)
+            except OSError:
+                self.log.info(f'Failed to create path {path} (Permission denied).')
+                return False
+
+        return path
+
     def get_cache_file_path(self, filename, cache_type=None):
-        return join(self.get_cache_dir(cache_type), filename) if filename else None
+        return join(self.get_cache_file_dir(filename, cache_type), filename) if filename else None
 
     def get_cache_file_exists(self, filename, cache_type=None):
         path = self.get_cache_file_path(filename, cache_type)
@@ -78,7 +87,7 @@ class FileSystem:
                 return False
 
     def delete_cache_file(self, filename, cache_type=None):
-        path = join(self.get_cache_dir(cache_type), filename)
+        path = self.get_cache_file_path(filename, cache_type)
         if isfile(path):
             try:
                 remove(path)

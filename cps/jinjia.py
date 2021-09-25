@@ -32,9 +32,7 @@ from flask import Blueprint, request, url_for
 from flask_babel import get_locale
 from flask_login import current_user
 from markupsafe import escape
-from . import logger
-from .tasks.thumbnail import THUMBNAIL_RESOLUTION_1X, THUMBNAIL_RESOLUTION_2X, THUMBNAIL_RESOLUTION_3X
-
+from . import constants, logger
 
 jinjia = Blueprint('jinjia', __name__)
 log = logger.create()
@@ -141,17 +139,44 @@ def uuidfilter(var):
     return uuid4()
 
 
+@jinjia.app_template_filter('cache_timestamp')
+def cache_timestamp(rolling_period='month'):
+    if rolling_period == 'day':
+        return str(int(datetime.datetime.today().replace(hour=1, minute=1).timestamp()))
+    elif rolling_period == 'year':
+        return str(int(datetime.datetime.today().replace(day=1).timestamp()))
+    else:
+        return str(int(datetime.datetime.today().replace(month=1, day=1).timestamp()))
+
+
 @jinjia.app_template_filter('last_modified')
-def book_cover_cache_id(book):
-    timestamp = int(book.last_modified.timestamp() * 1000)
-    return str(timestamp)
+def book_last_modified(book):
+    return str(int(book.last_modified.timestamp()))
 
 
 @jinjia.app_template_filter('get_cover_srcset')
 def get_cover_srcset(book):
     srcset = list()
-    for resolution in [THUMBNAIL_RESOLUTION_1X, THUMBNAIL_RESOLUTION_2X, THUMBNAIL_RESOLUTION_3X]:
-        timestamp = int(book.last_modified.timestamp() * 1000)
-        url = url_for('web.get_cover', book_id=book.id, resolution=resolution, cache_bust=str(timestamp))
+    resolutions = {
+        constants.COVER_THUMBNAIL_SMALL: 'sm',
+        constants.COVER_THUMBNAIL_MEDIUM: 'md',
+        constants.COVER_THUMBNAIL_LARGE: 'lg'
+    }
+    for resolution, shortname in resolutions.items():
+        url = url_for('web.get_cover', book_id=book.id, resolution=shortname, c=book_last_modified(book))
+        srcset.append(f'{url} {resolution}x')
+    return ', '.join(srcset)
+
+
+@jinjia.app_template_filter('get_series_srcset')
+def get_cover_srcset(series):
+    srcset = list()
+    resolutions = {
+        constants.COVER_THUMBNAIL_SMALL: 'sm',
+        constants.COVER_THUMBNAIL_MEDIUM: 'md',
+        constants.COVER_THUMBNAIL_LARGE: 'lg'
+    }
+    for resolution, shortname in resolutions.items():
+        url = url_for('web.get_series_cover', series_id=series.id, resolution=shortname, c=cache_timestamp())
         srcset.append(f'{url} {resolution}x')
     return ', '.join(srcset)

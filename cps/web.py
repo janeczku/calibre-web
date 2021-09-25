@@ -50,8 +50,8 @@ from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, check_email, check_username, \
-    get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
+from .helper import check_valid_domain, render_task_status, check_email, check_username, get_cc_columns, \
+    get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email
 from .pagination import Pagination
 from .redirect import redirect_back
@@ -1388,11 +1388,31 @@ def advanced_search_form():
 
 
 @web.route("/cover/<int:book_id>")
-@web.route("/cover/<int:book_id>/<int:resolution>")
-@web.route("/cover/<int:book_id>/<int:resolution>/<string:cache_bust>")
+@web.route("/cover/<int:book_id>/<string:resolution>")
 @login_required_if_no_ano
-def get_cover(book_id, resolution=None, cache_bust=None):
-    return get_book_cover(book_id, resolution)
+def get_cover(book_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_book_cover(book_id, cover_resolution)
+
+
+@web.route("/series_cover/<int:series_id>")
+@web.route("/series_cover/<int:series_id>/<string:resolution>")
+@login_required_if_no_ano
+def get_series_cover(series_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_series_cover_thumbnail(series_id, cover_resolution)
 
 
 @web.route("/robots.txt")

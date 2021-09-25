@@ -1,0 +1,23 @@
+{% macro book_cover(book, title=None, alt=None) -%}
+    {%- set image_title = book.title if book.title else book.name -%}
+    {%- set image_title = title if title else image_title -%}
+    {%- set image_alt = alt if alt else image_title -%}
+    {% set srcset = book|get_cover_srcset %}
+    <img
+        srcset="{{ srcset }}"
+        src="{{ url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified) }}"
+        title="{{ image_title }}"
+        alt="{{ image_alt }}"
+    />
+{%- endmacro %}
+
+{% macro series(series, title=None, alt=None) -%}
+    {%- set image_alt = alt if alt else image_title -%}
+    {% set srcset = series|get_series_srcset %}
+    <img
+        srcset="{{ srcset }}"
+        src="{{ url_for('web.get_series_cover', series_id=series.id, resolution='og', c='month'|cache_timestamp) }}"
+        title="{{ title }}"
+        alt="{{ book_title }}"
+    />
+{%- endmacro %}

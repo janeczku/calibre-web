@@ -1,4 +1,4 @@
-{% from 'book_cover.html' import book_cover_image %}
+{% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
 {% if g.user.show_detail_random() %}
@@ -10,7 +10,7 @@
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
               <span class="img">
-                {{ book_cover_image(entry) }}
+                {{ image.book_cover(entry) }}
                 {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
               </span>
           </a>
@@ -87,7 +87,7 @@
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             <span class="img">
-              {{ book_cover_image(entry) }}
+              {{ image.book_cover(entry) }}
               {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
           </a>
