@@ -2273,7 +2273,7 @@ msgstr "Marcar como lido"
 
 #: cps/templates/detail.html:219
 msgid "Read"
-msgstr "Leia"
+msgstr "Lido"
 
 #: cps/templates/detail.html:227
 msgid "Restore from archive"
