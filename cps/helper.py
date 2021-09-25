@@ -55,7 +55,7 @@ from . import calibre_db
 from .tasks.convert import TaskConvert
 from . import logger, config, get_locale, db, fs, ub
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.mail import TaskEmail
@@ -575,8 +575,9 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
             thumbnail = get_book_cover_thumbnail(book, resolution)
             if thumbnail:
                 cache = fs.FileSystem()
-                if cache.get_cache_file_exists(thumbnail.filename, fs.CACHE_TYPE_THUMBNAILS):
-                    return send_from_directory(cache.get_cache_dir(fs.CACHE_TYPE_THUMBNAILS), thumbnail.filename)
+                if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                    return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                               thumbnail.filename)
 
         # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
@@ -606,12 +607,52 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
 
 def get_book_cover_thumbnail(book, resolution):
     if book and book.has_cover:
-        return ub.session\
-            .query(ub.Thumbnail)\
-            .filter(ub.Thumbnail.book_id == book.id)\
-            .filter(ub.Thumbnail.resolution == resolution)\
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow()))\
+        return ub.session \
+            .query(ub.Thumbnail) \
+            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
+            .filter(ub.Thumbnail.entity_id == book.id) \
+            .filter(ub.Thumbnail.resolution == resolution) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
             .first()
+
+
+def get_series_thumbnail_on_failure(series_id, resolution):
+    book = calibre_db.session \
+        .query(db.Books) \
+        .join(db.books_series_link) \
+        .join(db.Series) \
+        .filter(db.Series.id == series_id) \
+        .filter(db.Books.has_cover == 1) \
+        .first()
+
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+
+
+def get_series_cover_thumbnail(series_id, resolution=None):
+    return get_series_cover_internal(series_id, resolution)
+
+
+def get_series_cover_internal(series_id, resolution=None):
+    # Send the series thumbnail if it exists in cache
+    if resolution:
+        thumbnail = get_series_thumbnail(series_id, resolution)
+        if thumbnail:
+            cache = fs.FileSystem()
+            if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                           thumbnail.filename)
+
+    return get_series_thumbnail_on_failure(series_id, resolution)
+
+
+def get_series_thumbnail(series_id, resolution):
+    return ub.session \
+        .query(ub.Thumbnail) \
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
+        .filter(ub.Thumbnail.entity_id == series_id) \
+        .filter(ub.Thumbnail.resolution == resolution) \
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+        .first()
 
 
 # saves book cover from url

@@ -526,10 +526,11 @@ class Thumbnail(Base):
     __tablename__ = 'thumbnail'
 
     id = Column(Integer, primary_key=True)
-    book_id = Column(Integer)
+    entity_id = Column(Integer)
     uuid = Column(String, default=lambda: str(uuid.uuid4()), unique=True)
     format = Column(String, default='jpeg')
-    resolution = Column(SmallInteger, default=1)
+    type = Column(SmallInteger, default=constants.THUMBNAIL_TYPE_COVER)
+    resolution = Column(SmallInteger, default=constants.COVER_THUMBNAIL_SMALL)
     filename = Column(String, default=filename)
     generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
     expiration = Column(DateTime, nullable=True)

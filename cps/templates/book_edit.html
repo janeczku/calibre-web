@@ -1,10 +1,10 @@
-{% from 'book_cover.html' import book_cover_image %}
+{% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-        {{ book_cover_image(book) }}
+        {{ image.book_cover(book) }}
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">

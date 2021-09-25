@@ -21,7 +21,7 @@ from __future__ import division, print_function, unicode_literals
 from .services.background_scheduler import BackgroundScheduler
 from .services.worker import WorkerThread
 from .tasks.database import TaskReconnectDatabase
-from .tasks.thumbnail import TaskGenerateCoverThumbnails
+from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails
 
 
 def register_jobs():
@@ -37,3 +37,4 @@ def register_jobs():
 
 def register_startup_jobs():
     WorkerThread.add(None, TaskGenerateCoverThumbnails())
+    # WorkerThread.add(None, TaskGenerateSeriesThumbnails())
