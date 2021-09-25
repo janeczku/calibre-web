@@ -181,7 +181,7 @@ $("#delete_confirm").click(function() {
                             if (item.format != "") {
                                 $("button[data-delete-format='"+item.format+"']").addClass('hidden');
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
 
@@ -248,14 +248,13 @@ $(function() {
             dataType: "json",
             url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
-                // console.log(data.status);
                 $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
                     cleanUp();
                 }
             },
             error: function error() {
-                $("#DialogContent").html(updateText[7]);
+                $("#DialogContent").html(updateText[11]);
                 cleanUp();
             },
             timeout: 2000
@@ -451,7 +450,6 @@ $(function() {
             success: function success(data) {
                 updateText = data.text;
                 $("#DialogContent").html(updateText[data.status]);
-                // console.log(data.status);
                 updateTimerID = setInterval(updateTimer, 2000);
             }
         });
@@ -554,7 +552,7 @@ $(function() {
     function handle_response(data) {
         if (!jQuery.isEmptyObject(data)) {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                $(".navbar").after('<div class="row-fluid text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
