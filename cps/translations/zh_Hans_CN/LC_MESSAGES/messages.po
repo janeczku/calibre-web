@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-25 08:24+0200\n"
+"POT-Creation-Date: 2021-09-25 19:32+0800\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
-"Last-Translator: dalin <dalin.lin@gmail.com>\n"
+"Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: cps/about.py:43 cps/about.py:59
 msgid "installed"
@@ -237,7 +237,7 @@ msgstr "请输入有效的用户名进行密码重置"
 
 #: cps/admin.py:1104
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
+msgstr "请输入一个LDAP服务账号"
 
 #: cps/admin.py:1109
 #, python-format
@@ -260,15 +260,15 @@ msgstr "LDAP用户对象过滤器的括号不匹配"
 #: cps/admin.py:1124
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP成员用户过滤器需要有一个“%s”格式标识符"
 
 #: cps/admin.py:1126
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP成员用户过滤器中有不匹配的括号"
 
 #: cps/admin.py:1133
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "LDAP CA证书、证书或密钥位置无效，请输入正确的路径"
 
 #: cps/admin.py:1175 cps/admin.py:1276 cps/admin.py:1369 cps/admin.py:1470
 #: cps/admin.py:1536 cps/shelf.py:102 cps/shelf.py:162 cps/shelf.py:205
@@ -1286,7 +1286,7 @@ msgstr "资料已更新"
 
 #: cps/services/gmail.py:41
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr ""
+msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
 
 #: cps/tasks/convert.py:120
 #, python-format
@@ -1421,7 +1421,7 @@ msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:85
 msgid "Gmail via Oauth2"
-msgstr ""
+msgstr "通过Oauth2的Gmail"
 
 #: cps/templates/admin.html:100
 msgid "Configuration"
@@ -1800,10 +1800,13 @@ msgstr "自动更新作者排序"
 msgid "Enter Title"
 msgstr "输入书名"
 
-#: cps/templates/book_table.html:51 cps/templates/config_view_edit.html:23
-#: cps/templates/shelf_edit.html:7
+#: cps/templates/book_table.html:51 cps/templates/shelf_edit.html:7
 msgid "Title"
 msgstr "书名"
+
+#: cps/templates/config_view_edit.html:23
+msgid "Title"
+msgstr "网站标题"
 
 #: cps/templates/book_table.html:52
 msgid "Enter Title Sort"
@@ -2041,15 +2044,15 @@ msgstr "SSL协议"
 
 #: cps/templates/config_edit.html:201
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP CA证书路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:208
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP 证书路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:215
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP密钥文件路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Authentication"
@@ -2258,7 +2261,7 @@ msgstr "在线听书"
 #: cps/templates/detail.html:124
 #, fuzzy, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "%(range)s 第%(index)s册"
 
 #: cps/templates/detail.html:173
 msgid "Published"
@@ -2324,7 +2327,7 @@ msgstr "设置Gmail账号作为电子邮件服务"
 
 #: cps/templates/email_edit.html:23
 msgid "Revoke Gmail Access"
-msgstr ""
+msgstr "撤消 Gmail 访问权限"
 
 #: cps/templates/email_edit.html:41
 msgid "STARTTLS"
@@ -2421,11 +2424,11 @@ msgstr "开始"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr ""
+msgstr "字母排序书籍"
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr ""
+msgstr "按字母排序的书籍"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
@@ -2885,11 +2888,11 @@ msgstr "评分小于"
 
 #: cps/templates/search_form.html:179
 msgid "From:"
-msgstr ""
+msgstr "从："
 
 #: cps/templates/search_form.html:189
 msgid "To:"
-msgstr ""
+msgstr "到："
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
@@ -3132,4 +3135,3 @@ msgstr "显示已读/未读选择"
 #: cps/templates/user_table.html:158
 msgid "Show random books"
 msgstr "显示随机书籍"
-
