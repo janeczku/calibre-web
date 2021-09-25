@@ -138,7 +138,7 @@
             {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}
             {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), false, tags) }}
             {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), false, custom_values) }}
-            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), false, custom_values) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Column Values"), false, custom_values) }}
             {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "passwd_role", _('Change Password'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "upload_role",_('Upload'), visiblility, all_roles)}}
@@ -185,4 +185,3 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}
-
