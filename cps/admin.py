@@ -1740,7 +1740,9 @@ def ldap_import_create_user(user, user_data):
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
     content.kindle_mail = kindlemail
-    content.role = config.config_default_role
+    content.kindle_mail = kindlemail
+    content.default_language = config.default_language
+    content.locale = config.locale
     content.sidebar_view = config.config_default_show
     content.allowed_tags = config.config_allowed_tags
     content.denied_tags = config.config_denied_tags
