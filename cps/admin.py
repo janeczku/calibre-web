@@ -159,23 +159,6 @@ def shutdown():
     return json.dumps(showtext), 400
 
 
-@admi.route("/clear-cache")
-@login_required
-@admin_required
-def clear_cache():
-    cache_type = request.args.get('cache_type'.strip())
-    showtext = {}
-
-    if cache_type == constants.CACHE_TYPE_THUMBNAILS:
-        log.info('clearing cover thumbnail cache')
-        showtext['text'] = _(u'Cleared cover thumbnail cache')
-        helper.clear_cover_thumbnail_cache()
-        return json.dumps(showtext)
-
-    showtext['text'] = _(u'Unknown command')
-    return json.dumps(showtext)
-
-
 @admi.route("/admin/view")
 @login_required
 @admin_required
@@ -204,6 +187,7 @@ def admin():
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
                                  feature_support=feature_support, kobo_support=kobo_support,
                                  title=_(u"Admin page"), page="admin")
+
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
 @login_required
@@ -245,6 +229,7 @@ def ajax_db_config():
 def calibreweb_alive():
     return "", 200
 
+
 @admi.route("/admin/viewconfig")
 @login_required
 @admin_required
@@ -256,6 +241,7 @@ def view_configuration():
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
                                  title=_(u"UI Configuration"), page="uiconfig")
+
 
 @admi.route("/admin/usertable")
 @login_required
@@ -339,6 +325,7 @@ def list_users():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @admi.route("/ajax/deleteuser", methods=['POST'])
 @login_required
 @admin_required
@@ -371,6 +358,7 @@ def delete_user():
         success = [{'type': "success", 'message': _("{} users deleted successfully").format(count)}]
     success.extend(errors)
     return Response(json.dumps(success), mimetype='application/json')
+
 
 @admi.route("/ajax/getlocale")
 @login_required
@@ -517,6 +505,7 @@ def update_table_settings():
         return "Invalid request", 400
     return ""
 
+
 def check_valid_read_column(column):
     if column != "0":
         if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
@@ -524,13 +513,13 @@ def check_valid_read_column(column):
             return False
     return True
 
+
 def check_valid_restricted_column(column):
     if column != "0":
         if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
               .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all():
             return False
     return True
-
 
 
 @admi.route("/admin/viewconfig", methods=["POST"])
@@ -563,7 +552,6 @@ def update_view_configuration():
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
-
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
@@ -1210,6 +1198,7 @@ def _db_configuration_update_helper():
     config.save()
     return _db_configuration_result(None, gdrive_error)
 
+
 def _configuration_update_helper():
     reboot_required = False
     to_save = request.form.to_dict()
@@ -1299,6 +1288,7 @@ def _configuration_update_helper():
 
     return _configuration_result(None, reboot_required)
 
+
 def _configuration_result(error_flash=None, reboot=False):
     resp = {}
     if error_flash:
@@ -1387,6 +1377,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("Settings DB is not Writeable")
         flash(_("Settings DB is not Writeable"), category="error")
+
 
 def _delete_user(content):
     if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
@@ -1570,6 +1561,39 @@ def update_mailsettings():
         flash(_(u"E-mail server settings updated"), category="success")
 
     return edit_mailsettings()
+
+
+@admi.route("/admin/scheduledtasks")
+@login_required
+@admin_required
+def edit_scheduledtasks():
+    content = config.get_scheduled_task_settings()
+    return render_title_template("schedule_edit.html", content=content, title=_(u"Edit Scheduled Tasks Settings"))
+
+
+@admi.route("/admin/scheduledtasks", methods=["POST"])
+@login_required
+@admin_required
+def update_scheduledtasks():
+    to_save = request.form.to_dict()
+    _config_int(to_save, "schedule_start_time")
+    _config_int(to_save, "schedule_end_time")
+    _config_checkbox(to_save, "schedule_generate_book_covers")
+    _config_checkbox(to_save, "schedule_generate_series_covers")
+
+    try:
+        config.save()
+        flash(_(u"Scheduled tasks settings updated"), category="success")
+    except IntegrityError as ex:
+        ub.session.rollback()
+        log.error("An unknown error occurred while saving scheduled tasks settings")
+        flash(_(u"An unknown error occurred. Please try again later."), category="error")
+    except OperationalError:
+        ub.session.rollback()
+        log.error("Settings DB is not Writeable")
+        flash(_("Settings DB is not Writeable"), category="error")
+
+    return edit_scheduledtasks()
 
 
 @admi.route("/admin/user/<int:user_id>", methods=["GET", "POST"])

@@ -167,9 +167,9 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                 try:
                     stream = urlopen(web_content_link)
                     with Image(file=stream) as img:
-                        height = self.get_thumbnail_height(thumbnail)
+                        height = get_resize_height(thumbnail.resolution)
                         if img.height > height:
-                            width = self.get_thumbnail_width(height, img)
+                            width = get_resize_width(thumbnail.resolution, img.width, img.height)
                             img.resize(width=width, height=height, filter='lanczos')
                             img.format = thumbnail.format
                             filename = self.cache.get_cache_file_path(thumbnail.filename,
@@ -211,16 +211,6 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             constants.COVER_THUMBNAIL_SMALL,
             constants.COVER_THUMBNAIL_MEDIUM
         ]
-
-    # get all series
-    # get all books in series with covers and count >= 4 books
-    # get the dimensions from the first book in the series & pop the first book from the series list of books
-    # randomly select three other books in the series
-
-    # resize the covers in the sequence?
-    # create an image sequence from the 4 selected books of the series
-    # join pairs of books in the series with wand's concat
-    # join the two sets of pairs with wand's
 
     def run(self, worker_thread):
         if self.calibre_db.session and use_IM:
