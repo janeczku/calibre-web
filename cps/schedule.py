@@ -19,7 +19,6 @@
 from __future__ import division, print_function, unicode_literals
 
 from .services.background_scheduler import BackgroundScheduler
-from .services.worker import WorkerThread
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails
 
@@ -28,13 +27,19 @@ def register_jobs():
     scheduler = BackgroundScheduler()
 
     if scheduler:
-        # Reconnect metadata.db once every 12 hours
-        scheduler.add_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', hour='4,16')
+        # Reconnect Calibre database (metadata.db)
+        scheduler.schedule_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', hour='4,16')
 
-        # Generate all missing book cover thumbnails once every 24 hours
-        scheduler.add_task(user=None, task=lambda: TaskGenerateCoverThumbnails(), trigger='cron', hour=4)
+        # Generate all missing book cover thumbnails
+        scheduler.schedule_task(user=None, task=lambda: TaskGenerateCoverThumbnails(), trigger='cron', hour=4)
+
+        # Generate all missing series thumbnails
+        scheduler.schedule_task(user=None, task=lambda: TaskGenerateSeriesThumbnails(), trigger='cron', hour=4)
 
 
 def register_startup_jobs():
-    WorkerThread.add(None, TaskGenerateCoverThumbnails())
-    # WorkerThread.add(None, TaskGenerateSeriesThumbnails())
+    scheduler = BackgroundScheduler()
+
+    if scheduler:
+        scheduler.schedule_task_immediately(None, task=lambda: TaskGenerateCoverThumbnails())
+        scheduler.schedule_task_immediately(None, task=lambda: TaskGenerateSeriesThumbnails())

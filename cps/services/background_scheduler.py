@@ -40,25 +40,31 @@ class BackgroundScheduler:
 
         if cls._instance is None:
             cls._instance = super(BackgroundScheduler, cls).__new__(cls)
-
-            scheduler = BScheduler()
-            atexit.register(lambda: scheduler.shutdown())
-
             cls.log = logger.create()
-            cls.scheduler = scheduler
+            cls.scheduler = BScheduler()
             cls.scheduler.start()
+
+            atexit.register(lambda: cls.scheduler.shutdown())
 
         return cls._instance
 
-    def add(self, func, trigger, **trigger_args):
+    def _add(self, func, trigger, **trigger_args):
         if use_APScheduler:
             return self.scheduler.add_job(func=func, trigger=trigger, **trigger_args)
 
-    def add_task(self, user, task, trigger, **trigger_args):
+    # Expects a lambda expression for the task, so that the task isn't instantiated before the task is scheduled
+    def schedule_task(self, user, task, trigger, **trigger_args):
         if use_APScheduler:
             def scheduled_task():
                 worker_task = task()
-                self.log.info(f'Running scheduled task in background: {worker_task.name} - {worker_task.message}')
                 WorkerThread.add(user, worker_task)
 
-            return self.add(func=scheduled_task, trigger=trigger, **trigger_args)
+            return self._add(func=scheduled_task, trigger=trigger, **trigger_args)
+
+    # Expects a lambda expression for the task, so that the task isn't instantiated before the task is scheduled
+    def schedule_task_immediately(self, user, task):
+        if use_APScheduler:
+            def scheduled_task():
+                WorkerThread.add(user, task())
+
+            return self._add(func=scheduled_task, trigger='date')
