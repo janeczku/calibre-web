@@ -877,7 +877,7 @@ msgstr "Mostrar os melhores livros avaliados"
 #: cps/render_template.py:59 cps/templates/index.xml:54
 #: cps/templates/index.xml:58 cps/web.py:666
 msgid "Read Books"
-msgstr "Ler Livros"
+msgstr "Livros Lidos"
 
 #: cps/render_template.py:61
 msgid "Show read and unread"
