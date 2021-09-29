@@ -1745,12 +1745,14 @@ def show_book(book_id):
     entries = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if entries:
         for index in range(0, len(entries.languages)):
-            try:
-                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code)\
-                    .get_language_name(get_locale())
-            except UnknownLocaleError:
-                entries.languages[index].language_name = _(
-                    isoLanguages.get(part3=entries.languages[index].lang_code).name)
+            entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entries.languages[
+                index].lang_code)
+            #try:
+            #    entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), LC.parse(entries.languages[index].lang_code)
+            #                                                                            .get_language_name(get_locale())
+            #except UnknownLocaleError:
+            #    entries.languages[index].language_name = _(
+            #        isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
