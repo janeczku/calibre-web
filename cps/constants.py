@@ -24,10 +24,13 @@ from sqlalchemy import __version__ as sql_version
 
 sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2,0,0])
 
+# APP_MODE - production, development, or test
+APP_MODE             = os.environ.get('APP_MODE', 'production')
+
 # if installed via pip this variable is set to true (empty file with name .HOMEDIR present)
 HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.HOMEDIR'))
 
-#In executables updater is not available, so variable is set to False there
+# In executables updater is not available, so variable is set to False there
 UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
@@ -43,7 +46,7 @@ TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
 
 # Cache dir - use CACHE_DIR environment variable, otherwise use the default directory: cps/cache
 DEFAULT_CACHE_DIR   = os.path.join(BASE_DIR, 'cps', 'cache')
-CACHE_DIR           = os.environ.get("CACHE_DIR", DEFAULT_CACHE_DIR)
+CACHE_DIR           = os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")

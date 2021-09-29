@@ -17,29 +17,70 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
+import datetime
 
+from . import config, constants
 from .services.background_scheduler import BackgroundScheduler
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails
+from .services.worker import WorkerThread
 
 
-def register_jobs():
+def get_scheduled_tasks(reconnect=True):
+    tasks = list()
+
+    # Reconnect Calibre database (metadata.db)
+    if reconnect:
+        tasks.append(lambda: TaskReconnectDatabase())
+
+    # Generate all missing book cover thumbnails
+    if config.schedule_generate_book_covers:
+        tasks.append(lambda: TaskGenerateCoverThumbnails())
+
+    # Generate all missing series thumbnails
+    if config.schedule_generate_series_covers:
+        tasks.append(lambda: TaskGenerateSeriesThumbnails())
+
+    return tasks
+
+
+def end_scheduled_tasks():
+    worker = WorkerThread.get_instance()
+    for __, __, __, task in worker.tasks:
+        if task.scheduled and task.is_cancellable:
+            worker.end_task(task.id)
+
+
+def register_scheduled_tasks():
     scheduler = BackgroundScheduler()
 
     if scheduler:
-        # Reconnect Calibre database (metadata.db)
-        scheduler.schedule_task(user=None, task=lambda: TaskReconnectDatabase(), trigger='cron', hour='4,16')
+        # Remove all existing jobs
+        scheduler.remove_all_jobs()
 
-        # Generate all missing book cover thumbnails
-        scheduler.schedule_task(user=None, task=lambda: TaskGenerateCoverThumbnails(), trigger='cron', hour=4)
+        start = config.schedule_start_time
+        end = config.schedule_end_time
 
-        # Generate all missing series thumbnails
-        scheduler.schedule_task(user=None, task=lambda: TaskGenerateSeriesThumbnails(), trigger='cron', hour=4)
+        # Register scheduled tasks
+        if start != end:
+            scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
+            scheduler.schedule(func=end_scheduled_tasks, trigger='cron', hour=end)
+
+        # Kick-off tasks, if they should currently be running
+        now = datetime.datetime.now().hour
+        if start <= now < end:
+            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
 
 
-def register_startup_jobs():
+def register_startup_tasks():
     scheduler = BackgroundScheduler()
 
     if scheduler:
-        scheduler.schedule_task_immediately(None, task=lambda: TaskGenerateCoverThumbnails())
-        scheduler.schedule_task_immediately(None, task=lambda: TaskGenerateSeriesThumbnails())
+        start = config.schedule_start_time
+        end = config.schedule_end_time
+        now = datetime.datetime.now().hour
+
+        # Run scheduled tasks immediately for development and testing
+        # Ignore tasks that should currently be running, as these will be added when registering scheduled tasks
+        if constants.APP_MODE in ['development', 'test'] and not (start <= now < end):
+            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))

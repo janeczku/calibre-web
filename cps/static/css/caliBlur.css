@@ -5150,7 +5150,7 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     pointer-events: none
 }
 
-#DeleteDomain:hover:before, #RestartDialog:hover:before, #ShutdownDialog:hover:before, #StatusDialog:hover:before, #ClearCacheDialog:hover:before, #deleteButton, #deleteModal:hover:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover td > a:hover {
+#DeleteDomain:hover:before, #RestartDialog:hover:before, #ShutdownDialog:hover:before, #StatusDialog:hover:before,  #deleteButton, #deleteModal:hover:before, #cancelTaskModal:hover:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover td > a:hover {
     cursor: pointer
 }
 
@@ -5234,6 +5234,10 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.discover .btn > a {
 }
 
 body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col > .col-xs-12:nth-child(3) {
+    margin-bottom: 20px
+}
+
+body.admin > div.container-fluid div.scheduled_tasks_details {
     margin-bottom: 20px
 }
 
@@ -5468,7 +5472,7 @@ body.admin.modal-open .navbar {
     z-index: 0 !important
 }
 
-#RestartDialog, #ShutdownDialog, #StatusDialog, #ClearCacheDialog, #deleteModal {
+#RestartDialog, #ShutdownDialog, #StatusDialog, #deleteModal, #cancelTaskModal {
     top: 0;
     overflow: hidden;
     padding-top: 70px;
@@ -5478,7 +5482,7 @@ body.admin.modal-open .navbar {
     background: rgba(0, 0, 0, .5)
 }
 
-#RestartDialog:before, #ShutdownDialog:before, #StatusDialog:before, #ClearCacheDialog:before, #deleteModal:before {
+#RestartDialog:before, #ShutdownDialog:before, #StatusDialog:before, #deleteModal:before, #cancelTaskModal:before {
     content: "\E208";
     padding-right: 10px;
     display: block;
@@ -5500,18 +5504,18 @@ body.admin.modal-open .navbar {
     z-index: 99
 }
 
-#RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #ClearCacheDialog.in:before, #deleteModal.in:before {
+#RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #deleteModal.in:before, #cancelTaskModal.in:before {
     -webkit-transform: translate(0, 0);
     -ms-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
-#RestartDialog > .modal-dialog, #ShutdownDialog > .modal-dialog, #StatusDialog > .modal-dialog, #ClearCacheDialog > .modal-dialog, #deleteModal > .modal-dialog {
+#RestartDialog > .modal-dialog, #ShutdownDialog > .modal-dialog, #StatusDialog > .modal-dialog, #deleteModal > .modal-dialog, #cancelTaskModal > .modal-dialog {
     width: 450px;
     margin: auto
 }
 
-#RestartDialog > .modal-dialog > .modal-content, #ShutdownDialog > .modal-dialog > .modal-content, #StatusDialog > .modal-dialog > .modal-content, #ClearCacheDialog > .modal-dialog > .modal-content, #deleteModal > .modal-dialog > .modal-content {
+#RestartDialog > .modal-dialog > .modal-content, #ShutdownDialog > .modal-dialog > .modal-content, #StatusDialog > .modal-dialog > .modal-content, #deleteModal > .modal-dialog > .modal-content, #cancelTaskModal > .modal-dialog > .modal-content {
     max-height: calc(100% - 90px);
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
@@ -5522,7 +5526,7 @@ body.admin.modal-open .navbar {
     width: 450px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-header, #ShutdownDialog > .modal-dialog > .modal-content > .modal-header, #StatusDialog > .modal-dialog > .modal-content > .modal-header, #ClearCacheDialog > .modal-dialog > .modal-content > .modal-header, #deleteModal > .modal-dialog > .modal-content > .modal-header {
+#RestartDialog > .modal-dialog > .modal-content > .modal-header, #ShutdownDialog > .modal-dialog > .modal-content > .modal-header, #StatusDialog > .modal-dialog > .modal-content > .modal-header, #deleteModal > .modal-dialog > .modal-content > .modal-header, #cancelTaskModal > .modal-dialog > .modal-content > .modal-header {
     padding: 15px 20px;
     border-radius: 3px 3px 0 0;
     line-height: 1.71428571;
@@ -5535,7 +5539,7 @@ body.admin.modal-open .navbar {
     text-align: left
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-header:before, #ShutdownDialog > .modal-dialog > .modal-content > .modal-header:before, #StatusDialog > .modal-dialog > .modal-content > .modal-header:before, #ClearCacheDialog > .modal-dialog > .modal-content > .modal-header:before, #deleteModal > .modal-dialog > .modal-content > .modal-header:before {
+#RestartDialog > .modal-dialog > .modal-content > .modal-header:before, #ShutdownDialog > .modal-dialog > .modal-content > .modal-header:before, #StatusDialog > .modal-dialog > .modal-content > .modal-header:before, #deleteModal > .modal-dialog > .modal-content > .modal-header:before, #cancelTaskModal > .modal-dialog > .modal-content > .modal-header:before {
     padding-right: 10px;
     font-size: 18px;
     color: #999;
@@ -5559,12 +5563,12 @@ body.admin.modal-open .navbar {
     font-family: plex-icons-new, serif
 }
 
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-header:before {
-    content: "\EA15";
+#deleteModal > .modal-dialog > .modal-content > .modal-header:before {
+    content: "\EA6D";
     font-family: plex-icons-new, serif
 }
 
-#deleteModal > .modal-dialog > .modal-content > .modal-header:before {
+#cancelTaskModal > .modal-dialog > .modal-content > .modal-header:before {
     content: "\EA6D";
     font-family: plex-icons-new, serif
 }
@@ -5587,19 +5591,19 @@ body.admin.modal-open .navbar {
     font-size: 20px
 }
 
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Clear Cover Thumbnail Cache";
-    display: inline-block;
-    font-size: 20px
-}
-
 #deleteModal > .modal-dialog > .modal-content > .modal-header:after {
     content: "Delete Book";
     display: inline-block;
     font-size: 20px
 }
 
-#StatusDialog > .modal-dialog > .modal-content > .modal-header > span, #deleteModal > .modal-dialog > .modal-content > .modal-header > span, #loader > center > img, .rating-mobile {
+#cancelTaskModal > .modal-dialog > .modal-content > .modal-header:after {
+    content: "Delete Book";
+    display: inline-block;
+    font-size: 20px
+}
+
+#StatusDialog > .modal-dialog > .modal-content > .modal-header > span, #deleteModal > .modal-dialog > .modal-content > .modal-header > span, #cancelTaskModal > .modal-dialog > .modal-content > .modal-header > span, #loader > center > img, .rating-mobile {
     display: none
 }
 
@@ -5613,7 +5617,7 @@ body.admin.modal-open .navbar {
     text-align: left
 }
 
-#ShutdownDialog > .modal-dialog > .modal-content > .modal-body, #StatusDialog > .modal-dialog > .modal-content > .modal-body, #deleteModal > .modal-dialog > .modal-content > .modal-body {
+#ShutdownDialog > .modal-dialog > .modal-content > .modal-body, #StatusDialog > .modal-dialog > .modal-content > .modal-body, #deleteModal > .modal-dialog > .modal-content > .modal-body, #cancelTaskModal > .modal-dialog > .modal-content > .modal-body {
     padding: 20px 20px 40px;
     font-size: 16px;
     line-height: 1.6em;
@@ -5623,17 +5627,7 @@ body.admin.modal-open .navbar {
     text-align: left
 }
 
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-body {
-    padding: 20px 20px 10px;
-    font-size: 16px;
-    line-height: 1.6em;
-    font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
-    color: #eee;
-    background: #282828;
-    text-align: left
-}
-
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > p, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > p, #StatusDialog > .modal-dialog > .modal-content > .modal-body > p, #ClearCacheDialog > .modal-dialog > .modal-content > .modal-body > p, #deleteModal > .modal-dialog > .modal-content > .modal-body > p {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > p, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > p, #StatusDialog > .modal-dialog > .modal-content > .modal-body > p, #deleteModal > .modal-dialog > .modal-content > .modal-body > p, #cancelTaskModal > .modal-dialog > .modal-content > .modal-body > p {
     padding: 20px 20px 0 0;
     font-size: 16px;
     line-height: 1.6em;
@@ -5642,7 +5636,7 @@ body.admin.modal-open .navbar {
     background: #282828
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown), #ClearCacheDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#clear_cache), #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown), #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
     float: right;
     z-index: 9;
     position: relative;
@@ -5678,11 +5672,11 @@ body.admin.modal-open .navbar {
     border-radius: 3px
 }
 
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-body > #clear_cache {
+#deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-danger {
     float: right;
     z-index: 9;
     position: relative;
-    margin: 25px 0 0 10px;
+    margin: 0 0 0 10px;
     min-width: 80px;
     padding: 10px 18px;
     font-size: 16px;
@@ -5690,7 +5684,7 @@ body.admin.modal-open .navbar {
     border-radius: 3px
 }
 
-#deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-danger {
+#cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-danger {
     float: right;
     z-index: 9;
     position: relative;
@@ -5710,15 +5704,15 @@ body.admin.modal-open .navbar {
     margin: 55px 0 0 10px
 }
 
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#clear_cache) {
-    margin: 25px 0 0 10px
-}
-
 #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
     margin: 0 0 0 10px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown):hover, #ClearCacheDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#clear_cache):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default:hover {
+#cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
+    margin: 0 0 0 10px
+}
+
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default:hover, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -5746,21 +5740,6 @@ body.admin.modal-open .navbar {
     border-radius: 0 0 3px 3px;
     left: 0;
     margin-top: 40px;
-    z-index: 0;
-    border-top: 1px solid #222;
-    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, .5)
-}
-
-#ClearCacheDialog > .modal-dialog > .modal-content > .modal-body:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 72px;
-    background-color: #323232;
-    border-radius: 0 0 3px 3px;
-    left: 0;
-    margin-top: 10px;
     z-index: 0;
     border-top: 1px solid #222;
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
@@ -7355,11 +7334,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         background-color: transparent !important
     }
 
-    #RestartDialog > .modal-dialog, #ShutdownDialog > .modal-dialog, #StatusDialog > .modal-dialog, #ClearCacheDialog > .modal-dialog, #deleteModal > .modal-dialog {
+    #RestartDialog > .modal-dialog, #ShutdownDialog > .modal-dialog, #StatusDialog > .modal-dialog, #deleteModal > .modal-dialog, #cancelTaskModal > .modal-dialog {
         max-width: calc(100vw - 40px)
     }
 
-    #RestartDialog > .modal-dialog > .modal-content, #ShutdownDialog > .modal-dialog > .modal-content, #StatusDialog > .modal-dialog > .modal-content, #ClearCacheDialog > .modal-dialog > .modal-content, #deleteModal > .modal-dialog > .modal-content {
+    #RestartDialog > .modal-dialog > .modal-content, #ShutdownDialog > .modal-dialog > .modal-content, #StatusDialog > .modal-dialog > .modal-content, #deleteModal > .modal-dialog > .modal-content, #cancelTaskModal > .modal-dialog > .modal-content {
         max-width: calc(100vw - 40px);
         left: 0
     }
@@ -7509,7 +7488,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding: 30px 15px
     }
 
-    #RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #ClearCacheDialog.in:before, #deleteModal.in:before {
+    #RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #deleteModal.in:before, #cancelTaskModal.in:before {
         left: auto;
         right: 34px
     }

@@ -234,3 +234,7 @@ class TaskConvert(CalibreTask):
     @property
     def name(self):
         return "Convert"
+
+    @property
+    def is_cancellable(self):
+        return False

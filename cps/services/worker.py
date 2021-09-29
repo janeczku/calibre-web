@@ -21,6 +21,8 @@ STAT_WAITING = 0
 STAT_FAIL = 1
 STAT_STARTED = 2
 STAT_FINISH_SUCCESS = 3
+STAT_ENDED = 4
+STAT_CANCELLED = 5
 
 # Only retain this many tasks in dequeued list
 TASK_CLEANUP_TRIGGER = 20
@@ -50,7 +52,7 @@ class WorkerThread(threading.Thread):
     _instance = None
 
     @classmethod
-    def getInstance(cls):
+    def get_instance(cls):
         if cls._instance is None:
             cls._instance = WorkerThread()
         return cls._instance
@@ -67,12 +69,13 @@ class WorkerThread(threading.Thread):
 
     @classmethod
     def add(cls, user, task):
-        ins = cls.getInstance()
+        ins = cls.get_instance()
         ins.num += 1
-        log.debug("Add Task for user: {}: {}".format(user, task))
+        username = user if user is not None else 'System'
+        log.debug("Add Task for user: {}: {}".format(username, task))
         ins.queue.put(QueuedTask(
             num=ins.num,
-            user=user,
+            user=username,
             added=datetime.now(),
             task=task,
         ))
@@ -134,6 +137,12 @@ class WorkerThread(threading.Thread):
 
             self.queue.task_done()
 
+    def end_task(self, task_id):
+        ins = self.get_instance()
+        for __, __, __, task in ins.tasks:
+            if str(task.id) == str(task_id) and task.is_cancellable:
+                task.stat = STAT_CANCELLED if task.stat == STAT_WAITING else STAT_ENDED
+
 
 class CalibreTask:
     __metaclass__ = abc.ABCMeta
@@ -147,15 +156,21 @@ class CalibreTask:
         self.message = message
         self.id = uuid.uuid4()
         self.self_cleanup = False
+        self._scheduled = False
 
     @abc.abstractmethod
     def run(self, worker_thread):
-        """Provides the caller some human-readable name for this class"""
+        """The main entry-point for this task"""
         raise NotImplementedError
 
     @abc.abstractmethod
     def name(self):
         """Provides the caller some human-readable name for this class"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def is_cancellable(self):
+        """Does this task gracefully handle being cancelled (STAT_ENDED, STAT_CANCELLED)?"""
         raise NotImplementedError
 
     def start(self, *args):
@@ -208,7 +223,7 @@ class CalibreTask:
         We have a separate dictating this because there may be certain tasks that want to override this
         """
         # By default, we're good to clean a task if it's "Done"
-        return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL)
+        return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL, STAT_ENDED, STAT_CANCELLED)
 
     '''@progress.setter
     def progress(self, x):        
@@ -225,6 +240,14 @@ class CalibreTask:
     @self_cleanup.setter
     def self_cleanup(self, is_self_cleanup):
         self._self_cleanup = is_self_cleanup
+
+    @property
+    def scheduled(self):
+        return self._scheduled
+
+    @scheduled.setter
+    def scheduled(self, is_scheduled):
+        self._scheduled = is_scheduled
 
     def _handleError(self, error_message):
         self.stat = STAT_FAIL

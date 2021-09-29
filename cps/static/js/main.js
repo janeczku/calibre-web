@@ -454,18 +454,6 @@ $(function() {
             }
         });
     });
-    $("#clear_cache").click(function () {
-        $("#spinner3").show();
-        $.ajax({
-            dataType: "json",
-            url: window.location.pathname + "/../../clear-cache",
-            data: {"cache_type":"thumbnails"},
-            success: function(data) {
-                $("#spinner3").hide();
-                $("#ClearCacheDialog").modal("hide");
-            }
-        });
-    });
 
     // Init all data control handlers to default
     $("input[data-control]").trigger("change");

@@ -11,7 +11,7 @@
       <label for="schedule_start_time">{{_('Time at which tasks start to run')}}</label>
       <select name="schedule_start_time" id="schedule_start_time" class="form-control">
         {% for n in range(24) %}
-          <option value="{{n}}" {% if content.schedule_start_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
+          <option value="{{n}}" {% if config.schedule_start_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
         {% endfor %}
       </select>
     </div>
@@ -19,12 +19,12 @@
       <label for="schedule_end_time">{{_('Time at which tasks stop running')}}</label>
       <select name="schedule_end_time" id="schedule_end_time" class="form-control">
         {% for n in range(24) %}
-          <option value="{{n}}" {% if content.schedule_end_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
+          <option value="{{n}}" {% if config.schedule_end_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
         {% endfor %}
       </select>
     </div>
     <div class="form-group">
-      <input type="checkbox" id="schedule_generate_book_covers" name="schedule_generate_book_covers" checked>
+      <input type="checkbox" id="schedule_generate_book_covers" name="schedule_generate_book_covers" {% if config.schedule_generate_book_covers %}checked{% endif %}>
       <label for="schedule_generate_book_covers">{{_('Generate Book Cover Thumbnails')}}</label>
     </div>
     <div class="form-group">

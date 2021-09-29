@@ -16,3 +16,7 @@ class TaskUpload(CalibreTask):
     @property
     def name(self):
         return "Upload"
+
+    @property
+    def is_cancellable(self):
+        return False

@@ -47,3 +47,7 @@ class TaskReconnectDatabase(CalibreTask):
     @property
     def name(self):
         return "Reconnect Database"
+
+    @property
+    def is_cancellable(self):
+        return False
