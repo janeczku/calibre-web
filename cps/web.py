@@ -124,7 +124,7 @@ def viewer_required(f):
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = WorkerThread.getInstance().tasks
+    tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
@@ -1055,7 +1055,7 @@ def category_list():
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    tasks = WorkerThread.getInstance().tasks
+    tasks = WorkerThread.get_instance().tasks
     answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 

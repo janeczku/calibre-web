@@ -40,12 +40,13 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services, isoLanguages, fs
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
+from . import constants, logger, helper, services, isoLanguages
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
+from .services.worker import WorkerThread
 from . import debug_info, _BABEL_TRANSLATIONS
 
 try:
@@ -1568,7 +1569,7 @@ def update_mailsettings():
 @admin_required
 def edit_scheduledtasks():
     content = config.get_scheduled_task_settings()
-    return render_title_template("schedule_edit.html", content=content, title=_(u"Edit Scheduled Tasks Settings"))
+    return render_title_template("schedule_edit.html", config=content, title=_(u"Edit Scheduled Tasks Settings"))
 
 
 @admi.route("/admin/scheduledtasks", methods=["POST"])
@@ -1584,6 +1585,12 @@ def update_scheduledtasks():
     try:
         config.save()
         flash(_(u"Scheduled tasks settings updated"), category="success")
+
+        # Cancel any running tasks
+        schedule.end_scheduled_tasks()
+
+        # Re-register tasks with new settings
+        schedule.register_scheduled_tasks()
     except IntegrityError as ex:
         ub.session.rollback()
         log.error("An unknown error occurred while saving scheduled tasks settings")
@@ -1869,3 +1876,13 @@ def extract_dynamic_field_from_filter(user, filtr):
 def extract_user_identifier(user, filtr):
     dynamic_field = extract_dynamic_field_from_filter(user, filtr)
     return extract_user_data_from_field(user, dynamic_field)
+
+
+@admi.route("/ajax/canceltask", methods=['POST'])
+@login_required
+@admin_required
+def cancel_task():
+    task_id = request.get_json().get('task_id', None)
+    worker = WorkerThread.get_instance()
+    worker.end_task(task_id)
+    return ""

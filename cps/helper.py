@@ -57,7 +57,8 @@ from . import logger, config, get_locale, db, fs, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
-from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
+    STAT_CANCELLED
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache
 
@@ -838,12 +839,22 @@ def render_task_status(tasklist):
                     ret['status'] = _(u'Started')
                 elif task.stat == STAT_FINISH_SUCCESS:
                     ret['status'] = _(u'Finished')
+                elif task.stat == STAT_ENDED:
+                    ret['status'] = _(u'Ended')
+                elif task.stat == STAT_CANCELLED:
+                    ret['status'] = _(u'Cancelled')
                 else:
                     ret['status'] = _(u'Unknown Status')
 
-            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
+            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message) if task.message else _(task.name)
             ret['progress'] = "{} %".format(int(task.progress * 100))
             ret['user'] = escape(user)  # prevent xss
+
+            # Hidden fields
+            ret['id'] = task.id
+            ret['stat'] = task.stat
+            ret['is_cancellable'] = task.is_cancellable
+
             renderedtasklist.append(ret)
 
     return renderedtasklist
@@ -914,5 +925,5 @@ def get_download_link(book_id, book_format, client):
         abort(404)
 
 
-def clear_cover_thumbnail_cache(book_id=None):
+def clear_cover_thumbnail_cache(book_id):
     WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))

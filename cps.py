@@ -44,7 +44,7 @@ from cps.editbooks import editbook
 from cps.remotelogin import remotelogin
 from cps.search_metadata import meta
 from cps.error_handler import init_errorhandler
-from cps.schedule import register_jobs, register_startup_jobs
+from cps.schedule import register_scheduled_tasks, register_startup_tasks
 
 try:
     from cps.kobo import kobo, get_kobo_activated
@@ -81,9 +81,9 @@ def main():
     if oauth_available:
         app.register_blueprint(oauth)
 
-    # Register scheduled jobs
-    register_jobs()
-    # register_startup_jobs()
+    # Register scheduled tasks
+    register_scheduled_tasks()
+    register_startup_tasks()
 
     success = web_server.start()
     sys.exit(0 if success else 1)

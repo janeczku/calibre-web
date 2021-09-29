@@ -162,7 +162,6 @@ class TaskEmail(CalibreTask):
             log.debug_or_exception(ex)
             self._handleError(u'Error sending e-mail: {}'.format(ex))
 
-
     def send_standard_email(self, msg):
         use_ssl = int(self.settings.get('mail_use_ssl', 0))
         timeout = 600  # set timeout to 5mins
@@ -218,7 +217,6 @@ class TaskEmail(CalibreTask):
             self.asyncSMTP = None
             self._progress = x
 
-
     @classmethod
     def _get_attachment(cls, bookpath, filename):
         """Get file as MIMEBase message"""
@@ -259,6 +257,10 @@ class TaskEmail(CalibreTask):
     @property
     def name(self):
         return "E-mail"
+
+    @property
+    def is_cancellable(self):
+        return False
 
     def __str__(self):
         return "{}, {}".format(self.name, self.subject)
