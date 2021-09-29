@@ -1131,10 +1131,11 @@ def edit_list_book(param):
         else:
             lang_names = list()
             for lang in book.languages:
-                try:
-                    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
-                except UnknownLocaleError:
-                    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
+                lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
+                #try:
+                #    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
+                #except UnknownLocaleError:
+                #    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
             ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
                             mimetype='application/json')
     elif param =='author_sort':
