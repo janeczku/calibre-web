@@ -606,13 +606,18 @@ def render_category_books(page, book_id, order):
 
 def render_language_books(page, name, order):
     try:
-        cur_l = LC.parse(name)
-        lang_name = cur_l.get_language_name(get_locale())
-    except UnknownLocaleError:
-        try:
-            lang_name = _(isoLanguages.get(part3=name).name)
-        except KeyError:
-            abort(404)
+        lang_name = isoLanguages.get_language_name(get_locale(), name)
+    except KeyError:
+        abort(404)
+
+    #try:
+    #    cur_l = LC.parse(name)
+    #    lang_name = cur_l.get_language_name(get_locale())
+    #except UnknownLocaleError:
+    #    try:
+    #        lang_name = _(isoLanguages.get(part3=name).name)
+    #    except KeyError:
+    #        abort(404)
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
@@ -819,12 +824,14 @@ def list_books():
 
     for entry in entries:
         for index in range(0, len(entry.languages)):
-            try:
-                entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
-                    .get_language_name(get_locale())
-            except UnknownLocaleError:
-                entry.languages[index].language_name = _(
-                    isoLanguages.get(part3=entry.languages[index].lang_code).name)
+            entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
+                index].lang_code)
+            #try:
+            #    entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
+            #        .get_language_name(get_locale())
+            #except UnknownLocaleError:
+            #    entry.languages[index].language_name = _(
+            #        isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
@@ -1003,16 +1010,18 @@ def language_overview():
             languages = calibre_db.speaking_language()
             # ToDo: generate first character list for languages
         else:
-            try:
-                cur_l = LC.parse(current_user.filter_language())
-            except UnknownLocaleError:
-                cur_l = None
+            #try:
+            #    cur_l = LC.parse(current_user.filter_language())
+            #except UnknownLocaleError:
+            #    cur_l = None
+
             languages = calibre_db.session.query(db.Languages).filter(
                 db.Languages.lang_code == current_user.filter_language()).all()
-            if cur_l:
-                languages[0].name = cur_l.get_language_name(get_locale())
-            else:
-                languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+            languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].name.lang_code)
+            #if cur_l:
+            #    languages[0].name = cur_l.get_language_name(get_locale())
+            #else:
+            #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
         lang_counter = calibre_db.session.query(db.books_languages_link,
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
