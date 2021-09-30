@@ -41,7 +41,7 @@
     </div>
 
     <table id="books-table" class="table table-no-bordered table-striped"
-           data-url="{{url_for('web.list_books')}}">
+           data-url="{{url_for('web.list_books')}}" data-locale="{{ g.user.locale }}">
       <thead>
         <tr>
           {% if g.user.role_edit() %}
@@ -96,6 +96,7 @@
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
