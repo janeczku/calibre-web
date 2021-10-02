@@ -27,16 +27,16 @@
               <div class="text-left">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in source_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
                   <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
                   <select class="form-control" name="book_format_to" id="book_format_to">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in conversion_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
               </div>
