@@ -84,7 +84,9 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    resp.headers['Content-Security-Policy']= "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src * data:"
+    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval';"
+    if request.endpoint == "editbook.edit_book":
+        resp.headers['Content-Security-Policy'] += "img-src * data:"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
