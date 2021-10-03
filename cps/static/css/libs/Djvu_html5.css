@@ -35,7 +35,7 @@ body {
 	float: left;
 	width: 40px;
 	height: 40px;
-	background-image: url("img/toolbar-buttons.png");
+	background-image: url("../../js/libs/djvu_html5/img/toolbar-buttons.png");
 	background-repeat: no-repeat;
 	background-size: 500% 300%;
 }
@@ -185,10 +185,10 @@ _:-ms-lang(x), .textLayer {
 	width: 128px;
 	height: 128px;
 	margin: -72px 0 0 -64px;
-	background-image: url("img/status.png");
+	background-image: url("../../js/libs/djvu_html5/img/status.png");
 	background-repeat: no-repeat;
 }
 
 .blankImage {
-	background-image: url("img/blank.jpg");
+	background-image: url("../../js/libs/djvu_html5/img/blank.jpg");
 }
