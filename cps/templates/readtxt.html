@@ -5,139 +5,26 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>{{_('txt Reader')}} | {{title}}</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>
+        <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-        <!-- EPUBJS Renderer -->
-        <!--<script src="../build/epub.js"></script>-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/text.css') }}" type="text/css"/>
+
         <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
-
-        <style type="text/css">
-
-          body {
-            background: white;
-          }
-
-          #readmain {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-          }
-
-          #area {
-            width: 80%;
-            height: 80%;
-            margin: 5% auto;
-            max-width: 1250px;
-          }
-
-          #area iframe {
-            border: none;
-          }
-
-          xmp, pre, plaintext {
-            display: block;
-            font-family: -moz-fixed;
-            white-space: pre;
-            margin: 1em 0;
-          }
-          #area{
-            overflow:hidden;
-          }
-          pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-family: -moz-fixed;
-            column-count:2;
-            -webkit-columns:2;
-            -moz-columns:2;
-            column-gap:20px;
-            -moz-column-gap:20px;
-            -webkit-column-gap:20px;
-            position:relative;
-          }
-        </style>
-
-         <script>
+        <script>
             "use strict";
         </script>
+        <script src="{{ url_for('static', filename='js/reading/txt_reader.js') }}"></script>
     </head>
     <body>
-        <div id="readmain">
-          <div id="left" class="arrow" >‹</div>
-          <div id="area"><pre id="content" class="content"></pre></div>
-          <div id="right" class="arrow">›</div>
-        </div>
-
-        <script>
-
-        $(document).ready(function() {
-          //to int
-          $("#area").width($("#area").width());
-          $("#content").width($("#content").width());
-          //bind text
-          $("#content").load("{{ url_for('web.serve_book', book_id=txtfile,book_format='txt') }}",function(textStr) {
-           $(this).height($(this).parent().height()*0.95);
-           $(this).text(textStr);
-          });
-          //keybind
-          $(document).keydown(function(event){
-            if(event.keyCode == 37){
-              prevPage();
-            }
-            if(event.keyCode == 39){
-              nextPage();
-            }
-          });
-          //click
-          $( "#left" ).click(function() {
-            prevPage();
-          });
-          $( "#right" ).click(function() {
-            nextPage();
-          });
-          $("#readmain").swipe( {
-            swipeRight:function() {
-                prevPage();
-            },
-            swipeLeft:function() {
-                nextPage();
-            },
-          });
-          //bind mouse
-          $(window).bind('DOMMouseScroll mousewheel', function(event) {
-            var delta = 0;
-            if (event.originalEvent.wheelDelta) {
-              delta = event.originalEvent.wheelDelta;
-            }else if (event.originalEvent.detail) {
-              delta = event.originalEvent.detail*-1;
-            }
-            if (delta >= 0) {
-                  prevPage();
-              }
-              else {
-                  nextPage();
-              }
-          });
-          //page animate
-          var origwidth = $("#content")[0].getBoundingClientRect().width;
-          var gap = 20;
-          function prevPage(){
-            if($("#content").offset().left > 0){ return;}
-            leftoff = $("#content").offset().left;
-            leftoff = leftoff+origwidth+gap;
-            $("#content").offset({left:leftoff});
-          }
-          function nextPage(){
-            leftoff = $("#content").offset().left;
-            leftoff = leftoff-origwidth-gap;
-            if ( leftoff + $("#content")[0].scrollWidth < 0) { return;}
-            $("#content").offset({left:leftoff});
-          }
-        });
-
-        </script>
+      <div id="readmain" data-load="{{ url_for('web.serve_book', book_id=txtfile, book_format='txt') }}">
+        <div id="left" class="arrow" >‹</div>
+        <div id="area"><pre id="content" class="content"></pre></div>
+        <div id="right" class="arrow">›</div>
+      </div>
     </body>
 </html>
