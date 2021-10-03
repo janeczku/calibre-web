@@ -419,6 +419,12 @@ class ArchivedBook(Base):
     last_modified = Column(DateTime, default=datetime.datetime.utcnow)
 
 
+class KoboSyncedBooks(Base):
+    __tablename__ = 'kobo_synced_books'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+
 # The Kobo ReadingState API keeps track of 4 timestamped entities:
 #   ReadingState, StatusInfo, Statistics, CurrentBookmark
 # Which we map to the following 4 tables:
