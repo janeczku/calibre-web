@@ -170,9 +170,14 @@ def HandleSyncRequest():
                                                        ub.ArchivedBook.is_archived)
         changed_entries = (changed_entries
                 .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
-                .filter(or_(db.Books.last_modified > sync_token.books_last_modified,
-                            ub.BookShelf.date_added > sync_token.books_last_modified))
-                .filter(db.Data.format.in_(KOBO_FORMATS)).filter(calibre_db.common_filters())
+                .join(ub.KoboSyncedBooks, ub.KoboSyncedBooks.book_id == db.Books.id, isouter=True)
+                .filter(or_(ub.KoboSyncedBooks.user_id != current_user.id,
+                            ub.KoboSyncedBooks.book_id == None))
+                #.filter(or_(db.Books.last_modified > sync_token.books_last_modified,
+                #            ub.BookShelf.date_added > sync_token.books_last_modified))
+                .filter(ub.BookShelf.date_added > sync_token.books_last_modified) #?? or also or from above
+                .filter(db.Data.format.in_(KOBO_FORMATS))
+                .filter(calibre_db.common_filters())
                 .order_by(db.Books.id)
                 .order_by(ub.ArchivedBook.last_modified)
                 .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
@@ -189,16 +194,18 @@ def HandleSyncRequest():
                                                        ub.ArchivedBook.last_modified,
                                                        ub.ArchivedBook.is_archived)
         changed_entries = (changed_entries
-                .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
-                .filter(db.Books.last_modified > sync_token.books_last_modified)
-                .filter(calibre_db.common_filters())
-                .filter(db.Data.format.in_(KOBO_FORMATS))
-                .order_by(db.Books.last_modified)
-                .order_by(db.Books.id)
+                   .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
+                   .join(ub.KoboSyncedBooks, ub.KoboSyncedBooks.book_id == db.Books.id, isouter=True)
+                   .filter(or_(ub.KoboSyncedBooks.user_id != current_user.id,
+                               ub.KoboSyncedBooks.book_id == None))
+                   .filter(calibre_db.common_filters())
+                   .filter(db.Data.format.in_(KOBO_FORMATS))
+                   .order_by(db.Books.last_modified)
+                   .order_by(db.Books.id)
         )
 
-    if sync_token.books_last_id > -1:
-        changed_entries = changed_entries.filter(db.Books.id > sync_token.books_last_id)
+    #if sync_token.books_last_id > -1:
+    #    changed_entries = changed_entries.filter(db.Books.id > sync_token.books_last_id)
 
     reading_states_in_new_entitlements = []
     if sqlalchemy_version2:
@@ -206,6 +213,7 @@ def HandleSyncRequest():
     else:
         books = changed_entries.limit(SYNC_ITEM_LIMIT)
     for book in books:
+        add_synced_books(book.Books.id)
         formats = [data.format for data in book.Books.data]
         if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
             helper.convert_book_format(book.Books.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.name)
@@ -263,11 +271,11 @@ def HandleSyncRequest():
         entries = calibre_db.session.execute(changed_entries).all()
         book_count = len(entries)
     else:
-        entries = changed_entries.all()
+        #entries = changed_entries.all()
         book_count = changed_entries.count()
     # last entry:
-    books_last_id = entries[-1].Books.id or -1 if book_count else -1
-
+    # sync_cont = entries[-1].Books.id or -1 if book_count else -1
+    log.debug("Remaining books to Sync: {}".format(book_count))
     # generate reading state data
     changed_reading_states = ub.session.query(ub.KoboReadingState)
 
@@ -305,7 +313,7 @@ def HandleSyncRequest():
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified
-    sync_token.books_last_id = books_last_id
+    # sync_token.books_last_id = books_last_id
 
     return generate_sync_response(sync_token, sync_results, book_count)
 
@@ -330,7 +338,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
         extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
 
-    log.debug("Kobo Sync Content: {}".format(sync_results))
+    # log.debug("Kobo Sync Content: {}".format(sync_results))
     response = make_response(jsonify(sync_results), extra_headers)
 
     return response
@@ -837,6 +845,16 @@ def get_ub_read_status(kobo_read_status):
         "Reading": ub.ReadBook.STATUS_IN_PROGRESS,
     }
     return string_to_enum_map[kobo_read_status]
+
+def add_synced_books(book_id):
+    synced_book = ub.KoboSyncedBooks()
+    synced_book.user_id = current_user.id
+    synced_book.book_id = book_id
+    ub.session.add(synced_book)
+    try:
+        ub.session.commit()
+    except Exception:
+        ub.session.rollback()
 
 
 def get_or_create_reading_state(book_id):
