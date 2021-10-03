@@ -15,7 +15,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
