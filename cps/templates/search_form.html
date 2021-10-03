@@ -228,10 +228,6 @@
 {% endblock %}
 
 {% block js %}
-<script>
-  var language = '{{ g.user.locale }}';
-</script>
-
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 {% if not g.user.locale == 'en' %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
