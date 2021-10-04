@@ -16,8 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import division, print_function, unicode_literals
 import os
 import sys
 import json
@@ -361,10 +359,6 @@ def _migrate_table(session, orm_class):
                 session.query(column).first()
             except OperationalError as err:
                 log.debug("%s: %s", column_name, err.args[0])
-                if column.default is not None:
-                    if sys.version_info < (3, 0):
-                        if isinstance(column.default.arg, unicode):
-                            column.default.arg = column.default.arg.encode('utf-8')
                 if column.default is None:
                     column_default = ""
                 else:

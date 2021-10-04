@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
@@ -30,7 +29,6 @@ import copy
 
 from babel.dates import format_date
 from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
@@ -212,7 +210,7 @@ def toggle_archived(book_id):
 @web.route("/ajax/view", methods=["POST"])
 @login_required_if_no_ano
 def update_view():
-    to_save = request.get_json()
+    to_save = request.form.to_dict() # request.get_json()
     try:
         for element in to_save:
             for param in to_save[element]:
@@ -261,10 +259,7 @@ def get_comic_book(book_id, book_format, page):
                     log.error('unsupported comic format')
                     return "", 204
 
-                if sys.version_info.major >= 3:
-                    b64 = codecs.encode(extract(page), 'base64').decode()
-                else:
-                    b64 = extract(page).encode('base64')
+                b64 = codecs.encode(extract(page), 'base64').decode()
                 ext = names[page].rpartition('.')[-1]
                 if ext not in ('png', 'gif', 'jpg', 'jpeg', 'webp'):
                     ext = 'png'
@@ -273,7 +268,6 @@ def get_comic_book(book_id, book_format, page):
                 return make_response(json.dumps(fileData))
         return "", 204
 '''
-
 
 # ################################### Typeahead ##################################################################
 

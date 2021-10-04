@@ -492,10 +492,7 @@ def get_metadata(book):
     metadata.update(get_author(book))
 
     if get_series(book):
-        if sys.version_info < (3, 0):
-            name = get_series(book).encode("utf-8")
-        else:
-            name = get_series(book)
+        name = get_series(book)
         metadata["Series"] = {
             "Name": get_series(book),
             "Number": get_seriesindex(book),        # ToDo Check int() ?

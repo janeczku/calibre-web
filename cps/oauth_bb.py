@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from __future__ import division, print_function, unicode_literals
 import json
 from functools import wraps
 

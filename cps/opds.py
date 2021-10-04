@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import datetime
 from functools import wraps
@@ -537,11 +536,10 @@ def feed_search(term):
 
 
 def check_auth(username, password):
-    if sys.version_info.major == 3:
-        try:
-            username = username.encode('windows-1252')
-        except UnicodeEncodeError:
-            username = username.encode('utf-8')
+    try:
+        username = username.encode('windows-1252')
+    except UnicodeEncodeError:
+        username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
                                             username.decode('utf-8').lower()).first()
     if bool(user and check_password_hash(str(user.password), password)):
