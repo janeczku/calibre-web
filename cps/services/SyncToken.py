@@ -35,10 +35,7 @@ log = logger.create()
 
 
 def b64encode_json(json_data):
-    if sys.version_info < (3, 0):
-        return b64encode(json.dumps(json_data))
-    else:
-        return b64encode(json.dumps(json_data).encode())
+    return b64encode(json.dumps(json_data).encode())
 
 
 # Python3 has a timestamp() method we could be calling, however it's not avaiable in python2.

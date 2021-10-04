@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import mimetypes
@@ -118,16 +117,11 @@ def create_app():
         print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         sys.exit(6)
     if not wtf_present:
-        log.info('*** "flask-wtf" is needed for calibre-web to run. Please install it using pip: "pip install flask-wtf" ***')
-        print('*** "flask-wtf" is needed for calibre-web to run. Please install it using pip: "pip install flask-wtf" ***')
-        sys.exit(7)
+        log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        # sys.exit(7)
 
     app.wsgi_app = ReverseProxied(app.wsgi_app)
-    # For python2 convert path to unicode
-    if sys.version_info < (3, 0):
-        app.static_folder = app.static_folder.decode('utf-8')
-        app.root_path = app.root_path.decode('utf-8')
-        app.instance_path = app.instance_path.decode('utf-8')
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)

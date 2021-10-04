@@ -16,7 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import argparse
@@ -47,19 +46,6 @@ parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to liste
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
 args = parser.parse_args()
-
-if sys.version_info < (3, 0):
-    if args.p:
-        args.p = args.p.decode('utf-8')
-    if args.g:
-        args.g = args.g.decode('utf-8')
-    if args.k:
-        args.k = args.k.decode('utf-8')
-    if args.c:
-        args.c = args.c.decode('utf-8')
-    if args.s:
-        args.s = args.s.decode('utf-8')
-
 
 settingspath = args.p or os.path.join(_CONFIG_DIR, "app.db")
 gdpath       = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")

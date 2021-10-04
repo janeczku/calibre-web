@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import sys
 import hashlib
@@ -137,10 +136,7 @@ def on_received_watch_confirmation():
         response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
         log.debug('%r', response)
         if response:
-            if sys.version_info < (3, 0):
-                dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-            else:
-                dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
+            dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
             if not response['deleted'] and response['file']['title'] == 'metadata.db' \
                 and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
                 tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
