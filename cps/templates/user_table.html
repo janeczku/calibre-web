@@ -118,6 +118,7 @@
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-xs-12 col-sm-12">
         <div class="row">
           <div class="btn btn-default disabled" id="user_delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>

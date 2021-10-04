@@ -112,6 +112,14 @@ $("#btn-upload").change(function() {
     $("#form-upload").submit();
 });
 
+$("#form-upload").uploadprogress({
+    redirect_url: getPath() + "/", //"{{ url_for('web.index')}}",
+    uploadedMsg: $("#form-upload").data("message"), //"{{_('Upload done, processing, please wait...')}}",
+    modalTitle: $("#form-upload").data("title"), //"{{_('Uploading...')}}",
+    modalFooter: $("#form-upload").data("footer"), //"{{_('Close')}}",
+    modalTitleFailed: $("#form-upload").data("failed") //"{{_('Error')}}"
+});
+
 $(document).ready(function() {
   var inp = $('#query').first()
   if (inp.length) {
@@ -222,6 +230,16 @@ $(function() {
     // eslint-disable-next-line new-cap
     var preFilters = $.Callbacks();
     $.ajaxPrefilter(preFilters.fire);
+
+    // equip all post requests with csrf_token
+    var csrftoken = $("input[name='csrf_token']").val();
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            }
+        }
+    });
 
     function restartTimer() {
         $("#spinner").addClass("hidden");
@@ -576,7 +594,7 @@ $(function() {
             method:"post",
             dataType: "json",
             url: window.location.pathname + "/../../ajax/simulatedbchange",
-            data: {config_calibre_dir: $("#config_calibre_dir").val()},
+            data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( data.change ) {
                     if ( data.valid ) {
@@ -712,7 +730,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/view",
+            url: getPath() + "/ajax/view",
             data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();

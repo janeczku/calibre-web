@@ -47,7 +47,8 @@ from sqlalchemy.exc import StatementError
 from sqlalchemy.sql import select
 import requests
 
-from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub
+
+from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf
 from .constants import sqlalchemy_version2
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
@@ -505,7 +506,7 @@ def get_metadata(book):
 
     return metadata
 
-
+@csrf.exempt
 @kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
 @requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
@@ -595,6 +596,7 @@ def add_items_to_shelf(items, shelf):
     return items_unknown_to_calibre
 
 
+@csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
 @requires_kobo_auth
 def HandleTagAddItem(tag_id):
@@ -624,6 +626,7 @@ def HandleTagAddItem(tag_id):
     return make_response('', 201)
 
 
+@csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
 @requires_kobo_auth
 def HandleTagRemoveItem(tag_id):
@@ -983,6 +986,7 @@ def HandleUnimplementedRequest(dummy=None):
 
 
 # TODO: Implement the following routes
+@csrf.exempt
 @kobo.route("/v1/user/loyalty/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/user/profile", methods=["GET", "POST"])
 @kobo.route("/v1/user/wishlist", methods=["GET", "POST"])
@@ -993,6 +997,7 @@ def HandleUserRequest(dummy=None):
     return redirect_or_proxy_request()
 
 
+@csrf.exempt
 @kobo.route("/v1/products/<dummy>/prices", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
@@ -1026,6 +1031,7 @@ def make_calibre_web_auth_response():
     )
 
 
+@csrf.exempt
 @kobo.route("/v1/auth/device", methods=["POST"])
 @requires_kobo_auth
 def HandleAuthRequest():

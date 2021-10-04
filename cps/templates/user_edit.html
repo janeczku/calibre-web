@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-md-10 col-lg-8">
     {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">

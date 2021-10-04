@@ -61,7 +61,7 @@
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                   <li>
-                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" method="post" enctype="multipart/form-data">
+                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
                         type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
@@ -200,17 +200,6 @@
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
-    <script type="text/javascript">
-        $(function() {
-            $("#form-upload").uploadprogress({
-              redirect_url: "{{ url_for('web.index')}}",
-              uploadedMsg: "{{_('Upload done, processing, please wait...')}}",
-              modalTitle: "{{_('Uploading...')}}",
-              modalFooter: "{{_('Close')}}",
-              modalTitleFailed: "{{_('Error')}}"
-            });
-        });
-    </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% if g.current_theme == 1 %}
       <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>

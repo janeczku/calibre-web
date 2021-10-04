@@ -49,7 +49,7 @@ try:
     from cps.kobo import kobo, get_kobo_activated
     from cps.kobo_auth import kobo_auth
     kobo_available = get_kobo_activated()
-except ImportError:
+except (ImportError, AttributeError):   # Catch also error for not installed flask-wtf (missing csrf decorator)
     kobo_available = False
 
 try:
