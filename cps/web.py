@@ -84,14 +84,13 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval';"
+    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
     if request.endpoint == "editbook.edit_book":
-        resp.headers['Content-Security-Policy'] += "img-src * data:"
+        resp.headers['Content-Security-Policy'] += " *"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
     resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    # log.debug(request.full_path)
     return resp
 
 web = Blueprint('web', __name__)

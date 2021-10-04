@@ -29,6 +29,10 @@ from collections import OrderedDict
 import babel, pytz, requests, sqlalchemy
 import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
+try:
+    from flask_wtf import __version__ as flaskwtf_version
+except ImportError:
+    flaskwtf_version = _(u'not installed')
 
 from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
 from .render_template import render_title_template
@@ -75,6 +79,7 @@ _VERSIONS = OrderedDict(
     Flask=flask.__version__,
     Flask_Login=flask_loginVersion,
     Flask_Principal=flask_principal.__version__,
+    Flask_WTF=flaskwtf_version,
     Werkzeug=werkzeug.__version__,
     Babel=babel.__version__,
     Jinja2=jinja2.__version__,
@@ -84,14 +89,14 @@ _VERSIONS = OrderedDict(
     SQLite=sqlite3.sqlite_version,
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
-    Unidecode = unidecode_version,
-    Scholarly = scholarly_version,
-    Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else None,
-    python_LDAP = services.ldapVersion if bool(services.ldapVersion) else None,
-    Goodreads = u'installed' if bool(services.goodreads_support) else None,
-    jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else None,
-    flask_dance = flask_danceVersion,
-    greenlet = greenlet_Version
+    Unidecode=unidecode_version,
+    Scholarly=scholarly_version,
+    Flask_SimpleLDAP=u'installed' if bool(services.ldap) else None,
+    python_LDAP=services.ldapVersion if bool(services.ldapVersion) else None,
+    Goodreads=u'installed' if bool(services.goodreads_support) else None,
+    jsonschema=services.SyncToken.__version__ if bool(services.SyncToken) else None,
+    flask_dance=flask_danceVersion,
+    greenlet=greenlet_Version
 )
 _VERSIONS.update(uploader.get_versions())
 

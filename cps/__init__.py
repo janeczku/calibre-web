@@ -43,6 +43,12 @@ try:
 except ImportError:
     lxml_present = False
 
+try:
+    from flask_wtf.csrf import CSRFProtect
+    wtf_present = True
+except ImportError:
+    wtf_present = False
+
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
@@ -75,6 +81,12 @@ lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 lm.session_protection = 'strong'
 
+if wtf_present:
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+else:
+    csrf = None
+
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
@@ -105,6 +117,11 @@ def create_app():
         log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         sys.exit(6)
+    if not wtf_present:
+        log.info('*** "flask-wtf" is needed for calibre-web to run. Please install it using pip: "pip install flask-wtf" ***')
+        print('*** "flask-wtf" is needed for calibre-web to run. Please install it using pip: "pip install flask-wtf" ***')
+        sys.exit(7)
+
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
