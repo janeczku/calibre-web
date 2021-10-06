@@ -263,7 +263,7 @@ $(function() {
     function updateTimer() {
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/../../get_updater_status",
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
                 $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
@@ -462,8 +462,8 @@ $(function() {
         $.ajax({
             type: "POST",
             dataType: "json",
-            data: { start: "True"},
-            url: window.location.pathname + "/../../get_updater_status",
+            data: { start: "True" },
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
                 updateText = data.text;
                 $("#DialogContent").html(updateText[data.status]);
