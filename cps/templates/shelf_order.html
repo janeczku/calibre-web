@@ -3,6 +3,7 @@
   <div class="col-sm-8 col-lg-8 col-xs-12">
     <h2>{{title}}</h2>
     <div>{{_('Drag to Rearrange Order')}}</div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
           <div id="{{entry['Books']['id']}}" class="list-group-item">

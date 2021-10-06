@@ -1745,6 +1745,7 @@ def ldap_import_create_user(user, user_data):
     content.kindle_mail = kindlemail
     content.default_language = config.config_default_language
     content.locale = config.config_default_locale
+    content.role = config.config_default_role
     content.sidebar_view = config.config_default_show
     content.allowed_tags = config.config_allowed_tags
     content.denied_tags = config.config_denied_tags
