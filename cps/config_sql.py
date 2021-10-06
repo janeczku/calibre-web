@@ -89,6 +89,8 @@ class _Settings(_Base):
 
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=constants.ADMIN_USER_SIDEBAR)
+    config_default_language = Column(String(3), default="all")
+    config_default_locale = Column(String(2), default="en")
     config_columns_to_ignore = Column(String)
 
     config_denied_tags = Column(String, default="")

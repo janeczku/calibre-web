@@ -235,8 +235,12 @@ def view_configuration():
         .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.Custom_Columns)\
         .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    languages = calibre_db.speaking_language()
+    translations = [LC('en')] + babel.list_translations()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 languages=languages,
+                                 translations=translations,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 @admi.route("/admin/usertable")
@@ -514,15 +518,11 @@ def check_valid_restricted_column(column):
     return True
 
 
-
 @admi.route("/admin/viewconfig", methods=["POST"])
 @login_required
 @admin_required
 def update_view_configuration():
     to_save = request.form.to_dict()
-
-    # _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
-    # _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
 
     _config_string(to_save, "config_calibre_web_title")
     _config_string(to_save, "config_columns_to_ignore")
@@ -545,6 +545,8 @@ def update_view_configuration():
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
+    _config_string(to_save, "config_default_language")
+    _config_string(to_save, "config_default_locale")
 
 
     config.config_default_role = constants.selected_roles(to_save)
@@ -1350,6 +1352,8 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
+        content.default_language = config.config_default_language
+        content.locale = config.config_default_locale
         content.allowed_tags = config.config_allowed_tags
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
@@ -1739,9 +1743,8 @@ def ldap_import_create_user(user, user_data):
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
     content.kindle_mail = kindlemail
-    content.kindle_mail = kindlemail
-    content.default_language = config.default_language
-    content.locale = config.locale
+    content.default_language = config.config_default_language
+    content.locale = config.config_default_locale
     content.sidebar_view = config.config_default_show
     content.allowed_tags = config.config_allowed_tags
     content.denied_tags = config.config_denied_tags

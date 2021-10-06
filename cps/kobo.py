@@ -538,6 +538,7 @@ def HandleTagCreate():
     return make_response(jsonify(str(shelf.uuid)), 201)
 
 
+@csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
 @requires_kobo_auth
 def HandleTagUpdate(tag_id):
@@ -765,7 +766,7 @@ def create_kobo_tag(shelf):
         )
     return {"Tag": tag}
 
-
+@csrf.exempt
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
 @requires_kobo_auth
 def HandleStateRequest(book_uuid):
@@ -950,6 +951,7 @@ def TopLevelEndpoint():
     return make_response(jsonify({}))
 
 
+@csrf.exempt
 @kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
 @requires_kobo_auth
 def HandleBookDeletionRequest(book_uuid):
@@ -976,6 +978,7 @@ def HandleBookDeletionRequest(book_uuid):
 
 
 # TODO: Implement the following routes
+@csrf.exempt
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
 def HandleUnimplementedRequest(dummy=None):
     log.debug("Unimplemented Library Request received: %s", request.base_url)
