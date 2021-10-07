@@ -21,7 +21,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import hashlib
 import json
 import tempfile
@@ -33,7 +32,7 @@ from flask import Blueprint, flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
 from flask_login import login_required
 
-from . import logger, gdriveutils, config, ub, calibre_db
+from . import logger, gdriveutils, config, ub, calibre_db, csrf
 from .admin import admin_required
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
@@ -117,6 +116,7 @@ def revoke_watch_gdrive():
     return redirect(url_for('admin.db_configuration'))
 
 
+@csrf.exempt
 @gdrive.route("/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
     if not config.config_google_drive_watch_changes_response:
