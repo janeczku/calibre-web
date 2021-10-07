@@ -83,7 +83,7 @@ except ImportError:
 @app.after_request
 def add_security_headers(resp):
     resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
-    if request.endpoint == "editbook.edit_book":
+    if request.endpoint == "editbook.edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'

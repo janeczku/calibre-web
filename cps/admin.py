@@ -1352,8 +1352,6 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
-        content.default_language = config.config_default_language
-        content.locale = config.config_default_locale
         content.allowed_tags = config.config_allowed_tags
         content.denied_tags = config.config_denied_tags
         content.allowed_column_value = config.config_allowed_column_value
@@ -1491,6 +1489,8 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
+        content.locale = config.config_default_locale
+        content.default_language = config.config_default_language
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
