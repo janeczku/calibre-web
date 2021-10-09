@@ -27,7 +27,6 @@ from binascii import hexlify
 
 from flask_login import AnonymousUserMixin, current_user
 from flask_login import user_logged_in
-from contextlib import contextmanager
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin

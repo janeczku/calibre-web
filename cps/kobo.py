@@ -19,7 +19,6 @@
 
 import base64
 import datetime
-import sys
 import os
 import uuid
 from time import gmtime, strftime
@@ -48,7 +47,7 @@ from sqlalchemy.sql import select
 import requests
 
 
-from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf
+from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
 from .constants import sqlalchemy_version2
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
@@ -214,7 +213,7 @@ def HandleSyncRequest():
     else:
         books = changed_entries.limit(SYNC_ITEM_LIMIT)
     for book in books:
-        add_synced_books(book.Books.id)
+        kobo_sync_status.add_synced_books(book.Books.id)
         formats = [data.format for data in book.Books.data]
         if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
             helper.convert_book_format(book.Books.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.name)
@@ -846,16 +845,6 @@ def get_ub_read_status(kobo_read_status):
         "Reading": ub.ReadBook.STATUS_IN_PROGRESS,
     }
     return string_to_enum_map[kobo_read_status]
-
-def add_synced_books(book_id):
-    synced_book = ub.KoboSyncedBooks()
-    synced_book.user_id = current_user.id
-    synced_book.book_id = book_id
-    ub.session.add(synced_book)
-    try:
-        ub.session.commit()
-    except Exception:
-        ub.session.rollback()
 
 
 def get_or_create_reading_state(book_id):
