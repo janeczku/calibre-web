@@ -39,14 +39,12 @@ try:
 except ImportError:
     have_scholar = False
 
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
 from sqlite3 import OperationalError as sqliteOperationalError
-from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
+from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, get_locale, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
@@ -825,6 +823,8 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
+                kobo_sync_status.remove_synced_book(edited_books_id)
+
             calibre_db.session.merge(book)
             calibre_db.session.commit()
             if config.config_use_google_drive:
