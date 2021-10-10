@@ -40,7 +40,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
@@ -1432,8 +1432,13 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
 
+        old_state = content.kobo_only_shelves_sync
         content.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
-
+        # 1 -> 0: nothing has to be done
+        # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs
+        # which don't have to be synced have to be removed (added to Shelf archive)
+        if old_state == 0 and content.kobo_only_shelves_sync == 1:
+            kobo_sync_status.update_on_sync_shelfs(content.id)
         if to_save.get("default_language"):
             content.default_language = to_save["default_language"]
         if to_save.get("locale"):

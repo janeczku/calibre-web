@@ -173,11 +173,9 @@ def HandleSyncRequest():
                 .join(ub.KoboSyncedBooks, ub.KoboSyncedBooks.book_id == db.Books.id, isouter=True)
                 .filter(or_(ub.KoboSyncedBooks.user_id != current_user.id,
                             ub.KoboSyncedBooks.book_id == None))
-                #.filter(or_(db.Books.last_modified > sync_token.books_last_modified,
-                #            ub.BookShelf.date_added > sync_token.books_last_modified))
-                .filter(ub.BookShelf.date_added > sync_token.books_last_modified) #?? or also or from above
+                .filter(ub.BookShelf.date_added > sync_token.books_last_modified)
                 .filter(db.Data.format.in_(KOBO_FORMATS))
-                .filter(calibre_db.common_filters())
+                .filter(calibre_db.common_filters(allow_show_archived=True))
                 .order_by(db.Books.id)
                 .order_by(ub.ArchivedBook.last_modified)
                 .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
@@ -204,8 +202,6 @@ def HandleSyncRequest():
                    .order_by(db.Books.id)
         )
 
-    #if sync_token.books_last_id > -1:
-    #    changed_entries = changed_entries.filter(db.Books.id > sync_token.books_last_id)
 
     reading_states_in_new_entitlements = []
     if sqlalchemy_version2:
