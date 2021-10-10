@@ -737,6 +737,7 @@ class CalibreDB():
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
+        # json_dumps = json.dumps([dict(name=escape(r.name.replace(*replace))) for r in entries])
         json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
         return json_dumps
 

@@ -58,11 +58,11 @@
     <div class="text-center">
         <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
     </div>
-
-    <div class="form-group">
+    <div id="author_div" class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
     </div>
+
     <div class="form-group">
       <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
