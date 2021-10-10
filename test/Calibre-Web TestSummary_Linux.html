@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-10-07 20:52:54</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-10-09 19:48:39</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-10-08 00:16:00</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-10-09 23:11:14</p>
             
         </div>
       </div>
@@ -592,8 +592,8 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 330, in test_convert_only
-    self.assertEqual(ret[-3][&#39;result&#39;], &#39;Finished&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 332, in test_convert_only
+    self.assertEqual(ret[-2][&#39;result&#39;], &#39;Finished&#39;)
 AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
 - Failed
 + Finished</pre>
@@ -1810,13 +1810,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestKoboSync</td>
         <td class="text-center">10</td>
-        <td class="text-center">6</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c21', 10)">Detail</a>
         </td>
@@ -1842,31 +1842,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
     
     
-        <tr id="et21.3" class="none bg-info">
+        <tr id='st21.3' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et21.3')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et21.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et21.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 618, in test_kobo_sync_selected_shelfs
-    self.assertIn(&#34;NewTag&#34;, data3[2])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>SKIP</td>
         </tr>
     
     
@@ -1880,31 +1860,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft21.5" class="none bg-danger">
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft21.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 285, in test_sync_changed_book
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1927,31 +1887,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="ft21.8" class="none bg-danger">
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft21.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 303, in test_sync_shelf
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1965,31 +1905,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="ft21.10" class="none bg-danger">
+        <tr id='pt21.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.10')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft21.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 269, in test_sync_upload
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4093,10 +4013,10 @@ AssertionError: True is not false</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>353</td>
-        <td>341</td>
-        <td>5</td>
+        <td>344</td>
         <td>2</td>
-        <td>5</td>
+        <td>1</td>
+        <td>6</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -4496,7 +4416,7 @@ AssertionError: True is not false</pre>
 </div>
 
 <script>
-    drawCircle(341, 5, 2, 5);
+    drawCircle(344, 2, 1, 6);
     showCase(5);
 </script>
 

@@ -46,7 +46,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
-from . import calibre_db
+from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, check_email, check_username, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
@@ -1628,7 +1628,13 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
             current_user.default_language = to_save["default_language"]
         if to_save.get("locale"):
             current_user.locale = to_save["locale"]
+        old_state = current_user.kobo_only_shelves_sync
+        # 1 -> 0: nothing has to be done
+        # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs which
+        # don't have to be synced have to be removed (added to Shelf archive)
         current_user.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
+        if old_state == 0 and current_user.kobo_only_shelves_sync == 1:
+            kobo_sync_status.update_on_sync_shelfs(current_user.id)
 
     except Exception as ex:
         flash(str(ex), category="error")
@@ -1754,12 +1760,6 @@ def show_book(book_id):
         for index in range(0, len(entries.languages)):
             entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entries.languages[
                 index].lang_code)
-            #try:
-            #    entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), LC.parse(entries.languages[index].lang_code)
-            #                                                                            .get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    entries.languages[index].language_name = _(
-            #        isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
