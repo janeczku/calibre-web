@@ -28,7 +28,7 @@ from babel import Locale as LC
 from babel import negotiate_locale
 from babel.core import UnknownLocaleError
 from flask import Flask, request, g
-from flask_login import LoginManager
+from .MyLoginManager import MyLoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
@@ -75,7 +75,7 @@ app.config.update(
 )
 
 
-lm = LoginManager()
+lm = MyLoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 lm.session_protection = 'strong'
