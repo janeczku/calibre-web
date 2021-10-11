@@ -150,11 +150,16 @@ if ($("body.book").length > 0) {
         var splitText = $(this).text().split(':');
         var label = splitText.shift().trim();
         var value = splitText.join(':').trim();
+        var class_value = ""
         // Preserve Links
         if ($(this).find('a').length) {
             value = $(this).find('a').first().removeClass();
         }
-        $(this).html('<span>' + label + '</span><span></span>').find('span').last().append(value);
+        // Preserve glyphicons
+        if ($(this).find('span').length) {
+            class_value = $(this).find('span').first().attr('class');
+        }
+        $(this).html('<span>' + label + '</span><span class="' + class_value + '"></span>').find('span').last().append(value);
     });
 
     $(".book-meta h2:first").clone()
