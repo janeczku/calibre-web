@@ -15,7 +15,6 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
@@ -113,6 +112,14 @@ $("#btn-upload").change(function() {
     $("#form-upload").submit();
 });
 
+$("#form-upload").uploadprogress({
+    redirect_url: getPath() + "/", //"{{ url_for('web.index')}}",
+    uploadedMsg: $("#form-upload").data("message"), //"{{_('Upload done, processing, please wait...')}}",
+    modalTitle: $("#form-upload").data("title"), //"{{_('Uploading...')}}",
+    modalFooter: $("#form-upload").data("footer"), //"{{_('Close')}}",
+    modalTitleFailed: $("#form-upload").data("failed") //"{{_('Error')}}"
+});
+
 $(document).ready(function() {
   var inp = $('#query').first()
   if (inp.length) {
@@ -181,7 +188,7 @@ $("#delete_confirm").click(function() {
                             if (item.format != "") {
                                 $("button[data-delete-format='"+item.format+"']").addClass('hidden');
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
 
@@ -224,6 +231,16 @@ $(function() {
     var preFilters = $.Callbacks();
     $.ajaxPrefilter(preFilters.fire);
 
+    // equip all post requests with csrf_token
+    var csrftoken = $("input[name='csrf_token']").val();
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            }
+        }
+    });
+
     function restartTimer() {
         $("#spinner").addClass("hidden");
         $("#RestartDialog").modal("hide");
@@ -246,16 +263,15 @@ $(function() {
     function updateTimer() {
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/../../get_updater_status",
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
-                // console.log(data.status);
                 $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
                     cleanUp();
                 }
             },
             error: function error() {
-                $("#DialogContent").html(updateText[7]);
+                $("#DialogContent").html(updateText[11]);
                 cleanUp();
             },
             timeout: 2000
@@ -446,12 +462,11 @@ $(function() {
         $.ajax({
             type: "POST",
             dataType: "json",
-            data: { start: "True"},
-            url: window.location.pathname + "/../../get_updater_status",
+            data: { start: "True" },
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
                 updateText = data.text;
                 $("#DialogContent").html(updateText[data.status]);
-                // console.log(data.status);
                 updateTimerID = setInterval(updateTimer, 2000);
             }
         });
@@ -554,7 +569,7 @@ $(function() {
     function handle_response(data) {
         if (!jQuery.isEmptyObject(data)) {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                $(".navbar").after('<div class="row-fluid text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
@@ -579,7 +594,7 @@ $(function() {
             method:"post",
             dataType: "json",
             url: window.location.pathname + "/../../ajax/simulatedbchange",
-            data: {config_calibre_dir: $("#config_calibre_dir").val()},
+            data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( data.change ) {
                     if ( data.valid ) {
@@ -652,10 +667,10 @@ $(function() {
         var folder = target.data("folderonly");
         var filter = target.data("filefilter");
         $("#element_selected").text(path);
-        $("#file_confirm")[0].attributes["data-link"].value = target.data("link");
-        $("#file_confirm")[0].attributes["data-folderonly"].value = (typeof folder === 'undefined') ? false : true;
-        $("#file_confirm")[0].attributes["data-filefilter"].value = (typeof filter === 'undefined') ? "" : filter;
-        $("#file_confirm")[0].attributes["data-newfile"].value = target.data("newfile");
+        $("#file_confirm").data("link", target.data("link"));
+        $("#file_confirm").data("folderonly", (typeof folder === 'undefined') ? false : true);
+        $("#file_confirm").data("filefilter", (typeof filter === 'undefined') ? "" : filter);
+        $("#file_confirm").data("newfile", target.data("newfile"));
         fillFileTable(path,"dir", folder, filter);
     });
 
@@ -669,7 +684,7 @@ $(function() {
         var folder = $(file_confirm).data("folderonly");
         var filter = $(file_confirm).data("filefilter");
         var newfile = $(file_confirm).data("newfile");
-        if (newfile !== 'undefined') {
+        if (newfile !== "") {
             $("#element_selected").text(path + $("#new_file".text()));
         } else {
             $("#element_selected").text(path);
@@ -715,7 +730,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/view",
+            url: getPath() + "/ajax/view",
             data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();

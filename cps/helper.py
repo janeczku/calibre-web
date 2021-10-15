@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import io
@@ -234,16 +233,14 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        value = (unidecode.unidecode(value))
+        if not config.config_unicode_filename:
+            value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
         value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile(r'[\W\s-]', re.UNICODE)
-        if isinstance(value, str):  # Python3 str, Python2 unicode
-            value = re_slugify.sub('', value)
-        else:
-            value = unicode(re_slugify.sub('', value))
+        value = re_slugify.sub('', value)
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
         value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
@@ -252,10 +249,7 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128].strip()
     if not value:
         raise ValueError("Filename cannot be empty")
-    if sys.version_info.major == 3:
-        return value
-    else:
-        return value.decode('utf-8')
+    return value
 
 
 def split_authors(values):
@@ -495,10 +489,7 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    if sys.version_info < (3, 0):
-        return "".join(s[ord(c) % len(s)] for c in os.urandom(passlen))
-    else:
-        return "".join(s[c % len(s)] for c in os.urandom(passlen))
+    return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 
 def uniq(inpt):
@@ -712,8 +703,6 @@ def check_unrar(unrarLocation):
         return _('Unrar binary file not found')
 
     try:
-        if sys.version_info < (3, 0):
-            unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
         unrarLocation = [unrarLocation]
         value = process_wait(unrarLocation, pattern='UNRAR (.*) freeware')
         if value:
@@ -842,8 +831,8 @@ def get_download_link(book_id, book_format, client):
             ub.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '_' + file_name
-        file_name = get_valid_filename(file_name)
+            file_name = file_name + ' - ' + book.authors[0].name
+        file_name = get_valid_filename(file_name, replace_whitespace=False)
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (

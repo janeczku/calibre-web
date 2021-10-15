@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import sys
 import datetime
@@ -28,7 +27,6 @@ from binascii import hexlify
 
 from flask_login import AnonymousUserMixin, current_user
 from flask_login import user_logged_in
-from contextlib import contextmanager
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -62,6 +60,24 @@ app_DB_path = None
 Base = declarative_base()
 searched_ids = {}
 
+logged_in = dict()
+
+def store_user_session():
+    if flask_session.get('_user_id', ""):
+        if logged_in.get(flask_session.get('_user_id', "")):
+            logged_in[flask_session.get('_user_id', "")].append(flask_session.get('_id', ""))
+        else:
+            logged_in[flask_session.get('_user_id', "")] = [flask_session.get('_id', "")]
+        log.info(flask_session.get('_id', ""))
+
+def delete_user_session(user_id, session_key):
+    try:
+        logged_in.get(str(user_id), []).remove(session_key)
+    except ValueError:
+        pass
+
+def check_user_session(user_id, session_key):
+    return session_key in logged_in.get(str(user_id), [])
 
 def signal_store_user_session(object, user):
     store_user_session()
@@ -400,6 +416,12 @@ class ArchivedBook(Base):
     is_archived = Column(Boolean, unique=False)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow)
 
+
+class KoboSyncedBooks(Base):
+    __tablename__ = 'kobo_synced_books'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
 
 # The Kobo ReadingState API keeps track of 4 timestamped entities:
 #   ReadingState, StatusInfo, Statistics, CurrentBookmark

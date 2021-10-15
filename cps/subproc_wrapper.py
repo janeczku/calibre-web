@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import subprocess
@@ -33,13 +32,8 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
             if key in quotes:
                 command[key] = '"' + element + '"'
         exc_command = " ".join(command)
-        if sys.version_info < (3, 0):
-            exc_command = exc_command.encode(sys.getfilesystemencoding())
     else:
-        if sys.version_info < (3, 0):
-            exc_command = [x.encode(sys.getfilesystemencoding()) for x in command]
-        else:
-            exc_command = [x for x in command]
+        exc_command = [x for x in command]
 
     return subprocess.Popen(exc_command, shell=False, stdout=sout, stderr=serr, universal_newlines=newlines, env=env) # nosec
 

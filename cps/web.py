@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
@@ -30,7 +29,6 @@ import copy
 
 from babel.dates import format_date
 from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
@@ -48,7 +46,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
-from . import calibre_db
+from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, check_email, check_username, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
@@ -84,12 +82,13 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    # resp.headers['Content-Security-Policy']= "script-src 'self'" https://www.googleapis.com https://api.douban.com https://comicvine.gamespot.com;"
+    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+    if request.endpoint == "editbook.edit_book" or config.config_use_google_drive:
+        resp.headers['Content-Security-Policy'] += " *"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
     resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    # log.debug(request.full_path)
     return resp
 
 web = Blueprint('web', __name__)
@@ -211,7 +210,7 @@ def toggle_archived(book_id):
 @web.route("/ajax/view", methods=["POST"])
 @login_required_if_no_ano
 def update_view():
-    to_save = request.get_json()
+    to_save = request.form.to_dict() # request.get_json()
     try:
         for element in to_save:
             for param in to_save[element]:
@@ -260,10 +259,7 @@ def get_comic_book(book_id, book_format, page):
                     log.error('unsupported comic format')
                     return "", 204
 
-                if sys.version_info.major >= 3:
-                    b64 = codecs.encode(extract(page), 'base64').decode()
-                else:
-                    b64 = extract(page).encode('base64')
+                b64 = codecs.encode(extract(page), 'base64').decode()
                 ext = names[page].rpartition('.')[-1]
                 if ext not in ('png', 'gif', 'jpg', 'jpeg', 'webp'):
                     ext = 'png'
@@ -272,7 +268,6 @@ def get_comic_book(book_id, book_format, page):
                 return make_response(json.dumps(fileData))
         return "", 204
 '''
-
 
 # ################################### Typeahead ##################################################################
 
@@ -606,13 +601,18 @@ def render_category_books(page, book_id, order):
 
 def render_language_books(page, name, order):
     try:
-        cur_l = LC.parse(name)
-        lang_name = cur_l.get_language_name(get_locale())
-    except UnknownLocaleError:
-        try:
-            lang_name = _(isoLanguages.get(part3=name).name)
-        except KeyError:
-            abort(404)
+        lang_name = isoLanguages.get_language_name(get_locale(), name)
+    except KeyError:
+        abort(404)
+
+    #try:
+    #    cur_l = LC.parse(name)
+    #    lang_name = cur_l.get_language_name(get_locale())
+    #except UnknownLocaleError:
+    #    try:
+    #        lang_name = _(isoLanguages.get(part3=name).name)
+    #    except KeyError:
+    #        abort(404)
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
@@ -819,12 +819,14 @@ def list_books():
 
     for entry in entries:
         for index in range(0, len(entry.languages)):
-            try:
-                entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
-                    .get_language_name(get_locale())
-            except UnknownLocaleError:
-                entry.languages[index].language_name = _(
-                    isoLanguages.get(part3=entry.languages[index].lang_code).name)
+            entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
+                index].lang_code)
+            #try:
+            #    entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
+            #        .get_language_name(get_locale())
+            #except UnknownLocaleError:
+            #    entry.languages[index].language_name = _(
+            #        isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
@@ -1003,16 +1005,18 @@ def language_overview():
             languages = calibre_db.speaking_language()
             # ToDo: generate first character list for languages
         else:
-            try:
-                cur_l = LC.parse(current_user.filter_language())
-            except UnknownLocaleError:
-                cur_l = None
+            #try:
+            #    cur_l = LC.parse(current_user.filter_language())
+            #except UnknownLocaleError:
+            #    cur_l = None
+
             languages = calibre_db.session.query(db.Languages).filter(
                 db.Languages.lang_code == current_user.filter_language()).all()
-            if cur_l:
-                languages[0].name = cur_l.get_language_name(get_locale())
-            else:
-                languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+            languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].name.lang_code)
+            #if cur_l:
+            #    languages[0].name = cur_l.get_language_name(get_locale())
+            #else:
+            #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
         lang_counter = calibre_db.session.query(db.books_languages_link,
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
@@ -1533,6 +1537,7 @@ def login():
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
                 login_user(user, remember=bool(form.get('remember_me')))
+                ub.store_user_session()
                 log.debug(u"You are now logged in as: '%s'", user.name)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
                       category="success")
@@ -1540,6 +1545,7 @@ def login():
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
+                ub.store_user_session()
                 log.info("Local Fallback Login as: '%s'", user.name)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.name),
@@ -1569,6 +1575,7 @@ def login():
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
+                    ub.store_user_session()
                     log.debug(u"You are now logged in as: '%s'", user.name)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
                     config.config_is_initial = False
@@ -1621,7 +1628,13 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
             current_user.default_language = to_save["default_language"]
         if to_save.get("locale"):
             current_user.locale = to_save["locale"]
+        old_state = current_user.kobo_only_shelves_sync
+        # 1 -> 0: nothing has to be done
+        # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs which
+        # don't have to be synced have to be removed (added to Shelf archive)
         current_user.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
+        if old_state == 0 and current_user.kobo_only_shelves_sync == 1:
+            kobo_sync_status.update_on_sync_shelfs(current_user.id)
 
     except Exception as ex:
         flash(str(ex), category="error")
@@ -1747,12 +1760,6 @@ def show_book(book_id):
         for index in range(0, len(entries.languages)):
             entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entries.languages[
                 index].lang_code)
-            #try:
-            #    entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), LC.parse(entries.languages[index].lang_code)
-            #                                                                            .get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    entries.languages[index].language_name = _(
-            #        isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()

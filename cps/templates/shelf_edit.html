@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label for="title">{{_('Title')}}</label>
       <input type="text" class="form-control" name="title" id="title" value="{{ shelf.name if shelf.name != None }}">

@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
@@ -40,14 +39,12 @@ try:
 except ImportError:
     have_scholar = False
 
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
 from sqlite3 import OperationalError as sqliteOperationalError
-from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
+from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, get_locale, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
@@ -826,6 +823,8 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
+                kobo_sync_status.remove_synced_book(edited_books_id)
+
             calibre_db.session.merge(book)
             calibre_db.session.commit()
             if config.config_use_google_drive:
@@ -1131,10 +1130,11 @@ def edit_list_book(param):
         else:
             lang_names = list()
             for lang in book.languages:
-                try:
-                    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
-                except UnknownLocaleError:
-                    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
+                lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
+                #try:
+                #    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
+                #except UnknownLocaleError:
+                #    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
             ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
                             mimetype='application/json')
     elif param =='author_sort':

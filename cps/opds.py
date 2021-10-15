@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import datetime
 from functools import wraps
@@ -433,16 +432,17 @@ def feed_languagesindex():
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
-        try:
-            cur_l = LC.parse(current_user.filter_language())
-        except UnknownLocaleError:
-            cur_l = None
+        #try:
+        #    cur_l = LC.parse(current_user.filter_language())
+        #except UnknownLocaleError:
+        #    cur_l = None
         languages = calibre_db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
-        if cur_l:
-            languages[0].name = cur_l.get_language_name(get_locale())
-        else:
-            languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+        languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].lang_code)
+        #if cur_l:
+        #    languages[0].name = cur_l.get_language_name(get_locale())
+        #else:
+        #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(languages))
     return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
@@ -536,11 +536,10 @@ def feed_search(term):
 
 
 def check_auth(username, password):
-    if sys.version_info.major == 3:
-        try:
-            username = username.encode('windows-1252')
-        except UnicodeEncodeError:
-            username = username.encode('utf-8')
+    try:
+        username = username.encode('windows-1252')
+    except UnicodeEncodeError:
+        username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
                                             username.decode('utf-8').lower()).first()
     if bool(user and check_password_hash(str(user.password), password)):

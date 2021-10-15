@@ -22,15 +22,17 @@ $(function() {
 });
 
 $("#have_read_cb").on("change", function() {
-    $.post({
+    $.ajax({
         url: this.closest("form").action,
+        method:"post",
+        data: $(this).closest("form").serialize(),
         error: function(response) {
             var data = [{type:"danger", message:response.responseText}]
             $("#flash_success").remove();
             $("#flash_danger").remove();
             if (!jQuery.isEmptyObject(data)) {
                 data.forEach(function (item) {
-                    $(".navbar").after('<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                    $(".navbar").after('<div class="row-fluid text-center" >' +
                         '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                         '</div>');
                 });

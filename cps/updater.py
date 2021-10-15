@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import datetime
@@ -94,14 +93,17 @@ class Updater(threading.Thread):
                 return False
             self.status = 4
             log.debug(u'Replacing files')
-            self.update_source(foldername, constants.BASE_DIR)
-            self.status = 6
-            log.debug(u'Preparing restart of server')
-            time.sleep(2)
-            web_server.stop(True)
-            self.status = 7
-            time.sleep(2)
-            return True
+            if self.update_source(foldername, constants.BASE_DIR):
+                self.status = 6
+                log.debug(u'Preparing restart of server')
+                time.sleep(2)
+                web_server.stop(True)
+                self.status = 7
+                time.sleep(2)
+                return True
+            else:
+                self.status = 13
+
         except requests.exceptions.HTTPError as ex:
             log.error(u'HTTP Error %s', ex)
             self.status = 8
@@ -180,6 +182,28 @@ class Updater(threading.Thread):
             if not item.startswith(exclude_items):
                 rf.append(item)
         return rf
+
+    @classmethod
+    def check_permissions(cls, root_src_dir, root_dst_dir):
+        access = True
+        remove_path = len(root_src_dir) + 1
+        for src_dir, __, files in os.walk(root_src_dir):
+            root_dir = os.path.join(root_dst_dir, src_dir[remove_path:])
+            # Skip non existing folders on check
+            if not os.path.isdir(root_dir): # root_dir.lstrip(os.sep).startswith('.') or
+                continue
+            if not os.access(root_dir, os.R_OK|os.W_OK):
+                log.debug("Missing permissions for {}".format(root_dir))
+                access = False
+            for file_ in files:
+                curr_file = os.path.join(root_dir, file_)
+                # Skip non existing files on check
+                if not os.path.isfile(curr_file): # or curr_file.startswith('.'):
+                    continue
+                if not os.access(curr_file, os.R_OK|os.W_OK):
+                    log.debug("Missing permissions for {}".format(curr_file))
+                    access = False
+        return access
 
     @classmethod
     def moveallfiles(cls, root_src_dir, root_dst_dir):
@@ -269,20 +293,25 @@ class Updater(threading.Thread):
 
         remove_items = self.reduce_dirs(rf, new_list)
 
-        self.moveallfiles(source, destination)
+        if self.check_permissions(source, destination):
+            self.moveallfiles(source, destination)
 
-        for item in remove_items:
-            item_path = os.path.join(destination, item[1:])
-            if os.path.isdir(item_path):
-                log.debug("Delete dir %s", item_path)
-                shutil.rmtree(item_path, ignore_errors=True)
-            else:
-                try:
-                    os.remove(item_path)
-                    log.debug("Delete file %s", item_path)
-                except OSError:
-                    log.debug("Could not remove: %s", item_path)
-        shutil.rmtree(source, ignore_errors=True)
+            for item in remove_items:
+                item_path = os.path.join(destination, item[1:])
+                if os.path.isdir(item_path):
+                    log.debug("Delete dir %s", item_path)
+                    shutil.rmtree(item_path, ignore_errors=True)
+                else:
+                    try:
+                        os.remove(item_path)
+                        log.debug("Delete file %s", item_path)
+                    except OSError:
+                        log.debug("Could not remove: %s", item_path)
+            shutil.rmtree(source, ignore_errors=True)
+            return True
+        else:
+            log.debug("Permissions missing for update")
+            return False
 
     @staticmethod
     def is_venv():
@@ -572,5 +601,5 @@ class Updater(threading.Thread):
             status['message'] = _(u'Timeout while establishing connection')
         except (requests.exceptions.RequestException, ValueError):
             status['message'] = _(u'General error')
-        log.debug('Updater status: %s', status['message'])
+        log.debug('Updater status: {}'.format(status['message'] or "OK"))
         return status, commit
