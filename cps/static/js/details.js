@@ -22,8 +22,10 @@ $(function() {
 });
 
 $("#have_read_cb").on("change", function() {
-    $.post({
+    $.ajax({
         url: this.closest("form").action,
+        method:"post",
+        data: $(this).closest("form").serialize(),
         error: function(response) {
             var data = [{type:"danger", message:response.responseText}]
             $("#flash_success").remove();
