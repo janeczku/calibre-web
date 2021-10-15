@@ -17,18 +17,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
 import os
 
 
 # Insert local directories into path
-if sys.version_info < (3, 0):
-    sys.path.append(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))))
-    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))), 'vendor'))
-else:
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
 from cps import create_app
@@ -42,13 +37,14 @@ from cps.admin import admi
 from cps.gdrive import gdrive
 from cps.editbooks import editbook
 from cps.remotelogin import remotelogin
+from cps.search_metadata import meta
 from cps.error_handler import init_errorhandler
 
 try:
     from cps.kobo import kobo, get_kobo_activated
     from cps.kobo_auth import kobo_auth
     kobo_available = get_kobo_activated()
-except ImportError:
+except (ImportError, AttributeError):   # Catch also error for not installed flask-WTF (missing csrf decorator)
     kobo_available = False
 
 try:
@@ -70,6 +66,7 @@ def main():
     app.register_blueprint(shelf)
     app.register_blueprint(admi)
     app.register_blueprint(remotelogin)
+    app.register_blueprint(meta)
     app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
     if kobo_available:

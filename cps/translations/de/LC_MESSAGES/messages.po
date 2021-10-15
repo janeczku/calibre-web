@@ -3046,7 +3046,7 @@ msgstr "Kindle E-Mail"
 
 #: cps/templates/user_table.html:136
 msgid "Locale"
-msgstr "Anuzeigesprache"
+msgstr "Anzeigesprache"
 
 #: cps/templates/user_table.html:137
 msgid "Visible Book Languages"

@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-md-10 col-lg-8">
     {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
@@ -32,7 +33,7 @@
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
@@ -41,7 +42,7 @@
     <div class="form-group">
       <label for="default_language">{{_('Language of Books')}}</label>
         <select name="default_language" id="default_language" class="form-control">
-            <option value="all" {% if new_user == 1 %}selected{% endif %}>{{ _('Show All') }}</option>
+            <option value="all" {% if content.default_language == "all" %}selected{% endif %}>{{ _('Show All') }}</option>
             {%  for language in languages %}
             <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.name }}</option>
             {% endfor %}

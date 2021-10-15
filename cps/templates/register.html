@@ -3,6 +3,7 @@
 <div class="well col-sm-6 col-sm-offset-2">
   <h2 style="margin-top: 0">{{_('Register New Account')}}</h2>
   <form method="POST" role="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     {% if not config.config_register_email %}
     <div class="form-group required">
       <label for="name">{{_('Username')}}</label>

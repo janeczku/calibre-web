@@ -22,7 +22,6 @@
 
 # custom jinja filters
 
-from __future__ import division, print_function, unicode_literals
 import datetime
 import mimetypes
 from uuid import uuid4

@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import mimetypes
@@ -29,7 +28,7 @@ from babel import Locale as LC
 from babel import negotiate_locale
 from babel.core import UnknownLocaleError
 from flask import Flask, request, g
-from flask_login import LoginManager
+from .MyLoginManager import MyLoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
@@ -42,6 +41,12 @@ try:
     lxml_present = True
 except ImportError:
     lxml_present = False
+
+try:
+    from flask_wtf.csrf import CSRFProtect
+    wtf_present = True
+except ImportError:
+    wtf_present = False
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -70,10 +75,16 @@ app.config.update(
 )
 
 
-lm = LoginManager()
+lm = MyLoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 lm.session_protection = 'strong'
+
+if wtf_present:
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+else:
+    csrf = None
 
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
@@ -105,12 +116,12 @@ def create_app():
         log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         sys.exit(6)
+    if not wtf_present:
+        log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        # sys.exit(7)
+
     app.wsgi_app = ReverseProxied(app.wsgi_app)
-    # For python2 convert path to unicode
-    if sys.version_info < (3, 0):
-        app.static_folder = app.static_folder.decode('utf-8')
-        app.root_path = app.root_path.decode('utf-8')
-        app.instance_path = app.instance_path.decode('utf-8')
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
@@ -139,7 +150,6 @@ def create_app():
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
-    # user = None
     if user is not None and hasattr(user, "locale"):
         if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
@@ -159,6 +169,7 @@ def get_locale():
 def get_timezone():
     user = getattr(g, 'user', None)
     return user.timezone if user else None
+
 
 from .updater import Updater
 updater_thread = Updater()

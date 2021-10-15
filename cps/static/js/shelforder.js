@@ -35,6 +35,7 @@ function sendData(path) {
     var form = document.createElement("form");
     form.setAttribute("method", "post");
     form.setAttribute("action", path);
+    // form.setAttribute("csrf_token", );
 
     for (counter = 0;counter < maxElements;counter++) {
         tmp[counter] = elements[counter].getAttribute("id");
@@ -44,6 +45,10 @@ function sendData(path) {
         hiddenField.setAttribute("value", String(counter + 1));
         form.appendChild(hiddenField);
     }
+    $("<input type='hidden'/>")
+     .attr("name", "csrf_token").val($("input[name='csrf_token']").val())
+     .appendTo(form);
+
     document.body.appendChild(form);
     form.submit();
 }

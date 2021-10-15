@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import re
@@ -387,8 +386,6 @@ class Custom_Columns(Base):
 
     def get_display_dict(self):
         display_dict = ast.literal_eval(self.display)
-        if sys.version_info < (3, 0):
-            display_dict['enum_values'] = [x.decode('unicode_escape') for x in display_dict['enum_values']]
         return display_dict
 
 
@@ -740,6 +737,7 @@ class CalibreDB():
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
+        # json_dumps = json.dumps([dict(name=escape(r.name.replace(*replace))) for r in entries])
         json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
         return json_dumps
 

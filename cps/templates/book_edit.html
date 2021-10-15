@@ -23,20 +23,21 @@
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
       <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
               <div class="text-left">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in source_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
                   <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
                   <select class="form-control" name="book_format_to" id="book_format_to">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in conversion_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
               </div>
@@ -48,6 +49,7 @@
 
   </div>
 <form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -56,11 +58,11 @@
     <div class="text-center">
         <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
     </div>
-
-    <div class="form-group">
+    <div id="author_div" class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
     </div>
+
     <div class="form-group">
       <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
@@ -111,8 +113,8 @@
     {% endif %}
     <label for="pubdate">{{_('Published Date')}}</label>
     <div class="form-group input-group">
-       <input type="text" style="position: static;"  class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
-       <input type="text" style="position: absolute;" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
+       <input type="text" class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+       <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
       <span class="input-group-btn">
         <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
       </span>
@@ -156,11 +158,11 @@
 
             {% if c.datatype == 'datetime' %}
               <div class="input-group">
-                <input type="text" style="position: static;"  class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+                <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
                   {% endif %}>
-                <input type="text" style="position: absolute;" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate"
+                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate_{{ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
                   {% endif %}>
@@ -232,7 +234,7 @@
         <form class="padded-bottom" id="meta-search">
           <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
-            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_(" Search keyword ")}}">
+            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_("Search keyword")}}">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-primary" id="do-search">{{_("Search")}}</button>
             </span>
@@ -241,25 +243,12 @@
         <div class="text-center"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
       </div>
       <div class="modal-body">
-        <div class="text-center padded-bottom">
-          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
-          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
-          <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-comics" class="pill" data-control="comicvine" checked>
-          <label for="show-comics">ComicVine <span class="glyphicon glyphicon-ok"></span></label>
-
-          <input type="checkbox" id="show-googlescholar" class="pill" data-control="googlescholar" checked>
-          <label for="show-googlescholar">Google Scholar <span class="glyphicon glyphicon-ok"></span></label>
-
+        <div class="text-center padded-bottom" id="metadata_provider">
         </div>
 
         <div id="meta-info">
           {{_("Loading...")}}
         </div>
-        <ul id="book-list" class="media-list"></ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
@@ -275,7 +264,7 @@
     <img class="pull-left img-responsive"
          data-toggle="modal"
          data-target="#metaModal"
-         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}"  %>"
+         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
          alt="Cover"
     >
     <div class="media-body">

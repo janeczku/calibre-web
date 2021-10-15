@@ -1,5 +1,21 @@
+# -*- coding: utf-8 -*-
 
-from __future__ import division, print_function, unicode_literals
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2020 pwr
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import threading
 import abc
 import uuid
@@ -205,10 +221,13 @@ class CalibreTask:
         # By default, we're good to clean a task if it's "Done"
         return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL)
 
-    @progress.setter
-    def progress(self, x):
-        # todo: throw error if outside of [0,1]
-        self._progress = x
+    '''@progress.setter
+    def progress(self, x):        
+        if x > 1: 
+            x = 1
+        if x < 0: 
+            x = 0
+        self._progress = x'''
 
     def _handleError(self, error_message):
         self.stat = STAT_FAIL
