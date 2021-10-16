@@ -1,4 +1,21 @@
-from __future__ import division, print_function, unicode_literals
+# -*- coding: utf-8 -*-
+
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2020 pwr
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import sys
 import os
 import re
@@ -161,8 +178,6 @@ class TaskConvert(CalibreTask):
         while True:
             nextline = p.stdout.readlines()
             nextline = [x.strip('\n') for x in nextline if x != '\n']
-            if sys.version_info < (3, 0):
-                nextline = [x.decode('utf-8') for x in nextline]
             for line in nextline:
                 log.debug(line)
             if p.poll() is not None:
@@ -207,10 +222,6 @@ class TaskConvert(CalibreTask):
 
         while p.poll() is None:
             nextline = p.stdout.readline()
-            if os.name == 'nt' and sys.version_info < (3, 0):
-                nextline = nextline.decode('windows-1252')
-            elif os.name == 'posix' and sys.version_info < (3, 0):
-                nextline = nextline.decode('utf-8')
             log.debug(nextline.strip('\r\n'))
             # parse progress string from calibre-converter
             progress = re.search(r"(\d+)%\s.*", nextline)
@@ -224,8 +235,6 @@ class TaskConvert(CalibreTask):
         calibre_traceback = p.stderr.readlines()
         error_message = ""
         for ele in calibre_traceback:
-            if sys.version_info < (3, 0):
-                ele = ele.decode('utf-8')
             log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
                 error_message = _("Calibre failed with error: %(error)s", error=ele.strip('\n'))

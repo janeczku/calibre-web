@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="well">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <h2 style="margin-top: 0">{{_('Magic Link - Authorise New Device')}}</h2>
   <p>
     {{_('On another device, login and visit:')}}
-  <h4><a id="verify_url" href="{{verify_url}}">{{verify_url}}</a></b>
+  <h4><a id="verify_url" data-token="{{token}}" href="{{verify_url}}">{{verify_url}}</a><b></b>
   </h4>
   <p>
     {{_('Once verified, you will automatically be logged in on this device.')}}
@@ -16,26 +17,5 @@
 {% endblock %}
 
 {% block js %}
-<script type="text/javascript">
-  (function () {
-    // Poll the server to check if the user has authenticated
-    var t = setInterval(function () {
-      $.post('{{url_for("remotelogin.token_verified")}}', { token: '{{token}}' })
-        .done(function(response) {
-          if (response.status === 'success') {
-            // Wait a tick so cookies are updated
-            setTimeout(function () {
-              window.location.href = '{{url_for("web.index")}}';
-            }, 0);
-          }
-        })
-        .fail(function (xhr) {
-          clearInterval(t);
-
-          var response = JSON.parse(xhr.responseText);
-          alert(response.message);
-        });
-    }, 5000);
-  })()
-</script>
+    <script src="{{ url_for('static', filename='js/remote_login.js') }}"></script>
 {% endblock %}

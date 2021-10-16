@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-08-29 13:30+0200\n"
+"POT-Creation-Date: 2021-09-25 08:24+0200\n"
 "PO-Revision-Date: 2020-06-09 21:11+0100\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -439,24 +439,29 @@ msgstr "Všeobecná chyba"
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "Aktualizační soubor nemohl být uložen do Temp Dir"
 
-#: cps/admin.py:1746
+#: cps/admin.py:1709
+#, fuzzy
+msgid "Failed to extract at least One LDAP User"
+msgstr "Nepodařilo se vytvořit nejméně jednoho uživatele LDAP"
+
+#: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Nepodařilo se vytvořit nejméně jednoho uživatele LDAP"
 
-#: cps/admin.py:1759
+#: cps/admin.py:1765
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Chyba: %(ldaperror)s"
 
-#: cps/admin.py:1763
+#: cps/admin.py:1769
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Chyba: Žádná reakce od uživatele LDAP serveru"
 
-#: cps/admin.py:1796
+#: cps/admin.py:1802
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Nejméně jeden uživatel LDAP nenalezen v databázi"
 
-#: cps/admin.py:1798
+#: cps/admin.py:1804
 msgid "{} User Successfully Imported"
 msgstr ""
 

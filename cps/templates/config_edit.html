@@ -8,6 +8,7 @@
 <div class="discover">
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <div class="panel-group col-md-10 col-lg-8">
   <div class="panel panel-default">
     <div class="panel-heading">

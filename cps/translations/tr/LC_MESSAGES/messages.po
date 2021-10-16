@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-29 13:30+0200\n"
+"POT-Creation-Date: 2021-09-25 08:24+0200\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -435,24 +435,28 @@ msgstr "Genel hata"
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
-#: cps/admin.py:1746
+#: cps/admin.py:1709
+msgid "Failed to extract at least One LDAP User"
+msgstr ""
+
+#: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1759
+#: cps/admin.py:1765
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1763
+#: cps/admin.py:1769
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1796
+#: cps/admin.py:1802
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1798
+#: cps/admin.py:1804
 msgid "{} User Successfully Imported"
 msgstr ""
 

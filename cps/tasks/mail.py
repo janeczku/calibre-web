@@ -1,11 +1,27 @@
-from __future__ import division, print_function, unicode_literals
+# -*- coding: utf-8 -*-
+
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2020 pwr
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import sys
 import os
 import smtplib
 import threading
 import socket
 import mimetypes
-import base64
 
 try:
     from StringIO import StringIO
@@ -162,17 +178,11 @@ class TaskEmail(CalibreTask):
             log.debug_or_exception(ex)
             self._handleError(u'Error sending e-mail: {}'.format(ex))
 
-
     def send_standard_email(self, msg):
         use_ssl = int(self.settings.get('mail_use_ssl', 0))
         timeout = 600  # set timeout to 5mins
 
-        # redirect output to logfile on python2 on python3 debugoutput is caught with overwritten
-        # _print_debug function
-        if sys.version_info < (3, 0):
-            org_smtpstderr = smtplib.stderr
-            smtplib.stderr = logger.StderrLogger('worker.smtp')
-
+        # on python3 debugoutput is caught with overwritten _print_debug function
         log.debug("Start sending e-mail")
         if use_ssl == 2:
             self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
@@ -198,9 +208,6 @@ class TaskEmail(CalibreTask):
         self._handleSuccess()
         log.debug("E-mail send successfully")
 
-        if sys.version_info < (3, 0):
-            smtplib.stderr = org_smtpstderr
-
     def send_gmail_email(self, message):
         return gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
 
@@ -217,7 +224,6 @@ class TaskEmail(CalibreTask):
         if x == 1:
             self.asyncSMTP = None
             self._progress = x
-
 
     @classmethod
     def _get_attachment(cls, bookpath, filename):

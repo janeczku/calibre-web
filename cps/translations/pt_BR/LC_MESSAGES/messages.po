@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-29 13:30+0200\n"
+"POT-Creation-Date: 2021-09-25 08:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -438,24 +438,29 @@ msgstr "Erro geral"
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "Arquivo de atualização não pôde ser salvo no diretório temporário"
 
-#: cps/admin.py:1746
+#: cps/admin.py:1709
+#, fuzzy
+msgid "Failed to extract at least One LDAP User"
+msgstr "Falha na criação no mínimo de um usuário LDAP"
+
+#: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Falha na criação no mínimo de um usuário LDAP"
 
-#: cps/admin.py:1759
+#: cps/admin.py:1765
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Erro: %(ldaperror)s"
 
-#: cps/admin.py:1763
+#: cps/admin.py:1769
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Erro: Nenhum usuário retornado em resposta do servidor LDAP"
 
-#: cps/admin.py:1796
+#: cps/admin.py:1802
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "No mínimo um usuário LDAP não encontrado no banco de dados"
 
-#: cps/admin.py:1798
+#: cps/admin.py:1804
 msgid "{} User Successfully Imported"
 msgstr "{} Usuário Importado com Sucesso"
 
@@ -2268,7 +2273,7 @@ msgstr "Marcar como lido"
 
 #: cps/templates/detail.html:219
 msgid "Read"
-msgstr "Leia"
+msgstr "Lido"
 
 #: cps/templates/detail.html:227
 msgid "Restore from archive"

@@ -186,6 +186,7 @@
       </table>
 
       {%  if feature_support['updater'] %}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
       <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
       <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>

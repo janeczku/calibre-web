@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import io
@@ -490,10 +489,7 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    if sys.version_info < (3, 0):
-        return "".join(s[ord(c) % len(s)] for c in os.urandom(passlen))
-    else:
-        return "".join(s[c % len(s)] for c in os.urandom(passlen))
+    return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 
 def uniq(inpt):
@@ -707,8 +703,6 @@ def check_unrar(unrarLocation):
         return _('Unrar binary file not found')
 
     try:
-        if sys.version_info < (3, 0):
-            unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
         unrarLocation = [unrarLocation]
         value = process_wait(unrarLocation, pattern='UNRAR (.*) freeware')
         if value:

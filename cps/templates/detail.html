@@ -214,6 +214,7 @@
         <div class="custom_columns">
           <p>
           <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id)}}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label class="block-label">
               <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if have_read %}checked{% endif %} >
               <span>{{_('Read')}}</span>
@@ -223,6 +224,7 @@
           {% if g.user.check_visibility(32768) %}
           <p>
             <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <label class="block-label">
                 <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if is_archived %}checked{% endif %} >
                 <span>{{_('Archived')}}</span>

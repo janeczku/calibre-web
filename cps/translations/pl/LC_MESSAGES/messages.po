@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2021-06-12 08:52)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-08-29 13:30+0200\n"
+"POT-Creation-Date: 2021-09-25 08:24+0200\n"
 "PO-Revision-Date: 2021-06-12 15:35+0200\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language: pl\n"
@@ -441,24 +441,29 @@ msgstr "Błąd ogólny"
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "Plik aktualizacji nie mógł zostać zapisany w katalogu tymczasowym"
 
-#: cps/admin.py:1746
+#: cps/admin.py:1709
+#, fuzzy
+msgid "Failed to extract at least One LDAP User"
+msgstr "Błąd przy tworzeniu przynajmniej jednego użytkownika LDAP"
+
+#: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Błąd przy tworzeniu przynajmniej jednego użytkownika LDAP"
 
-#: cps/admin.py:1759
+#: cps/admin.py:1765
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Błąd: %(ldaperror)s"
 
-#: cps/admin.py:1763
+#: cps/admin.py:1769
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Błąd. LDAP nie zwrócił żadnego użytkownika"
 
-#: cps/admin.py:1796
+#: cps/admin.py:1802
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Przynajmniej jeden użytkownik LDAP nie został znaleziony w bazie danych"
 
-#: cps/admin.py:1798
+#: cps/admin.py:1804
 msgid "{} User Successfully Imported"
 msgstr "{} Użytkownik pomyślnie zaimportowany"
 
