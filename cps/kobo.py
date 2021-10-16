@@ -961,7 +961,7 @@ def HandleBookDeletionRequest(book_uuid):
 
     ub.session.merge(archived_book)
     ub.session_commit()
-    return ("", 204)
+    return "", 204
 
 
 # TODO: Implement the following routes
