@@ -125,7 +125,7 @@
         </div>
     </div>
     <table id="user-table" class="table table-no-bordered table-striped"
-           data-url="{{url_for('admin.list_users')}}">
+           data-url="{{url_for('admin.list_users')}}"  data-locale="{{ g.user.locale }}">
       <thead>
         <tr>
             <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
@@ -139,7 +139,7 @@
             {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}
             {{ user_table_row('denied_tags', _("Edit Denied Tags"), _("Denied Tags"), false, tags) }}
             {{ user_table_row('allowed_column_value', _("Edit Allowed Column Values"), _("Allowed Column Values"), false, custom_values) }}
-            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Columns Values"), false, custom_values) }}
+            {{ user_table_row('denied_column_value', _("Edit Denied Column Values"), _("Denied Column Values"), false, custom_values) }}
             {{ user_checkbox_row("role", "admin_role", _('Admin'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "passwd_role", _('Change Password'), visiblility, all_roles)}}
             {{ user_checkbox_row("role", "upload_role",_('Upload'), visiblility, all_roles)}}
@@ -181,6 +181,7 @@
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
@@ -189,4 +190,3 @@
 {% endif %}
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}
-

@@ -781,6 +781,7 @@ def list_books():
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
+        # order = [db.Books.timestamp.asc()] if order == "asc" else [db.Books.timestamp.desc()]   # ToDo wrong: sort ticked
     elif sort == "tags":
         order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
         join = db.books_tags_link,db.Books.id == db.books_tags_link.c.book, db.Tags
@@ -805,7 +806,7 @@ def list_books():
 
     total_count = filtered_count = calibre_db.session.query(db.Books).count()
 
-    if state:
+    if state is not None:
         if search:
             books = calibre_db.search_query(search).all()
             filtered_count = len(books)
@@ -1198,7 +1199,7 @@ def adv_search_serie(q, include_series_inputs, exclude_series_inputs):
 
 def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
     q = q.outerjoin(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)\
-        .filter(or_(ub.BookShelf.shelf == None, ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
+        .filter(or_(ub.BookShelf.shelf is None, ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
     if len(include_shelf_inputs) > 0:
         q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
     return q
@@ -1228,7 +1229,7 @@ def extend_search_term(searchterm,
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                            format='medium', locale=get_locale())])
         except ValueError:
-            pub_start = u""
+            pub_end = u""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
@@ -1299,7 +1300,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
                 searchterm.extend([u"{} >= {}".format(c.name,
-                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d"),
+                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
                                                                       format='medium',
                                                                       locale=get_locale())
                                                       )])
@@ -1361,7 +1362,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     flask_session['query'] = json.dumps(term)
     ub.store_ids(q)
     result_count = len(q)
-    if offset != None and limit != None:
+    if offset is not None and limit is not None:
         offset = int(offset)
         limit_all = offset + int(limit)
         pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
@@ -1561,7 +1562,7 @@ def login():
         else:
             ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
             if 'forgot' in form and form['forgot'] == 'forgot':
-                if user != None and user.name != "Guest":
+                if user is not None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")

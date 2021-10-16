@@ -267,10 +267,9 @@ def HandleSyncRequest():
         entries = calibre_db.session.execute(changed_entries).all()
         book_count = len(entries)
     else:
-        #entries = changed_entries.all()
         book_count = changed_entries.count()
     # last entry:
-    # sync_cont = entries[-1].Books.id or -1 if book_count else -1
+    cont_sync = bool(book_count)
     log.debug("Remaining books to Sync: {}".format(book_count))
     # generate reading state data
     changed_reading_states = ub.session.query(ub.KoboReadingState)
@@ -282,18 +281,18 @@ def HandleSyncRequest():
             .filter(current_user.id == ub.Shelf.user_id)\
             .filter(ub.Shelf.kobo_sync,
                     or_(
-                        func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
+                        ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified,
                         func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified
                     )).distinct()
     else:
         changed_reading_states = changed_reading_states.filter(
-            func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified)
+            ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified)
 
     changed_reading_states = changed_reading_states.filter(
         and_(ub.KoboReadingState.user_id == current_user.id,
              ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)))
-
-    for kobo_reading_state in changed_reading_states.all():
+    cont_sync |= bool(changed_reading_states.count() > SYNC_ITEM_LIMIT)
+    for kobo_reading_state in changed_reading_states.limit(SYNC_ITEM_LIMIT).all():
         book = calibre_db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
         if book:
             sync_results.append({
@@ -311,7 +310,7 @@ def HandleSyncRequest():
     sync_token.reading_state_last_modified = new_reading_state_last_modified
     # sync_token.books_last_id = books_last_id
 
-    return generate_sync_response(sync_token, sync_results, book_count)
+    return generate_sync_response(sync_token, sync_results, cont_sync)
 
 
 def generate_sync_response(sync_token, sync_results, set_cont=False):
@@ -682,6 +681,9 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
                 }
             }
         })
+        ub.session.delete(shelf)
+        ub.session_commit()
+
 
     extra_filters = []
     if only_kobo_shelves:
