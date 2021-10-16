@@ -395,7 +395,7 @@ class AlchemyEncoder(json.JSONEncoder):
         if isinstance(o.__class__, DeclarativeMeta):
             # an SQLAlchemy class
             fields = {}
-            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata' and x!="password"]:
+            for field in [x for x in dir(o) if not x.startswith('_') and x != 'metadata' and x != "password"]:
                 if field == 'books':
                     continue
                 data = o.__getattribute__(field)
@@ -404,8 +404,11 @@ class AlchemyEncoder(json.JSONEncoder):
                         data = data.replace("'", "\'")
                     elif isinstance(data, InstrumentedList):
                         el = list()
+                        # ele = None
                         for ele in data:
-                            if ele.get:
+                            if hasattr(ele, 'value'):       # converter for custom_column values
+                                el = [str(ele.value)]
+                            elif ele.get:
                                 el.append(ele.get())
                             else:
                                 el.append(json.dumps(ele, cls=AlchemyEncoder))

@@ -573,10 +573,19 @@ def edit_cc_data_string(book, c, to_save, cc_db_value, cc_string):
         getattr(book, cc_string).append(new_cc)
     return changed, to_save
 
+def edit_single_cc_data(book_id, book, column_id, to_save):
+    cc = (calibre_db.session.query(db.Custom_Columns)
+          .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions))
+          .filter(db.Custom_Columns.id == column_id)
+          .all())
+    return edit_cc_data(book_id, book, to_save, cc)
 
-def edit_cc_data(book_id, book, to_save):
-    changed = False
+def edit_all_cc_data(book_id, book, to_save):
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    return edit_cc_data(book_id, book, to_save, cc)
+
+def edit_cc_data(book_id, book, to_save, cc):
+    changed = False
     for c in cc:
         cc_string = "custom_column_" + str(c.id)
         if not c.is_multiple:
@@ -811,7 +820,7 @@ def edit_book(book_id):
             # handle book ratings
             modif_date |= edit_book_ratings(to_save, book)
             # handle cc data
-            modif_date |= edit_cc_data(book_id, book, to_save)
+            modif_date |= edit_all_cc_data(book_id, book, to_save)
 
             if to_save["pubdate"]:
                 try:
@@ -1131,10 +1140,6 @@ def edit_list_book(param):
             lang_names = list()
             for lang in book.languages:
                 lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-                #try:
-                #    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
-                #except UnknownLocaleError:
-                #    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
             ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
                             mimetype='application/json')
     elif param =='author_sort':
@@ -1157,6 +1162,13 @@ def edit_list_book(param):
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
+    elif param.startswith("custom_column_"):
+        new_val = dict()
+        new_val[param] = vals['value']
+        edit_single_cc_data(book.id, book, param[14:], new_val)
+        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                       mimetype='application/json')
+
     book.last_modified = datetime.utcnow()
     try:
         calibre_db.session.commit()
