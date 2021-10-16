@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-09-25 08:24+0200\n"
+"POT-Creation-Date: 2021-09-25 19:32+0800\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
-"Last-Translator: dalin <dalin.lin@gmail.com>\n"
+"Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: cps/about.py:43 cps/about.py:59
 msgid "installed"
@@ -66,9 +66,8 @@ msgid "UI Configuration"
 msgstr "界面配置"
 
 #: cps/admin.py:274 cps/templates/admin.html:46
-#, fuzzy
 msgid "Edit Users"
-msgstr "管理员用户"
+msgstr "管理用户"
 
 #: cps/admin.py:315 cps/opds.py:110 cps/opds.py:199 cps/opds.py:276
 #: cps/opds.py:328 cps/templates/grid.html:14 cps/templates/list.html:14
@@ -185,14 +184,12 @@ msgid "Are you sure you want to change the selected visibility restrictions for 
 msgstr "您确定要修改选定用户的选定可视化限制吗？"
 
 #: cps/admin.py:589
-#, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "您确定要修改选定用户的选定角色吗？"
+msgstr "您确定要更改所选用户的书架同步行为吗？"
 
 #: cps/admin.py:591
-#, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "您确定要关闭吗？"
+msgstr "您确定要更改 Calibre 库位置吗？"
 
 #: cps/admin.py:740
 msgid "Tag not found"
@@ -231,13 +228,12 @@ msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "请输入LDAP主机、端口、DN和用户对象标识符"
 
 #: cps/admin.py:1101
-#, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "请输入有效的用户名进行密码重置"
+msgstr "请输入一个LDAP服务账号和密码 "
 
 #: cps/admin.py:1104
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
+msgstr "请输入一个LDAP服务账号"
 
 #: cps/admin.py:1109
 #, python-format
@@ -260,15 +256,15 @@ msgstr "LDAP用户对象过滤器的括号不匹配"
 #: cps/admin.py:1124
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP成员用户过滤器需要有一个“%s”格式标识符"
 
 #: cps/admin.py:1126
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP成员用户过滤器中有不匹配的括号"
 
 #: cps/admin.py:1133
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "LDAP CA证书、证书或密钥位置无效，请输入正确的路径"
 
 #: cps/admin.py:1175 cps/admin.py:1276 cps/admin.py:1369 cps/admin.py:1470
 #: cps/admin.py:1536 cps/shelf.py:102 cps/shelf.py:162 cps/shelf.py:205
@@ -293,9 +289,8 @@ msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "证书文件路径无效，请输入正确的路径"
 
 #: cps/admin.py:1320
-#, fuzzy
 msgid "Database Configuration"
-msgstr "功能配置"
+msgstr "数据库配置"
 
 #: cps/admin.py:1336 cps/web.py:1479
 msgid "Please fill out all fields!"
@@ -315,9 +310,8 @@ msgid "User '%(user)s' created"
 msgstr "用户“%(user)s”已创建"
 
 #: cps/admin.py:1365
-#, fuzzy
 msgid "Found an existing account for this e-mail address or name."
-msgstr "此邮箱或用户名的账号已经存在。"
+msgstr "使用此邮箱或用户名的账号已经存在。"
 
 #: cps/admin.py:1385
 #, python-format
@@ -351,7 +345,6 @@ msgid "Edit E-mail Server Settings"
 msgstr "编辑邮件服务器设置"
 
 #: cps/admin.py:1517
-#, fuzzy
 msgid "Gmail Account Verification Successful"
 msgstr "G-Mail账号校验成功"
 
@@ -440,13 +433,12 @@ msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "更新文件无法保存在临时目录中"
 
 #: cps/admin.py:1709
-#, fuzzy
 msgid "Failed to extract at least One LDAP User"
-msgstr "创建至少一个LDAP用户失败"
+msgstr "未能提取至少一个LDAP用户"
 
 #: cps/admin.py:1752
 msgid "Failed to Create at Least One LDAP User"
-msgstr "创建至少一个LDAP用户失败"
+msgstr "未能创建至少一个LDAP用户"
 
 #: cps/admin.py:1765
 #, python-format
@@ -639,9 +631,9 @@ msgid "Send %(format)s to Kindle"
 msgstr "发送 %(format)s 到Kindle"
 
 #: cps/helper.py:220 cps/tasks/convert.py:73
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to Kindle"
-msgstr "发送到Kindle"
+msgstr "%(book)s发送到Kindle"
 
 #: cps/helper.py:225
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -658,9 +650,9 @@ msgid "Deleting book %(id)s failed: %(message)s"
 msgstr "删除书籍 %(id)s失败：%(message)s"
 
 #: cps/helper.py:339
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "仅从数据库中删除书籍 %(id)s，书籍路径在数据库中无效： %(path)s"
+msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无效： %(path)s"
 
 #: cps/helper.py:394
 #, python-format
@@ -683,9 +675,8 @@ msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到书籍路径 %(path)s"
 
 #: cps/helper.py:516 cps/web.py:1653
-#, fuzzy
 msgid "Found an existing account for this e-mail address"
-msgstr "此邮箱的账号已经存在。"
+msgstr "使用此邮箱的账号已经存在。"
 
 #: cps/helper.py:524
 msgid "This username is already taken"
@@ -986,9 +977,8 @@ msgid "Invalid shelf specified"
 msgstr "指定的书架无效"
 
 #: cps/shelf.py:75
-#, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "对不起，您没有添加书籍到书架 %(shelfname)s 的权限"
+msgstr "对不起，您没有添加书籍到这个书架的权限"
 
 #: cps/shelf.py:84
 #, python-format
@@ -1035,9 +1025,8 @@ msgid "Create a Shelf"
 msgstr "创建书架"
 
 #: cps/shelf.py:238
-#, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "对不起，您没有编辑书架的权限"
+msgstr "对不起，您没有编辑这个书架的权限"
 
 #: cps/shelf.py:240
 msgid "Edit a shelf"
@@ -1286,7 +1275,7 @@ msgstr "资料已更新"
 
 #: cps/services/gmail.py:41
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr ""
+msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
 
 #: cps/tasks/convert.py:120
 #, python-format
@@ -1421,7 +1410,7 @@ msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:85
 msgid "Gmail via Oauth2"
-msgstr ""
+msgstr "通过Oauth2的Gmail"
 
 #: cps/templates/admin.html:100
 msgid "Configuration"
@@ -1472,9 +1461,8 @@ msgid "Reverse Proxy Header Name"
 msgstr "反向代理头部名称"
 
 #: cps/templates/admin.html:153
-#, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "编辑基本配置"
+msgstr "编辑Calibre数据库配置"
 
 #: cps/templates/admin.html:154
 msgid "Edit Basic Configuration"
@@ -1803,7 +1791,7 @@ msgstr "输入书名"
 #: cps/templates/book_table.html:51 cps/templates/config_view_edit.html:23
 #: cps/templates/shelf_edit.html:7
 msgid "Title"
-msgstr "书名"
+msgstr "标题"
 
 #: cps/templates/book_table.html:52
 msgid "Enter Title Sort"
@@ -1890,9 +1878,8 @@ msgid "Revoke"
 msgstr "撤回"
 
 #: cps/templates/config_db.html:67
-#, fuzzy
 msgid "New db location is invalid, please enter valid path"
-msgstr "数据库路径无效，请输入正确的路径"
+msgstr "新数据库路径无效，请输入有效的路径"
 
 #: cps/templates/config_edit.html:17
 msgid "Server Configuration"
@@ -2041,15 +2028,15 @@ msgstr "SSL协议"
 
 #: cps/templates/config_edit.html:201
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP CA证书路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:208
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP 证书路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:215
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "LDAP密钥文件路径(仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Authentication"
@@ -2256,9 +2243,9 @@ msgid "Listen in Browser"
 msgstr "在线听书"
 
 #: cps/templates/detail.html:124
-#, fuzzy, python-format
+#, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "%(range)s 第%(index)s册"
 
 #: cps/templates/detail.html:173
 msgid "Published"
@@ -2324,7 +2311,7 @@ msgstr "设置Gmail账号作为电子邮件服务"
 
 #: cps/templates/email_edit.html:23
 msgid "Revoke Gmail Access"
-msgstr ""
+msgstr "撤消 Gmail 访问权限"
 
 #: cps/templates/email_edit.html:41
 msgid "STARTTLS"
@@ -2381,9 +2368,8 @@ msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):
 msgstr "在文本编辑器中打开.kobo/Kobo eReader.conf，添加（或编辑）:"
 
 #: cps/templates/http_error.html:31
-#, fuzzy
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "邮件服务未配置，请联系网站管理员！"
+msgstr "Calibre-Web 实例未配置，请联系您的管理员！"
 
 #: cps/templates/http_error.html:41
 msgid "Create Issue"
@@ -2421,11 +2407,11 @@ msgstr "开始"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr ""
+msgstr "字母排序书籍"
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr ""
+msgstr "按字母排序的书籍"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
@@ -2646,16 +2632,14 @@ msgid "Select"
 msgstr "选择"
 
 #: cps/templates/modal_dialogs.html:134
-#, fuzzy
 msgid "Ok"
-msgstr "丛书编号"
+msgstr "完成"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
 msgstr "Caliebre-Web电子书路径"
 
 #: cps/templates/read.html:6
-#, fuzzy
 msgid "epub Reader"
 msgstr "epub阅读器"
 
@@ -2664,7 +2648,6 @@ msgid "Reflow text when sidebars are open."
 msgstr "打开侧栏时重排文本。"
 
 #: cps/templates/readcbr.html:7
-#, fuzzy
 msgid "Comic Reader"
 msgstr "Comic阅读器"
 
@@ -2785,17 +2768,14 @@ msgid "Hide"
 msgstr "隐藏"
 
 #: cps/templates/readdjvu.html:10
-#, fuzzy
 msgid "DJVU Reader"
 msgstr "DJVU阅读器"
 
 #: cps/templates/readpdf.html:29
-#, fuzzy
 msgid "PDF Reader"
 msgstr "PDF阅读器"
 
 #: cps/templates/readtxt.html:6
-#, fuzzy
 msgid "txt Reader"
 msgstr "txt阅读器"
 
@@ -2885,11 +2865,11 @@ msgstr "评分小于"
 
 #: cps/templates/search_form.html:179
 msgid "From:"
-msgstr ""
+msgstr "从："
 
 #: cps/templates/search_form.html:189
 msgid "To:"
-msgstr ""
+msgstr "到："
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
@@ -3088,24 +3068,20 @@ msgid "Denied Tags"
 msgstr "拒绝标签"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Edit Allowed Column Values"
-msgstr "添加显示或隐藏书籍的自定义栏目值"
+msgstr "编辑显示栏目值"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Allowed Column Values"
-msgstr "添加显示或隐藏书籍的自定义栏目值"
+msgstr "显示栏目值"
 
 #: cps/templates/user_table.html:141
-#, fuzzy
 msgid "Edit Denied Column Values"
-msgstr "添加显示或隐藏书籍的自定义栏目值"
+msgstr "编辑隐藏栏目值"
 
 #: cps/templates/user_table.html:141
-#, fuzzy
-msgid "Denied Columns Values"
-msgstr "添加显示或隐藏书籍的自定义栏目值"
+msgid "Denied Column Values"
+msgstr "隐藏栏目值"
 
 #: cps/templates/user_table.html:143
 msgid "Change Password"
@@ -3116,12 +3092,10 @@ msgid "View"
 msgstr "查看书籍"
 
 #: cps/templates/user_table.html:149
-#, fuzzy
 msgid "Edit Public Shelves"
 msgstr "编辑公共书架"
 
 #: cps/templates/user_table.html:151
-#, fuzzy
 msgid "Sync selected Shelves with Kobo"
 msgstr "同步所选书架到 Kobo"
 
@@ -3132,4 +3106,3 @@ msgstr "显示已读/未读选择"
 #: cps/templates/user_table.html:158
 msgid "Show random books"
 msgstr "显示随机书籍"
-
