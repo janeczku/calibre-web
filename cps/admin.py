@@ -145,7 +145,7 @@ def shutdown():
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
-        web_server.stop(task==0)
+        web_server.stop(task == 0)
         return json.dumps(showtext)
 
     if task == 2:
