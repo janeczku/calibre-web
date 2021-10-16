@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import re
 import base64
@@ -41,7 +40,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
@@ -146,7 +145,7 @@ def shutdown():
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
-        web_server.stop(task==0)
+        web_server.stop(task == 0)
         return json.dumps(showtext)
 
     if task == 2:
@@ -236,8 +235,12 @@ def view_configuration():
         .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.Custom_Columns)\
         .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    languages = calibre_db.speaking_language()
+    translations = [LC('en')] + babel.list_translations()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 languages=languages,
+                                 translations=translations,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 @admi.route("/admin/usertable")
@@ -515,15 +518,11 @@ def check_valid_restricted_column(column):
     return True
 
 
-
 @admi.route("/admin/viewconfig", methods=["POST"])
 @login_required
 @admin_required
 def update_view_configuration():
     to_save = request.form.to_dict()
-
-    # _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
-    # _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
 
     _config_string(to_save, "config_calibre_web_title")
     _config_string(to_save, "config_columns_to_ignore")
@@ -546,6 +545,8 @@ def update_view_configuration():
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
+    _config_string(to_save, "config_default_language")
+    _config_string(to_save, "config_default_locale")
 
 
     config.config_default_role = constants.selected_roles(to_save)
@@ -1431,8 +1432,13 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
 
+        old_state = content.kobo_only_shelves_sync
         content.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
-
+        # 1 -> 0: nothing has to be done
+        # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs
+        # which don't have to be synced have to be removed (added to Shelf archive)
+        if old_state == 0 and content.kobo_only_shelves_sync == 1:
+            kobo_sync_status.update_on_sync_shelfs(content.id)
         if to_save.get("default_language"):
             content.default_language = to_save["default_language"]
         if to_save.get("locale"):
@@ -1488,6 +1494,8 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
+        content.locale = config.config_default_locale
+        content.default_language = config.config_default_language
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
@@ -1740,6 +1748,8 @@ def ldap_import_create_user(user, user_data):
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
     content.kindle_mail = kindlemail
+    content.default_language = config.config_default_language
+    content.locale = config.config_default_locale
     content.role = config.config_default_role
     content.sidebar_view = config.config_default_show
     content.allowed_tags = config.config_allowed_tags

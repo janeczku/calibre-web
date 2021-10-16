@@ -8,6 +8,7 @@
 <div class="discover">
   <h2>{{title}}</h2>
   <form role="form" method="POST" class="col-md-10 col-lg-6" action="{{ url_for('admin.db_configuration') }}" autocomplete="off">
+       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
        <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
        <div class="form-group required input-group">
         <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">

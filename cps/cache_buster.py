@@ -19,7 +19,6 @@
 # Inspired by https://github.com/ChrisTM/Flask-CacheBust
 # Uses query strings so CSS font files are found without having to resort to absolute URLs
 
-from __future__ import division, print_function, unicode_literals
 import os
 import hashlib
 

@@ -23,20 +23,21 @@
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
       <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
               <div class="text-left">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in source_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
                   <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
                   <select class="form-control" name="book_format_to" id="book_format_to">
-                    <option disabled selected value> -- {{_('select an option')}} -- </option>
+                    <option disabled selected value>-- {{_('select an option')}} --</option>
                     {% for format in conversion_formats %}
-                    <option>{{format|upper}} </option>
+                    <option>{{format|upper}}</option>
                     {% endfor %}
                   </select>
               </div>
@@ -48,6 +49,7 @@
 
   </div>
 <form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -56,11 +58,11 @@
     <div class="text-center">
         <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
     </div>
-
-    <div class="form-group">
+    <div id="author_div" class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
     </div>
+
     <div class="form-group">
       <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
