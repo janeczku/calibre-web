@@ -119,7 +119,7 @@ def create_app():
     if not wtf_present:
         log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
         print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
-        # sys.exit(7)
+        sys.exit(7)
 
     app.wsgi_app = ReverseProxied(app.wsgi_app)
 
