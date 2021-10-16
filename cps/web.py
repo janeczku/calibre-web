@@ -765,7 +765,8 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    return render_title_template('book_table.html', title=_(u"Books List"), page="book_table",
+    cc = get_cc_columns(filter_config_custom_read=True)
+    return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
 @web.route("/ajax/listbooks")
@@ -822,12 +823,6 @@ def list_books():
         for index in range(0, len(entry.languages)):
             entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 index].lang_code)
-            #try:
-            #    entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
-            #        .get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    entry.languages[index].language_name = _(
-            #        isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
