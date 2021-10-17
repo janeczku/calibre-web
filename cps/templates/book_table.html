@@ -70,7 +70,7 @@
                 <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="select" data-editable-source={{ url_for('editbook.table_get_custom_enum', c_id=c.id)  }} data-editable-url="{{ url_for('editbook.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype in ["bool", "datetime", "comments"] %}
                   <!-- missing -->
-              {% elif c.datatype == "text"  and not c.is_multiple %}
+              {% elif c.datatype == "text" %}
                  {{ text_table_row('custom_column_' + c.id|string, _('Enter ') + c.name, c.name, false, false) }}
               {% else %}
                 <!--{{ text_table_row('custom_column_' + c.id|string, _('Enter ') + c.name, c.name, false, false) }} -->

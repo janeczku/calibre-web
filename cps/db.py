@@ -407,7 +407,7 @@ class AlchemyEncoder(json.JSONEncoder):
                         # ele = None
                         for ele in data:
                             if hasattr(ele, 'value'):       # converter for custom_column values
-                                el = [str(ele.value)]
+                                el.append(str(ele.value))
                             elif ele.get:
                                 el.append(ele.get())
                             else:
