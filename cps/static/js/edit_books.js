@@ -23,6 +23,7 @@ if ($(".tiny_editor").length) {
 
 $(".datepicker").datepicker({
     format: "yyyy-mm-dd",
+    language: language
 }).on("change", function () {
     // Show localized date over top of the standard YYYY-MM-DD date
     var pubDate;
