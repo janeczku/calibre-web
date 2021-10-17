@@ -1088,23 +1088,17 @@ def convert_bookformat(book_id):
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
 
-@editbook.route("/scholarsearch/<query>",methods=['GET'])
-@login_required_if_no_ano
-@edit_required
-def scholar_search(query):
-    if have_scholar:
-        scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
-        i=0
-        result = []
-        for publication in scholar_gen:
-            del publication['source']
-            result.append(publication)
-            i+=1
-            if(i>=10):
-                break
-        return Response(json.dumps(result),mimetype='application/json')
-    else:
-        return "[]"
+@editbook.route("/ajax/getcustomenum/<int:c_id>")
+@login_required
+def table_get_custom_enum(c_id):
+    ret = list()
+    cc = (calibre_db.session.query(db.Custom_Columns)
+              .filter(db.Custom_Columns.id == c_id)
+              .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).one_or_none())
+    for idx, en in enumerate(cc.get_display_dict()['enum_values']):
+        ret.append({'value': en, 'text': en})
+    return json.dumps(ret)
+
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
