@@ -199,6 +199,8 @@
                   {{column.value|safe}}
                 {% elif c.datatype == 'series' %}
                   {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                {% elif c.datatype == 'text' %}
+                    {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
                 {% else %}
                   {{ column.value }}
                 {% endif %}

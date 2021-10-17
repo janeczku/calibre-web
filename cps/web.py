@@ -82,7 +82,7 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
     if request.endpoint == "editbook.edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
@@ -765,7 +765,8 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    return render_title_template('book_table.html', title=_(u"Books List"), page="book_table",
+    cc = get_cc_columns(filter_config_custom_read=True)
+    return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
 @web.route("/ajax/listbooks")
@@ -804,7 +805,7 @@ def list_books():
     elif not state:
         order = [db.Books.timestamp.desc()]
 
-    total_count = filtered_count = calibre_db.session.query(db.Books).count()
+    total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(False)).count()
 
     if state is not None:
         if search:
@@ -822,12 +823,6 @@ def list_books():
         for index in range(0, len(entry.languages)):
             entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 index].lang_code)
-            #try:
-            #    entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
-            #        .get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    entry.languages[index].language_name = _(
-            #        isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
