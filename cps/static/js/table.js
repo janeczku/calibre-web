@@ -149,6 +149,10 @@ $(function() {
                     }
                 }
             };
+            if ($(this).attr("data-editable-type") == "wysihtml5") {
+                //if (this.id == "comments") {
+                element.editable.display = shorten_html;
+            }
             var validateText = $(this).attr("data-edit-validate");
             if (validateText) {
                 element.editable.validate = function (value) {
@@ -158,6 +162,7 @@ $(function() {
         }
         column.push(element);
     });
+    // $.fn.editable.defaults.display = comment_display;
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
@@ -874,4 +879,11 @@ function user_handle (userId) {
         data: {"userid":userId}
     });
     $("#user-table").bootstrapTable("refresh");
+}
+
+function shorten_html(value, response) {
+    if(value) {
+        $(this).html("[...]");
+        // value.split('\n').slice(0, 2).join("") +
+    }
 }
