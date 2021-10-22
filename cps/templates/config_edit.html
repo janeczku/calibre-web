@@ -46,6 +46,10 @@
               <option value="2" {% if config.config_updatechannel == 2 %}selected{% endif %}>{{_('Nightly')}}</option>
             </select>
         </div>
+        <div class="form-group">
+          <label for="config_trustedhosts">{{_('Trusted Hosts (Comma Separated)')}}</label>
+          <input type="text" class="form-control" id="config_trustedhosts" name="config_trustedhosts" value="{% if config.trustedhosts != None %}{{ config.config_trustedhosts }}{% endif %}" autocomplete="off">
+        </div>
       </div>
     </div>
   </div>
