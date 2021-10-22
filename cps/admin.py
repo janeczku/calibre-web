@@ -1199,7 +1199,7 @@ def _configuration_update_helper():
     to_save = request.form.to_dict()
     try:
         reboot_required |= _config_int(to_save, "config_port")
-
+        reboot_required |= _config_string(to_save, "config_trustedhosts")
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
             return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'))
