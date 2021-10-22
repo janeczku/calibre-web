@@ -459,6 +459,7 @@ def edit_book_series_index(series_index, book):
         modif_date = True
     return modif_date
 
+
 # Handle book comments/description
 def edit_book_comments(comments, book):
     modif_date = False
@@ -1149,6 +1150,10 @@ def edit_list_book(param):
     elif param =='sort':
         book.sort = vals['value']
         ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
+                       mimetype='application/json')
+    elif param =='comments':
+        edit_book_comments(vals['value'], book)
+        ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
                        mimetype='application/json')
     elif param =='authors':
         input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
