@@ -115,42 +115,44 @@ def revoke_watch_gdrive():
         config.save()
     return redirect(url_for('admin.db_configuration'))
 
+try:
+    @csrf.exempt
+    @gdrive.route("/watch/callback", methods=['GET', 'POST'])
+    def on_received_watch_confirmation():
+        if not config.config_google_drive_watch_changes_response:
+            return ''
+        if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
+                or request.headers.get('X-Goog-Resource-State') != 'change' \
+                or not request.data:
+            return ''
 
-@csrf.exempt
-@gdrive.route("/watch/callback", methods=['GET', 'POST'])
-def on_received_watch_confirmation():
-    if not config.config_google_drive_watch_changes_response:
+        log.debug('%r', request.headers)
+        log.debug('%r', request.data)
+        log.info('Change received from gdrive')
+
+        try:
+            j = json.loads(request.data)
+            log.info('Getting change details')
+            response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
+            log.debug('%r', response)
+            if response:
+                dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
+                if not response['deleted'] and response['file']['title'] == 'metadata.db' \
+                    and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
+                    tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
+                    if not os.path.isdir(tmp_dir):
+                        os.mkdir(tmp_dir)
+
+                    log.info('Database file updated')
+                    copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))
+                    log.info('Backing up existing and downloading updated metadata.db')
+                    gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmp_dir, "tmp_metadata.db"))
+                    log.info('Setting up new DB')
+                    # prevent error on windows, as os.rename does on existing files, also allow cross hdd move
+                    move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
+                    calibre_db.reconnect_db(config, ub.app_DB_path)
+        except Exception as ex:
+            log.debug_or_exception(ex)
         return ''
-    if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
-            or request.headers.get('X-Goog-Resource-State') != 'change' \
-            or not request.data:
-        return ''
-
-    log.debug('%r', request.headers)
-    log.debug('%r', request.data)
-    log.info('Change received from gdrive')
-
-    try:
-        j = json.loads(request.data)
-        log.info('Getting change details')
-        response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
-        log.debug('%r', response)
-        if response:
-            dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
-            if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
-                tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
-                if not os.path.isdir(tmp_dir):
-                    os.mkdir(tmp_dir)
-
-                log.info('Database file updated')
-                copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))
-                log.info('Backing up existing and downloading updated metadata.db')
-                gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmp_dir, "tmp_metadata.db"))
-                log.info('Setting up new DB')
-                # prevent error on windows, as os.rename does on existing files, also allow cross hdd move
-                move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
-                calibre_db.reconnect_db(config, ub.app_DB_path)
-    except Exception as ex:
-        log.debug_or_exception(ex)
-    return ''
+except AttributeError:
+    pass
