@@ -88,7 +88,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
     return resp
 
 web = Blueprint('web', __name__)
@@ -605,14 +605,6 @@ def render_language_books(page, name, order):
     except KeyError:
         abort(404)
 
-    #try:
-    #    cur_l = LC.parse(name)
-    #    lang_name = cur_l.get_language_name(get_locale())
-    #except UnknownLocaleError:
-    #    try:
-    #        lang_name = _(isoLanguages.get(part3=name).name)
-    #    except KeyError:
-    #        abort(404)
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
