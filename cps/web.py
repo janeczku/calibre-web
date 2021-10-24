@@ -187,7 +187,7 @@ def toggle_read(book_id):
             return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column), 400
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
-            log.error(u"Read status could not set: %e", e)
+            log.error(u"Read status could not set: {}".format(e))
             return "Read status could not set: {}".format(e), 400
     return ""
 
@@ -1756,63 +1756,40 @@ def read_book(book_id, book_format):
 @web.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
-    entries = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
+    entries = calibre_db.get_book_read_archived(book_id, config.config_read_column, allow_show_archived=True)
     if entries:
-        for index in range(0, len(entries.languages)):
-            entries.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entries.languages[
+        read_book = entries[1]
+        archived_book = entries[2]
+        entry = entries[0]
+        entry.read_status = read_book == ub.ReadBook.STATUS_FINISHED
+        entry.is_archived = archived_book
+        for index in range(0, len(entry.languages)):
+            entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 index].lang_code)
         cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
-        for entry in shelfs:
-            book_in_shelfs.append(entry.shelf)
+        for sh in shelfs:
+            book_in_shelfs.append(sh.shelf)
 
-        if not current_user.is_anonymous:
-            if not config.config_read_column:
-                matching_have_read_book = ub.session.query(ub.ReadBook). \
-                    filter(and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
-                have_read = len(
-                    matching_have_read_book) > 0 and matching_have_read_book[0].read_status == ub.ReadBook.STATUS_FINISHED
-            else:
-                try:
-                    matching_have_read_book = getattr(entries, 'custom_column_' + str(config.config_read_column))
-                    have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
-                except (KeyError, AttributeError):
-                    log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-                    have_read = None
+        entry.tags = sort(entry.tags, key=lambda tag: tag.name)
 
-            archived_book = ub.session.query(ub.ArchivedBook).\
-                filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
-                            ub.ArchivedBook.book_id == book_id)).first()
-            is_archived = archived_book and archived_book.is_archived
+        entry.authors = calibre_db.order_authors(entry)
 
-        else:
-            have_read = None
-            is_archived = None
+        entry.kindle_list = check_send_to_kindle(entry)
+        entry.reader_list = check_read_formats(entry)
 
-        entries.tags = sort(entries.tags, key=lambda tag: tag.name)
-
-        entries = calibre_db.order_authors(entries)
-
-        kindle_list = check_send_to_kindle(entries)
-        reader_list = check_read_formats(entries)
-
-        audioentries = []
-        for media_format in entries.data:
+        entry.audioentries = []
+        for media_format in entry.data:
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
-                audioentries.append(media_format.format.lower())
+                entry.audioentries.append(media_format.format.lower())
 
         return render_title_template('detail.html',
-                                     entry=entries,
-                                     audioentries=audioentries,
+                                     entry=entry,
                                      cc=cc,
                                      is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest',
-                                     title=entries.title,
+                                     title=entry.title,
                                      books_shelfs=book_in_shelfs,
-                                     have_read=have_read,
-                                     is_archived=is_archived,
-                                     kindle_list=kindle_list,
-                                     reader_list=reader_list,
                                      page="book")
     else:
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
