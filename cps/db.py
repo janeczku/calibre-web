@@ -685,9 +685,12 @@ class CalibreDB():
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
     @staticmethod
-    def get_checkbox_sorted(inputlist, state, offset, limit, order):
+    def get_checkbox_sorted(inputlist, state, offset, limit, order, combo=False):
         outcome = list()
-        elementlist = {ele.id: ele for ele in inputlist}
+        if combo:
+            elementlist = {ele[0].id: ele for ele in inputlist}
+        else:
+            elementlist = {ele.id: ele for ele in inputlist}
         for entry in state:
             try:
                 outcome.append(elementlist[entry])
@@ -702,10 +705,10 @@ class CalibreDB():
 
     # Fill indexpage with all requested data from database
     def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
-        return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
+        return self.fill_indexpage_with_archived_books(page, pagesize, db_filter, order, False, database, join)
 
-    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived,
-                                           *join):
+    def fill_indexpage_with_archived_books(self, page, pagesize, db_filter, order, allow_show_archived,
+                                           *args):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
             randm = self.session.query(Books) \
@@ -714,20 +717,32 @@ class CalibreDB():
                 .limit(self.config.config_random_books).all()
         else:
             randm = false()
+        if len(args) > 1:
+            if isinstance(args[0], DeclarativeMeta):
+                query = self.session.query(args[0])
+            else:
+                query = self.session.query(*args[0])
+            join = args[1]
+        else:
+            join = tuple()
+            query = self.session.query(args)
         off = int(int(pagesize) * (page - 1))
-        query = self.session.query(database)
-        if len(join) == 6:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
-        if len(join) == 5:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4])
-        if len(join) == 4:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3])
-        if len(join) == 3:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
-        elif len(join) == 2:
-            query = query.outerjoin(join[0], join[1])
-        elif len(join) == 1:
-            query = query.outerjoin(join[0])
+
+        indx = len(join)
+        element = 0
+        while indx:
+            if indx >= 3:
+                query = query.outerjoin(join[element], join[element+1]).outerjoin(join[element+2])
+                indx -= 3
+                element += 3
+            elif indx == 2:
+                query = query.outerjoin(join[element], join[element+1])
+                indx -= 2
+                element += 2
+            elif indx == 1:
+                query = query.outerjoin(join[element])
+                indx -= 1
+                element += 1
         query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()
@@ -785,7 +800,9 @@ class CalibreDB():
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        query = self.session.query(Books)
+        query = (self.session.query(Books, ub.ArchivedBook.is_archived)
+                 .outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                             int(current_user.id) == ub.ArchivedBook.user_id)))
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
@@ -816,7 +833,7 @@ class CalibreDB():
             offset = 0
             limit_all = result_count
 
-        ub.store_ids(result)
+        ub.store_combo_ids(result)
         return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
@@ -831,15 +848,6 @@ class CalibreDB():
                 .group_by(text('books_languages_link.lang_code')).all()
         for lang in languages:
             lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-            #try:
-            #    if lang.lang_code.lower() == "und":
-            #        lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-            #        # lang.name = _("Undetermined")
-            #    else:
-            #        cur_l = LC.parse(lang.lang_code)
-            #        lang.name = cur_l.get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         return languages
 
     def update_title_sort(self, config, conn=None):

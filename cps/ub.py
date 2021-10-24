@@ -126,6 +126,12 @@ def store_ids(result):
         ids.append(element.id)
     searched_ids[current_user.id] = ids
 
+def store_combo_ids(result):
+    ids = list()
+    for element in result:
+        ids.append(element[0].id)
+    searched_ids[current_user.id] = ids
+
 
 class UserBase:
 
