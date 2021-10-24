@@ -406,6 +406,7 @@ def render_books_list(data, sort, book_id, page):
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order,
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -419,6 +420,7 @@ def render_rated_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.ratings.any(db.Ratings.rating > 9),
                                                                 order,
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -482,6 +484,7 @@ def render_downloaded_books(page, order, user_id):
                                                             db.Books,
                                                             ub.Downloads.user_id == user_id,
                                                             order,
+                                                            False, 0,
                                                             ub.Downloads, db.Books.id == ub.Downloads.book_id)
         for book in entries:
             if not calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
@@ -504,6 +507,7 @@ def render_author_books(page, author_id, order):
                                                         db.Books,
                                                         db.Books.authors.any(db.Authors.id == author_id),
                                                         [order[0], db.Series.name, db.Books.series_index],
+                                                        False, 0,
                                                         db.books_series_link,
                                                         db.Books.id == db.books_series_link.c.book,
                                                         db.Series)
@@ -535,6 +539,7 @@ def render_publisher_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.publishers.any(db.Publishers.id == book_id),
                                                                 [db.Series.name, order[0], db.Books.series_index],
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -590,6 +595,7 @@ def render_category_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.tags.any(db.Tags.id == book_id),
                                                                 [order[0], db.Series.name, db.Books.series_index],
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -625,6 +631,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                                                 db.Books,
                                                                 db_filter,
                                                                 order,
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series,
@@ -639,6 +646,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                                                     db.Books,
                                                                     db_filter,
                                                                     order,
+                                                                    False, 0,
                                                                     db.books_series_link,
                                                                     db.Books.id == db.books_series_link.c.book,
                                                                     db.Series,
@@ -676,11 +684,12 @@ def render_archived_books(page, order):
 
     archived_filter = db.Books.id.in_(archived_book_ids)
 
-    entries, random, pagination = calibre_db.fill_indexpage_with_archived_books(page, 0,
+    entries, random, pagination = calibre_db.fill_indexpage_with_archived_books(page, db.Books,
+                                                                                0,
                                                                                 archived_filter,
                                                                                 order,
                                                                                 True,
-                                                                                db.Books)
+                                                                                False, 0)
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     pagename = "archived"
@@ -770,7 +779,7 @@ def list_books():
     sort = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
-    join = list()
+    join = tuple()
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
@@ -802,27 +811,48 @@ def list_books():
             books = calibre_db.search_query(search).all()
             filtered_count = len(books)
         else:
-            books = (calibre_db.session.query(db.Books,ub.ArchivedBook.is_archived)
-                     .outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                      int(current_user.id) == ub.ArchivedBook.user_id))
+            if not config.config_read_column:
+                books = (calibre_db.session.query(db.Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
+                         .select_from(db.Books)
+                         .outerjoin(ub.ReadBook,
+                                    and_(ub.ReadBook.user_id == int(current_user.id),
+                                         ub.ReadBook.book_id == db.Books.id)))
+            else:
+                try:
+                    read_column = db.cc_classes[config.config_read_column]
+                    books = (calibre_db.session.query(db.Books, read_column.value, ub.ArchivedBook.is_archived)
+                             .select_from(db.Books)
+                             .outerjoin(read_column, read_column.book == db.Books.id))
+                except (KeyError, AttributeError):
+                    log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                    # Skip linking read column and return None instead of read status
+                    books =calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
+            books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                                          int(current_user.id) == ub.ArchivedBook.user_id))
                      .filter(calibre_db.common_filters()).all())
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
     elif search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *tuple(join))
+        entries, filtered_count, __ = calibre_db.get_search_results(search,
+                                                                    off,
+                                                                    order,
+                                                                    limit,
+                                                                    config.config_read_column,
+                                                                    *join)
     else:
-        join.append(ub.ArchivedBook)
-        join.append(and_(db.Books.id == ub.ArchivedBook.book_id,int(current_user.id) == ub.ArchivedBook.user_id))
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1),
                                                     limit,
-                                                    (db.Books, ub.ArchivedBook),
+                                                    db.Books,
                                                     True,
                                                     order,
-                                                    *tuple(join))
+                                                    True,
+                                                    config.config_read_column,
+                                                    *join)
 
     result = list()
     for entry in entries:
         val = entry[0]
-        val.is_archived = entry[1] == True
+        val.read_status = entry[1] == ub.ReadBook.STATUS_FINISHED
+        val.is_archived = entry[2] is True
         for index in range(0, len(val.languages)):
             val.languages[index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
                 index].lang_code)

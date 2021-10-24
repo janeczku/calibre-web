@@ -228,7 +228,7 @@
             <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <label class="block-label">
-                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if entry.is_archived.is_archived %}checked{% endif %} >
+                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if entry.is_archived %}checked{% endif %} >
                 <span>{{_('Archived')}}</span>
               </label>
             </form>

@@ -1161,13 +1161,22 @@ def edit_list_book(param):
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
+    elif param =='is_archive':
+        # ToDo save
+        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                       mimetype='application/json')
+    elif param =='read_status':
+        # ToDo save
+        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                       mimetype='application/json')
     elif param.startswith("custom_column_"):
         new_val = dict()
         new_val[param] = vals['value']
         edit_single_cc_data(book.id, book, param[14:], new_val)
         ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
                        mimetype='application/json')
-
+    else:
+        return _("Parameter not found"), 400
     book.last_modified = datetime.utcnow()
     try:
         calibre_db.session.commit()
