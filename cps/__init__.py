@@ -72,6 +72,7 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
     REMEMBER_COOKIE_SAMESITE='Lax',  # will be available in flask-login 0.5.1 earliest
+    WTF_CSRF_SSL_STRICT=False
 )
 
 
@@ -111,15 +112,18 @@ def create_app():
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
         print(
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        web_server.stop(True)
         sys.exit(5)
     if not lxml_present:
         log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        web_server.stop(True)
         sys.exit(6)
     if not wtf_present:
         log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
         print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
-        # sys.exit(7)
+        web_server.stop(True)
+        sys.exit(7)
 
     app.wsgi_app = ReverseProxied(app.wsgi_app)
 
