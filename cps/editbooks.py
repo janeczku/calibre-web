@@ -376,7 +376,7 @@ def render_edit_book(book_id):
     for lang in book.languages:
         lang.language_name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
 
-    book = calibre_db.order_authors(book)
+    book.authors = calibre_db.order_authors(book)
 
     author_names = []
     for authr in book.authors:
@@ -1249,9 +1249,9 @@ def table_xchange_author_title():
             modif_date = False
             book = calibre_db.get_book(val)
             authors = book.title
-            entries = calibre_db.order_authors(book)
+            book.authors = calibre_db.order_authors(book)
             author_names = []
-            for authr in entries.authors:
+            for authr in book.authors:
                 author_names.append(authr.name.replace('|', ','))
 
             title_change = handle_title_on_edit(book, " ".join(author_names))

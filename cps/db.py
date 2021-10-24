@@ -39,9 +39,8 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import joinedload
 from flask_login import current_user
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
 from flask import flash
 
@@ -338,15 +337,15 @@ class Books(Base):
     isbn = Column(String(collation='NOCASE'), default="")
     flags = Column(Integer, nullable=False, default=1)
 
-    authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books', order_by="Tags.name")
-    comments = relationship('Comments', backref='books')
-    data = relationship('Data', backref='books')
-    series = relationship('Series', secondary=books_series_link, backref='books')
-    ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
-    languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    publishers = relationship('Publishers', secondary=books_publishers_link, backref='books')
-    identifiers = relationship('Identifiers', backref='books')
+    authors = relationship(Authors, secondary=books_authors_link, backref='books')
+    tags = relationship(Tags, secondary=books_tags_link, backref='books', order_by="Tags.name")
+    comments = relationship(Comments, backref='books')
+    data = relationship(Data, backref='books')
+    series = relationship(Series, secondary=books_series_link, backref='books')
+    ratings = relationship(Ratings, secondary=books_ratings_link, backref='books')
+    languages = relationship(Languages, secondary=books_languages_link, backref='books')
+    publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
+    identifiers = relationship(Identifiers, backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
                  authors, tags, languages=None):
@@ -602,6 +601,33 @@ class CalibreDB():
         return self.session.query(Books).filter(Books.id == book_id). \
             filter(self.common_filters(allow_show_archived)).first()
 
+    def get_book_read_archived(self, book_id, read_column, allow_show_archived=False):
+        # Add missing relationships for inter database joins
+        #setattr(Books, "is_archived",
+        #        relationship(ub.ArchivedBook,
+        #                     uselist=False,
+        #                     foreign_keys=ub.ArchivedBook.book_id,
+        #                     primaryjoin=and_(Books.id == ub.ArchivedBook.book_id,
+        #                                      int(current_user.id) == ub.ArchivedBook.user_id)))
+        if not read_column:
+            bd = (self.session.query(Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived).select_from(Books)
+                  .join(ub.ReadBook, and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id),
+                  isouter=True))
+        else:
+            try:
+                read_column = cc_classes[read_column]
+                bd = (self.session.query(Books, read_column.value, ub.ArchivedBook.is_archived).select_from(Books)
+                      .join(read_column, read_column.book == book_id,
+                      isouter=True))
+            except (KeyError, AttributeError):
+                log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                # Skip linking read column and return None instead of read status
+                bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
+        return (bd.filter(Books.id == book_id)
+                .join(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                            int(current_user.id) == ub.ArchivedBook.user_id), isouter=True)
+                .filter(self.common_filters(allow_show_archived)).first())
+
     def get_book_by_uuid(self, book_uuid):
         return self.session.query(Books).filter(Books.uuid == book_uuid).first()
 
@@ -709,8 +735,6 @@ class CalibreDB():
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
             log.debug_or_exception(ex)
-        #for book in entries:
-        #    book = self.order_authors(book)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
@@ -730,7 +754,7 @@ class CalibreDB():
                     authors_ordered.append(r)
         if not error:
             entry.authors = authors_ordered
-        return entry
+        return authors_ordered
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
