@@ -6,6 +6,7 @@
 if ($("#description").length) {
     tinymce.init({
         selector: "#description",
+        plugins: 'code',
         branding: false,
         menubar: "edit view format",
         language: language
@@ -15,6 +16,7 @@ if ($("#description").length) {
 if ($(".tiny_editor").length) {
     tinymce.init({
         selector: ".tiny_editor",
+        plugins: 'code',
         branding: false,
         menubar: "edit view format",
         language: language
