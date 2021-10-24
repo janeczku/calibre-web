@@ -677,10 +677,10 @@ def render_archived_books(page, order):
     archived_filter = db.Books.id.in_(archived_book_ids)
 
     entries, random, pagination = calibre_db.fill_indexpage_with_archived_books(page, 0,
-                                                                                db.Books,
                                                                                 archived_filter,
                                                                                 order,
-                                                                                allow_show_archived=True)
+                                                                                True,
+                                                                                db.Books)
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     pagename = "archived"
@@ -770,20 +770,19 @@ def list_books():
     sort = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
-    join = tuple()
+    join = list()
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
-        # order = [db.Books.timestamp.asc()] if order == "asc" else [db.Books.timestamp.desc()]   # ToDo wrong: sort ticked
     elif sort == "tags":
         order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
-        join = db.books_tags_link,db.Books.id == db.books_tags_link.c.book, db.Tags
+        join = db.books_tags_link, db.Books.id == db.books_tags_link.c.book, db.Tags
     elif sort == "series":
         order = [db.Series.name.asc()] if order == "asc" else [db.Series.name.desc()]
-        join = db.books_series_link,db.Books.id == db.books_series_link.c.book, db.Series
+        join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
     elif sort == "publishers":
         order = [db.Publishers.name.asc()] if order == "asc" else [db.Publishers.name.desc()]
-        join = db.books_publishers_link,db.Books.id == db.books_publishers_link.c.book, db.Publishers
+        join = db.books_publishers_link, db.Books.id == db.books_publishers_link.c.book, db.Publishers
     elif sort == "authors":
         order = [db.Authors.name.asc(), db.Series.name, db.Books.series_index] if order == "asc" \
             else [db.Authors.name.desc(), db.Series.name.desc(), db.Books.series_index.desc()]
@@ -798,24 +797,38 @@ def list_books():
         order = [db.Books.timestamp.desc()]
 
     total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(False)).count()
-
     if state is not None:
         if search:
             books = calibre_db.search_query(search).all()
             filtered_count = len(books)
         else:
-            books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
-        entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order)
+            books = (calibre_db.session.query(db.Books,ub.ArchivedBook.is_archived)
+                     .outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                                      int(current_user.id) == ub.ArchivedBook.user_id))
+                     .filter(calibre_db.common_filters()).all())
+        entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
     elif search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *join)
+        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *tuple(join))
     else:
-        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order, *join)
+        join.append(ub.ArchivedBook)
+        join.append(and_(db.Books.id == ub.ArchivedBook.book_id,int(current_user.id) == ub.ArchivedBook.user_id))
+        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1),
+                                                    limit,
+                                                    (db.Books, ub.ArchivedBook),
+                                                    True,
+                                                    order,
+                                                    *tuple(join))
 
+    result = list()
     for entry in entries:
-        for index in range(0, len(entry.languages)):
-            entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
+        val = entry[0]
+        val.is_archived = entry[1] == True
+        for index in range(0, len(val.languages)):
+            val.languages[index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
                 index].lang_code)
-    table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
+        result.append(val)
+
+    table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": result}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
     response = make_response(js_list)
