@@ -459,6 +459,7 @@ def edit_book_series_index(series_index, book):
         modif_date = True
     return modif_date
 
+
 # Handle book comments/description
 def edit_book_comments(comments, book):
     modif_date = False
@@ -573,10 +574,19 @@ def edit_cc_data_string(book, c, to_save, cc_db_value, cc_string):
         getattr(book, cc_string).append(new_cc)
     return changed, to_save
 
+def edit_single_cc_data(book_id, book, column_id, to_save):
+    cc = (calibre_db.session.query(db.Custom_Columns)
+          .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions))
+          .filter(db.Custom_Columns.id == column_id)
+          .all())
+    return edit_cc_data(book_id, book, to_save, cc)
 
-def edit_cc_data(book_id, book, to_save):
-    changed = False
+def edit_all_cc_data(book_id, book, to_save):
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    return edit_cc_data(book_id, book, to_save, cc)
+
+def edit_cc_data(book_id, book, to_save, cc):
+    changed = False
     for c in cc:
         cc_string = "custom_column_" + str(c.id)
         if not c.is_multiple:
@@ -811,7 +821,7 @@ def edit_book(book_id):
             # handle book ratings
             modif_date |= edit_book_ratings(to_save, book)
             # handle cc data
-            modif_date |= edit_cc_data(book_id, book, to_save)
+            modif_date |= edit_all_cc_data(book_id, book, to_save)
 
             if to_save["pubdate"]:
                 try:
@@ -1079,23 +1089,17 @@ def convert_bookformat(book_id):
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
 
-@editbook.route("/scholarsearch/<query>",methods=['GET'])
-@login_required_if_no_ano
-@edit_required
-def scholar_search(query):
-    if have_scholar:
-        scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
-        i=0
-        result = []
-        for publication in scholar_gen:
-            del publication['source']
-            result.append(publication)
-            i+=1
-            if(i>=10):
-                break
-        return Response(json.dumps(result),mimetype='application/json')
-    else:
-        return "[]"
+@editbook.route("/ajax/getcustomenum/<int:c_id>")
+@login_required
+def table_get_custom_enum(c_id):
+    ret = list()
+    cc = (calibre_db.session.query(db.Custom_Columns)
+              .filter(db.Custom_Columns.id == c_id)
+              .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).one_or_none())
+    for idx, en in enumerate(cc.get_display_dict()['enum_values']):
+        ret.append({'value': en, 'text': en})
+    return json.dumps(ret)
+
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
@@ -1131,10 +1135,6 @@ def edit_list_book(param):
             lang_names = list()
             for lang in book.languages:
                 lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-                #try:
-                #    lang_names.append(LC.parse(lang.lang_code).get_language_name(get_locale()))
-                #except UnknownLocaleError:
-                #    lang_names.append(_(isoLanguages.get(part3=lang.lang_code).name))
             ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
                             mimetype='application/json')
     elif param =='author_sort':
@@ -1151,12 +1151,23 @@ def edit_list_book(param):
         book.sort = vals['value']
         ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
                        mimetype='application/json')
+    elif param =='comments':
+        edit_book_comments(vals['value'], book)
+        ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
+                       mimetype='application/json')
     elif param =='authors':
         input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
         helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
+    elif param.startswith("custom_column_"):
+        new_val = dict()
+        new_val[param] = vals['value']
+        edit_single_cc_data(book.id, book, param[14:], new_val)
+        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                       mimetype='application/json')
+
     book.last_modified = datetime.utcnow()
     try:
         calibre_db.session.commit()

@@ -261,6 +261,7 @@ $(function() {
     }
 
     function updateTimer() {
+        var no_response = 0;
         $.ajax({
             dataType: "json",
             url: getPath() + "/get_updater_status",
@@ -271,8 +272,12 @@ $(function() {
                 }
             },
             error: function error() {
-                $("#DialogContent").html(updateText[11]);
-                cleanUp();
+                // Server has to restart in 60 Sek. otherwise output error message
+                no_response += 1;
+                if (no_response > 30) {
+                    $("#DialogContent").html(updateText[11]);
+                    cleanUp();
+                }
             },
             timeout: 2000
         });
@@ -447,7 +452,7 @@ $(function() {
         $("#spinner2").show();
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
+            url: getPath() + "/shutdown",
             data: {"parameter":2},
             success: function success(data) {
                 $("#spinner2").hide();

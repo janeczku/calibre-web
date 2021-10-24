@@ -82,13 +82,13 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:"
+    resp.headers['Content-Security-Policy'] = "default-src 'self' 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
     if request.endpoint == "editbook.edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
     return resp
 
 web = Blueprint('web', __name__)
@@ -605,14 +605,6 @@ def render_language_books(page, name, order):
     except KeyError:
         abort(404)
 
-    #try:
-    #    cur_l = LC.parse(name)
-    #    lang_name = cur_l.get_language_name(get_locale())
-    #except UnknownLocaleError:
-    #    try:
-    #        lang_name = _(isoLanguages.get(part3=name).name)
-    #    except KeyError:
-    #        abort(404)
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
@@ -765,7 +757,8 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    return render_title_template('book_table.html', title=_(u"Books List"), page="book_table",
+    cc = get_cc_columns(filter_config_custom_read=True)
+    return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
 @web.route("/ajax/listbooks")
@@ -804,7 +797,7 @@ def list_books():
     elif not state:
         order = [db.Books.timestamp.desc()]
 
-    total_count = filtered_count = calibre_db.session.query(db.Books).count()
+    total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(False)).count()
 
     if state is not None:
         if search:
@@ -822,12 +815,6 @@ def list_books():
         for index in range(0, len(entry.languages)):
             entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 index].lang_code)
-            #try:
-            #    entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
-            #        .get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    entry.languages[index].language_name = _(
-            #        isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
 
@@ -1229,7 +1216,7 @@ def extend_search_term(searchterm,
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                            format='medium', locale=get_locale())])
         except ValueError:
-            pub_start = u""
+            pub_end = u""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
@@ -1300,7 +1287,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
                 searchterm.extend([u"{} >= {}".format(c.name,
-                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d"),
+                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
                                                                       format='medium',
                                                                       locale=get_locale())
                                                       )])
