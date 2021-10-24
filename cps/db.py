@@ -605,13 +605,6 @@ class CalibreDB():
             filter(self.common_filters(allow_show_archived)).first()
 
     def get_book_read_archived(self, book_id, read_column, allow_show_archived=False):
-        # Add missing relationships for inter database joins
-        #setattr(Books, "is_archived",
-        #        relationship(ub.ArchivedBook,
-        #                     uselist=False,
-        #                     foreign_keys=ub.ArchivedBook.book_id,
-        #                     primaryjoin=and_(Books.id == ub.ArchivedBook.book_id,
-        #                                      int(current_user.id) == ub.ArchivedBook.user_id)))
         if not read_column:
             bd = (self.session.query(Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived).select_from(Books)
                   .join(ub.ReadBook, and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id),
@@ -704,11 +697,13 @@ class CalibreDB():
         return outcome[offset:offset + limit]
 
     # Fill indexpage with all requested data from database
-    def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
-        return self.fill_indexpage_with_archived_books(page, pagesize, db_filter, order, False, database, join)
+    def fill_indexpage(self, page, pagesize, database, db_filter, order,
+                       join_archive_read=False, config_read_column=0, *join):
+        return self.fill_indexpage_with_archived_books(page, database, pagesize, db_filter, order, False,
+                                                       join_archive_read, config_read_column, *join)
 
-    def fill_indexpage_with_archived_books(self, page, pagesize, db_filter, order, allow_show_archived,
-                                           *args):
+    def fill_indexpage_with_archived_books(self, page, database, pagesize, db_filter, order, allow_show_archived,
+                                           join_archive_read, config_read_column, *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
             randm = self.session.query(Books) \
@@ -717,15 +712,26 @@ class CalibreDB():
                 .limit(self.config.config_random_books).all()
         else:
             randm = false()
-        if len(args) > 1:
-            if isinstance(args[0], DeclarativeMeta):
-                query = self.session.query(args[0])
+        if join_archive_read:
+            if not config_read_column:
+                query = (self.session.query(database, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
+                         .select_from(Books)
+                         .outerjoin(ub.ReadBook,
+                               and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
             else:
-                query = self.session.query(*args[0])
-            join = args[1]
+                try:
+                    read_column = cc_classes[config_read_column]
+                    query = (self.session.query(database, read_column.value, ub.ArchivedBook.is_archived)
+                             .select_from(Books)
+                             .outerjoin(read_column, read_column.book == Books.id))
+                except (KeyError, AttributeError):
+                    log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                    # Skip linking read column and return None instead of read status
+                    query =self.session.query(database, None, ub.ArchivedBook.is_archived)
+            query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                          int(current_user.id) == ub.ArchivedBook.user_id))
         else:
-            join = tuple()
-            query = self.session.query(args)
+            query = self.session.query(database)
         off = int(int(pagesize) * (page - 1))
 
         indx = len(join)
@@ -793,16 +799,29 @@ class CalibreDB():
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, *join):
+    def search_query(self, term, config_read_column, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        query = (self.session.query(Books, ub.ArchivedBook.is_archived)
-                 .outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                             int(current_user.id) == ub.ArchivedBook.user_id)))
+        if not config_read_column:
+            query = (self.session.query(Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(Books)
+                     .outerjoin(ub.ReadBook, and_(Books.id == ub.ReadBook.book_id,
+                                                  int(current_user.id) == ub.ReadBook.user_id)))
+        else:
+            try:
+                read_column = cc_classes[config_read_column]
+                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value).select_from(Books)
+                         .outerjoin(read_column, read_column.book == Books.id))
+            except (KeyError, AttributeError):
+                log.error("Custom Column No.%d is not existing in calibre database", config_read_column)
+                # Skip linking read column
+                query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
+        query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                      int(current_user.id) == ub.ArchivedBook.user_id))
+
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
