@@ -184,14 +184,12 @@ msgid "Are you sure you want to change the selected visibility restrictions for 
 msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione dell'/degli utente/i selezionato/i?"
 
 #: cps/admin.py:590
-#, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare il ruolo evidenziato dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare il comportamento di sincronizzazione dello scaffale per l'/gli utente/i selezionato/i?"
 
 #: cps/admin.py:592
-#, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "Vuoi veramente arrestare Calibre-Web?"
+msgstr "Sei sicuro di voler modificare la posizione della libreria di Calibre?"
 
 #: cps/admin.py:741
 msgid "Tag not found"
@@ -230,13 +228,12 @@ msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "Per favore digita un Provider LDAP, porta, DN e User Object Identifier"
 
 #: cps/admin.py:1102
-#, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "Per favore digita un nome di utente valido per resettare la password"
+msgstr "Per favore digita nome di utente e password del servizio LDAP"
 
 #: cps/admin.py:1105
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
+msgstr "Per favore indica un account di servizio LDAP"
 
 #: cps/admin.py:1110
 #, python-format
@@ -292,14 +289,12 @@ msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "La posizione del Certfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:1316
-#, fuzzy
 msgid "Database Settings updated"
-msgstr "Configurazione del server e-mail aggiornata"
+msgstr "Configurazione del Database aggiornata"
 
 #: cps/admin.py:1324
-#, fuzzy
 msgid "Database Configuration"
-msgstr "Ulteriori opzioni"
+msgstr "Configurazione del Database"
 
 #: cps/admin.py:1340 cps/web.py:1479
 msgid "Please fill out all fields!"
@@ -438,18 +433,16 @@ msgid "General error"
 msgstr "Errore generale"
 
 #: cps/admin.py:1696
-#, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "Il file di aggiornamento non può essere salvato nella cartella temporanea"
 
 #: cps/admin.py:1697
 msgid "Files could not be replaced during update"
-msgstr ""
+msgstr "Durante l'aggiornamento non è stato possibile sostituire alcuni file"
 
 #: cps/admin.py:1721
-#, fuzzy
 msgid "Failed to extract at least One LDAP User"
-msgstr "Fallita la creazione di almeno un utente LDAP"
+msgstr "Fallita l'estrazione di almeno un utente LDAP"
 
 #: cps/admin.py:1766
 msgid "Failed to Create at Least One LDAP User"
@@ -505,7 +498,7 @@ msgstr "modifica i metadati"
 #: cps/editbooks.py:455
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr ""
+msgstr "%(seriesindex)s non è un numero valido, proseguo"
 
 #: cps/editbooks.py:490
 #, python-format
@@ -646,9 +639,9 @@ msgid "Send %(format)s to Kindle"
 msgstr "Invia %(format)s a Kindle"
 
 #: cps/helper.py:219 cps/tasks/convert.py:90
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to Kindle"
-msgstr "Invia a Kindle"
+msgstr "%(book)s inviato a Kindle"
 
 #: cps/helper.py:224
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -665,9 +658,9 @@ msgid "Deleting book %(id)s failed: %(message)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 
 #: cps/helper.py:333
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "Eliminazione del libro %(id)s. Il percorso del libro non è valido: %(path)s"
+msgstr "Eliminazione del libro %(id)s unicamente dal database. Il percorso del libro nel database non è valido: %(path)s"
 
 #: cps/helper.py:388
 #, python-format
@@ -961,7 +954,7 @@ msgstr "Valutazioni"
 
 #: cps/render_template.py:88 cps/templates/user_table.html:164
 msgid "Show ratings selection"
-msgstr "Mostra l'opzione per la selezione della valutazione"
+msgstr "Mostra l'opzione per la selezione delle valutazioni"
 
 #: cps/render_template.py:89 cps/templates/index.xml:112
 msgid "File formats"
@@ -1034,16 +1027,15 @@ msgstr "Il libro è stato rimosso dallo scaffale: %(sname)s"
 #: cps/shelf.py:218
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
-msgstr "Spiacente, ma non sei autorizzato a togliere libri dallo scaffale: %(sname)s"
+msgstr "Spiacente, non sei autorizzato a togliere libri dallo scaffale: %(sname)s"
 
 #: cps/shelf.py:228 cps/templates/layout.html:142
 msgid "Create a Shelf"
 msgstr "Crea uno scaffale"
 
 #: cps/shelf.py:236
-#, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Spiacente, ma non sei autorizzato a togliere libri dallo scaffale: %(sname)s"
+msgstr "Spiacente, non sei autorizzato a modificare questo scaffale"
 
 #: cps/shelf.py:238
 msgid "Edit a shelf"
@@ -1216,7 +1208,7 @@ msgstr "Stato di lettura = %(status)s"
 
 #: cps/web.py:1354
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr ""
+msgstr "Errore di ricerca nelle colonne personalizzate. Per favore riavvia Calibre-Web"
 
 #: cps/web.py:1449
 #, python-format
@@ -1478,9 +1470,8 @@ msgid "Reverse Proxy Header Name"
 msgstr "Nome dell'intestazione Reverse Proxy"
 
 #: cps/templates/admin.html:153
-#, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Modifica la configurazione di base"
+msgstr "Modifica la configurazione del Database di Calibre"
 
 #: cps/templates/admin.html:154
 msgid "Edit Basic Configuration"
@@ -1747,9 +1738,8 @@ msgid "Keyword"
 msgstr "Parola chiave"
 
 #: cps/templates/book_edit.html:237
-#, fuzzy
 msgid "Search keyword"
-msgstr " ricerca parola chiave "
+msgstr "Cerca parola chiave"
 
 #: cps/templates/book_edit.html:243
 msgid "Click the cover to load metadata to the form"
@@ -1793,7 +1783,7 @@ msgstr "Rimuovi le selezioni"
 
 #: cps/templates/book_table.html:41
 msgid "Exchange author and title"
-msgstr ""
+msgstr "Scambia autore e titolo"
 
 #: cps/templates/book_table.html:47
 msgid "Update Title Sort automatically"
@@ -1860,9 +1850,8 @@ msgstr "Indica gli editori"
 #: cps/templates/book_table.html:79 cps/templates/book_table.html:81
 #: cps/templates/book_table.html:85 cps/templates/book_table.html:87
 #: cps/templates/book_table.html:89
-#, fuzzy
 msgid "Enter "
-msgstr "Identificatori"
+msgstr "Conferma "
 
 #: cps/templates/book_table.html:106 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
@@ -1905,9 +1894,8 @@ msgid "Revoke"
 msgstr "Revoca"
 
 #: cps/templates/config_db.html:68
-#, fuzzy
 msgid "New db location is invalid, please enter valid path"
-msgstr "La posizione del DB non è valida, per favore indica il percorso corretto"
+msgstr "La nuova posizione del DB non è valida, per favore indica un percorso corretto"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
@@ -1959,7 +1947,7 @@ msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:100
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr ""
+msgstr "Converti caratteri non inglesi del titolo e dell'autore durante il salvataggio su disco"
 
 #: cps/templates/config_edit.html:104
 msgid "Enable Uploads"
@@ -2250,18 +2238,16 @@ msgid "Allow Editing Public Shelves"
 msgstr "Permetti la modifica degli scaffali pubblici"
 
 #: cps/templates/config_view_edit.html:119
-#, fuzzy
 msgid "Default Language"
-msgstr "Escludi lingue"
+msgstr "Lingua predefinita"
 
 #: cps/templates/config_view_edit.html:127
-#, fuzzy
 msgid "Default Visible Language of Books"
-msgstr "Mostra libri in"
+msgstr "Lingua predefinita di presentazione dei libri"
 
 #: cps/templates/config_view_edit.html:143
 msgid "Default Visibilities for New Users"
-msgstr "Visibilità di base per i nuovi utenti"
+msgstr "Visibilità predefinita per i nuovi utenti"
 
 #: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:81
 #: cps/templates/user_table.html:154
@@ -2285,9 +2271,9 @@ msgid "Listen in Browser"
 msgstr "Ascolta nel navigatore"
 
 #: cps/templates/detail.html:124
-#, fuzzy, python-format
+#, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "Libro %(index)s di %(range)s"
 
 #: cps/templates/detail.html:173
 msgid "Published"
@@ -2344,16 +2330,14 @@ msgid "Use Standard E-Mail Account"
 msgstr "Utilizza un account e-mail standard"
 
 #: cps/templates/email_edit.html:16
-#, fuzzy
 msgid "Gmail Account with OAuth2 Verification"
-msgstr "Utilizza un account Gmail con la verifica OAuth2"
+msgstr "Account Gmail con verifica OAuth2"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account as E-Mail Server"
 msgstr "Configura l'account Gmail quale server e-mail"
 
 #: cps/templates/email_edit.html:24
-#, fuzzy
 msgid "Revoke Gmail Access"
 msgstr "Revoca l'accesso Gmail"
 
@@ -2412,9 +2396,8 @@ msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):
 msgstr "Apri il file .kobo/Kobo eReader.conf in un editore di testi e aggiungi (o edita):"
 
 #: cps/templates/http_error.html:31
-#, fuzzy
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "Il server e-mail non è configurato, per favore contatta l'amministratore"
+msgstr "L'istanza Calibre-Web non è configurata, per favore contatta l'amministratore"
 
 #: cps/templates/http_error.html:41
 msgid "Create Issue"
@@ -2426,7 +2409,7 @@ msgstr "Ritorna alla pagina principale"
 
 #: cps/templates/http_error.html:50
 msgid "Logout User"
-msgstr ""
+msgstr "Disconnetti l'utente"
 
 #: cps/templates/index.html:72 cps/templates/search.html:33
 #: cps/templates/shelf.html:21
@@ -2685,18 +2668,16 @@ msgid "Calibre-Web eBook Catalog"
 msgstr "Catalogo Calibre-Web"
 
 #: cps/templates/read.html:6
-#, fuzzy
 msgid "epub Reader"
-msgstr "Lettore PDF"
+msgstr "Lettore epub"
 
 #: cps/templates/read.html:74
 msgid "Reflow text when sidebars are open."
 msgstr "Adatta il testo quando le barre laterali sono aperte."
 
 #: cps/templates/readcbr.html:7
-#, fuzzy
 msgid "Comic Reader"
-msgstr "Lettore PDF"
+msgstr "Lettore di fumetti"
 
 #: cps/templates/readcbr.html:89
 msgid "Keyboard Shortcuts"
@@ -2796,38 +2777,35 @@ msgstr "Da destra a sinistra"
 
 #: cps/templates/readcbr.html:165
 msgid "Reset to Top"
-msgstr ""
+msgstr "Ripristina all'inizio"
 
 #: cps/templates/readcbr.html:166
 msgid "Remember Position"
-msgstr ""
+msgstr "Ricorda la posizione"
 
 #: cps/templates/readcbr.html:171
 msgid "Scrollbar"
-msgstr ""
+msgstr "Barra di scorrimento"
 
 #: cps/templates/readcbr.html:174
 msgid "Show"
-msgstr ""
+msgstr "Mostra"
 
 #: cps/templates/readcbr.html:175
 msgid "Hide"
-msgstr ""
+msgstr "Nascondi"
 
 #: cps/templates/readdjvu.html:5
-#, fuzzy
 msgid "DJVU Reader"
-msgstr "Lettore PDF"
+msgstr "Lettore DJVU"
 
 #: cps/templates/readpdf.html:29
-#, fuzzy
 msgid "PDF Reader"
 msgstr "Lettore PDF"
 
 #: cps/templates/readtxt.html:6
-#, fuzzy
 msgid "txt Reader"
-msgstr "Lettore PDF"
+msgstr "Lettore txt"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -2951,7 +2929,7 @@ msgstr "Condividi con tutti"
 
 #: cps/templates/shelf_edit.html:21
 msgid "Sync this shelf with Kobo device"
-msgstr ""
+msgstr "Sincronizza questo scaffale con il lettore Kobo"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -3051,7 +3029,7 @@ msgstr "Aggiungi valori personali permessi/negati nelle colonne"
 
 #: cps/templates/user_edit.html:130
 msgid "Sync only books in selected shelves with Kobo"
-msgstr ""
+msgstr "Sincronizza con Kobo unicamene i libri negli scaffali selezionati"
 
 #: cps/templates/user_edit.html:140 cps/templates/user_table.html:169
 msgid "Delete User"
@@ -3122,9 +3100,8 @@ msgid "Edit Denied Column Values"
 msgstr "Modifica i valori delle colonne negate"
 
 #: cps/templates/user_table.html:142
-#, fuzzy
 msgid "Denied Column Values"
-msgstr "Valori delle colonne negate"
+msgstr "Valori negati per le colonne"
 
 #: cps/templates/user_table.html:144
 msgid "Change Password"
@@ -3135,13 +3112,12 @@ msgid "View"
 msgstr "Visualizza"
 
 #: cps/templates/user_table.html:150
-#, fuzzy
 msgid "Edit Public Shelves"
 msgstr "Modifica gli scaffali pubblici"
 
 #: cps/templates/user_table.html:152
 msgid "Sync selected Shelves with Kobo"
-msgstr ""
+msgstr "Sincronizza con Kobo gli scaffali selezionati"
 
 #: cps/templates/user_table.html:156
 msgid "Show read/unread selection"
