@@ -155,11 +155,6 @@ table .bg-dark-danger a { color: #fff; }
   height: 100%;
 }
 
-.container-fluid .book .cover span.img {
-  bottom: 0;
-  height: 100%;
-  position: absolute;
-}
 .author-bio img { margin: 0 1em 1em 0; }
 
 .container-fluid .single .cover img {
@@ -175,11 +170,11 @@ table .bg-dark-danger a { color: #fff; }
 }
 
 .container-fluid .book .cover span img {
-  position: relative;
-  top: 0;
-  left: 0;
-  height: 100%;
   border: 1px solid #fff;
+  bottom: 0;
+  position: relative;
+  height: 100%;
+
   box-sizing: border-box;
   -webkit-box-shadow: 0 5px 8px -6px #777;
   -moz-box-shadow: 0 5px 8px -6px #777;
