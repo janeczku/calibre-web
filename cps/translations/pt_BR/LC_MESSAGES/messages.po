@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-17 14:59+0200\n"
+"POT-Creation-Date: 2021-10-30 09:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -43,9 +43,9 @@ msgstr "Reconexão bem-sucedida"
 msgid "Unknown command"
 msgstr "Comando desconhecido"
 
-#: cps/admin.py:167 cps/editbooks.py:703 cps/editbooks.py:717
-#: cps/editbooks.py:858 cps/editbooks.py:860 cps/editbooks.py:887
-#: cps/editbooks.py:903 cps/updater.py:584 cps/uploader.py:93
+#: cps/admin.py:167 cps/editbooks.py:704 cps/editbooks.py:718
+#: cps/editbooks.py:859 cps/editbooks.py:861 cps/editbooks.py:888
+#: cps/editbooks.py:904 cps/updater.py:584 cps/uploader.py:93
 #: cps/uploader.py:103
 msgid "Unknown"
 msgstr "Desconhecido"
@@ -302,7 +302,7 @@ msgstr "Atualização das configurações do servidor de e-mail"
 msgid "Database Configuration"
 msgstr "Configuração das Características"
 
-#: cps/admin.py:1340 cps/web.py:1479
+#: cps/admin.py:1340 cps/web.py:1471
 msgid "Please fill out all fields!"
 msgstr "Por favor, preencha todos os campos!"
 
@@ -347,7 +347,7 @@ msgstr "Editar usuário %(nick)s"
 msgid "User '%(nick)s' updated"
 msgstr "Usuário '%(nick)s' atualizado"
 
-#: cps/admin.py:1475 cps/admin.py:1605 cps/web.py:1504 cps/web.py:1567
+#: cps/admin.py:1475 cps/admin.py:1605 cps/web.py:1496 cps/web.py:1559
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ocorreu um erro desconhecido. Por favor, tente novamente mais tarde."
 
@@ -382,7 +382,7 @@ msgstr "Atualização das configurações do servidor de e-mail"
 msgid "Password for user %(user)s reset"
 msgstr "Senha para redefinição do usuário %(user)s"
 
-#: cps/admin.py:1608 cps/web.py:1444
+#: cps/admin.py:1608 cps/web.py:1436
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Por favor, configure primeiro as configurações de correio SMTP..."
 
@@ -482,7 +482,7 @@ msgstr "não configurado"
 msgid "Execution permissions missing"
 msgstr "Faltam as permissões de execução"
 
-#: cps/db.py:651 cps/web.py:657 cps/web.py:1156
+#: cps/db.py:651 cps/web.py:649 cps/web.py:1148
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr "A coluna personalizada No.%(column)d não existe no banco de dados do calibre"
@@ -495,8 +495,8 @@ msgstr "Formato do Livro Eliminado com Sucesso"
 msgid "Book Successfully Deleted"
 msgstr "Livro Eliminado com Sucesso"
 
-#: cps/editbooks.py:373 cps/editbooks.py:759 cps/web.py:511 cps/web.py:1706
-#: cps/web.py:1747 cps/web.py:1814
+#: cps/editbooks.py:373 cps/editbooks.py:760 cps/web.py:511 cps/web.py:1698
+#: cps/web.py:1739 cps/web.py:1806
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Oops! O título do livro seleccionado não está disponível. O arquivo não existe ou não é acessível"
 
@@ -509,81 +509,81 @@ msgstr "editar metadados"
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:490
+#: cps/editbooks.py:491
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s não é um idioma válido"
 
-#: cps/editbooks.py:630 cps/editbooks.py:973
+#: cps/editbooks.py:631 cps/editbooks.py:974
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "A extensão de arquivo '%(ext)s' não pode ser enviada para este servidor"
 
-#: cps/editbooks.py:634 cps/editbooks.py:977
+#: cps/editbooks.py:635 cps/editbooks.py:978
 msgid "File to be uploaded must have an extension"
 msgstr "O arquivo a ser carregado deve ter uma extensão"
 
-#: cps/editbooks.py:646
+#: cps/editbooks.py:647
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Falha ao criar o caminho %(path)s (Permission denied)."
 
-#: cps/editbooks.py:651
+#: cps/editbooks.py:652
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Falha ao armazenar o arquivo %(file)s."
 
-#: cps/editbooks.py:669 cps/editbooks.py:1064 cps/web.py:1667
+#: cps/editbooks.py:670 cps/editbooks.py:1065 cps/web.py:1659
 #, python-format
 msgid "Database error: %(error)s."
 msgstr "Erro de banco de dados: %(error)s."
 
-#: cps/editbooks.py:674
+#: cps/editbooks.py:675
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Formato de arquivo %(ext)s adicionado a %(book)s"
 
-#: cps/editbooks.py:810
+#: cps/editbooks.py:811
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Os identificadores não são sensíveis a maiúsculas ou minúsculas, mas sim a maiúsculas e minúsculas"
 
-#: cps/editbooks.py:844
+#: cps/editbooks.py:845
 msgid "Metadata successfully updated"
 msgstr "Metadados atualizados com sucesso"
 
-#: cps/editbooks.py:853
+#: cps/editbooks.py:854
 msgid "Error editing book, please check logfile for details"
 msgstr "Livro de edição de erros, por favor verifique o ficheiro de registo para mais detalhes"
 
-#: cps/editbooks.py:891
+#: cps/editbooks.py:892
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "O livro carregado provavelmente existe na biblioteca, considere mudar antes de carregar novo: "
 
-#: cps/editbooks.py:985
+#: cps/editbooks.py:986
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "O arquivo %(filename)s não pôde ser salvo no diretório temporário"
 
-#: cps/editbooks.py:1004
+#: cps/editbooks.py:1005
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Falha ao mover arquivo de capa  %(file)s: %(error)s"
 
-#: cps/editbooks.py:1051
+#: cps/editbooks.py:1052
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Arquivo %(file)s enviado"
 
-#: cps/editbooks.py:1076
+#: cps/editbooks.py:1077
 msgid "Source or destination format for conversion missing"
 msgstr "Falta o formato de origem ou destino para a conversão"
 
-#: cps/editbooks.py:1084
+#: cps/editbooks.py:1085
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Livro enfileirado com sucesso para conversão em %(book_format)s"
 
-#: cps/editbooks.py:1088
+#: cps/editbooks.py:1089
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Ocorreu um erro ao converter este livro: %(res)s"
@@ -691,7 +691,7 @@ msgstr "Arquivo %(file)s não encontrado no Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Caminho do livro %(path)s não encontrado no Google Drive"
 
-#: cps/helper.py:507 cps/web.py:1662
+#: cps/helper.py:507 cps/web.py:1654
 #, fuzzy
 msgid "Found an existing account for this e-mail address"
 msgstr "Encontrado uma conta existente para este endereço de e-mail."
@@ -769,7 +769,7 @@ msgstr "Configuração Kobo"
 msgid "Register with %(provider)s"
 msgstr "Registre-se com %(provider)s"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1538
+#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1530
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "agora você está logado como: '%(nickname)s'"
@@ -835,7 +835,7 @@ msgid "{} Stars"
 msgstr ""
 
 #: cps/remotelogin.py:65 cps/templates/layout.html:86
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1587
+#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1579
 msgid "Login"
 msgstr "Login"
 
@@ -885,7 +885,7 @@ msgid "Show Top Rated Books"
 msgstr "Mostrar os melhores livros avaliados"
 
 #: cps/render_template.py:59 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:666
+#: cps/templates/index.xml:58 cps/web.py:658
 msgid "Read Books"
 msgstr "Livros Lidos"
 
@@ -894,7 +894,7 @@ msgid "Show read and unread"
 msgstr "Mostrar lido e não lido"
 
 #: cps/render_template.py:63 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:669
+#: cps/templates/index.xml:65 cps/web.py:661
 msgid "Unread Books"
 msgstr "Livros Não Lidos"
 
@@ -912,7 +912,7 @@ msgid "Show Random Books"
 msgstr "Mostrar Livros Aleatórios"
 
 #: cps/render_template.py:69 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1043
+#: cps/templates/index.xml:83 cps/web.py:1035
 msgid "Categories"
 msgstr "Categorias"
 
@@ -922,7 +922,7 @@ msgstr "Mostrar seleção de categoria"
 
 #: cps/render_template.py:72 cps/templates/book_edit.html:90
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:938 cps/web.py:948
+#: cps/templates/search_form.html:69 cps/web.py:930 cps/web.py:940
 msgid "Series"
 msgstr "Série"
 
@@ -940,7 +940,7 @@ msgid "Show author selection"
 msgstr "Mostrar selecção de autor"
 
 #: cps/render_template.py:79 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:915
+#: cps/templates/index.xml:76 cps/web.py:907
 msgid "Publishers"
 msgstr "Editores"
 
@@ -950,7 +950,7 @@ msgstr "Mostrar selecção de editores"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1020
+#: cps/web.py:1012
 msgid "Languages"
 msgstr "Idiomas"
 
@@ -974,7 +974,7 @@ msgstr "Formatos de arquivo"
 msgid "Show file formats selection"
 msgstr "Mostrar seleção de formatos de arquivo"
 
-#: cps/render_template.py:93 cps/web.py:693
+#: cps/render_template.py:93 cps/web.py:685
 msgid "Archived Books"
 msgstr "Livros Arquivados"
 
@@ -982,7 +982,7 @@ msgstr "Livros Arquivados"
 msgid "Show archived books"
 msgstr "Mostrar livros arquivados"
 
-#: cps/render_template.py:97 cps/web.py:769
+#: cps/render_template.py:97 cps/web.py:761
 msgid "Books List"
 msgstr "Lista de Livros"
 
@@ -1162,134 +1162,134 @@ msgstr "Formato do arquivo: %(format)s"
 msgid "Category: %(name)s"
 msgstr "Categoria: %(name)s"
 
-#: cps/web.py:621
+#: cps/web.py:613
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Idioma: %(name)s"
 
-#: cps/templates/layout.html:56 cps/web.py:727 cps/web.py:1372
+#: cps/templates/layout.html:56 cps/web.py:719 cps/web.py:1364
 msgid "Advanced Search"
 msgstr "Pesquisa Avançada"
 
 #: cps/templates/book_edit.html:239 cps/templates/feed.xml:33
 #: cps/templates/index.xml:11 cps/templates/layout.html:45
 #: cps/templates/layout.html:48 cps/templates/search_form.html:226
-#: cps/web.py:740 cps/web.py:1078
+#: cps/web.py:732 cps/web.py:1070
 msgid "Search"
 msgstr "Pesquisa"
 
-#: cps/templates/admin.html:16 cps/web.py:893
+#: cps/templates/admin.html:16 cps/web.py:885
 msgid "Downloads"
 msgstr "Downloads"
 
-#: cps/web.py:969
+#: cps/web.py:961
 msgid "Ratings list"
 msgstr "Lista de classificações"
 
-#: cps/web.py:990
+#: cps/web.py:982
 msgid "File formats list"
 msgstr "Lista de formatos de arquivo"
 
-#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1057
+#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1049
 msgid "Tasks"
 msgstr "Tarefas"
 
-#: cps/web.py:1216
+#: cps/web.py:1208
 msgid "Published after "
 msgstr "Publicado depois de "
 
-#: cps/web.py:1223
+#: cps/web.py:1215
 msgid "Published before "
 msgstr "Publicado antes de "
 
-#: cps/web.py:1245
+#: cps/web.py:1237
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Avaliação <= %(rating)s"
 
-#: cps/web.py:1247
+#: cps/web.py:1239
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Avaliação >= %(rating)s"
 
-#: cps/web.py:1249
+#: cps/web.py:1241
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr "Status de leitura  = %(status)s"
 
-#: cps/web.py:1354
+#: cps/web.py:1346
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/web.py:1449
+#: cps/web.py:1441
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Livro enfileirado com sucesso para envio para %(kindlemail)s"
 
-#: cps/web.py:1453
+#: cps/web.py:1445
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Ups! Ocorreu um erro ao enviar este livro: %(res)s"
 
-#: cps/web.py:1455
+#: cps/web.py:1447
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Por favor, atualize seu perfil com um endereço de e-mail válido para Kindle."
 
-#: cps/web.py:1472
+#: cps/web.py:1464
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "O servidor de E-Mail não está configurado, por favor contacte o seu administrador!"
 
-#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1473
-#: cps/web.py:1480 cps/web.py:1486 cps/web.py:1505 cps/web.py:1509
-#: cps/web.py:1515
+#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1465
+#: cps/web.py:1472 cps/web.py:1478 cps/web.py:1497 cps/web.py:1501
+#: cps/web.py:1507
 msgid "Register"
 msgstr "Registe-se"
 
-#: cps/web.py:1507
+#: cps/web.py:1499
 msgid "Your e-mail is not allowed to register"
 msgstr "Seu e-mail não tem permissão para registrar"
 
-#: cps/web.py:1510
+#: cps/web.py:1502
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "O e-mail de confirmação foi enviado para a sua conta de e-mail."
 
-#: cps/web.py:1527
+#: cps/web.py:1519
 msgid "Cannot activate LDAP authentication"
 msgstr "Não é possível ativar a autenticação LDAP"
 
-#: cps/web.py:1546
+#: cps/web.py:1538
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Login de reserva como:'%(nickname)s', servidor LDAP não acessível ou usuário desconhecido"
 
-#: cps/web.py:1552
+#: cps/web.py:1544
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Não foi possível fazer o login: %(message)s"
 
-#: cps/web.py:1556 cps/web.py:1581
+#: cps/web.py:1548 cps/web.py:1573
 msgid "Wrong Username or Password"
 msgstr "Nome de usuário ou senha incorretos"
 
-#: cps/web.py:1563
+#: cps/web.py:1555
 msgid "New Password was send to your email address"
 msgstr "Nova senha foi enviada para seu endereço de e-mail"
 
-#: cps/web.py:1569
+#: cps/web.py:1561
 msgid "Please enter valid username to reset password"
 msgstr "Por favor, digite um nome de usuário válido para redefinir a senha"
 
-#: cps/web.py:1576
+#: cps/web.py:1568
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Você agora está logado como: '%(nickname)s'"
 
-#: cps/web.py:1642 cps/web.py:1691
+#: cps/web.py:1634 cps/web.py:1683
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Perfil de %(name)s's"
 
-#: cps/web.py:1658
+#: cps/web.py:1650
 msgid "Profile updated"
 msgstr "Perfil atualizado"
 
@@ -1381,7 +1381,7 @@ msgid "Edit"
 msgstr "Editar"
 
 #: cps/templates/admin.html:23 cps/templates/book_edit.html:16
-#: cps/templates/book_table.html:93 cps/templates/modal_dialogs.html:63
+#: cps/templates/book_table.html:97 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
 #: cps/templates/user_table.html:149
 msgid "Delete"
@@ -1552,7 +1552,7 @@ msgid "OK"
 msgstr "Ok"
 
 #: cps/templates/admin.html:211 cps/templates/admin.html:225
-#: cps/templates/book_edit.html:217 cps/templates/book_table.html:120
+#: cps/templates/book_edit.html:217 cps/templates/book_table.html:124
 #: cps/templates/config_db.html:54 cps/templates/config_edit.html:355
 #: cps/templates/config_view_edit.html:169 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
@@ -1859,27 +1859,36 @@ msgstr "Data de publicação"
 msgid "Enter Publishers"
 msgstr "Entrar Editores"
 
-#: cps/templates/book_table.html:75 cps/templates/book_table.html:77
-#: cps/templates/book_table.html:79 cps/templates/book_table.html:81
-#: cps/templates/book_table.html:85 cps/templates/book_table.html:87
-#: cps/templates/book_table.html:89
+#: cps/templates/book_table.html:73
+#, fuzzy
+msgid "Enter comments"
+msgstr "Digite o nome do domínio"
+
+#: cps/templates/book_table.html:73
+msgid "Comments"
+msgstr ""
+
+#: cps/templates/book_table.html:77 cps/templates/book_table.html:79
+#: cps/templates/book_table.html:81 cps/templates/book_table.html:83
+#: cps/templates/book_table.html:87 cps/templates/book_table.html:89
+#: cps/templates/book_table.html:91 cps/templates/book_table.html:93
 #, fuzzy
 msgid "Enter "
 msgstr "Identificadores"
 
-#: cps/templates/book_table.html:106 cps/templates/modal_dialogs.html:46
+#: cps/templates/book_table.html:110 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
 msgstr "Tens mesmo a certeza?"
 
-#: cps/templates/book_table.html:110
+#: cps/templates/book_table.html:114
 msgid "Books with Title will be merged from:"
 msgstr "Os livros com título serão fundidos a partir de:"
 
-#: cps/templates/book_table.html:114
+#: cps/templates/book_table.html:118
 msgid "Into Book with Title:"
 msgstr "Into Book with Title:"
 
-#: cps/templates/book_table.html:119
+#: cps/templates/book_table.html:123
 msgid "Merge"
 msgstr "Fundir"
 
