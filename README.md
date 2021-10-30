@@ -72,14 +72,7 @@ Optionally, to enable on-the-fly conversion from one ebook format to another whe
 
 ## Docker Images
 
-Pre-built Docker images are available in these Docker Hub repositories:
-
-#### **Technosoft2000 - x64**
-+ Docker Hub - [https://hub.docker.com/r/technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web)
-+ Github - [https://github.com/Technosoft2000/docker-calibre-web](https://github.com/Technosoft2000/docker-calibre-web) 
-
-    Includes the Calibre `ebook-convert` binary.
-    + The "path to convertertool" should be set to `/opt/calibre/ebook-convert`
+A pre-built Docker image is available in these Docker Hub repository (maintained by the LinuxServer team):
 
 #### **LinuxServer - x64, armhf, aarch64**
 + Docker Hub - [https://hub.docker.com/r/linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web)
