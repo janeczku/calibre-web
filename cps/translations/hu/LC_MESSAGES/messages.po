@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-30 09:34+0200\n"
+"POT-Creation-Date: 2021-10-30 16:37+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -1439,7 +1439,7 @@ msgstr "Konfiguráció"
 msgid "Calibre Database Directory"
 msgstr "Calibre adatbázis mappája:"
 
-#: cps/templates/admin.html:107 cps/templates/config_edit.html:64
+#: cps/templates/admin.html:107 cps/templates/config_edit.html:68
 msgid "Log Level"
 msgstr "Naplózás szintje:"
 
@@ -1475,7 +1475,7 @@ msgstr "Távoli belépés:"
 msgid "Reverse Proxy Login"
 msgstr ""
 
-#: cps/templates/admin.html:148 cps/templates/config_edit.html:169
+#: cps/templates/admin.html:148 cps/templates/config_edit.html:173
 msgid "Reverse Proxy Header Name"
 msgstr ""
 
@@ -1552,7 +1552,7 @@ msgstr "OK"
 
 #: cps/templates/admin.html:211 cps/templates/admin.html:225
 #: cps/templates/book_edit.html:217 cps/templates/book_table.html:124
-#: cps/templates/config_db.html:54 cps/templates/config_edit.html:355
+#: cps/templates/config_db.html:54 cps/templates/config_edit.html:359
 #: cps/templates/config_view_edit.html:169 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
 #: cps/templates/modal_dialogs.html:135 cps/templates/shelf.html:97
@@ -1738,7 +1738,7 @@ msgid "Fetch Metadata"
 msgstr "Metaadatok beszerzése"
 
 #: cps/templates/book_edit.html:216 cps/templates/config_db.html:53
-#: cps/templates/config_edit.html:354 cps/templates/config_view_edit.html:168
+#: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:168
 #: cps/templates/email_edit.html:65 cps/templates/shelf_edit.html:25
 #: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:135
 msgid "Save"
@@ -1947,239 +1947,243 @@ msgstr "Stabil"
 msgid "Nightly"
 msgstr "Éjszakai"
 
-#: cps/templates/config_edit.html:57
+#: cps/templates/config_edit.html:50
+msgid "Trusted Hosts (Comma Separated)"
+msgstr ""
+
+#: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
 msgstr "Naplózási beállítások"
 
-#: cps/templates/config_edit.html:73
+#: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "Naplófájl helye és neve (üresen hagyva calibre-web.log)"
 
-#: cps/templates/config_edit.html:78
+#: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
 msgstr ""
 
-#: cps/templates/config_edit.html:81
+#: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
 msgstr ""
 
-#: cps/templates/config_edit.html:92
+#: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
 msgstr "Funkciók beállítása"
 
-#: cps/templates/config_edit.html:100
+#: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
 msgstr ""
 
-#: cps/templates/config_edit.html:104
+#: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
 msgstr "Feltöltés engedélyezése"
 
-#: cps/templates/config_edit.html:108
+#: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
 msgstr ""
 
-#: cps/templates/config_edit.html:114
+#: cps/templates/config_edit.html:118
 msgid "Enable Anonymous Browsing"
 msgstr "Böngészés bejelentkezés nélkül engedélyezése"
 
-#: cps/templates/config_edit.html:118
+#: cps/templates/config_edit.html:122
 msgid "Enable Public Registration"
 msgstr "Nyilvános regisztráció engedélyezése"
 
-#: cps/templates/config_edit.html:123
+#: cps/templates/config_edit.html:127
 msgid "Use E-Mail as Username"
 msgstr ""
 
-#: cps/templates/config_edit.html:128
+#: cps/templates/config_edit.html:132
 msgid "Enable Magic Link Remote Login"
 msgstr "Távoli belépés engedélyezése (\"varázs-hivatkozás\")"
 
-#: cps/templates/config_edit.html:133
+#: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
 msgstr ""
 
-#: cps/templates/config_edit.html:138
+#: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
 msgstr ""
 
-#: cps/templates/config_edit.html:141
+#: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
 msgstr ""
 
-#: cps/templates/config_edit.html:149
+#: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
 msgstr ""
 
-#: cps/templates/config_edit.html:150
+#: cps/templates/config_edit.html:154
 msgid "Create an API Key"
 msgstr "API-kulcs beszerzése"
 
-#: cps/templates/config_edit.html:154
+#: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
 msgstr "Goodreads API-kulcs"
 
-#: cps/templates/config_edit.html:158
+#: cps/templates/config_edit.html:162
 msgid "Goodreads API Secret"
 msgstr "Goodreads API titkos kód"
 
-#: cps/templates/config_edit.html:165
+#: cps/templates/config_edit.html:169
 msgid "Allow Reverse Proxy Authentication"
 msgstr ""
 
-#: cps/templates/config_edit.html:176
+#: cps/templates/config_edit.html:180
 msgid "Login type"
 msgstr ""
 
-#: cps/templates/config_edit.html:178
+#: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
 msgstr ""
 
-#: cps/templates/config_edit.html:180
+#: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
 msgstr ""
 
-#: cps/templates/config_edit.html:183
+#: cps/templates/config_edit.html:187
 msgid "Use OAuth"
 msgstr ""
 
-#: cps/templates/config_edit.html:190
+#: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
 msgstr ""
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
 msgstr ""
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
 msgstr ""
 
-#: cps/templates/config_edit.html:200 cps/templates/config_view_edit.html:62
+#: cps/templates/config_edit.html:204 cps/templates/config_view_edit.html:62
 #: cps/templates/email_edit.html:41
 msgid "None"
 msgstr "Nincs"
 
-#: cps/templates/config_edit.html:201
+#: cps/templates/config_edit.html:205
 msgid "TLS"
 msgstr ""
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:206
 msgid "SSL"
 msgstr ""
 
-#: cps/templates/config_edit.html:206
+#: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:213
+#: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:220
+#: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:229
+#: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
 msgstr ""
 
-#: cps/templates/config_edit.html:231
+#: cps/templates/config_edit.html:235
 msgid "Anonymous"
 msgstr ""
 
-#: cps/templates/config_edit.html:232
+#: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
 msgstr ""
 
-#: cps/templates/config_edit.html:233
+#: cps/templates/config_edit.html:237
 msgid "Simple"
 msgstr ""
 
-#: cps/templates/config_edit.html:238
+#: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
 msgstr ""
 
-#: cps/templates/config_edit.html:244
+#: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
 msgstr ""
 
-#: cps/templates/config_edit.html:249
+#: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
 msgstr ""
 
-#: cps/templates/config_edit.html:253
+#: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:258
+#: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
 msgstr ""
 
-#: cps/templates/config_edit.html:260
+#: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
 msgstr ""
 
-#: cps/templates/config_edit.html:262
+#: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:266
+#: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
 msgstr ""
 
-#: cps/templates/config_edit.html:270
+#: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
 msgstr ""
 
-#: cps/templates/config_edit.html:274
+#: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
 msgstr ""
 
-#: cps/templates/config_edit.html:276
+#: cps/templates/config_edit.html:280
 msgid "Autodetect"
 msgstr ""
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:281
 msgid "Custom Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:282
+#: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:293
+#: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr ""
 
-#: cps/templates/config_edit.html:296
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr ""
 
-#: cps/templates/config_edit.html:300
+#: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr ""
 
-#: cps/templates/config_edit.html:316
+#: cps/templates/config_edit.html:320
 msgid "External binaries"
 msgstr "Külső futtatható fájlok"
 
-#: cps/templates/config_edit.html:322
+#: cps/templates/config_edit.html:326
 msgid "Path to Calibre E-Book Converter"
 msgstr ""
 
-#: cps/templates/config_edit.html:330
+#: cps/templates/config_edit.html:334
 msgid "Calibre E-Book Converter Settings"
 msgstr ""
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:337
 msgid "Path to Kepubify E-Book Converter"
 msgstr ""
 
-#: cps/templates/config_edit.html:341
+#: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
 msgstr "Az Unrar futtatási állományának helye"
 
