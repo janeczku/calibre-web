@@ -66,6 +66,8 @@ mimetypes.add_type('application/mp4', '.m4a')
 mimetypes.add_type('application/mp4', '.m4b')
 mimetypes.add_type('application/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
 app = Flask(__name__)
 app.config.update(
