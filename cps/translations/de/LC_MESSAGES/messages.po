@@ -2408,7 +2408,7 @@ msgstr "Nächste"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Öffne ddie .kobo/Kobo eReader.conf Datei in einem Texteditor und füge hinzu (oder ersetze):"
+msgstr "Öffne die .kobo/Kobo eReader.conf Datei in einem Texteditor und füge hinzu (oder ersetze):"
 
 #: cps/templates/http_error.html:31
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
