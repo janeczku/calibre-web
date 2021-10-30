@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-10-17 14:59+0200\n"
+"POT-Creation-Date: 2021-10-30 16:37+0200\n"
 "PO-Revision-Date: 2020-06-09 21:11+0100\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -45,9 +45,9 @@ msgstr "Úspěšně obnovené připojení"
 msgid "Unknown command"
 msgstr "Neznámý příkaz"
 
-#: cps/admin.py:167 cps/editbooks.py:703 cps/editbooks.py:717
-#: cps/editbooks.py:858 cps/editbooks.py:860 cps/editbooks.py:887
-#: cps/editbooks.py:903 cps/updater.py:584 cps/uploader.py:93
+#: cps/admin.py:167 cps/editbooks.py:704 cps/editbooks.py:718
+#: cps/editbooks.py:859 cps/editbooks.py:861 cps/editbooks.py:888
+#: cps/editbooks.py:904 cps/updater.py:584 cps/uploader.py:93
 #: cps/uploader.py:103
 msgid "Unknown"
 msgstr "Neznámý"
@@ -303,7 +303,7 @@ msgstr "Nastavení e-mailového serveru aktualizováno"
 msgid "Database Configuration"
 msgstr "Konfigurace funkcí"
 
-#: cps/admin.py:1340 cps/web.py:1479
+#: cps/admin.py:1340 cps/web.py:1471
 msgid "Please fill out all fields!"
 msgstr "Vyplňte všechna pole!"
 
@@ -348,7 +348,7 @@ msgstr "Upravit uživatele %(nick)s"
 msgid "User '%(nick)s' updated"
 msgstr "Uživatel '%(nick)s' aktualizován"
 
-#: cps/admin.py:1475 cps/admin.py:1605 cps/web.py:1504 cps/web.py:1567
+#: cps/admin.py:1475 cps/admin.py:1605 cps/web.py:1496 cps/web.py:1559
 msgid "An unknown error occurred. Please try again later."
 msgstr "Neznámá chyba. Opakujte prosím později."
 
@@ -383,7 +383,7 @@ msgstr "Nastavení e-mailového serveru aktualizováno"
 msgid "Password for user %(user)s reset"
 msgstr "Heslo pro uživatele %(user)s resetováno"
 
-#: cps/admin.py:1608 cps/web.py:1444
+#: cps/admin.py:1608 cps/web.py:1436
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Nejprve nakonfigurujte nastavení pošty SMTP..."
 
@@ -483,7 +483,7 @@ msgstr "není nakonfigurováno"
 msgid "Execution permissions missing"
 msgstr "Chybí povolení k exekuci"
 
-#: cps/db.py:651 cps/web.py:657 cps/web.py:1156
+#: cps/db.py:651 cps/web.py:649 cps/web.py:1148
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr "Vlastní sloupec %(column)d neexistuje v databázi"
@@ -496,8 +496,8 @@ msgstr "Formát knihy úspěšně smazán"
 msgid "Book Successfully Deleted"
 msgstr "Kniha úspěšně smazána"
 
-#: cps/editbooks.py:373 cps/editbooks.py:759 cps/web.py:511 cps/web.py:1706
-#: cps/web.py:1747 cps/web.py:1814
+#: cps/editbooks.py:373 cps/editbooks.py:760 cps/web.py:511 cps/web.py:1698
+#: cps/web.py:1739 cps/web.py:1806
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Jejda! Vybraná kniha není k dispozici. Soubor neexistuje nebo není přístupný"
 
@@ -510,81 +510,81 @@ msgstr "upravit metadata"
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:490
+#: cps/editbooks.py:491
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s není platným jazykem"
 
-#: cps/editbooks.py:630 cps/editbooks.py:973
+#: cps/editbooks.py:631 cps/editbooks.py:974
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Soubor s příponou '%(ext)s' nelze odeslat na tento server"
 
-#: cps/editbooks.py:634 cps/editbooks.py:977
+#: cps/editbooks.py:635 cps/editbooks.py:978
 msgid "File to be uploaded must have an extension"
 msgstr "Soubor, který má být odeslán musí mít příponu"
 
-#: cps/editbooks.py:646
+#: cps/editbooks.py:647
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nepodařilo se vytvořit cestu %(path)s (oprávnění odepřeno)."
 
-#: cps/editbooks.py:651
+#: cps/editbooks.py:652
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Uložení souboru %(file)s se nezdařilo."
 
-#: cps/editbooks.py:669 cps/editbooks.py:1064 cps/web.py:1667
+#: cps/editbooks.py:670 cps/editbooks.py:1065 cps/web.py:1659
 #, python-format
 msgid "Database error: %(error)s."
 msgstr "Chyba databáze: %(error)s."
 
-#: cps/editbooks.py:674
+#: cps/editbooks.py:675
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Formát souboru %(ext)s přidán do %(book)s"
 
-#: cps/editbooks.py:810
+#: cps/editbooks.py:811
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:844
+#: cps/editbooks.py:845
 msgid "Metadata successfully updated"
 msgstr "Metadata úspěšně aktualizována"
 
-#: cps/editbooks.py:853
+#: cps/editbooks.py:854
 msgid "Error editing book, please check logfile for details"
 msgstr "Chyba při úpravách knihy, zkontrolujte prosím log pro podrobnosti"
 
-#: cps/editbooks.py:891
+#: cps/editbooks.py:892
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
 
-#: cps/editbooks.py:985
+#: cps/editbooks.py:986
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Soubor %(filename)s nemohl být uložen do dočasného adresáře"
 
-#: cps/editbooks.py:1004
+#: cps/editbooks.py:1005
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Nepodařilo se přesunout soubor obalu %(file)s: %(error)s"
 
-#: cps/editbooks.py:1051
+#: cps/editbooks.py:1052
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Soubor %(file)s nahrán"
 
-#: cps/editbooks.py:1076
+#: cps/editbooks.py:1077
 msgid "Source or destination format for conversion missing"
 msgstr "Chybí zdrojový nebo cílový formát pro převod"
 
-#: cps/editbooks.py:1084
+#: cps/editbooks.py:1085
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kniha byla úspěšně zařazena do fronty pro převod do %(book_format)s"
 
-#: cps/editbooks.py:1088
+#: cps/editbooks.py:1089
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Při převodu této knihy došlo k chybě: %(res)s"
@@ -692,7 +692,7 @@ msgstr "Soubor %(file)s nenalezen na Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Cesta ke knize %(path)s nebyla nalezena na Google Drive"
 
-#: cps/helper.py:507 cps/web.py:1662
+#: cps/helper.py:507 cps/web.py:1654
 #, fuzzy
 msgid "Found an existing account for this e-mail address"
 msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu."
@@ -770,7 +770,7 @@ msgstr "Kobo nastavení"
 msgid "Register with %(provider)s"
 msgstr "Registrovat s %(provider)s"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1538
+#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1530
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "nyní jste přihlášen jako: '%(nickname)s'"
@@ -836,7 +836,7 @@ msgid "{} Stars"
 msgstr ""
 
 #: cps/remotelogin.py:65 cps/templates/layout.html:86
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1587
+#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1579
 msgid "Login"
 msgstr "Přihlásit"
 
@@ -886,7 +886,7 @@ msgid "Show Top Rated Books"
 msgstr "Zobrazit nejlépe hodnocené knihy"
 
 #: cps/render_template.py:59 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:666
+#: cps/templates/index.xml:58 cps/web.py:658
 msgid "Read Books"
 msgstr "Přečtené knihy"
 
@@ -895,7 +895,7 @@ msgid "Show read and unread"
 msgstr "Zobrazit prečtené a nepřečtené"
 
 #: cps/render_template.py:63 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:669
+#: cps/templates/index.xml:65 cps/web.py:661
 msgid "Unread Books"
 msgstr "Nepřečtené knihy"
 
@@ -913,7 +913,7 @@ msgid "Show Random Books"
 msgstr "Zobrazit náhodné knihy"
 
 #: cps/render_template.py:69 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1043
+#: cps/templates/index.xml:83 cps/web.py:1035
 msgid "Categories"
 msgstr "Kategorie"
 
@@ -923,7 +923,7 @@ msgstr "Zobrazit výběr kategorie"
 
 #: cps/render_template.py:72 cps/templates/book_edit.html:90
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:938 cps/web.py:948
+#: cps/templates/search_form.html:69 cps/web.py:930 cps/web.py:940
 msgid "Series"
 msgstr "Série"
 
@@ -941,7 +941,7 @@ msgid "Show author selection"
 msgstr "Zobrazit výběr autora"
 
 #: cps/render_template.py:79 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:915
+#: cps/templates/index.xml:76 cps/web.py:907
 msgid "Publishers"
 msgstr "Vydavatelé"
 
@@ -951,7 +951,7 @@ msgstr "Zobrazit výběr vydavatele"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1020
+#: cps/web.py:1012
 msgid "Languages"
 msgstr "Jazyky"
 
@@ -975,7 +975,7 @@ msgstr "Formáty souborů"
 msgid "Show file formats selection"
 msgstr "Zobrazit výběr formátů"
 
-#: cps/render_template.py:93 cps/web.py:693
+#: cps/render_template.py:93 cps/web.py:685
 msgid "Archived Books"
 msgstr "Archivované knihy"
 
@@ -983,7 +983,7 @@ msgstr "Archivované knihy"
 msgid "Show archived books"
 msgstr "Zobrazit archivované knihy"
 
-#: cps/render_template.py:97 cps/web.py:769
+#: cps/render_template.py:97 cps/web.py:761
 msgid "Books List"
 msgstr ""
 
@@ -1163,134 +1163,134 @@ msgstr "Soubor formátů: %(format)s"
 msgid "Category: %(name)s"
 msgstr "Kategorie: %(name)s"
 
-#: cps/web.py:621
+#: cps/web.py:613
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Jazyky: %(name)s"
 
-#: cps/templates/layout.html:56 cps/web.py:727 cps/web.py:1372
+#: cps/templates/layout.html:56 cps/web.py:719 cps/web.py:1364
 msgid "Advanced Search"
 msgstr "Rozšířené hledání"
 
 #: cps/templates/book_edit.html:239 cps/templates/feed.xml:33
 #: cps/templates/index.xml:11 cps/templates/layout.html:45
 #: cps/templates/layout.html:48 cps/templates/search_form.html:226
-#: cps/web.py:740 cps/web.py:1078
+#: cps/web.py:732 cps/web.py:1070
 msgid "Search"
 msgstr "Hledat"
 
-#: cps/templates/admin.html:16 cps/web.py:893
+#: cps/templates/admin.html:16 cps/web.py:885
 msgid "Downloads"
 msgstr "Stáhnutí"
 
-#: cps/web.py:969
+#: cps/web.py:961
 msgid "Ratings list"
 msgstr "Seznam hodnocení"
 
-#: cps/web.py:990
+#: cps/web.py:982
 msgid "File formats list"
 msgstr "Seznam formátů"
 
-#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1057
+#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1049
 msgid "Tasks"
 msgstr "Úlohy"
 
-#: cps/web.py:1216
+#: cps/web.py:1208
 msgid "Published after "
 msgstr "Vydáno po "
 
-#: cps/web.py:1223
+#: cps/web.py:1215
 msgid "Published before "
 msgstr "Vydáno před "
 
-#: cps/web.py:1245
+#: cps/web.py:1237
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Hodnocení <= %(rating)s"
 
-#: cps/web.py:1247
+#: cps/web.py:1239
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Hodnocení >= %(rating)s"
 
-#: cps/web.py:1249
+#: cps/web.py:1241
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/web.py:1354
+#: cps/web.py:1346
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/web.py:1449
+#: cps/web.py:1441
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemail)s"
 
-#: cps/web.py:1453
+#: cps/web.py:1445
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Při odesílání této knihy došlo k chybě: %(res)s"
 
-#: cps/web.py:1455
+#: cps/web.py:1447
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Nejprve nakonfigurujte vaši kindle e-mailovou adresu.."
 
-#: cps/web.py:1472
+#: cps/web.py:1464
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "E-mailový server není nakonfigurován, kontaktujte svého správce!"
 
-#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1473
-#: cps/web.py:1480 cps/web.py:1486 cps/web.py:1505 cps/web.py:1509
-#: cps/web.py:1515
+#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1465
+#: cps/web.py:1472 cps/web.py:1478 cps/web.py:1497 cps/web.py:1501
+#: cps/web.py:1507
 msgid "Register"
 msgstr "Registrovat"
 
-#: cps/web.py:1507
+#: cps/web.py:1499
 msgid "Your e-mail is not allowed to register"
 msgstr "Váš e-mail nemá povolení k registraci"
 
-#: cps/web.py:1510
+#: cps/web.py:1502
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Potvrzovací e-mail byl odeslán na váš účet."
 
-#: cps/web.py:1527
+#: cps/web.py:1519
 msgid "Cannot activate LDAP authentication"
 msgstr "Nelze aktivovat ověření LDAP"
 
-#: cps/web.py:1546
+#: cps/web.py:1538
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Záložní přihlášení jako: ‘%(nickname)s’, server LDAP není dosažitelný nebo neznámý uživatel"
 
-#: cps/web.py:1552
+#: cps/web.py:1544
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Nelze se přihlásit: %(message)s"
 
-#: cps/web.py:1556 cps/web.py:1581
+#: cps/web.py:1548 cps/web.py:1573
 msgid "Wrong Username or Password"
 msgstr "Špatné uživatelské jméno nebo heslo"
 
-#: cps/web.py:1563
+#: cps/web.py:1555
 msgid "New Password was send to your email address"
 msgstr "Nové heslo bylo zasláno na vaši emailovou adresu"
 
-#: cps/web.py:1569
+#: cps/web.py:1561
 msgid "Please enter valid username to reset password"
 msgstr "Zadejte platné uživatelské jméno pro obnovení hesla"
 
-#: cps/web.py:1576
+#: cps/web.py:1568
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Nyní jste přihlášeni jako: '%(nickname)s'"
 
-#: cps/web.py:1642 cps/web.py:1691
+#: cps/web.py:1634 cps/web.py:1683
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s profil"
 
-#: cps/web.py:1658
+#: cps/web.py:1650
 msgid "Profile updated"
 msgstr "Profil aktualizován"
 
@@ -1382,7 +1382,7 @@ msgid "Edit"
 msgstr "Upravovat"
 
 #: cps/templates/admin.html:23 cps/templates/book_edit.html:16
-#: cps/templates/book_table.html:93 cps/templates/modal_dialogs.html:63
+#: cps/templates/book_table.html:97 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
 #: cps/templates/user_table.html:149
 msgid "Delete"
@@ -1441,7 +1441,7 @@ msgstr "Konfigurace"
 msgid "Calibre Database Directory"
 msgstr "Calibre DB adresář"
 
-#: cps/templates/admin.html:107 cps/templates/config_edit.html:64
+#: cps/templates/admin.html:107 cps/templates/config_edit.html:68
 msgid "Log Level"
 msgstr "Úroveň logu"
 
@@ -1477,7 +1477,7 @@ msgstr "Magic Link vzdálené přihlášení"
 msgid "Reverse Proxy Login"
 msgstr "Reverzní proxy přihlášení"
 
-#: cps/templates/admin.html:148 cps/templates/config_edit.html:169
+#: cps/templates/admin.html:148 cps/templates/config_edit.html:173
 msgid "Reverse Proxy Header Name"
 msgstr "Název záhlaví reverzního proxy"
 
@@ -1553,8 +1553,8 @@ msgid "OK"
 msgstr "OK"
 
 #: cps/templates/admin.html:211 cps/templates/admin.html:225
-#: cps/templates/book_edit.html:217 cps/templates/book_table.html:120
-#: cps/templates/config_db.html:54 cps/templates/config_edit.html:355
+#: cps/templates/book_edit.html:217 cps/templates/book_table.html:124
+#: cps/templates/config_db.html:54 cps/templates/config_edit.html:359
 #: cps/templates/config_view_edit.html:169 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
 #: cps/templates/modal_dialogs.html:135 cps/templates/shelf.html:97
@@ -1740,7 +1740,7 @@ msgid "Fetch Metadata"
 msgstr "Získat metadata"
 
 #: cps/templates/book_edit.html:216 cps/templates/config_db.html:53
-#: cps/templates/config_edit.html:354 cps/templates/config_view_edit.html:168
+#: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:168
 #: cps/templates/email_edit.html:65 cps/templates/shelf_edit.html:25
 #: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:135
 msgid "Save"
@@ -1860,27 +1860,36 @@ msgstr ""
 msgid "Enter Publishers"
 msgstr ""
 
-#: cps/templates/book_table.html:75 cps/templates/book_table.html:77
-#: cps/templates/book_table.html:79 cps/templates/book_table.html:81
-#: cps/templates/book_table.html:85 cps/templates/book_table.html:87
-#: cps/templates/book_table.html:89
+#: cps/templates/book_table.html:73
+#, fuzzy
+msgid "Enter comments"
+msgstr "Zadejte jméno domény"
+
+#: cps/templates/book_table.html:73
+msgid "Comments"
+msgstr ""
+
+#: cps/templates/book_table.html:77 cps/templates/book_table.html:79
+#: cps/templates/book_table.html:81 cps/templates/book_table.html:83
+#: cps/templates/book_table.html:87 cps/templates/book_table.html:89
+#: cps/templates/book_table.html:91 cps/templates/book_table.html:93
 #, fuzzy
 msgid "Enter "
 msgstr "Identifikátory"
 
-#: cps/templates/book_table.html:106 cps/templates/modal_dialogs.html:46
+#: cps/templates/book_table.html:110 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
 msgstr "Jste si opravdu jisti?"
 
-#: cps/templates/book_table.html:110
+#: cps/templates/book_table.html:114
 msgid "Books with Title will be merged from:"
 msgstr ""
 
-#: cps/templates/book_table.html:114
+#: cps/templates/book_table.html:118
 msgid "Into Book with Title:"
 msgstr ""
 
-#: cps/templates/book_table.html:119
+#: cps/templates/book_table.html:123
 msgid "Merge"
 msgstr ""
 
@@ -1941,239 +1950,243 @@ msgstr "Stabilní"
 msgid "Nightly"
 msgstr "Noční"
 
-#: cps/templates/config_edit.html:57
+#: cps/templates/config_edit.html:50
+msgid "Trusted Hosts (Comma Separated)"
+msgstr ""
+
+#: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
 msgstr "Konfigurace log souboru"
 
-#: cps/templates/config_edit.html:73
+#: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "Umístění a jméno log souboru (calibre-web.log pro žádnou položku)"
 
-#: cps/templates/config_edit.html:78
+#: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
 msgstr "Povolit log přístupů"
 
-#: cps/templates/config_edit.html:81
+#: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
 msgstr "Umístění a jméno logu přístupů (access.log pro žádnou položku)"
 
-#: cps/templates/config_edit.html:92
+#: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
 msgstr "Konfigurace funkcí"
 
-#: cps/templates/config_edit.html:100
+#: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
 msgstr ""
 
-#: cps/templates/config_edit.html:104
+#: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
 msgstr "Povolit nahrávání"
 
-#: cps/templates/config_edit.html:108
+#: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
 msgstr "Povolené nahrávání formátů souborů"
 
-#: cps/templates/config_edit.html:114
+#: cps/templates/config_edit.html:118
 msgid "Enable Anonymous Browsing"
 msgstr "Povolit anonymní prohlížení"
 
-#: cps/templates/config_edit.html:118
+#: cps/templates/config_edit.html:122
 msgid "Enable Public Registration"
 msgstr "Povolit veřejnou registraci"
 
-#: cps/templates/config_edit.html:123
+#: cps/templates/config_edit.html:127
 msgid "Use E-Mail as Username"
 msgstr "Použít e-mail jako přezdívku"
 
-#: cps/templates/config_edit.html:128
+#: cps/templates/config_edit.html:132
 msgid "Enable Magic Link Remote Login"
 msgstr "Povolit Magic Link vzdálené přihlášení"
 
-#: cps/templates/config_edit.html:133
+#: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
 msgstr "Povolit Kobo synchronizaci"
 
-#: cps/templates/config_edit.html:138
+#: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
 msgstr "Proxy neznámé požadavky na obchod Kobo"
 
-#: cps/templates/config_edit.html:141
+#: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
 msgstr ""
 
-#: cps/templates/config_edit.html:149
+#: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
 msgstr "Použít Goodreads"
 
-#: cps/templates/config_edit.html:150
+#: cps/templates/config_edit.html:154
 msgid "Create an API Key"
 msgstr "Získat API klíč"
 
-#: cps/templates/config_edit.html:154
+#: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
 msgstr "Goodreads API Klíč"
 
-#: cps/templates/config_edit.html:158
+#: cps/templates/config_edit.html:162
 msgid "Goodreads API Secret"
 msgstr "Goodreads API tajemství"
 
-#: cps/templates/config_edit.html:165
+#: cps/templates/config_edit.html:169
 msgid "Allow Reverse Proxy Authentication"
 msgstr "Povolit reverzní ověření proxy"
 
-#: cps/templates/config_edit.html:176
+#: cps/templates/config_edit.html:180
 msgid "Login type"
 msgstr "Typ přihlášení"
 
-#: cps/templates/config_edit.html:178
+#: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
 msgstr "Použít standartní ověření"
 
-#: cps/templates/config_edit.html:180
+#: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
 msgstr "Použít ověření LDAP"
 
-#: cps/templates/config_edit.html:183
+#: cps/templates/config_edit.html:187
 msgid "Use OAuth"
 msgstr "Použít OAuth"
 
-#: cps/templates/config_edit.html:190
+#: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
 msgstr "Název hostitele serveru LDAP nebo IP adresa"
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
 msgstr "LDAP Server Port"
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
 msgstr "LDAP Šifrování"
 
-#: cps/templates/config_edit.html:200 cps/templates/config_view_edit.html:62
+#: cps/templates/config_edit.html:204 cps/templates/config_view_edit.html:62
 #: cps/templates/email_edit.html:41
 msgid "None"
 msgstr "Žádné"
 
-#: cps/templates/config_edit.html:201
+#: cps/templates/config_edit.html:205
 msgid "TLS"
 msgstr "TLS"
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:206
 msgid "SSL"
 msgstr "SSL"
 
-#: cps/templates/config_edit.html:206
+#: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:213
+#: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:220
+#: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
 msgstr ""
 
-#: cps/templates/config_edit.html:229
+#: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
 msgstr "LDAP Ověření"
 
-#: cps/templates/config_edit.html:231
+#: cps/templates/config_edit.html:235
 msgid "Anonymous"
 msgstr "Anonymní"
 
-#: cps/templates/config_edit.html:232
+#: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
 msgstr "Neověřeno"
 
-#: cps/templates/config_edit.html:233
+#: cps/templates/config_edit.html:237
 msgid "Simple"
 msgstr "Jednoduché"
 
-#: cps/templates/config_edit.html:238
+#: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
 msgstr "Uživatelské jméno správce LDAP"
 
-#: cps/templates/config_edit.html:244
+#: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
 msgstr "Heslo správce LDAP"
 
-#: cps/templates/config_edit.html:249
+#: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
 msgstr "Rozlišující název LDAP (DN)"
 
-#: cps/templates/config_edit.html:253
+#: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
 msgstr "Filtr objektu uživatele LDAP"
 
-#: cps/templates/config_edit.html:258
+#: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
 msgstr "Server LDAP je OpenLDAP?"
 
-#: cps/templates/config_edit.html:260
+#: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
 msgstr "Následující nastavení jsou potřeba pro import uživatele"
 
-#: cps/templates/config_edit.html:262
+#: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
 msgstr "Filtr objektů skupiny LDAP"
 
-#: cps/templates/config_edit.html:266
+#: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
 msgstr "Jméno skupiny LDAP"
 
-#: cps/templates/config_edit.html:270
+#: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
 msgstr "Pole členů skupiny LDAP"
 
-#: cps/templates/config_edit.html:274
+#: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
 msgstr ""
 
-#: cps/templates/config_edit.html:276
+#: cps/templates/config_edit.html:280
 msgid "Autodetect"
 msgstr ""
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:281
 msgid "Custom Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:282
+#: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:293
+#: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Získat %(provider)s OAuth pověření"
 
-#: cps/templates/config_edit.html:296
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "%(provider)s OAuth Klient Id"
 
-#: cps/templates/config_edit.html:300
+#: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s OAuth Klient Tajemství"
 
-#: cps/templates/config_edit.html:316
+#: cps/templates/config_edit.html:320
 msgid "External binaries"
 msgstr "Externí binární soubory"
 
-#: cps/templates/config_edit.html:322
+#: cps/templates/config_edit.html:326
 msgid "Path to Calibre E-Book Converter"
 msgstr "Cesta k převaděči e-knih Calibre"
 
-#: cps/templates/config_edit.html:330
+#: cps/templates/config_edit.html:334
 msgid "Calibre E-Book Converter Settings"
 msgstr "Nastavení převaděče e-knih Calibre"
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:337
 msgid "Path to Kepubify E-Book Converter"
 msgstr "Cesta k převaděči e-knih Kepubify"
 
-#: cps/templates/config_edit.html:341
+#: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
 msgstr "Umístění Unrar binarních souborů"
 

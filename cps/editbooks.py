@@ -1096,6 +1096,7 @@ def table_get_custom_enum(c_id):
     cc = (calibre_db.session.query(db.Custom_Columns)
               .filter(db.Custom_Columns.id == c_id)
               .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).one_or_none())
+    ret.append({'value': "", 'text': ""})
     for idx, en in enumerate(cc.get_display_dict()['enum_values']):
         ret.append({'value': en, 'text': en})
     return json.dumps(ret)
