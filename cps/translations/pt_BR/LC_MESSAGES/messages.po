@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-10-30 09:34+0200\n"
+"POT-Creation-Date: 2021-10-30 16:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -1440,7 +1440,7 @@ msgstr "Configuração"
 msgid "Calibre Database Directory"
 msgstr "Diretório do Banco de Dados de Calibres"
 
-#: cps/templates/admin.html:107 cps/templates/config_edit.html:64
+#: cps/templates/admin.html:107 cps/templates/config_edit.html:68
 msgid "Log Level"
 msgstr "Nível de registo"
 
@@ -1476,7 +1476,7 @@ msgstr "Login remoto Magic Link"
 msgid "Reverse Proxy Login"
 msgstr "Login de Proxy Reversa"
 
-#: cps/templates/admin.html:148 cps/templates/config_edit.html:169
+#: cps/templates/admin.html:148 cps/templates/config_edit.html:173
 msgid "Reverse Proxy Header Name"
 msgstr "Nome do cabeçalho do Proxy Reverso"
 
@@ -1553,7 +1553,7 @@ msgstr "Ok"
 
 #: cps/templates/admin.html:211 cps/templates/admin.html:225
 #: cps/templates/book_edit.html:217 cps/templates/book_table.html:124
-#: cps/templates/config_db.html:54 cps/templates/config_edit.html:355
+#: cps/templates/config_db.html:54 cps/templates/config_edit.html:359
 #: cps/templates/config_view_edit.html:169 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
 #: cps/templates/modal_dialogs.html:135 cps/templates/shelf.html:97
@@ -1739,7 +1739,7 @@ msgid "Fetch Metadata"
 msgstr "Buscar Metadados"
 
 #: cps/templates/book_edit.html:216 cps/templates/config_db.html:53
-#: cps/templates/config_edit.html:354 cps/templates/config_view_edit.html:168
+#: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:168
 #: cps/templates/email_edit.html:65 cps/templates/shelf_edit.html:25
 #: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:135
 msgid "Save"
@@ -1949,239 +1949,243 @@ msgstr "Estável"
 msgid "Nightly"
 msgstr "Nocturno"
 
-#: cps/templates/config_edit.html:57
+#: cps/templates/config_edit.html:50
+msgid "Trusted Hosts (Comma Separated)"
+msgstr ""
+
+#: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
 msgstr "Configuração do ficheiro de registo"
 
-#: cps/templates/config_edit.html:73
+#: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "Localização e nome do arquivo de log (calibre-web.log para nenhuma entrada)"
 
-#: cps/templates/config_edit.html:78
+#: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
 msgstr "Habilitar Log de Acesso"
 
-#: cps/templates/config_edit.html:81
+#: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
 msgstr "Localização e nome do arquivo de log de acesso (access.log para nenhuma entrada)"
 
-#: cps/templates/config_edit.html:92
+#: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
 msgstr "Configuração das Características"
 
-#: cps/templates/config_edit.html:100
+#: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
 msgstr ""
 
-#: cps/templates/config_edit.html:104
+#: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
 msgstr "Habilitar Uploads"
 
-#: cps/templates/config_edit.html:108
+#: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
 msgstr "Upload de formatos de arquivo permitidos"
 
-#: cps/templates/config_edit.html:114
+#: cps/templates/config_edit.html:118
 msgid "Enable Anonymous Browsing"
 msgstr "Habilitar Navegação Anônima"
 
-#: cps/templates/config_edit.html:118
+#: cps/templates/config_edit.html:122
 msgid "Enable Public Registration"
 msgstr "Habilitar Registro Público"
 
-#: cps/templates/config_edit.html:123
+#: cps/templates/config_edit.html:127
 msgid "Use E-Mail as Username"
 msgstr "Use e-mail como nome de usuário"
 
-#: cps/templates/config_edit.html:128
+#: cps/templates/config_edit.html:132
 msgid "Enable Magic Link Remote Login"
 msgstr "Habilitar login remoto do Magic Link"
 
-#: cps/templates/config_edit.html:133
+#: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
 msgstr "Activar a sincronização de Kobo"
 
-#: cps/templates/config_edit.html:138
+#: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
 msgstr "Proxy de pedidos desconhecidos para a loja Kobo"
 
-#: cps/templates/config_edit.html:141
+#: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
 msgstr "Porta externa do servidor (para chamadas API de porta encaminhadas)"
 
-#: cps/templates/config_edit.html:149
+#: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
 msgstr "Use Goodreads"
 
-#: cps/templates/config_edit.html:150
+#: cps/templates/config_edit.html:154
 msgid "Create an API Key"
 msgstr "Criar uma chave API"
 
-#: cps/templates/config_edit.html:154
+#: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
 msgstr "Goodreads Chave API"
 
-#: cps/templates/config_edit.html:158
+#: cps/templates/config_edit.html:162
 msgid "Goodreads API Secret"
 msgstr "Goodreads API Secreto"
 
-#: cps/templates/config_edit.html:165
+#: cps/templates/config_edit.html:169
 msgid "Allow Reverse Proxy Authentication"
 msgstr "Permitir a Autenticação por Proxy Reversa"
 
-#: cps/templates/config_edit.html:176
+#: cps/templates/config_edit.html:180
 msgid "Login type"
 msgstr "Tipo de Login"
 
-#: cps/templates/config_edit.html:178
+#: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
 msgstr "Usar autenticação padrão"
 
-#: cps/templates/config_edit.html:180
+#: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
 msgstr "Usar autenticação LDAP"
 
-#: cps/templates/config_edit.html:183
+#: cps/templates/config_edit.html:187
 msgid "Use OAuth"
 msgstr "Use OAuth"
 
-#: cps/templates/config_edit.html:190
+#: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
 msgstr "Nome ou endereço IP do servidor LDAP"
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
 msgstr "Porta do servidor LDAP"
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
 msgstr "Criptografia LDAP"
 
-#: cps/templates/config_edit.html:200 cps/templates/config_view_edit.html:62
+#: cps/templates/config_edit.html:204 cps/templates/config_view_edit.html:62
 #: cps/templates/email_edit.html:41
 msgid "None"
 msgstr "Nenhum"
 
-#: cps/templates/config_edit.html:201
+#: cps/templates/config_edit.html:205
 msgid "TLS"
 msgstr "TLS"
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:206
 msgid "SSL"
 msgstr "SSL"
 
-#: cps/templates/config_edit.html:206
+#: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP CACertificate Path (Somente necessário para Autenticação de Certificado de Cliente)"
 
-#: cps/templates/config_edit.html:213
+#: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP Certificate Path (Somente necessário para Autenticação de Certificado de Cliente)"
 
-#: cps/templates/config_edit.html:220
+#: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP Keyfile Path (Somente necessário para Autenticação de Certificado de Cliente)"
 
-#: cps/templates/config_edit.html:229
+#: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
 msgstr "Autenticação LDAP"
 
-#: cps/templates/config_edit.html:231
+#: cps/templates/config_edit.html:235
 msgid "Anonymous"
 msgstr "Anônimo"
 
-#: cps/templates/config_edit.html:232
+#: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
 msgstr "Não autenticado"
 
-#: cps/templates/config_edit.html:233
+#: cps/templates/config_edit.html:237
 msgid "Simple"
 msgstr "Simples"
 
-#: cps/templates/config_edit.html:238
+#: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
 msgstr "Nome de usuário do administrador LDAP"
 
-#: cps/templates/config_edit.html:244
+#: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
 msgstr "Senha de Administrador LDAP"
 
-#: cps/templates/config_edit.html:249
+#: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
 msgstr "Nome distinto LDAP (DN)"
 
-#: cps/templates/config_edit.html:253
+#: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
 msgstr "Filtro de objeto do usuário LDAP"
 
-#: cps/templates/config_edit.html:258
+#: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
 msgstr "O LDAP Server é OpenLDAP?"
 
-#: cps/templates/config_edit.html:260
+#: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
 msgstr "As seguintes configurações são necessárias para a importação do usuário"
 
-#: cps/templates/config_edit.html:262
+#: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
 msgstr "Filtro de objetos do grupo LDAP"
 
-#: cps/templates/config_edit.html:266
+#: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
 msgstr "Nome do Grupo LDAP"
 
-#: cps/templates/config_edit.html:270
+#: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
 msgstr "Campo de Membros do Grupo LDAP"
 
-#: cps/templates/config_edit.html:274
+#: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
 msgstr "LDAP Detecção de filtro de usuário membro LDAP"
 
-#: cps/templates/config_edit.html:276
+#: cps/templates/config_edit.html:280
 msgid "Autodetect"
 msgstr "Autodetectar"
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:281
 msgid "Custom Filter"
 msgstr "Filtro Personalizado"
 
-#: cps/templates/config_edit.html:282
+#: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
 msgstr "Filtro de Utilizador Membro LDAP"
 
-#: cps/templates/config_edit.html:293
+#: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Obtenha a credencial OAuth de %(provider)s"
 
-#: cps/templates/config_edit.html:296
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "ID do cliente OAuth de %(provider)s"
 
-#: cps/templates/config_edit.html:300
+#: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s  Cliente segredo do  OAuth"
 
-#: cps/templates/config_edit.html:316
+#: cps/templates/config_edit.html:320
 msgid "External binaries"
 msgstr "Binários externos"
 
-#: cps/templates/config_edit.html:322
+#: cps/templates/config_edit.html:326
 msgid "Path to Calibre E-Book Converter"
 msgstr "Caminho para o Calibre E-Book Converter"
 
-#: cps/templates/config_edit.html:330
+#: cps/templates/config_edit.html:334
 msgid "Calibre E-Book Converter Settings"
 msgstr "Configurações do conversor de E-Book Calibre"
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:337
 msgid "Path to Kepubify E-Book Converter"
 msgstr "Caminho para Kepubify E-Book Converter"
 
-#: cps/templates/config_edit.html:341
+#: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
 msgstr "Localização do binário Unrar"
 
