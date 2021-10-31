@@ -251,8 +251,8 @@ span.glyphicon.glyphicon-tags {
 }
 
 .cover .read {
-  /*position: relative;
-  top: -20px;*/
+  position: relative;
+  top: -20px;
   /*left: auto;
   right: 2px;*/
   width: 17px;
