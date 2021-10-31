@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-10-29 07:17:17</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-10-30 19:49:15</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-10-29 10:46:29</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-10-30 23:31:02</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 49 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 2 min</p>
         </div>
       </div>
       </div>
@@ -378,11 +378,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestDeleteDatabase</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -392,32 +392,11 @@
 
     
     
-        <tr id="ft5.1" class="none bg-danger">
+        <tr id='pt5.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestDeleteDatabase - test_delete_books_in_database</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft5.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft5.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_delete_database.py&#34;, line 77, in test_delete_books_in_database
-    self.assertEqual(&#34;&#34;, bl[&#39;table&#39;][0][&#39;selector&#39;][&#39;text&#39;])
-AssertionError: &#39;&#39; != &#39;No matching records found&#39;
-+ No matching records found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1240,15 +1219,15 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksList</td>
-        <td class="text-center">10</td>
-        <td class="text-center">9</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 10)">Detail</a>
+            <a onclick="showClassDetail('c12', 18)">Detail</a>
         </td>
     </tr>
 
@@ -1274,7 +1253,7 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
         <tr id='pt12.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1283,7 +1262,7 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
         <tr id='pt12.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1292,7 +1271,7 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
         <tr id='pt12.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1301,7 +1280,7 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
         <tr id='pt12.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1310,6 +1289,78 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
         <tr id='pt12.7' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.15' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -1317,36 +1368,16 @@ AssertionError: &#39;&#39; != &#39;No matching records found&#39;
     
     
     
-        <tr id="ft12.8" class="none bg-danger">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft12.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 287, in test_list_visibility
-    self.assertEqual(9, len(bl[&#39;column_elements&#39;]))
-AssertionError: 9 != 17</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt12.9' class='hiddenRow bg-success'>
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
             </td>
@@ -1355,7 +1386,7 @@ AssertionError: 9 != 17</pre>
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id='pt12.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
@@ -1365,11 +1396,11 @@ AssertionError: 9 != 17</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">19</td>
-        <td class="text-center">1</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1550,31 +1581,11 @@ AssertionError: 9 != 17</pre>
     
     
     
-        <tr id="ft13.20" class="none bg-danger">
+        <tr id='pt13.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.20')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.20" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft13.20').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 928, in test_watch_metadata
-    self.assertNotIn(&#39;series&#39;, book)
-AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5?edit=7a19f85c-19e9-45b0-ba12-3c54b9b88d6d&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1943,12 +1954,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">4</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
-        <td class="text-center">2</td>
+        <td class="text-center">4</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c22', 4)">Detail</a>
@@ -1957,60 +1968,20 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     
     
-        <tr id="et22.1" class="none bg-info">
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelfs</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 278, in test_kobo_sync_selected_shelfs
-    self.assertIn(&#34;NewTag&#34;, data3[2])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et22.2" class="none bg-info">
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 185, in test_sync_changed_book
-    self.assertTrue(&#39;ChangedEntitlement&#39; in data[0][0])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2024,31 +1995,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft22.4" class="none bg-danger">
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft22.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft22.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 200, in test_sync_shelf
-    self.assertEqual(1, len(data[0]))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2950,11 +2901,11 @@ AssertionError: 1 != 0</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestShelf</td>
         <td class="text-center">13</td>
-        <td class="text-center">11</td>
-        <td class="text-center">1</td>
+        <td class="text-center">12</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -2973,31 +2924,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="ft33.2" class="none bg-danger">
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft33.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft33.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft33.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 447, in test_adv_search_shelf
-    self.assertEqual(len(self.adv_search({u&#39;exclude_shelf&#39;: u&#39;Search&#39;, &#39;book_title&#39;: &#39;book&#39;})), 5)
-AssertionError: 0 != 5</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4151,10 +4082,10 @@ AssertionError: 0 != 5</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>358</td>
-        <td>345</td>
-        <td>5</td>
-        <td>2</td>
+        <td>366</td>
+        <td>360</td>
+        <td>0</td>
+        <td>0</td>
         <td>6</td>
         <td>&nbsp;</td>
     </tr>
@@ -4561,7 +4492,7 @@ AssertionError: 0 != 5</pre>
 </div>
 
 <script>
-    drawCircle(345, 5, 2, 6);
+    drawCircle(360, 0, 0, 6);
     showCase(5);
 </script>
 
