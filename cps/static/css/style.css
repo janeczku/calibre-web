@@ -169,9 +169,14 @@ table .bg-dark-danger a { color: #fff; }
     position: static;
 }
 
+.container-fluid .book .cover span .img {
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+}
+
 .container-fluid .book .cover span img {
   border: 1px solid #fff;
-  bottom: 0;
   position: relative;
   height: 100%;
 
@@ -246,8 +251,10 @@ span.glyphicon.glyphicon-tags {
 }
 
 .cover .read {
-  left: auto;
-  right: 2px;
+  position: relative;
+  top: -20px;
+  /*left: auto;
+  right: 2px;*/
   width: 17px;
   height: 17px;
   display: inline-block;
