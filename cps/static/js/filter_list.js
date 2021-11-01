@@ -73,7 +73,7 @@ $("#desc").click(function() {
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
     var index = 0;
@@ -121,7 +121,7 @@ $("#asc").click(function() {
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
     });
     var index = 0;
