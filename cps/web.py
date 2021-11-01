@@ -210,7 +210,7 @@ def toggle_archived(book_id):
 @web.route("/ajax/view", methods=["POST"])
 @login_required_if_no_ano
 def update_view():
-    to_save = request.form.to_dict() # request.get_json()
+    to_save = request.get_json()
     try:
         for element in to_save:
             for param in to_save[element]:
@@ -927,7 +927,7 @@ def series_list():
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                         title=_(u"Series"), page="serieslist", data="series")
+                                         title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
             entries = calibre_db.session.query(db.Books, func.count('books_series_link').label('count')) \
                 .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters()) \
