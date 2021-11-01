@@ -34,13 +34,14 @@ $("#desc").click(function() {
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
     $list.isotope({
         sortBy: "name",
         sortAscending: true
     });
+    direction = 0;
 });
 
 $("#asc").click(function() {
@@ -52,13 +53,14 @@ $("#asc").click(function() {
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
     });
     $list.isotope({
         sortBy: "name",
         sortAscending: false
     });
+    direction = 1;
 });
 
 $("#all").click(function() {
