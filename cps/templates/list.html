@@ -3,6 +3,7 @@
 <h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader hidden-xs">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {% if entries.__len__() and data == 'author' %}
         <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
       {% endif %}
@@ -18,7 +19,6 @@
       </div>
 
       {% if data == "series" %}
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button class="update-view btn btn-primary" data-target="series_view" id="grid-button" data-view="grid">Grid</button>
       {% endif %}
     </div>
