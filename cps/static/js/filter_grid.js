@@ -21,9 +21,10 @@ var $list = $("#list").isotope({
     itemSelector: ".book",
     layoutMode: "fitRows",
     getSortData: {
-        title: ".title",
-    }
+        title: ".title"
+    },
 });
+
 
 $("#desc").click(function() {
     if (direction === 0) {
@@ -37,9 +38,10 @@ $("#desc").click(function() {
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
+    // invert sorting order to make already inverted start order working
     $list.isotope({
         sortBy: "name",
-        sortAscending: true
+        sortAscending: !$list.data('isotope').options.sortAscending
     });
     direction = 0;
 });
@@ -58,7 +60,7 @@ $("#asc").click(function() {
     });
     $list.isotope({
         sortBy: "name",
-        sortAscending: false
+        sortAscending: !$list.data('isotope').options.sortAscending
     });
     direction = 1;
 });
