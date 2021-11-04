@@ -931,8 +931,9 @@ def series_list():
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
-            entries = calibre_db.session.query(db.Books, func.count('books_series_link').label('count')) \
-                .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters()) \
+            entries = calibre_db.session.query(db.Books, func.count('books_series_link').label('count'),
+                                               func.max(db.Books.series_index), db.Books.id) \
+                .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters())\
                 .group_by(text('books_series_link.series')).order_by(order).all()
             charlist = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
