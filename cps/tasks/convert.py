@@ -151,6 +151,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
+                    self._handleError(error_message)
                     return
                 self.results['path'] = cur_book.path
                 self.title = cur_book.title

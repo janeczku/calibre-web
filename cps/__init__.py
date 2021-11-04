@@ -35,6 +35,7 @@ from flask_principal import Principal
 from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
+from .dep_check import dependency_check
 
 try:
     import lxml
@@ -100,6 +101,7 @@ _BABEL_TRANSLATIONS = set()
 
 log = logger.create()
 
+
 from . import services
 
 db.CalibreDB.update_config(config)
@@ -126,7 +128,11 @@ def create_app():
         print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
         web_server.stop(True)
         sys.exit(7)
-
+    for res in dependency_check() + dependency_check(True):
+        log.info('*** "{}" version does not fit the requirements. Should: {}, Found: {}, please consider updating. ***'
+            .format(res['name'],
+                 res['target'],
+                 res['found']))
     app.wsgi_app = ReverseProxied(app.wsgi_app)
 
     if os.environ.get('FLASK_DEBUG'):

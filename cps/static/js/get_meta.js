@@ -28,14 +28,17 @@ $(function () {
 
     function populateForm (book) {
         tinymce.get("description").setContent(book.description);
-        var uniqueTags = [];
+        var uniqueTags = $.map($("#tags").val().split(","), $.trim);
+        if ( uniqueTags.length == 1 && uniqueTags[0] == "") {
+            uniqueTags = [];
+        }
         $.each(book.tags, function(i, el) {
             if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
         });
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
         $("#bookAuthor").val(ampSeparatedAuthors);
         $("#book_title").val(book.title);
-        $("#tags").val(uniqueTags.join(","));
+        $("#tags").val(uniqueTags.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
         if(book.cover !== null){
             $(".cover img").attr("src", book.cover);
