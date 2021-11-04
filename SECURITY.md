@@ -16,14 +16,14 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.7 |Hardcoded secret key for sessions |CVE-2020-12627 |
 | V 0.6.13|Calibre-Web Metadata cross site scripting |CVE-2021-25964|
 | V 0.6.13|Name of Shelves are only visible to users who can access the corresponding shelf Thanks to @ibarrionuevo||
-| V 0.6.13|JavaScript could get executed in the description field. Thanks to @ranjit-git ||
+| V 0.6.13|JavaScript could get executed in the description field. Thanks to @ranjit-git  and Hagai Wechsler (WhiteSource)||
 | V 0.6.13|JavaScript could get executed in a custom column of type "comment" field ||
 | V 0.6.13|JavaScript could get executed after converting a book to another format with a title containing javascript code||
 | V 0.6.13|JavaScript could get executed after converting a book to another format with a username containing javascript code||
 | V 0.6.13|JavaScript could get executed in the description series, categories or publishers title||
 | V 0.6.13|JavaScript could get executed  in the shelf title||
 | V 0.6.13|Login with the old session cookie after logout. Thanks to @ibarrionuevo||
-| V 0.6.14|CSRF was possible. Thanks to @mik317 ||
+| V 0.6.14|CSRF was possible. Thanks to @mik317 and Hagai Wechsler (WhiteSource)  ||
 | V 0.6.14|Cross-Site Scripting vulnerability on typeahead inputs. Thanks to @notdodo||
 
 
