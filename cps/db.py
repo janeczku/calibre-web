@@ -780,7 +780,7 @@ class CalibreDB():
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, offset=None, order=None, limit=None, *join):
-        order = order or [Books.sort]
+        order = order[0] or [Books.sort]
         pagination = None
         result = self.search_query(term, *join).order_by(*order).all()
         result_count = len(result)
