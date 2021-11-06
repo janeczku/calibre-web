@@ -117,7 +117,6 @@ else:
         Jinja2=jinja2.__version__,
         pySqlite = sqlite3.version,
         SQLite = sqlite3.sqlite_version,
-        Unidecode=unidecode_version,
     )
     _VERSIONS.update(ret)
     _VERSIONS.update(uploader.get_versions(False))
