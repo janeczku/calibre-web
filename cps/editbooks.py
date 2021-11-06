@@ -114,7 +114,7 @@ def search_objects_add(db_book_object, db_type, input_elements):
                 type_elements = c_elements.value
             else:
                 type_elements = c_elements.name
-            if inp_element == type_elements:
+            if inp_element.lower() == type_elements.lower():    # Lowercase check
                 found = True
                 break
         if not found:
@@ -503,7 +503,7 @@ def edit_book_languages(languages, book, upload=False, invalid=None):
 
 def edit_book_publisher(publishers, book):
     changed = False
-    if publishers:        
+    if publishers:
         publisher = publishers.rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
             changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,

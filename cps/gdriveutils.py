@@ -36,6 +36,15 @@ from sqlalchemy.exc import OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import text
 
 try:
+    from six import __version__ as six_version
+except ImportError:
+    six_version = "not installed"
+try:
+    from httplib2 import __version__ as httplib2_version
+except ImportError:
+    httplib2_version = "not installed"
+
+try:
     from apiclient import errors
     from httplib2 import ServerNotFoundError
     importError = None
@@ -659,3 +668,8 @@ def get_error_text(client_secrets=None):
         return 'Callback url (redirect url) is missing in client_secrets.json'
     if client_secrets:
         client_secrets.update(filedata['web'])
+
+
+def get_versions():
+    return {'six': six_version,
+            'httplib2': httplib2_version}
