@@ -38,11 +38,7 @@ def load_dependencys(optional=False):
                         except ImportNotFound:
                             if optional:
                                 continue
-                            '''else:
-                                return [{'name':res.group(1),
-                                        'target': "available",
-                                        'found': "Not available"
-                                        }]'''
+                            dep_version = "not installed"
                         deps.append([dep_version, res.group(1), res.group(2), res.group(3), res.group(4), res.group(5)])
     return deps
 
@@ -51,12 +47,19 @@ def dependency_check(optional=False):
     d = list()
     deps = load_dependencys(optional)
     for dep in deps:
-        dep_version_int = [int(x) for x in dep[0].split('.')]
-        low_check = [int(x) for x in dep[3].split('.')]
         try:
+            dep_version_int = [int(x) for x in dep[0].split('.')]
+            low_check = [int(x) for x in dep[3].split('.')]
             high_check = [int(x) for x in dep[5].split('.')]
         except AttributeError:
             high_check = None
+        except ValueError:
+            d.append({'name': dep[1],
+                     'target': "available",
+                     'found': "Not available"
+                     })
+            continue
+
         if dep[2].strip() == "==":
             if dep_version_int != low_check:
                 d.append({'name': dep[1],
