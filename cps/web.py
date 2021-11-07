@@ -637,7 +637,7 @@ def render_language_books(page, name, order):
 
 
 def render_read_books(page, are_read, as_xml=False, order=None):
-    sort = order[0] or []
+    sort = order[0] if order else []
     if not config.config_read_column:
         if are_read:
             db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
@@ -1272,7 +1272,7 @@ def extend_search_term(searchterm,
 
 
 def render_adv_search_results(term, offset=None, order=None, limit=None):
-    sort = order[0] or [db.Books.sort]
+    sort = order[0] if order else [db.Books.sort]
     pagination = None
 
     cc = get_cc_columns(filter_config_custom_read=True)
