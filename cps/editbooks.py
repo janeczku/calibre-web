@@ -171,7 +171,7 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
 def create_objects_for_addition(db_element, add_element, db_type):
     if db_type == 'custom':
         if db_element.value != add_element:
-            db_element.value = add_element  # ToDo: Before new_element, but this is not plausible
+            db_element.value = add_element
     elif db_type == 'languages':
         if db_element.lang_code != add_element:
             db_element.lang_code = add_element
@@ -182,7 +182,7 @@ def create_objects_for_addition(db_element, add_element, db_type):
     elif db_type == 'author':
         if db_element.name != add_element:
             db_element.name = add_element
-            db_element.sort = add_element.replace('|', ',')
+            db_element.sort = helper.get_sorted_author(add_element.replace('|', ','))
     elif db_type == 'publisher':
         if db_element.name != add_element:
             db_element.name = add_element
@@ -376,7 +376,7 @@ def render_edit_book(book_id):
     for lang in book.languages:
         lang.language_name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
 
-    book.authors = calibre_db.order_authors(book)
+    book.authors = calibre_db.order_authors([book])
 
     author_names = []
     for authr in book.authors:
@@ -1286,7 +1286,7 @@ def table_xchange_author_title():
             modif_date = False
             book = calibre_db.get_book(val)
             authors = book.title
-            book.authors = calibre_db.order_authors(book)
+            book.authors = calibre_db.order_authors([book])
             author_names = []
             for authr in book.authors:
                 author_names.append(authr.name.replace('|', ','))

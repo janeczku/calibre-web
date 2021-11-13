@@ -39,7 +39,6 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.orm import joinedload
 from flask_login import current_user
 from flask_babel import gettext as _
 from flask import flash
@@ -759,26 +758,32 @@ class CalibreDB():
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
             log.debug_or_exception(ex)
+        # display authors in right order
+        entries = self.order_authors(entries, True)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
-    def order_authors(self, entry):
-        sort_authors = entry.author_sort.split('&')
-        authors_ordered = list()
-        error = False
-        ids = [a.id for a in entry.authors]
-        for auth in sort_authors:
-            results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
-            # ToDo: How to handle not found authorname
-            if not len(results):
-                error = True
-                break
-            for r in results:
-                if r.id in ids:
-                    authors_ordered.append(r)
-        if not error:
-            entry.authors = authors_ordered
-        return authors_ordered
+    def order_authors(self, entries, list_return=False):
+        for entry in entries:
+            sort_authors = entry.author_sort.split('&')
+            authors_ordered = list()
+            error = False
+            ids = [a.id for a in entry.authors]
+            for auth in sort_authors:
+                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
+                # ToDo: How to handle not found authorname
+                if not len(results):
+                    error = True
+                    break
+                for r in results:
+                    if r.id in ids:
+                        authors_ordered.append(r)
+            if not error:
+                entry.authors = authors_ordered
+        if list_return:
+            return entries
+        else:
+            return authors_ordered
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
@@ -839,10 +844,10 @@ class CalibreDB():
                 ))
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None, *join):
+    def get_search_results(self, term, offset=None, order=None, limit=None, config_read_column=False, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, *join).order_by(*order).all()
+        result = self.search_query(term, config_read_column, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
@@ -853,6 +858,9 @@ class CalibreDB():
             limit_all = result_count
 
         ub.store_combo_ids(result)
+        # ToDo: doesn't work as more than one table returned
+        # entries = self.order_authors(result[offset:limit_all], True)
+
         return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
