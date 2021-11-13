@@ -503,7 +503,7 @@ def edit_book_languages(languages, book, upload=False, invalid=None):
 
 def edit_book_publisher(publishers, book):
     changed = False
-    if publishers:        
+    if publishers:
         publisher = publishers.rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
             changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
@@ -709,6 +709,7 @@ def handle_title_on_edit(book, book_title):
 
 def handle_author_on_edit(book, author_name, update_stored=True):
     # handle author(s)
+    # renamed = False
     input_authors = author_name.split('&')
     input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
     # Remove duplicates in authors list
@@ -716,6 +717,20 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     # we have all author names now
     if input_authors == ['']:
         input_authors = [_(u'Unknown')]  # prevent empty Author
+
+    # ToDo: Falsch es kann auch sein das der 2. Author in der Liste umbenannt wurde,
+    #  man müsste für alle Authoren schauen
+    renamed = list()
+    for in_aut in input_authors:
+        renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
+        if renamed_author and in_aut != renamed_author.name:
+            renamed.append(renamed_author.name)
+            all_books = calibre_db.session.query(db.Books) \
+                .filter(db.Books.authors.any(db.Authors.name == renamed_author.name)).all()
+            sorted_renamed_author = helper.get_sorted_author(renamed_author.name)
+            sorted_old_author = helper.get_sorted_author(in_aut)
+            for one_book in all_books:
+                one_book.author_sort = one_book.author_sort.replace(sorted_renamed_author, sorted_old_author)
 
     change = modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
@@ -733,7 +748,7 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     if book.author_sort != sort_authors and update_stored:
         book.author_sort = sort_authors
         change = True
-    return input_authors, change
+    return input_authors, change, renamed
 
 
 @editbook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
@@ -773,7 +788,7 @@ def edit_book(book_id):
         # handle book title
         title_change = handle_title_on_edit(book, to_save["book_title"])
 
-        input_authors, authorchange = handle_author_on_edit(book, to_save["author_name"])
+        input_authors, authorchange, renamed = handle_author_on_edit(book, to_save["author_name"])
         if authorchange or title_change:
             edited_books_id = book.id
             modif_date = True
@@ -783,7 +798,8 @@ def edit_book(book_id):
 
         error = False
         if edited_books_id:
-            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
+            error = helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
+                                               renamed_author=renamed)
 
         if not error:
             if "cover_url" in to_save:
@@ -1096,6 +1112,7 @@ def table_get_custom_enum(c_id):
     cc = (calibre_db.session.query(db.Custom_Columns)
               .filter(db.Custom_Columns.id == c_id)
               .filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).one_or_none())
+    ret.append({'value': "", 'text': ""})
     for idx, en in enumerate(cc.get_display_dict()['enum_values']):
         ret.append({'value': en, 'text': en})
     return json.dumps(ret)
@@ -1144,7 +1161,7 @@ def edit_list_book(param):
     elif param == 'title':
         sort = book.sort
         handle_title_on_edit(book, vals.get('value', ""))
-        helper.update_dir_stucture(book.id, config.config_calibre_dir)
+        helper.update_dir_structure(book.id, config.config_calibre_dir)
         ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
                        mimetype='application/json')
     elif param =='sort':
@@ -1156,8 +1173,8 @@ def edit_list_book(param):
         ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
                        mimetype='application/json')
     elif param =='authors':
-        input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
-        helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
+        input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
+        helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0], renamed_author=renamed)
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
@@ -1275,7 +1292,7 @@ def table_xchange_author_title():
                 author_names.append(authr.name.replace('|', ','))
 
             title_change = handle_title_on_edit(book, " ".join(author_names))
-            input_authors, authorchange = handle_author_on_edit(book, authors)
+            input_authors, authorchange, renamed = handle_author_on_edit(book, authors)
             if authorchange or title_change:
                 edited_books_id = book.id
                 modif_date = True
@@ -1284,7 +1301,8 @@ def table_xchange_author_title():
                 gdriveutils.updateGdriveCalibreFromLocal()
 
             if edited_books_id:
-                helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
+                helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
+                                           renamed_author=renamed)
             if modif_date:
                 book.last_modified = datetime.utcnow()
             try:

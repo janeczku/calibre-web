@@ -334,9 +334,22 @@ def delete_book_file(book, calibrepath, book_format=None):
                    id=book.id,
                    path=book.path)
 
+# was muss gemacht werden:
+# Die Autorennamen müssen separiert werden und von dupletten bereinigt werden.
+# Es muss geprüft werden:
+# - ob es die alten Autoren mit dem letzten Buch verknüpft waren, dann müssen sie gelöscht werden
+# - ob es neue Autoren sind, dann müssen sie angelegt werden -> macht modify_database_object
+# - ob es bestehende Autoren sind welche umbenannt wurden -> Groß Kleinschreibung, dann muss:
+# für jedes Buch und jeder Autor welcher umbenannt wurde:
+#   - Autorensortierung angepasst werden
+#   - Pfad im Buch angepasst werden
+#   - Dateiname in Datatabelle angepasst werden, sowie die Dateien umbenannt werden
+#   - Dateipfade Autor umbenannt werden
+# die letzten Punkte treffen auch zu wenn es sich um einen normalen Autoränderungsvorgang handelt kann man also generell
+# behandeln
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
-def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename):
+def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename, renamed_author):
     # get book database entry from id, if original path overwrite source with original_filepath
     localbook = calibre_db.get_book(book_id)
     if orignal_filepath:
@@ -352,21 +365,32 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
     # Create new titledir from database and add id
     if first_author:
         new_authordir = get_valid_filename(first_author)
+        for r in renamed_author:
+            if first_author.lower() == r.lower():
+                try:
+                    new_author_path = os.path.join(calibrepath, new_authordir)
+                    old_author_path = os.path.join(calibrepath, r)
+                    shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
+                except (OSError) as ex:
+                    log.error("Rename author from: %s to %s: %s", r, new_authordir, ex)
+                    log.debug(ex, exc_info=True)
+                    return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                             src=old_author_path, dest=new_author_path, error=str(ex))
     else:
         new_authordir = get_valid_filename(localbook.authors[0].name)
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir or authordir != new_authordir or orignal_filepath:
         new_path = os.path.join(calibrepath, new_authordir, new_titledir)
-        new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
+        new_name = get_valid_filename(localbook.title) + ' - ' + new_authordir
         try:
             if orignal_filepath:
                 if not os.path.isdir(new_path):
                     os.makedirs(new_path)
                 shutil.move(os.path.normcase(path), os.path.normcase(os.path.join(new_path, db_filename)))
                 log.debug("Moving title: %s to %s/%s", path, new_path, new_name)
-                # Check new path is not valid path
             else:
+                # Check new path is not valid path
                 if not os.path.exists(new_path):
                     # move original path to new path
                     log.debug("Moving title: %s to %s", path, new_path)
@@ -379,8 +403,6 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                             shutil.move(os.path.normcase(os.path.join(dir_name, file)),
                                             os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
                             # os.unlink(os.path.normcase(os.path.join(dir_name, file)))
-            # change location in database to new author/title path
-            localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
         except (OSError) as ex:
             log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
@@ -389,15 +411,23 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
 
         # Rename all files from old names to new names
         try:
-            for file_format in localbook.data:
-                shutil.move(os.path.normcase(
-                    os.path.join(new_path, file_format.name + '.' + file_format.format.lower())),
-                    os.path.normcase(os.path.join(new_path, new_name + '.' + file_format.format.lower())))
-                file_format.name = new_name
-            if not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
+            all_books = calibre_db.session.query(db.Books)\
+                .filter(db.Books.authors.any(db.Authors.name == renamed_author)).all()
+            for book in all_books:
+                all_titledir = book.path.split('/')[1]
+                all_new_path = os.path.join(calibrepath, new_authordir, all_titledir)
+                all_new_name = get_valid_filename(book.title) + ' - ' + new_authordir
+                # change location in database to new author/title path
+                book.path = os.path.join(new_authordir, all_titledir).replace('\\', '/')
+                for file_format in book.data:
+                    shutil.move(os.path.normcase(
+                        os.path.join(all_new_path, file_format.name + '.' + file_format.format.lower())),
+                        os.path.normcase(os.path.join(all_new_path, all_new_name + '.' + file_format.format.lower())))
+                    file_format.name = all_new_name
+            if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
                 shutil.rmtree(os.path.dirname(path))
         except (OSError) as ex:
-            log.error("Rename file in path %s to %s: %s", new_path, new_name, ex)
+            log.error("Rename file in path %s to %s: %s", all_new_path, all_new_name, ex)
             log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=new_path, dest=new_name, error=str(ex))
@@ -528,11 +558,21 @@ def valid_email(email):
 # ################################# External interface #################################
 
 
-def update_dir_stucture(book_id, calibrepath, first_author=None, orignal_filepath=None, db_filename=None):
+def update_dir_structure(book_id,
+                        calibrepath,
+                        first_author=None,
+                        orignal_filepath=None,
+                        db_filename=None,
+                        renamed_author=False):
     if config.config_use_google_drive:
+        # ToDo: rename author on gdrive
         return update_dir_structure_gdrive(book_id, first_author)
     else:
-        return update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename)
+        return update_dir_structure_file(book_id,
+                                         calibrepath,
+                                         first_author,
+                                         orignal_filepath,
+                                         db_filename, renamed_author)
 
 
 def delete_book(book, calibrepath, book_format):

@@ -33,8 +33,9 @@ try:
 except ImportError:
     flaskwtf_version = _(u'not installed')
 
-from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
+from . import db, calibre_db, converter, uploader, server, isoLanguages, constants, gdriveutils, dep_check
 from .render_template import render_title_template
+
 try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:
@@ -67,38 +68,58 @@ from . import services
 
 about = flask.Blueprint('about', __name__)
 
+ret = dict()
+req = dep_check.load_dependencys(False)
+opt = dep_check.load_dependencys(True)
+for i in (req + opt):
+    ret[i[1]] = i[0]
 
-_VERSIONS = OrderedDict(
-    Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
-    Python=sys.version,
-    Calibre_Web=constants.STABLE_VERSION['version'] + ' - '
-                + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
-                + constants.NIGHTLY_VERSION[1].replace('%','%%'),
-    WebServer=server.VERSION,
-    Flask=flask.__version__,
-    Flask_Login=flask_loginVersion,
-    Flask_Principal=flask_principal.__version__,
-    Flask_WTF=flaskwtf_version,
-    Werkzeug=werkzeug.__version__,
-    Babel=babel.__version__,
-    Jinja2=jinja2.__version__,
-    Requests=requests.__version__,
-    SqlAlchemy=sqlalchemy.__version__,
-    pySqlite=sqlite3.version,
-    SQLite=sqlite3.sqlite_version,
-    iso639=isoLanguages.__version__,
-    pytz=pytz.__version__,
-    Unidecode=unidecode_version,
-    Scholarly=scholarly_version,
-    Flask_SimpleLDAP=u'installed' if bool(services.ldap) else None,
-    python_LDAP=services.ldapVersion if bool(services.ldapVersion) else None,
-    Goodreads=u'installed' if bool(services.goodreads_support) else None,
-    jsonschema=services.SyncToken.__version__ if bool(services.SyncToken) else None,
-    flask_dance=flask_danceVersion,
-    greenlet=greenlet_Version
-)
-_VERSIONS.update(uploader.get_versions())
-
+if not ret:
+    _VERSIONS = OrderedDict(
+        Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
+        Python=sys.version,
+        Calibre_Web=constants.STABLE_VERSION['version'] + ' - '
+                    + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
+                    + constants.NIGHTLY_VERSION[1].replace('%','%%'),
+        WebServer=server.VERSION,
+        Flask=flask.__version__,
+        Flask_Login=flask_loginVersion,
+        Flask_Principal=flask_principal.__version__,
+        Flask_WTF=flaskwtf_version,
+        Werkzeug=werkzeug.__version__,
+        Babel=babel.__version__,
+        Jinja2=jinja2.__version__,
+        Requests=requests.__version__,
+        SqlAlchemy=sqlalchemy.__version__,
+        pySqlite=sqlite3.version,
+        SQLite=sqlite3.sqlite_version,
+        iso639=isoLanguages.__version__,
+        pytz=pytz.__version__,
+        Unidecode=unidecode_version,
+        Scholarly=scholarly_version,
+        Flask_SimpleLDAP=u'installed' if bool(services.ldap) else None,
+        python_LDAP=services.ldapVersion if bool(services.ldapVersion) else None,
+        Goodreads=u'installed' if bool(services.goodreads_support) else None,
+        jsonschema=services.SyncToken.__version__ if bool(services.SyncToken) else None,
+        flask_dance=flask_danceVersion,
+        greenlet=greenlet_Version
+    )
+    _VERSIONS.update(gdriveutils.get_versions())
+    _VERSIONS.update(uploader.get_versions(True))
+else:
+    _VERSIONS = OrderedDict(
+        Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
+        Python = sys.version,
+        Calibre_Web = constants.STABLE_VERSION['version'] + ' - '
+                      + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
+                      + constants.NIGHTLY_VERSION[1].replace('%', '%%'),
+        Werkzeug = werkzeug.__version__,
+        Jinja2=jinja2.__version__,
+        pySqlite = sqlite3.version,
+        SQLite = sqlite3.sqlite_version,
+    )
+    _VERSIONS.update(ret)
+    _VERSIONS.update(uploader.get_versions(False))
 
 def collect_stats():
     _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
@@ -115,5 +136,3 @@ def stats():
     series = calibre_db.session.query(db.Series).count()
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=collect_stats(),
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
-
-

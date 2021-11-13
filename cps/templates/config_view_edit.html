@@ -95,17 +95,21 @@
           <input type="checkbox" name="viewer_role" id="viewer_role" {% if conf.role_viewer() %}checked{% endif %}>
           <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
         </div>
+      {% if config.config_upload %}
         <div class="form-group">
           <input type="checkbox" name="upload_role" id="upload_role" {% if conf.role_upload() %}checked{% endif %}>
           <label for="upload_role">{{_('Allow Uploads')}}</label>
         </div>
+      {% endif %}
         <div class="form-group">
-          <input type="checkbox" name="edit_role" id="edit_role" {% if conf.role_edit() %}checked{% endif %}>
+          <input type="checkbox" name="edit_role" data-control="edit_settings" id="edit_role" {% if conf.role_edit() %}checked{% endif %}>
           <label for="edit_role">{{_('Allow Edit')}}</label>
         </div>
-        <div class="form-group">
-          <input type="checkbox" name="delete_role" id="delete_role" {% if conf.role_delete_books() %}checked{% endif %}>
-          <label for="delete_role">{{_('Allow Delete Books')}}</label>
+        <div data-related="edit_settings">
+          <div class="form-group">
+            <input type="checkbox" name="delete_role" id="delete_role" {% if conf.role_delete_books() %}checked{% endif %}>
+            <label for="delete_role">{{_('Allow Delete Books')}}</label>
+          </div>
         </div>
         <div class="form-group">
           <input type="checkbox" name="passwd_role" id="passwd_role" {% if conf.role_passwd() %}checked{% endif %}>

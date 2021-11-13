@@ -13,7 +13,7 @@
       {% if entries.__len__() %}
       <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Arrange books manually') }} </a>
       <button id="toggle_order_shelf" type="button" data-alt-text="{{ _('Disable Change order') }}" class="btn btn-primary">{{ _('Enable Change order') }}</button>
-        <div class="filterheader hidden-xs hidden-sm">
+        <div class="filterheader hidden-xs">
           <a data-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
           <a data-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
           <a data-toggle="tooltip" title="{{_('Sort title in alphabetical order')}}" id="asc" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>

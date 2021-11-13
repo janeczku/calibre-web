@@ -19,6 +19,7 @@ var direction = $("#asc").data('order');  // 0=Descending order; 1= ascending or
 var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {
+    $("#sort_name").toggleClass("active");
     var className = $("h1").attr("Class") + "_sort_name";
     var obj = {};
     obj[className] = sort;
@@ -68,12 +69,15 @@ $("#desc").click(function() {
     if (direction === 0) {
         return;
     }
+    $("#asc").removeClass("active");
+    $("#desc").addClass("active");
+
     var page = $(this).data("id");
     $.ajax({
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
     var index = 0;
@@ -112,16 +116,18 @@ $("#desc").click(function() {
 
 
 $("#asc").click(function() {
-
     if (direction === 1) {
         return;
     }
+    $("#desc").removeClass("active");
+    $("#asc").addClass("active");
+
     var page = $(this).data("id");
     $.ajax({
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        url: window.location.pathname + "/../../ajax/view",
+        url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
     });
     var index = 0;
@@ -159,6 +165,8 @@ $("#asc").click(function() {
 });
 
 $("#all").click(function() {
+    $("#all").addClass("active");
+    $(".char").removeClass("active");
     var cnt = $("#second").contents();
     $("#list").append(cnt);
     // Find count of middle element
@@ -176,6 +184,9 @@ $("#all").click(function() {
 });
 
 $(".char").click(function() {
+    $(".char").removeClass("active");
+    $(this).addClass("active");
+    $("#all").removeClass("active");
     var character = this.innerText;
     var count = 0;
     var index = 0;
