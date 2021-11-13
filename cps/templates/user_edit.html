@@ -101,29 +101,33 @@
       <input type="checkbox" name="viewer_role" id="viewer_role" {% if content.role_viewer() %}checked{% endif %}>
       <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
     </div>
+    {% if config.config_upload %}
     <div class="form-group">
       <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
       <label for="upload_role">{{_('Allow Uploads')}}</label>
     </div>
+    {% endif %}
     <div class="form-group">
-      <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
+      <input type="checkbox" name="edit_role" data-control="edit_settings" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
       <label for="edit_role">{{_('Allow Edit')}}</label>
     </div>
-    <div class="form-group">
-      <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
-      <label for="delete_role">{{_('Allow Delete Books')}}</label>
+    <div data-related="edit_settings">
+      <div class="form-group">
+        <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
+        <label for="delete_role">{{_('Allow Delete Books')}}</label>
+      </div>
     </div>
-      {% if not content.role_anonymous() %}
-        <div class="form-group">
-          <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
-          <label for="passwd_role">{{_('Allow Changing Password')}}</label>
-        </div>
-        <div class="form-group">
-          <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
-          <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
-        </div>
-      {% endif %}
+    {% if not content.role_anonymous() %}
+      <div class="form-group">
+        <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
+        <label for="passwd_role">{{_('Allow Changing Password')}}</label>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
+        <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
+      </div>
     {% endif %}
+  {% endif %}
     {% if kobo_support and not content.role_anonymous() %}
     <div class="form-group">
       <input type="checkbox" name="kobo_only_shelves_sync" id="kobo_only_shelves_sync" {% if content.kobo_only_shelves_sync %}checked{% endif %}>

@@ -652,6 +652,9 @@ function singlecheckboxFormatter(value, row){
 }
 
 function ratingFormatter(value, row) {
+    if (value == 0) {
+        return "";
+    }
     return (value/2);
 }
 
