@@ -543,7 +543,6 @@ def render_author_books(page, author_id, order):
     if services.goodreads_support and config.config_use_goodreads:
         author_info = services.goodreads_support.get_author_info(author_name)
         other_books = services.goodreads_support.get_other_books(author_info, entries)
-
     return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
                                  title=_(u"Author: %(name)s", name=author_name), author=author_info,
                                  other_books=other_books, page="author", order=order[1])
@@ -753,7 +752,12 @@ def render_prepare_search_form(cc):
 
 def render_search_results(term, offset=None, order=None, limit=None):
     join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit, *join)
+    entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                      offset,
+                                                                      order,
+                                                                      limit,
+                                                                      config.config_read_column,
+                                                                      *join)
     return render_title_template('search.html',
                                  searchterm=term,
                                  pagination=pagination,
@@ -832,7 +836,7 @@ def list_books():
     total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(False)).count()
     if state is not None:
         if search:
-            books = calibre_db.search_query(search).all()
+            books = calibre_db.search_query(search, config.config_read_column).all()
             filtered_count = len(books)
         else:
             if not config.config_read_column:
@@ -1424,10 +1428,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     else:
         offset = 0
         limit_all = result_count
+    entries = calibre_db.order_authors(q[offset:limit_all], True)
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
-                                 entries=q[offset:limit_all],
+                                 entries=entries,
                                  result_count=result_count,
                                  title=_(u"Advanced Search"), page="advsearch",
                                  order=order[1])
@@ -1830,7 +1835,7 @@ def show_book(book_id):
 
         entry.tags = sort(entry.tags, key=lambda tag: tag.name)
 
-        entry.authors = calibre_db.order_authors(entry)
+        entry.authors = calibre_db.order_authors([entry])
 
         entry.kindle_list = check_send_to_kindle(entry)
         entry.reader_list = check_read_formats(entry)

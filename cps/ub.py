@@ -83,6 +83,8 @@ def signal_store_user_session(object, user):
     store_user_session()
 
 def store_user_session():
+    if flask_session.get('user_id', ""):
+        flask_session['_user_id'] = flask_session.get('user_id', "")
     if flask_session.get('_user_id', ""):
         try:
             if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):

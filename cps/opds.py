@@ -20,23 +20,21 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import datetime
+from urllib.parse import unquote_plus
 from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from werkzeug.security import check_password_hash
-
+from tornado.httputil import HTTPServerRequest
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 
 opds = Blueprint('opds', __name__)
 
@@ -84,10 +82,12 @@ def feed_osd():
 
 
 @opds.route("/opds/search", defaults={'query': ""})
-@opds.route("/opds/search/<query>")
+@opds.route("/opds/search/<path:query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
-    return feed_search(query.strip())
+    # Handle strange query from Libera Reader with + instead of spaces
+    plus_query = unquote_plus(request.base_url.split('/opds/search/')[1]).strip()
+    return feed_search(plus_query)
 
 
 @opds.route("/opds/search", methods=["GET"])
@@ -527,7 +527,7 @@ def get_metadata_calibre_companion(uuid, library):
 
 def feed_search(term):
     if term:
-        entries, __, ___ = calibre_db.get_search_results(term)
+        entries, __, ___ = calibre_db.get_search_results(term, config_read_column=config.config_read_column)
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
