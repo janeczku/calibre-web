@@ -16,7 +16,7 @@
             <th>{{_('Downloads')}}</th>
             <th class="hidden-xs ">{{_('Admin')}}</th>
             <th class="hidden-xs hidden-sm">{{_('Password')}}</th>
-          {% if config.config_upload %}
+          {% if config.config_uploading %}
             <th class="hidden-xs hidden-sm">{{_('Upload')}}</th>
           {%  endif %}
             <th class="hidden-xs hidden-sm">{{_('Download')}}</th>
@@ -34,7 +34,7 @@
             <td>{{user.downloads.count()}}</td>
             <td class="hidden-xs">{{ display_bool_setting(user.role_admin()) }}</td>
             <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_passwd()) }}</td>
-            {% if config.config_upload %}
+            {% if config.config_uploading %}
             <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_upload()) }}</td>
             {%  endif %}
             <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_download()) }}</td>
