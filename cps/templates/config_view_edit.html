@@ -95,7 +95,7 @@
           <input type="checkbox" name="viewer_role" id="viewer_role" {% if conf.role_viewer() %}checked{% endif %}>
           <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
         </div>
-      {% if config.config_upload %}
+      {% if conf.config_uploading %}
         <div class="form-group">
           <input type="checkbox" name="upload_role" id="upload_role" {% if conf.role_upload() %}checked{% endif %}>
           <label for="upload_role">{{_('Allow Uploads')}}</label>
