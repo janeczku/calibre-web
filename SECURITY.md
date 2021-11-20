@@ -23,7 +23,7 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.13|JavaScript could get executed in the description series, categories or publishers title||
 | V 0.6.13|JavaScript could get executed  in the shelf title||
 | V 0.6.13|Login with the old session cookie after logout. Thanks to @ibarrionuevo||
-| V 0.6.14|CSRF was possible. Thanks to @mik317 and Hagai Wechsler (WhiteSource)  ||
+| V 0.6.14|CSRF was possible. Thanks to @mik317 and Hagai Wechsler (WhiteSource)  |CVE-2021-25965|
 | V 0.6.14|Cross-Site Scripting vulnerability on typeahead inputs. Thanks to @notdodo||
 
 
