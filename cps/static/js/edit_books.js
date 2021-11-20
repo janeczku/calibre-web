@@ -248,7 +248,7 @@ $("#btn-upload-format").on("change", function () {
     if (filename.substring(3, 11) === "fakepath") {
         filename = filename.substring(12);
     } // Remove c:\fake at beginning from localhost chrome
-    $("#upload-format").html(filename);
+    $("#upload-format").text(filename);
 });
 
 $("#btn-upload-cover").on("change", function () {
@@ -256,7 +256,7 @@ $("#btn-upload-cover").on("change", function () {
     if (filename.substring(3, 11) === "fakepath") {
         filename = filename.substring(12);
     } // Remove c:\fake at beginning from localhost chrome
-    $("#upload-cover").html(filename);
+    $("#upload-cover").text(filename);
 });
 
 $("#xchange").click(function () {
