@@ -339,7 +339,7 @@ def get_matching_tags():
 
 
 def get_sort_function(sort, data):
-    order = [db.Books.sort]
+    order = [db.Books.timestamp.desc()]
     if sort == 'stored':
         sort = current_user.get_view_property(data, 'stored')
     else:
@@ -369,7 +369,7 @@ def get_sort_function(sort, data):
     if sort == 'hotasc':
         order = [func.count(ub.Downloads.book_id).asc()]
     if sort is None:
-        sort = "abc"
+        sort = "new"
     return order, sort
 
 

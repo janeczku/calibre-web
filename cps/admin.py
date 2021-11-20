@@ -1348,7 +1348,9 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
             raise Exception(_(u"E-mail is not from valid domain"))
     except Exception as ex:
         flash(str(ex), category="error")
-        return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+        return render_title_template("user_edit.html", new_user=1, content=content,
+                                     config=config,
+                                     translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
@@ -1463,6 +1465,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                          kobo_support=kobo_support,
                                          new_user=0,
                                          content=content,
+                                         config=config,
                                          registered_oauth=oauth_check,
                                          title=_(u"Edit User %(nick)s", nick=content.name),
                                          page="edituser")
@@ -1496,7 +1499,8 @@ def new_user():
         content.sidebar_view = config.config_default_show
         content.locale = config.config_default_locale
         content.default_language = config.config_default_language
-    return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+    return render_title_template("user_edit.html", new_user=1, content=content,
+                                 config=config, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
@@ -1584,6 +1588,7 @@ def edit_user(user_id):
                                  languages=languages,
                                  new_user=0,
                                  content=content,
+                                 config=config,
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
