@@ -224,8 +224,13 @@ def remove_from_shelf(shelf_id, book_id):
 @shelf.route("/shelf/create", methods=["GET", "POST"])
 @login_required
 def create_shelf():
-    shelf = ub.Shelf()
-    return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
+    if not current_user.role_edit_shelfs() and request.method == 'POST':
+        flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
+        return redirect(url_for('web.index'))
+    else:
+        shelf = ub.Shelf()
+        return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
+
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
