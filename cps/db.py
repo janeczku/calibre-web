@@ -807,15 +807,6 @@ class CalibreDB():
                 .group_by(text('books_languages_link.lang_code')).all()
         for lang in languages:
             lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-            #try:
-            #    if lang.lang_code.lower() == "und":
-            #        lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-            #        # lang.name = _("Undetermined")
-            #    else:
-            #        cur_l = LC.parse(lang.lang_code)
-            #        lang.name = cur_l.get_language_name(get_locale())
-            #except UnknownLocaleError:
-            #    lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         return languages
 
     def update_title_sort(self, config, conn=None):
