@@ -1575,7 +1575,7 @@ def edit_user(user_id):
     if not content or (not config.config_anonbrowse and content.name == "Guest"):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
-    languages = calibre_db.speaking_language()
+    languages = calibre_db.speaking_language(return_all_languages=True)
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
