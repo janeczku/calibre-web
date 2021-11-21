@@ -114,7 +114,7 @@ def search_objects_add(db_book_object, db_type, input_elements):
                 type_elements = c_elements.value
             else:
                 type_elements = c_elements.name
-            if inp_element.lower() == type_elements.lower():    # Lowercase check
+            if inp_element == type_elements:
                 found = True
                 break
         if not found:
