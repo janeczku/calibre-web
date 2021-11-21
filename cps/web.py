@@ -1059,30 +1059,25 @@ def formats_list():
 @web.route("/language")
 @login_required_if_no_ano
 def language_overview():
-    if current_user.check_visibility(constants.SIDEBAR_LANGUAGE):
-        charlist = list()
-        if current_user.filter_language() == u"all":
-            languages = calibre_db.speaking_language()
-            # ToDo: generate first character list for languages
+    if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
+        if current_user.get_view_property('language', 'dir') == 'desc':
+            order = db.Languages.lang_code.desc()
+            order_no = 0
         else:
-            #try:
-            #    cur_l = LC.parse(current_user.filter_language())
-            #except UnknownLocaleError:
-            #    cur_l = None
-
-            languages = calibre_db.session.query(db.Languages).filter(
-                db.Languages.lang_code == current_user.filter_language()).all()
-            languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].name.lang_code)
-            #if cur_l:
-            #    languages[0].name = cur_l.get_language_name(get_locale())
-            #else:
-            #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+            order = db.Languages.lang_code.asc()
+            order_no = 1
+        charlist = list()
+        languages = calibre_db.speaking_language(reverse_order=not order_no)
+        for lang in languages:
+            upper_lang = lang.name[0].upper()
+            if upper_lang not in charlist:
+                charlist.append(upper_lang)
         lang_counter = calibre_db.session.query(db.books_languages_link,
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
                                      charlist=charlist, title=_(u"Languages"), page="langlist",
-                                     data="language")
+                                     data="language", order=order_no)
     else:
         abort(404)
 
