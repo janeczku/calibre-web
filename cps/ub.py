@@ -62,27 +62,13 @@ searched_ids = {}
 
 logged_in = dict()
 
-def store_user_session():
-    if flask_session.get('_user_id', ""):
-        if logged_in.get(flask_session.get('_user_id', "")):
-            logged_in[flask_session.get('_user_id', "")].append(flask_session.get('_id', ""))
-        else:
-            logged_in[flask_session.get('_user_id', "")] = [flask_session.get('_id', "")]
-        log.info(flask_session.get('_id', ""))
-
-def delete_user_session(user_id, session_key):
-    try:
-        logged_in.get(str(user_id), []).remove(session_key)
-    except ValueError:
-        pass
-
-def check_user_session(user_id, session_key):
-    return session_key in logged_in.get(str(user_id), [])
 
 def signal_store_user_session(object, user):
     store_user_session()
 
 def store_user_session():
+    if flask_session.get('user_id', ""):
+        flask_session['_user_id'] = flask_session.get('user_id', "")
     if flask_session.get('_user_id', ""):
         try:
             if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):

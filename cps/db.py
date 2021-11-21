@@ -612,7 +612,7 @@ class CalibreDB():
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
 
     # Language and content filters for displaying in the UI
-    def common_filters(self, allow_show_archived=False):
+    def common_filters(self, allow_show_archived=False, return_all_languages=False):
         if not allow_show_archived:
             archived_books = (
                 ub.session.query(ub.ArchivedBook)
@@ -625,10 +625,10 @@ class CalibreDB():
         else:
             archived_filter = true()
 
-        if current_user.filter_language() != "all":
-            lang_filter = Books.languages.any(Languages.lang_code == current_user.filter_language())
-        else:
+        if current_user.filter_language() == "all" or return_all_languages:
             lang_filter = true()
+        else:
+            lang_filter = Books.languages.any(Languages.lang_code == current_user.filter_language())
         negtags_list = current_user.list_denied_tags()
         postags_list = current_user.list_allowed_tags()
         neg_content_tags_filter = false() if negtags_list == [''] else Books.tags.any(Tags.name.in_(negtags_list))
@@ -796,18 +796,19 @@ class CalibreDB():
         return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
-    def speaking_language(self, languages=None):
+    def speaking_language(self, languages=None, return_all_languages=False, reverse_order=False):
         from . import get_locale
 
         if not languages:
             languages = self.session.query(Languages) \
                 .join(books_languages_link) \
                 .join(Books) \
-                .filter(self.common_filters()) \
+                .filter(self.common_filters(return_all_languages=return_all_languages)) \
                 .group_by(text('books_languages_link.lang_code')).all()
         for lang in languages:
             lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-        return languages
+        return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
+
 
     def update_title_sort(self, config, conn=None):
         # user defined sort function for calibre databases (Series, etc.)
