@@ -142,9 +142,6 @@ def HandleSyncRequest():
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
-    # TODO: Limit the number of books return per sync call, and rely on the sync-continuatation header
-    # instead so that the device triggers another sync.
-
     new_books_last_modified = sync_token.books_last_modified
     new_books_last_created = sync_token.books_last_created
     new_reading_state_last_modified = sync_token.reading_state_last_modified
