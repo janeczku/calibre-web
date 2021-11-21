@@ -63,7 +63,7 @@ log = logger.create()
 
 try:
     from wand.image import Image
-    from wand.exceptions import MissingDelegateError
+    from wand.exceptions import MissingDelegateError, BlobError
     use_IM = True
 except (ImportError, RuntimeError) as e:
     log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
@@ -697,13 +697,17 @@ def save_cover(img, book_path):
             return False, _("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
         if content_type != 'image/jpg':
-            if hasattr(img, 'stream'):
-                imgc = Image(blob=img.stream)
-            else:
-                imgc = Image(blob=io.BytesIO(img.content))
-            imgc.format = 'jpeg'
-            imgc.transform_colorspace("rgb")
-            img = imgc
+            try:
+                if hasattr(img, 'stream'):
+                    imgc = Image(blob=img.stream)
+                else:
+                    imgc = Image(blob=io.BytesIO(img.content))
+                imgc.format = 'jpeg'
+                imgc.transform_colorspace("rgb")
+                img = imgc
+            except BlobError:
+                log.error("Invalid cover file content")
+                return False, _("Invalid cover file content")
     else:
         if content_type not in 'image/jpeg':
             log.error("Only jpg/jpeg files are supported as coverfile")
