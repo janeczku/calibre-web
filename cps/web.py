@@ -831,7 +831,7 @@ def list_books():
             books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order)
     elif search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search, off, order, limit, *join)
+        entries, filtered_count, __ = calibre_db.get_search_results(search, off, [order,''], limit, *join)
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order, *join)
 
