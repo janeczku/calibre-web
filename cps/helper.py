@@ -646,7 +646,7 @@ def save_cover(img, book_path):
                 imgc.format = 'jpeg'
                 imgc.transform_colorspace("rgb")
                 img = imgc
-            except BlobError:
+            except (BlobError, MissingDelegateError):
                 log.error("Invalid cover file content")
                 return False, _("Invalid cover file content")
     else:
