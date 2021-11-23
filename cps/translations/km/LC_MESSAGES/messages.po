@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-11-21 09:26+0100\n"
+"POT-Creation-Date: 2021-11-23 19:29+0100\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.8.0\n"
+"Generated-By: Babel 2.9.0\n"
 
 #: cps/about.py:34 cps/about.py:49 cps/about.py:65 cps/converter.py:31
 msgid "not installed"
@@ -72,7 +72,8 @@ msgid "Edit Users"
 msgstr "អ្នកប្រើប្រាស់រដ្ឋបាល"
 
 #: cps/admin.py:318 cps/opds.py:109 cps/opds.py:198 cps/opds.py:275
-#: cps/opds.py:327 cps/templates/grid.html:13 cps/templates/list.html:13
+#: cps/opds.py:327 cps/templates/grid.html:13 cps/templates/languages.html:9
+#: cps/templates/list.html:13
 msgid "All"
 msgstr ""
 
@@ -274,7 +275,7 @@ msgstr ""
 
 #: cps/admin.py:1176 cps/admin.py:1278 cps/admin.py:1375 cps/admin.py:1482
 #: cps/admin.py:1551 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
-#: cps/shelf.py:275 cps/shelf.py:336 cps/shelf.py:371 cps/shelf.py:446
+#: cps/shelf.py:274 cps/shelf.py:335 cps/shelf.py:370 cps/shelf.py:445
 msgid "Settings DB is not Writeable"
 msgstr ""
 
@@ -304,7 +305,7 @@ msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្
 msgid "Database Configuration"
 msgstr "ការកំណត់មុខងារ"
 
-#: cps/admin.py:1340 cps/web.py:1497
+#: cps/admin.py:1340 cps/web.py:1492
 msgid "Please fill out all fields!"
 msgstr "សូមបំពេញចន្លោះទាំងអស់!"
 
@@ -348,7 +349,7 @@ msgstr "កែប្រែអ្នកប្រើប្រាស់ %(nick)s"
 msgid "User '%(nick)s' updated"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានកែប្រែ"
 
-#: cps/admin.py:1478 cps/admin.py:1610 cps/web.py:1522 cps/web.py:1585
+#: cps/admin.py:1478 cps/admin.py:1610 cps/web.py:1517 cps/web.py:1580
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
@@ -383,7 +384,7 @@ msgstr ""
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:1613 cps/web.py:1462
+#: cps/admin.py:1613 cps/web.py:1457
 msgid "Please configure the SMTP mail settings first..."
 msgstr "សូមកំណត់អ៊ីមែល SMTP ជាមុនសិន"
 
@@ -481,7 +482,7 @@ msgstr ""
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:651 cps/web.py:672 cps/web.py:1173
+#: cps/db.py:651 cps/web.py:672 cps/web.py:1168
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr ""
@@ -494,8 +495,8 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:373 cps/editbooks.py:760 cps/web.py:528 cps/web.py:1724
-#: cps/web.py:1765 cps/web.py:1832
+#: cps/editbooks.py:373 cps/editbooks.py:760 cps/web.py:528 cps/web.py:1719
+#: cps/web.py:1760 cps/web.py:1827
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr ""
 
@@ -532,7 +533,7 @@ msgstr "មិនអាចបង្កើតទីតាំង %(path)s (ពុ�
 msgid "Failed to store file %(file)s."
 msgstr "មិនអាចរក្សាទុកឯកសារ %(file)s ។"
 
-#: cps/editbooks.py:670 cps/editbooks.py:1065 cps/web.py:1685
+#: cps/editbooks.py:670 cps/editbooks.py:1065 cps/web.py:1680
 #, python-format
 msgid "Database error: %(error)s."
 msgstr ""
@@ -690,7 +691,7 @@ msgstr "ឯកសារ %(file)s រកមិនឃើញក្នុង Google 
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "ទីតាំងសៀវភៅ %(path)s រកមិនឃើញក្នុង Google Drive"
 
-#: cps/helper.py:507 cps/web.py:1680
+#: cps/helper.py:507 cps/web.py:1675
 msgid "Found an existing account for this e-mail address"
 msgstr ""
 
@@ -771,7 +772,7 @@ msgstr ""
 msgid "Register with %(provider)s"
 msgstr ""
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1556
+#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1551
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ឥឡូវអ្នកបានចូលដោយមានឈ្មោះថា៖ ‘%(nickname)s’"
@@ -837,7 +838,7 @@ msgid "{} Stars"
 msgstr ""
 
 #: cps/remotelogin.py:65 cps/templates/layout.html:86
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1605
+#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1600
 msgid "Login"
 msgstr "ចូលប្រើប្រាស់"
 
@@ -914,7 +915,7 @@ msgid "Show Random Books"
 msgstr "បង្ហាញសៀវភៅចៃដន្យ"
 
 #: cps/render_template.py:69 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1060
+#: cps/templates/index.xml:83 cps/web.py:1055
 msgid "Categories"
 msgstr "ប្រភេទនានា"
 
@@ -952,7 +953,7 @@ msgstr ""
 
 #: cps/render_template.py:82 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1037
+#: cps/web.py:1032
 msgid "Languages"
 msgstr "ភាសានានា"
 
@@ -1039,58 +1040,58 @@ msgstr "សៀវភៅត្រូវបានដកចេញពីធ្នើ
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr ""
 
-#: cps/shelf.py:228
-msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
-
-#: cps/shelf.py:232 cps/templates/layout.html:142
+#: cps/shelf.py:228 cps/templates/layout.html:142
 msgid "Create a Shelf"
 msgstr "បង្កើតធ្នើ"
 
-#: cps/shelf.py:241
+#: cps/shelf.py:237
 #, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
 msgstr "សូមអភ័យទោស អ្នកមិនមានសិទ្ធិដកសៀវភៅចេញពីធ្នើនេះទេ៖ %(sname)s"
 
-#: cps/shelf.py:243
+#: cps/shelf.py:239
 msgid "Edit a shelf"
 msgstr "កែប្រែធ្នើ"
 
-#: cps/shelf.py:262
+#: cps/shelf.py:249
+msgid "Sorry you are not allowed to create a public shelf"
+msgstr ""
+
+#: cps/shelf.py:261
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានបង្កើត"
 
-#: cps/shelf.py:265
+#: cps/shelf.py:264
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានប្តូរ"
 
-#: cps/shelf.py:279
+#: cps/shelf.py:278
 msgid "There was an error"
 msgstr "មានបញ្ហា"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:300
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:312
+#: cps/shelf.py:311
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:381
+#: cps/shelf.py:380
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "ប្តូរលំដាប់ធ្នើ៖ ‘%(name)s’"
 
-#: cps/shelf.py:451
+#: cps/shelf.py:450
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "ធ្នើ៖ ‘%(name)s’"
 
-#: cps/shelf.py:455
+#: cps/shelf.py:454
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "មានបញ្ហាពេលបើកធ្នើ។ ពុំមានធ្នើ ឬមិនអាចបើកបាន"
 
@@ -1171,14 +1172,14 @@ msgstr "ប្រភេទ៖ %(name)s"
 msgid "Language: %(name)s"
 msgstr "ភាសា៖ %(name)s"
 
-#: cps/templates/layout.html:56 cps/web.py:742 cps/web.py:1389
+#: cps/templates/layout.html:56 cps/web.py:742 cps/web.py:1384
 msgid "Advanced Search"
 msgstr "ស្វែងរកកម្រិតខ្ពស់"
 
 #: cps/templates/book_edit.html:239 cps/templates/feed.xml:33
 #: cps/templates/index.xml:11 cps/templates/layout.html:45
 #: cps/templates/layout.html:48 cps/templates/search_form.html:226
-#: cps/web.py:755 cps/web.py:1095
+#: cps/web.py:755 cps/web.py:1090
 msgid "Search"
 msgstr "ស្វែងរក"
 
@@ -1194,106 +1195,106 @@ msgstr ""
 msgid "File formats list"
 msgstr ""
 
-#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1074
+#: cps/templates/layout.html:75 cps/templates/tasks.html:7 cps/web.py:1069
 msgid "Tasks"
 msgstr "កិច្ចការនានា"
 
-#: cps/web.py:1233
+#: cps/web.py:1228
 msgid "Published after "
 msgstr "បានបោះពុម្ភក្រោយ  "
 
-#: cps/web.py:1240
+#: cps/web.py:1235
 msgid "Published before "
 msgstr "បានបោះពុម្ភមុន  "
 
-#: cps/web.py:1262
+#: cps/web.py:1257
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "ការវាយតម្លៃ <= %(rating)s"
 
-#: cps/web.py:1264
+#: cps/web.py:1259
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "ការវាយតម្លៃ >= %(rating)s"
 
-#: cps/web.py:1266
+#: cps/web.py:1261
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/web.py:1371
+#: cps/web.py:1366
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/web.py:1467
+#: cps/web.py:1462
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(kindlemail)s ដោយជោគជ័យ"
 
-#: cps/web.py:1471
+#: cps/web.py:1466
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "មានបញ្ហានៅពេលផ្ញើសៀវភៅនេះ៖ %(res)s"
 
-#: cps/web.py:1473
+#: cps/web.py:1468
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr ""
 
-#: cps/web.py:1490
+#: cps/web.py:1485
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1491
-#: cps/web.py:1498 cps/web.py:1504 cps/web.py:1523 cps/web.py:1527
-#: cps/web.py:1533
+#: cps/templates/layout.html:87 cps/templates/register.html:17 cps/web.py:1486
+#: cps/web.py:1493 cps/web.py:1499 cps/web.py:1518 cps/web.py:1522
+#: cps/web.py:1528
 msgid "Register"
 msgstr "ចុះឈ្មោះ"
 
-#: cps/web.py:1525
+#: cps/web.py:1520
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:1528
+#: cps/web.py:1523
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:1545
+#: cps/web.py:1540
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1564
+#: cps/web.py:1559
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1570
+#: cps/web.py:1565
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1574 cps/web.py:1599
+#: cps/web.py:1569 cps/web.py:1594
 msgid "Wrong Username or Password"
 msgstr "ខុសឈ្មោះអ្នកប្រើប្រាស់ ឬលេខសម្ងាត់"
 
-#: cps/web.py:1581
+#: cps/web.py:1576
 msgid "New Password was send to your email address"
 msgstr ""
 
-#: cps/web.py:1587
+#: cps/web.py:1582
 msgid "Please enter valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1594
+#: cps/web.py:1589
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1660 cps/web.py:1709
+#: cps/web.py:1655 cps/web.py:1704
 #, python-format
 msgid "%(name)s's profile"
 msgstr "ព័ត៌មានសង្ខេបរបស់ %(name)s"
 
-#: cps/web.py:1676
+#: cps/web.py:1671
 msgid "Profile updated"
 msgstr "ព័ត៌មានសង្ខេបបានកែប្រែ"
 
