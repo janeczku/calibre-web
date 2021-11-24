@@ -665,6 +665,9 @@ function init(filename) {
         if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
             //reloadImages is a slow process when multiple images are involved. Only used when rotating/mirroring
             reloadImages(); 
+        } else if(this.name === "direction") {
+            // Skips updatePage and updateScale so that the current image doesn't scroll up
+            return updateProgress();
         }
         
         updatePage();
