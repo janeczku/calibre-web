@@ -1844,8 +1844,11 @@ def read_website(book_id):
     epub_file = os.path.join(config.config_calibre_dir, book.path, data.name) + ".epub"
     if not os.path.isfile(epub_file):
         raise ValueError('Error opening eBook. File does not exist: ', epub_file)
-    cmd = "%s -g /static/ -e %s -o %s" % (quote(config.config_epub2websitepath), quote(epub_file), quote(book_dir))
-    print(cmd)
+    cmd = "%s -g %s -e %s -o %s" % (
+        quote(config.config_epub2websitepath),
+        quote(config.config_epub2website_library),
+        quote(epub_file), quote(book_dir))
+    log.info("execute epub2website command: " + cmd)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     com = p.communicate()
     out = com[0].strip().decode("utf-8")

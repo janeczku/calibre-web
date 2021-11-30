@@ -334,12 +334,16 @@
               <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
               <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
            </div>
-           <label for="config_converterpath">{{_('Path to Epub2Website Converter')}}</label>
+           <label for="config_epub2websitepath">{{_('Path to Epub2Website Converter')}}</label>
            <div class="form-group input-group">
             <input type="text" class="form-control" id="config_epub2websitepath" name="config_epub2websitepath" value="{% if config.config_epub2websitepath != None %}{{ config.config_epub2websitepath }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
               <button type="button" data-toggle="modal" id="epub2website_path" data-link="config_epub2websitepath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
+           </div>
+           <div class="form-group">
+              <label for="config_epub2website_library">{{_('Epub2Website Library Endpoint Settings')}}</label>
+              <input type="text" class="form-control" id="config_epub2website_library" name="config_epub2website_library" value="{% if config.config_epub2website_library != None %}{{ config.config_epub2website_library }}{% endif %}" autocomplete="off">
            </div>
         <label for="config_kepubifypath">{{_('Path to Kepubify E-Book Converter')}}</label>
            <div class="form-group input-group">
