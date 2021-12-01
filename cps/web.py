@@ -54,6 +54,7 @@ from .helper import check_valid_domain, render_task_status, check_email, check_u
 from .pagination import Pagination
 from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
+from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 
 feature_support = {
@@ -206,6 +207,8 @@ def toggle_archived(book_id):
         archived_book.is_archived = True
     ub.session.merge(archived_book)
     ub.session_commit("Book {} archivebit toggled".format(book_id))
+    if archived_book.is_archived:
+        remove_synced_book(book_id)
     return ""
 
 
