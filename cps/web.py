@@ -1016,22 +1016,14 @@ def formats_list():
 @login_required_if_no_ano
 def language_overview():
     if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
-        if current_user.get_view_property('language', 'dir') == 'desc':
-            order = db.Languages.lang_code.desc()
-            order_no = 0
-        else:
-            order = db.Languages.lang_code.asc()
-            order_no = 1
+        order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
         charlist = list()
-        languages = calibre_db.speaking_language(reverse_order=not order_no)
+        languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
         for lang in languages:
-            upper_lang = lang.name[0].upper()
+            upper_lang = lang[0].name[0].upper()
             if upper_lang not in charlist:
                 charlist.append(upper_lang)
-        lang_counter = calibre_db.session.query(db.books_languages_link,
-                                        func.count('books_languages_link.book').label('bookcount')).group_by(
-            text('books_languages_link.lang_code')).all()
-        return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
+        return render_title_template('languages.html', languages=languages,
                                      charlist=charlist, title=_(u"Languages"), page="langlist",
                                      data="language", order=order_no)
     else:
