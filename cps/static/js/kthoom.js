@@ -666,7 +666,6 @@ function init(filename) {
             //reloadImages is a slow process when multiple images are involved. Only used when rotating/mirroring
             reloadImages(); 
         } else if(this.name === "direction") {
-            // Skips updatePage and updateScale so that the current image doesn't scroll up
             return updateProgress();
         }
         
@@ -689,6 +688,8 @@ function init(filename) {
     if (typeof screenfull !== "undefined") {
         $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
+			// Focus so you can use up/down keys immediately after fullscreen
+			$("#mainContent").focus();
         });
 
         if (screenfull.raw) {
