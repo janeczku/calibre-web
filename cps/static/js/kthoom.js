@@ -179,7 +179,7 @@ function initProgressClick() {
     });
 }
 
-function loadFromArrayBuffer(ab, _callback) {
+function loadFromArrayBuffer(ab) {
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
