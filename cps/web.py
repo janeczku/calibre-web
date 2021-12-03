@@ -1815,7 +1815,7 @@ def show_book(book_id):
         return redirect(url_for("web.index"))
 
 
-@web.route("/read/website/<int:book_id>")
+@web.route("/read/<int:book_id>/website")
 @login_required_if_no_ano
 @viewer_required
 def read_website(book_id):
@@ -1839,7 +1839,7 @@ def read_website(book_id):
         f = open(redirect_file, "r")
         out = f.readline()
         f.close()
-        return redirect('/read/website/%s/%s' % (str(book_id), out))
+        return redirect('/read/%s/website/%s' % (str(book_id), out))
 
     epub_file = os.path.join(config.config_calibre_dir, book.path, data.name) + ".epub"
     if not os.path.isfile(epub_file):
@@ -1861,10 +1861,10 @@ def read_website(book_id):
     f = open(redirect_file, "w")
     f.write(str(out))
     f.close()
-    return redirect('/read/website/%s/%s' % (str(book_id), out))
+    return redirect('/read/%s/website/%s' % (str(book_id), out))
 
 
-@web.route('/read/website/<int:book_id>/<path:asset_path>')
+@web.route('/read/<int:book_id>/website/<path:asset_path>')
 @login_required_if_no_ano
 @viewer_required
 def read_website_asset(book_id, asset_path):
