@@ -355,7 +355,9 @@ def HandleMetadataRequest(book_uuid):
         return redirect_or_proxy_request()
 
     metadata = get_metadata(book)
-    return jsonify([metadata])
+    response = make_response(json.dumps([metadata]))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 
 def get_download_url_for_book(book, book_format):
@@ -413,15 +415,12 @@ def get_description(book):
 def get_author(book):
     if not book.authors:
         return {"Contributors": None}
-    if len(book.authors) > 1:
-        author_list = []
-        autor_roles = []
-        for author in book.authors:
-            autor_roles.append({"Name":author.name})    #.encode('unicode-escape').decode('latin-1')
-            author_list.append(author.name)
-        return {"ContributorRoles": autor_roles, "Contributors":author_list}
-    return {"ContributorRoles": [{"Name":book.authors[0].name}],
-            "Contributors": book.authors[0].name}
+    author_list = []
+    autor_roles = []
+    for author in book.authors:
+        autor_roles.append({"Name":author.name})    #.encode('unicode-escape').decode('latin-1')
+        author_list.append(author.name)
+    return {"ContributorRoles": autor_roles, "Contributors":author_list}
 
 
 def get_publisher(book):
