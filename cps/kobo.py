@@ -987,6 +987,25 @@ def HandleUserRequest(dummy=None):
 
 
 @csrf.exempt
+@kobo.route("/v1/user/loyalty/benefits", methods=["GET"])
+def handle_benefits():
+    if config.config_kobo_proxy:
+        return redirect_or_proxy_request()
+    else:
+        return make_response(jsonify({"Benefits": {}}))
+
+
+@csrf.exempt
+@kobo.route("/v1/analytics/gettests", methods=["GET", "POST"])
+def handle_getests():
+    if config.config_kobo_proxy:
+        return redirect_or_proxy_request()
+    else:
+        testkey = request.headers.get("X-Kobo-userkey","")
+        return make_response(jsonify({"Result": "Success", "TestKey":testkey, "Tests": {}}))
+
+
+@csrf.exempt
 @kobo.route("/v1/products/<dummy>/prices", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
@@ -1001,6 +1020,7 @@ def HandleUserRequest(dummy=None):
 @kobo.route("/v1/products/deals", methods=["GET", "POST"])
 @kobo.route("/v1/products", methods=["GET", "POST"])
 @kobo.route("/v1/affiliate", methods=["GET", "POST"])
+@kobo.route("/v1/deals", methods=["GET", "POST"])
 def HandleProductsRequest(dummy=None):
     log.debug("Unimplemented Products Request received: %s", request.base_url)
     return redirect_or_proxy_request()
