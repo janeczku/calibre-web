@@ -284,11 +284,7 @@ $(function() {
     }
 
     function fillFileTable(path, type, folder, filt) {
-        if (window.location.pathname.endsWith("/basicconfig")) {
-            var request_path = "/../basicconfig/pathchooser/";
-        } else {
-            var request_path = "/../../ajax/pathchooser/";
-        }
+        var request_path = "/../../ajax/pathchooser/";
         $.ajax({
             dataType: "json",
             data: {

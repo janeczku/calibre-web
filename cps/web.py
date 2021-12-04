@@ -54,6 +54,7 @@ from .helper import check_valid_domain, render_task_status, check_email, check_u
 from .pagination import Pagination
 from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
+from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 
 feature_support = {
@@ -206,6 +207,8 @@ def toggle_archived(book_id):
         archived_book.is_archived = True
     ub.session.merge(archived_book)
     ub.session_commit("Book {} archivebit toggled".format(book_id))
+    if archived_book.is_archived:
+        remove_synced_book(book_id)
     return ""
 
 
@@ -862,7 +865,7 @@ def list_books():
     elif search:
         entries, filtered_count, __ = calibre_db.get_search_results(search,
                                                                     off,
-                                                                    order,
+                                                                    [order,''],
                                                                     limit,
                                                                     config.config_read_column,
                                                                     *join)
@@ -1060,22 +1063,14 @@ def formats_list():
 @login_required_if_no_ano
 def language_overview():
     if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
-        if current_user.get_view_property('language', 'dir') == 'desc':
-            order = db.Languages.lang_code.desc()
-            order_no = 0
-        else:
-            order = db.Languages.lang_code.asc()
-            order_no = 1
+        order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
         charlist = list()
-        languages = calibre_db.speaking_language(reverse_order=not order_no)
+        languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
         for lang in languages:
-            upper_lang = lang.name[0].upper()
+            upper_lang = lang[0].name[0].upper()
             if upper_lang not in charlist:
                 charlist.append(upper_lang)
-        lang_counter = calibre_db.session.query(db.books_languages_link,
-                                        func.count('books_languages_link.book').label('bookcount')).group_by(
-            text('books_languages_link.lang_code')).all()
-        return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
+        return render_title_template('languages.html', languages=languages,
                                      charlist=charlist, title=_(u"Languages"), page="langlist",
                                      data="language", order=order_no)
     else:
@@ -1578,9 +1573,6 @@ def register():
 
 @web.route('/login', methods=['GET', 'POST'])
 def login():
-    #if not config.db_configured:
-    #    log.debug(u"Redirect to initial configuration")
-    #    return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:

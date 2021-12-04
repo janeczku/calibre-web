@@ -182,10 +182,9 @@ class SyncToken:
         return b64encode_json(token)
 
     def __str__(self):
-        return "{},{},{},{},{},{}".format(self.raw_kobo_store_token,
-                                       self.books_last_created,
+        return "{},{},{},{},{},{}".format(self.books_last_created,
                                        self.books_last_modified,
                                        self.archive_last_modified,
                                        self.reading_state_last_modified,
-                                       self.tags_last_modified)
+                                       self.tags_last_modified, self.raw_kobo_store_token)
                                        #self.books_last_id)
