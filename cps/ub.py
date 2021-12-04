@@ -306,11 +306,11 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return None
 
     def set_view_property(self, page, prop, value):
-        if 'view' in flask_session:
-            if not flask_session['view'].get(page):
-                flask_session['view'][page] = dict()
-            flask_session['view'][page][prop] = value
-        return None
+        if not 'view' in flask_session:
+            flask_session['view'] = dict()
+        if not flask_session['view'].get(page):
+            flask_session['view'][page] = dict()
+        flask_session['view'][page][prop] = value
 
 class User_Sessions(Base):
     __tablename__ = 'user_session'

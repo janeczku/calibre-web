@@ -705,7 +705,7 @@ def save_cover(img, book_path):
                 imgc.format = 'jpeg'
                 imgc.transform_colorspace("rgb")
                 img = imgc
-            except BlobError:
+            except (BlobError, MissingDelegateError):
                 log.error("Invalid cover file content")
                 return False, _("Invalid cover file content")
     else:
@@ -882,7 +882,7 @@ def get_cc_columns(filter_config_custom_read=False):
 
 def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
-    book = calibre_db.get_filtered_book(book_id)
+    book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if book:
         data1 = calibre_db.get_book_format(book.id, book_format.upper())
     else:

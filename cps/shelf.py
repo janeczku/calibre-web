@@ -224,12 +224,8 @@ def remove_from_shelf(shelf_id, book_id):
 @shelf.route("/shelf/create", methods=["GET", "POST"])
 @login_required
 def create_shelf():
-    if not current_user.role_edit_shelfs() and request.method == 'POST':
-        flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
-        return redirect(url_for('web.index'))
-    else:
-        shelf = ub.Shelf()
-        return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
+    shelf = ub.Shelf()
+    return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
 
 
 
@@ -249,6 +245,9 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
     # calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id).filter(ub.Shelf.kobo_sync).count()
     if request.method == "POST":
         to_save = request.form.to_dict()
+        if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
+            flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
+            return redirect(url_for('web.index'))
         shelf.is_public = 1 if to_save.get("is_public") else 0
         if config.config_kobo_sync:
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False

@@ -31,7 +31,6 @@ try:
 except ImportError:
     pass
 
-
 # Improve this to check if scholarly is available in a global way, like other pythonic libraries
 try:
     from scholarly import scholarly
@@ -67,7 +66,7 @@ log = logger.create()
 def upload_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if current_user.role_upload() or current_user.role_admin():
+        if current_user.role_upload():
             return f(*args, **kwargs)
         abort(403)
 
@@ -454,7 +453,7 @@ def edit_book_series_index(series_index, book):
     if not series_index.replace('.', '', 1).isdigit():
         flash(_("%(seriesindex)s is not a valid number, skipping", seriesindex=series_index), category="warning")
         return False
-    if book.series_index != series_index:
+    if str(book.series_index) != series_index:
         book.series_index = series_index
         modif_date = True
     return modif_date
@@ -484,11 +483,11 @@ def edit_book_languages(languages, book, upload=False, invalid=None):
     else:
         input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
-        log.error('%s is not a valid language', l)
+        log.error("'%s' is not a valid language", l)
         if isinstance(invalid, list):
             invalid.append(l)
         else:
-            flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
+            raise ValueError(_(u"'%(langname)s' is not a valid language", langname=l))
     # ToDo: Not working correct
     if upload and len(input_l) == 1:
         # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
@@ -864,6 +863,10 @@ def edit_book(book_id):
             calibre_db.session.rollback()
             flash(error, category="error")
             return render_edit_book(book_id)
+    except ValueError as e:
+        calibre_db.session.rollback()
+        flash(str(e), category="error")
+        return redirect(url_for('web.show_book', book_id=book.id))
     except Exception as ex:
         log.debug_or_exception(ex)
         calibre_db.session.rollback()
@@ -960,7 +963,11 @@ def create_book_on_upload(modif_date, meta):
     modif_date |= edit_book_series_index(meta.series_id, db_book)
 
     # add languages
-    modif_date |= edit_book_languages(meta.languages, db_book, upload=True)
+    invalid=[]
+    modif_date |= edit_book_languages(meta.languages, db_book, upload=True, invalid=invalid)
+    if invalid:
+        for l in invalid:
+            flash(_(u"'%(langname)s' is not a valid language", langname=l), category="warning")
 
     # handle tags
     modif_date |= edit_book_tags(meta.tags, db_book)
