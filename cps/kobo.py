@@ -355,7 +355,7 @@ def HandleMetadataRequest(book_uuid):
         return redirect_or_proxy_request()
 
     metadata = get_metadata(book)
-    response = make_response(json.dumps([metadata]))
+    response = make_response(json.dumps([metadata], ensure_ascii=False))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
