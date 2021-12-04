@@ -796,18 +796,27 @@ class CalibreDB():
         return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
-    def speaking_language(self, languages=None, return_all_languages=False, reverse_order=False):
+    def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
         from . import get_locale
 
         if not languages:
-            languages = self.session.query(Languages) \
-                .join(books_languages_link) \
-                .join(Books) \
-                .filter(self.common_filters(return_all_languages=return_all_languages)) \
-                .group_by(text('books_languages_link.lang_code')).all()
-        for lang in languages:
-            lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-        return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
+            if with_count:
+                languages = self.session.query(Languages, func.count('books_languages_link.book'))\
+                    .join(books_languages_link).join(Books)\
+                    .filter(self.common_filters(return_all_languages=return_all_languages)) \
+                    .group_by(text('books_languages_link.lang_code')).all()
+                for lang in languages:
+                    lang[0].name = isoLanguages.get_language_name(get_locale(), lang[0].lang_code)
+                return sorted(languages, key=lambda x: x[0].name, reverse=reverse_order)
+            else:
+                languages = self.session.query(Languages) \
+                    .join(books_languages_link) \
+                    .join(Books) \
+                    .filter(self.common_filters(return_all_languages=return_all_languages)) \
+                    .group_by(text('books_languages_link.lang_code')).all()
+                for lang in languages:
+                    lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
+            return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
 
 
     def update_title_sort(self, config, conn=None):
