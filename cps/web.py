@@ -1525,9 +1525,6 @@ def register():
 
 @web.route('/login', methods=['GET', 'POST'])
 def login():
-    #if not config.db_configured:
-    #    log.debug(u"Redirect to initial configuration")
-    #    return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:

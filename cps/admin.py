@@ -1186,11 +1186,20 @@ def _db_configuration_update_helper():
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
+        # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
+        ub.session.query(ub.Downloads).delete()
+        ub.session.query(ub.ArchivedBook).delete()
+        ub.session.query(ub.ArchivedBook).delete()
+        ub.session.query(ub.ReadBook).delete()
+        ub.session.query(ub.BookShelf).delete()
+        ub.session.query(ub.Bookmark).delete()
+        ub.session.query(ub.KoboReadingState).delete()
+        ub.session.query(ub.KoboStatistics).delete()
+        ub.session.query(ub.KoboSyncedBooks).delete()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
-            # warning = {'type': "warning", 'message': _(u"DB is not Writeable")}
     config.save()
     return _db_configuration_result(None, gdrive_error)
 
