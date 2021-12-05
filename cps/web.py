@@ -894,8 +894,6 @@ def list_books():
 @web.route("/ajax/table_settings", methods=['POST'])
 @login_required
 def update_table_settings():
-    # vals = request.get_json()
-    # ToDo: Save table settings
     current_user.view_settings['table'] = json.loads(request.data)
     try:
         try:

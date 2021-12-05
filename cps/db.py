@@ -864,10 +864,9 @@ class CalibreDB():
             limit_all = result_count
 
         ub.store_combo_ids(result)
-        # ToDo: doesn't work as more than one table returned
-        # entries = self.order_authors(result[offset:limit_all], True)
+        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
 
-        return result[offset:limit_all], result_count, pagination
+        return entries, result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):

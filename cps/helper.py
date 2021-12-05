@@ -452,7 +452,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
             return _("Error in rename file in path: %(error)s", error=str(ex))
     return False
 
-def update_dir_structure_gdrive(book_id, first_author):
+def update_dir_structure_gdrive(book_id, first_author, renamed_author):
     error = False
     book = calibre_db.get_book(book_id)
     path = book.path
@@ -460,8 +460,24 @@ def update_dir_structure_gdrive(book_id, first_author):
     authordir = book.path.split('/')[0]
     if first_author:
         new_authordir = get_valid_filename(first_author)
+        for r in renamed_author:
+            # Todo: Rename all authors on gdrive
+            new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
+            old_author_dir = get_valid_filename(r)
+            new_author_rename_dir = get_valid_filename(new_author.name)
+            '''if os.path.isdir(os.path.join(calibrepath, old_author_dir)):
+                try:
+                    old_author_path = os.path.join(calibrepath, old_author_dir)
+                    new_author_path = os.path.join(calibrepath, new_author_rename_dir)
+                    shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
+                except (OSError) as ex:
+                    log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
+                    log.debug(ex, exc_info=True)
+                    return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                             src=old_author_path, dest=new_author_path, error=str(ex))'''
     else:
         new_authordir = get_valid_filename(book.authors[0].name)
+
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + u" (" + str(book_id) + u")"
 
@@ -485,8 +501,19 @@ def update_dir_structure_gdrive(book_id, first_author):
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
             error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+    # Todo: Rename all authors on gdrive
     # Rename all files from old names to new names
-
+    '''
+    try:
+        clean_author_database(renamed_author, calibrepath)
+        if first_author not in renamed_author:
+            clean_author_database([first_author], calibrepath, localbook)
+        if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
+            shutil.rmtree(os.path.dirname(path))
+    except (OSError, FileNotFoundError) as ex:
+        log.error("Error in rename file in path %s", ex)
+        log.debug(ex, exc_info=True)
+        return _("Error in rename file in path: %(error)s", error=str(ex))'''
     if authordir != new_authordir or titledir != new_titledir:
         new_name = get_valid_filename(book.title) + u' - ' + get_valid_filename(new_authordir)
         for file_format in book.data:
@@ -584,8 +611,7 @@ def update_dir_structure(book_id,
                         db_filename=None,
                         renamed_author=False):
     if config.config_use_google_drive:
-        # ToDo: rename author on gdrive
-        return update_dir_structure_gdrive(book_id, first_author)
+        return update_dir_structure_gdrive(book_id, first_author, renamed_author)
     else:
         return update_dir_structure_file(book_id,
                                          calibrepath,
