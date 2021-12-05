@@ -718,8 +718,6 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     if input_authors == ['']:
         input_authors = [_(u'Unknown')]  # prevent empty Author
 
-    # ToDo: Falsch es kann auch sein das der 2. Author in der Liste umbenannt wurde,
-    #  man müsste für alle Authoren schauen
     renamed = list()
     for in_aut in input_authors:
         renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
@@ -923,6 +921,18 @@ def prepare_authors_on_upload(title, authr):
     if input_authors == ['']:
         input_authors = [_(u'Unknown')]  # prevent empty Author
 
+    renamed = list()
+    for in_aut in input_authors:
+        renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
+        if renamed_author and in_aut != renamed_author.name:
+            renamed.append(renamed_author.name)
+            all_books = calibre_db.session.query(db.Books) \
+                .filter(db.Books.authors.any(db.Authors.name == renamed_author.name)).all()
+            sorted_renamed_author = helper.get_sorted_author(renamed_author.name)
+            sorted_old_author = helper.get_sorted_author(in_aut)
+            for one_book in all_books:
+                one_book.author_sort = one_book.author_sort.replace(sorted_renamed_author, sorted_old_author)
+
     sort_authors_list = list()
     db_author = None
     for inp in input_authors:
@@ -939,13 +949,13 @@ def prepare_authors_on_upload(title, authr):
             sort_author = stored_author.sort
         sort_authors_list.append(sort_author)
     sort_authors = ' & '.join(sort_authors_list)
-    return sort_authors, input_authors, db_author
+    return sort_authors, input_authors, db_author, renamed
 
 
 def create_book_on_upload(modif_date, meta):
     title = meta.title
     authr = meta.author
-    sort_authors, input_authors, db_author = prepare_authors_on_upload(title, authr)
+    sort_authors, input_authors, db_author, renamed_authors = prepare_authors_on_upload(title, authr)
 
     title_dir = helper.get_valid_filename(title)
     author_dir = helper.get_valid_filename(db_author.name)
@@ -987,7 +997,7 @@ def create_book_on_upload(modif_date, meta):
 
     # flush content, get db_book.id available
     calibre_db.session.flush()
-    return db_book, input_authors, title_dir
+    return db_book, input_authors, title_dir, renamed_authors
 
 def file_handling_on_upload(requested_file):
     # check if file extension is correct
@@ -1049,7 +1059,7 @@ def upload():
                 if error:
                     return error
 
-                db_book, input_authors, title_dir = create_book_on_upload(modif_date, meta)
+                db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modif_date, meta)
 
                 # Comments needs book id therefore only possible after flush
                 modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
@@ -1061,7 +1071,8 @@ def upload():
                                                    config.config_calibre_dir,
                                                    input_authors[0],
                                                    meta.file_path,
-                                                   title_dir + meta.extension.lower())
+                                                   title_dir + meta.extension.lower(),
+                                                   renamed_author=renamed_authors)
 
                 move_coverfile(meta, db_book)
 

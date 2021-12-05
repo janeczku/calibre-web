@@ -1309,7 +1309,24 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 
     cc = get_cc_columns(filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    q = calibre_db.session.query(db.Books).outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
+    if not config.config_read_column:
+        query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(db.Books)
+                 .outerjoin(ub.ReadBook, and_(db.Books.id == ub.ReadBook.book_id,
+                                              int(current_user.id) == ub.ReadBook.user_id)))
+    else:
+        try:
+            read_column = cc[config.config_read_column]
+            query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, read_column.value)
+                     .select_from(db.Books)
+                     .outerjoin(read_column, read_column.book == db.Books.id))
+        except (KeyError, AttributeError):
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            # Skip linking read column
+            query = calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, None)
+    query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                                  int(current_user.id) == ub.ArchivedBook.user_id))
+
+    q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
         .outerjoin(db.Series)\
         .filter(calibre_db.common_filters(True))
 
@@ -1373,7 +1390,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                                             rating_high,
                                                             rating_low,
                                                             read_status)
-        q = q.filter()
+        # q = q.filter()
         if author_name:
             q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_name + "%")))
         if book_title:
@@ -1404,7 +1421,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 
     q = q.order_by(*sort).all()
     flask_session['query'] = json.dumps(term)
-    ub.store_ids(q)
+    ub.store_combo_ids(q)
     result_count = len(q)
     if offset is not None and limit is not None:
         offset = int(offset)
@@ -1413,7 +1430,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     else:
         offset = 0
         limit_all = result_count
-    entries = calibre_db.order_authors(q[offset:limit_all], True)
+    entries = calibre_db.order_authors(q[offset:limit_all], list_return=True, combined=True)
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
@@ -1421,7 +1438,6 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  result_count=result_count,
                                  title=_(u"Advanced Search"), page="advsearch",
                                  order=order[1])
-
 
 
 @web.route("/advsearch", methods=['GET'])
