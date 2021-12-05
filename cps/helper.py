@@ -52,7 +52,7 @@ except ImportError:
 
 from . import calibre_db
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub
+from . import logger, config, get_locale, db, ub, kobo_sync_status
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
@@ -431,7 +431,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                         for file in file_list:
                             shutil.move(os.path.normcase(os.path.join(dir_name, file)),
                                             os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
-                            # os.unlink(os.path.normcase(os.path.join(dir_name, file)))
+            # change location in database to new author/title path
+            localbook.path = os.path.join(new_authordir, new_titledir).replace('\\','/')
         except (OSError) as ex:
             log.error("Rename title from: %s to %s: %s", path, new_path, ex)
             log.debug(ex, exc_info=True)
@@ -441,12 +442,11 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
         # Rename all files from old names to new names
         try:
             clean_author_database(renamed_author, calibrepath)
-
             if first_author not in renamed_author:
                 clean_author_database([first_author], calibrepath, localbook)
             if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
                 shutil.rmtree(os.path.dirname(path))
-        except (OSError) as ex:
+        except (OSError, FileNotFoundError) as ex:
             log.error("Error in rename file in path %s", ex)
             log.debug(ex, exc_info=True)
             return _("Error in rename file in path: %(error)s", error=str(ex))

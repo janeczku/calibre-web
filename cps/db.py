@@ -756,16 +756,21 @@ class CalibreDB():
         except Exception as ex:
             log.debug_or_exception(ex)
         # display authors in right order
-        entries = self.order_authors(entries, True)
+        entries = self.order_authors(entries, True, join_archive_read)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
-    def order_authors(self, entries, list_return=False):
+    def order_authors(self, entries, list_return=False, combined=False):
         for entry in entries:
-            sort_authors = entry.author_sort.split('&')
+            if combined:
+                sort_authors = entry.Books.author_sort.split('&')
+                ids = [a.id for a in entry.Books.authors]
+
+            else:
+                sort_authors = entry.author_sort.split('&')
+                ids = [a.id for a in entry.authors]
             authors_ordered = list()
             error = False
-            ids = [a.id for a in entry.authors]
             for auth in sort_authors:
                 results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
                 # ToDo: How to handle not found authorname
@@ -776,7 +781,10 @@ class CalibreDB():
                     if r.id in ids:
                         authors_ordered.append(r)
             if not error:
-                entry.authors = authors_ordered
+                if combined:
+                    entry.Books.authors = authors_ordered
+                else:
+                    entry.authors = authors_ordered
         if list_return:
             return entries
         else:
@@ -841,7 +849,8 @@ class CalibreDB():
                 ))
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None, config_read_column=False, *join):
+    def get_search_results(self, term, offset=None, order=None, limit=None, allow_show_archived=False,
+                           config_read_column=False, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
         result = self.search_query(term, config_read_column, *join).order_by(*order).all()

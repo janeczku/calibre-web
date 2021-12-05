@@ -71,8 +71,8 @@
             <!--th data-field="pubdate" data-type="date" data-visible="{{visiblility.get('pubdate')}}" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">{{_('Publishing Date')}}</th-->
             {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers'), false, true) }}
             <th data-field="comments" id="comments" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('comments')}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('editbook.edit_list_book', param='comments')}}" data-edit="true" data-editable-title="{{_('Enter comments')}}"{% endif %}>{{_('Comments')}}</th>
-            {{ book_checkbox_row('is_archived', _('Enter Archiv Status'), false)}}
-            {{ book_checkbox_row('read_status', _('Enter Read Status'), false)}}
+            {{ book_checkbox_row('is_archived', _('Archiv Status'), false)}}
+            {{ book_checkbox_row('read_status', _('Read Status'), false)}}
             {% for c in cc %}
               {% if c.datatype == "int" %}
                 <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="1" data-editable-url="{{ url_for('editbook.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
@@ -89,7 +89,7 @@
               {% elif c.datatype == "comments" %}
                   <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('editbook.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype == "bool" %}
-                  {{ book_checkbox_row('custom_column_' + c.id|string,  _('Enter ') + c.name, c.name, visiblility, all_roles, false)}}
+                  {{ book_checkbox_row('custom_column_' + c.id|string, c.name, false)}}
               {% else %}
                 <!--{{ text_table_row('custom_column_' + c.id|string, _('Enter ') + c.name, c.name, false, false) }} -->
               {% endif %}

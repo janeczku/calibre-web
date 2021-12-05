@@ -949,7 +949,8 @@ def HandleBookDeletionRequest(book_uuid):
         return redirect_or_proxy_request()
 
     book_id = book.id
-    archived_book = (
+    is_archived = kobo_sync_status.change_archived_books(book_id, True)
+    '''archived_book = (
         ub.session.query(ub.ArchivedBook)
         .filter(ub.ArchivedBook.book_id == book_id)
         .first()
@@ -960,8 +961,8 @@ def HandleBookDeletionRequest(book_uuid):
     archived_book.last_modified = datetime.datetime.utcnow()
 
     ub.session.merge(archived_book)
-    ub.session_commit()
-    if archived_book.is_archived:
+    ub.session_commit()'''
+    if is_archived:
         kobo_sync_status.remove_synced_book(book_id)
     return "", 204
 
