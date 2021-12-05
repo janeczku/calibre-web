@@ -56,6 +56,7 @@ from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
+from .kobo_sync_status import change_archived_books
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -197,17 +198,8 @@ def toggle_read(book_id):
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_archived(book_id):
-    archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
-                                                                  ub.ArchivedBook.book_id == book_id)).first()
-    if archived_book:
-        archived_book.is_archived = not archived_book.is_archived
-        archived_book.last_modified = datetime.utcnow()
-    else:
-        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
-        archived_book.is_archived = True
-    ub.session.merge(archived_book)
-    ub.session_commit("Book {} archivebit toggled".format(book_id))
-    if archived_book.is_archived:
+    is_archived = change_archived_books(book_id, message="Book {} archivebit toggled".format(book_id))
+    if is_archived:
         remove_synced_book(book_id)
     return ""
 
@@ -759,6 +751,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                                                       offset,
                                                                       order,
                                                                       limit,
+                                                                      False,
                                                                       config.config_read_column,
                                                                       *join)
     return render_title_template('search.html',
@@ -836,7 +829,7 @@ def list_books():
     elif not state:
         order = [db.Books.timestamp.desc()]
 
-    total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(False)).count()
+    total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(allow_show_archived=True)).count()
     if state is not None:
         if search:
             books = calibre_db.search_query(search, config.config_read_column).all()
@@ -860,24 +853,26 @@ def list_books():
                     books =calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
             books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                           int(current_user.id) == ub.ArchivedBook.user_id))
-                     .filter(calibre_db.common_filters()).all())
+                     .filter(calibre_db.common_filters(allow_show_archived=True)).all())
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
     elif search:
         entries, filtered_count, __ = calibre_db.get_search_results(search,
                                                                     off,
                                                                     [order,''],
                                                                     limit,
+                                                                    True,
                                                                     config.config_read_column,
                                                                     *join)
     else:
-        entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1),
-                                                    limit,
-                                                    db.Books,
-                                                    True,
-                                                    order,
-                                                    True,
-                                                    config.config_read_column,
-                                                    *join)
+        entries, __, __ = calibre_db.fill_indexpage_with_archived_books((int(off) / (int(limit)) + 1),
+                                                                        db.Books,
+                                                                        limit,
+                                                                        True,
+                                                                        order,
+                                                                        True,
+                                                                        True,
+                                                                        config.config_read_column,
+                                                                        *join)
 
     result = list()
     for entry in entries:

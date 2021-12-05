@@ -50,6 +50,7 @@ from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
+from .kobo_sync_status import change_archived_books
 
 try:
     from functools import wraps
@@ -1185,10 +1186,9 @@ def edit_list_book(param):
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
-    elif param =='is_archive':
-        # ToDo save
-        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
-                       mimetype='application/json')
+    elif param =='is_archived':
+        change_archived_books(book.id, vals['value']=="True")
+        ret = ""
     elif param =='read_status':
         # ToDo save
         ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
@@ -1197,8 +1197,12 @@ def edit_list_book(param):
         new_val = dict()
         new_val[param] = vals['value']
         edit_single_cc_data(book.id, book, param[14:], new_val)
-        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
-                       mimetype='application/json')
+        # ToDo: Very hacky find better solution
+        if vals['value'] in ["True", "False"]:
+            ret = ""
+        else:
+            ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                           mimetype='application/json')
     else:
         return _("Parameter not found"), 400
     book.last_modified = datetime.utcnow()
