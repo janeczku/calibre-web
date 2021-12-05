@@ -631,14 +631,14 @@ function singleUserFormatter(value, row) {
 }
 
 function checkboxFormatter(value, row){
-    if(value & this.column)
+    if (value & this.column)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
 
 function singlecheckboxFormatter(value, row){
-    if(value)
+    if (value)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
@@ -793,7 +793,7 @@ function handleListServerResponse (data) {
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
         method: "post",
-        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        url: getPath() + "/ajax/editlistusers/" + field,
         data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
         error: function(data) {
             handleListServerResponse([{type:"danger", message:data.responseText}])
