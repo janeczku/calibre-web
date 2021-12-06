@@ -85,7 +85,7 @@ class WorkerThread(threading.Thread):
     def add(cls, user, task):
         ins = cls.getInstance()
         ins.num += 1
-        log.debug("Add Task for user: {}: {}".format(user, task))
+        log.debug("Add Task for user: {} - {}".format(user, task))
         ins.queue.put(QueuedTask(
             num=ins.num,
             user=user,
