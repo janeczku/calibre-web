@@ -550,10 +550,7 @@ class CalibreDB():
 
     @classmethod
     def setup_db(cls, config_calibre_dir, app_db_path):
-        # cls.config = config
         cls.dispose()
-
-        # toDo: if db changed -> delete shelfs, delete download books, delete read boks, kobo sync??
 
         if not config_calibre_dir:
             cls.config.invalidate()

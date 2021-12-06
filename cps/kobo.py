@@ -355,7 +355,9 @@ def HandleMetadataRequest(book_uuid):
         return redirect_or_proxy_request()
 
     metadata = get_metadata(book)
-    return jsonify([metadata])
+    response = make_response(json.dumps([metadata], ensure_ascii=False))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 
 def get_download_url_for_book(book, book_format):
@@ -413,15 +415,12 @@ def get_description(book):
 def get_author(book):
     if not book.authors:
         return {"Contributors": None}
-    if len(book.authors) > 1:
-        author_list = []
-        autor_roles = []
-        for author in book.authors:
-            autor_roles.append({"Name":author.name})    #.encode('unicode-escape').decode('latin-1')
-            author_list.append(author.name)
-        return {"ContributorRoles": autor_roles, "Contributors":author_list}
-    return {"ContributorRoles": [{"Name":book.authors[0].name}],
-            "Contributors": book.authors[0].name}
+    author_list = []
+    autor_roles = []
+    for author in book.authors:
+        autor_roles.append({"Name":author.name})    #.encode('unicode-escape').decode('latin-1')
+        author_list.append(author.name)
+    return {"ContributorRoles": autor_roles, "Contributors":author_list}
 
 
 def get_publisher(book):
@@ -988,6 +987,25 @@ def HandleUserRequest(dummy=None):
 
 
 @csrf.exempt
+@kobo.route("/v1/user/loyalty/benefits", methods=["GET"])
+def handle_benefits():
+    if config.config_kobo_proxy:
+        return redirect_or_proxy_request()
+    else:
+        return make_response(jsonify({"Benefits": {}}))
+
+
+@csrf.exempt
+@kobo.route("/v1/analytics/gettests", methods=["GET", "POST"])
+def handle_getests():
+    if config.config_kobo_proxy:
+        return redirect_or_proxy_request()
+    else:
+        testkey = request.headers.get("X-Kobo-userkey","")
+        return make_response(jsonify({"Result": "Success", "TestKey":testkey, "Tests": {}}))
+
+
+@csrf.exempt
 @kobo.route("/v1/products/<dummy>/prices", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
@@ -1002,6 +1020,7 @@ def HandleUserRequest(dummy=None):
 @kobo.route("/v1/products/deals", methods=["GET", "POST"])
 @kobo.route("/v1/products", methods=["GET", "POST"])
 @kobo.route("/v1/affiliate", methods=["GET", "POST"])
+@kobo.route("/v1/deals", methods=["GET", "POST"])
 def HandleProductsRequest(dummy=None):
     log.debug("Unimplemented Products Request received: %s", request.base_url)
     return redirect_or_proxy_request()
