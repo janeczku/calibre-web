@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2021-12-02 06:37:36</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2021-12-05 19:18:28</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-12-02 10:15:15</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2021-12-05 22:58:48</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2h 57 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 0 min</p>
         </div>
       </div>
       </div>
@@ -1858,12 +1858,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">11</td>
-        <td class="text-center">6</td>
-        <td class="text-center">4</td>
-        <td class="text-center">1</td>
+        <td class="text-center">2</td>
+        <td class="text-center">9</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c21', 11)">Detail</a>
@@ -1872,11 +1872,35 @@
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id="ft21.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft21.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft21.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 583, in test_book_download
+    data = self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1890,26 +1914,30 @@
     
     
     
-        <tr id="et21.3" class="none bg-info">
+        <tr id="ft21.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et21.3')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.3')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et21.3" class="popup_window test_output" style="display:block;">
+                <div id="div_ft21.3" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et21.3').style.display='none'"><span
+                                onclick="document.getElementById('div_ft21.3').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 619, in test_kobo_sync_selected_shelfs
-    self.assertIn(&#34;NewTag&#34;, data3[2])
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 602, in test_kobo_sync_selected_shelfs
+    data = self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1919,11 +1947,35 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.4' class='hiddenRow bg-success'>
+        <tr id="ft21.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_upload_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft21.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft21.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 652, in test_kobo_upload_book
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1945,9 +1997,13 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 481, in test_shelves_add_remove_books
-    self.assertEqual(1, len(books))
-AssertionError: 1 != 0</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 447, in test_shelves_add_remove_books
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1974,9 +2030,13 @@ AssertionError: 1 != 0</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 286, in test_sync_changed_book
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 2</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 277, in test_sync_changed_book
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1995,11 +2055,35 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt21.8' class='hiddenRow bg-success'>
+        <tr id="ft21.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft21.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft21.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 514, in test_sync_reading_state
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2021,9 +2105,13 @@ AssertionError: 1 != 2</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 304, in test_sync_shelf
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 0</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 296, in test_sync_shelf
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2033,11 +2121,35 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id='pt21.10' class='hiddenRow bg-success'>
+        <tr id="ft21.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft21.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft21.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 242, in test_sync_unchanged
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2059,9 +2171,13 @@ AssertionError: 1 != 0</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 270, in test_sync_upload
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 0</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 256, in test_sync_upload
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 111, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2072,11 +2188,11 @@ AssertionError: 1 != 0</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">5</td>
-        <td class="text-center">5</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2095,38 +2211,134 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id="ft22.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelfs</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft22.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft22.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 260, in test_kobo_sync_selected_shelfs
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 103, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id="ft22.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft22.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft22.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 164, in test_sync_changed_book
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 103, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id="ft22.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft22.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft22.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 237, in test_sync_reading_state
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 103, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id="ft22.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft22.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft22.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 193, in test_sync_shelf
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 103, in inital_sync
+    self.assertEqual(r.json(), {})
+AssertionError: {&#39;Benefits&#39;: {}} != {}
+- {&#39;Benefits&#39;: {}}
++ {}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3844,51 +4056,322 @@ AssertionError: 0 != 1</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestCalibreWebVisibilitys</td>
+        <td class="text-center">34</td>
+        <td class="text-center">34</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 1)">Detail</a>
+            <a onclick="showClassDetail('c40', 34)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et40.1" class="none bg-info">
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_visiblilitys</div>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et40.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et40.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_visiblilitys
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.8/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.8/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 764
-    books = self.get_shelf_books_displayed()test_upload_book_cbr
-                                            ^
-SyntaxError: invalid syntax</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.22' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.23' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.24' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.25' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.26' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.27' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.28' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.29' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.30' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.31' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.32' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.33' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.34' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4054,10 +4537,10 @@ SyntaxError: invalid syntax</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>345</td>
-        <td>332</td>
-        <td>5</td>
-        <td>2</td>
+        <td>378</td>
+        <td>358</td>
+        <td>14</td>
+        <td>0</td>
         <td>6</td>
         <td>&nbsp;</td>
     </tr>
@@ -4086,7 +4569,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.13.0-21-generic #21~20.04.1-Ubuntu SMP Tue Oct 26 15:49:20 UTC 2021 x86_64 x86_64</td>
+              <td>Linux 5.13.0-22-generic #22~20.04.1-Ubuntu SMP Tue Nov 9 15:07:24 UTC 2021 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -4242,7 +4725,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.31.0</td>
+              <td>2.32.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4272,7 +4755,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.31.0</td>
+              <td>2.32.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4302,7 +4785,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.31.0</td>
+              <td>2.32.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4344,7 +4827,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.31.0</td>
+              <td>2.32.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4374,7 +4857,7 @@ SyntaxError: invalid syntax</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.31.0</td>
+              <td>2.32.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -4464,7 +4947,7 @@ SyntaxError: invalid syntax</pre>
 </div>
 
 <script>
-    drawCircle(332, 5, 2, 6);
+    drawCircle(358, 14, 0, 6);
     showCase(5);
 </script>
 
