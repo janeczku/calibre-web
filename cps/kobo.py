@@ -209,7 +209,7 @@ def HandleSyncRequest():
         books = calibre_db.session.execute(changed_entries.limit(SYNC_ITEM_LIMIT))
     else:
         books = changed_entries.limit(SYNC_ITEM_LIMIT)
-    log.debug("Books to Sync: {}".format(books.count()))
+    log.debug("Books to Sync: {}".format(len(books.all())))
     for book in books:
         formats = [data.format for data in book.Books.data]
         if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
