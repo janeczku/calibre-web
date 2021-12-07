@@ -590,6 +590,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "btnfullsync":
+        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?")
     return json.dumps(texts)
 
 
@@ -889,9 +891,17 @@ def list_restriction(res_type, user_id):
     else:
         json_dumps = ""
     js = json.dumps(json_dumps)
-    response = make_response(js) #.replace("'", '"')
+    response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
+@admi.route("/ajax/fullsync")
+@login_required
+def ajax_fullsync():
+    count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
+    message = _("{} sync entries deleted").format(count)
+    ub.session_commit(message)
+    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
 
 
 @admi.route("/ajax/pathchooser/")
@@ -1189,13 +1199,13 @@ def _db_configuration_update_helper():
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         ub.session.query(ub.Downloads).delete()
         ub.session.query(ub.ArchivedBook).delete()
-        ub.session.query(ub.ArchivedBook).delete()
         ub.session.query(ub.ReadBook).delete()
         ub.session.query(ub.BookShelf).delete()
         ub.session.query(ub.Bookmark).delete()
         ub.session.query(ub.KoboReadingState).delete()
         ub.session.query(ub.KoboStatistics).delete()
         ub.session.query(ub.KoboSyncedBooks).delete()
+        ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
