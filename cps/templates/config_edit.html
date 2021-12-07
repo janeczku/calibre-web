@@ -293,9 +293,12 @@
       {% if feature_support['oauth'] %}
         <div data-related="login-settings-2">
           {% for prov in provider %}
+          <h4>  {{prov['provider_name']}} </h4>
+          {% if prov.obtain_link %}
           <div class="form-group">
             <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
           </div>
+          {% endif %}
           <div class="form-group">
             <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
             <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
@@ -304,6 +307,48 @@
             <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
             <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
           </div>
+          {% if 'scope' in prov and 'generic' == prov['provider_name'] %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_scope">{{_('%(provider)s OAuth scope', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_scope" name="config_{{ prov['id'] }}_scope" value="{% if prov['scope']%}{{ prov['scope'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'oauth_base_url' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_oauth_base_url">{{_('%(provider)s OAuth Base URL', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_base_url" name="config_{{ prov['id'] }}_oauth_base_url" value="{% if prov['oauth_base_url']%}{{ prov['oauth_base_url'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'oauth_auth_url' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_oauth_auth_url">{{_('%(provider)s OAuth Auth URL (relative)', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_auth_url" name="config_{{ prov['id'] }}_oauth_auth_url" value="{% if prov['oauth_auth_url']%}{{ prov['oauth_auth_url'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'oauth_token_url' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_oauth_token_url">{{_('%(provider)s OAuth Token URL (relative)', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_token_url" name="config_{{ prov['id'] }}_oauth_token_url" value="{% if prov['oauth_token_url']%}{{ prov['oauth_token_url'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'username_mapper' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_username_mapper">{{_('%(provider)s OAuth Username mapper', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_username_mapper" name="config_{{ prov['id'] }}_username_mapper" value="{% if prov['username_mapper']%}{{ prov['username_mapper'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'email_mapper' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_email_mapper">{{_('%(provider)s OAuth Email mapper', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_email_mapper" name="config_{{ prov['id'] }}_email_mapper" value="{% if prov['email_mapper']%}{{ prov['email_mapper'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+          {% if 'login_button' in prov %}
+            <div class="form-group">
+              <label for="config_{{ prov['id'] }}_login_button">{{_('%(provider)s OAuth Login Button', provider=prov['provider_name'])}}</label>
+              <input type="text" class="form-control" id="config_{{ prov['id'] }}_login_button" name="config_{{ prov['id'] }}_login_button" value="{% if prov['login_button']%}{{ prov['login_button'] }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
         {% endfor %}
         </div>
       {% endif %}

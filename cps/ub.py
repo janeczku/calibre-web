@@ -250,6 +250,13 @@ class OAuthProvider(Base):
     provider_name = Column(String)
     oauth_client_id = Column(String)
     oauth_client_secret = Column(String)
+    oauth_base_url = Column(String)
+    oauth_auth_url = Column(String, default="/protocol/openid-connect/auth")
+    oauth_token_url = Column(String, default="/protocol/openid-connect/token")
+    scope = Column(String, default="openid profile email")
+    username_mapper = Column(String, default="preferred_username")
+    email_mapper = Column(String, default="email")
+    login_button = Column(String)
     active = Column(Boolean)
 
 
@@ -688,13 +695,13 @@ def migrate_Database(session):
                      "kindle_mail VARCHAR(120),"
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
-                     "default_language VARCHAR(3),"                     
+                     "default_language VARCHAR(3),"
                      "denied_tags VARCHAR,"
                      "allowed_tags VARCHAR,"
                      "denied_column_value VARCHAR,"
                      "allowed_column_value VARCHAR,"
                      "view_settings JSON,"
-                     "kobo_only_shelves_sync SMALLINT,"                              
+                     "kobo_only_shelves_sync SMALLINT,"
                      "UNIQUE (name),"
                      "UNIQUE (email))"))
             conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
