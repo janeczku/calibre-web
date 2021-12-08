@@ -64,21 +64,14 @@ $(function() {
                 $("#merge_books").attr("aria-disabled", true);
             }
             if (selections.length < 1) {
-                $("#delete_selection").addClass("disabled");
-                $("#delete_selection").attr("aria-disabled", true);
                 $("#table_xchange").addClass("disabled");
                 $("#table_xchange").attr("aria-disabled", true);
             } else {
-                $("#delete_selection").removeClass("disabled");
-                $("#delete_selection").attr("aria-disabled", false);
                 $("#table_xchange").removeClass("disabled");
                 $("#table_xchange").attr("aria-disabled", false);
 
             }
         });
-    $("#delete_selection").click(function() {
-        $("#books-table").bootstrapTable("uncheckAll");
-    });
 
     $("#merge_confirm").click(function() {
         $.ajax({
@@ -179,7 +172,7 @@ $(function() {
         searchAlign: "left",
         showSearchButton : true,
         searchOnEnterKey: true,
-        checkboxHeader: false,
+        checkboxHeader: true,
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: column,
@@ -554,8 +547,6 @@ $(function() {
 
 function handle_header_buttons () {
     if (selections.length < 1) {
-        $("#user_delete_selection").addClass("disabled");
-        $("#user_delete_selection").attr("aria-disabled", true);
         $(".check_head").attr("aria-disabled", true);
         $(".check_head").attr("disabled", true);
         $(".check_head").prop('checked', false);
@@ -567,8 +558,6 @@ function handle_header_buttons () {
         $(".multi_selector").attr("disabled", true);
         $(".header_select").attr("disabled", true);
     } else {
-        $("#user_delete_selection").removeClass("disabled");
-        $("#user_delete_selection").attr("aria-disabled", false);
         $(".check_head").attr("aria-disabled", false);
         $(".check_head").removeAttr("disabled");
         $(".button_head").attr("aria-disabled", false);
@@ -730,9 +719,6 @@ function move_header_elements() {
         }
     }
 
-    $("#user_delete_selection").click(function () {
-        $("#user-table").bootstrapTable("uncheckAll");
-    });
     $("#select_locale").on("change", function () {
         selectHeader(this, "locale");
     });
