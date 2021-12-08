@@ -54,7 +54,9 @@ from .helper import check_valid_domain, render_task_status, check_email, check_u
 from .pagination import Pagination
 from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
+from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
+from .kobo_sync_status import change_archived_books
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -189,23 +191,16 @@ def toggle_read(book_id):
             return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column), 400
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
-            log.error(u"Read status could not set: %e", e)
+            log.error(u"Read status could not set: {}".format(e))
             return "Read status could not set: {}".format(e), 400
     return ""
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_archived(book_id):
-    archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
-                                                                  ub.ArchivedBook.book_id == book_id)).first()
-    if archived_book:
-        archived_book.is_archived = not archived_book.is_archived
-        archived_book.last_modified = datetime.utcnow()
-    else:
-        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
-        archived_book.is_archived = True
-    ub.session.merge(archived_book)
-    ub.session_commit("Book {} archivebit toggled".format(book_id))
+    is_archived = change_archived_books(book_id, message="Book {} archivebit toggled".format(book_id))
+    if is_archived:
+        remove_synced_book(book_id)
     return ""
 
 
@@ -798,7 +793,6 @@ def list_books():
 
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
-        # order = [db.Books.timestamp.asc()] if order == "asc" else [db.Books.timestamp.desc()]   # ToDo wrong: sort ticked
     elif sort == "tags":
         order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
         join = db.books_tags_link,db.Books.id == db.books_tags_link.c.book, db.Tags
@@ -1013,22 +1007,14 @@ def formats_list():
 @login_required_if_no_ano
 def language_overview():
     if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
-        if current_user.get_view_property('language', 'dir') == 'desc':
-            order = db.Languages.lang_code.desc()
-            order_no = 0
-        else:
-            order = db.Languages.lang_code.asc()
-            order_no = 1
+        order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
         charlist = list()
-        languages = calibre_db.speaking_language(reverse_order=not order_no)
+        languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
         for lang in languages:
-            upper_lang = lang.name[0].upper()
+            upper_lang = lang[0].name[0].upper()
             if upper_lang not in charlist:
                 charlist.append(upper_lang)
-        lang_counter = calibre_db.session.query(db.books_languages_link,
-                                        func.count('books_languages_link.book').label('bookcount')).group_by(
-            text('books_languages_link.lang_code')).all()
-        return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
+        return render_title_template('languages.html', languages=languages,
                                      charlist=charlist, title=_(u"Languages"), page="langlist",
                                      data="language", order=order_no)
     else:
@@ -1530,9 +1516,6 @@ def register():
 
 @web.route('/login', methods=['GET', 'POST'])
 def login():
-    #if not config.db_configured:
-    #    log.debug(u"Redirect to initial configuration")
-    #    return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:

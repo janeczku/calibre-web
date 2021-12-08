@@ -240,14 +240,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @editbook.route("/ajax/delete/<int:book_id>")
 @login_required
 def delete_book_from_details(book_id):
-    return Response(delete_book(book_id, "", True), mimetype='application/json')
+    return Response(delete_book_from_table(book_id, "", True), mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
 @editbook.route("/delete/<int:book_id>/<string:book_format>")
 @login_required
 def delete_book_ajax(book_id, book_format):
-    return delete_book(book_id, book_format, False)
+    return delete_book_from_table(book_id, book_format, False)
 
 
 def delete_whole_book(book_id, book):
@@ -317,7 +317,7 @@ def render_delete_book_result(book_format, jsonResponse, warning, book_id):
             return redirect(url_for('web.index'))
 
 
-def delete_book(book_id, book_format, jsonResponse):
+def delete_book_from_table(book_id, book_format, jsonResponse):
     warning = {}
     if current_user.role_delete_books():
         book = calibre_db.get_book(book_id)
@@ -1254,7 +1254,7 @@ def merge_list_book():
                                                         element.format,
                                                         element.uncompressed_size,
                                                         to_name))
-                    delete_book(from_book.id,"", True)
+                    delete_book_from_table(from_book.id,"", True)
                     return json.dumps({'success': True})
     return ""
 
