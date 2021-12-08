@@ -7941,6 +7941,7 @@ LANGUAGE_NAMES = {
         "cre": "Cree",
         "crh": "Turkish; Crimean",
         "csb": "Kashubian",
+        "csl": "Chinese Sign Language",
         "cym": "Welsh",
         "dak": "Dakota",
         "dan": "Danish",

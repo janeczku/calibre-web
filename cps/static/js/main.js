@@ -284,11 +284,7 @@ $(function() {
     }
 
     function fillFileTable(path, type, folder, filt) {
-        if (window.location.pathname.endsWith("/basicconfig")) {
-            var request_path = "/../basicconfig/pathchooser/";
-        } else {
-            var request_path = "/../../ajax/pathchooser/";
-        }
+        var request_path = "/../../ajax/pathchooser/";
         $.ajax({
             dataType: "json",
             data: {
@@ -521,6 +517,7 @@ $(function() {
         .on("hidden.bs.modal", function() {
             $(this).find(".modal-body").html("...");
             $("#config_delete_kobo_token").show();
+            $("#kobo_full_sync").show();
         });
 
     $("#config_delete_kobo_token").click(function() {
@@ -534,6 +531,7 @@ $(function() {
                     url: getPath() + "/kobo_auth/deleteauthtoken/" + value,
                 });
                 $("#config_delete_kobo_token").hide();
+                $("#kobo_full_sync").hide();
             }
         );
     });
@@ -567,6 +565,33 @@ $(function() {
             }
         );
     });
+
+    $("#kobo_full_sync").click(function() {
+        confirmDialog(
+           "btnfullsync",
+            "GeneralDeleteModal",
+            $(this).data('value'),
+            function(value){
+                path = getPath() + "/ajax/fullsync"
+                $.ajax({
+                    method:"get",
+                    url: path,
+                    timeout: 900,
+                    success:function(data) {
+                        data.forEach(function(item) {
+                            if (!jQuery.isEmptyObject(item)) {
+                                $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                                    '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
+                                    '</div>');
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
+
+
     $("#user_submit").click(function() {
         this.closest("form").submit();
     });
