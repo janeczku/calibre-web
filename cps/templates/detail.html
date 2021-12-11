@@ -63,10 +63,8 @@
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                     {% for format in reader_list %}
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
-                      {% if config.config_epub2websitepath != None %}
-                      {% if format == "epub" %}
+                      {% if format == "epub" and enable_epub2website %}
                       <li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>
-                      {% endif %}
                       {% endif %}
                     {%endfor%}
                     </ul>
@@ -78,7 +76,7 @@
                   </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=reader_list[0]) }}">{{reader_list[0]}}</a></li>
-                      {% if config.config_epub2websitepath != None %}<li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>{% endif %}
+                      {% if enable_epub2website %}<li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>{% endif %}
                     </ul>
                   {% else %}
                     <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=reader_list[0])}}" id="readbtn" class="btn btn-primary" role="button">

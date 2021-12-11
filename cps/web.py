@@ -1796,6 +1796,7 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 audioentries.append(media_format.format.lower())
 
+        enable_epub2website = config.config_epub2websitepath and config.config_epub2websitepath != "" and config.config_epub2website_library and config.config_epub2website_library != ""
         return render_title_template('detail.html',
                                      entry=entries,
                                      audioentries=audioentries,
@@ -1807,6 +1808,7 @@ def show_book(book_id):
                                      is_archived=is_archived,
                                      kindle_list=kindle_list,
                                      reader_list=reader_list,
+                                     enable_epub2website=enable_epub2website,
                                      page="book")
     else:
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
