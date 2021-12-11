@@ -1100,6 +1100,7 @@ def upload():
                 flash(_(u"Database error: %(error)s.", error=e), category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
+
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
@@ -1297,6 +1298,7 @@ def merge_list_book():
                     delete_book(from_book.id,"", True)
                     return json.dumps({'success': True})
     return ""
+
 
 @editbook.route("/ajax/xchange", methods=['POST'])
 @login_required

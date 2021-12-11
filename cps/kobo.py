@@ -133,7 +133,7 @@ def convert_to_kobo_timestamp_string(timestamp):
         return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
     except AttributeError as exc:
         log.debug("Timestamp not valid: {}".format(exc))
-        return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        return datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @kobo.route("/v1/library/sync")
@@ -310,7 +310,6 @@ def HandleSyncRequest():
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified
-    # sync_token.books_last_id = books_last_id
 
     return generate_sync_response(sync_token, sync_results, cont_sync)
 
@@ -388,7 +387,7 @@ def create_book_entitlement(book, archived):
     book_uuid = str(book.uuid)
     return {
         "Accessibility": "Full",
-        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.datetime.now())},
+        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.datetime.utcnow())},
         "Created": convert_to_kobo_timestamp_string(book.timestamp),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
@@ -942,7 +941,7 @@ def TopLevelEndpoint():
 @kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
 @requires_kobo_auth
 def HandleBookDeletionRequest(book_uuid):
-    log.info("Kobo book deletion request received for book %s" % book_uuid)
+    log.info("Kobo book delete request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book:
         log.info(u"Book %s not found in database", book_uuid)
@@ -950,18 +949,6 @@ def HandleBookDeletionRequest(book_uuid):
 
     book_id = book.id
     is_archived = kobo_sync_status.change_archived_books(book_id, True)
-    '''archived_book = (
-        ub.session.query(ub.ArchivedBook)
-        .filter(ub.ArchivedBook.book_id == book_id)
-        .first()
-    )
-    if not archived_book:
-        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
-    archived_book.is_archived = True
-    archived_book.last_modified = datetime.datetime.utcnow()
-
-    ub.session.merge(archived_book)
-    ub.session_commit()'''
     if is_archived:
         kobo_sync_status.remove_synced_book(book_id)
     return "", 204
