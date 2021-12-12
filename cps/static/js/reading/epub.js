@@ -13,6 +13,10 @@ var reader;
         bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });
 
+    reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("darkTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
+
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
         reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));

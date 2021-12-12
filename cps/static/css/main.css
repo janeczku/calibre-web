@@ -567,6 +567,31 @@ input:-moz-placeholder { color: #454545; }
   font-size: 0.8em;
 }
 
+.md-content .themes button {
+  display: inline-block;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 5%;
+  margin-right: 1%;
+  font-size: 16px;
+}
+
+.md-content .themes button.darkTheme {
+  background-color: black;
+  color: white;
+}
+
+.md-content .themes button.whiteTheme {
+  background-color: white;
+  color: black;
+}
+
+.md-content .themes button.sepiaTheme {
+  background-color: #ece1ca;
+  color: black;
+}
+
 /* Effect 1: Fade in and scale up */
 .md-effect-1 .md-content {
   -webkit-transform: scale(0.7);
