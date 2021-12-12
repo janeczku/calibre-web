@@ -69,6 +69,14 @@
       <div class="modal md-effect-1" id="settings-modal">
           <div class="md-content">
               <h3>{{_('Settings')}}</h3>
+              <div class="themes" id="themes">
+                  Choose a theme below: <br />
+
+                  <!-- Hardcoded a tick in the light theme button because it is the "default" theme. Need to find a way to do this dynamically on startup-->
+                  <button type="button" id="lightTheme" class="lightTheme" onclick="selectTheme(this.id)"><span id="lightSelected">✓</span>{{_('Light')}}</button> 
+                  <button type="button" id="darkTheme" class="darkTheme" onclick="selectTheme(this.id)"><span id="darkSelected"> </span>{{_('Dark')}}</button>
+                  <button type="button" id="sepiaTheme" class="sepiaTheme" onclick="selectTheme(this.id)"><span id="sepiaSelected"> </span>{{_('Sepia')}}</button>
+              </div>
               <div>
                   <p>
                     <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
@@ -90,6 +98,32 @@
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
               useBookmarks: "{{ g.user.is_authenticated | tojson }}"
           };
+
+          function selectTheme(id) {
+            tickSpans = document.getElementById("themes").querySelectorAll("span");
+            
+            // Remove tick mark from all theme buttons
+            for(var i = 0; i < tickSpans.length; i++) {
+              document.getElementById(tickSpans[i].id).textContent = "";
+            }
+
+            // Add tick mark to the button corresponding to the currently selected theme
+            document.getElementById(id).querySelector("span").textContent = "✓";
+
+            // Apply theme to epubjs iframe
+            reader.rendition.themes.select(id);
+
+            // Apply theme to rest of the page. TODO - Do this smarter
+            if (id == "darkTheme") {
+              document.getElementById("main").style.backgroundColor = "black";
+            }
+            else if (id == "lightTheme") {
+              document.getElementById("main").style.backgroundColor = "white";
+            }
+            else if (id == "sepiaTheme") {
+              document.getElementById("main").style.backgroundColor = "#ece1ca";
+            }
+          }
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
