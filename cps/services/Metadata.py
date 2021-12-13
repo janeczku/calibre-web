@@ -16,7 +16,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 import abc
-from typing import Dict, List, Optional, TypedDict, Union
+import re
+from typing import Dict, Generator, List, Optional, TypedDict, Union
 
 
 class Metadata:
@@ -30,8 +31,48 @@ class Metadata:
         self.active = state
 
     @abc.abstractmethod
-    def search(self, query: str, generic_cover: str):
+    def search(self, query: str, generic_cover: str = ""):
         pass
+
+    @staticmethod
+    def get_title_tokens(
+        title: str, strip_joiners: bool = True
+    ) -> Generator[str, None, None]:
+        """
+        Taken from calibre source code
+        """
+        title_patterns = [
+            (re.compile(pat, re.IGNORECASE), repl)
+            for pat, repl in [
+                # Remove things like: (2010) (Omnibus) etc.
+                (
+                    r"(?i)[({\[](\d{4}|omnibus|anthology|hardcover|"
+                    r"audiobook|audio\scd|paperback|turtleback|"
+                    r"mass\s*market|edition|ed\.)[\])}]",
+                    "",
+                ),
+                # Remove any strings that contain the substring edition inside
+                # parentheses
+                (r"(?i)[({\[].*?(edition|ed.).*?[\]})]", ""),
+                # Remove commas used a separators in numbers
+                (r"(\d+),(\d+)", r"\1\2"),
+                # Remove hyphens only if they have whitespace before them
+                (r"(\s-)", " "),
+                # Replace other special chars with a space
+                (r"""[:,;!@$%^&*(){}.`~"\s\[\]/]《》「」“”""", " "),
+            ]
+        ]
+
+        for pat, repl in title_patterns:
+            title = pat.sub(repl, title)
+
+        tokens = title.split()
+        for token in tokens:
+            token = token.strip().strip('"').strip("'")
+            if token and (
+                not strip_joiners or token.lower() not in ("a", "and", "the", "&")
+            ):
+                yield token
 
 
 class MetaSourceInfo(TypedDict):

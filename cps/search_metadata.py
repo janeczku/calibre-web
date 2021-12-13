@@ -16,25 +16,23 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import json
-import importlib
-import sys
-import inspect
-import datetime
 import concurrent.futures
+import importlib
+import inspect
+import json
+import os
+import sys
 
-from flask import Blueprint, request, Response, url_for
+from flask import Blueprint, Response, request, url_for
 from flask_login import current_user
 from flask_login import login_required
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import constants, logger, ub
 from cps.services.Metadata import Metadata
+from . import constants, logger, ub
 
-
-meta = Blueprint('metadata', __name__)
+meta = Blueprint("metadata", __name__)
 
 log = logger.create()
 
@@ -42,7 +40,7 @@ new_list = list()
 meta_dir = os.path.join(constants.BASE_DIR, "cps", "metadata_provider")
 modules = os.listdir(os.path.join(constants.BASE_DIR, "cps", "metadata_provider"))
 for f in modules:
-    if os.path.isfile(os.path.join(meta_dir, f)) and not f.endswith('__init__.py'):
+    if os.path.isfile(os.path.join(meta_dir, f)) and not f.endswith("__init__.py"):
         a = os.path.basename(f)[:-3]
         try:
             importlib.import_module("cps.metadata_provider." + a)
@@ -51,34 +49,46 @@ for f in modules:
             log.error("Import error for metadata source: {}".format(a))
             pass
 
+
 def list_classes(provider_list):
     classes = list()
     for element in provider_list:
-        for name, obj in inspect.getmembers(sys.modules["cps.metadata_provider." + element]):
-            if inspect.isclass(obj) and name != "Metadata" and issubclass(obj, Metadata):
+        for name, obj in inspect.getmembers(
+            sys.modules["cps.metadata_provider." + element]
+        ):
+            if (
+                inspect.isclass(obj)
+                and name != "Metadata"
+                and issubclass(obj, Metadata)
+            ):
                 classes.append(obj())
     return classes
 
+
 cl = list_classes(new_list)
+
 
 @meta.route("/metadata/provider")
 @login_required
 def metadata_provider():
-    active = current_user.view_settings.get('metadata', {})
+    active = current_user.view_settings.get("metadata", {})
     provider = list()
     for c in cl:
         ac = active.get(c.__id__, True)
-        provider.append({"name": c.__name__, "active": ac, "initial": ac, "id": c.__id__})
-    return Response(json.dumps(provider), mimetype='application/json')
+        provider.append(
+            {"name": c.__name__, "active": ac, "initial": ac, "id": c.__id__}
+        )
+    return Response(json.dumps(provider), mimetype="application/json")
 
-@meta.route("/metadata/provider", methods=['POST'])
-@meta.route("/metadata/provider/<prov_name>", methods=['POST'])
+
+@meta.route("/metadata/provider", methods=["POST"])
+@meta.route("/metadata/provider/<prov_name>", methods=["POST"])
 @login_required
 def metadata_change_active_provider(prov_name):
     new_state = request.get_json()
-    active = current_user.view_settings.get('metadata', {})
-    active[new_state['id']] = new_state['value']
-    current_user.view_settings['metadata'] = active
+    active = current_user.view_settings.get("metadata", {})
+    active[new_state["id"]] = new_state["value"]
+    current_user.view_settings["metadata"] = active
     try:
         try:
             flag_modified(current_user, "view_settings")
@@ -91,27 +101,26 @@ def metadata_change_active_provider(prov_name):
     if "initial" in new_state and prov_name:
         for c in cl:
             if c.__id__ == prov_name:
-                data = c.search(new_state.get('query', ""))
+                data = c.search(new_state.get("query", ""))
                 break
-        return Response(json.dumps(data), mimetype='application/json')
+        return Response(json.dumps(data), mimetype="application/json")
     return ""
 
-@meta.route("/metadata/search", methods=['POST'])
+
+@meta.route("/metadata/search", methods=["POST"])
 @login_required
 def metadata_search():
-    query = request.form.to_dict().get('query')
+    query = request.form.to_dict().get("query")
     data = list()
-    active = current_user.view_settings.get('metadata', {})
+    active = current_user.view_settings.get("metadata", {})
     if query:
-        static_cover = url_for('static', filename='generic_cover.jpg')
+        static_cover = url_for("static", filename="generic_cover.jpg")
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            meta = {executor.submit(c.search, query, static_cover): c for c in cl if active.get(c.__id__, True)}
+            meta = {
+                executor.submit(c.search, query, static_cover): c
+                for c in cl
+                if active.get(c.__id__, True)
+            }
             for future in concurrent.futures.as_completed(meta):
                 data.extend(future.result())
-    return Response(json.dumps(data), mimetype='application/json')
-
-
-
-
-
-
+    return Response(json.dumps(data), mimetype="application/json")
