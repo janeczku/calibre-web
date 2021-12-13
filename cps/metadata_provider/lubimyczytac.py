@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
 #    Copyright (C) 2021 OzzieIsaacs
 #
@@ -18,7 +17,8 @@
 import datetime
 import json
 import re
-from typing import Dict, Generator, List, Optional, Tuple, Union
+from multiprocessing.pool import ThreadPool
+from typing import Dict, List, Optional, Tuple, Union
 from urllib.parse import quote
 
 import requests
@@ -114,13 +114,14 @@ class LubimyCzytac(Metadata):
             lc_parser = LubimyCzytacParser(root=root, metadata=self)
             matches = lc_parser.parse_search_results()
             if matches:
-                final_matches = []
-                for match in matches:
-                    response = requests.get(match.get("url"))
-                    match = lc_parser.parse_single_book(
-                        match=match, response=response, generic_cover=generic_cover
+                with ThreadPool(processes=10) as pool:
+                    final_matches = pool.starmap(
+                        lc_parser.parse_single_book,
+                        [
+                            (match, generic_cover)
+                            for match in matches
+                        ],
                     )
-                    final_matches.append(match)
                 return final_matches
             return matches
 
@@ -145,46 +146,6 @@ class LubimyCzytac(Metadata):
         if not query:
             return ""
         return f"{LubimyCzytac.BASE_URL}/szukaj/ksiazki?phrase={query}"
-
-    @staticmethod
-    def get_title_tokens(
-        title: str, strip_joiners: bool = True
-    ) -> Generator[str, None, None]:
-        """
-        Taken from calibre source code
-        """
-        title_patterns = [
-            (re.compile(pat, re.IGNORECASE), repl)
-            for pat, repl in [
-                # Remove things like: (2010) (Omnibus) etc.
-                (
-                    r"(?i)[({\[](\d{4}|omnibus|anthology|hardcover|"
-                    r"audiobook|audio\scd|paperback|turtleback|"
-                    r"mass\s*market|edition|ed\.)[\])}]",
-                    "",
-                ),
-                # Remove any strings that contain the substring edition inside
-                # parentheses
-                (r"(?i)[({\[].*?(edition|ed.).*?[\]})]", ""),
-                # Remove commas used a separators in numbers
-                (r"(\d+),(\d+)", r"\1\2"),
-                # Remove hyphens only if they have whitespace before them
-                (r"(\s-)", " "),
-                # Replace other special chars with a space
-                (r"""[:,;!@$%^&*(){}.`~"\s\[\]/]《》「」“”""", " "),
-            ]
-        ]
-
-        for pat, repl in title_patterns:
-            title = pat.sub(repl, title)
-
-        tokens = title.split()
-        for token in tokens:
-            token = token.strip().strip('"').strip("'")
-            if token and (
-                not strip_joiners or token.lower() not in ("a", "and", "the", "&")
-            ):
-                yield token
 
 
 class LubimyCzytacParser:
@@ -232,8 +193,9 @@ class LubimyCzytacParser:
         return matches
 
     def parse_single_book(
-        self, match: Dict, response, generic_cover: str
+        self, match: Dict, generic_cover: str
     ) -> MetaRecord:
+        response = requests.get(match.get("url"))
         self.root = fromstring(response.text)
         match["series"], match["series_index"] = self._parse_series()
         match["tags"] = self._parse_tags()
