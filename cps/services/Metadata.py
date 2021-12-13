@@ -15,13 +15,44 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
+import abc
+from typing import Dict, List, Optional, TypedDict, Union
 
 
-class Metadata():
+class Metadata:
     __name__ = "Generic"
+    __id__ = "generic"
 
     def __init__(self):
         self.active = True
 
     def set_status(self, state):
         self.active = state
+
+    @abc.abstractmethod
+    def search(self, query: str, generic_cover: str):
+        pass
+
+
+class MetaSourceInfo(TypedDict):
+    id: str
+    description: str
+    link: str
+
+
+class MetaRecord(TypedDict):
+    id: Union[str, int]
+    title: str
+    authors: List[str]
+    url: str
+    cover: str
+    series: Optional[str]
+    series_index: Optional[Union[int, float]]
+    tags: Optional[List[str]]
+    publisher: Optional[str]
+    publishedDate: Optional[str]
+    rating: Optional[int]
+    description: Optional[str]
+    source: MetaSourceInfo
+    languages: Optional[List[str]]
+    identifiers: Dict[str, Union[str, int]]

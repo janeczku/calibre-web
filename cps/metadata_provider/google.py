@@ -17,19 +17,20 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # Google Books api document: https://developers.google.com/books/docs/v1/using
-
-
 import requests
+
 from cps.services.Metadata import Metadata
+
 
 class Google(Metadata):
     __name__ = "Google"
     __id__ = "google"
+    BASE_URL = "https://www.googleapis.com/books/v1/volumes?q="
 
-    def search(self, query, __):
+    def search(self, query, generic_cover=""):
         if self.active:
             val = list()
-            result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))
+            result = requests.get(Google.BASE_URL + query.replace(" ","+"))
             for r in result.json()['items']:
                 v = dict()
                 v['id'] = r['id']
@@ -43,7 +44,8 @@ class Google(Metadata):
                 if r['volumeInfo'].get('imageLinks'):
                     v['cover'] = r['volumeInfo']['imageLinks']['thumbnail'].replace("http://", "https://")
                 else:
-                    v['cover'] = "/../../../static/generic_cover.jpg"
+                    # v['cover'] = "/../../../static/generic_cover.jpg"
+                    v['cover'] = generic_cover
                 v['source'] = {
                     "id": self.__id__,
                     "description": "Google Books",

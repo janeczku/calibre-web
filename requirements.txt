@@ -16,3 +16,4 @@ lxml>=3.8.0,<4.7.0
 flask-wtf>=0.14.2,<1.1.0
 markdown2==2.4.2
 html2text==2020.1.16
+python-dateutil==2.8.2
