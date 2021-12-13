@@ -22,6 +22,7 @@ import inspect
 import json
 import os
 import sys
+from dataclasses import asdict
 
 from flask import Blueprint, Response, request, url_for
 from flask_login import current_user
@@ -99,11 +100,13 @@ def metadata_change_active_provider(prov_name):
         log.error("Invalid request received: {}".format(request))
         return "Invalid request", 400
     if "initial" in new_state and prov_name:
-        for c in cl:
-            if c.__id__ == prov_name:
-                data = c.search(new_state.get("query", ""))
-                break
-        return Response(json.dumps(data), mimetype="application/json")
+        data = []
+        provider = next((c for c in cl if c.__id__ == prov_name), None)
+        if provider is not None:
+            data = provider.search(new_state.get("query", ""))
+        return Response(
+            json.dumps([asdict(x) for x in data]), mimetype="application/json"
+        )
     return ""
 
 
@@ -123,5 +126,5 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend(future.result())
+                data.extend([asdict(x) for x in future.result()])
     return Response(json.dumps(data), mimetype="application/json")

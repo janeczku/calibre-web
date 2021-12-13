@@ -16,32 +16,38 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 import abc
+import dataclasses
+import os
 import re
-from typing import Dict, Generator, List, Optional, TypedDict, Union
+from typing import Dict, Generator, List, Optional, Union
+
+from cps import constants
 
 
-class MetaSourceInfo(TypedDict):
+@dataclasses.dataclass
+class MetaSourceInfo:
     id: str
     description: str
     link: str
 
 
-class MetaRecord(TypedDict):
+@dataclasses.dataclass
+class MetaRecord:
     id: Union[str, int]
     title: str
     authors: List[str]
     url: str
-    cover: str
-    series: Optional[str]
-    series_index: Optional[Union[int, float]]
-    tags: Optional[List[str]]
-    publisher: Optional[str]
-    publishedDate: Optional[str]
-    rating: Optional[int]
-    description: Optional[str]
     source: MetaSourceInfo
-    languages: Optional[List[str]]
-    identifiers: Dict[str, Union[str, int]]
+    cover: str = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+    description: Optional[str] = ""
+    series: Optional[str] = None
+    series_index: Optional[Union[int, float]] = 0
+    identifiers: Dict[str, Union[str, int]] = dataclasses.field(default_factory=dict)
+    publisher: Optional[str] = None
+    publishedDate: Optional[str] = None
+    rating: Optional[int] = 0
+    languages: Optional[List[str]] = dataclasses.field(default_factory=list)
+    tags: Optional[List[str]] = dataclasses.field(default_factory=list)
 
 
 class Metadata:

@@ -27,7 +27,7 @@ from html2text import HTML2Text
 from lxml.html import HtmlElement, fromstring, tostring
 from markdown2 import Markdown
 
-from cps.services.Metadata import MetaRecord, Metadata
+from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
 SYMBOLS_TO_TRANSLATE = (
     "öÖüÜóÓőŐúÚéÉáÁűŰíÍąĄćĆęĘłŁńŃóÓśŚźŹżŻ",
@@ -158,61 +158,60 @@ class LubimyCzytacParser:
         self.root = root
         self.metadata = metadata
 
-    def parse_search_results(self) -> List[Dict]:
+    def parse_search_results(self) -> List[MetaRecord]:
         matches = []
         results = self.root.xpath(LubimyCzytac.BOOK_SEARCH_RESULT_XPATH)
         for result in results:
             title = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                f"{LubimyCzytac.TITLE_TEXT_PATH}",
+                      f"{LubimyCzytac.TITLE_TEXT_PATH}",
             )
 
             book_url = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                f"{LubimyCzytac.URL_PATH}",
+                      f"{LubimyCzytac.URL_PATH}",
             )
             authors = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                f"{LubimyCzytac.AUTHORS_PATH}",
+                      f"{LubimyCzytac.AUTHORS_PATH}",
                 take_first=False,
             )
             if not all([title, book_url, authors]):
                 continue
             matches.append(
-                {
-                    "id": book_url.replace(f"/ksiazka/", "").split("/")[0],
-                    "title": title,
-                    "authors": [strip_accents(author) for author in authors],
-                    "url": LubimyCzytac.BASE_URL + book_url,
-                }
+                MetaRecord(
+                    id=book_url.replace(f"/ksiazka/", "").split("/")[0],
+                    title=title,
+                    authors=[strip_accents(author) for author in authors],
+                    url=LubimyCzytac.BASE_URL + book_url,
+                    source=MetaSourceInfo(
+                        id=self.metadata.__id__,
+                        description=self.metadata.__name__,
+                        link=LubimyCzytac.BASE_URL,
+                    )
+                )
             )
         return matches
 
-    def parse_single_book(self, match: Dict, generic_cover: str) -> MetaRecord:
-        response = requests.get(match.get("url"))
+    def parse_single_book(self, match: MetaRecord, generic_cover: str) -> MetaRecord:
+        response = requests.get(match.url)
         self.root = fromstring(response.text)
-        match["cover"] = self._parse_cover(generic_cover=generic_cover)
-        match["description"] = self._parse_description()
-        match["languages"] = self._parse_languages()
-        match["publisher"] = self._parse_publisher()
-        match["publishedDate"] = self._parse_from_summary(
+        match.cover = self._parse_cover(generic_cover=generic_cover)
+        match.description = self._parse_description()
+        match.languages = self._parse_languages()
+        match.publisher = self._parse_publisher()
+        match.publishedDate = self._parse_from_summary(
             attribute_name="datePublished"
         )
-        match["rating"] = self._parse_rating()
-        match["series"], match["series_index"] = self._parse_series()
-        match["tags"] = self._parse_tags()
-
-        match["source"] = {
-            "id": self.metadata.__id__,
-            "description": self.metadata.__name__,
-            "link": LubimyCzytac.BASE_URL,
-        }
-        match["identifiers"] = {
+        match.rating = self._parse_rating()
+        match.series, match.series_index = self._parse_series()
+        match.tags = self._parse_tags()
+        match.identifiers = {
             "isbn": self._parse_isbn(),
-            "lubimyczytac": match["id"],
+            "lubimyczytac": match.id,
         }
         return match
 
