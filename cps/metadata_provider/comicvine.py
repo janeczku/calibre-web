@@ -26,7 +26,7 @@ class ComicVine(Metadata):
     __name__ = "ComicVine"
     __id__ = "comicvine"
 
-    def search(self, query, __):
+    def search(self, query, generic_cover=""):
         val = list()
         apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
         if self.active:
@@ -52,7 +52,7 @@ class ComicVine(Metadata):
                 v['tags'] = ["Comics", seriesTitle]
                 v['rating'] = 0
                 v['series'] = seriesTitle
-                v['cover'] = r['image'].get('original_url')
+                v['cover'] = r['image'].get('original_url', generic_cover)
                 v['source'] = {
                     "id": self.__id__,
                     "description": "ComicVine Books",
