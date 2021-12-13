@@ -23,7 +23,7 @@ from urllib.parse import quote
 import requests
 
 from cps.isoLanguages import get_lang3, get_language_name
-from cps.services.Metadata import MetaRecord, Metadata
+from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
 
 class Google(Metadata):
@@ -56,38 +56,37 @@ class Google(Metadata):
     def _parse_search_result(
         self, result: Dict, generic_cover: str, locale: str
     ) -> MetaRecord:
-        match = dict()
-        match["id"] = result["id"]
-        match["title"] = result["volumeInfo"]["title"]
-        match["authors"] = result["volumeInfo"].get("authors", [])
-        match["url"] = Google.BOOK_URL + result["id"]
-        match["cover"] = self._parse_cover(result=result, generic_cover=generic_cover)
-        match["description"] = result["volumeInfo"].get("description", "")
-        match["languages"] = self._parse_languages(result=result, locale=locale)
-        match["publisher"] = result["volumeInfo"].get("publisher", "")
-        match["publishedDate"] = result["volumeInfo"].get("publishedDate", "")
-        match["rating"] = result["volumeInfo"].get("averageRating", 0)
-        match["series"], match["series_index"] = "", 1
-        match["tags"] = result["volumeInfo"].get("categories", [])
+        match = MetaRecord(
+            id=result["id"],
+            title=result["volumeInfo"]["title"],
+            authors=result["volumeInfo"].get("authors", []),
+            url=Google.BOOK_URL + result["id"],
+            source=MetaSourceInfo(
+                id=self.__id__,
+                description=Google.DESCRIPTION,
+                link=Google.META_URL,
+            ),
+        )
 
-        match["source"] = {
-            "id": self.__id__,
-            "description": Google.DESCRIPTION,
-            "link": Google.META_URL,
-        }
+        match.cover = self._parse_cover(result=result, generic_cover=generic_cover)
+        match.description = result["volumeInfo"].get("description", "")
+        match.languages = self._parse_languages(result=result, locale=locale)
+        match.publisher = result["volumeInfo"].get("publisher", "")
+        match.publishedDate = result["volumeInfo"].get("publishedDate", "")
+        match.rating = result["volumeInfo"].get("averageRating", 0)
+        match.series, match.series_index = "", 1
+        match.tags = result["volumeInfo"].get("categories", [])
 
-        match["identifiers"] = {
-            "google": match.get("id"),
-        }
+        match.identifiers = {"google": match.id}
         match = self._parse_isbn(result=result, match=match)
         return match
 
     @staticmethod
-    def _parse_isbn(result: Dict, match: Dict) -> Dict:
+    def _parse_isbn(result: Dict, match: MetaRecord) -> MetaRecord:
         identifiers = result["volumeInfo"].get("industryIdentifiers", [])
         for identifier in identifiers:
             if identifier.get("type") == Google.ISBN_TYPE:
-                match["identifiers"]["isbn"] = identifier.get("identifier")
+                match.identifiers["isbn"] = identifier.get("identifier")
                 break
         return match
 
@@ -100,7 +99,7 @@ class Google(Metadata):
 
     @staticmethod
     def _parse_languages(result: Dict, locale: str) -> List[str]:
-        language_iso2 = result.get("language", "")
+        language_iso2 = result["volumeInfo"].get("language", "")
         languages = (
             [get_language_name(locale, get_lang3(language_iso2))]
             if language_iso2
