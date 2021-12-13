@@ -20,6 +20,30 @@ import re
 from typing import Dict, Generator, List, Optional, TypedDict, Union
 
 
+class MetaSourceInfo(TypedDict):
+    id: str
+    description: str
+    link: str
+
+
+class MetaRecord(TypedDict):
+    id: Union[str, int]
+    title: str
+    authors: List[str]
+    url: str
+    cover: str
+    series: Optional[str]
+    series_index: Optional[Union[int, float]]
+    tags: Optional[List[str]]
+    publisher: Optional[str]
+    publishedDate: Optional[str]
+    rating: Optional[int]
+    description: Optional[str]
+    source: MetaSourceInfo
+    languages: Optional[List[str]]
+    identifiers: Dict[str, Union[str, int]]
+
+
 class Metadata:
     __name__ = "Generic"
     __id__ = "generic"
@@ -31,7 +55,9 @@ class Metadata:
         self.active = state
 
     @abc.abstractmethod
-    def search(self, query: str, generic_cover: str = ""):
+    def search(
+        self, query: str, generic_cover: str = "", locale: str = "en"
+    ) -> Optional[List[MetaRecord]]:
         pass
 
     @staticmethod
@@ -73,27 +99,3 @@ class Metadata:
                 not strip_joiners or token.lower() not in ("a", "and", "the", "&")
             ):
                 yield token
-
-
-class MetaSourceInfo(TypedDict):
-    id: str
-    description: str
-    link: str
-
-
-class MetaRecord(TypedDict):
-    id: Union[str, int]
-    title: str
-    authors: List[str]
-    url: str
-    cover: str
-    series: Optional[str]
-    series_index: Optional[Union[int, float]]
-    tags: Optional[List[str]]
-    publisher: Optional[str]
-    publishedDate: Optional[str]
-    rating: Optional[int]
-    description: Optional[str]
-    source: MetaSourceInfo
-    languages: Optional[List[str]]
-    identifiers: Dict[str, Union[str, int]]

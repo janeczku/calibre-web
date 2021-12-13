@@ -107,7 +107,9 @@ class LubimyCzytac(Metadata):
 
     SUMMARY = "//script[@type='application/ld+json']//text()"
 
-    def search(self, query: str, generic_cover: str = "") -> Optional[List]:
+    def search(
+        self, query: str, generic_cover: str = "", locale: str = "en"
+    ) -> Optional[List[MetaRecord]]:
         if self.active:
             result = requests.get(self._prepare_query(title=query))
             root = fromstring(result.text)
@@ -117,10 +119,7 @@ class LubimyCzytac(Metadata):
                 with ThreadPool(processes=10) as pool:
                     final_matches = pool.starmap(
                         lc_parser.parse_single_book,
-                        [
-                            (match, generic_cover)
-                            for match in matches
-                        ],
+                        [(match, generic_cover) for match in matches],
                     )
                 return final_matches
             return matches
@@ -192,26 +191,25 @@ class LubimyCzytacParser:
             )
         return matches
 
-    def parse_single_book(
-        self, match: Dict, generic_cover: str
-    ) -> MetaRecord:
+    def parse_single_book(self, match: Dict, generic_cover: str) -> MetaRecord:
         response = requests.get(match.get("url"))
         self.root = fromstring(response.text)
-        match["series"], match["series_index"] = self._parse_series()
-        match["tags"] = self._parse_tags()
+        match["cover"] = self._parse_cover(generic_cover=generic_cover)
+        match["description"] = self._parse_description()
+        match["languages"] = self._parse_languages()
         match["publisher"] = self._parse_publisher()
         match["publishedDate"] = self._parse_from_summary(
             attribute_name="datePublished"
         )
         match["rating"] = self._parse_rating()
-        match["description"] = self._parse_description()
-        match["cover"] = self._parse_cover(generic_cover=generic_cover)
+        match["series"], match["series_index"] = self._parse_series()
+        match["tags"] = self._parse_tags()
+
         match["source"] = {
             "id": self.metadata.__id__,
             "description": self.metadata.__name__,
             "link": LubimyCzytac.BASE_URL,
         }
-        match["languages"] = self._parse_languages()
         match["identifiers"] = {
             "isbn": self._parse_isbn(),
             "lubimyczytac": match["id"],
