@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-13 18:24+0100\n"
+"POT-Creation-Date: 2021-12-14 17:51+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -298,9 +298,8 @@ msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "证书文件路径无效，请输入正确的路径"
 
 #: cps/admin.py:1335
-#, fuzzy
 msgid "Database Settings updated"
-msgstr "邮件服务器设置已更新"
+msgstr "数据库设置已更新"
 
 #: cps/admin.py:1343
 msgid "Database Configuration"
@@ -443,13 +442,12 @@ msgid "General error"
 msgstr "一般错误"
 
 #: cps/admin.py:1720
-#, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "更新文件无法保存在临时目录中"
 
 #: cps/admin.py:1721
 msgid "Files could not be replaced during update"
-msgstr ""
+msgstr "更新期间无法替换文件"
 
 #: cps/admin.py:1745
 msgid "Failed to extract at least One LDAP User"
@@ -512,9 +510,9 @@ msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
 
 #: cps/editbooks.py:490 cps/editbooks.py:954
-#, fuzzy, python-format
+#, python-format
 msgid "'%(langname)s' is not a valid language"
-msgstr "%(langname)s 不是一种有效语言"
+msgstr "'%(langname)s' 不是一种有效语言"
 
 #: cps/editbooks.py:630 cps/editbooks.py:981
 #, python-format
@@ -727,7 +725,7 @@ msgstr "封面文件只支持jpg/jpeg/png/webp/bmp文件"
 
 #: cps/helper.py:651
 msgid "Invalid cover file content"
-msgstr ""
+msgstr "封面文件内容无效"
 
 #: cps/helper.py:655
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -1015,7 +1013,7 @@ msgstr "此书籍已被添加到书架：%(sname)s"
 
 #: cps/shelf.py:126
 msgid "You are not allowed to add a book to the shelf"
-msgstr ""
+msgstr "你没有向书架添加书籍的权限"
 
 #: cps/shelf.py:144
 #, python-format
@@ -1039,7 +1037,7 @@ msgstr "此书已从书架 %(sname)s 中删除"
 
 #: cps/shelf.py:218
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr ""
+msgstr "抱歉，你没有从这个书架删除书籍的权限"
 
 #: cps/shelf.py:228 cps/templates/layout.html:140
 msgid "Create a Shelf"
@@ -1055,7 +1053,7 @@ msgstr "编辑书架"
 
 #: cps/shelf.py:249
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
+msgstr "抱歉，你没有创建公开书架的权限"
 
 #: cps/shelf.py:261
 #, python-format
@@ -1754,7 +1752,6 @@ msgid "Keyword"
 msgstr "关键字"
 
 #: cps/templates/book_edit.html:233
-#, fuzzy
 msgid "Search keyword"
 msgstr " 搜索关键字 "
 
@@ -1864,21 +1861,19 @@ msgid "Enter Publishers"
 msgstr "输入出版社"
 
 #: cps/templates/book_table.html:73
-#, fuzzy
 msgid "Enter comments"
-msgstr "输入域名"
+msgstr "输入简介"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "简介"
 
 #: cps/templates/book_table.html:77 cps/templates/book_table.html:79
 #: cps/templates/book_table.html:81 cps/templates/book_table.html:83
 #: cps/templates/book_table.html:87 cps/templates/book_table.html:89
 #: cps/templates/book_table.html:91 cps/templates/book_table.html:93
-#, fuzzy
 msgid "Enter "
-msgstr "书号"
+msgstr "输入"
 
 #: cps/templates/book_table.html:110 cps/templates/modal_dialogs.html:46
 msgid "Are you really sure?"
@@ -1954,7 +1949,7 @@ msgstr "夜间版"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
+msgstr "可信主机（用逗号分隔）"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
@@ -1978,7 +1973,7 @@ msgstr "功能配置"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr ""
+msgstr "保存到磁盘事转换标题和作者中的非英文字符"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
@@ -1986,7 +1981,7 @@ msgstr "启用上传"
 
 #: cps/templates/config_edit.html:108
 msgid "(Please ensure users having also upload rights)"
-msgstr ""
+msgstr "（请确保用户也有上传权限）"
 
 #: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
@@ -2273,14 +2268,12 @@ msgid "Allow Editing Public Shelves"
 msgstr "允许编辑公共书架"
 
 #: cps/templates/config_view_edit.html:123
-#, fuzzy
 msgid "Default Language"
-msgstr "排除语言"
+msgstr "默认语言"
 
 #: cps/templates/config_view_edit.html:131
-#, fuzzy
 msgid "Default Visible Language of Books"
-msgstr "按语言显示书籍"
+msgstr "默认显示书籍语言"
 
 #: cps/templates/config_view_edit.html:147
 msgid "Default Visibilities for New Users"
@@ -2450,11 +2443,11 @@ msgstr "登出账号"
 
 #: cps/templates/index.html:69
 msgid "Sort ascending according to download count"
-msgstr ""
+msgstr "按下载数排序"
 
 #: cps/templates/index.html:70
 msgid "Sort descending according to download count"
-msgstr ""
+msgstr "按下载数逆序排序"
 
 #: cps/templates/index.html:76 cps/templates/search.html:33
 #: cps/templates/shelf.html:21
