@@ -18,7 +18,7 @@ import datetime
 import json
 import re
 from multiprocessing.pool import ThreadPool
-from typing import Dict, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
 from urllib.parse import quote
 
 import requests
@@ -27,6 +27,7 @@ from html2text import HTML2Text
 from lxml.html import HtmlElement, fromstring, tostring
 from markdown2 import Markdown
 
+from cps.isoLanguages import get_language_name
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
 SYMBOLS_TO_TRANSLATE = (
@@ -119,7 +120,7 @@ class LubimyCzytac(Metadata):
                 with ThreadPool(processes=10) as pool:
                     final_matches = pool.starmap(
                         lc_parser.parse_single_book,
-                        [(match, generic_cover) for match in matches],
+                        [(match, generic_cover, locale) for match in matches],
                     )
                 return final_matches
             return matches
@@ -165,18 +166,18 @@ class LubimyCzytacParser:
             title = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                      f"{LubimyCzytac.TITLE_TEXT_PATH}",
+                f"{LubimyCzytac.TITLE_TEXT_PATH}",
             )
 
             book_url = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                      f"{LubimyCzytac.URL_PATH}",
+                f"{LubimyCzytac.URL_PATH}",
             )
             authors = self._parse_xpath_node(
                 root=result,
                 xpath=f"{LubimyCzytac.SINGLE_BOOK_RESULT_XPATH}"
-                      f"{LubimyCzytac.AUTHORS_PATH}",
+                f"{LubimyCzytac.AUTHORS_PATH}",
                 take_first=False,
             )
             if not all([title, book_url, authors]):
@@ -191,21 +192,21 @@ class LubimyCzytacParser:
                         id=self.metadata.__id__,
                         description=self.metadata.__name__,
                         link=LubimyCzytac.BASE_URL,
-                    )
+                    ),
                 )
             )
         return matches
 
-    def parse_single_book(self, match: MetaRecord, generic_cover: str) -> MetaRecord:
+    def parse_single_book(
+        self, match: MetaRecord, generic_cover: str, locale: str
+    ) -> MetaRecord:
         response = requests.get(match.url)
         self.root = fromstring(response.text)
         match.cover = self._parse_cover(generic_cover=generic_cover)
         match.description = self._parse_description()
-        match.languages = self._parse_languages()
+        match.languages = self._parse_languages(locale=locale)
         match.publisher = self._parse_publisher()
-        match.publishedDate = self._parse_from_summary(
-            attribute_name="datePublished"
-        )
+        match.publishedDate = self._parse_from_summary(attribute_name="datePublished")
         match.rating = self._parse_rating()
         match.series, match.series_index = self._parse_series()
         match.tags = self._parse_tags()
@@ -241,15 +242,15 @@ class LubimyCzytacParser:
     def _parse_publisher(self) -> Optional[str]:
         return self._parse_xpath_node(xpath=LubimyCzytac.PUBLISHER, take_first=True)
 
-    def _parse_languages(self) -> List[str]:
+    def _parse_languages(self, locale: str) -> List[str]:
         languages = list()
         lang = self._parse_xpath_node(xpath=LubimyCzytac.LANGUAGES, take_first=True)
         if lang:
             if "polski" in lang:
-                languages.append("Polish")
+                languages.append("pol")
             if "angielski" in lang:
-                languages.append("English")
-        return languages
+                languages.append("eng")
+        return [get_language_name(locale, language) for language in languages]
 
     def _parse_series(self) -> Tuple[Optional[str], Optional[Union[float, int]]]:
         series_index = 0
