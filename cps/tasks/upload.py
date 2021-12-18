@@ -32,3 +32,6 @@ class TaskUpload(CalibreTask):
     @property
     def name(self):
         return "Upload"
+
+    def __str__(self):
+        return "Upload {}".format(self.message)
