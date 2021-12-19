@@ -217,13 +217,16 @@ class TaskConvert(CalibreTask):
                     quotes.append(quotes_index)
                     quotes_index += 1
 
-            p = process_open(command, quotes)
+            p = process_open(command, quotes, newlines=False)
         except OSError as e:
             return 1, _(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()
-            log.debug(nextline.strip('\r\n'))
+            if isinstance(nextline, bytes):
+                nextline = nextline.decode('utf-8', errors="ignore").strip('\r\n')
+            if nextline:
+                log.debug(nextline)
             # parse progress string from calibre-converter
             progress = re.search(r"(\d+)%\s.*", nextline)
             if progress:
@@ -236,11 +239,15 @@ class TaskConvert(CalibreTask):
         calibre_traceback = p.stderr.readlines()
         error_message = ""
         for ele in calibre_traceback:
-            log.debug(ele.strip('\n'))
+            ele = ele.decode('utf-8', errors="ignore").strip('\n')
+            log.debug(ele)
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
-                error_message = _("Calibre failed with error: %(error)s", error=ele.strip('\n'))
+                error_message = _("Calibre failed with error: %(error)s", error=ele)
         return check, error_message
 
     @property
     def name(self):
         return "Convert"
+
+    def __str__(self):
+        return "Convert {} {}".format(self.bookid, self.kindle_mail)

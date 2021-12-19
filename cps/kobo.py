@@ -146,9 +146,16 @@ def HandleSyncRequest():
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
-    new_books_last_modified = sync_token.books_last_modified
-    new_books_last_created = sync_token.books_last_created
+    # if no books synced don't respect sync_token
+    if not ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == current_user.id).count():
+        sync_token.books_last_modified = datetime.datetime.min
+        sync_token.books_last_created = datetime.datetime.min
+        sync_token.reading_state_last_modified = datetime.datetime.min
+
+    new_books_last_modified = sync_token.books_last_modified # needed for sync selected shelfs only
+    new_books_last_created = sync_token.books_last_created # needed to distinguish between new and changed entitlement
     new_reading_state_last_modified = sync_token.reading_state_last_modified
+
     new_archived_last_modified = datetime.datetime.min
     sync_results = []
 
@@ -209,7 +216,7 @@ def HandleSyncRequest():
         books = calibre_db.session.execute(changed_entries.limit(SYNC_ITEM_LIMIT))
     else:
         books = changed_entries.limit(SYNC_ITEM_LIMIT)
-    log.debug("Books to Sync: {}".format(books.count()))
+    log.debug("Books to Sync: {}".format(len(books.all())))
     for book in books:
         formats = [data.format for data in book.Books.data]
         if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
@@ -306,7 +313,9 @@ def HandleSyncRequest():
 
     sync_shelves(sync_token, sync_results, only_kobo_shelves)
 
-    sync_token.books_last_created = new_books_last_created
+    # update last created timestamp to distinguish between new and changed entitlements
+    if not cont_sync:
+        sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified

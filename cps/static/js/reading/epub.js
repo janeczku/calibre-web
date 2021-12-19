@@ -61,11 +61,14 @@ var reader;
                 this.removeBookmark(bookmark);
             }.bind(this));
         }
+        
+        var csrftoken = $("input[name='csrf_token']").val();
 
         // Save to database
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
-            data: { bookmark: location || "" }
+            data: { bookmark: location || "" },
+            headers: { "X-CSRFToken": csrftoken }
         }).fail(function (xhr, status, error) {
             alert(error);
         });

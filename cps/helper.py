@@ -233,7 +233,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        if not config.config_unicode_filename:
+        if config.config_unicode_filename:
             value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
