@@ -12,7 +12,7 @@ rsa>=3.4.2,<4.8.0
 six>=1.10.0,<1.17.0
 
 # Gdrive and Gmail integration
-google-api-python-client>=1.7.11,<2.32.0
+google-api-python-client>=1.7.11,<2.34.0
 
 # Gmail
 google-auth-oauthlib>=0.4.3,<0.5.0
