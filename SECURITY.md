@@ -27,3 +27,6 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.14|Cross-Site Scripting vulnerability on typeahead inputs. Thanks to @notdodo||
 
 
+## Staement regarding Log4j (CVE-2021-44228 and related)
+
+Calibre-web is not affected by bugs related to Log4j. Calibre-Web is a python program, therefore not using Java, and not using the Java logging feature log4j. 
