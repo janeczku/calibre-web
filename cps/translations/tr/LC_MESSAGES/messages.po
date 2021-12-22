@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-12-14 17:51+0100\n"
+"POT-Creation-Date: 2021-12-22 19:06+0100\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: cps/about.py:34 cps/about.py:49 cps/about.py:65 cps/converter.py:31
 msgid "not installed"
@@ -75,7 +75,7 @@ msgstr ""
 msgid "All"
 msgstr "Tümü"
 
-#: cps/admin.py:343 cps/admin.py:1595
+#: cps/admin.py:343 cps/admin.py:1606
 msgid "User not found"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:418 cps/admin.py:1473
+#: cps/admin.py:418 cps/admin.py:1484
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:442 cps/admin.py:1431
+#: cps/admin.py:442 cps/admin.py:1442
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Invalid Restricted Column"
 msgstr ""
 
-#: cps/admin.py:560 cps/admin.py:1312
+#: cps/admin.py:560 cps/admin.py:1323
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web yapılandırması güncellendi"
 
@@ -204,278 +204,278 @@ msgstr ""
 msgid "Invalid Action"
 msgstr ""
 
-#: cps/admin.py:860 cps/admin.py:866 cps/admin.py:876 cps/admin.py:886
+#: cps/admin.py:871 cps/admin.py:877 cps/admin.py:887 cps/admin.py:897
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr ""
 
-#: cps/admin.py:862 cps/admin.py:868 cps/admin.py:878 cps/admin.py:888
+#: cps/admin.py:873 cps/admin.py:879 cps/admin.py:889 cps/admin.py:899
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr ""
 
-#: cps/admin.py:902
+#: cps/admin.py:913
 msgid "{} sync entries deleted"
 msgstr ""
 
-#: cps/admin.py:1025
+#: cps/admin.py:1036
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr ""
 
-#: cps/admin.py:1070
+#: cps/admin.py:1081
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1076
+#: cps/admin.py:1087
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1106
+#: cps/admin.py:1117
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:1112
+#: cps/admin.py:1123
 #, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr "Şifrenizi sıfırlayabilmek için lütfen geçerli bir kullanıcı adı giriniz"
 
-#: cps/admin.py:1115
+#: cps/admin.py:1126
 msgid "Please Enter a LDAP Service Account"
 msgstr ""
 
-#: cps/admin.py:1120
+#: cps/admin.py:1131
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1122
+#: cps/admin.py:1133
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1126
+#: cps/admin.py:1137
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1128
+#: cps/admin.py:1139
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1135
+#: cps/admin.py:1146
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1137
+#: cps/admin.py:1148
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1144
+#: cps/admin.py:1155
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1186 cps/admin.py:1297 cps/admin.py:1394 cps/admin.py:1501
-#: cps/admin.py:1570 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
+#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1512
+#: cps/admin.py:1581 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
 #: cps/shelf.py:274 cps/shelf.py:335 cps/shelf.py:370 cps/shelf.py:445
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1197
+#: cps/admin.py:1208
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1212
+#: cps/admin.py:1223
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1224
+#: cps/admin.py:1235
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1228
+#: cps/admin.py:1239
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1335
+#: cps/admin.py:1346
 #, fuzzy
 msgid "Database Settings updated"
 msgstr "E-posta sunucusu ayarları güncellendi"
 
-#: cps/admin.py:1343
+#: cps/admin.py:1354
 #, fuzzy
 msgid "Database Configuration"
 msgstr "Özellik Yapılandırması"
 
-#: cps/admin.py:1359 cps/web.py:1478
+#: cps/admin.py:1370 cps/web.py:1478
 msgid "Please fill out all fields!"
 msgstr "Lütfen tüm alanları doldurun!"
 
-#: cps/admin.py:1367
+#: cps/admin.py:1378
 msgid "E-mail is not from valid domain"
 msgstr "E-posta izin verilen bir servisten değil"
 
-#: cps/admin.py:1373 cps/admin.py:1523
+#: cps/admin.py:1384 cps/admin.py:1534
 msgid "Add new user"
 msgstr "Yeni kullanıcı ekle"
 
-#: cps/admin.py:1384
+#: cps/admin.py:1395
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "'%(user)s' kullanıcısı oluşturuldu"
 
-#: cps/admin.py:1390
+#: cps/admin.py:1401
 #, fuzzy
 msgid "Found an existing account for this e-mail address or name."
 msgstr "Bu e-posta adresi veya kullanıcı adı için zaten bir hesap var."
 
-#: cps/admin.py:1410
+#: cps/admin.py:1421
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Kullanıcı '%(nick)s' silindi"
 
-#: cps/admin.py:1412 cps/admin.py:1413
+#: cps/admin.py:1423 cps/admin.py:1424
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1416
+#: cps/admin.py:1427
 msgid "No admin user remaining, can't delete user"
 msgstr "Başka yönetici kullanıcı olmadığından silinemedi"
 
-#: cps/admin.py:1489 cps/admin.py:1614
+#: cps/admin.py:1500 cps/admin.py:1625
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s kullanıcısını düzenle"
 
-#: cps/admin.py:1493
+#: cps/admin.py:1504
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "'%(nick)s' kullanıcısı güncellendi"
 
-#: cps/admin.py:1497 cps/admin.py:1629 cps/web.py:1503 cps/web.py:1563
+#: cps/admin.py:1508 cps/admin.py:1640 cps/web.py:1503 cps/web.py:1563
 msgid "An unknown error occurred. Please try again later."
 msgstr "Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
 
-#: cps/admin.py:1532 cps/templates/admin.html:98
+#: cps/admin.py:1543 cps/templates/admin.html:98
 msgid "Edit E-mail Server Settings"
 msgstr ""
 
-#: cps/admin.py:1551
+#: cps/admin.py:1562
 msgid "Gmail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1577
+#: cps/admin.py:1588
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1580
+#: cps/admin.py:1591
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Deneme e-postası gönderilirken bir hata oluştu: %(res)s"
 
-#: cps/admin.py:1582
+#: cps/admin.py:1593
 msgid "Please configure your e-mail address first..."
 msgstr "Lütfen önce e-posta adresinizi ayarlayın..."
 
-#: cps/admin.py:1584
+#: cps/admin.py:1595
 msgid "E-mail server settings updated"
 msgstr "E-posta sunucusu ayarları güncellendi"
 
-#: cps/admin.py:1626
+#: cps/admin.py:1637
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s kullanıcısının şifresi sıfırlandı"
 
-#: cps/admin.py:1632 cps/web.py:1443
+#: cps/admin.py:1643 cps/web.py:1443
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Lütfen önce SMTP e-posta ayarlarını ayarlayın..."
 
-#: cps/admin.py:1643
+#: cps/admin.py:1654
 msgid "Logfile viewer"
 msgstr "Log dosyası görüntüleyici"
 
-#: cps/admin.py:1709
+#: cps/admin.py:1720
 msgid "Requesting update package"
 msgstr "Güncelleme paketi isteniyor"
 
-#: cps/admin.py:1710
+#: cps/admin.py:1721
 msgid "Downloading update package"
 msgstr "Güncelleme paketi indiriliyor"
 
-#: cps/admin.py:1711
+#: cps/admin.py:1722
 msgid "Unzipping update package"
 msgstr "Güncelleme paketi ayıklanıyor"
 
-#: cps/admin.py:1712
+#: cps/admin.py:1723
 msgid "Replacing files"
 msgstr "Dosyalar değiştiriliyor"
 
-#: cps/admin.py:1713
+#: cps/admin.py:1724
 msgid "Database connections are closed"
 msgstr "Veritabanı bağlantıları kapalı"
 
-#: cps/admin.py:1714
+#: cps/admin.py:1725
 msgid "Stopping server"
 msgstr "Sunucu durduruyor"
 
-#: cps/admin.py:1715
+#: cps/admin.py:1726
 msgid "Update finished, please press okay and reload page"
 msgstr "Güncelleme tamamlandı, sayfayı yenilemek için lütfen Tamam'a tıklayınız"
 
-#: cps/admin.py:1716 cps/admin.py:1717 cps/admin.py:1718 cps/admin.py:1719
-#: cps/admin.py:1720 cps/admin.py:1721
+#: cps/admin.py:1727 cps/admin.py:1728 cps/admin.py:1729 cps/admin.py:1730
+#: cps/admin.py:1731 cps/admin.py:1732
 msgid "Update failed:"
 msgstr "Güncelleme başarısız:"
 
-#: cps/admin.py:1716 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
+#: cps/admin.py:1727 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
 msgid "HTTP Error"
 msgstr "HTTP Hatası"
 
-#: cps/admin.py:1717 cps/updater.py:387 cps/updater.py:599
+#: cps/admin.py:1728 cps/updater.py:387 cps/updater.py:599
 msgid "Connection error"
 msgstr "Bağlantı hatası"
 
-#: cps/admin.py:1718 cps/updater.py:389 cps/updater.py:601
+#: cps/admin.py:1729 cps/updater.py:389 cps/updater.py:601
 msgid "Timeout while establishing connection"
 msgstr "Bağlantı kurulmaya çalışırken zaman aşımına uğradı"
 
-#: cps/admin.py:1719 cps/updater.py:391 cps/updater.py:603
+#: cps/admin.py:1730 cps/updater.py:391 cps/updater.py:603
 msgid "General error"
 msgstr "Genel hata"
 
-#: cps/admin.py:1720
+#: cps/admin.py:1731
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "%(filename)s dosyası geçici dizine kaydedilemedi"
 
-#: cps/admin.py:1721
+#: cps/admin.py:1732
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1745
+#: cps/admin.py:1756
 msgid "Failed to extract at least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1790
+#: cps/admin.py:1801
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1803
+#: cps/admin.py:1814
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1807
+#: cps/admin.py:1818
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1840
+#: cps/admin.py:1851
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1842
+#: cps/admin.py:1853
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -1337,7 +1337,7 @@ msgstr ""
 msgid "Ebook-converter failed: %(error)s"
 msgstr "eKitap-Dönüştürücü hatası: %(error)s"
 
-#: cps/tasks/convert.py:241
+#: cps/tasks/convert.py:245
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr ""
@@ -2574,7 +2574,7 @@ msgstr "Hata"
 msgid "Upload done, processing, please wait..."
 msgstr "Yükleme tamamlandı, işleniyor, lütfen bekleyin..."
 
-#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/layout.html:76 cps/templates/read.html:72
 #: cps/templates/readcbr.html:84 cps/templates/readcbr.html:108
 msgid "Settings"
 msgstr "Ayarlar"
@@ -2725,7 +2725,7 @@ msgstr ""
 msgid "epub Reader"
 msgstr "PDF Okuyucu"
 
-#: cps/templates/read.html:74
+#: cps/templates/read.html:75
 msgid "Reflow text when sidebars are open."
 msgstr "Kenar çubukları açıkken metni kaydır"
 
