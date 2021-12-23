@@ -19,20 +19,23 @@
 from scholarly import scholarly
 
 from cps.services.Metadata import Metadata
-
+import pprint
+pp = pprint.PrettyPrinter(indent=4)
 
 class scholar(Metadata):
     __name__ = "Google Scholar"
     __id__ = "googlescholar"
 
-    def search(self, query, generic_cover=""):
+    def search(self, query, generic_cover=None):
         val = list()
         if self.active:
             scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
             i = 0
             for publication in scholar_gen:
+                print(f"PUBLICATION {i + 1}")
+                pp.pprint(publication)
                 v = dict()
-                v['id'] = "1234" # publication['bib'].get('title')
+                v['id'] = publication['url_scholarbib'].split(':')[1]
                 v['title'] = publication['bib'].get('title')
                 v['authors'] = publication['bib'].get('author', [])
                 v['description'] = publication['bib'].get('abstract', "")
@@ -41,8 +44,8 @@ class scholar(Metadata):
                     v['publishedDate'] = publication['bib'].get('pub_year')+"-01-01"
                 else:
                     v['publishedDate'] = ""
-                v['tags'] = ""
-                v['ratings'] = 0
+                v['tags'] = []
+                v['rating'] = 0
                 v['series'] = ""
                 v['cover'] = generic_cover
                 v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
@@ -55,6 +58,7 @@ class scholar(Metadata):
                 i += 1
                 if (i >= 10):
                     break
+        pp.pprint(val)
         return val
 
 
