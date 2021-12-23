@@ -233,7 +233,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        if not config.config_unicode_filename:
+        if config.config_unicode_filename:
             value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
@@ -673,9 +673,9 @@ def save_cover(img, book_path):
 
 def do_download_file(book, book_format, client, data, headers):
     if config.config_use_google_drive:
-        startTime = time.time()
+        #startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        log.debug('%s', time.time() - startTime)
+        #log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:

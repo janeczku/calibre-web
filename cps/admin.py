@@ -756,7 +756,12 @@ def prepare_tags(user, action, tags_name, id_list):
     return ",".join(saved_tags_list)
 
 
-@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def add_user_0_restriction(res_type):
+    return add_restriction(res_type, 0)
+
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -803,7 +808,13 @@ def add_restriction(res_type, user_id):
     return ""
 
 
-@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def delete_user_0_restriction(res_type):
+    return delete_restriction(res_type, 0)
+
+
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
