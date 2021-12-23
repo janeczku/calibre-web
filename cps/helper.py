@@ -673,9 +673,9 @@ def save_cover(img, book_path):
 
 def do_download_file(book, book_format, client, data, headers):
     if config.config_use_google_drive:
-        startTime = time.time()
+        #startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        log.debug('%s', time.time() - startTime)
+        #log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:
