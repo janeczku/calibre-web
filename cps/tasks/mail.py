@@ -267,4 +267,4 @@ class TaskEmail(CalibreTask):
         return "E-mail"
 
     def __str__(self):
-        return "{}, {}".format(self.name, self.subject)
+        return "E-mail {}, {}".format(self.name, self.subject)

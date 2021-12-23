@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2021-12-04 10:53+0100\n"
+"POT-Creation-Date: 2021-12-22 19:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Depountis Georgios\n"
 "Language: el\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.0\n"
+"Generated-By: Babel 2.8.0\n"
 
 #: cps/about.py:34 cps/about.py:49 cps/about.py:65 cps/converter.py:31
 msgid "not installed"
@@ -75,7 +75,7 @@ msgstr "Χρήστης Διαχειριστής"
 msgid "All"
 msgstr "Όλα"
 
-#: cps/admin.py:343 cps/admin.py:1576
+#: cps/admin.py:343 cps/admin.py:1606
 msgid "User not found"
 msgstr "Δεν βρέθηκε χρήστης"
 
@@ -92,7 +92,7 @@ msgstr "Προβολή Όλων"
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:418 cps/admin.py:1454
+#: cps/admin.py:418 cps/admin.py:1484
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:442 cps/admin.py:1412
+#: cps/admin.py:442 cps/admin.py:1442
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Δεν έχει απομείνει χρήστης διαχειριστής, δεν μπορεί να αφαιρεθεί ο ρόλος διαχειριστή"
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Invalid Restricted Column"
 msgstr ""
 
-#: cps/admin.py:560 cps/admin.py:1293
+#: cps/admin.py:560 cps/admin.py:1323
 msgid "Calibre-Web configuration updated"
 msgstr "Ενημερώθηκε η διαμόρφωση Calibre-Web"
 
@@ -196,283 +196,291 @@ msgstr "Είσαι σίγουρος/η πως θέλεις να διαγράψε
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Είσαι σίγουρος/η πως θέλεις να κάνεις κλείσιμο;"
 
-#: cps/admin.py:741
+#: cps/admin.py:594
+msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgstr ""
+
+#: cps/admin.py:743
 msgid "Tag not found"
 msgstr ""
 
-#: cps/admin.py:753
+#: cps/admin.py:755
 msgid "Invalid Action"
 msgstr ""
 
-#: cps/admin.py:858 cps/admin.py:864 cps/admin.py:874 cps/admin.py:884
+#: cps/admin.py:871 cps/admin.py:877 cps/admin.py:887 cps/admin.py:897
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr "Απόρριψη"
 
-#: cps/admin.py:860 cps/admin.py:866 cps/admin.py:876 cps/admin.py:886
+#: cps/admin.py:873 cps/admin.py:879 cps/admin.py:889 cps/admin.py:899
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr "Επιτρέπεται"
 
-#: cps/admin.py:1015
+#: cps/admin.py:913
+msgid "{} sync entries deleted"
+msgstr ""
+
+#: cps/admin.py:1036
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr "client_secrets.json Δεν Έχει Διαμορφωθεί Για Διαδικτυακή Εφαρμογή"
 
-#: cps/admin.py:1060
+#: cps/admin.py:1081
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Το Φύλλο Καταγραφής Τοποθεσίας δεν είναι Έγκυρο, Παρακαλούμε Συμπλήρωσε Τη Σωστή Πορεία"
 
-#: cps/admin.py:1066
+#: cps/admin.py:1087
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Η Πρόσβαση Φύλλου Καταγραφης Τοποθεσίας δεν είναι έγκυρη, Παρακαλούμε Συμπλήρωσε Τη Σωστή Πορεία"
 
-#: cps/admin.py:1096
+#: cps/admin.py:1117
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "Παρακαλούμε Συμπλήρωσε ένα Πάροχο LDAP, Θύρα, DN και Αντικείμενο Αναγνώρισης Χρήστη"
 
-#: cps/admin.py:1102
+#: cps/admin.py:1123
 #, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr "Παρακαλούμε συμπλήρωσε ένα έγκυρο όνομα χρήστη για επαναφορά του κωδικού"
 
-#: cps/admin.py:1105
+#: cps/admin.py:1126
 msgid "Please Enter a LDAP Service Account"
 msgstr ""
 
-#: cps/admin.py:1110
+#: cps/admin.py:1131
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr "Το Αντικείμενο Φίλτρου Ομάδας LDAP Πρέπει να Έχει Μια \"%s\" Αναγνώριση Μορφής"
 
-#: cps/admin.py:1112
+#: cps/admin.py:1133
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr "Το Αντικείμενο Φίλτρου Ομάδας LDAP Έχει Παρενθέσεις Που Δεν Ταιριάζουν"
 
-#: cps/admin.py:1116
+#: cps/admin.py:1137
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr "Το Αντικείμενο Φίλτρου Χρήστη LDAP πρέπει να Έχει Μια \"%s\" Αναγνώριση Μορφής"
 
-#: cps/admin.py:1118
+#: cps/admin.py:1139
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr "Το Αντικείμενο Φίλτρου Χρήστη LDAP Έχει Παρενθέσεις Που Δεν Ταιριάζουν"
 
-#: cps/admin.py:1125
+#: cps/admin.py:1146
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1127
+#: cps/admin.py:1148
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1134
+#: cps/admin.py:1155
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1176 cps/admin.py:1278 cps/admin.py:1375 cps/admin.py:1482
-#: cps/admin.py:1551 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
+#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1512
+#: cps/admin.py:1581 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
 #: cps/shelf.py:274 cps/shelf.py:335 cps/shelf.py:370 cps/shelf.py:445
 msgid "Settings DB is not Writeable"
 msgstr "Οι ρυθμίσεις DB δεν μπορούν να Γραφτούν"
 
-#: cps/admin.py:1187
+#: cps/admin.py:1208
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "Η Τοποθεσία DB δεν είναι Έγκυρη, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
 
-#: cps/admin.py:1192
+#: cps/admin.py:1223
 msgid "DB is not Writeable"
 msgstr "Η DB δεν μπορεί να Γραφτεί"
 
-#: cps/admin.py:1205
+#: cps/admin.py:1235
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr "Το Αρχειο Κλειδί Τοποθεσίας δεν είναι Έγκυρο, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
 
-#: cps/admin.py:1209
+#: cps/admin.py:1239
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Η Τοποθεσία Certfile δεν είναι Έγκυρη, Παρακαλούμε Συμπληρώστε Τη Σωστή Πορεία"
 
-#: cps/admin.py:1316
+#: cps/admin.py:1346
 #, fuzzy
 msgid "Database Settings updated"
 msgstr "Ενημερώθηκαν οι ρυθμίσεις E-mail διακομιστή"
 
-#: cps/admin.py:1324
+#: cps/admin.py:1354
 #, fuzzy
 msgid "Database Configuration"
 msgstr "Διαμόρφωση Λειτουργίας"
 
-#: cps/admin.py:1340 cps/web.py:1487
+#: cps/admin.py:1370 cps/web.py:1478
 msgid "Please fill out all fields!"
 msgstr "Παρακαλούμε συμπλήρωσε όλα τα πεδία!"
 
-#: cps/admin.py:1348
+#: cps/admin.py:1378
 msgid "E-mail is not from valid domain"
 msgstr "Το E-mail δεν είναι από έγκυρο domain"
 
-#: cps/admin.py:1354 cps/admin.py:1504
+#: cps/admin.py:1384 cps/admin.py:1534
 msgid "Add new user"
 msgstr "Προσθήκη νέου χρήστη"
 
-#: cps/admin.py:1365
+#: cps/admin.py:1395
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Χρήστης/ες '%(user)s' δημιουργήθηκαν"
 
-#: cps/admin.py:1371
+#: cps/admin.py:1401
 #, fuzzy
 msgid "Found an existing account for this e-mail address or name."
 msgstr "Βρέθηκε ένας ήδη υπάρχον λογαριασμός για αυτή τη διεύθυνση e-mail ή όνομα χρήστη."
 
-#: cps/admin.py:1391
+#: cps/admin.py:1421
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Χρήστης/ες '%(nick)s' διαγράφηκαν"
 
-#: cps/admin.py:1393 cps/admin.py:1394
+#: cps/admin.py:1423 cps/admin.py:1424
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1397
+#: cps/admin.py:1427
 msgid "No admin user remaining, can't delete user"
 msgstr "Δεν έχει απομείνει χρήστης διαχειριστής, δεν μπορεί να διαγραφεί ο χρήστης"
 
-#: cps/admin.py:1470 cps/admin.py:1595
+#: cps/admin.py:1500 cps/admin.py:1625
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Επεξεργασία χρήστη %(nick)s"
 
-#: cps/admin.py:1474
+#: cps/admin.py:1504
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Χρήστης/ες '%(nick)s' ενημερώθηκαν"
 
-#: cps/admin.py:1478 cps/admin.py:1610 cps/web.py:1512 cps/web.py:1575
+#: cps/admin.py:1508 cps/admin.py:1640 cps/web.py:1503 cps/web.py:1563
 msgid "An unknown error occurred. Please try again later."
 msgstr "Προέκυψε ένα άγνωστο σφάλμα. Παρακαλούμε δοκίμασε ξανά αργότερα."
 
-#: cps/admin.py:1513 cps/templates/admin.html:98
+#: cps/admin.py:1543 cps/templates/admin.html:98
 msgid "Edit E-mail Server Settings"
 msgstr "Επεξεργασία Ρυθμίσεων E-mail Διακομιστή"
 
-#: cps/admin.py:1532
+#: cps/admin.py:1562
 msgid "Gmail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1558
+#: cps/admin.py:1588
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1561
+#: cps/admin.py:1591
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Παρουσιάστηκε σφάλμα κατά την αποστολή του δοκιμαστικού e-mail:% (res)s"
 
-#: cps/admin.py:1563
+#: cps/admin.py:1593
 msgid "Please configure your e-mail address first..."
 msgstr "Παρακαλούμε ρύθμισε πρώτα τη διεύθυνση e-mail σου..."
 
-#: cps/admin.py:1565
+#: cps/admin.py:1595
 msgid "E-mail server settings updated"
 msgstr "Ενημερώθηκαν οι ρυθμίσεις E-mail διακομιστή"
 
-#: cps/admin.py:1607
+#: cps/admin.py:1637
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Κωδικός για επαναφορά %(user) χρήστη/ών"
 
-#: cps/admin.py:1613 cps/web.py:1452
+#: cps/admin.py:1643 cps/web.py:1443
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Παρακαλούμε διαμόρφωσε πρώτα τις ρυθμίσεις ταχυδρομείου SMTP..."
 
-#: cps/admin.py:1624
+#: cps/admin.py:1654
 msgid "Logfile viewer"
 msgstr "Προβολέας αρχείου φύλλου καταγραφής"
 
-#: cps/admin.py:1690
+#: cps/admin.py:1720
 msgid "Requesting update package"
 msgstr "Αίτημα πακέτου ενημέρωσης"
 
-#: cps/admin.py:1691
+#: cps/admin.py:1721
 msgid "Downloading update package"
 msgstr "Κατεβάζει πακέτο ενημέρωσης"
 
-#: cps/admin.py:1692
+#: cps/admin.py:1722
 msgid "Unzipping update package"
 msgstr "Ανοίγει πακέτο ενημέρωσης"
 
-#: cps/admin.py:1693
+#: cps/admin.py:1723
 msgid "Replacing files"
 msgstr "Αντικατάσταση αρχείων"
 
-#: cps/admin.py:1694
+#: cps/admin.py:1724
 msgid "Database connections are closed"
 msgstr "Οι συνδέσεις βάσης δεδομένων είναι κλειστές"
 
-#: cps/admin.py:1695
+#: cps/admin.py:1725
 msgid "Stopping server"
 msgstr "Σταματάει το διακομιστή"
 
-#: cps/admin.py:1696
+#: cps/admin.py:1726
 msgid "Update finished, please press okay and reload page"
 msgstr "Η ενημέρωση τελειώσε, παρακαλούμε πιέστε το εντάξει και φορτώστε ξανά τη σελίδα"
 
-#: cps/admin.py:1697 cps/admin.py:1698 cps/admin.py:1699 cps/admin.py:1700
-#: cps/admin.py:1701 cps/admin.py:1702
+#: cps/admin.py:1727 cps/admin.py:1728 cps/admin.py:1729 cps/admin.py:1730
+#: cps/admin.py:1731 cps/admin.py:1732
 msgid "Update failed:"
 msgstr "Η ενημέρωση απέτυχε:"
 
-#: cps/admin.py:1697 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
+#: cps/admin.py:1727 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
 msgid "HTTP Error"
 msgstr "HTTP Σφάλμα"
 
-#: cps/admin.py:1698 cps/updater.py:387 cps/updater.py:599
+#: cps/admin.py:1728 cps/updater.py:387 cps/updater.py:599
 msgid "Connection error"
 msgstr "Σφάλμα σύνδεσης"
 
-#: cps/admin.py:1699 cps/updater.py:389 cps/updater.py:601
+#: cps/admin.py:1729 cps/updater.py:389 cps/updater.py:601
 msgid "Timeout while establishing connection"
 msgstr "Τελείωσε ο χρόνος κατά την προσπάθεια δημιουργίας σύνδεσης"
 
-#: cps/admin.py:1700 cps/updater.py:391 cps/updater.py:603
+#: cps/admin.py:1730 cps/updater.py:391 cps/updater.py:603
 msgid "General error"
 msgstr "Γενικό σφάλμα"
 
-#: cps/admin.py:1701
+#: cps/admin.py:1731
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "Το Αρχείο Ενημέρωσης Δεν Μπόρεσε Να Αποθηκευτεί σε"
 
-#: cps/admin.py:1702
+#: cps/admin.py:1732
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1726
+#: cps/admin.py:1756
 #, fuzzy
 msgid "Failed to extract at least One LDAP User"
 msgstr "Αποτυχία Δημιουργίας Τουλάχιστον Ενός Χρήστη LDAP"
 
-#: cps/admin.py:1771
+#: cps/admin.py:1801
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Αποτυχία Δημιουργίας Τουλάχιστον Ενός Χρήστη LDAP"
 
-#: cps/admin.py:1784
+#: cps/admin.py:1814
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Σφάλμα: %(ldaperror)s"
 
-#: cps/admin.py:1788
+#: cps/admin.py:1818
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Σφάλμα: Δεν επιστράφηκε χρήστης σε απάντηση του διακομιστή LDAP"
 
-#: cps/admin.py:1821
+#: cps/admin.py:1851
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Τουλάχιστον Ένας Χρήστης LDAP Δεν Βρέθηκε Στη Βάση Δεδομένων"
 
-#: cps/admin.py:1823
+#: cps/admin.py:1853
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -484,7 +492,7 @@ msgstr "δεν διαμορφώθηκε"
 msgid "Execution permissions missing"
 msgstr "Λείπουν άδειες εκτέλεσης"
 
-#: cps/db.py:651 cps/web.py:675 cps/web.py:1163
+#: cps/db.py:648 cps/web.py:667 cps/web.py:1154
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr "Η ειδικά προσαρμοσμένη στήλη No.%(column)d δεν υπάρχει στο επίπεδο βάσης δεδομένων"
@@ -497,8 +505,8 @@ msgstr "Η μορφή βιβλίου Διαγράφηκε Επιτυχώς"
 msgid "Book Successfully Deleted"
 msgstr "Το Βιβλίο Διαγράφηκε Επιτυχώς"
 
-#: cps/editbooks.py:372 cps/editbooks.py:759 cps/web.py:531 cps/web.py:1714
-#: cps/web.py:1755 cps/web.py:1822
+#: cps/editbooks.py:372 cps/editbooks.py:759 cps/web.py:523 cps/web.py:1702
+#: cps/web.py:1743 cps/web.py:1810
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Oυπς! Ο επιλεγμένος τίτλος βιβλίου δεν είναι διαθέσιμος. Το αρχείο δεν υπάρχει ή δεν είναι προσβάσιμο"
 
@@ -535,7 +543,7 @@ msgstr "Αποτυχεία δημιουργίας πορείας %(path)s (Η ά
 msgid "Failed to store file %(file)s."
 msgstr "Αποτυχία αποθήκευσης αρχείου %(file)s."
 
-#: cps/editbooks.py:669 cps/editbooks.py:1072 cps/web.py:1675
+#: cps/editbooks.py:669 cps/editbooks.py:1072 cps/web.py:1663
 #, python-format
 msgid "Database error: %(error)s."
 msgstr "Σφάλμα βάσης δεδομένων: %(error)s."
@@ -693,7 +701,7 @@ msgstr "Το αρχείο %(file)s δεν βρέθηκε στο Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Η πορεία βιβλίου %(path)s δεν βρέθηκε στο Google Drive"
 
-#: cps/helper.py:507 cps/web.py:1670
+#: cps/helper.py:507 cps/web.py:1658
 #, fuzzy
 msgid "Found an existing account for this e-mail address"
 msgstr "Βρέθηκε ένας ήδη υπάρχον λογαριασμός για αυτή τη διεύθυνση e-mail."
@@ -775,7 +783,7 @@ msgstr "Καθορισμός Kobo"
 msgid "Register with %(provider)s"
 msgstr "Εγγραφή με %(provider)s"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1546
+#: cps/oauth_bb.py:138 cps/remotelogin.py:133 cps/web.py:1534
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "τώρα έχεις συνδεθεί ως: '%(nickname)s'"
@@ -841,7 +849,7 @@ msgid "{} Stars"
 msgstr ""
 
 #: cps/remotelogin.py:65 cps/templates/layout.html:84
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1595
+#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1583
 msgid "Login"
 msgstr "Σύνδεση"
 
@@ -857,7 +865,7 @@ msgstr "Η μάρκα έχει λήξει"
 msgid "Success! Please return to your device"
 msgstr "Επιτυχία! Παρακαλούμε επέστρεψε στη συσκευή σου"
 
-#: cps/render_template.py:39 cps/web.py:424
+#: cps/render_template.py:39 cps/web.py:416
 msgid "Books"
 msgstr "Βιβλία"
 
@@ -882,7 +890,7 @@ msgstr "Κατεβασμένα Βιβλία"
 msgid "Show Downloaded Books"
 msgstr "Προβολή Κατεβασμένων Βιβλίων"
 
-#: cps/render_template.py:56 cps/templates/index.xml:32 cps/web.py:438
+#: cps/render_template.py:56 cps/templates/index.xml:32 cps/web.py:430
 msgid "Top Rated Books"
 msgstr "Βιβλία με Κορυφαία Αξιολόγηση"
 
@@ -891,7 +899,7 @@ msgid "Show Top Rated Books"
 msgstr "Προβολή Βιβλίων με Κορυφαία Αξιολόγηση"
 
 #: cps/render_template.py:59 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:684
+#: cps/templates/index.xml:58 cps/web.py:676
 msgid "Read Books"
 msgstr "Βιβλία που Διαβάστηκαν"
 
@@ -900,7 +908,7 @@ msgid "Show read and unread"
 msgstr "Προβολή διαβασμένων και αδιάβαστων"
 
 #: cps/render_template.py:63 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:687
+#: cps/templates/index.xml:65 cps/web.py:679
 msgid "Unread Books"
 msgstr "Βιβλία που δεν Διαβάστηκαν"
 
@@ -918,7 +926,7 @@ msgid "Show Random Books"
 msgstr "Προβολή Τυχαίων Βιβλίων"
 
 #: cps/render_template.py:69 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1050
+#: cps/templates/index.xml:83 cps/web.py:1041
 msgid "Categories"
 msgstr "Κατηγορίες"
 
@@ -928,7 +936,7 @@ msgstr "Προβολή επιλογών κατηγορίας"
 
 #: cps/render_template.py:72 cps/templates/book_edit.html:90
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:957 cps/web.py:968
+#: cps/templates/search_form.html:69 cps/web.py:948 cps/web.py:959
 msgid "Series"
 msgstr "Σειρές"
 
@@ -946,7 +954,7 @@ msgid "Show author selection"
 msgstr "Προβολή επιλογών συγγραφέα"
 
 #: cps/render_template.py:79 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:934
+#: cps/templates/index.xml:76 cps/web.py:925
 msgid "Publishers"
 msgstr "Εκδότες"
 
@@ -956,7 +964,7 @@ msgstr "Προβολή επιλογών εκδότη"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1027
+#: cps/web.py:1018
 msgid "Languages"
 msgstr "Γλώσσες"
 
@@ -980,7 +988,7 @@ msgstr "Μορφές αρχείου"
 msgid "Show file formats selection"
 msgstr "Προβολή επιλογών μορφής αρχείου"
 
-#: cps/render_template.py:93 cps/web.py:711
+#: cps/render_template.py:93 cps/web.py:703
 msgid "Archived Books"
 msgstr "Αρχειοθετημένα Βιβλία"
 
@@ -988,7 +996,7 @@ msgstr "Αρχειοθετημένα Βιβλία"
 msgid "Show archived books"
 msgstr "Προβολή αρχειοθετημένων βιβλίων"
 
-#: cps/render_template.py:97 cps/web.py:788
+#: cps/render_template.py:97 cps/web.py:780
 msgid "Books List"
 msgstr "Λίστα Βιβλίων"
 
@@ -1127,177 +1135,177 @@ msgstr "Μια νέα ενημέρωση είναι διαθέσιμη. Κάνε
 msgid "No release information available"
 msgstr "Δεν υπάρχουν διαθέσιμες πληροφορίες αποδέσμευσης"
 
-#: cps/templates/index.html:5 cps/web.py:448
+#: cps/templates/index.html:5 cps/web.py:440
 msgid "Discover (Random Books)"
 msgstr "Ανακάλυψε (Τυχαία Βιβλία)"
 
-#: cps/web.py:479
+#: cps/web.py:471
 msgid "Hot Books (Most Downloaded)"
 msgstr "Βιβλία στη Μόδα (Με τα περισσότερα κατεβάσματα)"
 
-#: cps/web.py:515
+#: cps/web.py:507
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr "Κατεβασμένα βιβλία από %(user)s"
 
-#: cps/web.py:547
+#: cps/web.py:539
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Συγγραφέας: %(name)s"
 
-#: cps/web.py:562
+#: cps/web.py:554
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Εκδότης: %(name)s"
 
-#: cps/web.py:577
+#: cps/web.py:569
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Σειρές: %(serie)s"
 
-#: cps/web.py:590
+#: cps/web.py:582
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Αξιολόγηση: %(rating)s stars"
 
-#: cps/web.py:605
+#: cps/web.py:597
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Μορφή αρχείου: %(format)s"
 
-#: cps/web.py:623
+#: cps/web.py:615
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Κατηγορία: %(name)s"
 
-#: cps/web.py:639
+#: cps/web.py:631
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Γλώσσα: %(name)s"
 
-#: cps/templates/layout.html:56 cps/web.py:745 cps/web.py:1379
+#: cps/templates/layout.html:56 cps/web.py:737 cps/web.py:1370
 msgid "Advanced Search"
 msgstr "Προχωρημένη Αναζήτηση"
 
 #: cps/templates/book_edit.html:235 cps/templates/feed.xml:33
 #: cps/templates/index.xml:11 cps/templates/layout.html:45
 #: cps/templates/layout.html:48 cps/templates/search_form.html:226
-#: cps/web.py:758 cps/web.py:1085
+#: cps/web.py:750 cps/web.py:1076
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: cps/templates/admin.html:16 cps/web.py:912
+#: cps/templates/admin.html:16 cps/web.py:903
 msgid "Downloads"
 msgstr "Κατεβασμένα"
 
-#: cps/web.py:989
+#: cps/web.py:980
 msgid "Ratings list"
 msgstr "Λίστα αξιολογήσεων"
 
-#: cps/web.py:1010
+#: cps/web.py:1001
 msgid "File formats list"
 msgstr "Λίστα μορφών αρχείου"
 
-#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:1064
+#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:1055
 msgid "Tasks"
 msgstr "Εργασίες"
 
-#: cps/web.py:1223
+#: cps/web.py:1214
 msgid "Published after "
 msgstr "Εκδόθηκε μετά"
 
-#: cps/web.py:1230
+#: cps/web.py:1221
 msgid "Published before "
 msgstr "Εκδόθηκε πριν"
 
-#: cps/web.py:1252
+#: cps/web.py:1243
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Αξιολόγηση <= %(rating)s"
 
-#: cps/web.py:1254
+#: cps/web.py:1245
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Αξιολόγηση >= %(rating)s"
 
-#: cps/web.py:1256
+#: cps/web.py:1247
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/web.py:1361
+#: cps/web.py:1352
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/web.py:1457
+#: cps/web.py:1448
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Το βιβλίο έχει επιτυχώς μπει σε σειρά για αποστολή στο %(kindlemail)s"
 
-#: cps/web.py:1461
+#: cps/web.py:1452
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Oυπς! Υπήρξε ένα σφάλμα κατά την αποστολή αυτού του βιβλίου: %(res)s"
 
-#: cps/web.py:1463
+#: cps/web.py:1454
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Παρακαλούμε ενημέρωσε το προφίλ σου με μια έγκυρη Διεύθυνση E-mail Αποστολής στο Kindle."
 
-#: cps/web.py:1480
+#: cps/web.py:1471
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "Ο διακομιστής E-Mail δεν έχει διαμορφωθεί, παρακαλούμε επικοινώνησε με το διαχειριστή σου!"
 
-#: cps/templates/layout.html:85 cps/templates/register.html:17 cps/web.py:1481
-#: cps/web.py:1488 cps/web.py:1494 cps/web.py:1513 cps/web.py:1517
-#: cps/web.py:1523
+#: cps/templates/layout.html:85 cps/templates/register.html:17 cps/web.py:1472
+#: cps/web.py:1479 cps/web.py:1485 cps/web.py:1504 cps/web.py:1508
+#: cps/web.py:1514
 msgid "Register"
 msgstr "Εγγραφή"
 
-#: cps/web.py:1515
+#: cps/web.py:1506
 msgid "Your e-mail is not allowed to register"
 msgstr "Η διεύθυνση e-mail σου δεν επιτρέπεται να εγγραφεί"
 
-#: cps/web.py:1518
+#: cps/web.py:1509
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Το e-mail επιβεβαίωσης έχει σταλεί στον e-mail λογαριασμό σου."
 
-#: cps/web.py:1535
+#: cps/web.py:1523
 msgid "Cannot activate LDAP authentication"
 msgstr "Δεν μπόρεσε να ενεργοποιηθεί η επαλήθευση LDAP"
 
-#: cps/web.py:1554
+#: cps/web.py:1542
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Εναλλακτική Σύνδεση ως: '%(nickname)s', Ο Διακομιστής LDAP δεν είναι προσβάσιμος, ή ο χρήστης δεν είναι γνωστός"
 
-#: cps/web.py:1560
+#: cps/web.py:1548
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Δεν μπόρεσε να συνδεθεί: %(message)s"
 
-#: cps/web.py:1564 cps/web.py:1589
+#: cps/web.py:1552 cps/web.py:1577
 msgid "Wrong Username or Password"
 msgstr "Λανθασμένο Όνομα Χρήστη ή Κωδικός"
 
-#: cps/web.py:1571
+#: cps/web.py:1559
 msgid "New Password was send to your email address"
 msgstr "Ο Νέος Κωδικός έχει σταλεί στη διεύθυνση email σου"
 
-#: cps/web.py:1577
+#: cps/web.py:1565
 msgid "Please enter valid username to reset password"
 msgstr "Παρακαλούμε συμπλήρωσε ένα έγκυρο όνομα χρήστη για επαναφορά του κωδικού"
 
-#: cps/web.py:1584
+#: cps/web.py:1572
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Έχεις συνδεθεί ως: '%(nickname)s'"
 
-#: cps/web.py:1650 cps/web.py:1699
+#: cps/web.py:1638 cps/web.py:1687
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s's προφίλ"
 
-#: cps/web.py:1666
+#: cps/web.py:1654
 msgid "Profile updated"
 msgstr "Το προφίλ ενημερώθηκε"
 
@@ -1334,7 +1342,7 @@ msgstr "Το τροποποιημένο αρχείο δεν βρέθηκε ή υ
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Ο μετατροπέας Ebook απέτυχε: %(error)s"
 
-#: cps/tasks/convert.py:241
+#: cps/tasks/convert.py:245
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Το Calibre απέτυχε με σφάλμα: %(error)s"
@@ -1565,7 +1573,7 @@ msgstr "OK"
 #: cps/templates/config_view_edit.html:173 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
 #: cps/templates/modal_dialogs.html:135 cps/templates/shelf.html:97
-#: cps/templates/shelf_edit.html:27 cps/templates/user_edit.html:141
+#: cps/templates/shelf_edit.html:27 cps/templates/user_edit.html:144
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -1749,7 +1757,7 @@ msgstr "Συγκέντρωση Μεταδεδομένων"
 #: cps/templates/book_edit.html:212 cps/templates/config_db.html:53
 #: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:172
 #: cps/templates/email_edit.html:65 cps/templates/shelf_edit.html:25
-#: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:139
+#: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:142
 msgid "Save"
 msgstr "Αποθήκευση"
 
@@ -1772,7 +1780,7 @@ msgstr "Φόρτωση..."
 
 #: cps/templates/book_edit.html:250 cps/templates/layout.html:63
 #: cps/templates/layout.html:186 cps/templates/modal_dialogs.html:34
-#: cps/templates/user_edit.html:160
+#: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -2245,35 +2253,35 @@ msgstr "Συνήθης Έκφραση για Ταξινόμηση Τίτλου"
 msgid "Default Settings for New Users"
 msgstr "Προκαθορισμένες Ρυθμίσεις για Νέους Χρήστες"
 
-#: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:93
+#: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:96
 msgid "Admin User"
 msgstr "Χρήστης Διαχειριστής"
 
-#: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:98
+#: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:101
 msgid "Allow Downloads"
 msgstr "Να Επιτρέπεται το Κατέβασμα"
 
-#: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:102
+#: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:105
 msgid "Allow eBook Viewer"
 msgstr "Να Επιτρέπεται η Προβολή eBook Viewer"
 
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:107
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:110
 msgid "Allow Uploads"
 msgstr "Να Επιτρέπεται το Ανέβασμα"
 
-#: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:112
+#: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:115
 msgid "Allow Edit"
 msgstr "Να Επιτρέπεται η Επεξεργασία"
 
-#: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:117
+#: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:120
 msgid "Allow Delete Books"
 msgstr "Να Επιτρέπεται η Διαγραφή Βιβλίων"
 
-#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:123
+#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:126
 msgid "Allow Changing Password"
 msgstr "Να Επιτρέπεται η Αλλαγή Κωδικού"
 
-#: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:127
+#: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:130
 msgid "Allow Editing Public Shelves"
 msgstr "Να Επιτρέπεται η Επεξεργασία Δημόσιων Ραφιών"
 
@@ -2291,12 +2299,12 @@ msgstr "Γλώσσα Βιβλίων"
 msgid "Default Visibilities for New Users"
 msgstr "Προκαθορισμένες Ορατότηες για Νέους Χρήστες"
 
-#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:81
+#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
 #: cps/templates/user_table.html:154
 msgid "Show Random Books in Detail View"
 msgstr "Προβολή Τυχαίων Βιβλίων σε Προβολή Λεπτομερειών"
 
-#: cps/templates/config_view_edit.html:165 cps/templates/user_edit.html:84
+#: cps/templates/config_view_edit.html:165 cps/templates/user_edit.html:87
 msgid "Add Allowed/Denied Tags"
 msgstr "Προσθήκη ετικετών Επιτρέπεται/Απορρίπτεται"
 
@@ -2573,7 +2581,7 @@ msgstr "Σφάλμα"
 msgid "Upload done, processing, please wait..."
 msgstr "Το ανέβασμα έγινε, γίνεται επεξεργασία, παρακαλούμε περίμενε..."
 
-#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/layout.html:76 cps/templates/read.html:72
 #: cps/templates/readcbr.html:84 cps/templates/readcbr.html:108
 msgid "Settings"
 msgstr "Ρυθμίσεις"
@@ -2724,7 +2732,7 @@ msgstr "Calibre-Web Κατάλογος eBook"
 msgid "epub Reader"
 msgstr "PDF πρόγραμμα ανάγνωσης"
 
-#: cps/templates/read.html:74
+#: cps/templates/read.html:75
 msgid "Reflow text when sidebars are open."
 msgstr "Επανάληψη ροής κειμένου όταν οι μπάρες στο πλάι είναι ανοιχτές."
 
@@ -3081,19 +3089,23 @@ msgstr "Kobo Μονάδα Συγχρονισμού"
 msgid "Create/View"
 msgstr "Δημιουγία/Προβολή"
 
-#: cps/templates/user_edit.html:85
+#: cps/templates/user_edit.html:70
+msgid "Force full kobo sync"
+msgstr ""
+
+#: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
 msgstr "Προσθήκη Τιμών Ειδικά Προσαρμοσμένης Στήλης επιτρέπεται/Απορρίπτεται"
 
-#: cps/templates/user_edit.html:134
+#: cps/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
 msgstr ""
 
-#: cps/templates/user_edit.html:144 cps/templates/user_table.html:169
+#: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
 msgid "Delete User"
 msgstr "Διαγραφή Χρήστη"
 
-#: cps/templates/user_edit.html:156
+#: cps/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
 msgstr "Δημιουργία Kobo Auth URL"
 
