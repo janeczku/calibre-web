@@ -20,6 +20,20 @@ function getPath() {
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
 }
 
+function postButton(event, action){
+    event.preventDefault();
+    var newForm = jQuery('<form>', {
+        "action": action,
+        'target': "_top",
+        'method': "post"
+    }).append(jQuery('<input>', {
+        'name': 'csrf_token',
+        'value': $("input[name=\'csrf_token\']").val(),
+        'type': 'hidden'
+    })).appendTo('body');
+    newForm.submit();
+}
+
 function elementSorter(a, b) {
     a = +a.slice(0, -2);
     b = +b.slice(0, -2);
@@ -70,6 +84,22 @@ $(document).on("change", "select[data-controlall]", function() {
         $("[data-related=" + name + "]").hide();
     }
 });
+
+/*$(document).on("click", "#sendbtn", function (event) {
+    postButton(event, $(this).data('action'));
+});
+
+$(document).on("click", ".sendbutton", function (event) {
+    // $(".sendbutton").on("click", "body", function(event) {
+    postButton(event, $(this).data('action'));
+});*/
+
+$(document).on("click", ".postAction", function (event) {
+    // $(".sendbutton").on("click", "body", function(event) {
+    postButton(event, $(this).data('action'));
+});
+
+
 
 // Syntax has to be bind not on, otherwise problems with firefox
 $(".container-fluid").bind("dragenter dragover", function () {
@@ -685,13 +715,14 @@ $(function() {
         });
     });
 
-    $("#delete_shelf").click(function() {
+    $("#delete_shelf").click(function(event) {
         confirmDialog(
             $(this).attr('id'),
             "GeneralDeleteModal",
             $(this).data('value'),
             function(value){
-                $("#delete_shelf").closest("form").submit()
+                postButton(event, $("#delete_shelf").data("action"));
+                // $("#delete_shelf").closest("form").submit()
             }
         );
 
@@ -775,4 +806,3 @@ $(function() {
         });
     });
 });
-
