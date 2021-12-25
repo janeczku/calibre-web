@@ -56,7 +56,7 @@ def check_shelf_view_permissions(cur_shelf):
     return True
 
 
-@shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>")
+@shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>", methods=["POST"])
 @login_required
 def add_to_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -112,7 +112,7 @@ def add_to_shelf(shelf_id, book_id):
     return "", 204
 
 
-@shelf.route("/shelf/massadd/<int:shelf_id>")
+@shelf.route("/shelf/massadd/<int:shelf_id>", methods=["POST"])
 @login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -164,7 +164,7 @@ def search_to_shelf(shelf_id):
     return redirect(url_for('web.index'))
 
 
-@shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
+@shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>", methods=["POST"])
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -323,12 +323,13 @@ def delete_shelf_helper(cur_shelf):
     ub.session_commit("successfully deleted Shelf {}".format(cur_shelf.name))
 
 
-@shelf.route("/shelf/delete/<int:shelf_id>")
+@shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     try:
         delete_shelf_helper(cur_shelf)
+        flash(_("Shelf successfully deleted"), category="success")
     except InvalidRequestError:
         ub.session.rollback()
         log.error("Settings DB is not Writeable")
