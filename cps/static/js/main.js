@@ -179,7 +179,7 @@ $("#delete_confirm").click(function() {
         if (ajaxResponse) {
             path = getPath() + "/ajax/delete/" + deleteId;
             $.ajax({
-                method:"get",
+                method:"post",
                 url: path,
                 timeout: 900,
                 success:function(data) {
@@ -376,9 +376,11 @@ $(function() {
 
     $("#restart").click(function() {
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":0},
+            url: getPath() + "/shutdown",
+            data: JSON.stringify({"parameter":0}),
             success: function success() {
                 $("#spinner").show();
                 setTimeout(restartTimer, 3000);
@@ -387,9 +389,11 @@ $(function() {
     });
     $("#shutdown").click(function() {
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":1},
+            url: getPath() + "/shutdown",
+            data: JSON.stringify({"parameter":1}),
             success: function success(data) {
                 return alert(data.text);
             }
@@ -447,9 +451,11 @@ $(function() {
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/shutdown",
-            data: {"parameter":2},
+            data: JSON.stringify({"parameter":2}),
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);
@@ -527,7 +533,7 @@ $(function() {
             $(this).data('value'),
             function (value) {
                 $.ajax({
-                    method: "get",
+                    method: "post",
                     url: getPath() + "/kobo_auth/deleteauthtoken/" + value,
                 });
                 $("#config_delete_kobo_token").hide();
@@ -574,7 +580,7 @@ $(function() {
             function(value){
                 path = getPath() + "/ajax/fullsync"
                 $.ajax({
-                    method:"get",
+                    method:"post",
                     url: path,
                     timeout: 900,
                     success:function(data) {
@@ -638,7 +644,7 @@ $(function() {
                     else {
                         $("#InvalidDialog").modal('show');
                     }
-                } else {                	
+                } else {
                     changeDbSettings();
                 }
             }
@@ -685,7 +691,7 @@ $(function() {
             "GeneralDeleteModal",
             $(this).data('value'),
             function(value){
-                window.location.href = window.location.pathname + "/../../shelf/delete/" + value
+                $("#delete_shelf").closest("form").submit()
             }
         );
 
@@ -734,7 +740,8 @@ $(function() {
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
-            method:"get",
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/import_ldap_users",
             success: function success(data) {

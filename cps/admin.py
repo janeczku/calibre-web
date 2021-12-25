@@ -129,11 +129,11 @@ def admin_forbidden():
     abort(403)
 
 
-@admi.route("/shutdown")
+@admi.route("/shutdown", methods=["POST"])
 @login_required
 @admin_required
 def shutdown():
-    task = int(request.args.get("parameter").strip())
+    task = request.get_json().get('parameter', -1)
     showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
@@ -906,7 +906,7 @@ def list_restriction(res_type, user_id):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/fullsync")
+@admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
 def ajax_fullsync():
     count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
@@ -1626,7 +1626,7 @@ def edit_user(user_id):
                                  page="edituser")
 
 
-@admi.route("/admin/resetpassword/<int:user_id>")
+@admi.route("/admin/resetpassword/<int:user_id>", methods=["POST"])
 @login_required
 @admin_required
 def reset_user_password(user_id):
@@ -1802,7 +1802,7 @@ def ldap_import_create_user(user, user_data):
         return 0, message
 
 
-@admi.route('/import_ldap_users')
+@admi.route('/import_ldap_users', methods=["POST"])
 @login_required
 @admin_required
 def import_ldap_users():

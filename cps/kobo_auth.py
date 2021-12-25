@@ -62,6 +62,7 @@ particular calls to non-Kobo specific endpoints such as the CalibreWeb book down
 from binascii import hexlify
 from datetime import datetime
 from os import urandom
+from functools import wraps
 
 from flask import g, Blueprint, url_for, abort, request
 from flask_login import login_user, current_user, login_required
@@ -69,11 +70,6 @@ from flask_babel import gettext as _
 
 from . import logger, config, calibre_db, db, helper, ub, lm
 from .render_template import render_title_template
-
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 
 log = logger.create()
@@ -167,7 +163,7 @@ def generate_auth_token(user_id):
         )
 
 
-@kobo_auth.route("/deleteauthtoken/<int:user_id>")
+@kobo_auth.route("/deleteauthtoken/<int:user_id>", methods=["POST"])
 @login_required
 def delete_auth_token(user_id):
     # Invalidate any prevously generated Kobo Auth token for this user.
