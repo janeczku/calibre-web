@@ -38,16 +38,16 @@
           {% endif %}
             {% if g.user.kindle_mail and kindle_list %}
               {% if kindle_list.__len__() == 1 %}
-                <a href="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" data-text="{{_('Send to Kindle')}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
+                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
-                  <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle postAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-send"></span>{{_('Send to Kindle')}}
                     <span class="caret"></span>
                   </button>
                     <ul class="dropdown-menu" aria-labelledby="send-to-kindle">
                     {% for format in kindle_list %}
-                      <li><a href="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
+                      <li><a class="postAction" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
                     {%endfor%}
                     </ul>
                 </div>
