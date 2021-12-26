@@ -23,6 +23,7 @@ import re
 import ast
 import json
 from datetime import datetime
+from urllib.parse import quote
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
@@ -166,6 +167,8 @@ class Identifiers(Base):
             return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
             return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+        elif self.val.lower().startswith("javascript:"):
+            return quote(self.val)
         else:
             return u"{0}".format(self.val)
 
