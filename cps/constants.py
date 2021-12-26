@@ -125,13 +125,22 @@ DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"  # nosec
 DEFAULT_PORT        = 8083
+
 env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
+
 try:
     DEFAULT_PORT = int(env_CALIBRE_PORT)
 except ValueError:
     print('Environment variable CALIBRE_PORT has invalid value (%s), faling back to default (8083)' % env_CALIBRE_PORT)
 del env_CALIBRE_PORT
-
+DEFAULT_SCHEME        = 'http'
+env_CALIBRE_SCHEME = os.environ.get("CALIBRE_SCHEME", DEFAULT_SCHEME)
+try:
+    env_CALIBRE_SCHEME == 'https' || env_CALIBRE_SCHEME == 'http'
+    DEFAULT_SCHEME = env_CALIBRE_SCHEME
+except ValueError:
+    print('Environment variable CALIBRE_SCHEME has invalid value (%s), faling back to default (http)' % env_CALIBRE_PORT)
+del env_CALIBRE_SCHEME
 
 EXTENSIONS_AUDIO    = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT_FROM  = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt','cbz','cbr']

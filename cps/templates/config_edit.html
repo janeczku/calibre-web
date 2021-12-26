@@ -145,6 +145,10 @@
         <label for="config_external_port">{{_('Server External Port (for port forwarded API calls)')}}</label>
         <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
       </div>
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_external_scheme">{{_('Server External Scheme (http / https for port forwarded API calls)')}}</label>
+        <input type="text" min="1" max="65535" class="form-control" name="config_external_scheme" id="config_external_scheme" value="{% if config.config_external_scheme != None %}{{ config.config_external_scheme }}{% endif %}" autocomplete="off" required>
+      </div>
     </div>
     {% endif %}
     {% if feature_support['goodreads'] %}

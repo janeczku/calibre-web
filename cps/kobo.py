@@ -376,7 +376,7 @@ def get_download_url_for_book(book, book_format):
             host = request.host
 
         return "{url_scheme}://{url_base}:{url_port}/kobo/{auth_token}/download/{book_id}/{book_format}".format(
-            url_scheme=request.scheme,
+            url_scheme=config.config_external_scheme,
             url_base=host,
             url_port=config.config_external_port,
             auth_token=get_auth_token(),

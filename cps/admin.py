@@ -1247,6 +1247,7 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
         _config_int(to_save, "config_external_port")
+        _config_string(to_save, "config_external_scheme")
         _config_checkbox_int(to_save, "config_kobo_proxy")
 
         if "config_upload_formats" in to_save:
