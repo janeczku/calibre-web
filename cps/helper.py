@@ -38,11 +38,8 @@ from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
+from urllib.parse import quote
 
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
 
 try:
     import unidecode

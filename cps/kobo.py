@@ -23,11 +23,7 @@ import os
 import uuid
 from time import gmtime, strftime
 import json
-
-try:
-    from urllib import unquote
-except ImportError:
-    from urllib.parse import unquote
+from urllib.parse import unquote
 
 from flask import (
     Blueprint,
