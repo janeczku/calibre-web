@@ -248,12 +248,13 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
         if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
             flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
             return redirect(url_for('web.index'))
-        shelf.is_public = 1 if to_save.get("is_public") else 0
+        is_public = 1 if to_save.get("is_public") else 0
         if config.config_kobo_sync:
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False
         shelf_title = to_save.get("title", "")
-        if check_shelf_is_unique(shelf, shelf_title, shelf_id):
+        if check_shelf_is_unique(shelf, shelf_title, is_public, shelf_id):
             shelf.name = shelf_title
+            shelf.is_public = is_public
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
@@ -284,12 +285,12 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
                                  sync_only_selected_shelves=sync_only_selected_shelves)
 
 
-def check_shelf_is_unique(shelf, title, shelf_id=False):
+def check_shelf_is_unique(shelf, title, is_public, shelf_id=False):
     if shelf_id:
         ident = ub.Shelf.id != shelf_id
     else:
         ident = true()
-    if shelf.is_public == 1:
+    if is_public == 1:
         is_shelf_name_unique = ub.session.query(ub.Shelf) \
                                    .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 1)) \
                                    .filter(ident) \
