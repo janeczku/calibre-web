@@ -47,15 +47,15 @@ $(function() {
             var rows = rowsAfter;
 
             if (e.type === "uncheck-all") {
-                rows = rowsBefore;
+                selections = [];
+            } else {
+                var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+                    return row.id;
+                });
+
+                var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+                selections = window._[func](selections, ids);
             }
-
-            var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-                return row.id;
-            });
-
-            var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-            selections = window._[func](selections, ids);
             if (selections.length >= 2) {
                 $("#merge_books").removeClass("disabled");
                 $("#merge_books").attr("aria-disabled", false);
@@ -540,14 +540,14 @@ $(function() {
         var rows = rowsAfter;
 
         if (e.type === "uncheck-all") {
-            rows = rowsBefore;
+            selections = [];
+        } else {
+	        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+	            return row.id;
+	        });
+	        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+            selections = window._[func](selections, ids);
         }
-
-        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-            return row.id;
-        });
-        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-        selections = window._[func](selections, ids);
         handle_header_buttons();
     });
 });
