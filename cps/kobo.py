@@ -321,7 +321,7 @@ def HandleSyncRequest():
 
 def generate_sync_response(sync_token, sync_results, set_cont=False):
     extra_headers = {}
-    if config.config_kobo_proxy:
+    if config.config_kobo_proxy and not set_cont:
         # Merge in sync results from the official Kobo store.
         try:
             store_response = make_request_to_kobo_store(sync_token)
