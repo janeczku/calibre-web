@@ -1069,7 +1069,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
+        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term.strip()))
     else:
         return render_title_template('search.html',
                                      searchterm="",
