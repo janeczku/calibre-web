@@ -74,13 +74,22 @@ opt = dep_check.load_dependencys(True)
 for i in (req + opt):
     ret[i[1]] = i[0]
 
+if constants.NIGHTLY_VERSION[0] == "$Format:%H$":
+    calibre_web_version = constants.STABLE_VERSION['version']
+else:
+    calibre_web_version = (constants.STABLE_VERSION['version'] + ' - '
+                    + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
+                    + constants.NIGHTLY_VERSION[1].replace('%','%%'))
+if getattr(sys, 'frozen', False):
+    calibre_web_version += " - Exe-Version"
+elif constants.HOME_CONFIG:
+    calibre_web_version += " - pyPi"
+
 if not ret:
     _VERSIONS = OrderedDict(
         Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
         Python=sys.version,
-        Calibre_Web=constants.STABLE_VERSION['version'] + ' - '
-                    + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
-                    + constants.NIGHTLY_VERSION[1].replace('%','%%'),
+        Calibre_Web=calibre_web_version,
         WebServer=server.VERSION,
         Flask=flask.__version__,
         Flask_Login=flask_loginVersion,
@@ -110,9 +119,7 @@ else:
     _VERSIONS = OrderedDict(
         Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
         Python = sys.version,
-        Calibre_Web = constants.STABLE_VERSION['version'] + ' - '
-                      + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
-                      + constants.NIGHTLY_VERSION[1].replace('%', '%%'),
+        Calibre_Web=calibre_web_version,
         Werkzeug = werkzeug.__version__,
         Jinja2=jinja2.__version__,
         pySqlite = sqlite3.version,
