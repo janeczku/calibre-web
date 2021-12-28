@@ -360,6 +360,31 @@ def clean_author_database(renamed_author, calibrepath, local_book=None):
                     file_format.name = all_new_name
 
 
+def clean_author_database_gdrive(renamed_author, calibrepath, local_book=None):
+    valid_filename_authors = [get_valid_filename(r) for r in renamed_author]
+    for r in renamed_author:
+        if local_book:
+            all_books = [local_book]
+        else:
+            all_books = calibre_db.session.query(db.Books) \
+                .filter(db.Books.authors.any(db.Authors.name == r)).all()
+        for book in all_books:
+            book_author_path = book.path.split('/')[0]
+            if book_author_path in valid_filename_authors or local_book:
+                new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
+                all_new_authordir = get_valid_filename(new_author.name)
+                all_titledir = book.path.split('/')[1]
+                all_new_path = os.path.join(calibrepath, all_new_authordir, all_titledir)
+                all_new_name = get_valid_filename(book.title) + ' - ' + all_new_authordir
+                # change location in database to new author/title path
+                book.path = os.path.join(all_new_authordir, all_titledir).replace('\\', '/')
+                for file_format in book.data:
+                    shutil.move(os.path.normcase(
+                        os.path.join(all_new_path, file_format.name + '.' + file_format.format.lower())),
+                        os.path.normcase(os.path.join(all_new_path, all_new_name + '.' + file_format.format.lower())))
+                    file_format.name = all_new_name
+
+
 # was muss gemacht werden:
 # Die Autorennamen müssen separiert werden und von dupletten bereinigt werden.
 # Es muss geprüft werden:
@@ -465,6 +490,9 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
             old_author_dir = get_valid_filename(r)
             new_author_rename_dir = get_valid_filename(new_author.name)
+            gFile = gd.getFileFromEbooksFolder(None, old_author_dir)
+            if gFile:
+                gd.moveGdriveFileRemote(gFile, new_author_rename_dir)
             '''if os.path.isdir(os.path.join(calibrepath, old_author_dir)):
                 try:
                     old_author_path = os.path.join(calibrepath, old_author_dir)
@@ -501,19 +529,6 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
             error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
-    # Todo: Rename all authors on gdrive
-    # Rename all files from old names to new names
-    '''
-    try:
-        clean_author_database(renamed_author, calibrepath)
-        if first_author not in renamed_author:
-            clean_author_database([first_author], calibrepath, localbook)
-        if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
-            shutil.rmtree(os.path.dirname(path))
-    except (OSError, FileNotFoundError) as ex:
-        log.error("Error in rename file in path %s", ex)
-        log.debug(ex, exc_info=True)
-        return _("Error in rename file in path: %(error)s", error=str(ex))'''
     if authordir != new_authordir or titledir != new_titledir:
         new_name = get_valid_filename(book.title) + u' - ' + get_valid_filename(new_authordir)
         for file_format in book.data:
@@ -523,6 +538,19 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
                 break
             gd.moveGdriveFileRemote(gFile, new_name + u'.' + file_format.format.lower())
             file_format.name = new_name
+    # Todo: Rename all authors on gdrive
+    # Rename all files from old names to new names
+    try:
+        # calibrepath -> config.config_calibre_dir
+        clean_author_database_gdrive(renamed_author, calibrepath)
+        if first_author not in renamed_author:
+            clean_author_database_gdrive([first_author], calibrepath, localbook)
+        if not renamed_author and len(os.listdir(os.path.dirname(path))) == 0:
+            shutil.rmtree(os.path.dirname(path))
+    except (OSError, FileNotFoundError) as ex:
+        log.error("Error in rename file in path %s", ex)
+        log.debug(ex, exc_info=True)
+        return _("Error in rename file in path: %(error)s", error=str(ex))
     return error
 
 
