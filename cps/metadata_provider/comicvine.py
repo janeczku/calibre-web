@@ -26,7 +26,7 @@ class ComicVine(Metadata):
     __name__ = "ComicVine"
     __id__ = "comicvine"
 
-    def search(self, query, __):
+    def search(self, query, generic_cover=""):
         val = list()
         apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
         if self.active:

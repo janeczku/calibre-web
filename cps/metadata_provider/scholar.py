@@ -20,7 +20,6 @@ from scholarly import scholarly
 
 from cps.services.Metadata import Metadata
 
-
 class scholar(Metadata):
     __name__ = "Google Scholar"
     __id__ = "googlescholar"
@@ -32,7 +31,7 @@ class scholar(Metadata):
             i = 0
             for publication in scholar_gen:
                 v = dict()
-                v['id'] = "1234" # publication['bib'].get('title')
+                v['id'] = publication['url_scholarbib'].split(':')[1]
                 v['title'] = publication['bib'].get('title')
                 v['authors'] = publication['bib'].get('author', [])
                 v['description'] = publication['bib'].get('abstract', "")
@@ -41,8 +40,8 @@ class scholar(Metadata):
                     v['publishedDate'] = publication['bib'].get('pub_year')+"-01-01"
                 else:
                     v['publishedDate'] = ""
-                v['tags'] = ""
-                v['ratings'] = 0
+                v['tags'] = []
+                v['rating'] = 0
                 v['series'] = ""
                 v['cover'] = generic_cover
                 v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
