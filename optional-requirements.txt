@@ -31,7 +31,7 @@ SQLAlchemy-Utils>=0.33.5,<0.38.0
 
 # extracting metadata
 rarfile>=2.7
-scholarly>=1.2.0, <1.5
+scholarly>=1.2.0, <1.6
 
 # other
 natsort>=2.2.0,<8.1.0
