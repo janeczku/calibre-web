@@ -43,7 +43,7 @@ class scholar(Metadata):
                 v['tags'] = []
                 v['rating'] = 0
                 v['series'] = ""
-                v['cover'] = generic_cover
+                v['cover'] = ""
                 v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
                 v['source'] = {
                     "id": self.__id__,
