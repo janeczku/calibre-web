@@ -198,7 +198,7 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     $confirm.modal('show');
 }
 
-$("#delete_confirm").click(function() {
+$("#delete_confirm").click(function(event) {
     //get data-id attribute of the clicked element
     var deleteId = $(this).data("delete-id");
     var bookFormat = $(this).data("delete-format");
@@ -228,8 +228,7 @@ $("#delete_confirm").click(function() {
                 }
             });
         } else {
-            window.location.href = getPath() + "/delete/" + deleteId;
-
+            postButton(event, getPath() + "/delete/" + deleteId);
         }
     }
 

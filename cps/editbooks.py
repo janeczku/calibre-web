@@ -357,7 +357,16 @@ def delete_book_from_table(book_id, book_format, jsonResponse):
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
-    return render_delete_book_result(book_format, jsonResponse, warning, book_id)
+        return render_delete_book_result(book_format, jsonResponse, warning, book_id)
+    message = _("You are missing permissions to delete books")
+    if jsonResponse:
+        return json.dumps({"location": url_for("editbook.edit_book", book_id=book_id),
+                           "type": "danger",
+                           "format": "",
+                           "message": message})
+    else:
+        flash(message, category="error")
+        return redirect(url_for('editbook.edit_book', book_id=book_id))
 
 
 def render_edit_book(book_id):
