@@ -30,7 +30,7 @@ class Google(Metadata):
         if self.active:
             val = list()
             result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))
-            for r in result.json()['items']:
+            for r in result.json().get('items'):
                 v = dict()
                 v['id'] = r['id']
                 v['title'] = r['volumeInfo'].get('title',"")

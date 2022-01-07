@@ -40,7 +40,7 @@ $(function () {
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
-        if(book.cover){
+        if(book.cover && $("#cover_url").length){
             $(".cover img").attr("src", book.cover);
             $("#cover_url").val(book.cover);
         }
