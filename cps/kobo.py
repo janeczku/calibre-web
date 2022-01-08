@@ -173,10 +173,10 @@ def HandleSyncRequest():
                                                        ub.BookShelf.date_added,
                                                        ub.ArchivedBook.is_archived)
         changed_entries = (changed_entries
-                .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
-                .join(ub.KoboSyncedBooks, ub.KoboSyncedBooks.book_id == db.Books.id, isouter=True)
-                .filter(or_(ub.KoboSyncedBooks.user_id != current_user.id,
-                            ub.KoboSyncedBooks.book_id == None))
+                           .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                                                          ub.ArchivedBook.user_id == current_user.id))
+                           .filter(db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id)
+                                           .filter(ub.KoboSyncedBooks.user_id == current_user.id)))
                 .filter(ub.BookShelf.date_added > sync_token.books_last_modified)
                 .filter(db.Data.format.in_(KOBO_FORMATS))
                 .filter(calibre_db.common_filters(allow_show_archived=True))
@@ -196,11 +196,11 @@ def HandleSyncRequest():
                                                        ub.ArchivedBook.last_modified,
                                                        ub.ArchivedBook.is_archived)
         changed_entries = (changed_entries
-                   .join(db.Data).outerjoin(ub.ArchivedBook, db.Books.id == ub.ArchivedBook.book_id)
-                   .join(ub.KoboSyncedBooks, ub.KoboSyncedBooks.book_id == db.Books.id, isouter=True)
-                   .filter(or_(ub.KoboSyncedBooks.user_id != current_user.id,
-                               ub.KoboSyncedBooks.book_id == None))
-                   .filter(calibre_db.common_filters())
+                   .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                                                  ub.ArchivedBook.user_id == current_user.id))
+                   .filter(db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id)
+                                              .filter(ub.KoboSyncedBooks.user_id == current_user.id)))
+                   .filter(calibre_db.common_filters(allow_show_archived=True))
                    .filter(db.Data.format.in_(KOBO_FORMATS))
                    .order_by(db.Books.last_modified)
                    .order_by(db.Books.id)
@@ -257,10 +257,12 @@ def HandleSyncRequest():
     if sqlalchemy_version2:
         max_change = calibre_db.session.execute(changed_entries
                                                 .filter(ub.ArchivedBook.is_archived)
+                                                .filter(ub.ArchivedBook.user_id == current_user.id)
                                                 .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()))\
             .columns(db.Books).first()
     else:
-        max_change = changed_entries.from_self().filter(ub.ArchivedBook.is_archived) \
+        max_change = changed_entries.from_self().filter(ub.ArchivedBook.is_archived)\
+            .filter(ub.ArchivedBook.user_id==current_user.id) \
             .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()).first()
 
     max_change = max_change.last_modified if max_change else new_archived_last_modified
@@ -339,7 +341,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
         extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
 
-    log.debug("Kobo Sync Content: {}".format(sync_results))
+    # log.debug("Kobo Sync Content: {}".format(sync_results))
     # jsonify decodes the unicode string different to what kobo expects
     response = make_response(json.dumps(sync_results), extra_headers)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -671,11 +673,8 @@ def HandleTagRemoveItem(tag_id):
 # Note: Public shelves that aren't owned by the user aren't supported.
 def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     new_tags_last_modified = sync_token.tags_last_modified
-
-    for shelf in ub.session.query(ub.ShelfArchive).filter(
-        func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
-        ub.ShelfArchive.user_id == current_user.id
-    ):
+    # transmit all archived shelfs independent of last sync (why should this matter?)
+    for shelf in ub.session.query(ub.ShelfArchive).filter(ub.ShelfArchive.user_id == current_user.id):
         new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
         sync_results.append({
             "DeletedTag": {
@@ -687,7 +686,6 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
         })
         ub.session.delete(shelf)
         ub.session_commit()
-
 
     extra_filters = []
     if only_kobo_shelves:
