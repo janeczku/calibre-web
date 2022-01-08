@@ -836,7 +836,7 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
-                kobo_sync_status.remove_synced_book(edited_books_id)
+                kobo_sync_status.remove_synced_book(edited_books_id, all=True)
 
             calibre_db.session.merge(book)
             calibre_db.session.commit()
