@@ -60,7 +60,7 @@ def change_archived_books(book_id, state=None, message=None):
     return archived_book.is_archived
 
 
-# select all books which are synced by the current user and do not belong to a synced shelf and them to archive
+# select all books which are synced by the current user and do not belong to a synced shelf and set them to archive
 # select all shelves from current user which are synced and do not belong to the "only sync" shelves
 def update_on_sync_shelfs(user_id):
     books_to_archive = (ub.session.query(ub.KoboSyncedBooks)
@@ -75,6 +75,7 @@ def update_on_sync_shelfs(user_id):
             .filter(ub.KoboSyncedBooks.user_id == user_id).delete()
         ub.session_commit()
 
+    # Search all shelf which are currently not synced
     shelves_to_archive = ub.session.query(ub.Shelf).filter(ub.Shelf.user_id == user_id).filter(
         ub.Shelf.kobo_sync == 0).all()
     for a in shelves_to_archive:
