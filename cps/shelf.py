@@ -251,6 +251,10 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
         is_public = 1 if to_save.get("is_public") else 0
         if config.config_kobo_sync:
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False
+            if shelf.kobo_sync:
+                ub.session.query(ub.ShelfArchive).filter(ub.ShelfArchive.user_id == current_user.id).filter(
+                    ub.ShelfArchive.uuid == shelf.uuid).delete()
+                ub.session_commit()
         shelf_title = to_save.get("title", "")
         if check_shelf_is_unique(shelf, shelf_title, is_public, shelf_id):
             shelf.name = shelf_title
