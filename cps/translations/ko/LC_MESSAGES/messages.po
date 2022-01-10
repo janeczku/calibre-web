@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
 "POT-Creation-Date: 2022-01-01 17:51+0100\n"
-"PO-Revision-Date: 2022-01-07 11:06+0900\n"
+"PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language-Team: 내맘대로의 epubguide.net <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -1285,7 +1285,7 @@ msgstr "비밀번호를 재설정하려면 유효한 사용자 이름을 입력�
 #: cps/web.py:1572
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "로그인을 할 수 없음: '%(nickname)s"
+msgstr "다음 사용자로 로그인: '%(nickname)s"
 
 #: cps/web.py:1638 cps/web.py:1687
 #, python-format
