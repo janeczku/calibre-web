@@ -49,6 +49,7 @@ import requests
 
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
+from .epub import get_epub_layout
 from .constants import sqlalchemy_version2
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
@@ -455,6 +456,8 @@ def get_metadata(book):
             continue
         for kobo_format in KOBO_FORMATS[book_data.format]:
             # log.debug('Id: %s, Format: %s' % (book.id, kobo_format))
+            if get_epub_layout(book, book_data) == 'pre-paginated':
+                kobo_format = 'EPUB3FL'
             download_urls.append(
                 {
                     "Format": kobo_format,
