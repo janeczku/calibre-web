@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-01-06 14:08+0100\n"
+"POT-Creation-Date: 2022-01-10 17:37+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: cps/admin.py:343 cps/admin.py:1606
+#: cps/admin.py:343 cps/admin.py:1615
 msgid "User not found"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:418 cps/admin.py:1484
+#: cps/admin.py:418 cps/admin.py:1493
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:442 cps/admin.py:1442
+#: cps/admin.py:442 cps/admin.py:1451
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
@@ -275,9 +275,9 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1512
-#: cps/admin.py:1581 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
-#: cps/shelf.py:275 cps/shelf.py:337 cps/shelf.py:372 cps/shelf.py:447
+#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1521
+#: cps/admin.py:1590 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
+#: cps/shelf.py:279 cps/shelf.py:341 cps/shelf.py:376 cps/shelf.py:451
 msgid "Settings DB is not Writeable"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr "全ての項目を入力してください"
 msgid "E-mail is not from valid domain"
 msgstr "このメールは有効なドメインからのものではありません"
 
-#: cps/admin.py:1384 cps/admin.py:1534
+#: cps/admin.py:1384 cps/admin.py:1543
 msgid "Add new user"
 msgstr "新規ユーザ追加"
 
@@ -329,151 +329,151 @@ msgstr "ユーザ '%(user)s' を作成しました"
 msgid "Found an existing account for this e-mail address or name."
 msgstr "このメールアドレスかニックネームで登録されたアカウントが見つかりました"
 
-#: cps/admin.py:1421
+#: cps/admin.py:1430
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "ユーザ '%(nick)s' を削除しました"
 
-#: cps/admin.py:1423 cps/admin.py:1424
+#: cps/admin.py:1432 cps/admin.py:1433
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1427
+#: cps/admin.py:1436
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:1500 cps/admin.py:1625
+#: cps/admin.py:1509 cps/admin.py:1634
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s を編集"
 
-#: cps/admin.py:1504
+#: cps/admin.py:1513
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "ユーザ '%(nick)s' を更新しました"
 
-#: cps/admin.py:1508 cps/admin.py:1640 cps/web.py:1504 cps/web.py:1564
+#: cps/admin.py:1517 cps/admin.py:1649 cps/web.py:1504 cps/web.py:1564
 msgid "An unknown error occurred. Please try again later."
 msgstr "不明なエラーが発生しました。あとで再試行してください。"
 
-#: cps/admin.py:1543 cps/templates/admin.html:98
+#: cps/admin.py:1552 cps/templates/admin.html:98
 msgid "Edit E-mail Server Settings"
 msgstr "SMTP設定を変更"
 
-#: cps/admin.py:1562
+#: cps/admin.py:1571
 msgid "Gmail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1588
+#: cps/admin.py:1597
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1591
+#: cps/admin.py:1600
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "テストメールを %(res)s に送信中にエラーが発生しました"
 
-#: cps/admin.py:1593
+#: cps/admin.py:1602
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:1595
+#: cps/admin.py:1604
 msgid "E-mail server settings updated"
 msgstr "メールサーバの設定を更新しました"
 
-#: cps/admin.py:1637
+#: cps/admin.py:1646
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s 用のパスワードをリセット"
 
-#: cps/admin.py:1643 cps/web.py:1444
+#: cps/admin.py:1652 cps/web.py:1444
 msgid "Please configure the SMTP mail settings first..."
 msgstr "初めにSMTPメールの設定をしてください"
 
-#: cps/admin.py:1654
+#: cps/admin.py:1663
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:1720
+#: cps/admin.py:1729
 msgid "Requesting update package"
 msgstr "更新データを要求中"
 
-#: cps/admin.py:1721
+#: cps/admin.py:1730
 msgid "Downloading update package"
 msgstr "更新データをダウンロード中"
 
-#: cps/admin.py:1722
+#: cps/admin.py:1731
 msgid "Unzipping update package"
 msgstr "更新データを展開中"
 
-#: cps/admin.py:1723
+#: cps/admin.py:1732
 msgid "Replacing files"
 msgstr "ファイルを置換中"
 
-#: cps/admin.py:1724
+#: cps/admin.py:1733
 msgid "Database connections are closed"
 msgstr "データベースの接続を切断完了"
 
-#: cps/admin.py:1725
+#: cps/admin.py:1734
 msgid "Stopping server"
 msgstr "サーバ停止中"
 
-#: cps/admin.py:1726
+#: cps/admin.py:1735
 msgid "Update finished, please press okay and reload page"
 msgstr "アップデート完了、OKを押してページをリロードしてください"
 
-#: cps/admin.py:1727 cps/admin.py:1728 cps/admin.py:1729 cps/admin.py:1730
-#: cps/admin.py:1731 cps/admin.py:1732
+#: cps/admin.py:1736 cps/admin.py:1737 cps/admin.py:1738 cps/admin.py:1739
+#: cps/admin.py:1740 cps/admin.py:1741
 msgid "Update failed:"
 msgstr "アップデート失敗:"
 
-#: cps/admin.py:1727 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
+#: cps/admin.py:1736 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
 msgid "HTTP Error"
 msgstr "HTTPエラー"
 
-#: cps/admin.py:1728 cps/updater.py:387 cps/updater.py:599
+#: cps/admin.py:1737 cps/updater.py:387 cps/updater.py:599
 msgid "Connection error"
 msgstr "接続エラー"
 
-#: cps/admin.py:1729 cps/updater.py:389 cps/updater.py:601
+#: cps/admin.py:1738 cps/updater.py:389 cps/updater.py:601
 msgid "Timeout while establishing connection"
 msgstr "接続を確立中にタイムアウトしました"
 
-#: cps/admin.py:1730 cps/updater.py:391 cps/updater.py:603
+#: cps/admin.py:1739 cps/updater.py:391 cps/updater.py:603
 msgid "General error"
 msgstr "エラー発生"
 
-#: cps/admin.py:1731
+#: cps/admin.py:1740
 msgid "Update file could not be saved in temp dir"
 msgstr ""
 
-#: cps/admin.py:1732
+#: cps/admin.py:1741
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1756
+#: cps/admin.py:1765
 msgid "Failed to extract at least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1801
+#: cps/admin.py:1810
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1814
+#: cps/admin.py:1823
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1818
+#: cps/admin.py:1827
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1851
+#: cps/admin.py:1860
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1853
+#: cps/admin.py:1862
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -1065,46 +1065,46 @@ msgstr "本棚を編集する"
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr ""
 
-#: cps/shelf.py:262
+#: cps/shelf.py:266
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "%(title)s を作成しました"
 
-#: cps/shelf.py:265
+#: cps/shelf.py:269
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "%(title)s を変更しました"
 
-#: cps/shelf.py:279
+#: cps/shelf.py:283
 msgid "There was an error"
 msgstr "エラーが発生しました"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:305
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:312
+#: cps/shelf.py:316
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:333
+#: cps/shelf.py:337
 #, fuzzy
 msgid "Shelf successfully deleted"
 msgstr "メタデータを更新しました"
 
-#: cps/shelf.py:382
+#: cps/shelf.py:386
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "'%(name)s' 内の本の順番を変更する"
 
-#: cps/shelf.py:452
+#: cps/shelf.py:456
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "本棚: '%(name)s'"
 
-#: cps/shelf.py:456
+#: cps/shelf.py:460
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "本棚を開けません。この本棚は存在しないかアクセスできません"
 

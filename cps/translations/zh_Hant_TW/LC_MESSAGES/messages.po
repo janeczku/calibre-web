@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 14:08+0100\n"
+"POT-Creation-Date: 2022-01-10 17:37+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_TW\n"
@@ -75,7 +75,7 @@ msgstr "管理用戶"
 msgid "All"
 msgstr "全部"
 
-#: cps/admin.py:343 cps/admin.py:1606
+#: cps/admin.py:343 cps/admin.py:1615
 msgid "User not found"
 msgstr "找不到用戶"
 
@@ -92,7 +92,7 @@ msgstr "顯示全部"
 msgid "Malformed request"
 msgstr "格式錯誤的請求"
 
-#: cps/admin.py:418 cps/admin.py:1484
+#: cps/admin.py:418 cps/admin.py:1493
 msgid "Guest Name can't be changed"
 msgstr "訪客名稱無法更改"
 
@@ -100,7 +100,7 @@ msgstr "訪客名稱無法更改"
 msgid "Guest can't have this role"
 msgstr "遊客無法擁有此角色"
 
-#: cps/admin.py:442 cps/admin.py:1442
+#: cps/admin.py:442 cps/admin.py:1451
 msgid "No admin user remaining, can't remove admin role"
 msgstr "管理員賬戶不存在，無法刪除管理員角色"
 
@@ -275,9 +275,9 @@ msgstr "LDAP成員用戶過濾器中有不匹配的括號"
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP CA證書、證書或密鑰位置無效，請輸入正確的路徑"
 
-#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1512
-#: cps/admin.py:1581 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
-#: cps/shelf.py:275 cps/shelf.py:337 cps/shelf.py:372 cps/shelf.py:447
+#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1521
+#: cps/admin.py:1590 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
+#: cps/shelf.py:279 cps/shelf.py:341 cps/shelf.py:376 cps/shelf.py:451
 msgid "Settings DB is not Writeable"
 msgstr "設置數據庫不可寫入"
 
@@ -314,7 +314,7 @@ msgstr "請填寫所有欄位！"
 msgid "E-mail is not from valid domain"
 msgstr "郵箱不在有效網域中"
 
-#: cps/admin.py:1384 cps/admin.py:1534
+#: cps/admin.py:1384 cps/admin.py:1543
 msgid "Add new user"
 msgstr "添加新用戶"
 
@@ -327,152 +327,152 @@ msgstr "用戶“%(user)s”已創建"
 msgid "Found an existing account for this e-mail address or name."
 msgstr "使用此郵箱或用戶名的賬號已經存在。"
 
-#: cps/admin.py:1421
+#: cps/admin.py:1430
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "用戶“%(nick)s”已刪除"
 
-#: cps/admin.py:1423 cps/admin.py:1424
+#: cps/admin.py:1432 cps/admin.py:1433
 msgid "Can't delete Guest User"
 msgstr "無法刪除訪客用戶"
 
-#: cps/admin.py:1427
+#: cps/admin.py:1436
 msgid "No admin user remaining, can't delete user"
 msgstr "管理員賬戶不存在，無法刪除用戶"
 
-#: cps/admin.py:1500 cps/admin.py:1625
+#: cps/admin.py:1509 cps/admin.py:1634
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "編輯用戶 %(nick)s"
 
-#: cps/admin.py:1504
+#: cps/admin.py:1513
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "用戶“%(nick)s”已更新"
 
-#: cps/admin.py:1508 cps/admin.py:1640 cps/web.py:1504 cps/web.py:1564
+#: cps/admin.py:1517 cps/admin.py:1649 cps/web.py:1504 cps/web.py:1564
 msgid "An unknown error occurred. Please try again later."
 msgstr "發生一個未知錯誤，請稍後再試。"
 
-#: cps/admin.py:1543 cps/templates/admin.html:98
+#: cps/admin.py:1552 cps/templates/admin.html:98
 msgid "Edit E-mail Server Settings"
 msgstr "編輯郵件服務器設置"
 
-#: cps/admin.py:1562
+#: cps/admin.py:1571
 msgid "Gmail Account Verification Successful"
 msgstr "G-Mail賬號驗證成功"
 
-#: cps/admin.py:1588
+#: cps/admin.py:1597
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr "發送給%(email)s的測試郵件已進入隊列。請檢查任務結果"
 
-#: cps/admin.py:1591
+#: cps/admin.py:1600
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "發送測試郵件時出錯：%(res)s"
 
-#: cps/admin.py:1593
+#: cps/admin.py:1602
 msgid "Please configure your e-mail address first..."
 msgstr "請先配置您的郵箱地址..."
 
-#: cps/admin.py:1595
+#: cps/admin.py:1604
 msgid "E-mail server settings updated"
 msgstr "郵件服務器設置已更新"
 
-#: cps/admin.py:1637
+#: cps/admin.py:1646
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "用戶 %(user)s 的密碼已重置"
 
-#: cps/admin.py:1643 cps/web.py:1444
+#: cps/admin.py:1652 cps/web.py:1444
 msgid "Please configure the SMTP mail settings first..."
 msgstr "請先配置SMTP郵箱設置..."
 
-#: cps/admin.py:1654
+#: cps/admin.py:1663
 msgid "Logfile viewer"
 msgstr "日誌文件查看器"
 
-#: cps/admin.py:1720
+#: cps/admin.py:1729
 msgid "Requesting update package"
 msgstr "正在請求更新包"
 
-#: cps/admin.py:1721
+#: cps/admin.py:1730
 msgid "Downloading update package"
 msgstr "正在下載更新包"
 
-#: cps/admin.py:1722
+#: cps/admin.py:1731
 msgid "Unzipping update package"
 msgstr "正在解壓更新包"
 
-#: cps/admin.py:1723
+#: cps/admin.py:1732
 msgid "Replacing files"
 msgstr "正在替換文件"
 
-#: cps/admin.py:1724
+#: cps/admin.py:1733
 msgid "Database connections are closed"
 msgstr "數據庫連接已關閉"
 
-#: cps/admin.py:1725
+#: cps/admin.py:1734
 msgid "Stopping server"
 msgstr "正在停止服務器"
 
-#: cps/admin.py:1726
+#: cps/admin.py:1735
 msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，請點擊確定並刷新頁面"
 
-#: cps/admin.py:1727 cps/admin.py:1728 cps/admin.py:1729 cps/admin.py:1730
-#: cps/admin.py:1731 cps/admin.py:1732
+#: cps/admin.py:1736 cps/admin.py:1737 cps/admin.py:1738 cps/admin.py:1739
+#: cps/admin.py:1740 cps/admin.py:1741
 msgid "Update failed:"
 msgstr "更新失敗："
 
-#: cps/admin.py:1727 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
+#: cps/admin.py:1736 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
 msgid "HTTP Error"
 msgstr "HTTP錯誤"
 
-#: cps/admin.py:1728 cps/updater.py:387 cps/updater.py:599
+#: cps/admin.py:1737 cps/updater.py:387 cps/updater.py:599
 msgid "Connection error"
 msgstr "連接錯誤"
 
-#: cps/admin.py:1729 cps/updater.py:389 cps/updater.py:601
+#: cps/admin.py:1738 cps/updater.py:389 cps/updater.py:601
 msgid "Timeout while establishing connection"
 msgstr "建立連接超時"
 
-#: cps/admin.py:1730 cps/updater.py:391 cps/updater.py:603
+#: cps/admin.py:1739 cps/updater.py:391 cps/updater.py:603
 msgid "General error"
 msgstr "一般錯誤"
 
-#: cps/admin.py:1731
+#: cps/admin.py:1740
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "更新文件無法保存在臨時目錄中"
 
-#: cps/admin.py:1732
+#: cps/admin.py:1741
 msgid "Files could not be replaced during update"
 msgstr "更新時檔案無法替換變更"
 
-#: cps/admin.py:1756
+#: cps/admin.py:1765
 msgid "Failed to extract at least One LDAP User"
 msgstr "未能提取至少一個LDAP用戶"
 
-#: cps/admin.py:1801
+#: cps/admin.py:1810
 msgid "Failed to Create at Least One LDAP User"
 msgstr "未能創建至少一個LDAP用戶"
 
-#: cps/admin.py:1814
+#: cps/admin.py:1823
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "錯誤：%(ldaperror)s"
 
-#: cps/admin.py:1818
+#: cps/admin.py:1827
 msgid "Error: No user returned in response of LDAP server"
 msgstr "錯誤：在LDAP服務器的響應中沒有返回用戶"
 
-#: cps/admin.py:1851
+#: cps/admin.py:1860
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "數據庫中沒有找到至少一個LDAP用戶"
 
-#: cps/admin.py:1853
+#: cps/admin.py:1862
 msgid "{} User Successfully Imported"
 msgstr "{} 用戶被成功導入"
 
@@ -1061,46 +1061,46 @@ msgstr "編輯書架"
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr ""
 
-#: cps/shelf.py:262
+#: cps/shelf.py:266
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "書架 %(title)s 已創建"
 
-#: cps/shelf.py:265
+#: cps/shelf.py:269
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "書架 %(title)s 已修改"
 
-#: cps/shelf.py:279
+#: cps/shelf.py:283
 msgid "There was an error"
 msgstr "發生錯誤"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:305
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr "公共書架：%(title)s已經存在已經存在。"
 
-#: cps/shelf.py:312
+#: cps/shelf.py:316
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "私有書架：%(title)s已經存在。"
 
-#: cps/shelf.py:333
+#: cps/shelf.py:337
 #, fuzzy
 msgid "Shelf successfully deleted"
 msgstr "書籍已成功刪除"
 
-#: cps/shelf.py:382
+#: cps/shelf.py:386
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "修改書架 %(name)s 順序"
 
-#: cps/shelf.py:452
+#: cps/shelf.py:456
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "書架：%(name)s"
 
-#: cps/shelf.py:456
+#: cps/shelf.py:460
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打開書架出錯。書架不存在或不可訪問"
 

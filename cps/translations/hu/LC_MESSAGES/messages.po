@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-06 14:08+0100\n"
+"POT-Creation-Date: 2022-01-10 17:37+0100\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -76,7 +76,7 @@ msgstr "Rendszergazda felhasználó"
 msgid "All"
 msgstr ""
 
-#: cps/admin.py:343 cps/admin.py:1606
+#: cps/admin.py:343 cps/admin.py:1615
 msgid "User not found"
 msgstr ""
 
@@ -93,7 +93,7 @@ msgstr "Mindent mutass"
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:418 cps/admin.py:1484
+#: cps/admin.py:418 cps/admin.py:1493
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:442 cps/admin.py:1442
+#: cps/admin.py:442 cps/admin.py:1451
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
@@ -280,9 +280,9 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1512
-#: cps/admin.py:1581 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
-#: cps/shelf.py:275 cps/shelf.py:337 cps/shelf.py:372 cps/shelf.py:447
+#: cps/admin.py:1197 cps/admin.py:1308 cps/admin.py:1405 cps/admin.py:1521
+#: cps/admin.py:1590 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
+#: cps/shelf.py:279 cps/shelf.py:341 cps/shelf.py:376 cps/shelf.py:451
 msgid "Settings DB is not Writeable"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr "Az összes mezőt ki kell tölteni!"
 msgid "E-mail is not from valid domain"
 msgstr "Az e-mail tartománya nem érvényes."
 
-#: cps/admin.py:1384 cps/admin.py:1534
+#: cps/admin.py:1384 cps/admin.py:1543
 msgid "Add new user"
 msgstr "Új felhasználó hozzáadása"
 
@@ -334,151 +334,151 @@ msgstr "A következő felhasználó létrehozva: %(user)s"
 msgid "Found an existing account for this e-mail address or name."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez vagy felhasználói névhez."
 
-#: cps/admin.py:1421
+#: cps/admin.py:1430
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "A felhasználó törölve: %(nick)s"
 
-#: cps/admin.py:1423 cps/admin.py:1424
+#: cps/admin.py:1432 cps/admin.py:1433
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1427
+#: cps/admin.py:1436
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:1500 cps/admin.py:1625
+#: cps/admin.py:1509 cps/admin.py:1634
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr " A felhasználó szerkesztése: %(nick)s"
 
-#: cps/admin.py:1504
+#: cps/admin.py:1513
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "A felhasználó frissítve: %(nick)s"
 
-#: cps/admin.py:1508 cps/admin.py:1640 cps/web.py:1504 cps/web.py:1564
+#: cps/admin.py:1517 cps/admin.py:1649 cps/web.py:1504 cps/web.py:1564
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/admin.py:1543 cps/templates/admin.html:98
+#: cps/admin.py:1552 cps/templates/admin.html:98
 msgid "Edit E-mail Server Settings"
 msgstr "SMTP beállítások változtatása"
 
-#: cps/admin.py:1562
+#: cps/admin.py:1571
 msgid "Gmail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1588
+#: cps/admin.py:1597
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1591
+#: cps/admin.py:1600
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Hiba történt a teszt levél küldése során: %(res)s"
 
-#: cps/admin.py:1593
+#: cps/admin.py:1602
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:1595
+#: cps/admin.py:1604
 msgid "E-mail server settings updated"
 msgstr "Az e-mail kiszolgáló beállításai frissítve."
 
-#: cps/admin.py:1637
+#: cps/admin.py:1646
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
 
-#: cps/admin.py:1643 cps/web.py:1444
+#: cps/admin.py:1652 cps/web.py:1444
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/admin.py:1654
+#: cps/admin.py:1663
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:1720
+#: cps/admin.py:1729
 msgid "Requesting update package"
 msgstr "Frissítési csomag kérése"
 
-#: cps/admin.py:1721
+#: cps/admin.py:1730
 msgid "Downloading update package"
 msgstr "Frissítési csomag letöltése"
 
-#: cps/admin.py:1722
+#: cps/admin.py:1731
 msgid "Unzipping update package"
 msgstr "Frissítési csomag kitömörítése"
 
-#: cps/admin.py:1723
+#: cps/admin.py:1732
 msgid "Replacing files"
 msgstr "Fájlok cserélése"
 
-#: cps/admin.py:1724
+#: cps/admin.py:1733
 msgid "Database connections are closed"
 msgstr "Adatbázis kapcsolatok lezárva"
 
-#: cps/admin.py:1725
+#: cps/admin.py:1734
 msgid "Stopping server"
 msgstr "Szerver leállítása"
 
-#: cps/admin.py:1726
+#: cps/admin.py:1735
 msgid "Update finished, please press okay and reload page"
 msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
 
-#: cps/admin.py:1727 cps/admin.py:1728 cps/admin.py:1729 cps/admin.py:1730
-#: cps/admin.py:1731 cps/admin.py:1732
+#: cps/admin.py:1736 cps/admin.py:1737 cps/admin.py:1738 cps/admin.py:1739
+#: cps/admin.py:1740 cps/admin.py:1741
 msgid "Update failed:"
 msgstr "A frissítés nem sikerült:"
 
-#: cps/admin.py:1727 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
+#: cps/admin.py:1736 cps/updater.py:385 cps/updater.py:595 cps/updater.py:597
 msgid "HTTP Error"
 msgstr "HTTP hiba"
 
-#: cps/admin.py:1728 cps/updater.py:387 cps/updater.py:599
+#: cps/admin.py:1737 cps/updater.py:387 cps/updater.py:599
 msgid "Connection error"
 msgstr "Kapcsolódási hiba"
 
-#: cps/admin.py:1729 cps/updater.py:389 cps/updater.py:601
+#: cps/admin.py:1738 cps/updater.py:389 cps/updater.py:601
 msgid "Timeout while establishing connection"
 msgstr "Időtúllépés a kapcsolódás során"
 
-#: cps/admin.py:1730 cps/updater.py:391 cps/updater.py:603
+#: cps/admin.py:1739 cps/updater.py:391 cps/updater.py:603
 msgid "General error"
 msgstr "Általános hiba"
 
-#: cps/admin.py:1731
+#: cps/admin.py:1740
 msgid "Update file could not be saved in temp dir"
 msgstr ""
 
-#: cps/admin.py:1732
+#: cps/admin.py:1741
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1756
+#: cps/admin.py:1765
 msgid "Failed to extract at least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1801
+#: cps/admin.py:1810
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1814
+#: cps/admin.py:1823
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1818
+#: cps/admin.py:1827
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1851
+#: cps/admin.py:1860
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1853
+#: cps/admin.py:1862
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -1070,46 +1070,46 @@ msgstr "Polc szerkesztése"
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr ""
 
-#: cps/shelf.py:262
+#: cps/shelf.py:266
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "A következő polc létre lett hozva: %(title)s"
 
-#: cps/shelf.py:265
+#: cps/shelf.py:269
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "A következő polc megváltoztatva: %(title)s"
 
-#: cps/shelf.py:279
+#: cps/shelf.py:283
 msgid "There was an error"
 msgstr "Hiba történt"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:305
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:312
+#: cps/shelf.py:316
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:333
+#: cps/shelf.py:337
 #, fuzzy
 msgid "Shelf successfully deleted"
 msgstr "A metaadatok sikeresen frissültek"
 
-#: cps/shelf.py:382
+#: cps/shelf.py:386
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "A következő polc átrendezése: %(name)s"
 
-#: cps/shelf.py:452
+#: cps/shelf.py:456
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Polc: '%(name)s'"
 
-#: cps/shelf.py:456
+#: cps/shelf.py:460
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Hiba a polc megnyitásakor. A polc nem létezik vagy nem elérhető."
 
