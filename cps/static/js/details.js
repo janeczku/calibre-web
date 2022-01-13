@@ -62,7 +62,7 @@ $("#archived_cb").on("change", function() {
     $("#shelf-actions").on("click", "[data-shelf-action]", function (e) {
         e.preventDefault();
 
-        $.get(this.href)
+        $.post(this.href)
             .done(function() {
                 var $this = $(this);
                 switch ($this.data("shelf-action")) {

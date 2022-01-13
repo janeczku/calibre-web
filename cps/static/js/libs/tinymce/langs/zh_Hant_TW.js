@@ -1,4 +1,4 @@
-tinymce.addI18n('zh_TW',{
+tinymce.addI18n('zh_Hant_TW',{
 "Redo": "\u91cd\u505a",
 "Undo": "\u64a4\u92b7",
 "Cut": "\u526a\u4e0b",

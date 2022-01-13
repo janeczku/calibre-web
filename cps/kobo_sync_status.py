@@ -20,7 +20,7 @@
 from flask_login import current_user
 from . import ub
 import datetime
-from sqlalchemy.sql.expression import or_, and_
+from sqlalchemy.sql.expression import or_, and_, true
 
 # Add the current book id to kobo_synced_books table for current user, if entry is already present,
 # do nothing (safety precaution)
@@ -36,9 +36,13 @@ def add_synced_books(book_id):
 
 
 # Select all entries of current book in kobo_synced_books table, which are from current user and delete them
-def remove_synced_book(book_id):
+def remove_synced_book(book_id, all=False):
+    if not all:
+        user = ub.KoboSyncedBooks.user_id == current_user.id
+    else:
+        user = true()
     ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.book_id == book_id) \
-        .filter(ub.KoboSyncedBooks.user_id == current_user.id).delete()
+        .filter(user).delete()
     ub.session_commit()
 
 
@@ -56,7 +60,7 @@ def change_archived_books(book_id, state=None, message=None):
     return archived_book.is_archived
 
 
-# select all books which are synced by the current user and do not belong to a synced shelf and them to archive
+# select all books which are synced by the current user and do not belong to a synced shelf and set them to archive
 # select all shelves from current user which are synced and do not belong to the "only sync" shelves
 def update_on_sync_shelfs(user_id):
     books_to_archive = (ub.session.query(ub.KoboSyncedBooks)
@@ -71,6 +75,7 @@ def update_on_sync_shelfs(user_id):
             .filter(ub.KoboSyncedBooks.user_id == user_id).delete()
         ub.session_commit()
 
+    # Search all shelf which are currently not synced
     shelves_to_archive = ub.session.query(ub.Shelf).filter(ub.Shelf.user_id == user_id).filter(
         ub.Shelf.kobo_sync == 0).all()
     for a in shelves_to_archive:

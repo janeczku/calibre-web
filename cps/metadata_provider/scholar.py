@@ -23,7 +23,6 @@ from scholarly import scholarly
 
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
-
 class scholar(Metadata):
     __name__ = "Google Scholar"
     __id__ = "googlescholar"

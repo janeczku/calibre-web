@@ -26,6 +26,8 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape
+from functools import wraps
+
 try:
     from lxml.html.clean import clean_html
 except ImportError:
@@ -50,13 +52,6 @@ from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
-
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
-
-
 
 
 editbook = Blueprint('editbook', __name__)
@@ -237,14 +232,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
             changed = True
     return changed, error
 
-@editbook.route("/ajax/delete/<int:book_id>")
+@editbook.route("/ajax/delete/<int:book_id>", methods=["POST"])
 @login_required
 def delete_book_from_details(book_id):
     return Response(delete_book_from_table(book_id, "", True), mimetype='application/json')
 
 
-@editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
-@editbook.route("/delete/<int:book_id>/<string:book_format>")
+@editbook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])
+@editbook.route("/delete/<int:book_id>/<string:book_format>", methods=["POST"])
 @login_required
 def delete_book_ajax(book_id, book_format):
     return delete_book_from_table(book_id, book_format, False)
@@ -362,7 +357,16 @@ def delete_book_from_table(book_id, book_format, jsonResponse):
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
-    return render_delete_book_result(book_format, jsonResponse, warning, book_id)
+        return render_delete_book_result(book_format, jsonResponse, warning, book_id)
+    message = _("You are missing permissions to delete books")
+    if jsonResponse:
+        return json.dumps({"location": url_for("editbook.edit_book", book_id=book_id),
+                           "type": "danger",
+                           "format": "",
+                           "message": message})
+    else:
+        flash(message, category="error")
+        return redirect(url_for('editbook.edit_book', book_id=book_id))
 
 
 def render_edit_book(book_id):
@@ -832,7 +836,7 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
-                kobo_sync_status.remove_synced_book(edited_books_id)
+                kobo_sync_status.remove_synced_book(edited_books_id, all=True)
 
             calibre_db.session.merge(book)
             calibre_db.session.commit()
@@ -1014,7 +1018,7 @@ def move_coverfile(meta, db_book):
               category="error")
 
 
-@editbook.route("/upload", methods=["GET", "POST"])
+@editbook.route("/upload", methods=["POST"])
 @login_required_if_no_ano
 @upload_required
 def upload():
