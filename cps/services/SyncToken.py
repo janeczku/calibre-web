@@ -21,11 +21,8 @@ import sys
 from base64 import b64decode, b64encode
 from jsonschema import validate, exceptions, __version__
 from datetime import datetime
-try:
-    # pylint: disable=unused-import
-    from urllib import unquote
-except ImportError:
-    from urllib.parse import unquote
+
+from urllib.parse import unquote
 
 from flask import json
 from .. import logger

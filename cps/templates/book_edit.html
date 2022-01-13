@@ -226,7 +226,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
+        <h4 class="modal-title text-center" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
         <form class="padded-bottom" id="meta-search">
           <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
@@ -247,7 +247,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+        <button id="meta_close" type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
   </div>
@@ -265,17 +265,17 @@
     >
     <div class="media-body">
       <h4 class="media-heading">
-        <a href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
+        <a class="meta_title" href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
       </h4>
-      <p>{{_('Author')}}：<%= authors.join(" & ") %></p>
+      <p class="meta_author">{{_('Author')}}：<%= authors.join(" & ") %></p>
       <% if (publisher) { %>
-        <p>{{_('Publisher')}}：<%= publisher %></p>
+        <p class="meta_publisher">{{_('Publisher')}}：<%= publisher %></p>
       <% } %>
       <% if (description) { %>
-        <p>{{_('Description')}}: <%= description %></p>
+        <p class="meta_description">{{_('Description')}}: <%= description %></p>
       <% } %>
       <p>{{_('Source')}}:
-        <a href="<%= source.url %>" target="_blank" rel="noopener"><%= source.description %></a>
+        <a class="meta_source" href="<%= source.link %>" target="_blank" rel="noopener"><%= source.description %></a>
       </p>
     </div>
   </li>

@@ -12,7 +12,7 @@ rsa>=3.4.2,<4.8.0
 six>=1.10.0,<1.17.0
 
 # Gdrive and Gmail integration
-google-api-python-client>=1.7.11,<2.32.0
+google-api-python-client>=1.7.11,<2.34.0
 
 # Gmail
 google-auth-oauthlib>=0.4.3,<0.5.0
@@ -22,7 +22,7 @@ goodreads>=0.3.2,<0.4.0
 python-Levenshtein>=0.12.0,<0.13.0
 
 # ldap login
-python-ldap>=3.0.0,<3.4.0
+python-ldap>=3.0.0,<3.5.0
 Flask-SimpleLDAP>=1.4.0,<1.5.0
 
 #oauth
@@ -31,7 +31,7 @@ SQLAlchemy-Utils>=0.33.5,<0.38.0
 
 # extracting metadata
 rarfile>=2.7
-scholarly>=1.2.0, <1.5
+scholarly>=1.2.0, <1.6
 markdown2==2.4.2
 html2text==2020.1.16
 python-dateutil==2.8.2
@@ -41,4 +41,4 @@ natsort>=2.2.0,<8.1.0
 comicapi>=2.2.0,<2.3.0
 
 #Kobo integration
-jsonschema>=3.2.0,<4.3.0
+jsonschema>=3.2.0,<4.4.0

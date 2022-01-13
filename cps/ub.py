@@ -421,8 +421,8 @@ class KoboReadingState(Base):
     book_id = Column(Integer)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
     priority_timestamp = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
-    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all")
-    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all")
+    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all, delete")
+    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all, delete")
 
 
 class KoboBookmark(Base):
