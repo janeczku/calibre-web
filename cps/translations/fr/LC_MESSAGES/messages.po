@@ -83,7 +83,7 @@ msgstr "Configuration de l’interface utilisateur"
 #: cps/admin.py:277 cps/templates/admin.html:50
 #, fuzzy
 msgid "Edit Users"
-msgstr "Utilisateur admin"
+msgstr "Éditer les utilisateurs"
 
 #: cps/admin.py:318 cps/opds.py:109 cps/opds.py:198 cps/opds.py:275
 #: cps/opds.py:327 cps/templates/grid.html:13 cps/templates/languages.html:9
@@ -214,7 +214,7 @@ msgstr "Voulez-vous vraiment arrêter Calibre-Web ?"
 
 #: cps/admin.py:594
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
-msgstr ""
+msgstr "Êtes-vous certain de vouloir supprimer la base de données de synchronisation de Calibre-Web pour forcer une synchronisation complète avec votre liseuse Kobo ?"
 
 #: cps/admin.py:743
 msgid "Tag not found"
@@ -238,7 +238,7 @@ msgstr "Autoriser"
 
 #: cps/admin.py:913
 msgid "{} sync entries deleted"
-msgstr ""
+msgstr "{} entrées de synchronisation supprimées"
 
 #: cps/admin.py:1036
 msgid "client_secrets.json Is Not Configured For Web Application"
@@ -472,7 +472,7 @@ msgstr "Le fichier de mise à jour ne peut pas être sauvegardé dans le répert
 
 #: cps/admin.py:1741
 msgid "Files could not be replaced during update"
-msgstr ""
+msgstr "Les fichiers n’ont pas pu être remplacés pendant la mise à jour"
 
 #: cps/admin.py:1765
 #, fuzzy
@@ -523,7 +523,7 @@ msgstr "Le livre a été supprimé avec succès"
 
 #: cps/editbooks.py:361
 msgid "You are missing permissions to delete books"
-msgstr ""
+msgstr "Vous n’avez par les permissions pour supprimer les livres"
 
 #: cps/editbooks.py:376 cps/editbooks.py:763 cps/web.py:523 cps/web.py:1703
 #: cps/web.py:1744 cps/web.py:1811
@@ -756,7 +756,7 @@ msgstr "Seuls les fichiers jpg/jpeg/png/webp/bmp sont supportés comme fichier d
 
 #: cps/helper.py:648
 msgid "Invalid cover file content"
-msgstr ""
+msgstr "Contenu du fichier de couverture invalide"
 
 #: cps/helper.py:652
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -1045,7 +1045,7 @@ msgstr "Le livre a bien été ajouté à l'étagère : %(sname)s"
 
 #: cps/shelf.py:126
 msgid "You are not allowed to add a book to the shelf"
-msgstr ""
+msgstr "Vous n’êtes pas autorisé à ajouter un livre à l’étagère"
 
 #: cps/shelf.py:144
 #, python-format
@@ -1069,7 +1069,7 @@ msgstr "Le livre a été supprimé de l'étagère %(sname)s"
 
 #: cps/shelf.py:218
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr ""
+msgstr "Désolé, vous n’êtes pas autorisé à supprimer un livre de cette étagère"
 
 #: cps/shelf.py:228 cps/templates/layout.html:140
 msgid "Create a Shelf"
@@ -1086,7 +1086,7 @@ msgstr "Modifier une étagère"
 
 #: cps/shelf.py:249
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
+msgstr "Désolé, vous n’êtes pas autorisé à créer une étagère publique"
 
 #: cps/shelf.py:266
 #, python-format
@@ -1524,7 +1524,7 @@ msgstr "Nom de l'en-tête du Reverse Proxy"
 #: cps/templates/admin.html:157
 #, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Éditer la configuration principale"
+msgstr "Éditer la configuration de la base de données Calibre"
 
 #: cps/templates/admin.html:158
 msgid "Edit Basic Configuration"
@@ -1532,7 +1532,7 @@ msgstr "Éditer la configuration principale"
 
 #: cps/templates/admin.html:159
 msgid "Edit UI Configuration"
-msgstr "Configuration de l’interface utilisateur"
+msgstr "Éditer la configuration de l’interface utilisateur"
 
 #: cps/templates/admin.html:164
 msgid "Administration"
@@ -1906,7 +1906,7 @@ msgstr "Saisir le nom du domaine"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "Commentaires"
 
 #: cps/templates/book_table.html:77 cps/templates/book_table.html:79
 #: cps/templates/book_table.html:81 cps/templates/book_table.html:83
@@ -1991,7 +1991,7 @@ msgstr "Nightly"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
+msgstr "Hôtes de confiance (séparés par des virgules)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
@@ -2015,7 +2015,7 @@ msgstr "Configuration des options"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr ""
+msgstr "Convertir les caractères non-anglais des titre et auteur lors de l’enregistrement sur le disque"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
@@ -2023,7 +2023,7 @@ msgstr "Autoriser le téléversement de fichier"
 
 #: cps/templates/config_edit.html:108
 msgid "(Please ensure users having also upload rights)"
-msgstr ""
+msgstr "(Svp, vérifiez que les utilisateurs ont aussi les droits de téléchargement vers le serveur)
 
 #: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
@@ -2184,7 +2184,7 @@ msgstr "Champ des membres de groupe LDAP"
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
-msgstr ""
+msgstr "Filtre de détection des utilisateurs membres LDAP"
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
@@ -2347,7 +2347,7 @@ msgstr "Écouter dans le navigateur"
 #: cps/templates/detail.html:124
 #, fuzzy, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "Livre %(index)s sur %(range)s"
 
 #: cps/templates/detail.html:173
 msgid "Published"
@@ -2488,11 +2488,11 @@ msgstr "Déconnecter l’utilisateur"
 
 #: cps/templates/index.html:69
 msgid "Sort ascending according to download count"
-msgstr ""
+msgstr "Trier de manière ascendante selon le nombre de téléchargements"
 
 #: cps/templates/index.html:70
 msgid "Sort descending according to download count"
-msgstr ""
+msgstr "Trier de manière descendante selon le nombre de téléchargements"
 
 #: cps/templates/index.html:76 cps/templates/search.html:33
 #: cps/templates/shelf.html:23
@@ -3111,7 +3111,7 @@ msgstr "Créer/visualiser"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr ""
+msgstr "Forcer une synchronisation complète Kobo"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
@@ -3136,7 +3136,7 @@ msgstr "Sélectionner..."
 #: cps/templates/user_table.html:131
 #, fuzzy
 msgid "Edit User"
-msgstr "Utilisateur admin"
+msgstr "Éditer l’utilisateur"
 
 #: cps/templates/user_table.html:134
 #, fuzzy
