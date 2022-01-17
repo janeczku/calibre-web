@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import datetime
 from functools import wraps
 
@@ -35,8 +34,6 @@ from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 
 opds = Blueprint('opds', __name__)
 

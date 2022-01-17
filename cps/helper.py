@@ -40,7 +40,6 @@ from werkzeug.security import generate_password_hash
 from markupsafe import escape
 from urllib.parse import quote
 
-
 try:
     import unidecode
     use_unidecode = True
