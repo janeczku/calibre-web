@@ -61,8 +61,11 @@ $("#archived_cb").on("change", function() {
 
     $("#shelf-actions").on("click", "[data-shelf-action]", function (e) {
         e.preventDefault();
-
-        $.post(this.href)
+        $.ajax({
+                url: this.href,
+                method:"post",
+                data: {csrf_token:$("input[name='csrf_token']").val()},
+            })
             .done(function() {
                 var $this = $(this);
                 switch ($this.data("shelf-action")) {
