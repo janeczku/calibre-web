@@ -5,11 +5,11 @@
 {% if author is not none %}
 <section class="author-bio">
   {%if author.image_url is not none %}
-  <img title="{{author.name|safe}}" src="{{author.image_url}}" alt="{{author.name|safe}}" class="author-photo pull-left">
+  <img title="{{author.name}}" src="{{author.image_url}}" alt="{{author.name}}" class="author-photo pull-left">
   {% endif %}
 
   {%if author.about is not none %}
-  <p>{{author.about|safe}}</p>
+  <p>{{author.about}}</p>
   {% endif %}
 
   - {{_("via")}} <a href="{{author.link}}" class="author-link" target="_blank" rel="noopener">Goodreads</a>
@@ -36,7 +36,7 @@
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
-            <span class="img" title="{{entry.title|safe}}">
+            <span class="img" title="{{entry.title}}">
               <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" />
               {% if entry.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
@@ -98,7 +98,7 @@
 
 {% if other_books and author is not none %}
 <div class="discover">
-  <h3>{{_("More by")}} {{ author.name.replace('|',',')|safe }}</h3>
+  <h3>{{_("More by")}} {{ author.name.replace('|',',') }}</h3>
   <div class="row">
     {% for entry in other_books %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
