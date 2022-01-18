@@ -248,7 +248,7 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
         if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
             flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
             return redirect(url_for('web.index'))
-        is_public = 1 if to_save.get("is_public") else 0
+        is_public = 1 if to_save.get("is_public") == "on" else 0
         if config.config_kobo_sync:
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False
             if shelf.kobo_sync:
