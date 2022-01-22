@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-17 18:51:33</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-18 21:11:17</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-18 07:49:35</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-19 01:03:52</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>12h 17 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 12 min</p>
         </div>
       </div>
       </div>
@@ -1423,11 +1423,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1437,11 +1437,31 @@
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id="ft13.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 136, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1613,19 +1633,9 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 250, in test_edit_title
-    self.fill_basic_config({&#34;config_unicode_filename&#34;: 0})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 358, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 268, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py&#34;, line 89, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 245, in test_edit_title
+    self.assertEqual(ele.text, u&#39;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#39;)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1998,11 +2008,11 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">11</td>
-        <td class="text-center">11</td>
-        <td class="text-center">0</td>
+        <td class="text-center">10</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2084,11 +2094,31 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt23.9' class='hiddenRow bg-success'>
+        <tr id="ft23.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft23.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft23.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 350, in test_sync_shelf
+    self.assertEqual(1, len(data), data)
+AssertionError: 1 != 0 : []</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2983,11 +3013,11 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestReader</td>
         <td class="text-center">5</td>
-        <td class="text-center">5</td>
-        <td class="text-center">0</td>
+        <td class="text-center">4</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3024,11 +3054,37 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id="ft33.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft33.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft33.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft33.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 230, in test_sound_listener
+    self.sound_test(&#39;music.flac&#39;, &#39;Unknown - music&#39;, &#39;0:02&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 219, in sound_test
+    self.assertEqual(duration, duration_item.text)
+AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
+- 0:02
+?    ^
++ 0:01
+?    ^</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3174,13 +3230,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
 
     <tr id="su" class="skipClass">
         <td>TestShelf</td>
+        <td class="text-center">15</td>
         <td class="text-center">14</td>
-        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 14)">Detail</a>
+            <a onclick="showClassDetail('c36', 15)">Detail</a>
         </td>
     </tr>
 
@@ -3224,7 +3280,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
+                <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3233,7 +3289,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_private_shelf</div>
+                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3242,7 +3298,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_public_private_shelf</div>
+                <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3251,7 +3307,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_public_shelf</div>
+                <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3260,7 +3316,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_rename_shelf</div>
+                <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3269,7 +3325,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+                <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3278,6 +3334,15 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
         <tr id='pt36.11' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt36.12' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -3285,19 +3350,19 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id="st36.12" class="none bg-warning">
+        <tr id="st36.13" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st36.12')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st36.13')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st36.12" class="popup_window test_output" style="display:none;">
+                <div id="div_st36.13" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st36.12').style.display='none'"><span
+                                onclick="document.getElementById('div_st36.13').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3311,7 +3376,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt36.13' class='hiddenRow bg-success'>
+        <tr id='pt36.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -3320,7 +3385,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt36.14' class='hiddenRow bg-success'>
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4362,9 +4427,9 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>385</td>
-        <td>376</td>
-        <td>0</td>
+        <td>386</td>
+        <td>374</td>
+        <td>3</td>
         <td>1</td>
         <td>8</td>
         <td>&nbsp;</td>
@@ -4754,7 +4819,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
 </div>
 
 <script>
-    drawCircle(376, 0, 1, 8);
+    drawCircle(374, 3, 1, 8);
     showCase(5);
 </script>
 
