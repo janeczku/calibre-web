@@ -1426,14 +1426,14 @@ def _delete_user(content):
             for kobo_entry in kobo_entries:
                 ub.session.delete(kobo_entry)
             ub.session_commit()
-            log.info(u"User {} deleted".format(content.name))
-            return(_(u"User '%(nick)s' deleted", nick=content.name))
+            log.info("User {} deleted".format(content.name))
+            return(_("User '%(nick)s' deleted", nick=content.name))
         else:
-            log.warning(_(u"Can't delete Guest User"))
-            raise Exception(_(u"Can't delete Guest User"))
+            log.warning(_("Can't delete Guest User"))
+            raise Exception(_("Can't delete Guest User"))
     else:
-        log.warning(u"No admin user remaining, can't delete user")
-        raise Exception(_(u"No admin user remaining, can't delete user"))
+        log.warning("No admin user remaining, can't delete user")
+        raise Exception(_("No admin user remaining, can't delete user"))
 
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
