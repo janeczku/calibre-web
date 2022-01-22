@@ -535,6 +535,7 @@ $(function() {
 
     $("#modal_kobo_token")
         .on("show.bs.modal", function(e) {
+            $(e.relatedTarget).one('focus', function(e){$(this).blur();});
             var $modalBody = $(this).find(".modal-body");
 
             // Prevent static assets from loading multiple times
