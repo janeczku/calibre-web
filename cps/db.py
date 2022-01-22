@@ -177,8 +177,8 @@ class Comments(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
     text = Column(String(collation='NOCASE'), nullable=False)
-    book = Column(Integer, ForeignKey('books.id'), nullable=False)
 
     def __init__(self, text, book):
         self.text = text
