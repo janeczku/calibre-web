@@ -204,7 +204,7 @@ $("#delete_confirm").click(function(event) {
     var bookFormat = $(this).data("delete-format");
     var ajaxResponse = $(this).data("ajax");
     if (bookFormat) {
-        window.location.href = getPath() + "/delete/" + deleteId + "/" + bookFormat;
+        postButton(event, getPath() + "/delete/" + deleteId + "/" + bookFormat);
     } else {
         if (ajaxResponse) {
             path = getPath() + "/ajax/delete/" + deleteId;
