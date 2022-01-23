@@ -355,23 +355,51 @@ def downloadFile(path, filename, output):
     f = getFileFromEbooksFolder(path, filename)
     f.GetContentFile(output)
 
+'''def renameGdriveFolderRemote(origin_file, target_folder):
+    drive = getDrive(Gdrive.Instance().drive)
+    previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
+    children = drive.auth.service.children().list(folderId=previous_parents).execute()
+    gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
+    if not gFileTargetDir or gFileTargetDir['title'] != target_folder:
+        # Folder is not existing, rename folder
+        drive.auth.service.files().patch(fileId=origin_file['id'],
+                                         body={'title': target_folder},
+                                         fields='title').execute()
+        # gFileTargetDir = drive.CreateFile(
+        #    {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+        #     "mimeType": "application/vnd.google-apps.folder"})
+        # gFileTargetDir.Upload()
+    else:
+        # Move the file to the new folder
+        drive.auth.service.files().update(fileId=origin_file['id'],
+                                          addParents=gFileTargetDir['id'],
+                                          removeParents=previous_parents,
+                                          fields='id, parents').execute()
+    # if previous_parents has no children anymore, delete original fileparent
+    if len(children['items']) == 1:
+        deleteDatabaseEntry(previous_parents)
+        drive.auth.service.files().delete(fileId=previous_parents).execute()'''
 
 def moveGdriveFolderRemote(origin_file, target_folder):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
     children = drive.auth.service.children().list(folderId=previous_parents).execute()
     gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
-    if not gFileTargetDir:
+    if not gFileTargetDir or gFileTargetDir['title'] != target_folder:
         # Folder is not existing, create, and move folder
-        gFileTargetDir = drive.CreateFile(
-            {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
-             "mimeType": "application/vnd.google-apps.folder"})
-        gFileTargetDir.Upload()
-    # Move the file to the new folder
-    drive.auth.service.files().update(fileId=origin_file['id'],
-                                      addParents=gFileTargetDir['id'],
-                                      removeParents=previous_parents,
-                                      fields='id, parents').execute()
+        drive.auth.service.files().patch(fileId=origin_file['id'],
+                                         body={'title': target_folder},
+                                         fields='title').execute()
+        #gFileTargetDir = drive.CreateFile(
+        #    {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+        #     "mimeType": "application/vnd.google-apps.folder"})
+        #gFileTargetDir.Upload()
+    else:
+        # Move the file to the new folder
+        drive.auth.service.files().update(fileId=origin_file['id'],
+                                          addParents=gFileTargetDir['id'],
+                                          removeParents=previous_parents,
+                                          fields='id, parents').execute()
     # if previous_parents has no children anymore, delete original fileparent
     if len(children['items']) == 1:
         deleteDatabaseEntry(previous_parents)
