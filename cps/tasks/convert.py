@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
 import re
 
@@ -31,7 +30,8 @@ from cps import db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
-from flask import url_for
+from cps.kobo_sync_status import remove_synced_book
+from cps.ub import ini
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
@@ -147,6 +147,10 @@ class TaskConvert(CalibreTask):
                 try:
                     local_db.session.merge(new_format)
                     local_db.session.commit()
+                    if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
+                        ub_session = ini()
+                        remove_synced_book(book_id, True, ub_session)
+                        ub_session.close()
                 except SQLAlchemyError as e:
                     local_db.session.rollback()
                     log.error("Database error: %s", e)

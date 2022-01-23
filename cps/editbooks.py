@@ -341,7 +341,8 @@ def delete_book_from_table(book_id, book_format, jsonResponse):
                 else:
                     calibre_db.session.query(db.Data).filter(db.Data.book == book.id).\
                         filter(db.Data.format == book_format).delete()
-                    kobo_sync_status.remove_synced_book(book.id, True)
+                    if book_format.upper() in ['KEPUB', 'EPUB', 'EPUB3']:
+                        kobo_sync_status.remove_synced_book(book.id, True)
                 calibre_db.session.commit()
             except Exception as ex:
                 log.debug_or_exception(ex)
