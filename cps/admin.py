@@ -129,11 +129,11 @@ def admin_forbidden():
     abort(403)
 
 
-@admi.route("/shutdown")
+@admi.route("/shutdown", methods=["POST"])
 @login_required
 @admin_required
 def shutdown():
-    task = int(request.args.get("parameter").strip())
+    task = request.get_json().get('parameter', -1)
     showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
@@ -756,7 +756,12 @@ def prepare_tags(user, action, tags_name, id_list):
     return ",".join(saved_tags_list)
 
 
-@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def add_user_0_restriction(res_type):
+    return add_restriction(res_type, 0)
+
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -803,7 +808,13 @@ def add_restriction(res_type, user_id):
     return ""
 
 
-@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def delete_user_0_restriction(res_type):
+    return delete_restriction(res_type, 0)
+
+
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -895,7 +906,7 @@ def list_restriction(res_type, user_id):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/fullsync")
+@admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
 def ajax_fullsync():
     count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
@@ -1404,16 +1415,25 @@ def _delete_user(content):
             for us in ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id):
                 ub.session.query(ub.BookShelf).filter(us.id == ub.BookShelf.shelf).delete()
             ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id).delete()
+            ub.session.query(ub.Bookmark).filter(content.id == ub.Bookmark.user_id).delete()
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session.query(ub.ArchivedBook).filter(ub.ArchivedBook.user_id == content.id).delete()
+            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == content.id).delete()
+            ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.user_id == content.id).delete()
+            ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == content.id).delete()
+            # delete KoboReadingState and all it's children
+            kobo_entries = ub.session.query(ub.KoboReadingState).filter(ub.KoboReadingState.user_id == content.id).all()
+            for kobo_entry in kobo_entries:
+                ub.session.delete(kobo_entry)
             ub.session_commit()
-            log.info(u"User {} deleted".format(content.name))
-            return(_(u"User '%(nick)s' deleted", nick=content.name))
+            log.info("User {} deleted".format(content.name))
+            return(_("User '%(nick)s' deleted", nick=content.name))
         else:
-            log.warning(_(u"Can't delete Guest User"))
-            raise Exception(_(u"Can't delete Guest User"))
+            log.warning(_("Can't delete Guest User"))
+            raise Exception(_("Can't delete Guest User"))
     else:
-        log.warning(u"No admin user remaining, can't delete user")
-        raise Exception(_(u"No admin user remaining, can't delete user"))
+        log.warning("No admin user remaining, can't delete user")
+        raise Exception(_("No admin user remaining, can't delete user"))
 
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
@@ -1615,7 +1635,7 @@ def edit_user(user_id):
                                  page="edituser")
 
 
-@admi.route("/admin/resetpassword/<int:user_id>")
+@admi.route("/admin/resetpassword/<int:user_id>", methods=["POST"])
 @login_required
 @admin_required
 def reset_user_password(user_id):
@@ -1791,7 +1811,7 @@ def ldap_import_create_user(user, user_data):
         return 0, message
 
 
-@admi.route('/import_ldap_users')
+@admi.route('/import_ldap_users', methods=["POST"])
 @login_required
 @admin_required
 def import_ldap_users():

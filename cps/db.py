@@ -23,6 +23,7 @@ import re
 import ast
 import json
 from datetime import datetime
+from urllib.parse import quote
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
@@ -164,6 +165,8 @@ class Identifiers(Base):
             return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
             return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+        elif self.val.lower().startswith("javascript:"):
+            return quote(self.val)
         else:
             return u"{0}".format(self.val)
 
@@ -172,8 +175,8 @@ class Comments(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
     text = Column(String(collation='NOCASE'), nullable=False)
-    book = Column(Integer, ForeignKey('books.id'), nullable=False)
 
     def __init__(self, text, book):
         self.text = text
@@ -872,23 +875,24 @@ class CalibreDB():
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
         from . import get_locale
 
-        if not languages:
-            if with_count:
+        if with_count:
+            if not languages:
                 languages = self.session.query(Languages, func.count('books_languages_link.book'))\
                     .join(books_languages_link).join(Books)\
                     .filter(self.common_filters(return_all_languages=return_all_languages)) \
                     .group_by(text('books_languages_link.lang_code')).all()
-                for lang in languages:
-                    lang[0].name = isoLanguages.get_language_name(get_locale(), lang[0].lang_code)
-                return sorted(languages, key=lambda x: x[0].name, reverse=reverse_order)
-            else:
+            for lang in languages:
+                lang[0].name = isoLanguages.get_language_name(get_locale(), lang[0].lang_code)
+            return sorted(languages, key=lambda x: x[0].name, reverse=reverse_order)
+        else:
+            if not languages:
                 languages = self.session.query(Languages) \
                     .join(books_languages_link) \
                     .join(Books) \
                     .filter(self.common_filters(return_all_languages=return_all_languages)) \
                     .group_by(text('books_languages_link.lang_code')).all()
-                for lang in languages:
-                    lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
+            for lang in languages:
+                lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
             return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
 
 

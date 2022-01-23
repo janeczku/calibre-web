@@ -109,7 +109,7 @@ def revoke_watch_gdrive():
         try:
             gdriveutils.stopChannel(gdriveutils.Gdrive.Instance().drive, last_watch_response['id'],
                                     last_watch_response['resourceId'])
-        except HttpError:
+        except (HttpError, AttributeError):
             pass
         config.config_google_drive_watch_changes_response = {}
         config.save()

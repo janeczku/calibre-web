@@ -40,7 +40,7 @@ $(function () {
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
-        if(book.cover !== null){
+        if(book.cover && $("#cover_url").length){
             $(".cover img").attr("src", book.cover);
             $("#cover_url").val(book.cover);
         }
@@ -128,9 +128,7 @@ $(function () {
         e.preventDefault();
         keyword = $("#keyword").val();
         $('.pill').each(function(){
-            // console.log($(this).data('control'));
             $(this).data("initial", $(this).prop('checked'));
-            // console.log($(this).data('initial'));
         });
         doSearch(keyword);
     });

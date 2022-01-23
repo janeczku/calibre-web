@@ -1104,7 +1104,8 @@ def get_tasks_status():
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
-@app.route("/reconnect")
+# method is available without login and not protected by CSRF to make it easy reachable
+@app.route("/reconnect", methods=['GET'])
 def reconnect():
     calibre_db.reconnect_db(config, ub.app_DB_path)
     return json.dumps({})
@@ -1117,7 +1118,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term))
+        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term.strip()))
     else:
         return render_title_template('search.html',
                                      searchterm="",
@@ -1501,7 +1502,7 @@ def download_link(book_id, book_format, anyname):
     return get_download_link(book_id, book_format, client)
 
 
-@web.route('/send/<int:book_id>/<book_format>/<int:convert>')
+@web.route('/send/<int:book_id>/<book_format>/<int:convert>', methods=["POST"])
 @login_required
 @download_required
 def send_to_kindle(book_id, book_format, convert):
