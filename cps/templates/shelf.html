@@ -2,14 +2,16 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
+      <!--form  method="post"--->
   {% if g.user.role_download() %}
   <a id="shelf_down" href="{{ url_for('shelf.show_simpleshelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Download') }} </a>
       {% endif %}
   {% if g.user.is_authenticated %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="btn btn-danger" id="delete_shelf" data-value="{{ shelf.id }}">{{ _('Delete this Shelf') }}</div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="btn btn-danger" data-action="{{url_for('shelf.delete_shelf', shelf_id=shelf.id)}}" id="delete_shelf" data-value="{{ shelf.id }}">{{ _('Delete this Shelf') }}</div>
       <a id="edit_shelf" href="{{ url_for('shelf.edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf Properties') }} </a>
+      </form>
       {% if entries.__len__() %}
       <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Arrange books manually') }} </a>
       <button id="toggle_order_shelf" type="button" data-alt-text="{{ _('Disable Change order') }}" class="btn btn-primary">{{ _('Enable Change order') }}</button>
@@ -84,22 +86,6 @@
     {% endfor %}
   </div>
 </div>
-<!--div id="DeleteShelfDialog" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-center">
-      <span>{{_('Are you sure you want to delete this shelf?')}}</span>
-      </div>
-      <div class="modal-body text-center">
-        <span>{{_('Shelf will be deleted for all users')}}</span>
-          <p></p>
-        <a id="confirm" href="{{ url_for('shelf.delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{_('OK')}}</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
-      </div>
-    </div>
-  </div>
-</div-->
-
 {% endblock %}
 {% block modal %}
 {{ delete_confirm_modal() }}

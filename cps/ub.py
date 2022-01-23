@@ -427,8 +427,8 @@ class KoboReadingState(Base):
     book_id = Column(Integer)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
     priority_timestamp = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
-    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all")
-    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all")
+    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all, delete")
+    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all, delete")
 
 
 class KoboBookmark(Base):
@@ -779,6 +779,14 @@ def create_admin_user(session):
     except Exception:
         session.rollback()
 
+def ini():
+    global app_DB_path
+    engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+
+    Session = scoped_session(sessionmaker())
+    Session.configure(bind=engine)
+    return Session()
+
 
 def init_db(app_db_path):
     # Open session for database connection
@@ -836,12 +844,13 @@ def dispose():
             except Exception:
                 pass
 
-def session_commit(success=None):
+def session_commit(success=None, sess=None):
+    s = sess if sess else session
     try:
-        session.commit()
+        s.commit()
         if success:
             log.info(success)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
-        session.rollback()
+        s.rollback()
         log.debug_or_exception(e)
     return ""

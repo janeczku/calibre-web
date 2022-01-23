@@ -17,7 +17,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-        <a class="btn btn-default" id="resend_password" href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
+        <a class="btn btn-default postAction" id="resend_password" role="button" data-action="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>

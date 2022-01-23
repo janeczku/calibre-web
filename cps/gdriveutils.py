@@ -56,11 +56,13 @@ try:
     from pydrive2.auth import GoogleAuth
     from pydrive2.drive import GoogleDrive
     from pydrive2.auth import RefreshError
+    from pydrive2.files import ApiRequestError
 except ImportError as err:
     try:
         from pydrive.auth import GoogleAuth
         from pydrive.drive import GoogleDrive
         from pydrive.auth import RefreshError
+        from pydrive.files import ApiRequestError
     except ImportError as err:
         importError = err
         gdrive_support = False
@@ -322,6 +324,11 @@ def getFolderId(path, drive):
         log.error("gdrive.db DB is not Writeable")
         log.debug('Database error: %s', ex)
         session.rollback()
+    except ApiRequestError as ex:
+        log.error('{} {}'.format(ex.error['message'], path))
+        session.rollback()
+    except RefreshError as ex:
+        log.error(ex)
     return currentFolderId
 
 

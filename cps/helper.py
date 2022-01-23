@@ -17,18 +17,18 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
 import io
 import mimetypes
 import re
 import shutil
-import time
+import socket
 import unicodedata
 from datetime import datetime, timedelta
 from tempfile import gettempdir
-
+from urllib.parse import urlparse
 import requests
+
 from babel.dates import format_datetime
 from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
@@ -38,11 +38,7 @@ from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
-
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
+from urllib.parse import quote
 
 try:
     import unidecode
@@ -50,7 +46,7 @@ try:
 except ImportError:
     use_unidecode = False
 
-from . import calibre_db
+from . import calibre_db, cli
 from .tasks.convert import TaskConvert
 from . import logger, config, get_locale, db, ub, kobo_sync_status
 from . import gdriveutils as gd
@@ -673,10 +669,17 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
 # saves book cover from url
 def save_cover_from_url(url, book_path):
     try:
+        if not cli.allow_localhost:
+            # 127.0.x.x, localhost, [::1], [::ffff:7f00:1]
+            ip = socket.getaddrinfo(urlparse(url).hostname, 0)[0][4][0]
+            if ip.startswith("127.") or ip.startswith('::ffff:7f') or ip == "::1":
+                log.error("Localhost was accessed for cover upload")
+                return False, _("You are not allowed to access localhost for cover uploads")
         img = requests.get(url, timeout=(10, 200))      # ToDo: Error Handling
         img.raise_for_status()
         return save_cover(img, book_path)
-    except (requests.exceptions.HTTPError,
+    except (socket.gaierror,
+            requests.exceptions.HTTPError,
             requests.exceptions.ConnectionError,
             requests.exceptions.Timeout) as ex:
         log.info(u'Cover Download Error %s', ex)
@@ -758,9 +761,9 @@ def save_cover(img, book_path):
 
 def do_download_file(book, book_format, client, data, headers):
     if config.config_use_google_drive:
-        startTime = time.time()
+        #startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        log.debug('%s', time.time() - startTime)
+        #log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:

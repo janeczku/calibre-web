@@ -26,14 +26,14 @@ class Google(Metadata):
     __name__ = "Google"
     __id__ = "google"
 
-    def search(self, query, __):
+    def search(self, query, generic_cover=""):
         if self.active:
             val = list()
             result = requests.get("https://www.googleapis.com/books/v1/volumes?q="+query.replace(" ","+"))
-            for r in result.json()['items']:
+            for r in result.json().get('items'):
                 v = dict()
                 v['id'] = r['id']
-                v['title'] = r['volumeInfo']['title']
+                v['title'] = r['volumeInfo'].get('title',"")
                 v['authors'] = r['volumeInfo'].get('authors', [])
                 v['description'] = r['volumeInfo'].get('description', "")
                 v['publisher'] = r['volumeInfo'].get('publisher', "")

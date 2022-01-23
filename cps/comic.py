@@ -56,25 +56,25 @@ COVER_EXTENSIONS = ['.png', '.webp', '.bmp', '.jpg', '.jpeg']
 
 def _cover_processing(tmp_file_name, img, extension):
     tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
-    if use_IM:
-        # convert to jpg because calibre only supports jpg
-        if extension in NO_JPEG_EXTENSIONS:
-            with Image(filename=tmp_file_name) as imgc:
+    if extension in NO_JPEG_EXTENSIONS:
+        if use_IM:
+            with Image(blob=img) as imgc:
                 imgc.format = 'jpeg'
                 imgc.transform_colorspace('rgb')
-                imgc.save(tmp_cover_name)
+                imgc.save(filename=tmp_cover_name)
                 return tmp_cover_name
-
-    if not img:
+        else:
+            return None
+    if img:
+        with open(tmp_cover_name, 'wb') as f:
+            f.write(img)
+        return tmp_cover_name
+    else:
         return None
-
-    with open(tmp_cover_name, 'wb') as f:
-        f.write(img)
-    return tmp_cover_name
 
 
 def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable):
-    cover_data = None
+    cover_data = extension = None
     if original_file_extension.upper() == '.CBZ':
         cf = zipfile.ZipFile(tmp_file_name)
         for name in cf.namelist():
@@ -106,7 +106,7 @@ def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecu
                         break
         except Exception as ex:
             log.debug('Rarfile failed with error: %s', ex)
-    return cover_data
+    return cover_data, extension
 
 
 def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
@@ -121,7 +121,7 @@ def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
                     cover_data = archive.getPage(index)
                     break
     else:
-        cover_data = _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable)
+        cover_data, extension = _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable)
     return _cover_processing(tmp_file_name, cover_data, extension)
 
 
