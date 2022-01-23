@@ -331,7 +331,7 @@ def delete_book_file(book, calibrepath, book_format=None):
                    path=book.path)
 
 
-def clean_author_database(renamed_author, calibrepath, local_book=None):
+def clean_author_database(renamed_author, calibrepath, local_book=None, gdrive=None):
     valid_filename_authors = [get_valid_filename(r) for r in renamed_author]
     for r in renamed_author:
         if local_book:
@@ -350,9 +350,19 @@ def clean_author_database(renamed_author, calibrepath, local_book=None):
                 # change location in database to new author/title path
                 book.path = os.path.join(all_new_authordir, all_titledir).replace('\\', '/')
                 for file_format in book.data:
-                    shutil.move(os.path.normcase(
-                        os.path.join(all_new_path, file_format.name + '.' + file_format.format.lower())),
-                        os.path.normcase(os.path.join(all_new_path, all_new_name + '.' + file_format.format.lower())))
+                    if not gdrive:
+                        shutil.move(os.path.normcase(os.path.join(all_new_path,
+                                                                  file_format.name + '.' + file_format.format.lower())),
+                            os.path.normcase(os.path.join(all_new_path,
+                                                          all_new_name + '.' + file_format.format.lower())))
+                    else:
+                        gFile = gd.getFileFromEbooksFolder(all_new_path,
+                                                           file_format.name + '.' + file_format.format.lower())
+                        if gFile:
+                            gd.moveGdriveFileRemote(gFile, all_new_name + u'.' + file_format.format.lower())
+                        else:
+                            log.error("File {} not found on gdrive"
+                                      .format(all_new_path, file_format.name + '.' + file_format.format.lower()))
                     file_format.name = all_new_name
 
 
@@ -461,23 +471,18 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
             old_author_dir = get_valid_filename(r)
             new_author_rename_dir = get_valid_filename(new_author.name)
-            '''if os.path.isdir(os.path.join(calibrepath, old_author_dir)):
-                try:
-                    old_author_path = os.path.join(calibrepath, old_author_dir)
-                    new_author_path = os.path.join(calibrepath, new_author_rename_dir)
-                    shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
-                except (OSError) as ex:
-                    log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                    log.debug(ex, exc_info=True)
-                    return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                             src=old_author_path, dest=new_author_path, error=str(ex))'''
+            gFile = gd.getFileFromEbooksFolder(None, old_author_dir)
+            if gFile:
+                gd.moveGdriveFolderRemote(gFile, new_author_rename_dir)
+            else:
+                error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
     else:
         new_authordir = get_valid_filename(book.authors[0].name)
 
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + u" (" + str(book_id) + u")"
 
-    if titledir != new_titledir:
+    '''if titledir != new_titledir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if gFile:
             gFile['title'] = new_titledir
@@ -496,10 +501,47 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             path = book.path
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
-            error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+            error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found'''
+
+    if authordir != new_authordir or titledir != new_titledir:
+        new_path = os.path.join(new_authordir, new_titledir)
+        new_name = get_valid_filename(book.title) + ' - ' + get_valid_filename(new_authordir)
+        gFile = gd.getFileFromEbooksFolder(new_authordir, new_titledir)
+        if not gFile:
+            # move original path to new path
+            log.debug("Moving title: %s to %s", path, new_path)
+            gFile = gd.getFileFromEbooksFolder(authordir, titledir)
+            # move author and title  -> currently only title??
+            gd.moveGdriveFileRemote(gFile, new_titledir)
+            # shutil.move(os.path.normcase(path), os.path.normcase(new_path))
+        else:  # path is valid copy only files to new location (merge)
+            log.info("Moving title: %s into existing: %s", path, new_path)
+            # Take all files and subfolder from old path (strange command)
+            # gd.moveGdriveFileRemote(gFile, new_name + u'.' + file_format.format.lower())
+            for dir_name, __, file_list in os.walk(path):
+                for file in file_list:
+                    shutil.move(os.path.normcase(os.path.join(dir_name, file)),
+                                os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
+    # change location in database to new author/title path
+    book.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
+
+    #for file_format in book.data:
+    #        gFile = gd.getFileFromEbooksFolder(path, file_format.name + '.' + file_format.format.lower())
+    #        if not gFile:
+    #           error = _(u'File %(file)s not found on Google Drive', file=file_format.name)  # file not found
+    #            break
+    #        gd.moveGdriveFileRemote(gFile, new_name + u'.' + file_format.format.lower())
+    #        file_format.name = new_name
+
     # Todo: Rename all authors on gdrive
     # Rename all files from old names to new names
-    '''
+    clean_author_database(renamed_author, "")
+    if first_author not in renamed_author:
+        clean_author_database([first_author], "", book)
+    #if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
+    #        shutil.rmtree(os.path.dirname(path))
+
+    '''# Rename all files from old names to new names
     try:
         clean_author_database(renamed_author, calibrepath)
         if first_author not in renamed_author:
@@ -510,15 +552,7 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
         log.error("Error in rename file in path %s", ex)
         log.debug(ex, exc_info=True)
         return _("Error in rename file in path: %(error)s", error=str(ex))'''
-    if authordir != new_authordir or titledir != new_titledir:
-        new_name = get_valid_filename(book.title) + u' - ' + get_valid_filename(new_authordir)
-        for file_format in book.data:
-            gFile = gd.getFileFromEbooksFolder(path, file_format.name + u'.' + file_format.format.lower())
-            if not gFile:
-                error = _(u'File %(file)s not found on Google Drive', file=file_format.name)  # file not found
-                break
-            gd.moveGdriveFileRemote(gFile, new_name + u'.' + file_format.format.lower())
-            file_format.name = new_name
+
     return error
 
 
