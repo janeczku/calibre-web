@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-23 05:50:54</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-24 05:56:04</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-23 10:25:22</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-24 09:54:16</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>3h 54 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 17 min</p>
         </div>
       </div>
       </div>
@@ -561,11 +561,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -593,11 +593,33 @@
     
     
     
-        <tr id='pt7.3' class='hiddenRow bg-success'>
+        <tr id="ft7.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft7.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft7.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 332, in test_convert_only
+    self.assertEqual(ret[-2][&#39;result&#39;], &#39;Finished&#39;)
+AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
+- Failed
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -714,15 +736,15 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
-        <td class="text-center">18</td>
-        <td class="text-center">15</td>
+        <td class="text-center">19</td>
+        <td class="text-center">17</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 18)">Detail</a>
+            <a onclick="showClassDetail('c10', 19)">Detail</a>
         </td>
     </tr>
 
@@ -730,7 +752,7 @@
     
         <tr id='pt10.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_cbz_comicinfo</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -739,7 +761,7 @@
     
         <tr id='pt10.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_delete_book</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -748,7 +770,7 @@
     
         <tr id='pt10.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_delete_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -757,7 +779,7 @@
     
         <tr id='pt10.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -766,7 +788,7 @@
     
         <tr id='pt10.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -775,7 +797,7 @@
     
         <tr id='pt10.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -784,7 +806,7 @@
     
         <tr id='pt10.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -793,7 +815,7 @@
     
         <tr id='pt10.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -802,6 +824,15 @@
     
         <tr id='pt10.9' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.10' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -809,38 +840,9 @@
     
     
     
-        <tr id="et10.10" class="none bg-info">
-            <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.10')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et10.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 59, in test_upload_cbz_coverformats
-    original_cover = self.check_element_on_page((By.ID, &#34;detailcover&#34;)).screenshot_as_png
-AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
         <tr id='pt10.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -849,7 +851,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
         <tr id='pt10.12' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -858,6 +860,15 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
         <tr id='pt10.13' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.14' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -865,19 +876,19 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id="st10.14" class="none bg-warning">
+        <tr id="st10.15" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st10.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st10.15')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st10.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st10.15" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st10.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st10.15').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -891,7 +902,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id='pt10.15' class='hiddenRow bg-success'>
+        <tr id='pt10.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
@@ -900,7 +911,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id='st10.16' class='none bg-warning'>
+        <tr id='st10.17' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
@@ -909,7 +920,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id='pt10.17' class='hiddenRow bg-success'>
+        <tr id='pt10.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
@@ -918,7 +929,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id='pt10.18' class='hiddenRow bg-success'>
+        <tr id='pt10.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
@@ -2180,13 +2191,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c25', 13)">Detail</a>
         </td>
@@ -2203,28 +2214,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
     
     
     
-        <tr id="st25.2" class="none bg-warning">
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st25.2')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st25.2" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st25.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Unknown how to test certificate</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4379,11 +4373,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>388</td>
-        <td>379</td>
-        <td>0</td>
+        <td>389</td>
+        <td>381</td>
         <td>1</td>
-        <td>8</td>
+        <td>0</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -4771,7 +4765,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;screenshot_as_png&#3
 </div>
 
 <script>
-    drawCircle(379, 0, 1, 8);
+    drawCircle(381, 1, 0, 7);
     showCase(5);
 </script>
 
