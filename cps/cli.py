@@ -45,6 +45,7 @@ parser.add_argument('-v', '--version', action='version', help='Shows version num
 parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
+parser.add_argument('-l', action='store_true', help='Allow loading covers from localhost')
 args = parser.parse_args()
 
 settingspath = args.p or os.path.join(_CONFIG_DIR, "app.db")
@@ -77,6 +78,8 @@ if (args.k and not args.c) or (not args.k and args.c):
 if args.k == "":
     keyfilepath = ""
 
+# load covers from localhost
+allow_localhost = args.l or None
 # handle and check ip address argument
 ip_address = args.i or None
 if ip_address:

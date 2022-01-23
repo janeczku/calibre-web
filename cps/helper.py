@@ -46,7 +46,7 @@ try:
 except ImportError:
     use_unidecode = False
 
-from . import calibre_db
+from . import calibre_db, cli
 from .tasks.convert import TaskConvert
 from . import logger, config, get_locale, db, ub
 from . import gdriveutils as gd
@@ -584,11 +584,12 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
 # saves book cover from url
 def save_cover_from_url(url, book_path):
     try:
-        # 127.0.x.x, localhost, [::1], [::ffff:7f00:1]
-        ip = socket.getaddrinfo(urlparse(url).hostname, 0)[0][4][0]
-        if ip.startswith("127.") or ip.startswith('::ffff:7f') or ip == "::1":
-            log.error("Localhost was accessed for cover upload")
-            return False, _("You are not allowed to access localhost for cover uploads")
+        if not cli.allow_localhost:
+            # 127.0.x.x, localhost, [::1], [::ffff:7f00:1]
+            ip = socket.getaddrinfo(urlparse(url).hostname, 0)[0][4][0]
+            if ip.startswith("127.") or ip.startswith('::ffff:7f') or ip == "::1":
+                log.error("Localhost was accessed for cover upload")
+                return False, _("You are not allowed to access localhost for cover uploads")
         img = requests.get(url, timeout=(10, 200))      # ToDo: Error Handling
         img.raise_for_status()
         return save_cover(img, book_path)
