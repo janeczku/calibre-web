@@ -366,6 +366,31 @@ def clean_author_database(renamed_author, calibrepath, local_book=None, gdrive=N
                     file_format.name = all_new_name
 
 
+def clean_author_database_gdrive(renamed_author, calibrepath, local_book=None):
+    valid_filename_authors = [get_valid_filename(r) for r in renamed_author]
+    for r in renamed_author:
+        if local_book:
+            all_books = [local_book]
+        else:
+            all_books = calibre_db.session.query(db.Books) \
+                .filter(db.Books.authors.any(db.Authors.name == r)).all()
+        for book in all_books:
+            book_author_path = book.path.split('/')[0]
+            if book_author_path in valid_filename_authors or local_book:
+                new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
+                all_new_authordir = get_valid_filename(new_author.name)
+                all_titledir = book.path.split('/')[1]
+                all_new_path = os.path.join(calibrepath, all_new_authordir, all_titledir)
+                all_new_name = get_valid_filename(book.title) + ' - ' + all_new_authordir
+                # change location in database to new author/title path
+                book.path = os.path.join(all_new_authordir, all_titledir).replace('\\', '/')
+                for file_format in book.data:
+                    shutil.move(os.path.normcase(
+                        os.path.join(all_new_path, file_format.name + '.' + file_format.format.lower())),
+                        os.path.normcase(os.path.join(all_new_path, all_new_name + '.' + file_format.format.lower())))
+                    file_format.name = all_new_name
+
+
 # was muss gemacht werden:
 # Die Autorennamen müssen separiert werden und von dupletten bereinigt werden.
 # Es muss geprüft werden:
