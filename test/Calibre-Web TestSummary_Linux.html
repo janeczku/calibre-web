@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-25 21:16:05</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-26 07:52:00</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-26 01:13:49</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-01-26 11:49:33</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>3h 17 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 16 min</p>
         </div>
       </div>
       </div>
@@ -1982,11 +1982,11 @@ AssertionError: 9 != 10</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1996,42 +1996,22 @@ AssertionError: 9 != 10</pre>
 
     
     
-        <tr id="ft14.1" class="none bg-danger">
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft14.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft14.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 136, in test_load_metadata
-    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
-AssertionError: 0.0 not greater than or equal to 0.05</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">20</td>
+        <td class="text-center">19</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c15', 20)">Detail</a>
@@ -2049,11 +2029,31 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
     
     
     
-        <tr id='pt15.2' class='hiddenRow bg-success'>
+        <tr id="et15.2" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et15.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et15.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 300, in test_edit_author
+    self.assertEqual(u&#39;O0ü 执&#39;, values[&#39;author&#39;][0])
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4925,8 +4925,8 @@ AssertionError: 200 != 500</pre>
         <td>Total</td>
         <td>390</td>
         <td>359</td>
-        <td>17</td>
-        <td>7</td>
+        <td>16</td>
+        <td>8</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5315,7 +5315,7 @@ AssertionError: 200 != 500</pre>
 </div>
 
 <script>
-    drawCircle(359, 17, 7, 7);
+    drawCircle(359, 16, 8, 7);
     showCase(5);
 </script>
 
