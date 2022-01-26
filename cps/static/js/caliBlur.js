@@ -270,7 +270,7 @@ if ($("body.book").length > 0) {
 
             if (position + $("#add-to-shelves").width() > $(window).width()) {
                 positionOff = position + $("#add-to-shelves").width() - $(window).width();
-                adsPosition = position - positionOff - 5
+                adsPosition = position - positionOff - 5;
                 $("#add-to-shelves").attr("style", "left: " + adsPosition + "px !important; right: auto;  top: " + topPos + "px");
             } else {
                 $("#add-to-shelves").attr("style", "left: " + position + "px !important; right: auto;  top: " + topPos + "px");
@@ -429,7 +429,7 @@ if($("body.advsearch").length > 0) {
 
           if (position + $("#add-to-shelves").width() > $(window).width()) {
               positionOff = position + $("#add-to-shelves").width() - $(window).width();
-              adsPosition = position - positionOff - 5
+              adsPosition = position - positionOff - 5;
               $("#add-to-shelves").attr("style", "left: " + adsPosition + "px !important; right: auto;  top: " + topPos + "px");
           } else {
               $("#add-to-shelves").attr("style", "left: " + position + "px !important; right: auto;  top: " + topPos + "px");
@@ -479,12 +479,12 @@ if ($.trim($("#add-to-shelves").html()).length === 0) {
     $("#add-to-shelf").addClass("empty-ul");
 }
 
-shelfLength = $("#add-to-shelves li").length
-emptyLength = 0
+shelfLength = $("#add-to-shelves li").length;
+emptyLength = 0;
 
 $("#add-to-shelves").on("click", "li a", function () {
     console.log("#remove-from-shelves change registered");
-    emptyLength++
+    emptyLength++;
 
     setTimeout(function () {
         if (emptyLength >= shelfLength) {
