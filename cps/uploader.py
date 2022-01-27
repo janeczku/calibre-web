@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import hashlib
 from tempfile import gettempdir
@@ -158,7 +157,7 @@ def parse_xmp(pdf_file):
 
 def parse_xmp(pdf_file):
     """
-    Parse XMP Metadata and prepare for BookMeta object 
+    Parse XMP Metadata and prepare for BookMeta object
     """
     try:
         xmp_info = pdf_file.getXmpMetadata()
@@ -171,8 +170,8 @@ def parse_xmp(pdf_file):
             xmp_author = xmp_info.dc_creator # list
         except AttributeError:
             xmp_author = ['Unknown']
-        
-        if xmp_info.dc_title: 
+
+        if xmp_info.dc_title:
             xmp_title = xmp_info.dc_title['x-default']
         else:
             xmp_title = ''
@@ -188,7 +187,7 @@ def parse_xmp(pdf_file):
                 languages.append(isoLanguages.get_lang3(i))
         except AttributeError:
             languages.append('')
-        
+
         xmp_tags = ', '.join(xmp_info.dc_subject)
         xmp_publisher = ', '.join(xmp_info.dc_publisher)
 
@@ -275,31 +274,30 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
 
 
-def get_versions():
+def get_versions(all=True):
+    ret = dict()
     if not use_generic_pdf_cover:
-        IVersion = ImageVersion.MAGICK_VERSION
-        WVersion = ImageVersion.VERSION
+        ret['Image Magick'] = ImageVersion.MAGICK_VERSION
     else:
-        IVersion = u'not installed'
-        WVersion = u'not installed'
-    if use_pdf_meta:
-        PVersion='v'+PyPdfVersion
-    else:
-        PVersion=u'not installed'
-    if lxmlversion:
-        XVersion = 'v'+'.'.join(map(str, lxmlversion))
-    else:
-        XVersion = u'not installed'
-    if comic.use_comic_meta:
-        ComicVersion = comic.comic_version or u'installed'
-    else:
-        ComicVersion = u'not installed'
-    return {'Image Magick': IVersion,
-            'PyPdf': PVersion,
-            'lxml':XVersion,
-            'Wand': WVersion,
-            # 'Pillow': PILVersion,
-            'Comic_API': ComicVersion}
+        ret['Image Magick'] = u'not installed'
+    if all:
+        if not use_generic_pdf_cover:
+            ret['Wand'] = ImageVersion.VERSION
+        else:
+            ret['Wand'] = u'not installed'
+        if use_pdf_meta:
+            ret['PyPdf'] = PyPdfVersion
+        else:
+            ret['PyPdf'] = u'not installed'
+        if lxmlversion:
+            ret['lxml'] = '.'.join(map(str, lxmlversion))
+        else:
+            ret['lxml'] = u'not installed'
+        if comic.use_comic_meta:
+            ret['Comic_API'] = comic.comic_version or u'installed'
+        else:
+            ret['Comic_API'] = u'not installed'
+    return ret
 
 
 def upload(uploadfile, rarExcecutable):

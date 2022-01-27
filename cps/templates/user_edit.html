@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-md-10 col-lg-8">
     {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
@@ -16,7 +17,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-        <a class="btn btn-default" id="resend_password" href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
+        <a class="btn btn-default postAction" id="resend_password" role="button" data-action="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
@@ -32,7 +33,7 @@
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
@@ -41,7 +42,7 @@
     <div class="form-group">
       <label for="default_language">{{_('Language of Books')}}</label>
         <select name="default_language" id="default_language" class="form-control">
-            <option value="all" {% if new_user == 1 %}selected{% endif %}>{{ _('Show All') }}</option>
+            <option value="all" {% if content.default_language == "all" %}selected{% endif %}>{{ _('Show All') }}</option>
             {%  for language in languages %}
             <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.name }}</option>
             {% endfor %}
@@ -64,6 +65,9 @@
     <div class="form-group col">
       <a class="btn btn-default" id="config_create_kobo_token" data-toggle="modal" data-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>
       <div class="btn btn-danger" id="config_delete_kobo_token" data-value="{{ content.id }}" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
+    </div>
+    <div class="form-group col">
+      <div class="btn btn-default" id="kobo_full_sync" data-value="{{ content.id }}" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Force full kobo sync')}}</div>
     </div>
     {% endif %}
     <div class="col-sm-6">
@@ -100,29 +104,33 @@
       <input type="checkbox" name="viewer_role" id="viewer_role" {% if content.role_viewer() %}checked{% endif %}>
       <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
     </div>
+    {% if config.config_uploading %}
     <div class="form-group">
       <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
       <label for="upload_role">{{_('Allow Uploads')}}</label>
     </div>
+    {% endif %}
     <div class="form-group">
-      <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
+      <input type="checkbox" name="edit_role" data-control="edit_settings" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
       <label for="edit_role">{{_('Allow Edit')}}</label>
     </div>
-    <div class="form-group">
-      <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
-      <label for="delete_role">{{_('Allow Delete Books')}}</label>
+    <div data-related="edit_settings">
+      <div class="form-group">
+        <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
+        <label for="delete_role">{{_('Allow Delete Books')}}</label>
+      </div>
     </div>
-      {% if not content.role_anonymous() %}
-        <div class="form-group">
-          <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
-          <label for="passwd_role">{{_('Allow Changing Password')}}</label>
-        </div>
-        <div class="form-group">
-          <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
-          <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
-        </div>
-      {% endif %}
+    {% if not content.role_anonymous() %}
+      <div class="form-group">
+        <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
+        <label for="passwd_role">{{_('Allow Changing Password')}}</label>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
+        <label for="edit_shelf_role">{{_('Allow Editing Public Shelves')}}</label>
+      </div>
     {% endif %}
+  {% endif %}
     {% if kobo_support and not content.role_anonymous() %}
     <div class="form-group">
       <input type="checkbox" name="kobo_only_shelves_sync" id="kobo_only_shelves_sync" {% if content.kobo_only_shelves_sync %}checked{% endif %}>

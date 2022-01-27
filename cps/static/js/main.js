@@ -15,10 +15,23 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 function getPath() {
     var jsFileLocation = $("script[src*=jquery]").attr("src");  // the js file path
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
+}
+
+function postButton(event, action){
+    event.preventDefault();
+    var newForm = jQuery('<form>', {
+        "action": action,
+        'target': "_top",
+        'method': "post"
+    }).append(jQuery('<input>', {
+        'name': 'csrf_token',
+        'value': $("input[name=\'csrf_token\']").val(),
+        'type': 'hidden'
+    })).appendTo('body');
+    newForm.submit();
 }
 
 function elementSorter(a, b) {
@@ -72,6 +85,22 @@ $(document).on("change", "select[data-controlall]", function() {
     }
 });
 
+/*$(document).on("click", "#sendbtn", function (event) {
+    postButton(event, $(this).data('action'));
+});
+
+$(document).on("click", ".sendbutton", function (event) {
+    // $(".sendbutton").on("click", "body", function(event) {
+    postButton(event, $(this).data('action'));
+});*/
+
+$(document).on("click", ".postAction", function (event) {
+    // $(".sendbutton").on("click", "body", function(event) {
+    postButton(event, $(this).data('action'));
+});
+
+
+
 // Syntax has to be bind not on, otherwise problems with firefox
 $(".container-fluid").bind("dragenter dragover", function () {
     if($("#btn-upload").length && !$('body').hasClass('shelforder')) {
@@ -111,6 +140,14 @@ $(".container-fluid").bind('drop', function (e) {
 
 $("#btn-upload").change(function() {
     $("#form-upload").submit();
+});
+
+$("#form-upload").uploadprogress({
+    redirect_url: getPath() + "/", //"{{ url_for('web.index')}}",
+    uploadedMsg: $("#form-upload").data("message"), //"{{_('Upload done, processing, please wait...')}}",
+    modalTitle: $("#form-upload").data("title"), //"{{_('Uploading...')}}",
+    modalFooter: $("#form-upload").data("footer"), //"{{_('Close')}}",
+    modalTitleFailed: $("#form-upload").data("failed") //"{{_('Error')}}"
 });
 
 $(document).ready(function() {
@@ -161,18 +198,18 @@ function confirmDialog(id, dialogid, dataValue, yesFn, noFn) {
     $confirm.modal('show');
 }
 
-$("#delete_confirm").click(function() {
+$("#delete_confirm").click(function(event) {
     //get data-id attribute of the clicked element
     var deleteId = $(this).data("delete-id");
     var bookFormat = $(this).data("delete-format");
     var ajaxResponse = $(this).data("ajax");
     if (bookFormat) {
-        window.location.href = getPath() + "/delete/" + deleteId + "/" + bookFormat;
+        postButton(event, getPath() + "/delete/" + deleteId + "/" + bookFormat);
     } else {
         if (ajaxResponse) {
             path = getPath() + "/ajax/delete/" + deleteId;
             $.ajax({
-                method:"get",
+                method:"post",
                 url: path,
                 timeout: 900,
                 success:function(data) {
@@ -191,8 +228,7 @@ $("#delete_confirm").click(function() {
                 }
             });
         } else {
-            window.location.href = getPath() + "/delete/" + deleteId;
-
+            postButton(event, getPath() + "/delete/" + deleteId);
         }
     }
 
@@ -224,6 +260,16 @@ $(function() {
     var preFilters = $.Callbacks();
     $.ajaxPrefilter(preFilters.fire);
 
+    // equip all post requests with csrf_token
+    var csrftoken = $("input[name='csrf_token']").val();
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken)
+            }
+        }
+    });
+
     function restartTimer() {
         $("#spinner").addClass("hidden");
         $("#RestartDialog").modal("hide");
@@ -244,9 +290,10 @@ $(function() {
     }
 
     function updateTimer() {
+        var no_response = 0;
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/../../get_updater_status",
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
                 $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
@@ -254,19 +301,19 @@ $(function() {
                 }
             },
             error: function error() {
-                $("#DialogContent").html(updateText[11]);
-                cleanUp();
+                // Server has to restart in 60 Sek. otherwise output error message
+                no_response += 1;
+                if (no_response > 30) {
+                    $("#DialogContent").html(updateText[11]);
+                    cleanUp();
+                }
             },
             timeout: 2000
         });
     }
 
     function fillFileTable(path, type, folder, filt) {
-        if (window.location.pathname.endsWith("/basicconfig")) {
-            var request_path = "/../basicconfig/pathchooser/";
-        } else {
-            var request_path = "/../../ajax/pathchooser/";
-        }
+        var request_path = "/../../ajax/pathchooser/";
         $.ajax({
             dataType: "json",
             data: {
@@ -358,9 +405,11 @@ $(function() {
 
     $("#restart").click(function() {
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":0},
+            url: getPath() + "/shutdown",
+            data: JSON.stringify({"parameter":0}),
             success: function success() {
                 $("#spinner").show();
                 setTimeout(restartTimer, 3000);
@@ -369,9 +418,11 @@ $(function() {
     });
     $("#shutdown").click(function() {
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":1},
+            url: getPath() + "/shutdown",
+            data: JSON.stringify({"parameter":1}),
             success: function success(data) {
                 return alert(data.text);
             }
@@ -429,9 +480,11 @@ $(function() {
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":2},
+            url: getPath() + "/shutdown",
+            data: JSON.stringify({"parameter":2}),
             success: function success(data) {
                 $("#spinner2").hide();
                 $("#DialogContent").html(data.text);
@@ -445,8 +498,8 @@ $(function() {
         $.ajax({
             type: "POST",
             dataType: "json",
-            data: { start: "True"},
-            url: window.location.pathname + "/../../get_updater_status",
+            data: { start: "True" },
+            url: getPath() + "/get_updater_status",
             success: function success(data) {
                 updateText = data.text;
                 $("#DialogContent").html(updateText[data.status]);
@@ -482,6 +535,7 @@ $(function() {
 
     $("#modal_kobo_token")
         .on("show.bs.modal", function(e) {
+            $(e.relatedTarget).one('focus', function(e){$(this).blur();});
             var $modalBody = $(this).find(".modal-body");
 
             // Prevent static assets from loading multiple times
@@ -499,6 +553,7 @@ $(function() {
         .on("hidden.bs.modal", function() {
             $(this).find(".modal-body").html("...");
             $("#config_delete_kobo_token").show();
+            $("#kobo_full_sync").show();
         });
 
     $("#config_delete_kobo_token").click(function() {
@@ -508,10 +563,11 @@ $(function() {
             $(this).data('value'),
             function (value) {
                 $.ajax({
-                    method: "get",
+                    method: "post",
                     url: getPath() + "/kobo_auth/deleteauthtoken/" + value,
                 });
                 $("#config_delete_kobo_token").hide();
+                $("#kobo_full_sync").hide();
             }
         );
     });
@@ -545,6 +601,33 @@ $(function() {
             }
         );
     });
+
+    $("#kobo_full_sync").click(function() {
+        confirmDialog(
+           "btnfullsync",
+            "GeneralDeleteModal",
+            $(this).data('value'),
+            function(value){
+                path = getPath() + "/ajax/fullsync"
+                $.ajax({
+                    method:"post",
+                    url: path,
+                    timeout: 900,
+                    success:function(data) {
+                        data.forEach(function(item) {
+                            if (!jQuery.isEmptyObject(item)) {
+                                $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                                    '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
+                                    '</div>');
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
+
+
     $("#user_submit").click(function() {
         this.closest("form").submit();
     });
@@ -577,7 +660,7 @@ $(function() {
             method:"post",
             dataType: "json",
             url: window.location.pathname + "/../../ajax/simulatedbchange",
-            data: {config_calibre_dir: $("#config_calibre_dir").val()},
+            data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( data.change ) {
                     if ( data.valid ) {
@@ -591,7 +674,7 @@ $(function() {
                     else {
                         $("#InvalidDialog").modal('show');
                     }
-                } else {                	
+                } else {
                     changeDbSettings();
                 }
             }
@@ -632,13 +715,14 @@ $(function() {
         });
     });
 
-    $("#delete_shelf").click(function() {
+    $("#delete_shelf").click(function(event) {
         confirmDialog(
             $(this).attr('id'),
             "GeneralDeleteModal",
             $(this).data('value'),
             function(value){
-                window.location.href = window.location.pathname + "/../../shelf/delete/" + value
+                postButton(event, $("#delete_shelf").data("action"));
+                // $("#delete_shelf").closest("form").submit()
             }
         );
 
@@ -650,10 +734,10 @@ $(function() {
         var folder = target.data("folderonly");
         var filter = target.data("filefilter");
         $("#element_selected").text(path);
-        $("#file_confirm")[0].attributes["data-link"].value = target.data("link");
-        $("#file_confirm")[0].attributes["data-folderonly"].value = (typeof folder === 'undefined') ? false : true;
-        $("#file_confirm")[0].attributes["data-filefilter"].value = (typeof filter === 'undefined') ? "" : filter;
-        $("#file_confirm")[0].attributes["data-newfile"].value = target.data("newfile");
+        $("#file_confirm").data("link", target.data("link"));
+        $("#file_confirm").data("folderonly", (typeof folder === 'undefined') ? false : true);
+        $("#file_confirm").data("filefilter", (typeof filter === 'undefined') ? "" : filter);
+        $("#file_confirm").data("newfile", target.data("newfile"));
         fillFileTable(path,"dir", folder, filter);
     });
 
@@ -667,7 +751,7 @@ $(function() {
         var folder = $(file_confirm).data("folderonly");
         var filter = $(file_confirm).data("filefilter");
         var newfile = $(file_confirm).data("newfile");
-        if (newfile !== 'undefined') {
+        if (newfile !== "") {
             $("#element_selected").text(path + $("#new_file".text()));
         } else {
             $("#element_selected").text(path);
@@ -687,7 +771,8 @@ $(function() {
         $("#DialogContent").html("");
         $("#spinner2").show();
         $.ajax({
-            method:"get",
+            method:"post",
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/import_ldap_users",
             success: function success(data) {
@@ -713,7 +798,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/view",
+            url: getPath() + "/ajax/view",
             data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();
@@ -721,4 +806,3 @@ $(function() {
         });
     });
 });
-

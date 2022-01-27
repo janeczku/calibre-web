@@ -5,7 +5,7 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks')}}</h2>
-    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('web.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc">
+    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('web.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ g.user.locale }}">
       <thead>
         <tr>
             {% if g.user.role_admin() %}
@@ -52,9 +52,7 @@
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
-<script>
-    // ToDo: Move to js file
-</script>
 
 {% endblock %}

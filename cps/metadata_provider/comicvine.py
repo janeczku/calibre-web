@@ -26,7 +26,7 @@ class ComicVine(Metadata):
     __name__ = "ComicVine"
     __id__ = "comicvine"
 
-    def search(self, query, __):
+    def search(self, query, generic_cover=""):
         val = list()
         apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
         if self.active:
@@ -36,7 +36,7 @@ class ComicVine(Metadata):
 
             result = requests.get("https://comicvine.gamespot.com/api/search?api_key="
                                   + apikey + "&resources=issue&query=" + query + "&sort=name:desc&format=json", headers=headers)
-            for r in result.json()['results']:
+            for r in result.json().get('results'):
                 seriesTitle = r['volume'].get('name', "")
                 if r.get('store_date'):
                     dateFomers = r.get('store_date')

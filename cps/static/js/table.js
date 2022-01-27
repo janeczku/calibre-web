@@ -65,15 +65,15 @@ $(function() {
             var rows = rowsAfter;
 
             if (e.type === "uncheck-all") {
-                rows = rowsBefore;
+                selections = [];
+            } else {
+                var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+                    return row.id;
+                });
+
+                var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+                selections = window._[func](selections, ids);
             }
-
-            var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-                return row.id;
-            });
-
-            var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-            selections = window._[func](selections, ids);
             if (selections.length >= 2) {
                 $("#merge_books").removeClass("disabled");
                 $("#merge_books").attr("aria-disabled", false);
@@ -167,6 +167,10 @@ $(function() {
                     }
                 }
             };
+            if ($(this).attr("data-editable-type") == "wysihtml5") {
+                //if (this.id == "comments") {
+                element.editable.display = shorten_html;
+            }
             var validateText = $(this).attr("data-edit-validate");
             if (validateText) {
                 element.editable.validate = function (value) {
@@ -176,6 +180,7 @@ $(function() {
         }
         column.push(element);
     });
+    // $.fn.editable.defaults.display = comment_display;
 
     $("#books-table").bootstrapTable({
         sidePagination: "server",
@@ -553,14 +558,14 @@ $(function() {
         var rows = rowsAfter;
 
         if (e.type === "uncheck-all") {
-            rows = rowsBefore;
+            selections = [];
+        } else {
+	        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+	            return row.id;
+	        });
+	        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+            selections = window._[func](selections, ids);
         }
-
-        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-            return row.id;
-        });
-        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-        selections = window._[func](selections, ids);
         handle_header_buttons();
     });
 });
@@ -658,17 +663,31 @@ function singleUserFormatter(value, row) {
 }
 
 function checkboxFormatter(value, row){
-    if(value & this.column)
+    if (value & this.column)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+function bookCheckboxFormatter(value, row){
+    if (value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+}
+
 
 function singlecheckboxFormatter(value, row){
-    if(value)
+    if (value)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
+}
+
+function ratingFormatter(value, row) {
+    if (value == 0) {
+        return "";
+    }
+    return (value/2);
 }
 
 
@@ -813,7 +832,7 @@ function handleListServerResponse (data) {
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
         method: "post",
-        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        url: getPath() + "/ajax/editlistusers/" + field,
         data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
         error: function(data) {
             handleListServerResponse([{type:"danger", message:data.responseText}])
@@ -821,6 +840,20 @@ function checkboxChange(checkbox, userId, field, field_index) {
         success: handleListServerResponse
     });
 }
+
+function BookCheckboxChange(checkbox, userId, field) {
+    var value = checkbox.checked ? "True" : "False";
+    $.ajax({
+        method: "post",
+        url: getPath() + "/ajax/editbooks/" + field,
+        data: {"pk": userId, "value": value},
+        error: function(data) {
+            handleListServerResponse([{type:"danger", message:data.responseText}])
+        },
+        success: handleListServerResponse
+    });
+}
+
 
 function selectHeader(element, field) {
     if (element.value !== "None") {
@@ -902,4 +935,11 @@ function user_handle (userId) {
         data: {"userid":userId}
     });
     $("#user-table").bootstrapTable("refresh");
+}
+
+function shorten_html(value, response) {
+    if(value) {
+        $(this).html("[...]");
+        // value.split('\n').slice(0, 2).join("") +
+    }
 }

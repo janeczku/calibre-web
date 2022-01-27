@@ -150,11 +150,16 @@ if ($("body.book").length > 0) {
         var splitText = $(this).text().split(':');
         var label = splitText.shift().trim();
         var value = splitText.join(':').trim();
+        var class_value = ""
         // Preserve Links
         if ($(this).find('a').length) {
             value = $(this).find('a').first().removeClass();
         }
-        $(this).html('<span>' + label + '</span><span></span>').find('span').last().append(value);
+        // Preserve glyphicons
+        if ($(this).find('span').length) {
+            class_value = $(this).find('span').first().attr('class');
+        }
+        $(this).html('<span>' + label + '</span><span class="' + class_value + '"></span>').find('span').last().append(value);
     });
 
     $(".book-meta h2:first").clone()
@@ -265,7 +270,7 @@ if ($("body.book").length > 0) {
 
             if (position + $("#add-to-shelves").width() > $(window).width()) {
                 positionOff = position + $("#add-to-shelves").width() - $(window).width();
-                adsPosition = position - positionOff - 5
+                adsPosition = position - positionOff - 5;
                 $("#add-to-shelves").attr("style", "left: " + adsPosition + "px !important; right: auto;  top: " + topPos + "px");
             } else {
                 $("#add-to-shelves").attr("style", "left: " + position + "px !important; right: auto;  top: " + topPos + "px");
@@ -424,7 +429,7 @@ if($("body.advsearch").length > 0) {
 
           if (position + $("#add-to-shelves").width() > $(window).width()) {
               positionOff = position + $("#add-to-shelves").width() - $(window).width();
-              adsPosition = position - positionOff - 5
+              adsPosition = position - positionOff - 5;
               $("#add-to-shelves").attr("style", "left: " + adsPosition + "px !important; right: auto;  top: " + topPos + "px");
           } else {
               $("#add-to-shelves").attr("style", "left: " + position + "px !important; right: auto;  top: " + topPos + "px");
@@ -474,12 +479,12 @@ if ($.trim($("#add-to-shelves").html()).length === 0) {
     $("#add-to-shelf").addClass("empty-ul");
 }
 
-shelfLength = $("#add-to-shelves li").length
-emptyLength = 0
+shelfLength = $("#add-to-shelves li").length;
+emptyLength = 0;
 
 $("#add-to-shelves").on("click", "li a", function () {
     console.log("#remove-from-shelves change registered");
-    emptyLength++
+    emptyLength++;
 
     setTimeout(function () {
         if (emptyLength >= shelfLength) {

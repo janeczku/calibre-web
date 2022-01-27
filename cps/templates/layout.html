@@ -59,17 +59,16 @@
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if g.user.is_authenticated or g.allow_anonymous %}
-              {% if g.user.role_upload() or g.user.role_admin()%}
-                {% if g.allow_upload %}
+              {% if g.user.role_upload() and g.allow_upload %}
                   <li>
-                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" method="post" enctype="multipart/form-data">
+                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
                         type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
                       </div>
                     </form>
                   </li>
-                {% endif %}
               {% endif %}
               {% if not g.user.is_anonymous %}
                 <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
@@ -136,7 +135,7 @@
               {% if g.user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span>{{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                 {% endfor %}
               {% if not g.user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
@@ -185,7 +184,7 @@
           </div>
           <div class="modal-body">...</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+            <button type="button" id="details_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
           </div>
         </div>
       </div>
@@ -201,17 +200,6 @@
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
-    <script type="text/javascript">
-        $(function() {
-            $("#form-upload").uploadprogress({
-              redirect_url: "{{ url_for('web.index')}}",
-              uploadedMsg: "{{_('Upload done, processing, please wait...')}}",
-              modalTitle: "{{_('Uploading...')}}",
-              modalFooter: "{{_('Close')}}",
-              modalTitleFailed: "{{_('Error')}}"
-            });
-        });
-    </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% if g.current_theme == 1 %}
       <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>

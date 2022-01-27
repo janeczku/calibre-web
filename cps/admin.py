@@ -20,7 +20,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import re
 import base64
@@ -41,7 +40,8 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, schedule
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, \
+    kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
@@ -131,11 +131,11 @@ def admin_forbidden():
     abort(403)
 
 
-@admi.route("/shutdown")
+@admi.route("/shutdown", methods=["POST"])
 @login_required
 @admin_required
 def shutdown():
-    task = int(request.args.get("parameter").strip())
+    task = request.get_json().get('parameter', -1)
     showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
@@ -147,7 +147,7 @@ def shutdown():
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
-        web_server.stop(task==0)
+        web_server.stop(task == 0)
         return json.dumps(showtext)
 
     if task == 2:
@@ -239,8 +239,12 @@ def view_configuration():
         .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.Custom_Columns)\
         .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    languages = calibre_db.speaking_language()
+    translations = [LC('en')] + babel.list_translations()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 languages=languages,
+                                 translations=translations,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 
@@ -529,9 +533,6 @@ def check_valid_restricted_column(column):
 def update_view_configuration():
     to_save = request.form.to_dict()
 
-    # _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
-    # _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
-
     _config_string(to_save, "config_calibre_web_title")
     _config_string(to_save, "config_columns_to_ignore")
     if _config_string(to_save, "config_title_regex"):
@@ -553,6 +554,8 @@ def update_view_configuration():
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
+    _config_string(to_save, "config_default_language")
+    _config_string(to_save, "config_default_locale")
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
@@ -595,6 +598,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "btnfullsync":
+        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?")
     return json.dumps(texts)
 
 
@@ -759,7 +764,12 @@ def prepare_tags(user, action, tags_name, id_list):
     return ",".join(saved_tags_list)
 
 
-@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def add_user_0_restriction(res_type):
+    return add_restriction(res_type, 0)
+
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -806,7 +816,13 @@ def add_restriction(res_type, user_id):
     return ""
 
 
-@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def delete_user_0_restriction(res_type):
+    return delete_restriction(res_type, 0)
+
+
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -894,9 +910,17 @@ def list_restriction(res_type, user_id):
     else:
         json_dumps = ""
     js = json.dumps(json_dumps)
-    response = make_response(js) #.replace("'", '"')
+    response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
+@admi.route("/ajax/fullsync", methods=["POST"])
+@login_required
+def ajax_fullsync():
+    count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
+    message = _("{} sync entries deleted").format(count)
+    ub.session_commit(message)
+    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
 
 
 @admi.route("/ajax/pathchooser/")
@@ -1191,11 +1215,20 @@ def _db_configuration_update_helper():
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
+        # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
+        ub.session.query(ub.Downloads).delete()
+        ub.session.query(ub.ArchivedBook).delete()
+        ub.session.query(ub.ReadBook).delete()
+        ub.session.query(ub.BookShelf).delete()
+        ub.session.query(ub.Bookmark).delete()
+        ub.session.query(ub.KoboReadingState).delete()
+        ub.session.query(ub.KoboStatistics).delete()
+        ub.session.query(ub.KoboSyncedBooks).delete()
+        ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
-            # warning = {'type': "warning", 'message': _(u"DB is not Writeable")}
     config.save()
     return _db_configuration_result(None, gdrive_error)
 
@@ -1205,7 +1238,7 @@ def _configuration_update_helper():
     to_save = request.form.to_dict()
     try:
         reboot_required |= _config_int(to_save, "config_port")
-
+        reboot_required |= _config_string(to_save, "config_trustedhosts")
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
             return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'))
@@ -1355,7 +1388,9 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
             raise Exception(_(u"E-mail is not from valid domain"))
     except Exception as ex:
         flash(str(ex), category="error")
-        return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+        return render_title_template("user_edit.html", new_user=1, content=content,
+                                     config=config,
+                                     translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
@@ -1391,16 +1426,25 @@ def _delete_user(content):
             for us in ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id):
                 ub.session.query(ub.BookShelf).filter(us.id == ub.BookShelf.shelf).delete()
             ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id).delete()
+            ub.session.query(ub.Bookmark).filter(content.id == ub.Bookmark.user_id).delete()
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session.query(ub.ArchivedBook).filter(ub.ArchivedBook.user_id == content.id).delete()
+            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == content.id).delete()
+            ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.user_id == content.id).delete()
+            ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == content.id).delete()
+            # delete KoboReadingState and all it's children
+            kobo_entries = ub.session.query(ub.KoboReadingState).filter(ub.KoboReadingState.user_id == content.id).all()
+            for kobo_entry in kobo_entries:
+                ub.session.delete(kobo_entry)
             ub.session_commit()
-            log.info(u"User {} deleted".format(content.name))
-            return(_(u"User '%(nick)s' deleted", nick=content.name))
+            log.info("User {} deleted".format(content.name))
+            return(_("User '%(nick)s' deleted", nick=content.name))
         else:
-            log.warning(_(u"Can't delete Guest User"))
-            raise Exception(_(u"Can't delete Guest User"))
+            log.warning(_("Can't delete Guest User"))
+            raise Exception(_("Can't delete Guest User"))
     else:
-        log.warning(u"No admin user remaining, can't delete user")
-        raise Exception(_(u"No admin user remaining, can't delete user"))
+        log.warning("No admin user remaining, can't delete user")
+        raise Exception(_("No admin user remaining, can't delete user"))
 
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
@@ -1440,8 +1484,13 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         else:
             content.sidebar_view &= ~constants.DETAIL_RANDOM
 
+        old_state = content.kobo_only_shelves_sync
         content.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
-
+        # 1 -> 0: nothing has to be done
+        # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs
+        # which don't have to be synced have to be removed (added to Shelf archive)
+        if old_state == 0 and content.kobo_only_shelves_sync == 1:
+            kobo_sync_status.update_on_sync_shelfs(content.id)
         if to_save.get("default_language"):
             content.default_language = to_save["default_language"]
         if to_save.get("locale"):
@@ -1466,6 +1515,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                          kobo_support=kobo_support,
                                          new_user=0,
                                          content=content,
+                                         config=config,
                                          registered_oauth=oauth_check,
                                          title=_(u"Edit User %(nick)s", nick=content.name),
                                          page="edituser")
@@ -1497,7 +1547,10 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-    return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+        content.locale = config.config_default_locale
+        content.default_language = config.config_default_language
+    return render_title_template("user_edit.html", new_user=1, content=content,
+                                 config=config, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
@@ -1611,7 +1664,7 @@ def edit_user(user_id):
     if not content or (not config.config_anonbrowse and content.name == "Guest"):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
-    languages = calibre_db.speaking_language()
+    languages = calibre_db.speaking_language(return_all_languages=True)
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
@@ -1624,6 +1677,7 @@ def edit_user(user_id):
                                  languages=languages,
                                  new_user=0,
                                  content=content,
+                                 config=config,
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
@@ -1631,7 +1685,7 @@ def edit_user(user_id):
                                  page="edituser")
 
 
-@admi.route("/admin/resetpassword/<int:user_id>")
+@admi.route("/admin/resetpassword/<int:user_id>", methods=["POST"])
 @login_required
 @admin_required
 def reset_user_password(user_id):
@@ -1788,6 +1842,8 @@ def ldap_import_create_user(user, user_data):
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
     content.kindle_mail = kindlemail
+    content.default_language = config.config_default_language
+    content.locale = config.config_default_locale
     content.role = config.config_default_role
     content.sidebar_view = config.config_default_show
     content.allowed_tags = config.config_allowed_tags
@@ -1805,7 +1861,7 @@ def ldap_import_create_user(user, user_data):
         return 0, message
 
 
-@admi.route('/import_ldap_users')
+@admi.route('/import_ldap_users', methods=["POST"])
 @login_required
 @admin_required
 def import_ldap_users():

@@ -1,0 +1,194 @@
+body {
+	margin: 0px;
+}
+
+#djvuContainer {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	max-width: 100%;
+	text-align: center;
+	overflow: hidden;
+}
+
+.toolbar {
+	position: relative;
+	display: inline-block;
+	padding-top: 10px;
+
+	transform: translate(0, 0);
+	-webkit-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	transition: transform 0.3s;
+	-webkit-transition: -webkit-transform 0.3s;
+}
+
+.toolbarHidden {
+	transform: translate(0, -100%);
+	-webkit-transform: translate(0, -100%);
+	-ms-transform: translate(0, -100%);
+	transition: transform 1s;
+	-webkit-transition: transform 1s;
+}
+
+.toolbarSquareButton {
+	float: left;
+	width: 40px;
+	height: 40px;
+	background-image: url("../../js/libs/djvu_html5/img/toolbar-buttons.png");
+	background-repeat: no-repeat;
+	background-size: 500% 300%;
+}
+
+.scrollbar {
+	position: absolute;
+	border-radius: 6px;
+	opacity: 0.6;
+	box-shadow: inset 0 0 0 1px black, inset 0 0 0 2px white, inset 0 0 0 10px #BBB;
+	transition: opacity 0.3s;
+}
+.scrollbar:hover {
+	box-shadow: inset 0 0 0 1px black, inset 0 0 0 2px white, inset 0 0 0 10px #999;
+}
+.scrollbarClicked, .scrollbarClicked:hover {
+	box-shadow: inset 0 0 0 1px black, inset 0 0 0 2px white, inset 0 0 0 10px #777;
+}
+.scrollbarHidden {
+	opacity: 0;
+	transition: opacity 0.6s;
+}
+
+.scrollbarVertical {
+	right: 0px;
+	border-right: 1px solid transparent;
+	width: 13px;
+}
+
+.scrollbarHorizontal {
+	bottom: 0px;
+	border-bottom: 1px solid transparent;
+	height: 13px;
+}
+
+.content {
+	overflow: hidden;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.textLayer {
+	position: absolute;
+	height: 120%;
+	width: 120%;
+	overflow: scroll;
+	text-align: left;
+}
+_:-ms-lang(x), .textLayer {
+	height: 100%;
+	width: 100%;
+	-ms-overflow-style: none;
+}
+.textPage {
+	margin-top: 100vh;
+	margin-bottom: 100vh;
+	padding-right: 100vw;
+}
+.textPage span {
+	font-family: sans-serif;
+	color: #000;
+	color: rgba(0, 0, 0, 0);
+	white-space: nowrap;
+}
+.visibleTextPage span {
+	display: inline-block;
+	position: relative;
+
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	/* border: 1px solid red; /* for easy debug */
+}
+
+.buttonZoomIn {
+	background-position: 25% 0;
+}
+.buttonZoomIn:hover {
+	background-position: 25% 50%;
+}
+.buttonZoomIn:disabled {
+	background-position: 25% 100%;
+}
+
+.buttonZoomOut {
+	background-position: 0 0;
+}
+.buttonZoomOut:hover {
+	background-position: 0 50%;
+}
+.buttonZoomOut:disabled {
+	background-position: 0 100%;
+}
+
+.buttonPagePrev {
+	background-position: 50% 0;
+}
+.buttonPagePrev:hover {
+	background-position: 50% 50%;
+}
+.buttonPagePrev:disabled {
+	background-position: 50% 100%;
+}
+
+.buttonPageNext {
+	background-position: 75% 0;
+}
+.buttonPageNext:hover {
+	background-position: 75% 50%;
+}
+.buttonPageNext:disabled {
+	background-position: 75% 100%;
+}
+
+.toolbarItem {
+	display: inline-block;
+	margin: 0 10px;
+}
+
+.comboBox {
+	float: left;
+	position: relative;
+}
+
+.comboBoxSelection {
+	width: 8.25ex;
+	margin: 10px 12px 0px 12px;
+}
+
+.comboBoxText {
+	width: 5ex;
+	border: none;
+	padding: 0px;
+	outline: none;
+
+	position: absolute;
+	margin: 10px 0px 0px 12px;
+	top: 2px;
+	left: 3px;
+}
+
+.statusImage {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 128px;
+	height: 128px;
+	margin: -72px 0 0 -64px;
+	background-image: url("../../js/libs/djvu_html5/img/status.png");
+	background-repeat: no-repeat;
+}
+
+.blankImage {
+	background-image: url("../../js/libs/djvu_html5/img/blank.jpg");
+}

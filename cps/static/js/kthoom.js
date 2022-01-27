@@ -180,13 +180,15 @@ function initProgressClick() {
 
 function loadFromArrayBuffer(ab) {
     var lastCompletion = 0;
+    const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
         archiveOpenFile(ab, function (archive) {
             if (archive) {
                 totalImages = archive.entries.length
                 console.info('Uncompressing ' + archive.archive_type + ' ...');
-                archive.entries.forEach(function(e, i) {
+                entries = archive.entries.sort((a,b) => collator.compare(a.name, b.name));
+                entries.forEach(function(e, i) {
                     updateProgress( (i + 1)/ totalImages * 100);
                     if (e.is_file) {
                         e.readData(function(d) {

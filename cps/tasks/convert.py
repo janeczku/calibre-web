@@ -1,5 +1,21 @@
-from __future__ import division, print_function, unicode_literals
-import sys
+# -*- coding: utf-8 -*-
+
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2020 pwr
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import re
 
@@ -14,7 +30,8 @@ from cps import db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
-from flask import url_for
+from cps.kobo_sync_status import remove_synced_book
+from cps.ub import ini
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
@@ -130,10 +147,15 @@ class TaskConvert(CalibreTask):
                 try:
                     local_db.session.merge(new_format)
                     local_db.session.commit()
+                    if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
+                        ub_session = ini()
+                        remove_synced_book(book_id, True, ub_session)
+                        ub_session.close()
                 except SQLAlchemyError as e:
                     local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
+                    self._handleError(error_message)
                     return
                 self.results['path'] = cur_book.path
                 self.title = cur_book.title
@@ -161,8 +183,6 @@ class TaskConvert(CalibreTask):
         while True:
             nextline = p.stdout.readlines()
             nextline = [x.strip('\n') for x in nextline if x != '\n']
-            if sys.version_info < (3, 0):
-                nextline = [x.decode('utf-8') for x in nextline]
             for line in nextline:
                 log.debug(line)
             if p.poll() is not None:
@@ -201,17 +221,16 @@ class TaskConvert(CalibreTask):
                     quotes.append(quotes_index)
                     quotes_index += 1
 
-            p = process_open(command, quotes)
+            p = process_open(command, quotes, newlines=False)
         except OSError as e:
             return 1, _(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()
-            if os.name == 'nt' and sys.version_info < (3, 0):
-                nextline = nextline.decode('windows-1252')
-            elif os.name == 'posix' and sys.version_info < (3, 0):
-                nextline = nextline.decode('utf-8')
-            log.debug(nextline.strip('\r\n'))
+            if isinstance(nextline, bytes):
+                nextline = nextline.decode('utf-8', errors="ignore").strip('\r\n')
+            if nextline:
+                log.debug(nextline)
             # parse progress string from calibre-converter
             progress = re.search(r"(\d+)%\s.*", nextline)
             if progress:
@@ -224,16 +243,18 @@ class TaskConvert(CalibreTask):
         calibre_traceback = p.stderr.readlines()
         error_message = ""
         for ele in calibre_traceback:
-            if sys.version_info < (3, 0):
-                ele = ele.decode('utf-8')
-            log.debug(ele.strip('\n'))
+            ele = ele.decode('utf-8', errors="ignore").strip('\n')
+            log.debug(ele)
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
-                error_message = _("Calibre failed with error: %(error)s", error=ele.strip('\n'))
+                error_message = _("Calibre failed with error: %(error)s", error=ele)
         return check, error_message
 
     @property
     def name(self):
         return "Convert"
+
+    def __str__(self):
+        return "Convert {} {}".format(self.bookid, self.kindle_mail)
 
     @property
     def is_cancellable(self):
