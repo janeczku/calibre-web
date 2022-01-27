@@ -3,6 +3,7 @@
 <h1 class="{{page}}">{{title}}</h1>
 <div class="col-md-10 col-lg-6">
   <form role="form" id="search" action="{{ url_for('web.advanced_search_form') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="book_title" id="book_title" value="">
@@ -19,7 +20,7 @@
       <div class="form-group col-sm-6">
         <label for="publishstart">{{_('Published Date From')}}</label>
         <div class="input-group">
-          <input type="text" class="datepicker form-control" name="publish_start" id="publishstart" value="">
+          <input type="text" class="datepicker form-control" name="publishstart" id="publishstart" value="">
           <input type="text" class="form-control fake-input hidden" id="fake_publishstart" value="">
           <span class="input-group-btn">
             <button type="button" id="publishstart_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
@@ -231,7 +232,6 @@
 <script>
   var language = '{{ g.user.locale }}';
 </script>
-
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
 {% if not g.user.locale == 'en' %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>

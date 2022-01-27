@@ -16,7 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 from collections import namedtuple
@@ -34,12 +33,7 @@ HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file
 UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
-if sys.version_info < (3, 0):
-    BASE_DIR            = os.path.abspath(os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),os.pardir)).decode('utf-8')
-else:
-    BASE_DIR            = os.path.abspath(os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),os.pardir))
+BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),os.pardir))
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
@@ -164,7 +158,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages, publisher')
 
-STABLE_VERSION = {'version': '0.6.13 Beta'}
+STABLE_VERSION = {'version': '0.6.17 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'

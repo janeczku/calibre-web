@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import json
 import importlib
@@ -104,9 +103,9 @@ def metadata_search():
     data = list()
     active = current_user.view_settings.get('metadata', {})
     if query:
-        static_cover = url_for('static', filename='generic_cover.jpg')
+        generic_cover = ""
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            meta = {executor.submit(c.search, query, static_cover): c for c in cl if active.get(c.__id__, True)}
+            meta = {executor.submit(c.search, query, generic_cover): c for c in cl if active.get(c.__id__, True)}
             for future in concurrent.futures.as_completed(meta):
                 data.extend(future.result())
     return Response(json.dumps(data), mimetype='application/json')

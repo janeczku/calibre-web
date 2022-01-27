@@ -16,9 +16,10 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
-
 from .iso_language_names import LANGUAGE_NAMES as _LANGUAGE_NAMES
+from . import logger
+
+log = logger.create()
 
 
 try:
@@ -52,7 +53,11 @@ def get_language_names(locale):
 
 
 def get_language_name(locale, lang_code):
-    return get_language_names(locale)[lang_code]
+    try:
+        return get_language_names(locale)[lang_code]
+    except KeyError:
+        log.error('Missing translation for language name: {}'.format(lang_code))
+        return "Unknown"
 
 
 def get_language_codes(locale, language_names, remainder=None):

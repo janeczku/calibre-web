@@ -16,7 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 import sys
 import inspect
@@ -43,20 +42,15 @@ logging.addLevelName(logging.CRITICAL, "CRIT")
 
 class _Logger(logging.Logger):
 
-    def debug_or_exception(self, message, *args, **kwargs):
+    def debug_or_exception(self, message, stacklevel=2, *args, **kwargs):
         if sys.version_info > (3, 7):
             if is_debug_enabled():
-                self.exception(message, stacklevel=2, *args, **kwargs)
+                self.exception(message, stacklevel=stacklevel, *args, **kwargs)
             else:
-                self.error(message, stacklevel=2, *args, **kwargs)
-        elif sys.version_info > (3, 0):
-            if is_debug_enabled():
-                self.exception(message, stack_info=True, *args, **kwargs)
-            else:
-                self.error(message, *args, **kwargs)
+                self.error(message, stacklevel=stacklevel, *args, **kwargs)
         else:
             if is_debug_enabled():
-                self.exception(message, *args, **kwargs)
+                self.exception(message, stack_info=True, *args, **kwargs)
             else:
                 self.error(message, *args, **kwargs)
 

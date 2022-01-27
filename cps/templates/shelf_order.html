@@ -3,15 +3,16 @@
   <div class="col-sm-8 col-lg-8 col-xs-12">
     <h2>{{title}}</h2>
     <div>{{_('Drag to Rearrange Order')}}</div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
           <div id="{{entry['Books']['id']}}" class="list-group-item">
             <div class="row">
               <div class="col-lg-2 col-sm-4 hidden-xs">
                 {% if entry['visible'] %}
-                  <img title="{{entry.title}}" class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
+                  <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
                 {% else %}
-                  <img title="{{entry.title}}" class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
+                  <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
                 {% endif %}
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">

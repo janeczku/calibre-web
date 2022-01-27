@@ -1,19 +1,35 @@
 {% extends "layout.html" %}
 {% block body %}
   <h1>{{title}}</h1>
+  <div class="filterheader hidden-xs">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div id="asc" data-order="{{ order }}" data-id="{{ data }}" class="btn btn-primary {% if order == 1 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
+    <div id="desc" data-id="{{ data }}" class="btn btn-primary{% if order == 0 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+    {% if charlist|length %}
+    <div id="all" class="active btn btn-primary {% if charlist|length > 9 %}hidden-sm{% endif %}">{{_('All')}}</div>
+    {% endif %}
+    <div class="btn-group character {% if charlist|length > 9 %}hidden-sm{% endif %}" role="group">
+      {% for char in charlist%}
+      <div class="btn btn-primary char">{{char}}</div>
+      {% endfor %}
+    </div>
+  </div>
   <div class="container">
-       <div class="col-xs-12 col-sm-6">
+      <div div id="list" class="col-xs-12 col-sm-6">
   {% for lang in languages %}
       {% if loop.index0 == (loop.length/2)|int and loop.length > 20 %}
-       </div>
-       <div class="col-xs-12 col-sm-6">
+      </div>
+      <div id="second" class="col-xs-12 col-sm-6">
     {% endif %}
-    <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{lang_counter[loop.index0].bookcount}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('web.books_list', book_id=lang.lang_code, data=data, sort_param='new')}}">{{lang.name}}</a></div>
+    <div class="row" data-id="{{lang[0].name}}">
+        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{lang[1]}}</span></div>
+        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('web.books_list', book_id=lang[0].lang_code, data=data, sort_param='new')}}">{{lang[0].name}}</a></div>
     </div>
   {% endfor %}
+      </div>
   </div>
-  </div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
 {% endblock %}
 

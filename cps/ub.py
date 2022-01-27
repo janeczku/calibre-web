@@ -17,7 +17,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import atexit
 import os
 import sys
@@ -29,7 +28,6 @@ from binascii import hexlify
 
 from flask_login import AnonymousUserMixin, current_user
 from flask_login import user_logged_in
-from contextlib import contextmanager
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -65,27 +63,13 @@ searched_ids = {}
 
 logged_in = dict()
 
-def store_user_session():
-    if flask_session.get('_user_id', ""):
-        if logged_in.get(flask_session.get('_user_id', "")):
-            logged_in[flask_session.get('_user_id', "")].append(flask_session.get('_id', ""))
-        else:
-            logged_in[flask_session.get('_user_id', "")] = [flask_session.get('_id', "")]
-        log.info(flask_session.get('_id', ""))
-
-def delete_user_session(user_id, session_key):
-    try:
-        logged_in.get(str(user_id), []).remove(session_key)
-    except ValueError:
-        pass
-
-def check_user_session(user_id, session_key):
-    return session_key in logged_in.get(str(user_id), [])
 
 def signal_store_user_session(object, user):
     store_user_session()
 
 def store_user_session():
+    if flask_session.get('user_id', ""):
+        flask_session['_user_id'] = flask_session.get('user_id', "")
     if flask_session.get('_user_id', ""):
         try:
             if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):
@@ -127,6 +111,12 @@ def store_ids(result):
     ids = list()
     for element in result:
         ids.append(element.id)
+    searched_ids[current_user.id] = ids
+
+def store_combo_ids(result):
+    ids = list()
+    for element in result:
+        ids.append(element[0].id)
     searched_ids[current_user.id] = ids
 
 
@@ -317,11 +307,11 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return None
 
     def set_view_property(self, page, prop, value):
-        if 'view' in flask_session:
-            if not flask_session['view'].get(page):
-                flask_session['view'][page] = dict()
-            flask_session['view'][page][prop] = value
-        return None
+        if not 'view' in flask_session:
+            flask_session['view'] = dict()
+        if not flask_session['view'].get(page):
+            flask_session['view'][page] = dict()
+        flask_session['view'][page][prop] = value
 
 class User_Sessions(Base):
     __tablename__ = 'user_session'
@@ -420,6 +410,12 @@ class ArchivedBook(Base):
     last_modified = Column(DateTime, default=datetime.datetime.utcnow)
 
 
+class KoboSyncedBooks(Base):
+    __tablename__ = 'kobo_synced_books'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+
 # The Kobo ReadingState API keeps track of 4 timestamped entities:
 #   ReadingState, StatusInfo, Statistics, CurrentBookmark
 # Which we map to the following 4 tables:
@@ -432,8 +428,8 @@ class KoboReadingState(Base):
     book_id = Column(Integer)
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
     priority_timestamp = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
-    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all")
-    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all")
+    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all, delete")
+    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all, delete")
 
 
 class KoboBookmark(Base):
@@ -808,6 +804,14 @@ def create_admin_user(session):
     except Exception:
         session.rollback()
 
+def ini():
+    global app_DB_path
+    engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+
+    Session = scoped_session(sessionmaker())
+    Session.configure(bind=engine)
+    return Session()
+
 
 def init_db(app_db_path):
     # Open session for database connection
@@ -875,12 +879,13 @@ def dispose():
             except Exception:
                 pass
 
-def session_commit(success=None):
+def session_commit(success=None, sess=None):
+    s = sess if sess else session
     try:
-        session.commit()
+        s.commit()
         if success:
             log.info(success)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
-        session.rollback()
+        s.rollback()
         log.debug_or_exception(e)
     return ""

@@ -19,8 +19,8 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
+__package__ = "cps"
 
-from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import mimetypes
@@ -29,19 +29,26 @@ from babel import Locale as LC
 from babel import negotiate_locale
 from babel.core import UnknownLocaleError
 from flask import Flask, request, g
-from flask_login import LoginManager
+from .MyLoginManager import MyLoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
 from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
+from .dep_check import dependency_check
 
 try:
     import lxml
     lxml_present = True
 except ImportError:
     lxml_present = False
+
+try:
+    from flask_wtf.csrf import CSRFProtect
+    wtf_present = True
+except ImportError:
+    wtf_present = False
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -61,19 +68,28 @@ mimetypes.add_type('application/mp4', '.m4a')
 mimetypes.add_type('application/mp4', '.m4b')
 mimetypes.add_type('application/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
 app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
     REMEMBER_COOKIE_SAMESITE='Lax',  # will be available in flask-login 0.5.1 earliest
+    WTF_CSRF_SSL_STRICT=False
 )
 
 
-lm = LoginManager()
+lm = MyLoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 lm.session_protection = 'strong'
+
+if wtf_present:
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+else:
+    csrf = None
 
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
@@ -85,6 +101,7 @@ babel = Babel()
 _BABEL_TRANSLATIONS = set()
 
 log = logger.create()
+
 
 from . import services
 
@@ -100,17 +117,24 @@ def create_app():
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
         print(
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+        web_server.stop(True)
         sys.exit(5)
     if not lxml_present:
         log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
         print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
+        web_server.stop(True)
         sys.exit(6)
+    if not wtf_present:
+        log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        web_server.stop(True)
+        sys.exit(7)
+    for res in dependency_check() + dependency_check(True):
+        log.info('*** "{}" version does not fit the requirements. Should: {}, Found: {}, please consider installing required version ***'
+            .format(res['name'],
+                 res['target'],
+                 res['found']))
     app.wsgi_app = ReverseProxied(app.wsgi_app)
-    # For python2 convert path to unicode
-    if sys.version_info < (3, 0):
-        app.static_folder = app.static_folder.decode('utf-8')
-        app.root_path = app.root_path.decode('utf-8')
-        app.instance_path = app.instance_path.decode('utf-8')
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)

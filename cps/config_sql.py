@@ -16,8 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from __future__ import division, print_function, unicode_literals
 import os
 import sys
 import json
@@ -68,7 +66,7 @@ class _Settings(_Base):
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
-
+    config_trustedhosts = Column(String,default='')
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
@@ -91,6 +89,8 @@ class _Settings(_Base):
 
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=constants.ADMIN_USER_SIDEBAR)
+    config_default_language = Column(String(3), default="all")
+    config_default_locale = Column(String(2), default="en")
     config_columns_to_ignore = Column(String)
 
     config_denied_tags = Column(String, default="")
@@ -366,10 +366,6 @@ def _migrate_table(session, orm_class):
                 session.query(column).first()
             except OperationalError as err:
                 log.debug("%s: %s", column_name, err.args[0])
-                if column.default is not None:
-                    if sys.version_info < (3, 0):
-                        if isinstance(column.default.arg, unicode):
-                            column.default.arg = column.default.arg.encode('utf-8')
                 if column.default is None:
                     column_default = ""
                 else:

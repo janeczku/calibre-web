@@ -27,11 +27,8 @@
 
 # http://flask.pocoo.org/snippets/62/
 
-from __future__ import division, print_function, unicode_literals
-try:
-    from urllib.parse import urlparse, urljoin
-except ImportError:
-    from urlparse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin
+
 
 from flask import request, url_for, redirect
 
