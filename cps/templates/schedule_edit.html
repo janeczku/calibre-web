@@ -7,6 +7,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" class="col-md-10 col-lg-6" method="POST" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label for="schedule_start_time">{{_('Time at which tasks start to run')}}</label>
       <select name="schedule_start_time" id="schedule_start_time" class="form-control">
