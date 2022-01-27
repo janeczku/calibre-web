@@ -432,17 +432,9 @@ def feed_languagesindex():
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
-        #try:
-        #    cur_l = LC.parse(current_user.filter_language())
-        #except UnknownLocaleError:
-        #    cur_l = None
         languages = calibre_db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
         languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].lang_code)
-        #if cur_l:
-        #    languages[0].name = cur_l.get_language_name(get_locale())
-        #else:
-        #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(languages))
     return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
@@ -530,7 +522,8 @@ def feed_search(term):
         entries, __, ___ = calibre_db.get_search_results(term, config_read_column=config.config_read_column)
         entries_count = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entries_count, entries_count)
-        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        items = [entry[0] for entry in entries]
+        return render_xml_template('feed.xml', searchterm=term, entries=items, pagination=pagination)
     else:
         return render_xml_template('feed.xml', searchterm="")
 

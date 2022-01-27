@@ -40,35 +40,35 @@
   {% if entries and entries[0] %}
   {% for entry in entries %}
   <entry>
-    <title>{{entry[0].title}}</title>
-    <id>urn:uuid:{{entry[0].uuid}}</id>
-    <updated>{{entry[0].atom_timestamp}}</updated>
-    {% if entry[0].authors.__len__() > 0 %}
+    <title>{{entry.title}}</title>
+    <id>urn:uuid:{{entry.uuid}}</id>
+    <updated>{{entry.atom_timestamp}}</updated>
+    {% if entry.authors.__len__() > 0 %}
       <author>
-        <name>{{entry[0].authors[0].name}}</name>
+        <name>{{entry.authors[0].name}}</name>
       </author>
     {% endif %}
-    {% if entry[0].publishers.__len__() > 0 %}
+    {% if entry.publishers.__len__() > 0 %}
       <publisher>
-        <name>{{entry[0].publishers[0].name}}</name>
+        <name>{{entry.publishers[0].name}}</name>
       </publisher>
     {% endif %}
-    {% for lang in entry[0].languages %}
+    {% for lang in entry.languages %}
       <dcterms:language>{{lang.lang_code}}</dcterms:language>
     {% endfor %}
-    {% for tag in entry[0].tags %}
+    {% for tag in entry.tags %}
     <category scheme="http://www.bisg.org/standards/bisac_subject/index.html"
               term="{{tag.name}}"
               label="{{tag.name}}"/>
     {% endfor %}
-    {% if entry[0].comments[0] %}<summary>{{entry[0].comments[0].text|striptags}}</summary>{% endif %}
-    {% if entry[0].has_cover %}
-    <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry[0].id)}}" rel="http://opds-spec.org/image"/>
-    <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry[0].id)}}" rel="http://opds-spec.org/image/thumbnail"/>
+    {% if entry.comments[0] %}<summary>{{entry.comments[0].text|striptags}}</summary>{% endif %}
+    {% if entry.has_cover %}
+    <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image"/>
+    <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image/thumbnail"/>
     {% endif %}
-    {% for format in entry[0].data %}
-    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('opds.opds_download_link', book_id=entry[0].id, book_format=format.format|lower)}}"
-          length="{{format.uncompressed_size}}" mtime="{{entry[0].atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
+    {% for format in entry.data %}
+    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"
+          length="{{format.uncompressed_size}}" mtime="{{entry.atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
   {% endfor %}
