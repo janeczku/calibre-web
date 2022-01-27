@@ -26,19 +26,26 @@ $(function () {
        )
     };
 
+    function getUniqueValues(attribute_name, book){
+        var presentArray = $.map($("#"+attribute_name).val().split(","), $.trim);
+        if ( presentArray.length === 1 && presentArray[0] === "") {
+            presentArray = [];
+        }
+        $.each(book[attribute_name], function(i, el) {
+            if ($.inArray(el, presentArray) === -1) presentArray.push(el);
+        });
+        return presentArray
+    }
+
     function populateForm (book) {
         tinymce.get("description").setContent(book.description);
-        var uniqueTags = $.map($("#tags").val().split(","), $.trim);
-        if ( uniqueTags.length == 1 && uniqueTags[0] == "") {
-            uniqueTags = [];
-        }
-        $.each(book.tags, function(i, el) {
-            if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
-        });
+        var uniqueTags = getUniqueValues('tags', book)
+        var uniqueLanguages = getUniqueValues('languages', book)
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
         $("#bookAuthor").val(ampSeparatedAuthors);
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
+        $("#languages").val(uniqueLanguages.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
         if(book.cover && $("#cover_url").length){
             $(".cover img").attr("src", book.cover);
@@ -48,7 +55,32 @@ $(function () {
         $("#publisher").val(book.publisher);
         if (typeof book.series !== "undefined") {
             $("#series").val(book.series);
+            $("#series_index").val(book.series_index);
         }
+        if (typeof book.identifiers !== "undefined") {
+            populateIdentifiers(book.identifiers)
+        }
+    }
+
+    function populateIdentifiers(identifiers){
+       for (const property in identifiers) {
+          console.log(`${property}: ${identifiers[property]}`);
+          if ($('input[name="identifier-type-'+property+'"]').length) {
+              $('input[name="identifier-val-'+property+'"]').val(identifiers[property])
+          }
+          else {
+              addIdentifier(property, identifiers[property])
+          }
+        }
+    }
+
+    function addIdentifier(name, value){
+        var line = '<tr>';
+        line += '<td><input type="text" class="form-control" name="identifier-type-'+ name +'" required="required" placeholder="' + _("Identifier Type") +'" value="'+ name +'"></td>';
+        line += '<td><input type="text" class="form-control" name="identifier-val-'+ name +'" required="required" placeholder="' + _("Identifier Value") +'" value="'+ value +'"></td>';
+        line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">'+_("Remove")+'</a></td>';
+        line += '</tr>';
+        $("#identifier-table").append(line);
     }
 
     function doSearch (keyword) {
