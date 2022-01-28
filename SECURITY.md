@@ -31,7 +31,7 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.15      | Changed error message in case of trying to delete a shelf unauthorized. Thanks to @ibarrionuevo                    ||
 | V 0.6.16      | JavaScript could get executed on authors page. Thanks to @alicaz                                                   ||
 | V 0.6.16      | Localhost can no longer be used to upload covers. Thanks to @scara31                                               ||
-| V 0.6.16      | Another case where public shelfs could be created without permission is prevented. Thanks to @ibarrionuevo         ||
+| V 0.6.16      | Another case where public shelfs could be created without permission is prevented. Thanks to @nhiephon             ||
 
 
 ## Staement regarding Log4j (CVE-2021-44228 and related)

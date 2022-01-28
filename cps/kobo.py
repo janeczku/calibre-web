@@ -552,11 +552,9 @@ def HandleTagUpdate(tag_id):
         else:
             abort(404, description="Collection isn't known to CalibreWeb")
 
-    if not shelf_lib.check_shelf_edit_permissions(shelf):
-        abort(401, description="User is unauthaurized to edit shelf.")
-
     if request.method == "DELETE":
-        shelf_lib.delete_shelf_helper(shelf)
+        if not shelf_lib.delete_shelf_helper(shelf):
+            abort(401, description="Error deleting Shelf")
     else:
         name = None
         try:
