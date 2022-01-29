@@ -186,4 +186,9 @@ def get_timezone():
 
 from .updater import Updater
 updater_thread = Updater()
+
+# Perform dry run of updater and exit afterwards
+if cli.dry_run:
+    updater_thread.dry_run()
+    sys.exit(0)
 updater_thread.start()
