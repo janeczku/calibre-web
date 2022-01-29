@@ -437,7 +437,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
         # Rename all files from old names to new names
         try:
             clean_author_database(renamed_author, calibrepath)
-            if first_author not in renamed_author:
+            if first_author and first_author not in renamed_author:
                 clean_author_database([first_author], calibrepath, localbook)
             if not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
                 shutil.rmtree(os.path.dirname(path))
@@ -585,7 +585,8 @@ def update_dir_structure(book_id,
                         first_author=None,
                         orignal_filepath=None,
                         db_filename=None,
-                        renamed_author=False):
+                        renamed_author=None):
+    renamed_author = renamed_author or []
     if config.config_use_google_drive:
         return update_dir_structure_gdrive(book_id, first_author, renamed_author)
     else:

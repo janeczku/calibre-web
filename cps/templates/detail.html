@@ -39,7 +39,7 @@
           {% endif %}
             {% if g.user.kindle_mail and entry.kindle_list %}
               {% if entry.kindle_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=entry.kindle_list[0]['format'], convert=entry.kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.kindle_list[0]['text']}}</div>
+                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=entry.kindle_list[0]['format'], convert=entry.kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.kindle_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
