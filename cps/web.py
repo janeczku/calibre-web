@@ -1104,13 +1104,6 @@ def get_tasks_status():
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
-# method is available without login and not protected by CSRF to make it easy reachable
-@app.route("/reconnect", methods=['GET'])
-def reconnect():
-    calibre_db.reconnect_db(config, ub.app_DB_path)
-    return json.dumps({})
-
-
 # ################################### Search functions ################################################################
 
 @web.route("/search", methods=["GET"])

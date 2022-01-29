@@ -39,7 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services
+from . import constants, logger, helper, services, cli
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
@@ -156,6 +156,18 @@ def shutdown():
 
     showtext['text'] = _(u'Unknown command')
     return json.dumps(showtext), 400
+
+
+# method is available without login and not protected by CSRF to make it easy reachable, is per default switched of
+# needed for docker applications, as changes on metadata.db from host are not visible to application
+@admi.route("/reconnect", methods=['GET'])
+def reconnect():
+    if cli.args.r:
+        calibre_db.reconnect_db(config, ub.app_DB_path)
+        return json.dumps({})
+    else:
+        log.debug("'/reconnect' was accessed but is not enabled")
+        abort(404)
 
 
 @admi.route("/admin/view")

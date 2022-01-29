@@ -53,12 +53,10 @@ class Updater(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.paused = False
-        # self.pause_cond = threading.Condition(threading.Lock())
         self.can_run = threading.Event()
         self.pause()
         self.status = -1
         self.updateIndex = None
-        # self.run()
 
     def get_current_version_info(self):
         if config.config_updatechannel == constants.UPDATE_STABLE:
@@ -85,15 +83,15 @@ class Updater(threading.Thread):
             log.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
-            foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
-            if not os.path.isdir(foldername):
+            folder_name = os.path.join(tmp_dir, z.namelist()[0])[:-1]
+            if not os.path.isdir(folder_name):
                 self.status = 11
                 log.info(u'Extracted contents of zipfile not found in temp folder')
                 self.pause()
                 return False
             self.status = 4
             log.debug(u'Replacing files')
-            if self.update_source(foldername, constants.BASE_DIR):
+            if self.update_source(folder_name, constants.BASE_DIR):
                 self.status = 6
                 log.debug(u'Preparing restart of server')
                 time.sleep(2)
@@ -184,7 +182,7 @@ class Updater(threading.Thread):
         return rf
 
     @classmethod
-    def check_permissions(cls, root_src_dir, root_dst_dir):
+    def check_permissions(cls, root_src_dir, root_dst_dir, logfunction):
         access = True
         remove_path = len(root_src_dir) + 1
         for src_dir, __, files in os.walk(root_src_dir):
@@ -193,7 +191,7 @@ class Updater(threading.Thread):
             if not os.path.isdir(root_dir): # root_dir.lstrip(os.sep).startswith('.') or
                 continue
             if not os.access(root_dir, os.R_OK|os.W_OK):
-                log.debug("Missing permissions for {}".format(root_dir))
+                logfunction("Missing permissions for {}".format(root_dir))
                 access = False
             for file_ in files:
                 curr_file = os.path.join(root_dir, file_)
@@ -201,7 +199,7 @@ class Updater(threading.Thread):
                 if not os.path.isfile(curr_file): # or curr_file.startswith('.'):
                     continue
                 if not os.access(curr_file, os.R_OK|os.W_OK):
-                    log.debug("Missing permissions for {}".format(curr_file))
+                    logfunction("Missing permissions for {}".format(curr_file))
                     access = False
         return access
 
@@ -258,18 +256,10 @@ class Updater(threading.Thread):
     def update_source(self, source, destination):
         # destination files
         old_list = list()
-        exclude = (
-            os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
-            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
-            os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
-            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
-            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
-            os.sep + 'gmail.json'
-        )
-        additional_path = self.is_venv()
+        exclude = self._add_excluded_files(log.info)
+        additional_path =self.is_venv()
         if additional_path:
-            exclude = exclude + (additional_path,)
-
+            exclude.append(additional_path)
         # check if we are in a package, rename cps.py to __init__.py
         if constants.HOME_CONFIG:
             shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
@@ -293,7 +283,7 @@ class Updater(threading.Thread):
 
         remove_items = self.reduce_dirs(rf, new_list)
 
-        if self.check_permissions(source, destination):
+        if self.check_permissions(source, destination, log.debug):
             self.moveallfiles(source, destination)
 
             for item in remove_items:
@@ -331,6 +321,12 @@ class Updater(threading.Thread):
     def _stable_version_info(cls):
         log.debug("Stable version: {}".format(constants.STABLE_VERSION))
         return constants.STABLE_VERSION  # Current version
+
+    @classmethod
+    def dry_run(cls):
+        cls._add_excluded_files(print)
+        cls.check_permissions(constants.BASE_DIR, constants.BASE_DIR, print)
+        print("\n*** Finished ***")
 
     @staticmethod
     def _populate_parent_commits(update_data, status, locale, tz, parents):
@@ -390,6 +386,30 @@ class Updater(threading.Thread):
         except (requests.exceptions.RequestException, ValueError):
             status['message'] = _(u'General error')
         return status, update_data
+
+    @staticmethod
+    def _add_excluded_files(logfunction):
+        excluded_files = [
+            os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
+            os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
+            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
+            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
+            os.sep + 'gmail.json', os.sep + 'exclude.txt'
+        ]
+        try:
+            with open(os.path.join(constants.BASE_DIR, "exclude.txt"), "r") as f:
+                lines = f.readlines()
+            for line in lines:
+                proccessed_line = line.strip("\n\r ").strip("\"'").lstrip("\\/ ").\
+                    replace("\\", os.sep).replace("/", os.sep)
+                if os.path.exists(os.path.join(constants.BASE_DIR, proccessed_line)):
+                    excluded_files.append(os.sep + proccessed_line)
+                else:
+                    logfunction("File list for updater: {} not found".format(line))
+        except (PermissionError, FileNotFoundError):
+            logfunction("Excluded file list for updater not found, or not accessible")
+        return excluded_files
 
     def _nightly_available_updates(self, request_method, locale):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
