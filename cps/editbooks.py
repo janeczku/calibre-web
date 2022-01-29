@@ -810,7 +810,8 @@ def edit_book(book_id):
             if "cover_url" in to_save:
                 if to_save["cover_url"]:
                     if not current_user.role_upload():
-                        return "", (403)
+                        calibre_db.session.rollback()
+                        return "", 403
                     if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
                         book.has_cover = 0
                     else:
