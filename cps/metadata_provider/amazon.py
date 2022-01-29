@@ -19,7 +19,7 @@
 import concurrent.futures
 import requests
 from bs4 import BeautifulSoup as BS  # requirement
-# import lxml     #requirement for better speed
+
 try:
     import cchardet #optional for better speed
 except ImportError:
