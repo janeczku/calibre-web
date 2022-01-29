@@ -66,8 +66,7 @@ def register_scheduled_tasks():
             scheduler.schedule(func=end_scheduled_tasks, trigger='cron', hour=end)
 
         # Kick-off tasks, if they should currently be running
-        now = datetime.datetime.now().hour
-        if start <= now < end:
+        if should_task_be_running(start, end):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
 
 
@@ -77,9 +76,13 @@ def register_startup_tasks():
     if scheduler:
         start = config.schedule_start_time
         end = config.schedule_end_time
-        now = datetime.datetime.now().hour
 
         # Run scheduled tasks immediately for development and testing
         # Ignore tasks that should currently be running, as these will be added when registering scheduled tasks
-        if constants.APP_MODE in ['development', 'test'] and not (start <= now < end):
+        if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, end):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
+
+
+def should_task_be_running(start, end):
+    now = datetime.datetime.now().hour
+    return (start < end and start <= now < end) or (end < start <= now or now < end)
