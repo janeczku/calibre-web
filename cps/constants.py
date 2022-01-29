@@ -21,22 +21,22 @@ import os
 from collections import namedtuple
 from sqlalchemy import __version__ as sql_version
 
-sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2,0,0])
+sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 # if installed via pip this variable is set to true (empty file with name .HOMEDIR present)
 HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.HOMEDIR'))
 
-#In executables updater is not available, so variable is set to False there
+# In executables updater is not available, so variable is set to False there
 UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
-BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),os.pardir))
+BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
 
 if HOME_CONFIG:
-    home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")
+    home_dir = os.path.join(os.path.expanduser("~"), ".calibre-web")
     if not os.path.exists(home_dir):
         os.makedirs(home_dir)
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
@@ -133,11 +133,14 @@ except ValueError:
 del env_CALIBRE_PORT
 
 
-EXTENSIONS_AUDIO    = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
-EXTENSIONS_CONVERT_FROM  = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt','cbz','cbr']
-EXTENSIONS_CONVERT_TO  = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt']
-EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
+EXTENSIONS_AUDIO = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
+EXTENSIONS_CONVERT_FROM = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf',
+                           'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr']
+EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',
+                         'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt']
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu',
+                     'prc', 'doc', 'docx', 'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg',
+                     'opus', 'wav', 'flac', 'm4a', 'm4b'}
 
 
 def has_flag(value, bit_flag):
@@ -153,7 +156,7 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
 
 STABLE_VERSION = {'version': '0.6.17 Beta'}
 
-NIGHTLY_VERSION = {}
+NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
 NIGHTLY_VERSION[1] = '$Format:%cI$'
 # NIGHTLY_VERSION[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
