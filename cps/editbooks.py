@@ -964,8 +964,8 @@ def create_book_on_upload(modif_date, meta):
     authr = meta.author
     sort_authors, input_authors, db_author, renamed_authors = prepare_authors_on_upload(title, authr)
 
-    title_dir = helper.get_valid_filename(title)
-    author_dir = helper.get_valid_filename(db_author.name)
+    title_dir = helper.get_valid_filename(title, chars=96)
+    author_dir = helper.get_valid_filename(db_author.name, chars=96)
 
     # combine path and normalize path from windows systems
     path = os.path.join(author_dir, title_dir).replace('\\', '/')
@@ -1283,8 +1283,8 @@ def merge_list_book():
         if to_book:
             for file in to_book.data:
                 to_file.append(file.format)
-            to_name = helper.get_valid_filename(to_book.title) + ' - ' + \
-                      helper.get_valid_filename(to_book.authors[0].name)
+            to_name = helper.get_valid_filename(to_book.title, chars=96) + ' - ' + \
+                      helper.get_valid_filename(to_book.authors[0].name, chars=96)
             for book_id in vals:
                 from_book = calibre_db.get_book(book_id)
                 if from_book:
