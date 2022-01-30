@@ -400,7 +400,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                     return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                              src=old_author_path, dest=new_author_path, error=str(ex))
         if first_author.lower() in [r.lower() for r in renamed_author]:
-            path = os.path.join(calibrepath, new_authordir, titledir)
+            if os.path.isdir(os.path.join(calibrepath, new_authordir)):
+                path = os.path.join(calibrepath, new_authordir, titledir)
     else:
         new_authordir = get_valid_filename(localbook.authors[0].name, chars=96)
     new_titledir = get_valid_filename(localbook.title, chars=96) + " (" + str(book_id) + ")"
@@ -412,8 +413,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
             if orignal_filepath:
                 if not os.path.isdir(new_path):
                     os.makedirs(new_path)
-                shutil.move(os.path.normcase(path), os.path.normcase(os.path.join(new_path, db_filename)))
-                log.debug("Moving title: %s to %s/%s", path, new_path, new_name)
+                shutil.move(os.path.normcase(orignal_filepath), os.path.normcase(os.path.join(new_path, db_filename)))
+                log.debug("Moving title: %s to %s/%s", orignal_filepath, new_path, new_name)
             else:
                 # Check new path is not valid path
                 if not os.path.exists(new_path):
