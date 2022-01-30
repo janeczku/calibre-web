@@ -398,6 +398,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                     log.debug(ex, exc_info=True)
                     return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                              src=old_author_path, dest=new_author_path, error=str(ex))
+        if first_author.lower() in [r.lower() for r in renamed_author]:
+            path = os.path.join(calibrepath, new_authordir, titledir)
     else:
         new_authordir = get_valid_filename(localbook.authors[0].name)
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
