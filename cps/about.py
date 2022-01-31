@@ -25,8 +25,15 @@ import platform
 import sqlite3
 from collections import OrderedDict
 
-import babel, pytz, requests, sqlalchemy
-import werkzeug, flask, flask_login, flask_principal, jinja2
+import babel
+import pytz
+import requests
+import sqlalchemy
+import werkzeug
+import flask
+import flask_login
+import flask_principal
+import jinja2
 from flask_babel import gettext as _
 try:
     from flask_wtf import __version__ as flaskwtf_version
@@ -58,16 +65,6 @@ try:
 except ImportError:
     greenlet_Version = None
 
-try:
-    from fake_useragent.errors import FakeUserAgentError
-except (ImportError):
-    FakeUserAgentError = BaseException
-try:
-    from scholarly import scholarly
-    scholarly_version = _(u'installed')
-except (ImportError, FakeUserAgentError):
-    scholarly_version = _(u'not installed')
-
 from . import services
 
 about = flask.Blueprint('about', __name__)
@@ -82,8 +79,8 @@ if constants.NIGHTLY_VERSION[0] == "$Format:%H$":
     calibre_web_version = constants.STABLE_VERSION['version']
 else:
     calibre_web_version = (constants.STABLE_VERSION['version'] + ' - '
-                    + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
-                    + constants.NIGHTLY_VERSION[1].replace('%','%%'))
+                           + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
+                           + constants.NIGHTLY_VERSION[1].replace('%', '%%'))
 if getattr(sys, 'frozen', False):
     calibre_web_version += " - Exe-Version"
 elif constants.HOME_CONFIG:
@@ -91,7 +88,7 @@ elif constants.HOME_CONFIG:
 
 if not ret:
     _VERSIONS = OrderedDict(
-        Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
+        Platform='{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
         Python=sys.version,
         Calibre_Web=calibre_web_version,
         WebServer=server.VERSION,
@@ -109,7 +106,6 @@ if not ret:
         iso639=isoLanguages.__version__,
         pytz=pytz.__version__,
         Unidecode=unidecode_version,
-        Scholarly=scholarly_version,
         Flask_SimpleLDAP=u'installed' if bool(services.ldap) else None,
         python_LDAP=services.ldapVersion if bool(services.ldapVersion) else None,
         Goodreads=u'installed' if bool(services.goodreads_support) else None,
@@ -121,22 +117,24 @@ if not ret:
     _VERSIONS.update(uploader.get_versions(True))
 else:
     _VERSIONS = OrderedDict(
-        Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
-        Python = sys.version,
+        Platform='{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
+        Python=sys.version,
         Calibre_Web=calibre_web_version,
-        Werkzeug = werkzeug.__version__,
+        Werkzeug=werkzeug.__version__,
         Jinja2=jinja2.__version__,
-        pySqlite = sqlite3.version,
-        SQLite = sqlite3.sqlite_version,
+        pySqlite=sqlite3.version,
+        SQLite=sqlite3.sqlite_version,
     )
     _VERSIONS.update(ret)
     _VERSIONS.update(uploader.get_versions(False))
+
 
 def collect_stats():
     _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
     _VERSIONS['unrar'] = _(converter.get_unrar_version())
     _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
     return _VERSIONS
+
 
 @about.route("/stats")
 @flask_login.login_required
