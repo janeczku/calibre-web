@@ -33,13 +33,6 @@ try:
 except ImportError:
     pass
 
-# Improve this to check if scholarly is available in a global way, like other pythonic libraries
-try:
-    from scholarly import scholarly
-    have_scholar = True
-except ImportError:
-    have_scholar = False
-
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required

@@ -19,7 +19,14 @@ import itertools
 from typing import Dict, List, Optional
 from urllib.parse import quote
 
-from scholarly import scholarly
+try:
+    from fake_useragent.errors import FakeUserAgentError
+except (ImportError):
+    FakeUserAgentError = BaseException
+try:
+    from scholarly import scholarly
+except FakeUserAgentError:
+    raise ImportError("No module named 'scholarly'")
 
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
