@@ -16,7 +16,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from scholarly import scholarly
+try:
+    from fake_useragent.errors import FakeUserAgentError
+except (ImportError):
+    FakeUserAgentError = BaseException
+try:
+    from scholarly import scholarly
+except FakeUserAgentError:
+    raise ImportError("No module named 'scholarly'")
 
 from cps.services.Metadata import Metadata
 

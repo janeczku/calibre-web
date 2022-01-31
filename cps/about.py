@@ -59,9 +59,13 @@ except ImportError:
     greenlet_Version = None
 
 try:
+    from fake_useragent.errors import FakeUserAgentError
+except (ImportError):
+    FakeUserAgentError = BaseException
+try:
     from scholarly import scholarly
     scholarly_version = _(u'installed')
-except ImportError:
+except (ImportError, FakeUserAgentError):
     scholarly_version = _(u'not installed')
 
 from . import services
