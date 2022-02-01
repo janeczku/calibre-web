@@ -1066,7 +1066,7 @@ def upload():
 
                 book_id = db_book.id
                 title = db_book.title
-
+                # ToDo this currently doesn't work -> integrate in update_dir_structure_gdrive
                 error = helper.update_dir_structure_file(book_id,
                                                    config.config_calibre_dir,
                                                    input_authors[0],
