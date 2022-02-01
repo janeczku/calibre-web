@@ -33,7 +33,7 @@ rarfile>=2.7
 scholarly>=1.2.0,<1.6
 
 # Comics
-natsort>=2.2.0,<8.1.0
+natsort>=2.2.0,<8.2.0
 comicapi>=2.2.0,<2.3.0
 
 # Kobo integration

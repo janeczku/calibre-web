@@ -233,7 +233,10 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         if subject == '':
             subject = doc_info.subject
         if tags == '' and '/Keywords' in doc_info:
-            tags = doc_info['/Keywords']
+            if isinstance(doc_info['/Keywords'], bytes):
+                tags = doc_info['/Keywords'].decode('utf-8')
+            else:
+                tags = doc_info['/Keywords']
     else:
         title = original_file_name
 
