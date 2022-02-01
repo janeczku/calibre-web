@@ -464,8 +464,9 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             gFile = gd.getFileFromEbooksFolder(None, old_author_dir)
             if gFile:
                 gd.moveGdriveFolderRemote(gFile, new_author_rename_dir)
-            else:
-                error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+            # author is always co-author and has is never author, no folder is okay
+            #else:
+            #    error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
     else:
         new_authordir = get_valid_filename(book.authors[0].name, chars=96)
 
