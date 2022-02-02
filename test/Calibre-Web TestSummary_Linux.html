@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-01-31 21:25:49</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-02-01 20:32:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-02-01 01:40:44</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-02-02 00:57:41</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>3h 28 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 39 min</p>
         </div>
       </div>
       </div>
@@ -1354,10 +1354,10 @@
     <tr id="su" class="failClass">
         <td>TestEditAuthorsGdrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">2</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 6)">Detail</a>
         </td>
@@ -1365,31 +1365,11 @@
 
     
     
-        <tr id="ft13.1" class="none bg-danger">
+        <tr id='pt13.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_co_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft13.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 294, in test_change_capital_co_author
-    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;d92f8f6d-6918-4c96-a00d-13ae877191d1&#34;, element=&#34;f777605d-a838-445b-bae2-e6d59822f1fa&#34;)&gt; is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1412,69 +1392,49 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     
     
     
-        <tr id="ft13.4" class="none bg-danger">
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_co_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft13.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 346, in test_change_capital_rename_co_author
-    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;d92f8f6d-6918-4c96-a00d-13ae877191d1&#34;, element=&#34;4fcb7fb8-c3e4-4e04-8fb3-6d99d9999b74&#34;)&gt; is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft13.5" class="none bg-danger">
+        <tr id='pt13.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_two_co_authors</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft13.6" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.5')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.6')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft13.5" class="popup_window test_output" style="display:block;">
+                <div id="div_ft13.6" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft13.5').style.display='none'"><span
+                                onclick="document.getElementById('div_ft13.6').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 461, in test_change_capital_rename_two_co_authors
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 562, in test_rename_capital_on_upload
     self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;d92f8f6d-6918-4c96-a00d-13ae877191d1&#34;, element=&#34;e4d4c44d-e87d-495b-abc6-f8a5100f2098&#34;)&gt; is not false</pre>
+AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;34a2afba-2e3f-4f75-bc09-67899f2ccfba&#34;, element=&#34;08372364-79c8-4996-97da-de74437e794d&#34;)&gt; is not false</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
-        </tr>
-    
-    
-    
-        <tr id='st13.6' class='none bg-warning'>
-            <td>
-                <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
-            </td>
-            <td colspan='6' align='center'>SKIP</td>
         </tr>
     
     
@@ -1657,11 +1617,11 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1671,11 +1631,31 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id="ft15.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft15.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft15.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 167, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4592,10 +4572,10 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>404</td>
-        <td>393</td>
-        <td>3</td>
+        <td>395</td>
+        <td>2</td>
         <td>0</td>
-        <td>8</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -4623,7 +4603,7 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.13.0-27-generic #29~20.04.1-Ubuntu SMP Fri Jan 14 00:32:30 UTC 2022 x86_64 x86_64</td>
+              <td>Linux 5.13.0-28-generic #31~20.04.1-Ubuntu SMP Wed Jan 19 14:08:10 UTC 2022 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5025,7 +5005,7 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
 </div>
 
 <script>
-    drawCircle(393, 3, 0, 8);
+    drawCircle(395, 2, 0, 7);
     showCase(5);
 </script>
 
