@@ -50,7 +50,8 @@ from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, check_email, check_username, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
-    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email
+    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
+    edit_book_read_status
 from .pagination import Pagination
 from .redirect import redirect_back
 from .usermanagement import login_required_if_no_ano
@@ -154,46 +155,12 @@ def bookmark(book_id, book_format):
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_read(book_id):
-    if not config.config_read_column:
-        book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
-                                                         ub.ReadBook.book_id == book_id)).first()
-        if book:
-            if book.read_status == ub.ReadBook.STATUS_FINISHED:
-                book.read_status = ub.ReadBook.STATUS_UNREAD
-            else:
-                book.read_status = ub.ReadBook.STATUS_FINISHED
-        else:
-            readBook = ub.ReadBook(user_id=current_user.id, book_id = book_id)
-            readBook.read_status = ub.ReadBook.STATUS_FINISHED
-            book = readBook
-        if not book.kobo_reading_state:
-            kobo_reading_state = ub.KoboReadingState(user_id=current_user.id, book_id=book_id)
-            kobo_reading_state.current_bookmark = ub.KoboBookmark()
-            kobo_reading_state.statistics = ub.KoboStatistics()
-            book.kobo_reading_state = kobo_reading_state
-        ub.session.merge(book)
-        ub.session_commit("Book {} readbit toggled".format(book_id))
+    message = edit_book_read_status(book_id)
+    if message:
+        return message, 400
     else:
-        try:
-            calibre_db.update_title_sort(config)
-            book = calibre_db.get_filtered_book(book_id)
-            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
-            if len(read_status):
-                read_status[0].value = not read_status[0].value
-                calibre_db.session.commit()
-            else:
-                cc_class = db.cc_classes[config.config_read_column]
-                new_cc = cc_class(value=1, book=book_id)
-                calibre_db.session.add(new_cc)
-                calibre_db.session.commit()
-        except (KeyError, AttributeError):
-            log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column), 400
-        except (OperationalError, InvalidRequestError) as e:
-            calibre_db.session.rollback()
-            log.error(u"Read status could not set: {}".format(e))
-            return "Read status could not set: {}".format(e), 400
-    return ""
+        return message
+
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @login_required

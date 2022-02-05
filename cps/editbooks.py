@@ -1151,24 +1151,24 @@ def table_get_custom_enum(c_id):
 def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
-    ret = ""
-    if param =='series_index':
+    # ret = ""
+    if param == 'series_index':
         edit_book_series_index(vals['value'], book)
         ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
-    elif param =='tags':
+    elif param == 'tags':
         edit_book_tags(vals['value'], book)
         ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
                        mimetype='application/json')
-    elif param =='series':
+    elif param == 'series':
         edit_book_series(vals['value'], book)
         ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
                        mimetype='application/json')
-    elif param =='publishers':
+    elif param == 'publishers':
         edit_book_publisher(vals['value'], book)
-        ret =  Response(json.dumps({'success': True,
+        ret = Response(json.dumps({'success': True,
                                     'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
                        mimetype='application/json')
-    elif param =='languages':
+    elif param == 'languages':
         invalid = list()
         edit_book_languages(vals['value'], book, invalid=invalid)
         if invalid:
@@ -1179,9 +1179,9 @@ def edit_list_book(param):
             lang_names = list()
             for lang in book.languages:
                 lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-            ret =  Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
+            ret = Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
                             mimetype='application/json')
-    elif param =='author_sort':
+    elif param == 'author_sort':
         book.author_sort = vals['value']
         ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
                        mimetype='application/json')
@@ -1191,27 +1191,27 @@ def edit_list_book(param):
         helper.update_dir_structure(book.id, config.config_calibre_dir)
         ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
                        mimetype='application/json')
-    elif param =='sort':
+    elif param == 'sort':
         book.sort = vals['value']
         ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
                        mimetype='application/json')
-    elif param =='comments':
+    elif param == 'comments':
         edit_book_comments(vals['value'], book)
         ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
                        mimetype='application/json')
-    elif param =='authors':
+    elif param == 'authors':
         input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
         helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0], renamed_author=renamed)
         ret = Response(json.dumps({'success': True,
                                    'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                        mimetype='application/json')
-    elif param =='is_archived':
-        change_archived_books(book.id, vals['value']=="True")
+    elif param == 'is_archived':
+        change_archived_books(book.id, vals['value'] == "True")
         ret = ""
-    elif param =='read_status':
-        # ToDo save
-        ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
-                       mimetype='application/json')
+    elif param == 'read_status':
+        ret = helper.edit_book_read_status(book.id, vals['value'] == "True")
+        if ret:
+            return ret, 400
     elif param.startswith("custom_column_"):
         new_val = dict()
         new_val[param] = vals['value']

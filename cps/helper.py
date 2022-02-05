@@ -35,6 +35,7 @@ from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text, func
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
@@ -289,6 +290,53 @@ def get_sorted_author(value):
             value2 = value
     return value2
 
+def edit_book_read_status(book_id, read_status=None):
+    if not config.config_read_column:
+        book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
+                                                         ub.ReadBook.book_id == book_id)).first()
+        if book:
+            if read_status is None:
+                if book.read_status == ub.ReadBook.STATUS_FINISHED:
+                    book.read_status = ub.ReadBook.STATUS_UNREAD
+                else:
+                    book.read_status = ub.ReadBook.STATUS_FINISHED
+            else:
+                book.read_status = ub.ReadBook.STATUS_FINISHED if read_status else ub.ReadBook.STATUS_UNREAD
+        else:
+            readBook = ub.ReadBook(user_id=current_user.id, book_id = book_id)
+            readBook.read_status = ub.ReadBook.STATUS_FINISHED
+            book = readBook
+        if not book.kobo_reading_state:
+            kobo_reading_state = ub.KoboReadingState(user_id=current_user.id, book_id=book_id)
+            kobo_reading_state.current_bookmark = ub.KoboBookmark()
+            kobo_reading_state.statistics = ub.KoboStatistics()
+            book.kobo_reading_state = kobo_reading_state
+        ub.session.merge(book)
+        ub.session_commit("Book {} readbit toggled".format(book_id))
+    else:
+        try:
+            calibre_db.update_title_sort(config)
+            book = calibre_db.get_filtered_book(book_id)
+            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
+            if len(read_status):
+                if read_status is None:
+                    read_status[0].value = not read_status[0].value
+                else:
+                    read_status[0].value = read_status is True
+                calibre_db.session.commit()
+            else:
+                cc_class = db.cc_classes[config.config_read_column]
+                new_cc = cc_class(value=read_status or 1, book=book_id)
+                calibre_db.session.add(new_cc)
+                calibre_db.session.commit()
+        except (KeyError, AttributeError):
+            log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column)
+        except (OperationalError, InvalidRequestError) as e:
+            calibre_db.session.rollback()
+            log.error(u"Read status could not set: {}".format(e))
+            return "Read status could not set: {}".format(e), 400
+    return ""
 
 # Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
 def delete_book_file(book, calibrepath, book_format=None):
