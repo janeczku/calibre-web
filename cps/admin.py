@@ -1208,15 +1208,16 @@ def _db_configuration_update_helper():
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
-        ub.session.query(ub.Downloads).delete()
-        ub.session.query(ub.ArchivedBook).delete()
-        ub.session.query(ub.ReadBook).delete()
-        ub.session.query(ub.BookShelf).delete()
-        ub.session.query(ub.Bookmark).delete()
-        ub.session.query(ub.KoboReadingState).delete()
-        ub.session.query(ub.KoboStatistics).delete()
-        ub.session.query(ub.KoboSyncedBooks).delete()
-        ub.session_commit()
+        if db_change:
+            ub.session.query(ub.Downloads).delete()
+            ub.session.query(ub.ArchivedBook).delete()
+            ub.session.query(ub.ReadBook).delete()
+            ub.session.query(ub.BookShelf).delete()
+            ub.session.query(ub.Bookmark).delete()
+            ub.session.query(ub.KoboReadingState).delete()
+            ub.session.query(ub.KoboStatistics).delete()
+            ub.session.query(ub.KoboSyncedBooks).delete()
+            ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
