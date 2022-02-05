@@ -1027,9 +1027,10 @@ def move_coverfile(meta, db_book):
         coverfile = meta.cover
     else:
         coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
+    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path)
     try:
-        copyfile(coverfile, new_coverpath)
+        os.makedirs(new_coverpath, exist_ok=True)
+        copyfile(coverfile, os.path.join(new_coverpath, "cover.jpg"))
         if meta.cover:
             os.unlink(meta.cover)
     except OSError as e:
@@ -1064,16 +1065,14 @@ def upload():
 
                 book_id = db_book.id
                 title = db_book.title
-                # ToDo this currently doesn't work -> integrate in update_dir_structure_gdrive
                 if config.config_use_google_drive:
-                    file_name = helper.get_valid_filename(title, chars=42) + \
-                                ' - ' + helper.get_valid_filename(input_authors[0], chars=42) +\
-                                meta.extension.lower()
-
-                    gdrive_path = os.path.join(helper.get_valid_filename(input_authors[0], chars=96),
-                                               title_dir + " (" + str(book_id) + ")",
-                                               file_name)
-                    gdriveutils.uploadFileToEbooksFolder(gdrive_path.replace("\\", "/"), meta.file_path)
+                    helper.upload_new_file_gdrive(book_id,
+                                                  input_authors[0],
+                                                  renamed_authors,
+                                                  title,
+                                                  title_dir,
+                                                  meta.file_path,
+                                                  meta.extension.lower())
                 else:
                     error = helper.update_dir_structure(book_id,
                                                         config.config_calibre_dir,
