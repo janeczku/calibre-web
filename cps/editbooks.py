@@ -82,7 +82,6 @@ def search_objects_remove(db_book_object, db_type, input_elements):
             type_elements = c_elements.name
         for inp_element in input_elements:
             if inp_element.lower() == type_elements.lower():
-                # if inp_element == type_elements:
                 found = True
                 break
         # if the element was not found in the new list, add it to remove list
@@ -132,7 +131,6 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
         # check if a element with that name exists
         db_element = db_session.query(db_object).filter(db_filter == add_element).first()
         # if no element is found add it
-        # if new_element is None:
         if db_type == 'author':
             new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')), "")
         elif db_type == 'series':
@@ -1067,12 +1065,22 @@ def upload():
                 book_id = db_book.id
                 title = db_book.title
                 # ToDo this currently doesn't work -> integrate in update_dir_structure_gdrive
-                error = helper.update_dir_structure_file(book_id,
-                                                   config.config_calibre_dir,
-                                                   input_authors[0],
-                                                   meta.file_path,
-                                                   title_dir + meta.extension.lower(),
-                                                   renamed_author=renamed_authors)
+                if config.config_use_google_drive:
+                    file_name = helper.get_valid_filename(title, chars=42) + \
+                                ' - ' + helper.get_valid_filename(input_authors[0], chars=42) +\
+                                meta.extension.lower()
+
+                    gdrive_path = os.path.join(helper.get_valid_filename(input_authors[0], chars=96),
+                                               title_dir + " (" + str(book_id) + ")",
+                                               file_name)
+                    gdriveutils.uploadFileToEbooksFolder(gdrive_path.replace("\\", "/"), meta.file_path)
+                else:
+                    error = helper.update_dir_structure(book_id,
+                                                        config.config_calibre_dir,
+                                                        input_authors[0],
+                                                        meta.file_path,
+                                                        title_dir + meta.extension.lower(),
+                                                        renamed_author=renamed_authors)
 
                 move_coverfile(meta, db_book)
 
