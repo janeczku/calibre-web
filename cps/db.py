@@ -41,8 +41,6 @@ from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_login import current_user
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
 from flask import flash
 
@@ -341,15 +339,15 @@ class Books(Base):
     isbn = Column(String(collation='NOCASE'), default="")
     flags = Column(Integer, nullable=False, default=1)
 
-    authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books', order_by="Tags.name")
-    comments = relationship('Comments', backref='books')
-    data = relationship('Data', backref='books')
-    series = relationship('Series', secondary=books_series_link, backref='books')
-    ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
-    languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    publishers = relationship('Publishers', secondary=books_publishers_link, backref='books')
-    identifiers = relationship('Identifiers', backref='books')
+    authors = relationship(Authors, secondary=books_authors_link, backref='books')
+    tags = relationship(Tags, secondary=books_tags_link, backref='books', order_by="Tags.name")
+    comments = relationship(Comments, backref='books')
+    data = relationship(Data, backref='books')
+    series = relationship(Series, secondary=books_series_link, backref='books')
+    ratings = relationship(Ratings, secondary=books_ratings_link, backref='books')
+    languages = relationship(Languages, secondary=books_languages_link, backref='books')
+    publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
+    identifiers = relationship(Identifiers, backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
                  authors, tags, languages=None):
@@ -605,6 +603,26 @@ class CalibreDB():
         return self.session.query(Books).filter(Books.id == book_id). \
             filter(self.common_filters(allow_show_archived)).first()
 
+    def get_book_read_archived(self, book_id, read_column, allow_show_archived=False):
+        if not read_column:
+            bd = (self.session.query(Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived).select_from(Books)
+                  .join(ub.ReadBook, and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id),
+                  isouter=True))
+        else:
+            try:
+                read_column = cc_classes[read_column]
+                bd = (self.session.query(Books, read_column.value, ub.ArchivedBook.is_archived).select_from(Books)
+                      .join(read_column, read_column.book == book_id,
+                      isouter=True))
+            except (KeyError, AttributeError):
+                log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                # Skip linking read column and return None instead of read status
+                bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
+        return (bd.filter(Books.id == book_id)
+                .join(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                            int(current_user.id) == ub.ArchivedBook.user_id), isouter=True)
+                .filter(self.common_filters(allow_show_archived)).first())
+
     def get_book_by_uuid(self, book_uuid):
         return self.session.query(Books).filter(Books.uuid == book_uuid).first()
 
@@ -659,9 +677,12 @@ class CalibreDB():
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
     @staticmethod
-    def get_checkbox_sorted(inputlist, state, offset, limit, order):
+    def get_checkbox_sorted(inputlist, state, offset, limit, order, combo=False):
         outcome = list()
-        elementlist = {ele.id: ele for ele in inputlist}
+        if combo:
+            elementlist = {ele[0].id: ele for ele in inputlist}
+        else:
+            elementlist = {ele.id: ele for ele in inputlist}
         for entry in state:
             try:
                 outcome.append(elementlist[entry])
@@ -675,11 +696,13 @@ class CalibreDB():
         return outcome[offset:offset + limit]
 
     # Fill indexpage with all requested data from database
-    def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
-        return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
+    def fill_indexpage(self, page, pagesize, database, db_filter, order,
+                       join_archive_read=False, config_read_column=0, *join):
+        return self.fill_indexpage_with_archived_books(page, database, pagesize, db_filter, order, False,
+                                                       join_archive_read, config_read_column, *join)
 
-    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived,
-                                           *join):
+    def fill_indexpage_with_archived_books(self, page, database, pagesize, db_filter, order, allow_show_archived,
+                                           join_archive_read, config_read_column, *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
             randm = self.session.query(Books) \
@@ -688,20 +711,43 @@ class CalibreDB():
                 .limit(self.config.config_random_books).all()
         else:
             randm = false()
+        if join_archive_read:
+            if not config_read_column:
+                query = (self.session.query(database, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
+                         .select_from(Books)
+                         .outerjoin(ub.ReadBook,
+                               and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
+            else:
+                try:
+                    read_column = cc_classes[config_read_column]
+                    query = (self.session.query(database, read_column.value, ub.ArchivedBook.is_archived)
+                             .select_from(Books)
+                             .outerjoin(read_column, read_column.book == Books.id))
+                except (KeyError, AttributeError):
+                    log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                    # Skip linking read column and return None instead of read status
+                    query =self.session.query(database, None, ub.ArchivedBook.is_archived)
+            query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                          int(current_user.id) == ub.ArchivedBook.user_id))
+        else:
+            query = self.session.query(database)
         off = int(int(pagesize) * (page - 1))
-        query = self.session.query(database)
-        if len(join) == 6:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
-        if len(join) == 5:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4])
-        if len(join) == 4:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3])
-        if len(join) == 3:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
-        elif len(join) == 2:
-            query = query.outerjoin(join[0], join[1])
-        elif len(join) == 1:
-            query = query.outerjoin(join[0])
+
+        indx = len(join)
+        element = 0
+        while indx:
+            if indx >= 3:
+                query = query.outerjoin(join[element], join[element+1]).outerjoin(join[element+2])
+                indx -= 3
+                element += 3
+            elif indx == 2:
+                query = query.outerjoin(join[element], join[element+1])
+                indx -= 2
+                element += 2
+            elif indx == 1:
+                query = query.outerjoin(join[element])
+                indx -= 1
+                element += 1
         query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()
@@ -712,28 +758,40 @@ class CalibreDB():
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
             log.debug_or_exception(ex)
-        #for book in entries:
-        #    book = self.order_authors(book)
+        # display authors in right order
+        entries = self.order_authors(entries, True, join_archive_read)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
-    def order_authors(self, entry):
-        sort_authors = entry.author_sort.split('&')
-        authors_ordered = list()
-        error = False
-        ids = [a.id for a in entry.authors]
-        for auth in sort_authors:
-            results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
-            # ToDo: How to handle not found authorname
-            if not len(results):
-                error = True
-                break
-            for r in results:
-                if r.id in ids:
-                    authors_ordered.append(r)
-        if not error:
-            entry.authors = authors_ordered
-        return entry
+    def order_authors(self, entries, list_return=False, combined=False):
+        for entry in entries:
+            if combined:
+                sort_authors = entry.Books.author_sort.split('&')
+                ids = [a.id for a in entry.Books.authors]
+
+            else:
+                sort_authors = entry.author_sort.split('&')
+                ids = [a.id for a in entry.authors]
+            authors_ordered = list()
+            error = False
+            for auth in sort_authors:
+                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
+                # ToDo: How to handle not found authorname
+                if not len(results):
+                    error = True
+                    break
+                for r in results:
+                    if r.id in ids:
+                        authors_ordered.append(r)
+            if not error:
+                if combined:
+                    entry.Books.authors = authors_ordered
+                else:
+                    entry.authors = authors_ordered
+        if list_return:
+            return entries
+        else:
+            return authors_ordered
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
@@ -754,14 +812,29 @@ class CalibreDB():
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, *join):
+    def search_query(self, term, config_read_column, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        query = self.session.query(Books)
+        if not config_read_column:
+            query = (self.session.query(Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(Books)
+                     .outerjoin(ub.ReadBook, and_(Books.id == ub.ReadBook.book_id,
+                                                  int(current_user.id) == ub.ReadBook.user_id)))
+        else:
+            try:
+                read_column = cc_classes[config_read_column]
+                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value).select_from(Books)
+                         .outerjoin(read_column, read_column.book == Books.id))
+            except (KeyError, AttributeError):
+                log.error("Custom Column No.%d is not existing in calibre database", config_read_column)
+                # Skip linking read column
+                query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
+        query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                      int(current_user.id) == ub.ArchivedBook.user_id))
+
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
@@ -779,10 +852,11 @@ class CalibreDB():
                 ))
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None, *join):
+    def get_search_results(self, term, offset=None, order=None, limit=None, allow_show_archived=False,
+                           config_read_column=False, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, *join).order_by(*order).all()
+        result = self.search_query(term, config_read_column, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
@@ -792,8 +866,10 @@ class CalibreDB():
             offset = 0
             limit_all = result_count
 
-        ub.store_ids(result)
-        return result[offset:limit_all], result_count, pagination
+        ub.store_combo_ids(result)
+        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
+
+        return entries, result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):

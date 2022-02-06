@@ -40,12 +40,15 @@ parser.add_argument('-c', metavar='path',
                     help='path and name to SSL certfile, e.g. /opt/test.cert, works only in combination with keyfile')
 parser.add_argument('-k', metavar='path',
                     help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
-parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-web',
+parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-Web',
                     version=version_info())
 parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
-parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
+parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password and exits Calibre-Web')
 parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
 parser.add_argument('-l', action='store_true', help='Allow loading covers from localhost')
+parser.add_argument('-d', action='store_true', help='Dry run of updater to check file permissions in advance '
+                                                    'and exits Calibre-Web')
+parser.add_argument('-r', action='store_true', help='Enable public database reconnect route under /reconnect')
 args = parser.parse_args()
 
 settingspath = args.p or os.path.join(_CONFIG_DIR, "app.db")
@@ -78,6 +81,9 @@ if (args.k and not args.c) or (not args.k and args.c):
 if args.k == "":
     keyfilepath = ""
 
+
+# dry run updater
+dry_run = args.d or None
 # load covers from localhost
 allow_localhost = args.l or None
 # handle and check ip address argument
@@ -106,3 +112,4 @@ if user_credentials and ":" not in user_credentials:
 
 if args.f:
     print("Warning: -f flag is depreciated and will be removed in next version")
+
