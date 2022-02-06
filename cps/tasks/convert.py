@@ -116,8 +116,20 @@ class TaskConvert(CalibreTask):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
             cur_book = local_db.get_book(book_id)
             self.title = cur_book.title
-            self.results['path'] = file_path
+            self.results['path'] = cur_book.path
             self.results['title'] = self.title
+            new_format = db.Data(name=os.path.basename(file_path),
+                                 book_format=self.settings['new_book_format'].upper(),
+                                 book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+            try:
+                local_db.session.merge(new_format)
+                local_db.session.commit()
+            except SQLAlchemyError as e:
+                local_db.session.rollback()
+                log.error("Database error: %s", e)
+                local_db.session.close()
+                self._handleError(error_message)
+                return
             self._handleSuccess()
             local_db.session.close()
             return os.path.basename(file_path + format_new_ext)
