@@ -31,7 +31,7 @@ from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 from cps.kobo_sync_status import remove_synced_book
-from cps.ub import ini
+from cps.ub import init_db_thread
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
@@ -148,7 +148,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.merge(new_format)
                     local_db.session.commit()
                     if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
-                        ub_session = ini()
+                        ub_session = init_db_thread()
                         remove_synced_book(book_id, True, ub_session)
                         ub_session.close()
                 except SQLAlchemyError as e:

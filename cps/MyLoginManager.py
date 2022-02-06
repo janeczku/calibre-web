@@ -27,8 +27,9 @@ from flask import session
 
 class MyLoginManager(LoginManager):
     def _session_protection_failed(self):
-        sess = session._get_current_object()
+        _session = session._get_current_object()
         ident = self._session_identifier_generator()
-        if(sess and not (len(sess) == 1 and sess.get('csrf_token', None))) and ident != sess.get('_id', None):
+        if(_session and not (len(_session) == 1
+                             and _session.get('csrf_token', None))) and ident != _session.get('_id', None):
             return super(). _session_protection_failed()
         return False

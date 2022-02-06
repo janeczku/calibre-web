@@ -196,7 +196,8 @@ def migrate():
 if not os.path.exists(cli.gdpath):
     try:
         Base.metadata.create_all(engine)
-    except Exception:
+    except Exception as ex:
+        log.error("Error connect to database: {} - {}".format(cli.gdpath, ex))
         raise
 migrate()
 
