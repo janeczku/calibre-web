@@ -21,13 +21,14 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+from urllib.parse import unquote_plus
 from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from werkzeug.security import check_password_hash
-
+from tornado.httputil import HTTPServerRequest
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
@@ -81,10 +82,12 @@ def feed_osd():
 
 
 @opds.route("/opds/search", defaults={'query': ""})
-@opds.route("/opds/search/<query>")
+@opds.route("/opds/search/<path:query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
-    return feed_search(query.strip())
+    # Handle strange query from Libera Reader with + instead of spaces
+    plus_query = unquote_plus(request.base_url.split('/opds/search/')[1]).strip()
+    return feed_search(plus_query)
 
 
 @opds.route("/opds/search", methods=["GET"])
@@ -429,17 +432,9 @@ def feed_languagesindex():
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
-        #try:
-        #    cur_l = LC.parse(current_user.filter_language())
-        #except UnknownLocaleError:
-        #    cur_l = None
         languages = calibre_db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
         languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].lang_code)
-        #if cur_l:
-        #    languages[0].name = cur_l.get_language_name(get_locale())
-        #else:
-        #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(languages))
     return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
@@ -524,10 +519,11 @@ def get_metadata_calibre_companion(uuid, library):
 
 def feed_search(term):
     if term:
-        entries, __, ___ = calibre_db.get_search_results(term)
-        entriescount = len(entries) if len(entries) > 0 else 1
-        pagination = Pagination(1, entriescount, entriescount)
-        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        entries, __, ___ = calibre_db.get_search_results(term, config_read_column=config.config_read_column)
+        entries_count = len(entries) if len(entries) > 0 else 1
+        pagination = Pagination(1, entries_count, entries_count)
+        items = [entry[0] for entry in entries]
+        return render_xml_template('feed.xml', searchterm=term, entries=items, pagination=pagination)
     else:
         return render_xml_template('feed.xml', searchterm="")
 

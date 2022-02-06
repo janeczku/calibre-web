@@ -90,7 +90,7 @@ def delete_user_session(user_id, session_key):
         session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
                                             User_Sessions.session_key==session_key).delete()
         session.commit()
-    except (exc.OperationalError, exc.InvalidRequestError):
+    except (exc.OperationalError, exc.InvalidRequestError) as e:
         session.rollback()
         log.exception(e)
 
@@ -110,6 +110,12 @@ def store_ids(result):
     ids = list()
     for element in result:
         ids.append(element.id)
+    searched_ids[current_user.id] = ids
+
+def store_combo_ids(result):
+    ids = list()
+    for element in result:
+        ids.append(element[0].id)
     searched_ids[current_user.id] = ids
 
 

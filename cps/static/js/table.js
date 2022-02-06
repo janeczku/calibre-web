@@ -636,6 +636,13 @@ function checkboxFormatter(value, row){
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+function bookCheckboxFormatter(value, row){
+    if (value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+}
+
 
 function singlecheckboxFormatter(value, row){
     if (value)
@@ -801,6 +808,20 @@ function checkboxChange(checkbox, userId, field, field_index) {
         success: handleListServerResponse
     });
 }
+
+function BookCheckboxChange(checkbox, userId, field) {
+    var value = checkbox.checked ? "True" : "False";
+    $.ajax({
+        method: "post",
+        url: getPath() + "/ajax/editbooks/" + field,
+        data: {"pk": userId, "value": value},
+        error: function(data) {
+            handleListServerResponse([{type:"danger", message:data.responseText}])
+        },
+        success: handleListServerResponse
+    });
+}
+
 
 function selectHeader(element, field) {
     if (element.value !== "None") {
