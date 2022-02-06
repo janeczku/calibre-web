@@ -47,7 +47,7 @@ def remove_synced_book(book_id, all=False, session=None):
         ub.session_commit()
     else:
         session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.book_id == book_id).filter(user).delete()
-        ub.session_commit(sess=session)
+        ub.session_commit(_session=session)
 
 
 
