@@ -116,11 +116,26 @@ class TaskConvert(CalibreTask):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
             cur_book = local_db.get_book(book_id)
             self.title = cur_book.title
-            self.results['path'] = file_path
+            self.results['path'] = cur_book.path
             self.results['title'] = self.title
-            self._handleSuccess()
-            local_db.session.close()
-            return os.path.basename(file_path + format_new_ext)
+            new_format = local_db.session.query(db.Data).filter(db.Data.book == book_id)\
+                .filter(db.Data.format == self.settings['new_book_format'].upper()).one_or_none()
+            if not new_format:
+                new_format = db.Data(name=os.path.basename(file_path),
+                                     book_format=self.settings['new_book_format'].upper(),
+                                     book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+                try:
+                    local_db.session.merge(new_format)
+                    local_db.session.commit()
+                except SQLAlchemyError as e:
+                    local_db.session.rollback()
+                    log.error("Database error: %s", e)
+                    local_db.session.close()
+                    self._handleError(error_message)
+                    return
+                self._handleSuccess()
+                local_db.session.close()
+                return os.path.basename(file_path + format_new_ext)
         else:
             log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
                      book_id,
@@ -141,22 +156,25 @@ class TaskConvert(CalibreTask):
         if check == 0:
             cur_book = local_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
-                new_format = db.Data(name=cur_book.data[0].name,
+                new_format = local_db.session.query(db.Data).filter(db.Data.book == book_id) \
+                    .filter(db.Data.format == self.settings['new_book_format'].upper()).one_or_none()
+                if not new_format:
+                    new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-                try:
-                    local_db.session.merge(new_format)
-                    local_db.session.commit()
-                    if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
-                        ub_session = init_db_thread()
-                        remove_synced_book(book_id, True, ub_session)
-                        ub_session.close()
-                except SQLAlchemyError as e:
-                    local_db.session.rollback()
-                    log.error("Database error: %s", e)
-                    local_db.session.close()
-                    self._handleError(error_message)
-                    return
+                    try:
+                        local_db.session.merge(new_format)
+                        local_db.session.commit()
+                        if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
+                            ub_session = init_db_thread()
+                            remove_synced_book(book_id, True, ub_session)
+                            ub_session.close()
+                    except SQLAlchemyError as e:
+                        local_db.session.rollback()
+                        log.error("Database error: %s", e)
+                        local_db.session.close()
+                        self._handleError(error_message)
+                        return
                 self.results['path'] = cur_book.path
                 self.title = cur_book.title
                 self.results['title'] = self.title
