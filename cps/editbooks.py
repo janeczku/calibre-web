@@ -670,7 +670,7 @@ def upload_single_file(request, book, book_id):
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
-            WorkerThread.add(current_user.name, TaskUpload(uploadText), escape(book.title))
+            WorkerThread.add(current_user.name, TaskUpload(uploadText, escape(book.title)))
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
