@@ -48,8 +48,8 @@ from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
 from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, check_email, check_username, \
-    get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
+from .helper import check_valid_domain, render_task_status, check_email, check_username, get_cc_columns, \
+    get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status
 from .pagination import Pagination
@@ -128,7 +128,7 @@ def viewer_required(f):
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = WorkerThread.getInstance().tasks
+    tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
@@ -761,6 +761,7 @@ def books_table():
     return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
+
 @web.route("/ajax/listbooks")
 @login_required
 def list_books():
@@ -858,6 +859,7 @@ def list_books():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @web.route("/ajax/table_settings", methods=['POST'])
 @login_required
 def update_table_settings():
@@ -937,6 +939,7 @@ def publisher_list():
         charlist = calibre_db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
+
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
     else:
@@ -1066,7 +1069,7 @@ def category_list():
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    tasks = WorkerThread.getInstance().tasks
+    tasks = WorkerThread.get_instance().tasks
     answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
@@ -1395,7 +1398,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  pagination=pagination,
                                  entries=entries,
                                  result_count=result_count,
-                                 title=_(u"Advanced Search"), page="advsearch",
+                                 title=_(u"Advanced Search"),
+                                 page="advsearch",
                                  order=order[1])
 
 
@@ -1411,13 +1415,37 @@ def advanced_search_form():
 
 
 @web.route("/cover/<int:book_id>")
+@web.route("/cover/<int:book_id>/<string:resolution>")
 @login_required_if_no_ano
-def get_cover(book_id):
-    return get_book_cover(book_id)
+def get_cover(book_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_book_cover(book_id, cover_resolution)
+
+
+@web.route("/series_cover/<int:series_id>")
+@web.route("/series_cover/<int:series_id>/<string:resolution>")
+@login_required_if_no_ano
+def get_series_cover(series_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_series_cover_thumbnail(series_id, cover_resolution)
+
 
 @web.route("/robots.txt")
 def get_robots():
     return send_from_directory(constants.STATIC_DIR, "robots.txt")
+
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/show/<int:book_id>/<book_format>/<anyname>")

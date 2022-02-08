@@ -34,7 +34,7 @@ from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text, func
+from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
@@ -49,12 +49,14 @@ except ImportError:
 
 from . import calibre_db, cli
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub, kobo_sync_status
+from . import logger, config, get_locale, db, ub, kobo_sync_status, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
-from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
+    STAT_CANCELLED
 from .tasks.mail import TaskEmail
+from .tasks.thumbnail import TaskClearCoverThumbnailCache
 
 log = logger.create()
 
@@ -497,6 +499,7 @@ def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_d
     return error
 
 
+
 def update_dir_structure_gdrive(book_id, first_author, renamed_author):
     error = False
     book = calibre_db.get_book(book_id)
@@ -633,6 +636,7 @@ def uniq(inpt):
             output.append(x)
     return output
 
+
 def check_email(email):
     email = valid_email(email)
     if ub.session.query(ub.User).filter(func.lower(ub.User.email) == email.lower()).first():
@@ -679,6 +683,7 @@ def update_dir_structure(book_id,
 
 
 def delete_book(book, calibrepath, book_format):
+    clear_cover_thumbnail_cache(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
@@ -692,19 +697,29 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 
-def get_book_cover(book_id):
+def get_book_cover(book_id, resolution=None):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-def get_book_cover_with_uuid(book_uuid,
-                             use_generic_cover_on_failure=True):
+def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
     book = calibre_db.get_book_by_uuid(book_uuid)
     return get_book_cover_internal(book, use_generic_cover_on_failure)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure):
+def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
     if book and book.has_cover:
+
+        # Send the book cover thumbnail if it exists in cache
+        if resolution:
+            thumbnail = get_book_cover_thumbnail(book, resolution)
+            if thumbnail:
+                cache = fs.FileSystem()
+                if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                    return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                               thumbnail.filename)
+
+        # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
@@ -718,6 +733,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
             except Exception as ex:
                 log.debug_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
+
+        # Send the book cover from the Calibre directory
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
@@ -726,6 +743,56 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 return get_cover_on_failure(use_generic_cover_on_failure)
     else:
         return get_cover_on_failure(use_generic_cover_on_failure)
+
+
+def get_book_cover_thumbnail(book, resolution):
+    if book and book.has_cover:
+        return ub.session \
+            .query(ub.Thumbnail) \
+            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
+            .filter(ub.Thumbnail.entity_id == book.id) \
+            .filter(ub.Thumbnail.resolution == resolution) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+            .first()
+
+
+def get_series_thumbnail_on_failure(series_id, resolution):
+    book = calibre_db.session \
+        .query(db.Books) \
+        .join(db.books_series_link) \
+        .join(db.Series) \
+        .filter(db.Series.id == series_id) \
+        .filter(db.Books.has_cover == 1) \
+        .first()
+
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+
+
+def get_series_cover_thumbnail(series_id, resolution=None):
+    return get_series_cover_internal(series_id, resolution)
+
+
+def get_series_cover_internal(series_id, resolution=None):
+    # Send the series thumbnail if it exists in cache
+    if resolution:
+        thumbnail = get_series_thumbnail(series_id, resolution)
+        if thumbnail:
+            cache = fs.FileSystem()
+            if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                           thumbnail.filename)
+
+    return get_series_thumbnail_on_failure(series_id, resolution)
+
+
+def get_series_thumbnail(series_id, resolution):
+    return ub.session \
+        .query(ub.Thumbnail) \
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
+        .filter(ub.Thumbnail.entity_id == series_id) \
+        .filter(ub.Thumbnail.resolution == resolution) \
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+        .first()
 
 
 # saves book cover from url
@@ -920,12 +987,22 @@ def render_task_status(tasklist):
                     ret['status'] = _(u'Started')
                 elif task.stat == STAT_FINISH_SUCCESS:
                     ret['status'] = _(u'Finished')
+                elif task.stat == STAT_ENDED:
+                    ret['status'] = _(u'Ended')
+                elif task.stat == STAT_CANCELLED:
+                    ret['status'] = _(u'Cancelled')
                 else:
                     ret['status'] = _(u'Unknown Status')
 
-            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
+            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message) if task.message else _(task.name)
             ret['progress'] = "{} %".format(int(task.progress * 100))
             ret['user'] = escape(user)  # prevent xss
+
+            # Hidden fields
+            ret['id'] = task.id
+            ret['stat'] = task.stat
+            ret['is_cancellable'] = task.is_cancellable
+
             renderedtasklist.append(ret)
 
     return renderedtasklist
@@ -994,3 +1071,7 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def clear_cover_thumbnail_cache(book_id):
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))

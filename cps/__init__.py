@@ -159,6 +159,7 @@ def create_app():
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     return app
 
+
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings

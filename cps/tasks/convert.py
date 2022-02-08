@@ -273,3 +273,7 @@ class TaskConvert(CalibreTask):
 
     def __str__(self):
         return "Convert {} {}".format(self.bookid, self.kindle_mail)
+
+    @property
+    def is_cancellable(self):
+        return False

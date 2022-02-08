@@ -36,3 +36,7 @@ class TaskUpload(CalibreTask):
 
     def __str__(self):
         return "Upload {}".format(self.book_title)
+
+    @property
+    def is_cancellable(self):
+        return False
