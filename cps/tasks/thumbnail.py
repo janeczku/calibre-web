@@ -18,6 +18,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+from urllib.request import urlopen
 
 from .. import constants
 from cps import config, db, fs, gdriveutils, logger, ub
@@ -25,10 +26,6 @@ from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
 from datetime import datetime
 from sqlalchemy import func, text, or_
 
-try:
-    from urllib.request import urlopen
-except ImportError as e:
-    from urllib2 import urlopen
 
 try:
     from wand.image import Image
@@ -372,7 +369,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                             dimensions = get_best_fit(width, height, img.width, img.height)
 
                             # resize and crop the image
-                            img.resize(width=int(dimensions['width']), height=int(dimensions['height']), filter='lanczos')
+                            img.resize(width=int(dimensions['width']), height=int(dimensions['height']),
+                                       filter='lanczos')
                             img.crop(width=int(width / 2.0), height=int(height / 2.0), gravity='center')
 
                             # add the image to the canvas
