@@ -450,11 +450,11 @@ class CalibreDB():
         """
         self.session = None
         if self._init:
-            self.initSession(expire_on_commit)
+            self.init_session(expire_on_commit)
 
         self.instances.add(self)
 
-    def initSession(self, expire_on_commit=True):
+    def init_session(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
@@ -603,7 +603,7 @@ class CalibreDB():
                                                           autoflush=True,
                                                           bind=cls.engine))
         for inst in cls.instances:
-            inst.initSession()
+            inst.init_session()
 
         cls._init = True
         return True
@@ -720,7 +720,8 @@ class CalibreDB():
             randm = self.session.query(Books) \
                 .filter(self.common_filters(allow_show_archived)) \
                 .order_by(func.random()) \
-                .limit(self.config.config_random_books).all()
+                .limit(self.config.config_random_books) \
+                .all()
         else:
             randm = false()
         if join_archive_read:

@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <form role="form" class="col-md-10 col-lg-6" method="POST" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label for="schedule_start_time">{{_('Time at which tasks start to run')}}</label>
+      <select name="schedule_start_time" id="schedule_start_time" class="form-control">
+        {% for n in range(24) %}
+          <option value="{{n}}" {% if config.schedule_start_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="schedule_end_time">{{_('Time at which tasks stop running')}}</label>
+      <select name="schedule_end_time" id="schedule_end_time" class="form-control">
+        {% for n in range(24) %}
+          <option value="{{n}}" {% if config.schedule_end_time == n %}selected{% endif %}>{{n}}{{_(':00')}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="schedule_generate_book_covers" name="schedule_generate_book_covers" {% if config.schedule_generate_book_covers %}checked{% endif %}>
+      <label for="schedule_generate_book_covers">{{_('Generate Book Cover Thumbnails')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="schedule_generate_series_covers" name="schedule_generate_series_covers" {% if config.schedule_generate_series_covers %}checked{% endif %}>
+      <label for="schedule_generate_series_covers">{{_('Generate Series Cover Thumbnails')}}</label>
+    </div>
+    <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" id="email_back" class="btn btn-default">{{_('Cancel')}}</a>
+  </form>
+</div>
+{% endblock %}

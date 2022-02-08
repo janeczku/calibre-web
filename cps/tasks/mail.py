@@ -266,5 +266,9 @@ class TaskEmail(CalibreTask):
     def name(self):
         return "E-mail"
 
+    @property
+    def is_cancellable(self):
+        return False
+
     def __str__(self):
         return "E-mail {}, {}".format(self.name, self.subject)

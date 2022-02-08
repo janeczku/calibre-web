@@ -4,7 +4,8 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img id="detailcover" title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
+        <!-- Always use full-sized image for the detail page -->
+        <img id="detailcover" title="{{entry.title}}" src="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
