@@ -23,16 +23,8 @@ import threading
 import socket
 import mimetypes
 
-try:
-    from StringIO import StringIO
-    from email.MIMEBase import MIMEBase
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEText import MIMEText
-except ImportError:
-    from io import StringIO
-    from email.mime.base import MIMEBase
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
+from io import StringIO
+from email.message import EmailMessage
 
 
 
@@ -131,19 +123,24 @@ class TaskEmail(CalibreTask):
         self.results = dict()
 
     def prepare_message(self):
-        message = MIMEMultipart()
+        message = EmailMessage()
+        # message = MIMEMultipart()
         message['to'] = self.recipent
         message['from'] = self.settings["mail_from"]
         message['subject'] = self.subject
         message['Message-Id'] = make_msgid('calibre-web')
         message['Date'] = formatdate(localtime=True)
-        text = self.text
-        msg = MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8')
-        message.attach(msg)
+        # text = self.text
+        message.set_content(self.text.encode('UTF-8'), "text", "plain")
         if self.attachment:
-            result = self._get_attachment(self.filepath, self.attachment)
-            if result:
-                message.attach(result)
+            data = self._get_attachment(self.filepath, self.attachment)
+            if data:
+                # Set mimetype
+                content_type, encoding = mimetypes.guess_type(self.attachment)
+                if content_type is None or encoding is not None:
+                    content_type = 'application/octet-stream'
+                main_type, sub_type = content_type.split('/', 1)
+                message.add_attachment(data, maintype=main_type, subtype=sub_type, filename=self.attachment)
             else:
                 self._handleError(u"Attachment not found")
                 return
@@ -226,15 +223,15 @@ class TaskEmail(CalibreTask):
             self._progress = x
 
     @classmethod
-    def _get_attachment(cls, bookpath, filename):
+    def _get_attachment(cls, book_path, filename):
         """Get file as MIMEBase message"""
         calibre_path = config.config_calibre_dir
         if config.config_use_google_drive:
-            df = gdriveutils.getFileFromEbooksFolder(bookpath, filename)
+            df = gdriveutils.getFileFromEbooksFolder(book_path, filename)
             if df:
-                datafile = os.path.join(calibre_path, bookpath, filename)
-                if not os.path.exists(os.path.join(calibre_path, bookpath)):
-                    os.makedirs(os.path.join(calibre_path, bookpath))
+                datafile = os.path.join(calibre_path, book_path, filename)
+                if not os.path.exists(os.path.join(calibre_path, book_path)):
+                    os.makedirs(os.path.join(calibre_path, book_path))
                 df.GetContentFile(datafile)
             else:
                 return None
@@ -244,23 +241,14 @@ class TaskEmail(CalibreTask):
             os.remove(datafile)
         else:
             try:
-                file_ = open(os.path.join(calibre_path, bookpath, filename), 'rb')
+                file_ = open(os.path.join(calibre_path, book_path, filename), 'rb')
                 data = file_.read()
                 file_.close()
             except IOError as e:
                 log.debug_or_exception(e, stacklevel=3)
                 log.error(u'The requested file could not be read. Maybe wrong permissions?')
                 return None
-        # Set mimetype
-        content_type, encoding = mimetypes.guess_type(filename)
-        if content_type is None or encoding is not None:
-            content_type = 'application/octet-stream'
-        main_type, sub_type = content_type.split('/', 1)
-        attachment = MIMEBase(main_type, sub_type)
-        attachment.set_payload(data)
-        encoders.encode_base64(attachment)
-        attachment.add_header('Content-Disposition', 'attachment', filename=filename)
-        return attachment
+        return data
 
     @property
     def name(self):
