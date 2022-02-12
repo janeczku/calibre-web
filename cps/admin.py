@@ -1192,8 +1192,10 @@ def _db_simulate_change():
                                            '',
                                            param['config_calibre_dir'],
                                            flags=re.IGNORECASE).strip()
-    db_change = config.config_calibre_dir != to_save["config_calibre_dir"] and config.config_calibre_dir
-    db_valid = calibre_db.check_valid_db(to_save["config_calibre_dir"], ub.app_DB_path)
+    db_valid, db_change = calibre_db.check_valid_db(to_save["config_calibre_dir"],
+                                                    ub.app_DB_path,
+                                                    config.config_calibre_uuid)
+    db_change = bool(db_change and config.config_calibre_dir)
     return db_change, db_valid
 
 
@@ -1223,12 +1225,15 @@ def _db_configuration_update_helper():
     except Exception as ex:
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
-    if db_change or not db_valid or not config.db_configured:
+    if db_change or not db_valid or not config.db_configured \
+          or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
+        config.store_calibre_uuid(calibre_db, db.Library_Id)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         if db_change:
+            log.info("Calibre Database changed, delete all Calibre-Web info related to old Database")
             ub.session.query(ub.Downloads).delete()
             ub.session.query(ub.ArchivedBook).delete()
             ub.session.query(ub.ReadBook).delete()
