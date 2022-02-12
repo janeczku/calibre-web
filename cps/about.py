@@ -25,47 +25,15 @@ import platform
 import sqlite3
 from collections import OrderedDict
 
-import babel
-import pytz
-import requests
-import sqlalchemy
 import werkzeug
 import flask
 import flask_login
-import flask_principal
 import jinja2
 from flask_babel import gettext as _
-try:
-    from flask_wtf import __version__ as flaskwtf_version
-except ImportError:
-    flaskwtf_version = _(u'not installed')
 
-from . import db, calibre_db, converter, uploader, server, isoLanguages, constants, gdriveutils, dep_check
+from . import db, calibre_db, converter, uploader, constants, dep_check
 from .render_template import render_title_template
 
-try:
-    from flask_login import __version__ as flask_loginVersion
-except ImportError:
-    from flask_login.__about__ import __version__ as flask_loginVersion
-try:
-    # pylint: disable=unused-import
-    import unidecode
-    # _() necessary to make babel aware of string for translation
-    unidecode_version = _(u'installed')
-except ImportError:
-    unidecode_version = _(u'not installed')
-
-try:
-    from flask_dance import __version__ as flask_danceVersion
-except ImportError:
-    flask_danceVersion = None
-
-try:
-    from greenlet import __version__ as greenlet_Version
-except ImportError:
-    greenlet_Version = None
-
-from . import services
 
 about = flask.Blueprint('about', __name__)
 
@@ -87,47 +55,17 @@ if getattr(sys, 'frozen', False):
 elif constants.HOME_CONFIG:
     calibre_web_version += " - pyPi"
 
-if not ret:
-    _VERSIONS = OrderedDict(
-        Platform='{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
-        Python=sys.version,
-        Calibre_Web=calibre_web_version,
-        WebServer=server.VERSION,
-        Flask=flask.__version__,
-        Flask_Login=flask_loginVersion,
-        Flask_Principal=flask_principal.__version__,
-        Flask_WTF=flaskwtf_version,
-        Werkzeug=werkzeug.__version__,
-        Babel=babel.__version__,
-        Jinja2=jinja2.__version__,
-        Requests=requests.__version__,
-        SqlAlchemy=sqlalchemy.__version__,
-        pySqlite=sqlite3.version,
-        SQLite=sqlite3.sqlite_version,
-        iso639=isoLanguages.__version__,
-        pytz=pytz.__version__,
-        Unidecode=unidecode_version,
-        Flask_SimpleLDAP=u'installed' if bool(services.ldap) else None,
-        python_LDAP=services.ldapVersion if bool(services.ldapVersion) else None,
-        Goodreads=u'installed' if bool(services.goodreads_support) else None,
-        jsonschema=services.SyncToken.__version__ if bool(services.SyncToken) else None,
-        flask_dance=flask_danceVersion,
-        greenlet=greenlet_Version
-    )
-    _VERSIONS.update(gdriveutils.get_versions())
-    _VERSIONS.update(uploader.get_versions(True))
-else:
-    _VERSIONS = OrderedDict(
-        Platform='{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
-        Python=sys.version,
-        Calibre_Web=calibre_web_version,
-        Werkzeug=werkzeug.__version__,
-        Jinja2=jinja2.__version__,
-        pySqlite=sqlite3.version,
-        SQLite=sqlite3.sqlite_version,
-    )
-    _VERSIONS.update(ret)
-    _VERSIONS.update(uploader.get_versions(False))
+_VERSIONS = OrderedDict(
+    Platform='{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
+    Python=sys.version,
+    Calibre_Web=calibre_web_version,
+    Werkzeug=werkzeug.__version__,
+    Jinja2=jinja2.__version__,
+    pySqlite=sqlite3.version,
+    SQLite=sqlite3.sqlite_version,
+)
+_VERSIONS.update(ret)
+_VERSIONS.update(uploader.get_versions(False))
 
 
 def collect_stats():
