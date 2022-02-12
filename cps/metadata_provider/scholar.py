@@ -17,7 +17,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 import itertools
 from typing import Dict, List, Optional
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 try:
     from fake_useragent.errors import FakeUserAgentError
@@ -66,7 +66,7 @@ class scholar(Metadata):
         )
 
         match.cover = result.get("image", {}).get("original_url", generic_cover)
-        match.description = result["bib"].get("abstract", "")
+        match.description = unquote(result["bib"].get("abstract", ""))
         match.publisher = result["bib"].get("venue", "")
         match.publishedDate = result["bib"].get("pub_year") + "-01-01"
         match.identifiers = {"scholar": match.id}
