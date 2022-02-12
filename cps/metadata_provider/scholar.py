@@ -47,7 +47,7 @@ class scholar(Metadata):
             scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
             for result in scholar_gen:
                 match = self._parse_search_result(
-                    result=result, generic_cover=generic_cover, locale=locale
+                    result=result, generic_cover="", locale=locale
                 )
                 val.append(match)
         return val
