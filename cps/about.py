@@ -81,6 +81,7 @@ else:
     calibre_web_version = (constants.STABLE_VERSION['version'] + ' - '
                            + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
                            + constants.NIGHTLY_VERSION[1].replace('%', '%%'))
+
 if getattr(sys, 'frozen', False):
     calibre_web_version += " - Exe-Version"
 elif constants.HOME_CONFIG:
