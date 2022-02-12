@@ -1,5 +1,7 @@
 import os
 import re
+import sys
+import json
 
 from .constants import BASE_DIR
 try:
@@ -8,7 +10,7 @@ try:
     ImportNotFound = BaseException
 except ImportError:
     importlib = False
-
+    version = None
 
 if not importlib:
     try:
@@ -20,6 +22,13 @@ if not importlib:
 
 def load_dependencys(optional=False):
     deps = list()
+    if getattr(sys, 'frozen', False):
+        pip_installed = os.path.join(BASE_DIR, ".pip_installed")
+        if os.path.exists(pip_installed):
+            with open(pip_installed) as f:
+                exe_deps = json.loads("".join(f.readlines()))
+        else:
+            return deps
     if importlib or pkgresources:
         if optional:
             req_path = os.path.join(BASE_DIR, "optional-requirements.txt")
@@ -31,11 +40,14 @@ def load_dependencys(optional=False):
                     if not line.startswith('#') and not line == '\n' and not line.startswith('git'):
                         res = re.match(r'(.*?)([<=>\s]+)([\d\.]+),?\s?([<=>\s]+)?([\d\.]+)?', line.strip())
                         try:
-                            if importlib:
-                                dep_version = version(res.group(1))
+                            if getattr(sys, 'frozen', False):
+                                dep_version = exe_deps[res.group(1).lower().replace('_','-')]
                             else:
-                                dep_version = pkg_resources.get_distribution(res.group(1)).version
-                        except ImportNotFound:
+                                if importlib:
+                                    dep_version = version(res.group(1))
+                                else:
+                                    dep_version = pkg_resources.get_distribution(res.group(1)).version
+                        except (ImportNotFound, KeyError):
                             if optional:
                                 continue
                             dep_version = "not installed"

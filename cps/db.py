@@ -93,6 +93,12 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
+class Library_Id(Base):
+    __tablename__ = 'library_id'
+    id = Column(Integer, primary_key=True)
+    uuid = Column(String, nullable=False)
+
+
 class Identifiers(Base):
     __tablename__ = 'identifiers'
 
@@ -525,12 +531,12 @@ class CalibreDB():
         return cc_classes
 
     @classmethod
-    def check_valid_db(cls, config_calibre_dir, app_db_path):
+    def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):
         if not config_calibre_dir:
-            return False
+            return False, False
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
-            return False
+            return False, False
         try:
             check_engine = create_engine('sqlite://',
                           echo=False,
@@ -540,10 +546,16 @@ class CalibreDB():
             with check_engine.begin() as connection:
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+                local_session = scoped_session(sessionmaker())
+                local_session.configure(bind=connection)
+                database_uuid = local_session().query(Library_Id).one_or_none()
+                # local_session.dispose()
+
             check_engine.connect()
+            db_change = config_calibre_uuid != database_uuid.uuid
         except Exception:
-            return False
-        return True
+            return False, False
+        return True, db_change
 
     @classmethod
     def update_config(cls, config):
