@@ -46,7 +46,7 @@ class Google(Metadata):
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "+".join(tokens)
             results = requests.get(Google.SEARCH_URL + query)
-            for result in results.json()["items"]:
+            for result in results.json().get("items", []):
                 val.append(
                     self._parse_search_result(
                         result=result, generic_cover=generic_cover, locale=locale
