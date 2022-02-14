@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
 import smtplib
 import threading
@@ -25,7 +24,7 @@ import mimetypes
 
 from io import StringIO
 from email.message import EmailMessage
-
+from email.utils import parseaddr
 
 
 from email import encoders
@@ -37,6 +36,7 @@ from cps.services import gmail
 from cps import logger, config
 
 from cps import gdriveutils
+import uuid
 
 log = logger.create()
 
@@ -122,15 +122,27 @@ class TaskEmail(CalibreTask):
         self.asyncSMTP = None
         self.results = dict()
 
+    # from calibre code:
+    # https://github.com/kovidgoyal/calibre/blob/731ccd92a99868de3e2738f65949f19768d9104c/src/calibre/utils/smtp.py#L60
+    def get_msgid_domain(self):
+        try:
+            # Parse out the address from the From line, and then the domain from that
+            from_email = parseaddr(self.settings["mail_from"])[1]
+            msgid_domain = from_email.partition('@')[2].strip()
+            # This can sometimes sneak through parseaddr if the input is malformed
+            msgid_domain = msgid_domain.rstrip('>').strip()
+        except Exception:
+            msgid_domain = ''
+        return msgid_domain or 'calibre-web.com'
+
     def prepare_message(self):
         message = EmailMessage()
         # message = MIMEMultipart()
-        message['to'] = self.recipent
-        message['from'] = self.settings["mail_from"]
-        message['subject'] = self.subject
-        message['Message-Id'] = make_msgid('calibre-web')
+        message['From'] = self.settings["mail_from"]
+        message['To'] = self.recipent
+        message['Subject'] = self.subject
         message['Date'] = formatdate(localtime=True)
-        # text = self.text
+        message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain()) # f"<{uuid.uuid4()}@{get_msgid_domain(from_)}>" # make_msgid('calibre-web')
         message.set_content(self.text.encode('UTF-8'), "text", "plain")
         if self.attachment:
             data = self._get_attachment(self.filepath, self.attachment)
