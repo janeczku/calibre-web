@@ -28,7 +28,7 @@ Flask-Dance>=2.0.0,<5.2.0
 SQLAlchemy-Utils>=0.33.5,<0.39.0
 
 # metadata extraction
-rarfile>=2.7
+rarfile>=3.2
 scholarly>=1.2.0,<1.6
 markdown2>=2.0.0,<2.5.0
 html2text>=2020.1.16,<2022.1.1
