@@ -19,14 +19,19 @@
 import concurrent.futures
 import requests
 from bs4 import BeautifulSoup as BS  # requirement
+from typing import List, Optional
 
 try:
     import cchardet #optional for better speed
 except ImportError:
     pass
+from cps import logger
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 #from time import time
 from operator import itemgetter
+
+log = logger.create()
+
 
 class Amazon(Metadata):
     __name__ = "Amazon"
@@ -46,12 +51,16 @@ class Amazon(Metadata):
 
     def search(
         self, query: str, generic_cover: str = "", locale: str = "en"
-    ):
+    ) -> Optional[List[MetaRecord]]:
         #timer=time()
-        def inner(link,index)->[dict,int]:
-             with self.session as session:
-                r = session.get(f"https://www.amazon.com/{link}")
-                r.raise_for_status()
+        def inner(link,index) -> tuple[dict,int]:
+            with self.session as session:
+                try:
+                    r = session.get(f"https://www.amazon.com/{link}")
+                    r.raise_for_status()
+                except Exception as e:
+                    log.warning(e)
+                    return
                 long_soup = BS(r.text, "lxml")  #~4sec :/
                 soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
                 if soup2 is None:
@@ -107,11 +116,15 @@ class Amazon(Metadata):
 
         val = list()
         if self.active:
-            results = self.session.get(
-                f"https://www.amazon.com/s?k={query.replace(' ', '+')}&i=digital-text&sprefix={query.replace(' ', '+')}"
-                f"%2Cdigital-text&ref=nb_sb_noss",
-                headers=self.headers)
-            results.raise_for_status()
+            try:
+                results = self.session.get(
+                    f"https://www.amazon.com/s?k={query.replace(' ', '+')}&i=digital-text&sprefix={query.replace(' ', '+')}"
+                    f"%2Cdigital-text&ref=nb_sb_noss",
+                    headers=self.headers)
+                results.raise_for_status()
+            except Exception as e:
+                    log.warning(e)
+                    return None
             soup = BS(results.text, 'html.parser')
             links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
                           soup.findAll("div", attrs={"data-component-type": "s-search-result"})]

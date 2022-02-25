@@ -21,7 +21,10 @@ from typing import Dict, List, Optional
 from urllib.parse import quote
 
 import requests
+from cps import logger
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+
+log = logger.create()
 
 
 class ComicVine(Metadata):
@@ -46,10 +49,15 @@ class ComicVine(Metadata):
             if title_tokens:
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "%20".join(tokens)
-            result = requests.get(
-                f"{ComicVine.BASE_URL}{query}{ComicVine.QUERY_PARAMS}",
-                headers=ComicVine.HEADERS,
-            )
+            try:
+                result = requests.get(
+                    f"{ComicVine.BASE_URL}{query}{ComicVine.QUERY_PARAMS}",
+                    headers=ComicVine.HEADERS,
+                )
+                result.raise_for_status()
+            except Exception as e:
+                log.warning(e)
+                return None
             for result in result.json()["results"]:
                 match = self._parse_search_result(
                     result=result, generic_cover=generic_cover, locale=locale
