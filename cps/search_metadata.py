@@ -130,6 +130,6 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in future.result()])
+                data.extend([asdict(x) for x in future.result() if x])
     # log.info({'Time elapsed {}'.format(current_milli_time()-start)})
     return Response(json.dumps(data), mimetype="application/json")
