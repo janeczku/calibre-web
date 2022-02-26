@@ -734,10 +734,10 @@ def save_cover_from_url(url, book_path):
         if not cli.allow_localhost:
             # 127.0.x.x, localhost, [::1], [::ffff:7f00:1]
             ip = socket.getaddrinfo(urlparse(url).hostname, 0)[0][4][0]
-            if ip.startswith("127.") or ip.startswith('::ffff:7f') or ip == "::1":
+            if ip.startswith("127.") or ip.startswith('::ffff:7f') or ip == "::1" or ip == "0.0.0.0" or ip == "::":
                 log.error("Localhost was accessed for cover upload")
                 return False, _("You are not allowed to access localhost for cover uploads")
-        img = requests.get(url, timeout=(10, 200))      # ToDo: Error Handling
+        img = requests.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         img.raise_for_status()
         return save_cover(img, book_path)
     except (socket.gaierror,
