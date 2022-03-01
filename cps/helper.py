@@ -493,12 +493,10 @@ def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_d
                                title_dir + " (" + str(book_id) + ")")
     book.path = gdrive_path.replace("\\", "/")
     gd.uploadFileToEbooksFolder(os.path.join(gdrive_path, file_name).replace("\\", "/"), original_filepath)
-    error |= rename_files_on_change(first_author, renamed_author, localbook=book, gdrive=True)
-    return error
+    return rename_files_on_change(first_author, renamed_author, localbook=book, gdrive=True)
 
 
 def update_dir_structure_gdrive(book_id, first_author, renamed_author):
-    error = False
     book = calibre_db.get_book(book_id)
 
     authordir = book.path.split('/')[0]
@@ -513,7 +511,7 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             book.path = book.path.split('/')[0] + u'/' + new_titledir
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
-            error = _(u'File %(file)s not found on Google Drive', file=book.path)  # file not found
+            return _(u'File %(file)s not found on Google Drive', file=book.path)  # file not found
 
     if authordir != new_authordir and authordir not in renamed_author:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), new_titledir)
@@ -522,12 +520,11 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
             book.path = new_authordir + u'/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
-            error = _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+            return _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
 
     # change location in database to new author/title path
     book.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
-    error |= rename_files_on_change(first_author, renamed_author, book, gdrive=True)
-    return error
+    return rename_files_on_change(first_author, renamed_author, book, gdrive=True)
 
 
 def move_files_on_change(calibre_path, new_authordir, new_titledir, localbook, db_filename, original_filepath, path):
