@@ -156,7 +156,7 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-
+    config.store_calibre_uuid(calibre_db, db.Library_Id)
     return app
 
 @babel.localeselector
@@ -186,4 +186,9 @@ def get_timezone():
 
 from .updater import Updater
 updater_thread = Updater()
+
+# Perform dry run of updater and exit afterwards
+if cli.dry_run:
+    updater_thread.dry_run()
+    sys.exit(0)
 updater_thread.start()

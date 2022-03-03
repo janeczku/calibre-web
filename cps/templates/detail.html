@@ -36,9 +36,9 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and kindle_list %}
-              {% if kindle_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</div>
+            {% if g.user.kindle_mail and entry.kindle_list %}
+              {% if entry.kindle_list.__len__() == 1 %}
+                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=entry.kindle_list[0]['format'], convert=entry.kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.kindle_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,22 +46,22 @@
                     <span class="caret"></span>
                   </button>
                     <ul class="dropdown-menu" aria-labelledby="send-to-kindle">
-                    {% for format in kindle_list %}
+                    {% for format in entry.kindle_list %}
                       <li><a class="postAction" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
                     {%endfor%}
                     </ul>
                 </div>
               {% endif %}
             {% endif %}
-          {% if reader_list and g.user.role_viewer() %}
+          {% if entry.reader_list and g.user.role_viewer() %}
               <div class="btn-group" role="group">
-              {% if reader_list|length > 1 %}
+              {% if entry.reader_list|length > 1 %}
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-book"></span> {{_('Read in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
-                    {% for format in reader_list %}
+                    {% for format in entry.reader_list %}
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
                       {% if format == "epub" and enable_epub2website %}
                       <li><a target="_blank" href="{{ url_for('web.read_website', book_id=entry.id) }}">website</a></li>
@@ -85,28 +85,28 @@
                 {% endif %}
               </div>
             {% endif %}
-            {% if audioentries|length > 0 and g.user.role_viewer() %}
+            {% if entry.audioentries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
-              {% if audioentries|length > 1 %}
+              {% if entry.audioentries|length > 1 %}
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
-                    {% for format in reader_list %}
+                    {% for format in entry.reader_list %}
                       <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
                     {%endfor%}
                     </ul>
                   <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
 
               {% for format in entry.data %}
-                  {% if format.format|lower in audioentries %}
+                  {% if format.format|lower in entry.audioentries %}
                     <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
                 {% else %}
-                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=audioentries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{audioentries[0]}}</a>
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=entry.audioentries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{entry.audioentries[0]}}</a>
                 {% endif %}
               </div>
             {% endif %}
@@ -233,7 +233,7 @@
           <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id)}}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label class="block-label">
-              <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if have_read %}checked{% endif %} >
+              <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if entry.read_status %}checked{% endif %} >
               <span>{{_('Read')}}</span>
             </label>
           </form>
@@ -243,7 +243,7 @@
             <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <label class="block-label">
-                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if is_archived %}checked{% endif %} >
+                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if entry.is_archived %}checked{% endif %} >
                 <span>{{_('Archived')}}</span>
               </label>
             </form>
@@ -275,7 +275,7 @@
             {% for shelf in g.shelves_access %}
               {% if not shelf.id in books_shelfs and ( not shelf.is_public or g.user.role_edit_shelfs() ) %}
                 <li>
-                  <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                  <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-shelf-action="add"
                   >
@@ -290,7 +290,7 @@
           {% if books_shelfs %}
             {% for shelf in g.shelves_access %}
               {% if shelf.id in books_shelfs %}
-                <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
                 >
@@ -324,13 +324,13 @@
 {% block js %}
 <script type="text/template" id="template-shelf-add">
   <li>
-    <a href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
+    <a data-href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
       <%= content %>
     </a>
   </li>
 </script>
 <script type="text/template" id="template-shelf-remove">
-  <a href="<%= remove %>" data-add-href="<%= add %>" class="btn btn-sm btn-default" data-shelf-action="remove">
+  <a data-href="<%= remove %>" data-add-href="<%= add %>" class="btn btn-sm btn-default" data-shelf-action="remove">
     <span class="glyphicon glyphicon-remove"></span> <%= content %>
   </a>
 </script>

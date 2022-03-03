@@ -35,10 +35,10 @@ except ImportError:
 from sqlalchemy.exc import OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import text
 
-try:
-    from six import __version__ as six_version
-except ImportError:
-    six_version = "not installed"
+#try:
+#    from six import __version__ as six_version
+#except ImportError:
+#    six_version = "not installed"
 try:
     from httplib2 import __version__ as httplib2_version
 except ImportError:
@@ -196,7 +196,8 @@ def migrate():
 if not os.path.exists(cli.gdpath):
     try:
         Base.metadata.create_all(engine)
-    except Exception:
+    except Exception as ex:
+        log.error("Error connect to database: {} - {}".format(cli.gdpath, ex))
         raise
 migrate()
 
@@ -362,16 +363,27 @@ def moveGdriveFolderRemote(origin_file, target_folder):
     children = drive.auth.service.children().list(folderId=previous_parents).execute()
     gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
     if not gFileTargetDir:
-        # Folder is not existing, create, and move folder
         gFileTargetDir = drive.CreateFile(
             {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
              "mimeType": "application/vnd.google-apps.folder"})
         gFileTargetDir.Upload()
-    # Move the file to the new folder
-    drive.auth.service.files().update(fileId=origin_file['id'],
-                                      addParents=gFileTargetDir['id'],
-                                      removeParents=previous_parents,
-                                      fields='id, parents').execute()
+        # Move the file to the new folder
+        drive.auth.service.files().update(fileId=origin_file['id'],
+                                          addParents=gFileTargetDir['id'],
+                                          removeParents=previous_parents,
+                                          fields='id, parents').execute()
+
+    elif gFileTargetDir['title'] != target_folder:
+        # Folder is not existing, create, and move folder
+        drive.auth.service.files().patch(fileId=origin_file['id'],
+                                         body={'title': target_folder},
+                                         fields='title').execute()
+    else:
+        # Move the file to the new folder
+        drive.auth.service.files().update(fileId=origin_file['id'],
+                                          addParents=gFileTargetDir['id'],
+                                          removeParents=previous_parents,
+                                          fields='id, parents').execute()
     # if previous_parents has no children anymore, delete original fileparent
     if len(children['items']) == 1:
         deleteDatabaseEntry(previous_parents)
@@ -419,24 +431,24 @@ def uploadFileToEbooksFolder(destFile, f):
     splitDir = destFile.split('/')
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
-            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+            existing_Files = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
-            if len(existingFiles) > 0:
-                driveFile = existingFiles[0]
+            if len(existing_Files) > 0:
+                driveFile = existing_Files[0]
             else:
                 driveFile = drive.CreateFile({'title': x,
                                               'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(f)
             driveFile.Upload()
         else:
-            existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+            existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
                                                   (x.replace("'", r"\'"), parent['id'])}).GetList()
-            if len(existingFolder) == 0:
+            if len(existing_Folder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder"})
                 parent.Upload()
             else:
-                parent = existingFolder[0]
+                parent = existing_Folder[0]
 
 
 def watchChange(drive, channel_id, channel_type, channel_address,
@@ -678,5 +690,5 @@ def get_error_text(client_secrets=None):
 
 
 def get_versions():
-    return {'six': six_version,
+    return { # 'six': six_version,
             'httplib2': httplib2_version}

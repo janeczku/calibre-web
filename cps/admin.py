@@ -39,7 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services
+from . import constants, logger, helper, services, cli
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
@@ -47,10 +47,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from . import debug_info, _BABEL_TRANSLATIONS
 
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
+from functools import wraps
 
 log = logger.create()
 
@@ -158,6 +155,18 @@ def shutdown():
     return json.dumps(showtext), 400
 
 
+# method is available without login and not protected by CSRF to make it easy reachable, is per default switched of
+# needed for docker applications, as changes on metadata.db from host are not visible to application
+@admi.route("/reconnect", methods=['GET'])
+def reconnect():
+    if cli.args.r:
+        calibre_db.reconnect_db(config, ub.app_DB_path)
+        return json.dumps({})
+    else:
+        log.debug("'/reconnect' was accessed but is not enabled")
+        abort(404)
+
+
 @admi.route("/admin/view")
 @login_required
 @admin_required
@@ -186,6 +195,7 @@ def admin():
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
                                  feature_support=feature_support, kobo_support=kobo_support,
                                  title=_(u"Admin page"), page="admin")
+
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
 @login_required
@@ -227,6 +237,7 @@ def ajax_db_config():
 def calibreweb_alive():
     return "", 200
 
+
 @admi.route("/admin/viewconfig")
 @login_required
 @admin_required
@@ -242,6 +253,7 @@ def view_configuration():
                                  languages=languages,
                                  translations=translations,
                                  title=_(u"UI Configuration"), page="uiconfig")
+
 
 @admi.route("/admin/usertable")
 @login_required
@@ -304,8 +316,8 @@ def list_users():
 
     if search:
         all_user = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
-                                    func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
-                                    func.lower(ub.User.email).ilike("%" + search + "%")))
+                                       func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
+                                       func.lower(ub.User.email).ilike("%" + search + "%")))
     if state:
         users = calibre_db.get_checkbox_sorted(all_user.all(), state, off, limit, request.args.get("order", "").lower())
     else:
@@ -325,12 +337,14 @@ def list_users():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @admi.route("/ajax/deleteuser", methods=['POST'])
 @login_required
 @admin_required
 def delete_user():
     user_ids = request.form.to_dict(flat=False)
     users = None
+    message = ""
     if "userid[]" in user_ids:
         users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids['userid[]'])).all()
     elif "userid" in user_ids:
@@ -357,6 +371,7 @@ def delete_user():
         success = [{'type': "success", 'message': _("{} users deleted successfully").format(count)}]
     success.extend(errors)
     return Response(json.dumps(success), mimetype='application/json')
+
 
 @admi.route("/ajax/getlocale")
 @login_required
@@ -417,9 +432,9 @@ def edit_list_user(param):
                     if user.name == "Guest":
                         raise Exception(_("Guest Name can't be changed"))
                     user.name = check_username(vals['value'])
-                elif param =='email':
+                elif param == 'email':
                     user.email = check_email(vals['value'])
-                elif param =='kobo_only_shelves_sync':
+                elif param == 'kobo_only_shelves_sync':
                     user.kobo_only_shelves_sync = int(vals['value'] == 'true')
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
@@ -439,8 +454,8 @@ def edit_list_user(param):
                                               ub.User.id != user.id).count():
                                     return Response(
                                         json.dumps([{'type': "danger",
-                                                     'message':_(u"No admin user remaining, can't remove admin role",
-                                                                 nick=user.name)}]), mimetype='application/json')
+                                                     'message': _(u"No admin user remaining, can't remove admin role",
+                                                                  nick=user.name)}]), mimetype='application/json')
                             user.role &= ~value
                         else:
                             raise Exception(_("Value has to be true or false"))
@@ -503,12 +518,14 @@ def update_table_settings():
         return "Invalid request", 400
     return ""
 
+
 def check_valid_read_column(column):
     if column != "0":
         if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
               .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all():
             return False
     return True
+
 
 def check_valid_restricted_column(column):
     if column != "0":
@@ -548,7 +565,6 @@ def update_view_configuration():
     _config_string(to_save, "config_default_language")
     _config_string(to_save, "config_default_locale")
 
-
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
@@ -585,13 +601,15 @@ def load_dialogtexts(element_id):
     elif element_id == "restrictions":
         texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":
-        texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
+        texts["main"] = _('Are you sure you want to change the selected visibility restrictions '
+                          'for the selected user(s)?')
     elif element_id == "kobo_only_shelves_sync":
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
     elif element_id == "btnfullsync":
-        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?")
+        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
+                          "to force a full sync with your Kobo Reader?")
     return json.dumps(texts)
 
 
@@ -762,6 +780,7 @@ def prepare_tags(user, action, tags_name, id_list):
 def add_user_0_restriction(res_type):
     return add_restriction(res_type, 0)
 
+
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -868,8 +887,8 @@ def delete_restriction(res_type, user_id):
 @admin_required
 def list_restriction(res_type, user_id):
     if res_type == 0:   # Tags as template
-        restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_denied_tags()) if x != '']
+        restrict = [{'Element': x, 'type': _('Deny'), 'id': 'd'+str(i)}
+                    for i, x in enumerate(config.list_denied_tags()) if x != '']
         allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
                  for i, x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
@@ -905,6 +924,7 @@ def list_restriction(res_type, user_id):
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 @admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
@@ -1167,13 +1187,15 @@ def simulatedbchange():
 
 def _db_simulate_change():
     param = request.form.to_dict()
-    to_save = {}
+    to_save = dict()
     to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
                                            '',
                                            param['config_calibre_dir'],
                                            flags=re.IGNORECASE).strip()
-    db_change = config.config_calibre_dir != to_save["config_calibre_dir"] and config.config_calibre_dir
-    db_valid = calibre_db.check_valid_db(to_save["config_calibre_dir"], ub.app_DB_path)
+    db_valid, db_change = calibre_db.check_valid_db(to_save["config_calibre_dir"],
+                                                    ub.app_DB_path,
+                                                    config.config_calibre_uuid)
+    db_change = bool(db_change and config.config_calibre_dir)
     return db_change, db_valid
 
 
@@ -1203,26 +1225,31 @@ def _db_configuration_update_helper():
     except Exception as ex:
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
-    if db_change or not db_valid or not config.db_configured:
+    if db_change or not db_valid or not config.db_configured \
+          or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
+        config.store_calibre_uuid(calibre_db, db.Library_Id)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
-        ub.session.query(ub.Downloads).delete()
-        ub.session.query(ub.ArchivedBook).delete()
-        ub.session.query(ub.ReadBook).delete()
-        ub.session.query(ub.BookShelf).delete()
-        ub.session.query(ub.Bookmark).delete()
-        ub.session.query(ub.KoboReadingState).delete()
-        ub.session.query(ub.KoboStatistics).delete()
-        ub.session.query(ub.KoboSyncedBooks).delete()
-        ub.session_commit()
+        if db_change:
+            log.info("Calibre Database changed, delete all Calibre-Web info related to old Database")
+            ub.session.query(ub.Downloads).delete()
+            ub.session.query(ub.ArchivedBook).delete()
+            ub.session.query(ub.ReadBook).delete()
+            ub.session.query(ub.BookShelf).delete()
+            ub.session.query(ub.Bookmark).delete()
+            ub.session.query(ub.KoboReadingState).delete()
+            ub.session.query(ub.KoboStatistics).delete()
+            ub.session.query(ub.KoboSyncedBooks).delete()
+            ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
     config.save()
     return _db_configuration_result(None, gdrive_error)
+
 
 def _configuration_update_helper():
     reboot_required = False
@@ -1315,6 +1342,7 @@ def _configuration_update_helper():
 
     return _configuration_result(None, reboot_required)
 
+
 def _configuration_result(error_flash=None, reboot=False):
     resp = {}
     if error_flash:
@@ -1322,9 +1350,9 @@ def _configuration_result(error_flash=None, reboot=False):
         config.load()
         resp['result'] = [{'type': "danger", 'message': error_flash}]
     else:
-        resp['result'] = [{'type': "success", 'message':_(u"Calibre-Web configuration updated")}]
+        resp['result'] = [{'type': "success", 'message': _(u"Calibre-Web configuration updated")}]
     resp['reboot'] = reboot
-    resp['config_upload']= config.config_upload_formats
+    resp['config_upload'] = config.config_upload_formats
     return Response(json.dumps(resp), mimetype='application/json')
 
 
@@ -1406,6 +1434,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         log.error("Settings DB is not Writeable")
         flash(_("Settings DB is not Writeable"), category="error")
 
+
 def _delete_user(content):
     if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
                                         ub.User.id != content.id).count():
@@ -1429,7 +1458,7 @@ def _delete_user(content):
                 ub.session.delete(kobo_entry)
             ub.session_commit()
             log.info("User {} deleted".format(content.name))
-            return(_("User '%(nick)s' deleted", nick=content.name))
+            return _("User '%(nick)s' deleted", nick=content.name)
         else:
             log.warning(_("Can't delete Guest User"))
             raise Exception(_("Can't delete Guest User"))
@@ -1727,7 +1756,7 @@ def get_updater_status():
         if request.method == "POST":
             commit = request.form.to_dict()
             if "start" in commit and commit['start'] == 'True':
-                text = {
+                txt = {
                     "1": _(u'Requesting update package'),
                     "2": _(u'Downloading update package'),
                     "3": _(u'Unzipping update package'),
@@ -1742,7 +1771,7 @@ def get_updater_status():
                     "12": _(u'Update failed:') + u' ' + _(u'Update file could not be saved in temp dir'),
                     "13": _(u'Update failed:') + u' ' + _(u'Files could not be replaced during update')
                 }
-                status['text'] = text
+                status['text'] = txt
                 updater_thread.status = 0
                 updater_thread.resume()
                 status['status'] = updater_thread.get_update_status()

@@ -97,7 +97,7 @@ def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecu
         try:
             rarfile.UNRAR_TOOL = rarExecutable
             cf = rarfile.RarFile(tmp_file_name)
-            for name in cf.getnames():
+            for name in cf.namelist():
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()

@@ -47,7 +47,7 @@ def remove_synced_book(book_id, all=False, session=None):
         ub.session_commit()
     else:
         session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.book_id == book_id).filter(user).delete()
-        ub.session_commit(sess=session)
+        ub.session_commit(_session=session)
 
 
 
@@ -58,7 +58,7 @@ def change_archived_books(book_id, state=None, message=None):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
 
     archived_book.is_archived = state if state else not archived_book.is_archived
-    archived_book.last_modified = datetime.datetime.utcnow()
+    archived_book.last_modified = datetime.datetime.utcnow()        # toDo. Check utc timestamp
 
     ub.session.merge(archived_book)
     ub.session_commit(message)

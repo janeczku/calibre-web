@@ -63,6 +63,7 @@ class _Settings(_Base):
     mail_gmail_token = Column(JSON, default={})
 
     config_calibre_dir = Column(String)
+    config_calibre_uuid = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
@@ -312,9 +313,8 @@ class _ConfigSQL(object):
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:
-            if not self.config_use_google_drive:
-                db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
-                have_metadata_db = os.path.isfile(db_file)
+            db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
+            have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
         if os.environ.get('FLASK_DEBUG'):
@@ -359,6 +359,14 @@ class _ConfigSQL(object):
         # self.config_calibre_dir = None
         self.save()
 
+    def store_calibre_uuid(self, calibre_db, Library_table):
+        try:
+            calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
+            if self.config_calibre_uuid != calibre_uuid.uuid:
+                self.config_calibre_uuid = calibre_uuid.uuid
+                self.save()
+        except AttributeError:
+            pass
 
 def _migrate_table(session, orm_class):
     changed = False
@@ -447,19 +455,12 @@ def load_configuration(session):
         session.add(_Settings())
         session.commit()
     conf = _ConfigSQL(session)
-    # Migrate from global restrictions to user based restrictions
-    #if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
-    #    conf.config_denied_tags = conf.config_mature_content_tags
-    #    conf.save()
-    #    session.query(ub.User).filter(ub.User.mature_content != True). \
-    #        update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
-    #    session.commit()
     return conf
 
-def get_flask_session_key(session):
-    flask_settings = session.query(_Flask_Settings).one_or_none()
+def get_flask_session_key(_session):
+    flask_settings = _session.query(_Flask_Settings).one_or_none()
     if flask_settings == None:
         flask_settings = _Flask_Settings(os.urandom(32))
-        session.add(flask_settings)
-        session.commit()
+        _session.add(flask_settings)
+        _session.commit()
     return flask_settings.flask_session_key
