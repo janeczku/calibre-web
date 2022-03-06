@@ -16,6 +16,7 @@ var reader;
     reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("darkTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("blackTheme", "/static/css/epub_themes.css");
 
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));

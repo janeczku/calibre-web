@@ -578,7 +578,7 @@ input:-moz-placeholder { color: #454545; }
 }
 
 .md-content .themes button.darkTheme {
-  background-color: black;
+  background-color: #202124;
   color: white;
 }
 
@@ -590,6 +590,11 @@ input:-moz-placeholder { color: #454545; }
 .md-content .themes button.sepiaTheme {
   background-color: #ece1ca;
   color: black;
+}
+
+.md-content .themes button.blackTheme {
+  background-color: black;
+  color: white;
 }
 
 /* Effect 1: Fade in and scale up */

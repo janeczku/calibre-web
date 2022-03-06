@@ -76,6 +76,7 @@
                   <button type="button" id="lightTheme" class="lightTheme" onclick="selectTheme(this.id)"><span id="lightSelected">✓</span>{{_('Light')}}</button> 
                   <button type="button" id="darkTheme" class="darkTheme" onclick="selectTheme(this.id)"><span id="darkSelected"> </span>{{_('Dark')}}</button>
                   <button type="button" id="sepiaTheme" class="sepiaTheme" onclick="selectTheme(this.id)"><span id="sepiaSelected"> </span>{{_('Sepia')}}</button>
+                  <button type="button" id="blackTheme" class="blackTheme" onclick="selectTheme(this.id)"><span id="blackSelected"> </span>{{_('Black')}}</button>
               </div>
               <div>
                   <p>
@@ -115,13 +116,16 @@
 
             // Apply theme to rest of the page. TODO - Do this smarter
             if (id == "darkTheme") {
-              document.getElementById("main").style.backgroundColor = "black";
+              document.getElementById("main").style.backgroundColor = "#202124";
             }
             else if (id == "lightTheme") {
               document.getElementById("main").style.backgroundColor = "white";
             }
             else if (id == "sepiaTheme") {
               document.getElementById("main").style.backgroundColor = "#ece1ca";
+            }
+            else if (id == "blackTheme") {
+              document.getElementById("main").style.backgroundColor = "black";
             }
           }
       </script>
