@@ -1263,8 +1263,8 @@ def simulate_merge_list_book():
         to_book = calibre_db.get_book(vals[0]).title
         vals.pop(0)
         if to_book:
+            from_book = []
             for book_id in vals:
-                from_book = []
                 from_book.append(calibre_db.get_book(book_id).title)
             return json.dumps({'to': to_book, 'from': from_book})
     return ""
