@@ -812,11 +812,13 @@ function checkboxChange(checkbox, userId, field, field_index) {
 
 function BookCheckboxChange(checkbox, userId, field) {
     var value = checkbox.checked ? "True" : "False";
+    var element = checkbox;
     $.ajax({
         method: "post",
         url: getPath() + "/ajax/editbooks/" + field,
         data: {"pk": userId, "value": value},
         error: function(data) {
+            element.checked = !element.checked;
             handleListServerResponse([{type:"danger", message:data.responseText}])
         },
         success: handleListServerResponse

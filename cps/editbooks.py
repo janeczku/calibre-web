@@ -1212,8 +1212,11 @@ def edit_list_book(param):
                                        'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
                            mimetype='application/json')
         elif param == 'is_archived':
-            change_archived_books(book.id, vals['value'] == "True")
-            ret = ""
+            is_archived = change_archived_books(book.id, vals['value'] == "True",
+                                                message="Book {} archivebit set to: {}".format(book.id, vals['value']))
+            if is_archived:
+                kobo_sync_status.remove_synced_book(book.id)
+            return ""
         elif param == 'read_status':
             ret = helper.edit_book_read_status(book.id, vals['value'] == "True")
             if ret:
