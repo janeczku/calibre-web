@@ -335,7 +335,7 @@ def edit_book_read_status(book_id, read_status=None):
         except (OperationalError, InvalidRequestError) as e:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: {}".format(e))
-            return "Read status could not set: {}".format(e), 400
+            return _("Read status could not set: {}".format(e.orig))
     return ""
 
 # Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
