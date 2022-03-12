@@ -713,7 +713,7 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
                     return get_cover_on_failure(use_generic_cover_on_failure)
             except Exception as ex:
-                log.debug_or_exception(ex)
+                log.error_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
@@ -861,7 +861,7 @@ def check_unrar(unrarLocation):
             log.debug("unrar version %s", version)
 
     except (OSError, UnicodeDecodeError) as err:
-        log.debug_or_exception(err)
+        log.error_or_exception(err)
         return _('Error excecuting UnRar')
 
 

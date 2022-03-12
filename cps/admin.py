@@ -1216,10 +1216,10 @@ def _db_configuration_update_helper():
 
         # gdrive_error drive setup
         gdrive_error = _configuration_gdrive_helper(to_save)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _db_configuration_result(_("Settings DB is not Writeable"), gdrive_error)
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _db_configuration_result(_(u"Database error: %(error)s.", error=e.orig), gdrive_error)
     try:
         metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
@@ -1332,10 +1332,10 @@ def _configuration_update_helper():
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
                 return _configuration_result(unrar_status)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _configuration_result(_("Settings DB is not Writeable"))
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _configuration_result(_(u"Database error: %(error)s.", error=e.orig))
 
     config.save()
     if reboot_required:
@@ -1430,10 +1430,10 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("Found an existing account for {} or {}".format(content.name, content.email))
         flash(_("Found an existing account for this e-mail address or name."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
 
 
 def _delete_user(content):
@@ -1547,10 +1547,10 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
         flash(_(u"An unknown error occurred. Please try again later."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
     return ""
 
 
@@ -1616,10 +1616,10 @@ def update_mailsettings():
         _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
     try:
         config.save()
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
         return edit_mailsettings()
 
     if to_save.get("test"):
@@ -1851,7 +1851,7 @@ def import_ldap_users():
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
     except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.debug_or_exception(e)
+        log.error_or_exception(e)
         showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
         return json.dumps(showtext)
     if not new_users:
@@ -1879,7 +1879,7 @@ def import_ldap_users():
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             continue
         if user_data:
             user_count, message = ldap_import_create_user(user, user_data)

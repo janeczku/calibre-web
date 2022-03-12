@@ -94,10 +94,10 @@ def add_to_shelf(shelf_id, book_id):
     try:
         ub.session.merge(shelf)
         ub.session.commit()
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_(u"Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
@@ -154,10 +154,10 @@ def search_to_shelf(shelf_id):
             ub.session.merge(shelf)
             ub.session.commit()
             flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
-        except (OperationalError, InvalidRequestError):
+        except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
-            log.error("Settings DB is not Writeable")
-            flash(_("Settings DB is not Writeable"), category="error")
+            log.error_or_exception("Settings Database error: {}".format(e))
+            flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
     else:
         log.error("Could not add books to shelf: {}".format(shelf.name))
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
@@ -197,10 +197,10 @@ def remove_from_shelf(shelf_id, book_id):
             ub.session.delete(book_shelf)
             shelf.last_modified = datetime.utcnow()
             ub.session.commit()
-        except (OperationalError, InvalidRequestError):
+        except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
-            log.error("Settings DB is not Writeable")
-            flash(_("Settings DB is not Writeable"), category="error")
+            log.error_or_exception("Settings Database error: {}".format(e))
+            flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
             if "HTTP_REFERER" in request.environ:
                 return redirect(request.environ["HTTP_REFERER"])
             else:
@@ -273,12 +273,12 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
             except (OperationalError, InvalidRequestError) as ex:
                 ub.session.rollback()
-                log.debug_or_exception(ex)
-                log.error("Settings DB is not Writeable")
-                flash(_("Settings DB is not Writeable"), category="error")
+                log.error_or_exception(ex)
+                log.error_or_exception("Settings Database error: {}".format(ex))
+                flash(_(u"Database error: %(error)s.", error=ex.orig), category="error")
             except Exception as ex:
                 ub.session.rollback()
-                log.debug_or_exception(ex)
+                log.error_or_exception(ex)
                 flash(_(u"There was an error"), category="error")
     return render_title_template('shelf_edit.html',
                                  shelf=shelf,
@@ -337,10 +337,10 @@ def delete_shelf(shelf_id):
             flash(_("Error deleting Shelf"), category="error")
         else:
             flash(_("Shelf successfully deleted"), category="success")
-    except InvalidRequestError:
+    except InvalidRequestError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -374,10 +374,10 @@ def order_shelf(shelf_id):
                 # if order diffrent from before -> shelf.last_modified = datetime.utcnow()
             try:
                 ub.session.commit()
-            except (OperationalError, InvalidRequestError):
+            except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
-                log.error("Settings DB is not Writeable")
-                flash(_("Settings DB is not Writeable"), category="error")
+                log.error_or_exception("Settings Database error: {}".format(e))
+                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
 
         result = list()
         if shelf:
@@ -450,10 +450,10 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             try:
                 ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == entry.book_id).delete()
                 ub.session.commit()
-            except (OperationalError, InvalidRequestError):
+            except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
-                log.error("Settings DB is not Writeable")
-                flash(_("Settings DB is not Writeable"), category="error")
+                log.error_or_exception("Settings Database error: {}".format(e))
+                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
 
         return render_title_template(page,
                                      entries=result,

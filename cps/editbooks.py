@@ -337,7 +337,7 @@ def delete_book_from_table(book_id, book_format, jsonResponse):
                         kobo_sync_status.remove_synced_book(book.id, True)
                 calibre_db.session.commit()
             except Exception as ex:
-                log.debug_or_exception(ex)
+                log.error_or_exception(ex)
                 calibre_db.session.rollback()
                 if jsonResponse:
                     return json.dumps([{"location": url_for("editbook.edit_book", book_id=book_id),
@@ -663,8 +663,8 @@ def upload_single_file(request, book, book_id):
                     calibre_db.update_title_sort(config)
                 except (OperationalError, IntegrityError) as e:
                     calibre_db.session.rollback()
-                    log.error('Database error: %s', e)
-                    flash(_(u"Database error: %(error)s.", error=e), category="error")
+                    log.error_or_exception("Database error: {}".format(e))
+                    flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
@@ -756,7 +756,7 @@ def edit_book(book_id):
     try:
         calibre_db.update_title_sort(config)
     except sqliteOperationalError as e:
-        log.debug_or_exception(e)
+        log.error_or_exception(e)
         calibre_db.session.rollback()
 
     # Show form
@@ -864,8 +864,13 @@ def edit_book(book_id):
         calibre_db.session.rollback()
         flash(str(e), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
+    except (OperationalError, IntegrityError) as e:
+        log.error_or_exception("Database error: {}".format(e))
+        calibre_db.session.rollback()
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        return redirect(url_for('web.show_book', book_id=book.id))
     except Exception as ex:
-        log.debug_or_exception(ex)
+        log.error_or_exception(ex)
         calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
@@ -1103,8 +1108,8 @@ def upload():
                         return Response(json.dumps(resp), mimetype='application/json')
             except (OperationalError, IntegrityError) as e:
                 calibre_db.session.rollback()
-                log.error("Database error: %s", e)
-                flash(_(u"Database error: %(error)s.", error=e), category="error")
+                log.error_or_exception("Database error: {}".format(e))
+                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
@@ -1234,7 +1239,7 @@ def edit_list_book(param):
             calibre_db.session.commit()
     except (OperationalError, IntegrityError) as e:
         calibre_db.session.rollback()
-        log.error("Database error: {}".format(e))
+        log.error_or_exception("Database error: {}".format(e))
         ret = Response(json.dumps({'success': False,
                                    'msg': 'Database error: {}'.format(e.orig)}),
                        mimetype='application/json')
@@ -1344,7 +1349,7 @@ def table_xchange_author_title():
                 calibre_db.session.commit()
             except (OperationalError, IntegrityError) as e:
                 calibre_db.session.rollback()
-                log.error("Database error: %s", e)
+                log.error_or_exception("Database error: %s", e)
                 return json.dumps({'success': False})
 
             if config.config_use_google_drive:

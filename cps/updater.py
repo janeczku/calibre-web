@@ -117,7 +117,7 @@ class Updater(threading.Thread):
         except (IOError, OSError) as ex:
             self.status = 12
             log.error(u'Possible Reason for error: update file could not be saved in temp dir')
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         self.pause()
         return False
 

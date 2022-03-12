@@ -42,7 +42,7 @@ logging.addLevelName(logging.CRITICAL, "CRIT")
 
 class _Logger(logging.Logger):
 
-    def debug_or_exception(self, message, stacklevel=2, *args, **kwargs):
+    def error_or_exception(self, message, stacklevel=2, *args, **kwargs):
         if sys.version_info > (3, 7):
             if is_debug_enabled():
                 self.exception(message, stacklevel=stacklevel, *args, **kwargs)

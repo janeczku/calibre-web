@@ -167,10 +167,10 @@ class TaskEmail(CalibreTask):
             else:
                 self.send_gmail_email(msg)
         except MemoryError as e:
-            log.debug_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=3)
             self._handleError(u'MemoryError sending e-mail: {}'.format(str(e)))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
-            log.debug_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=3)
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.decode('utf-8').replace("\n", '. ')
             elif hasattr(e, "message"):
@@ -181,10 +181,10 @@ class TaskEmail(CalibreTask):
                 text = ''
             self._handleError(u'Smtplib Error sending e-mail: {}'.format(text))
         except (socket.error) as e:
-            log.debug_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=3)
             self._handleError(u'Socket Error sending e-mail: {}'.format(e.strerror))
         except Exception as ex:
-            log.debug_or_exception(ex, stacklevel=3)
+            log.error_or_exception(ex, stacklevel=3)
             self._handleError(u'Error sending e-mail: {}'.format(ex))
 
     def send_standard_email(self, msg):
@@ -257,7 +257,7 @@ class TaskEmail(CalibreTask):
                 data = file_.read()
                 file_.close()
             except IOError as e:
-                log.debug_or_exception(e, stacklevel=3)
+                log.error_or_exception(e, stacklevel=3)
                 log.error(u'The requested file could not be read. Maybe wrong permissions?')
                 return None
         return data

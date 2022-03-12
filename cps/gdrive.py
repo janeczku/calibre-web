@@ -152,7 +152,7 @@ try:
                     move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                     calibre_db.reconnect_db(config, ub.app_DB_path)
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         return ''
 except AttributeError:
     pass

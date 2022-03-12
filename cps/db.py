@@ -597,7 +597,7 @@ class CalibreDB():
                 cc = conn.execute(text("SELECT id, datatype FROM custom_columns"))
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
-                log.debug_or_exception(e)
+                log.error_or_exception(e)
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
@@ -769,7 +769,7 @@ class CalibreDB():
                                     len(query.all()))
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         # display authors in right order
         entries = self.order_authors(entries, True, join_archive_read)
         return entries, randm, pagination
@@ -792,7 +792,7 @@ class CalibreDB():
                 results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
-                    log.error("Author {} not found to display name in right order".format(auth))
+                    log.error("Author {} not found to display name in right order".format(auth.strip()))
                     # error = True
                     break
                 for r in results:
@@ -974,5 +974,5 @@ def lcase(s):
         return unidecode.unidecode(s.lower())
     except Exception as ex:
         log = logger.create()
-        log.debug_or_exception(ex)
+        log.error_or_exception(ex)
         return s.lower()
