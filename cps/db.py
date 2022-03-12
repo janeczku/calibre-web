@@ -17,7 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+import copy
 import os
 import re
 import ast
@@ -776,6 +776,8 @@ class CalibreDB():
 
     # Orders all Authors in the list according to authors sort
     def order_authors(self, entries, list_return=False, combined=False):
+        # entries_copy = copy.deepcopy(entries)
+        # entries_copy =[]
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
@@ -785,26 +787,31 @@ class CalibreDB():
                 sort_authors = entry.author_sort.split('&')
                 ids = [a.id for a in entry.authors]
             authors_ordered = list()
-            error = False
+            # error = False
             for auth in sort_authors:
                 results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
                     log.error("Author {} not found to display name in right order".format(auth))
-                    error = True
+                    # error = True
                     break
                 for r in results:
                     if r.id in ids:
                         authors_ordered.append(r)
-            if not error:
+                        ids.remove(r.id)
+            for author_id in ids:
+                result = self.session.query(Authors).filter(Authors.id == author_id).first()
+                authors_ordered.append(result)
+
+            if list_return:
                 if combined:
                     entry.Books.authors = authors_ordered
                 else:
-                    entry.authors = authors_ordered
-        if list_return:
-            return entries
-        else:
-            return authors_ordered
+                    entry.ordered_authors = authors_ordered
+            else:
+                return authors_ordered
+        return entries
+
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''

@@ -37,7 +37,7 @@
       <div class="meta">
         <p title="{{entry.title}}" class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
-          {% for author in entry.authors %}
+          {% for author in entry.ordered_authors %}
             <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;

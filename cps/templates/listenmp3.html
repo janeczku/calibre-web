@@ -105,7 +105,7 @@
 
   <div class="sm2-playlist-wrapper">
     <ul class="sm2-playlist-bd">
-      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.authors %}{{author.name.replace('|',',')}}
+      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.ordered_authors %}{{author.name.replace('|',',')}}
         {% if not loop.last %} & {% endif %} {% endfor %}</b> - {{entry.title}}</a></li>
     </ul>
   </div>
