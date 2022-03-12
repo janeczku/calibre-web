@@ -1152,80 +1152,81 @@ def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
     # ret = ""
-    if param == 'series_index':
-        edit_book_series_index(vals['value'], book)
-        ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
-    elif param == 'tags':
-        edit_book_tags(vals['value'], book)
-        ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
-                       mimetype='application/json')
-    elif param == 'series':
-        edit_book_series(vals['value'], book)
-        ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
-                       mimetype='application/json')
-    elif param == 'publishers':
-        edit_book_publisher(vals['value'], book)
-        ret = Response(json.dumps({'success': True,
-                                    'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
-                       mimetype='application/json')
-    elif param == 'languages':
-        invalid = list()
-        edit_book_languages(vals['value'], book, invalid=invalid)
-        if invalid:
-            ret = Response(json.dumps({'success': False,
-                                       'msg': 'Invalid languages in request: {}'.format(','.join(invalid))}),
-                           mimetype='application/json')
-        else:
-            lang_names = list()
-            for lang in book.languages:
-                lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-            ret = Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
-                            mimetype='application/json')
-    elif param == 'author_sort':
-        book.author_sort = vals['value']
-        ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
-                       mimetype='application/json')
-    elif param == 'title':
-        sort = book.sort
-        handle_title_on_edit(book, vals.get('value', ""))
-        helper.update_dir_structure(book.id, config.config_calibre_dir)
-        ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
-                       mimetype='application/json')
-    elif param == 'sort':
-        book.sort = vals['value']
-        ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
-                       mimetype='application/json')
-    elif param == 'comments':
-        edit_book_comments(vals['value'], book)
-        ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
-                       mimetype='application/json')
-    elif param == 'authors':
-        input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
-        helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0], renamed_author=renamed)
-        ret = Response(json.dumps({'success': True,
-                                   'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
-                       mimetype='application/json')
-    elif param == 'is_archived':
-        change_archived_books(book.id, vals['value'] == "True")
-        ret = ""
-    elif param == 'read_status':
-        ret = helper.edit_book_read_status(book.id, vals['value'] == "True")
-        if ret:
-            return ret, 400
-    elif param.startswith("custom_column_"):
-        new_val = dict()
-        new_val[param] = vals['value']
-        edit_single_cc_data(book.id, book, param[14:], new_val)
-        # ToDo: Very hacky find better solution
-        if vals['value'] in ["True", "False"]:
-            ret = ""
-        else:
-            ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
-                           mimetype='application/json')
-    else:
-        return _("Parameter not found"), 400
-    book.last_modified = datetime.utcnow()
     try:
+        if param == 'series_index':
+            edit_book_series_index(vals['value'], book)
+            ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
+        elif param == 'tags':
+            edit_book_tags(vals['value'], book)
+            ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
+                           mimetype='application/json')
+        elif param == 'series':
+            edit_book_series(vals['value'], book)
+            ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
+                           mimetype='application/json')
+        elif param == 'publishers':
+            edit_book_publisher(vals['value'], book)
+            ret = Response(json.dumps({'success': True,
+                                        'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
+                           mimetype='application/json')
+        elif param == 'languages':
+            invalid = list()
+            edit_book_languages(vals['value'], book, invalid=invalid)
+            if invalid:
+                ret = Response(json.dumps({'success': False,
+                                           'msg': 'Invalid languages in request: {}'.format(','.join(invalid))}),
+                               mimetype='application/json')
+            else:
+                lang_names = list()
+                for lang in book.languages:
+                    lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
+                ret = Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
+                                mimetype='application/json')
+        elif param == 'author_sort':
+            book.author_sort = vals['value']
+            ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
+                           mimetype='application/json')
+        elif param == 'title':
+            sort = book.sort
+            handle_title_on_edit(book, vals.get('value', ""))
+            helper.update_dir_structure(book.id, config.config_calibre_dir)
+            ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
+                           mimetype='application/json')
+        elif param == 'sort':
+            book.sort = vals['value']
+            ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
+                           mimetype='application/json')
+        elif param == 'comments':
+            edit_book_comments(vals['value'], book)
+            ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
+                           mimetype='application/json')
+        elif param == 'authors':
+            input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
+            helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0], renamed_author=renamed)
+            ret = Response(json.dumps({'success': True,
+                                       'newValue':  ' & '.join([author.replace('|',',') for author in input_authors])}),
+                           mimetype='application/json')
+        elif param == 'is_archived':
+            change_archived_books(book.id, vals['value'] == "True")
+            ret = ""
+        elif param == 'read_status':
+            ret = helper.edit_book_read_status(book.id, vals['value'] == "True")
+            if ret:
+                return ret, 400
+        elif param.startswith("custom_column_"):
+            new_val = dict()
+            new_val[param] = vals['value']
+            edit_single_cc_data(book.id, book, param[14:], new_val)
+            # ToDo: Very hacky find better solution
+            if vals['value'] in ["True", "False"]:
+                ret = ""
+            else:
+                ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
+                               mimetype='application/json')
+        else:
+            return _("Parameter not found"), 400
+        book.last_modified = datetime.utcnow()
+
         calibre_db.session.commit()
         # revert change for sort if automatic fields link is deactivated
         if param == 'title' and vals.get('checkT') == "false":
@@ -1233,7 +1234,10 @@ def edit_list_book(param):
             calibre_db.session.commit()
     except (OperationalError, IntegrityError) as e:
         calibre_db.session.rollback()
-        log.error("Database error: %s", e)
+        log.error("Database error: {}".format(e))
+        ret = Response(json.dumps({'success': False,
+                                   'msg': 'Database error: {}'.format(e.orig)}),
+                       mimetype='application/json')
     return ret
 
 
