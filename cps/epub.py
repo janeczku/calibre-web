@@ -20,23 +20,26 @@ import os
 import zipfile
 from lxml import etree
 
-from . import isoLanguages
+from . import isoLanguages, cover
 from .helper import split_authors
 from .constants import BookMeta
 
 
-def extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
+def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     if cover_file is None:
         return None
     else:
+        cf = extension = None
         zip_cover_path = os.path.join(cover_path, cover_file).replace('\\', '/')
-        cf = zip_file.read(zip_cover_path)
+
         prefix = os.path.splitext(tmp_file_name)[0]
         tmp_cover_name = prefix + '.' + os.path.basename(zip_cover_path)
-        image = open(tmp_cover_name, 'wb')
-        image.write(cf)
-        image.close()
-        return tmp_cover_name
+        ext = os.path.splitext(tmp_cover_name)
+        if len(ext) > 1:
+            extension = ext[1].lower()
+        if extension in cover.COVER_EXTENSIONS:
+            cf = zip_file.read(zip_cover_path)
+        return cover.cover_processing(tmp_file_name, cf, extension)
 
 
 def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
@@ -70,9 +73,9 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             else:
                 epub_metadata[s] = tmp[0]
         else:
-            epub_metadata[s] = u'Unknown'
+            epub_metadata[s] = 'Unknown'
 
-    if epub_metadata['subject'] == u'Unknown':
+    if epub_metadata['subject'] == 'Unknown':
         epub_metadata['subject'] = ''
 
     if epub_metadata['description'] == u'Unknown':
@@ -112,7 +115,7 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
     cover_section = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     cover_file = None
     if len(cover_section) > 0:
-        cover_file = extract_cover(epub_zip, cover_section[0], cover_path, tmp_file_path)
+        cover_file = _extract_cover(epub_zip, cover_section[0], cover_path, tmp_file_path)
     else:
         meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
         if len(meta_cover) > 0:
@@ -123,10 +126,10 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
                     "/pkg:package/pkg:manifest/pkg:item[@properties='" + meta_cover[0] + "']/@href", namespaces=ns)
         else:
             cover_section = tree.xpath("/pkg:package/pkg:guide/pkg:reference/@href", namespaces=ns)
-        if len(cover_section) > 0:
-            filetype = cover_section[0].rsplit('.', 1)[-1]
+        for cs in cover_section:
+            filetype = cs.rsplit('.', 1)[-1]
             if filetype == "xhtml" or filetype == "html":  # if cover is (x)html format
-                markup = epub_zip.read(os.path.join(cover_path, cover_section[0]))
+                markup = epub_zip.read(os.path.join(cover_path, cs))
                 markup_tree = etree.fromstring(markup)
                 # no matter xhtml or html with no namespace
                 img_src = markup_tree.xpath("//*[local-name() = 'img']/@src")
@@ -137,9 +140,11 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
                     # img_src maybe start with "../"" so fullpath join then relpath to cwd
                     filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(cover_path, cover_section[0])),
                                                             img_src[0]))
-                    cover_file = extract_cover(epub_zip, filename, "", tmp_file_path)
+                    cover_file = _extract_cover(epub_zip, filename, "", tmp_file_path)
             else:
-                cover_file = extract_cover(epub_zip, cover_section[0], cover_path, tmp_file_path)
+                cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
+            if cover_file:
+                break
     return cover_file
 
 
