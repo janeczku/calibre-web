@@ -298,10 +298,13 @@ def list_users():
     limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
     sort = request.args.get("sort", "id")
-    order = request.args.get("order", "").lower()
     state = None
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
+    else:
+        if sort not in ub.User.__table__.columns.keys():
+            sort = "id"
+    order = request.args.get("order", "").lower()
 
     if sort != "state" and order:
         order = text(sort + " " + order)
