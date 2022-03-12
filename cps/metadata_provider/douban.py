@@ -88,7 +88,7 @@ class Douban(Metadata):
 
             results = r.json()
             if results["total"] == 0:
-                return val
+                return []
 
             book_id_list = [
                 self.ID_PATTERN.search(item).group("id")
@@ -139,7 +139,7 @@ class Douban(Metadata):
         match.cover = html.xpath(self.COVER_XPATH)[0].attrib["href"] or generic_cover
         try:
             rating_num = float(html.xpath(self.RATING_XPATH)[0].text.strip())
-        except ValueError:
+        except Exception:
             rating_num = 0
         match.rating = int(-1 * rating_num // 2 * -1) if rating_num else 0
 
@@ -166,10 +166,41 @@ class Douban(Metadata):
             elif self.SUBTITLE_PATTERN.search(text):
                 match.title = f'{match.title}:' + element.tail.strip()
             elif self.PUBLISHED_DATE_PATTERN.search(text):
-                match.publishedDate = element.tail.strip()
+                match.publishedDate = self._clean_date(element.tail.strip())
             elif self.SUBTITLE_PATTERN.search(text):
                 match.series = element.getnext().text
             elif i_type := self.IDENTIFIERS_PATTERN.search(text):
                 match.identifiers[i_type.group()] = element.tail.strip()
 
         return match
+
+    
+    def _clean_date(self, date: str) -> str:
+        """
+        Clean up the date string to be in the format YYYY-MM-DD
+
+        Examples of possible patterns:
+            '2014-7-16', '1988年4月', '1995-04', '2021-8', '2020-12-1', '1996年',
+            '1972', '2004/11/01', '1959年3月北京第1版第1印'
+        """
+        year = date[:4]
+        moon = "01"
+        day = "01"
+
+        if len(date) > 5:
+            digit = []
+            ls = []
+            for i in range(5, len(date)):
+                if date[i].isdigit():
+                    digit.append(date[i])
+                elif digit:
+                    ls.append("".join(digit) if len(digit)==2 else f"0{digit[0]}")
+                    digit = []
+            if digit:
+                ls.append("".join(digit) if len(digit)==2 else f"0{digit[0]}")
+
+            moon = ls[0]
+            if len(ls)>1:
+                day = ls[1]     
+
+        return f"{year}-{moon}-{day}"
