@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#     Copyright (C) 2018 OzzieIsaacs
+#     Copyright (C) 2018-2022 OzzieIsaacs
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -18,12 +18,8 @@
 
 import os
 
-from . import logger, isoLanguages
+from . import logger, isoLanguages, cover
 from .constants import BookMeta
-
-
-log = logger.create()
-
 
 try:
     from wand.image import Image
@@ -31,6 +27,7 @@ try:
 except (ImportError, RuntimeError) as e:
     use_IM = False
 
+log = logger.create()
 
 try:
     from comicapi.comicarchive import ComicArchive, MetaDataStyle
@@ -51,29 +48,8 @@ except (ImportError, LookupError) as e:
         use_rarfile = False
     use_comic_meta = False
 
-NO_JPEG_EXTENSIONS = ['.png', '.webp', '.bmp']
-COVER_EXTENSIONS = ['.png', '.webp', '.bmp', '.jpg', '.jpeg']
 
-def _cover_processing(tmp_file_name, img, extension):
-    tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
-    if extension in NO_JPEG_EXTENSIONS:
-        if use_IM:
-            with Image(blob=img) as imgc:
-                imgc.format = 'jpeg'
-                imgc.transform_colorspace('rgb')
-                imgc.save(filename=tmp_cover_name)
-                return tmp_cover_name
-        else:
-            return None
-    if img:
-        with open(tmp_cover_name, 'wb') as f:
-            f.write(img)
-        return tmp_cover_name
-    else:
-        return None
-
-
-def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable):
+def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_executable):
     cover_data = extension = None
     if original_file_extension.upper() == '.CBZ':
         cf = zipfile.ZipFile(tmp_file_name)
@@ -81,7 +57,7 @@ def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecu
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
-                if extension in COVER_EXTENSIONS:
+                if extension in cover.COVER_EXTENSIONS:
                     cover_data = cf.read(name)
                     break
     elif original_file_extension.upper() == '.CBT':
@@ -90,44 +66,44 @@ def _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecu
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
-                if extension in COVER_EXTENSIONS:
+                if extension in cover.COVER_EXTENSIONS:
                     cover_data = cf.extractfile(name).read()
                     break
     elif original_file_extension.upper() == '.CBR' and use_rarfile:
         try:
-            rarfile.UNRAR_TOOL = rarExecutable
+            rarfile.UNRAR_TOOL = rar_executable
             cf = rarfile.RarFile(tmp_file_name)
             for name in cf.namelist():
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()
-                    if extension in COVER_EXTENSIONS:
+                    if extension in cover.COVER_EXTENSIONS:
                         cover_data = cf.read(name)
                         break
         except Exception as ex:
-            log.debug('Rarfile failed with error: %s', ex)
+            log.debug('Rarfile failed with error: {}'.format(ex))
     return cover_data, extension
 
 
-def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
+def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
     cover_data = extension = None
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_name, rar_exe_path=rarExecutable)
+        archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
         for index, name in enumerate(archive.getPageNameList()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
-                if extension in COVER_EXTENSIONS:
+                if extension in cover.COVER_EXTENSIONS:
                     cover_data = archive.getPage(index)
                     break
     else:
-        cover_data, extension = _extract_Cover_from_archive(original_file_extension, tmp_file_name, rarExecutable)
-    return _cover_processing(tmp_file_name, cover_data, extension)
+        cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_executable)
+    return cover.cover_processing(tmp_file_name, cover_data, extension)
 
 
-def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
+def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable):
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_path, rar_exe_path=rarExecutable)
+        archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
         if archive.seemsToBeAComicArchive():
             if archive.hasMetadata(MetaDataStyle.CIX):
                 style = MetaDataStyle.CIX
@@ -137,23 +113,23 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 style = None
 
             # if style is not None:
-            loadedMetadata = archive.readMetadata(style)
+            loaded_metadata = archive.readMetadata(style)
 
-            lang = loadedMetadata.language or ""
-            loadedMetadata.language = isoLanguages.get_lang3(lang)
+            lang = loaded_metadata.language or ""
+            loaded_metadata.language = isoLanguages.get_lang3(lang)
 
             return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
-                title=loadedMetadata.title or original_file_name,
+                title=loaded_metadata.title or original_file_name,
                 author=" & ".join([credit["person"]
-                                   for credit in loadedMetadata.credits if credit["role"] == "Writer"]) or u'Unknown',
-                cover=_extractCover(tmp_file_path, original_file_extension, rarExecutable),
-                description=loadedMetadata.comments or "",
+                                   for credit in loaded_metadata.credits if credit["role"] == "Writer"]) or 'Unknown',
+                cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
+                description=loaded_metadata.comments or "",
                 tags="",
-                series=loadedMetadata.series or "",
-                series_id=loadedMetadata.issue or "",
-                languages=loadedMetadata.language,
+                series=loaded_metadata.series or "",
+                series_id=loaded_metadata.issue or "",
+                languages=loaded_metadata.language,
                 publisher="")
 
     return BookMeta(
@@ -161,7 +137,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
         extension=original_file_extension,
         title=original_file_name,
         author=u'Unknown',
-        cover=_extractCover(tmp_file_path, original_file_extension, rarExecutable),
+        cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
         description="",
         tags="",
         series="",
