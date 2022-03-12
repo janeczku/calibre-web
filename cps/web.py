@@ -1375,7 +1375,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         try:
             q = adv_search_custom_columns(cc, term, q)
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
 
     q = q.order_by(*sort_param).all()
@@ -1437,7 +1437,7 @@ def serve_book(book_id, book_format, anyname):
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
             return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             return "File Not Found"
     else:
         if book_format.upper() == 'TXT':

@@ -105,7 +105,7 @@ class Amazon(Metadata):
                         match.cover = ""
                     return match, index
             except Exception as e:
-                log.debug_or_exception(e)
+                log.error_or_exception(e)
                 return
 
         val = list()
@@ -126,5 +126,5 @@ class Amazon(Metadata):
             result = list(filter(lambda x: x, val))
             return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
         except requests.exceptions.HTTPError as e:
-            log.debug_or_exception(e)
+            log.error_or_exception(e)
             return []

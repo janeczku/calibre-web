@@ -853,5 +853,5 @@ def session_commit(success=None, _session=None):
             log.info(success)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
         s.rollback()
-        log.debug_or_exception(e)
+        log.error_or_exception(e)
     return ""
