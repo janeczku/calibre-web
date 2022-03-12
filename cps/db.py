@@ -788,8 +788,9 @@ class CalibreDB():
             error = False
             for auth in sort_authors:
                 results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
-                # ToDo: How to handle not found authorname
+                # ToDo: How to handle not found author name
                 if not len(results):
+                    log.error("Author {} not found to display name in right order".format(auth))
                     error = True
                     break
                 for r in results:
