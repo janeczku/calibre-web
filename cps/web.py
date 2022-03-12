@@ -300,43 +300,43 @@ def get_matching_tags():
     return json_dumps
 
 
-def get_sort_function(sort, data):
+def get_sort_function(sort_param, data):
     order = [db.Books.timestamp.desc()]
-    if sort == 'stored':
-        sort = current_user.get_view_property(data, 'stored')
+    if sort_param == 'stored':
+        sort_param = current_user.get_view_property(data, 'stored')
     else:
-        current_user.set_view_property(data, 'stored', sort)
-    if sort == 'pubnew':
+        current_user.set_view_property(data, 'stored', sort_param)
+    if sort_param == 'pubnew':
         order = [db.Books.pubdate.desc()]
-    if sort == 'pubold':
+    if sort_param == 'pubold':
         order = [db.Books.pubdate]
-    if sort == 'abc':
+    if sort_param == 'abc':
         order = [db.Books.sort]
-    if sort == 'zyx':
+    if sort_param == 'zyx':
         order = [db.Books.sort.desc()]
-    if sort == 'new':
+    if sort_param == 'new':
         order = [db.Books.timestamp.desc()]
-    if sort == 'old':
+    if sort_param == 'old':
         order = [db.Books.timestamp]
-    if sort == 'authaz':
+    if sort_param == 'authaz':
         order = [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index]
-    if sort == 'authza':
+    if sort_param == 'authza':
         order = [db.Books.author_sort.desc(), db.Series.name.desc(), db.Books.series_index.desc()]
-    if sort == 'seriesasc':
+    if sort_param == 'seriesasc':
         order = [db.Books.series_index.asc()]
-    if sort == 'seriesdesc':
+    if sort_param == 'seriesdesc':
         order = [db.Books.series_index.desc()]
-    if sort == 'hotdesc':
+    if sort_param == 'hotdesc':
         order = [func.count(ub.Downloads.book_id).desc()]
-    if sort == 'hotasc':
+    if sort_param == 'hotasc':
         order = [func.count(ub.Downloads.book_id).asc()]
-    if sort is None:
-        sort = "new"
-    return order, sort
+    if sort_param is None:
+        sort_param = "new"
+    return order, sort_param
 
 
-def render_books_list(data, sort, book_id, page):
-    order = get_sort_function(sort, data)
+def render_books_list(data, sort_param, book_id, page):
+    order = get_sort_function(sort_param, data)
     if data == "rated":
         return render_rated_books(page, book_id, order=order)
     elif data == "discover":
@@ -604,7 +604,7 @@ def render_language_books(page, name, order):
 
 
 def render_read_books(page, are_read, as_xml=False, order=None):
-    sort = order[0] if order else []
+    sort_param = order[0] if order else []
     if not config.config_read_column:
         if are_read:
             db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
@@ -614,7 +614,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db_filter,
-                                                                sort,
+                                                                sort_param,
                                                                 False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
@@ -629,7 +629,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                     db.Books,
                                                                     db_filter,
-                                                                    sort,
+                                                                    sort_param,
                                                                     False, 0,
                                                                     db.books_series_link,
                                                                     db.Books.id == db.books_series_link.c.book,
@@ -656,8 +656,8 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                      title=name, page=pagename, order=order[1])
 
 
-def render_archived_books(page, sort):
-    order = sort[0] or []
+def render_archived_books(page, sort_param):
+    order = sort_param[0] or []
     archived_books = (
         ub.session.query(ub.ArchivedBook)
         .filter(ub.ArchivedBook.user_id == int(current_user.id))
@@ -678,7 +678,7 @@ def render_archived_books(page, sort):
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     pagename = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=name, page=pagename, order=sort[1])
+                                 title=name, page=pagename, order=sort_param[1])
 
 
 def render_prepare_search_form(cc):
@@ -767,32 +767,32 @@ def list_books():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or config.config_books_per_page)
     search = request.args.get("search")
-    sort = request.args.get("sort", "id")
+    sort_param = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
     join = tuple()
 
-    if sort == "state":
+    if sort_param == "state":
         state = json.loads(request.args.get("state", "[]"))
-    elif sort == "tags":
+    elif sort_param == "tags":
         order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
         join = db.books_tags_link, db.Books.id == db.books_tags_link.c.book, db.Tags
-    elif sort == "series":
+    elif sort_param == "series":
         order = [db.Series.name.asc()] if order == "asc" else [db.Series.name.desc()]
         join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    elif sort == "publishers":
+    elif sort_param == "publishers":
         order = [db.Publishers.name.asc()] if order == "asc" else [db.Publishers.name.desc()]
         join = db.books_publishers_link, db.Books.id == db.books_publishers_link.c.book, db.Publishers
-    elif sort == "authors":
+    elif sort_param == "authors":
         order = [db.Authors.name.asc(), db.Series.name, db.Books.series_index] if order == "asc" \
             else [db.Authors.name.desc(), db.Series.name.desc(), db.Books.series_index.desc()]
         join = db.books_authors_link, db.Books.id == db.books_authors_link.c.book, db.Authors, \
                db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    elif sort == "languages":
+    elif sort_param == "languages":
         order = [db.Languages.lang_code.asc()] if order == "asc" else [db.Languages.lang_code.desc()]
         join = db.books_languages_link, db.Books.id == db.books_languages_link.c.book, db.Languages
-    elif order and sort in ["sort", "title", "authors_sort", "series_index"]:
-        order = [text(sort + " " + order)]
+    elif order and sort_param in ["sort", "title", "authors_sort", "series_index"]:
+        order = [text(sort_param + " " + order)]
     elif not state:
         order = [db.Books.timestamp.desc()]
 
@@ -817,7 +817,7 @@ def list_books():
                 except (KeyError, AttributeError):
                     log.error("Custom Column No.%d is not existing in calibre database", read_column)
                     # Skip linking read column and return None instead of read status
-                    books =calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
+                    books = calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
             books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                           int(current_user.id) == ub.ArchivedBook.user_id))
                      .filter(calibre_db.common_filters(allow_show_archived=True)).all())
@@ -1263,7 +1263,7 @@ def extend_search_term(searchterm,
 
 
 def render_adv_search_results(term, offset=None, order=None, limit=None):
-    sort = order[0] if order else [db.Books.sort]
+    sort_param = order[0] if order else [db.Books.sort]
     pagination = None
 
     cc = get_cc_columns(filter_config_custom_read=True)
@@ -1378,7 +1378,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             log.debug_or_exception(ex)
             flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
 
-    q = q.order_by(*sort).all()
+    q = q.order_by(*sort_param).all()
     flask_session['query'] = json.dumps(term)
     ub.store_combo_ids(q)
     result_count = len(q)
@@ -1792,7 +1792,7 @@ def show_book(book_id):
 
         entry.tags = sort(entry.tags, key=lambda tag: tag.name)
 
-        entry.authors = calibre_db.order_authors([entry])
+        entry.ordered_authors = calibre_db.order_authors([entry])
 
         entry.kindle_list = check_send_to_kindle(entry)
         entry.reader_list = check_read_formats(entry)
