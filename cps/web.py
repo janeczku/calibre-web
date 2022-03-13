@@ -26,6 +26,8 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+from shlex import quote
+import subprocess
 
 from babel.dates import format_date
 from babel import Locale as LC
@@ -1802,15 +1804,82 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audioentries.append(media_format.format.lower())
 
+        enable_epub2website = config.config_epub2websitepath and config.config_epub2websitepath != "" and config.config_epub2website_library and config.config_epub2website_library != ""
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
                                      is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest',
                                      title=entry.title,
                                      books_shelfs=book_in_shelfs,
+                                     enable_epub2website=enable_epub2website,
                                      page="book")
     else:
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
+
+
+@web.route("/read/<int:book_id>/website")
+@login_required_if_no_ano
+@viewer_required
+def read_website(book_id):
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if not book:
+        flash(_(u"Error opening eBook. Book does not exist"), category="error")
+        return redirect(url_for("web.index"))
+
+    data = calibre_db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == "EPUB").first()
+    if not data:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        return redirect(url_for("web.index"))
+
+    book_dir = os.path.join("/tmp/cache/website", str(book_id))
+    # check if redirect file is exists
+    redirect_file = book_dir + "/redirect.txt"
+    if os.path.exists(redirect_file):
+        # check book updated time, if updated, regenerate website
+        stat = os.stat(redirect_file)
+        mtime = datetime.utcfromtimestamp(stat.st_mtime)
+        if mtime > book.last_modified:
+            f = open(redirect_file, "r")
+            out = f.readline()
+            f.close()
+            return redirect('/read/%s/website/%s' % (str(book_id), out))
+        log.info("book updated, regenerate website in " + book_dir)
+        # remove all old files
+        for f in os.listdir(book_dir):
+            os.remove(os.path.join(book_dir, f))
+
+    if not os.path.exists(book_dir):
+        os.makedirs(book_dir)
+    epub_file = os.path.join(config.config_calibre_dir, book.path, data.name) + ".epub"
+    if not os.path.isfile(epub_file):
+        raise ValueError('Error opening eBook. File does not exist: ', epub_file)
+
+    cmd = "%s -g %s -e %s -o %s" % (
+        quote(config.config_epub2websitepath),
+        quote(config.config_epub2website_library),
+        quote(epub_file), quote(book_dir))
+    log.info("execute epub2website command: " + cmd)
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    com = p.communicate()
+    out = com[0].strip().decode("utf-8")
+    err = com[1].strip().decode("utf-8")
+    status = p.returncode
+    if status != 0:
+        flash(_(u"Error transfer eBook. Error: %s" % err), category="error")
+        return redirect(url_for("web.index"))
+
+    f = open(redirect_file, "w")
+    f.write(str(out))
+    f.close()
+    return redirect('/read/%s/website/%s' % (str(book_id), out))
+
+
+@web.route('/read/<int:book_id>/website/<path:asset_path>')
+@login_required_if_no_ano
+@viewer_required
+def read_website_asset(book_id, asset_path):
+    book_dir = os.path.join("/tmp/cache/website", str(book_id))
+    return send_from_directory(book_dir, asset_path)
