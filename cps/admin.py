@@ -499,7 +499,7 @@ def edit_list_user(param):
                 else:
                     return _("Parameter not found"), 400
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             return str(ex), 400
     ub.session_commit()
     return ""
