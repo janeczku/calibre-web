@@ -22,6 +22,7 @@
 
 import json
 from datetime import datetime
+from functools import wraps
 
 from flask import Blueprint, request, make_response, abort, url_for, flash, redirect
 from flask_login import login_required, current_user, login_user
@@ -31,10 +32,6 @@ from sqlalchemy.sql.expression import true
 from . import config, logger, ub
 from .render_template import render_title_template
 
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 remotelogin = Blueprint('remotelogin', __name__)
 log = logger.create()

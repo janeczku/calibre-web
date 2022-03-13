@@ -40,7 +40,7 @@ from cps.about import about
 from cps.shelf import shelf
 from cps.admin import admi
 from cps.gdrive import gdrive
-from cps.editbooks import editbook
+from cps.editbooks import EditBook
 from cps.remotelogin import remotelogin
 from cps.search_metadata import meta
 from cps.error_handler import init_errorhandler
@@ -73,7 +73,7 @@ def main():
     app.register_blueprint(remotelogin)
     app.register_blueprint(meta)
     app.register_blueprint(gdrive)
-    app.register_blueprint(editbook)
+    app.register_blueprint(EditBook)
     if kobo_available:
         app.register_blueprint(kobo)
         app.register_blueprint(kobo_auth)

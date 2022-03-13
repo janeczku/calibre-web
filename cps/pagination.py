@@ -57,10 +57,10 @@ class Pagination(object):
     def has_next(self):
         return self.page < self.pages
 
-    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shwn
-    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shwn
-    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shwn
-    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shwn
+    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shown
+    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shown
+    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shown
+    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shown
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=4, right_edge=2):
         last = 0
