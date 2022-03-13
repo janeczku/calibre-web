@@ -53,11 +53,11 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     txt = epub_zip.read('META-INF/container.xml')
     tree = etree.fromstring(txt)
-    cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
-    cf = epub_zip.read(cfname)
+    cf_name = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
+    cf = epub_zip.read(cf_name)
     tree = etree.fromstring(cf)
 
-    coverpath = os.path.dirname(cfname)
+    cover_path = os.path.dirname(cf_name)
 
     p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
 
@@ -90,7 +90,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
-    cover_file = parse_epub_cover(ns, tree, epub_zip, coverpath, tmp_file_path)
+    cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
 
     if not epub_metadata['title']:
         title = original_file_name
@@ -114,9 +114,12 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
     cover_section = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     cover_file = None
-    if len(cover_section) > 0:
-        cover_file = _extract_cover(epub_zip, cover_section[0], cover_path, tmp_file_path)
-    else:
+    # if len(cover_section) > 0:
+    for cs in cover_section:
+        cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
+        if cover_file:
+            break
+    if not cover_file:
         meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
         if len(meta_cover) > 0:
             cover_section = tree.xpath(
@@ -143,8 +146,7 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
                     cover_file = _extract_cover(epub_zip, filename, "", tmp_file_path)
             else:
                 cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
-            if cover_file:
-                break
+            if cover_file: break
     return cover_file
 
 

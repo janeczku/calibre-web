@@ -17,13 +17,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import copy
 import os
 import re
 import ast
 import json
 from datetime import datetime
 from urllib.parse import quote
+import unidecode
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
@@ -49,11 +49,6 @@ from .pagination import Pagination
 
 from weakref import WeakSet
 
-try:
-    import unidecode
-    use_unidecode = True
-except ImportError:
-    use_unidecode = False
 
 log = logger.create()
 
@@ -93,7 +88,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
-class Library_Id(Base):
+class LibraryId(Base):
     __tablename__ = 'library_id'
     id = Column(Integer, primary_key=True)
     uuid = Column(String, nullable=False)
@@ -112,7 +107,7 @@ class Identifiers(Base):
         self.type = id_type
         self.book = book
 
-    def formatType(self):
+    def format_type(self):
         format_type = self.type.lower()
         if format_type == 'amazon':
             return u"Amazon"
@@ -184,8 +179,8 @@ class Comments(Base):
     book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
     text = Column(String(collation='NOCASE'), nullable=False)
 
-    def __init__(self, text, book):
-        self.text = text
+    def __init__(self, comment, book):
+        self.text = comment
         self.book = book
 
     def get(self):
@@ -367,7 +362,6 @@ class Books(Base):
         self.path = path
         self.has_cover = (has_cover != None)
 
-
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
@@ -375,10 +369,10 @@ class Books(Base):
 
     @property
     def atom_timestamp(self):
-        return (self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or '')
+        return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
 
 
-class Custom_Columns(Base):
+class CustomColumns(Base):
     __tablename__ = 'custom_columns'
 
     id = Column(Integer, primary_key=True)
@@ -436,7 +430,7 @@ class AlchemyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-class CalibreDB():
+class CalibreDB:
     _init = False
     engine = None
     config = None
@@ -450,17 +444,17 @@ class CalibreDB():
         """
         self.session = None
         if self._init:
-            self.initSession(expire_on_commit)
+            self.init_session(expire_on_commit)
 
         self.instances.add(self)
 
-    def initSession(self, expire_on_commit=True):
+    def init_session(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
 
     @classmethod
-    def setup_db_cc_classes(self, cc):
+    def setup_db_cc_classes(cls, cc):
         cc_ids = []
         books_custom_column_links = {}
         for row in cc:
@@ -539,16 +533,16 @@ class CalibreDB():
             return False, False
         try:
             check_engine = create_engine('sqlite://',
-                          echo=False,
-                          isolation_level="SERIALIZABLE",
-                          connect_args={'check_same_thread': False},
-                          poolclass=StaticPool)
+                                         echo=False,
+                                         isolation_level="SERIALIZABLE",
+                                         connect_args={'check_same_thread': False},
+                                         poolclass=StaticPool)
             with check_engine.begin() as connection:
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
-                database_uuid = local_session().query(Library_Id).one_or_none()
+                database_uuid = local_session().query(LibraryId).one_or_none()
                 # local_session.dispose()
 
             check_engine.connect()
@@ -603,7 +597,7 @@ class CalibreDB():
                                                           autoflush=True,
                                                           bind=cls.engine))
         for inst in cls.instances:
-            inst.initSession()
+            inst.init_session()
 
         cls._init = True
         return True
@@ -644,12 +638,10 @@ class CalibreDB():
     # Language and content filters for displaying in the UI
     def common_filters(self, allow_show_archived=False, return_all_languages=False):
         if not allow_show_archived:
-            archived_books = (
-                ub.session.query(ub.ArchivedBook)
-                    .filter(ub.ArchivedBook.user_id == int(current_user.id))
-                    .filter(ub.ArchivedBook.is_archived == True)
-                    .all()
-            )
+            archived_books = (ub.session.query(ub.ArchivedBook)
+                              .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                              .filter(ub.ArchivedBook.is_archived == True)
+                              .all())
             archived_book_ids = [archived_book.book_id for archived_book in archived_books]
             archived_filter = Books.id.notin_(archived_book_ids)
         else:
@@ -668,11 +660,11 @@ class CalibreDB():
                 pos_cc_list = current_user.allowed_column_value.split(',')
                 pos_content_cc_filter = true() if pos_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
                 neg_cc_list = current_user.denied_column_value.split(',')
                 neg_content_cc_filter = false() if neg_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
             except (KeyError, AttributeError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
@@ -728,7 +720,7 @@ class CalibreDB():
                 query = (self.session.query(database, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
                          .select_from(Books)
                          .outerjoin(ub.ReadBook,
-                               and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
+                                    and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
             else:
                 try:
                     read_column = cc_classes[config_read_column]
@@ -738,7 +730,7 @@ class CalibreDB():
                 except (KeyError, AttributeError):
                     log.error("Custom Column No.%d is not existing in calibre database", read_column)
                     # Skip linking read column and return None instead of read status
-                    query =self.session.query(database, None, ub.ArchivedBook.is_archived)
+                    query = self.session.query(database, None, ub.ArchivedBook.is_archived)
             query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
                                                           int(current_user.id) == ub.ArchivedBook.user_id))
         else:
@@ -812,7 +804,6 @@ class CalibreDB():
                 return authors_ordered
         return entries
 
-
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
@@ -872,7 +863,7 @@ class CalibreDB():
                 ))
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None, allow_show_archived=False,
+    def get_search_results(self, term, offset=None, order=None, limit=None,
                            config_read_column=False, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
@@ -914,7 +905,6 @@ class CalibreDB():
             for lang in languages:
                 lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
             return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
-
 
     def update_title_sort(self, config, conn=None):
         # user defined sort function for calibre databases (Series, etc.)
@@ -973,6 +963,6 @@ def lcase(s):
     try:
         return unidecode.unidecode(s.lower())
     except Exception as ex:
-        log = logger.create()
-        log.error_or_exception(ex)
+        _log = logger.create()
+        _log.error_or_exception(ex)
         return s.lower()
