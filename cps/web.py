@@ -26,6 +26,7 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+from functools import wraps
 
 from babel.dates import format_date
 from babel import Locale as LC
@@ -59,6 +60,7 @@ from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 from .kobo_sync_status import change_archived_books
 
+
 feature_support = {
     'ldap': bool(services.ldap),
     'goodreads': bool(services.goodreads_support),
@@ -71,11 +73,6 @@ try:
 except ImportError:
     feature_support['oauth'] = False
     oauth_check = {}
-
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 try:
     from natsort import natsorted as sort
@@ -134,7 +131,7 @@ def get_email_status_json():
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
 @login_required
-def bookmark(book_id, book_format):
+def set_bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
     ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                               ub.Bookmark.book_id == book_id,
@@ -642,7 +639,8 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                         column=config.config_read_column),
                       category="error")
                 return redirect(url_for("web.index"))
-            # ToDo: Handle error Case for opds
+            return [] # ToDo: Handle error Case for opds
+
     if as_xml:
         return entries, pagination
     else:
@@ -809,6 +807,7 @@ def list_books():
                                     and_(ub.ReadBook.user_id == int(current_user.id),
                                          ub.ReadBook.book_id == db.Books.id)))
             else:
+                read_column = ""
                 try:
                     read_column = db.cc_classes[config.config_read_column]
                     books = (calibre_db.session.query(db.Books, read_column.value, ub.ArchivedBook.is_archived)
@@ -1725,12 +1724,14 @@ def profile():
 @viewer_required
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
+    book.ordered_authors = calibre_db.order_authors([book], False)
+
     if not book:
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
 
-    # check if book has bookmark
+    # check if book has a bookmark
     bookmark = None
     if current_user.is_authenticated:
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
