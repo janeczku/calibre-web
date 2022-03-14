@@ -40,16 +40,12 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 ## Installation
 
 #### Installation via pip (recommended)
-1. Install calibre web via pip with the command `pip install calibreweb` (Depending on your OS and or distro the command could also be `pip3`). 
-2. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
-3. Calibre-Web can be started afterwards by typing `cps` or `python3 -m cps` 
+1. To avoid problems with already installed python dependencies, it's recommended to create a virtual environment for Calibre-Web
+2. Install Calibre-Web via pip with the command `pip install calibreweb` (Depending on your OS and or distro the command could also be `pip3`). 
+3. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
+4. Calibre-Web can be started afterwards by typing `cps` or `python3 -m cps` 
 
-#### Manual installation
-1. Install dependencies by running `pip3 install --target vendor -r requirements.txt` (python3.x). Alternativly set up a python virtual environment.
-2. Execute the command: `python3 cps.py` (or `nohup python3 cps.py` - recommended if you want to exit the terminal window)
-
-Issues with Ubuntu:
-Please note that running the above install command can fail on some versions of Ubuntu, saying `"can't combine user with prefix"`. This is a [known bug](https://github.com/pypa/pip/issues/3826) and can be remedied by using the command `pip install --system --target vendor -r requirements.txt` instead.
+In the Wiki there are also examples for a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation) and for installation on [Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20)
 
 ## Quick start
 

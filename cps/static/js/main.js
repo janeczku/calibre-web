@@ -515,6 +515,7 @@ $(function() {
 
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
+            $("#flash_danger").remove();
             var $modalBody = $(this).find(".modal-body");
 
             // Prevent static assets from loading multiple times

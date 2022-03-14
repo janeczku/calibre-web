@@ -25,8 +25,11 @@ try:
 except ImportError:
     pass
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+import cps.logger as logger
+
 #from time import time
 from operator import itemgetter
+log = logger.create()
 
 class Amazon(Metadata):
     __name__ = "Amazon"
@@ -48,15 +51,15 @@ class Amazon(Metadata):
         self, query: str, generic_cover: str = "", locale: str = "en"
     ):
         #timer=time()
-        def inner(link,index)->[dict,int]:
-             with self.session as session:
-                r = session.get(f"https://www.amazon.com/{link}")
-                r.raise_for_status()
-                long_soup = BS(r.text, "lxml")  #~4sec :/
-                soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
-                if soup2 is None:
-                    return
-                try:
+        def inner(link, index) -> [dict, int]:
+            try:
+                with self.session as session:
+                    r = session.get(f"https://www.amazon.com{link}")
+                    r.raise_for_status()
+                    long_soup = BS(r.text, "lxml")  #~4sec :/
+                    soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
+                    if soup2 is None:
+                        return
                     match = MetaRecord(
                         title = "",
                         authors = "",
@@ -65,7 +68,7 @@ class Amazon(Metadata):
                             description="Amazon Books",
                             link="https://amazon.com/"
                         ),
-                        url = f"https://www.amazon.com/{link}",
+                        url = f"https://www.amazon.com{link}",
                         #the more searches the slower, these are too hard to find in reasonable time or might not even exist
                         publisher= "",  # very unreliable
                         publishedDate= "",  # very unreliable
@@ -101,22 +104,27 @@ class Amazon(Metadata):
                     except (AttributeError, TypeError):
                         match.cover = ""
                     return match, index
-                except Exception as e:
-                    print(e)
-                    return
+            except Exception as e:
+                log.error_or_exception(e)
+                return
 
         val = list()
-        if self.active:
-            results = self.session.get(
-                f"https://www.amazon.com/s?k={query.replace(' ', '+')}&i=digital-text&sprefix={query.replace(' ', '+')}"
-                f"%2Cdigital-text&ref=nb_sb_noss",
-                headers=self.headers)
-            results.raise_for_status()
-            soup = BS(results.text, 'html.parser')
-            links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
-                          soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
-            with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-                fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
-                val=list(map(lambda x : x.result() ,concurrent.futures.as_completed(fut)))
-        result=list(filter(lambda x: x, val))
-        return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
+        try:
+            if self.active:
+                results = self.session.get(
+                    f"https://www.amazon.com/s?k={query.replace(' ', '+')}"
+                    f"&i=digital-text&sprefix={query.replace(' ', '+')}"
+                    f"%2Cdigital-text&ref=nb_sb_noss",
+                    headers=self.headers)
+                results.raise_for_status()
+                soup = BS(results.text, 'html.parser')
+                links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
+                              soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
+                with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                    fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
+                    val = list(map(lambda x: x.result(), concurrent.futures.as_completed(fut)))
+            result = list(filter(lambda x: x, val))
+            return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
+        except requests.exceptions.HTTPError as e:
+            log.error_or_exception(e)
+            return []

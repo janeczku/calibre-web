@@ -156,7 +156,7 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-    config.store_calibre_uuid(calibre_db, db.Library_Id)
+    config.store_calibre_uuid(calibre_db, db.LibraryId)
     return app
 
 

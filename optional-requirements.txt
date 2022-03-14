@@ -1,5 +1,5 @@
 # GDrive Integration
-google-api-python-client>=1.7.11,<2.37.0
+google-api-python-client>=1.7.11,<2.41.0
 gevent>20.6.0,<22.0.0
 greenlet>=0.4.17,<1.2.0
 httplib2>=0.9.2,<0.21.0
@@ -12,8 +12,8 @@ PyYAML>=3.12
 rsa>=3.4.2,<4.9.0
 
 # Gmail
-google-auth-oauthlib>=0.4.3,<0.5.0
-google-api-python-client>=1.7.11,<2.37.0
+google-auth-oauthlib>=0.4.3,<0.6.0
+google-api-python-client>=1.7.11,<2.41.0
 
 # goodreads
 goodreads>=0.3.2,<0.4.0
@@ -28,8 +28,8 @@ Flask-Dance>=2.0.0,<5.2.0
 SQLAlchemy-Utils>=0.33.5,<0.39.0
 
 # metadata extraction
-rarfile>=2.7
-scholarly>=1.2.0,<1.6
+rarfile>=3.2
+scholarly>=1.2.0,<1.7
 markdown2>=2.0.0,<2.5.0
 html2text>=2020.1.16,<2022.1.1
 python-dateutil>=2.1,<2.9.0

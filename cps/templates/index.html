@@ -20,7 +20,7 @@
           <p title="{{entry.title}}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
-          {% for author in entry.authors %}
+          {% for author in entry.ordered_authors %}
             {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
@@ -102,7 +102,7 @@
           <p title="{{ entry.title }}" class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
-          {% for author in entry.authors %}
+          {% for author in entry.ordered_authors %}
             {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>

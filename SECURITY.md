@@ -32,6 +32,8 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.16      | JavaScript could get executed on authors page. Thanks to @alicaz                                                   ||
 | V 0.6.16      | Localhost can no longer be used to upload covers. Thanks to @scara31                                               ||
 | V 0.6.16      | Another case where public shelfs could be created without permission is prevented. Thanks to @nhiephon             ||
+| V 0.6.17      | The SSRF Protection can no longer be bypassed via an HTTP redirect. Thanks to @416e6e61                            ||
+| V 0.6.17      | The SSRF Protection can no longer be bypassed via 0.0.0.0 and it's ipv6 equivalent. Thanks to @r0hanSH             ||
 
 
 ## Staement regarding Log4j (CVE-2021-44228 and related)
