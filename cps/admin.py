@@ -863,10 +863,10 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, element['Element']))
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted denied tag of user {}: {}".format(usr.name, element['Element']))
     elif res_type == 3:  # Columns per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -875,12 +875,12 @@ def delete_restriction(res_type, user_id):
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
             ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.name,
-                                                                              usr.list_allowed_column_values))
+                                                                              usr.list_allowed_column_values()))
 
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
             ub.session_commit("Deleted denied columns of user {}: {}".format(usr.name,
-                                                                             usr.list_denied_column_values))
+                                                                             usr.list_denied_column_values()))
     return ""
 
 
