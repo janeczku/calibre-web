@@ -26,9 +26,10 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+from functools import wraps
 
 from babel.dates import format_date
-from babel import Locale as LC
+from babel import Locale
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
@@ -67,15 +68,12 @@ feature_support = {
 
 try:
     from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
+
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
     oauth_check = {}
-
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
+    register_user_with_oauth = logout_oauth_user = get_oauth_status = None
 
 try:
     from natsort import natsorted as sort
@@ -85,8 +83,11 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    resp.headers['Content-Security-Policy'] = "default-src 'self'" + ''.join([' '+host for host in config.config_trustedhosts.strip().split(',')]) + " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
-    if request.endpoint == "editbook.edit_book" or config.config_use_google_drive:
+    csp = "default-src 'self'"
+    csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
+    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
+    resp.headers['Content-Security-Policy'] = csp
+    if request.endpoint == "edit-book.edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     elif request.endpoint == "web.read_book":
         resp.headers['Content-Security-Policy'] += " blob:;style-src-elem 'self' blob: 'unsafe-inline';"
@@ -95,6 +96,7 @@ def add_security_headers(resp):
     resp.headers['X-XSS-Protection'] = '1; mode=block'
     resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
     return resp
+
 
 web = Blueprint('web', __name__)
 log = logger.create()
@@ -122,6 +124,7 @@ def viewer_required(f):
 
     return inner
 
+
 # ################################### data provider functions #########################################################
 
 
@@ -134,7 +137,7 @@ def get_email_status_json():
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
 @login_required
-def bookmark(book_id, book_format):
+def set_bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
     ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                               ub.Bookmark.book_id == book_id,
@@ -143,11 +146,11 @@ def bookmark(book_id, book_format):
         ub.session_commit()
         return "", 204
 
-    lbookmark = ub.Bookmark(user_id=current_user.id,
-                            book_id=book_id,
-                            format=book_format,
-                            bookmark_key=bookmark_key)
-    ub.session.merge(lbookmark)
+    l_bookmark = ub.Bookmark(user_id=current_user.id,
+                             book_id=book_id,
+                             format=book_format,
+                             bookmark_key=bookmark_key)
+    ub.session.merge(l_bookmark)
     ub.session_commit("Bookmark for user {} in book {} created".format(current_user.id, book_id))
     return "", 201
 
@@ -165,7 +168,7 @@ def toggle_read(book_id):
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_archived(book_id):
-    is_archived = change_archived_books(book_id, message="Book {} archivebit toggled".format(book_id))
+    is_archived = change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
     if is_archived:
         remove_synced_book(book_id)
     return ""
@@ -232,6 +235,7 @@ def get_comic_book(book_id, book_format, page):
                 return make_response(json.dumps(fileData))
         return "", 204
 '''
+
 
 # ################################### Typeahead ##################################################################
 
@@ -300,43 +304,49 @@ def get_matching_tags():
     return json_dumps
 
 
-def get_sort_function(sort, data):
+def generate_char_list(data_colum, db_link):
+    return (calibre_db.session.query(func.upper(func.substr(data_colum, 1, 1)).label('char'))
+            .join(db_link).join(db.Books).filter(calibre_db.common_filters())
+            .group_by(func.upper(func.substr(data_colum, 1, 1))).all())
+
+
+def get_sort_function(sort_param, data):
     order = [db.Books.timestamp.desc()]
-    if sort == 'stored':
-        sort = current_user.get_view_property(data, 'stored')
+    if sort_param == 'stored':
+        sort_param = current_user.get_view_property(data, 'stored')
     else:
-        current_user.set_view_property(data, 'stored', sort)
-    if sort == 'pubnew':
+        current_user.set_view_property(data, 'stored', sort_param)
+    if sort_param == 'pubnew':
         order = [db.Books.pubdate.desc()]
-    if sort == 'pubold':
+    if sort_param == 'pubold':
         order = [db.Books.pubdate]
-    if sort == 'abc':
+    if sort_param == 'abc':
         order = [db.Books.sort]
-    if sort == 'zyx':
+    if sort_param == 'zyx':
         order = [db.Books.sort.desc()]
-    if sort == 'new':
+    if sort_param == 'new':
         order = [db.Books.timestamp.desc()]
-    if sort == 'old':
+    if sort_param == 'old':
         order = [db.Books.timestamp]
-    if sort == 'authaz':
+    if sort_param == 'authaz':
         order = [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index]
-    if sort == 'authza':
+    if sort_param == 'authza':
         order = [db.Books.author_sort.desc(), db.Series.name.desc(), db.Books.series_index.desc()]
-    if sort == 'seriesasc':
+    if sort_param == 'seriesasc':
         order = [db.Books.series_index.asc()]
-    if sort == 'seriesdesc':
+    if sort_param == 'seriesdesc':
         order = [db.Books.series_index.desc()]
-    if sort == 'hotdesc':
+    if sort_param == 'hotdesc':
         order = [func.count(ub.Downloads.book_id).desc()]
-    if sort == 'hotasc':
+    if sort_param == 'hotasc':
         order = [func.count(ub.Downloads.book_id).asc()]
-    if sort is None:
-        sort = "new"
-    return order, sort
+    if sort_param is None:
+        sort_param = "new"
+    return order, sort_param
 
 
-def render_books_list(data, sort, book_id, page):
-    order = get_sort_function(sort, data)
+def render_books_list(data, sort_param, book_id, page):
+    order = get_sort_function(sort_param, data)
     if data == "rated":
         return render_rated_books(page, book_id, order=order)
     elif data == "discover":
@@ -376,7 +386,7 @@ def render_books_list(data, sort, book_id, page):
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order[0],
-        														False, 0,
+                                                                False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -410,12 +420,13 @@ def render_discover_books(page, book_id):
     else:
         abort(404)
 
+
 def render_hot_books(page, order):
     if current_user.check_visibility(constants.SIDEBAR_HOT):
         if order[1] not in ['hotasc', 'hotdesc']:
-        # Unary expression comparsion only working (for this expression) in sqlalchemy 1.4+
-        #if not (order[0][0].compare(func.count(ub.Downloads.book_id).desc()) or
-        #        order[0][0].compare(func.count(ub.Downloads.book_id).asc())):
+            # Unary expression comparsion only working (for this expression) in sqlalchemy 1.4+
+            # if not (order[0][0].compare(func.count(ub.Downloads.book_id).desc()) or
+            #        order[0][0].compare(func.count(ub.Downloads.book_id).asc())):
             order = [func.count(ub.Downloads.book_id).desc()], 'hotdesc'
         if current_user.show_detail_random():
             random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
@@ -423,19 +434,19 @@ def render_hot_books(page, order):
         else:
             random = false()
         off = int(int(config.config_books_per_page) * (page - 1))
-        all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id))\
+        all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)) \
             .order_by(*order[0]).group_by(ub.Downloads.book_id)
         hot_books = all_books.offset(off).limit(config.config_books_per_page)
         entries = list()
         for book in hot_books:
-            downloadBook = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).filter(
+            download_book = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).filter(
                 db.Books.id == book.Downloads.book_id).first()
-            if downloadBook:
-                entries.append(downloadBook)
+            if download_book:
+                entries.append(download_book)
             else:
                 ub.delete_download(book.Downloads.book_id)
-        numBooks = entries.__len__()
-        pagination = Pagination(page, config.config_books_per_page, numBooks)
+        num_books = entries.__len__()
+        pagination = Pagination(page, config.config_books_per_page, num_books)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Hot Books (Most Downloaded)"), page="hot", order=order[1])
     else:
@@ -465,8 +476,8 @@ def render_downloaded_books(page, order, user_id):
                                                             db.Series,
                                                             ub.Downloads, db.Books.id == ub.Downloads.book_id)
         for book in entries:
-            if not calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
-                             .filter(db.Books.id == book.id).first():
+            if not calibre_db.session.query(db.Books).\
+                                            filter(calibre_db.common_filters()).filter(db.Books.id == book.id).first():
                 ub.delete_download(book.id)
         user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
         return render_title_template('index.html',
@@ -474,7 +485,7 @@ def render_downloaded_books(page, order, user_id):
                                      entries=entries,
                                      pagination=pagination,
                                      id=user_id,
-                                     title=_(u"Downloaded books by %(user)s",user=user.name),
+                                     title=_(u"Downloaded books by %(user)s", user=user.name),
                                      page="download",
                                      order=order[1])
     else:
@@ -604,7 +615,7 @@ def render_language_books(page, name, order):
 
 
 def render_read_books(page, are_read, as_xml=False, order=None):
-    sort = order[0] if order else []
+    sort_param = order[0] if order else []
     if not config.config_read_column:
         if are_read:
             db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
@@ -614,7 +625,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db_filter,
-                                                                sort,
+                                                                sort_param,
                                                                 False, 0,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
@@ -629,7 +640,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                     db.Books,
                                                                     db_filter,
-                                                                    sort,
+                                                                    sort_param,
                                                                     False, 0,
                                                                     db.books_series_link,
                                                                     db.Books.id == db.books_series_link.c.book,
@@ -642,28 +653,27 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                         column=config.config_read_column),
                       category="error")
                 return redirect(url_for("web.index"))
-            # ToDo: Handle error Case for opds
+            return []  # ToDo: Handle error Case for opds
+
     if as_xml:
         return entries, pagination
     else:
         if are_read:
             name = _(u'Read Books') + ' (' + str(pagination.total_count) + ')'
-            pagename = "read"
+            page_name = "read"
         else:
             name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
-            pagename = "unread"
+            page_name = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=name, page=pagename, order=order[1])
+                                     title=name, page=page_name, order=order[1])
 
 
-def render_archived_books(page, sort):
-    order = sort[0] or []
-    archived_books = (
-        ub.session.query(ub.ArchivedBook)
-        .filter(ub.ArchivedBook.user_id == int(current_user.id))
-        .filter(ub.ArchivedBook.is_archived == True)
-        .all()
-    )
+def render_archived_books(page, sort_param):
+    order = sort_param[0] or []
+    archived_books = (ub.session.query(ub.ArchivedBook)
+                      .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                      .filter(ub.ArchivedBook.is_archived == True)
+                      .all())
     archived_book_ids = [archived_book.book_id for archived_book in archived_books]
 
     archived_filter = db.Books.id.in_(archived_book_ids)
@@ -676,40 +686,40 @@ def render_archived_books(page, sort):
                                                                                 False, 0)
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
-    pagename = "archived"
+    page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=name, page=pagename, order=sort[1])
+                                 title=name, page=page_name, order=sort_param[1])
 
 
 def render_prepare_search_form(cc):
     # prepare data for search-form
-    tags = calibre_db.session.query(db.Tags)\
-        .join(db.books_tags_link)\
-        .join(db.Books)\
+    tags = calibre_db.session.query(db.Tags) \
+        .join(db.books_tags_link) \
+        .join(db.Books) \
         .filter(calibre_db.common_filters()) \
-        .group_by(text('books_tags_link.tag'))\
+        .group_by(text('books_tags_link.tag')) \
         .order_by(db.Tags.name).all()
-    series = calibre_db.session.query(db.Series)\
-        .join(db.books_series_link)\
-        .join(db.Books)\
+    series = calibre_db.session.query(db.Series) \
+        .join(db.books_series_link) \
+        .join(db.Books) \
         .filter(calibre_db.common_filters()) \
-        .group_by(text('books_series_link.series'))\
-        .order_by(db.Series.name)\
+        .group_by(text('books_series_link.series')) \
+        .order_by(db.Series.name) \
         .filter(calibre_db.common_filters()).all()
-    shelves = ub.session.query(ub.Shelf)\
-        .filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == int(current_user.id)))\
+    shelves = ub.session.query(ub.Shelf) \
+        .filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == int(current_user.id))) \
         .order_by(ub.Shelf.name).all()
-    extensions = calibre_db.session.query(db.Data)\
-        .join(db.Books)\
+    extensions = calibre_db.session.query(db.Data) \
+        .join(db.Books) \
         .filter(calibre_db.common_filters()) \
-        .group_by(db.Data.format)\
+        .group_by(db.Data.format) \
         .order_by(db.Data.format).all()
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series,shelves=shelves, title=_(u"Advanced Search"), cc=cc, page="advsearch")
+                                 series=series, shelves=shelves, title=_(u"Advanced Search"), cc=cc, page="advsearch")
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
@@ -718,7 +728,6 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                                                       offset,
                                                                       order,
                                                                       limit,
-                                                                      False,
                                                                       config.config_read_column,
                                                                       *join)
     return render_title_template('search.html',
@@ -767,40 +776,41 @@ def books_table():
 def list_books():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or config.config_books_per_page)
-    search = request.args.get("search")
-    sort = request.args.get("sort", "id")
+    search_param = request.args.get("search")
+    sort_param = request.args.get("sort", "id")
     order = request.args.get("order", "").lower()
     state = None
     join = tuple()
 
-    if sort == "state":
+    if sort_param == "state":
         state = json.loads(request.args.get("state", "[]"))
-    elif sort == "tags":
+    elif sort_param == "tags":
         order = [db.Tags.name.asc()] if order == "asc" else [db.Tags.name.desc()]
         join = db.books_tags_link, db.Books.id == db.books_tags_link.c.book, db.Tags
-    elif sort == "series":
+    elif sort_param == "series":
         order = [db.Series.name.asc()] if order == "asc" else [db.Series.name.desc()]
         join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    elif sort == "publishers":
+    elif sort_param == "publishers":
         order = [db.Publishers.name.asc()] if order == "asc" else [db.Publishers.name.desc()]
         join = db.books_publishers_link, db.Books.id == db.books_publishers_link.c.book, db.Publishers
-    elif sort == "authors":
+    elif sort_param == "authors":
         order = [db.Authors.name.asc(), db.Series.name, db.Books.series_index] if order == "asc" \
             else [db.Authors.name.desc(), db.Series.name.desc(), db.Books.series_index.desc()]
-        join = db.books_authors_link, db.Books.id == db.books_authors_link.c.book, db.Authors, \
-               db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    elif sort == "languages":
+        join = db.books_authors_link, db.Books.id == db.books_authors_link.c.book, db.Authors, db.books_series_link, \
+            db.Books.id == db.books_series_link.c.book, db.Series
+    elif sort_param == "languages":
         order = [db.Languages.lang_code.asc()] if order == "asc" else [db.Languages.lang_code.desc()]
         join = db.books_languages_link, db.Books.id == db.books_languages_link.c.book, db.Languages
-    elif order and sort in ["sort", "title", "authors_sort", "series_index"]:
-        order = [text(sort + " " + order)]
+    elif order and sort_param in ["sort", "title", "authors_sort", "series_index"]:
+        order = [text(sort_param + " " + order)]
     elif not state:
         order = [db.Books.timestamp.desc()]
 
-    total_count = filtered_count = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(allow_show_archived=True)).count()
+    total_count = filtered_count = calibre_db.session.query(db.Books).filter(
+        calibre_db.common_filters(allow_show_archived=True)).count()
     if state is not None:
-        if search:
-            books = calibre_db.search_query(search, config.config_read_column).all()
+        if search_param:
+            books = calibre_db.search_query(search_param, config.config_read_column).all()
             filtered_count = len(books)
         else:
             if not config.config_read_column:
@@ -810,6 +820,7 @@ def list_books():
                                     and_(ub.ReadBook.user_id == int(current_user.id),
                                          ub.ReadBook.book_id == db.Books.id)))
             else:
+                read_column = ""
                 try:
                     read_column = db.cc_classes[config.config_read_column]
                     books = (calibre_db.session.query(db.Books, read_column.value, ub.ArchivedBook.is_archived)
@@ -818,17 +829,16 @@ def list_books():
                 except (KeyError, AttributeError):
                     log.error("Custom Column No.%d is not existing in calibre database", read_column)
                     # Skip linking read column and return None instead of read status
-                    books =calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
+                    books = calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
             books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                          int(current_user.id) == ub.ArchivedBook.user_id))
+                                                           int(current_user.id) == ub.ArchivedBook.user_id))
                      .filter(calibre_db.common_filters(allow_show_archived=True)).all())
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
-    elif search:
-        entries, filtered_count, __ = calibre_db.get_search_results(search,
+    elif search_param:
+        entries, filtered_count, __ = calibre_db.get_search_results(search_param,
                                                                     off,
-                                                                    [order,''],
+                                                                    [order, ''],
                                                                     limit,
-                                                                    True,
                                                                     config.config_read_column,
                                                                     *join)
     else:
@@ -847,9 +857,9 @@ def list_books():
         val = entry[0]
         val.read_status = entry[1] == ub.ReadBook.STATUS_FINISHED
         val.is_archived = entry[2] is True
-        for index in range(0, len(val.languages)):
-            val.languages[index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
-                index].lang_code)
+        for lang_index in range(0, len(val.languages)):
+            val.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
+                lang_index].lang_code)
         result.append(val)
 
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": result}
@@ -889,18 +899,17 @@ def author_list():
         entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_authors_link.author')).order_by(order).all()
-        charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
-            .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
+        char_list = generate_char_list(db.Authors.sort, db.books_authors_link)
         # If not creating a copy, readonly databases can not display authornames with "|" in it as changing the name
         # starts a change session
-        autor_copy = copy.deepcopy(entries)
-        for entry in autor_copy:
+        author_copy = copy.deepcopy(entries)
+        for entry in author_copy:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=autor_copy, folder='web.books_list', charlist=charlist,
+        return render_title_template('list.html', entries=author_copy, folder='web.books_list', charlist=char_list,
                                      title=u"Authors", page="authorlist", data='author', order=order_no)
     else:
         abort(404)
+
 
 @web.route("/downloadlist")
 @login_required_if_no_ano
@@ -912,12 +921,12 @@ def download_list():
         order = ub.User.name.asc()
         order_no = 1
     if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD) and current_user.role_admin():
-        entries = ub.session.query(ub.User, func.count(ub.Downloads.book_id).label('count'))\
+        entries = ub.session.query(ub.User, func.count(ub.Downloads.book_id).label('count')) \
             .join(ub.Downloads).group_by(ub.Downloads.user_id).order_by(order).all()
-        charlist = ub.session.query(func.upper(func.substr(ub.User.name, 1, 1)).label('char')) \
+        char_list = ub.session.query(func.upper(func.substr(ub.User.name, 1, 1)).label('char')) \
             .filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS) \
             .group_by(func.upper(func.substr(ub.User.name, 1, 1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Downloads"), page="downloadlist", data="download", order=order_no)
     else:
         abort(404)
@@ -936,11 +945,8 @@ def publisher_list():
         entries = calibre_db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_publishers_link.publisher')).order_by(order).all()
-        charlist = calibre_db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
-            .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
-
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+        char_list = generate_char_list(db.Publishers.name, db.books_publishers_link)
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
     else:
         abort(404)
@@ -956,25 +962,19 @@ def series_list():
         else:
             order = db.Series.sort.asc()
             order_no = 1
+        char_list = generate_char_list(db.Series.sort, db.books_series_link)
         if current_user.get_view_property('series', 'series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(text('books_series_link.series')).order_by(order).all()
-            charlist = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
-                .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
-                .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
-            return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+            return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
             entries = calibre_db.session.query(db.Books, func.count('books_series_link').label('count'),
                                                func.max(db.Books.series_index), db.Books.id) \
-                .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters())\
+                .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters()) \
                 .group_by(text('books_series_link.series')).order_by(order).all()
-            charlist = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
-                .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
-                .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
-
-            return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=charlist,
+            return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", bodyClass="grid-view",
                                          order=order_no)
     else:
@@ -992,7 +992,7 @@ def ratings_list():
             order = db.Ratings.rating.asc()
             order_no = 1
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
-                                   (db.Ratings.rating / 2).label('name')) \
+                                           (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_ratings_link.rating')).order_by(order).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
@@ -1027,14 +1027,14 @@ def formats_list():
 def language_overview():
     if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
         order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
-        charlist = list()
+        char_list = list()
         languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
         for lang in languages:
             upper_lang = lang[0].name[0].upper()
-            if upper_lang not in charlist:
-                charlist.append(upper_lang)
+            if upper_lang not in char_list:
+                char_list.append(upper_lang)
         return render_title_template('languages.html', languages=languages,
-                                     charlist=charlist, title=_(u"Languages"), page="langlist",
+                                     charlist=char_list, title=_(u"Languages"), page="langlist",
                                      data="language", order=order_no)
     else:
         abort(404)
@@ -1053,10 +1053,8 @@ def category_list():
         entries = calibre_db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
             .join(db.books_tags_link).join(db.Books).order_by(order).filter(calibre_db.common_filters()) \
             .group_by(text('books_tags_link.tag')).all()
-        charlist = calibre_db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('char')) \
-            .join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(func.upper(func.substr(db.Tags.name, 1, 1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+        char_list = generate_char_list(db.Tags.name, db.books_tags_link)
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Categories"), page="catlist", data="category", order=order_no)
     else:
         abort(404)
@@ -1131,27 +1129,6 @@ def adv_search_custom_columns(cc, term, q):
     return q
 
 
-def adv_search_language(q, include_languages_inputs, exclude_languages_inputs):
-    if current_user.filter_language() != "all":
-        q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
-    else:
-        for language in include_languages_inputs:
-            q = q.filter(db.Books.languages.any(db.Languages.id == language))
-        for language in exclude_languages_inputs:
-            q = q.filter(not_(db.Books.series.any(db.Languages.id == language)))
-    return q
-
-
-def adv_search_ratings(q, rating_high, rating_low):
-    if rating_high:
-        rating_high = int(rating_high) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
-    if rating_low:
-        rating_low = int(rating_low) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
-    return q
-
-
 def adv_search_read_status(q, read_status):
     if read_status:
         if config.config_read_column:
@@ -1180,35 +1157,39 @@ def adv_search_read_status(q, read_status):
     return q
 
 
-def adv_search_extension(q, include_extension_inputs, exclude_extension_inputs):
-    for extension in include_extension_inputs:
-        q = q.filter(db.Books.data.any(db.Data.format == extension))
-    for extension in exclude_extension_inputs:
-        q = q.filter(not_(db.Books.data.any(db.Data.format == extension)))
+def adv_search_language(q, include_languages_inputs, exclude_languages_inputs):
+    if current_user.filter_language() != "all":
+        q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
+    else:
+        return adv_search_text(q, include_languages_inputs, exclude_languages_inputs, db.Languages.id)
     return q
 
 
-def adv_search_tag(q, include_tag_inputs, exclude_tag_inputs):
-    for tag in include_tag_inputs:
-        q = q.filter(db.Books.tags.any(db.Tags.id == tag))
-    for tag in exclude_tag_inputs:
-        q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+def adv_search_ratings(q, rating_high, rating_low):
+    if rating_high:
+        rating_high = int(rating_high) * 2
+        q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
+    if rating_low:
+        rating_low = int(rating_low) * 2
+        q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
     return q
 
 
-def adv_search_serie(q, include_series_inputs, exclude_series_inputs):
-    for serie in include_series_inputs:
-        q = q.filter(db.Books.series.any(db.Series.id == serie))
-    for serie in exclude_series_inputs:
-        q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
+def adv_search_text(q, include_inputs, exclude_inputs, data_table):
+    for inp in include_inputs:
+        q = q.filter(getattr(db.Books, data_table.class_.__tablename__).any(data_table == inp))
+    for excl in exclude_inputs:
+        q = q.filter(not_(getattr(db.Books, data_table.class_.__tablename__).any(data_table == excl)))
     return q
+
 
 def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
-    q = q.outerjoin(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)\
+    q = q.outerjoin(ub.BookShelf, db.Books.id == ub.BookShelf.book_id) \
         .filter(or_(ub.BookShelf.shelf == None, ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
     if len(include_shelf_inputs) > 0:
         q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
     return q
+
 
 def extend_search_term(searchterm,
                        author_name,
@@ -1236,7 +1217,7 @@ def extend_search_term(searchterm,
                                            format='medium', locale=get_locale())])
         except ValueError:
             pub_end = u""
-    elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
+    elements = {'tag': db.Tags, 'serie': db.Series, 'shelf': ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
         searchterm.extend(tag.name for tag in tag_names)
@@ -1266,7 +1247,7 @@ def extend_search_term(searchterm,
 
 
 def render_adv_search_results(term, offset=None, order=None, limit=None):
-    sort = order[0] if order else [db.Books.sort]
+    sort_param = order[0] if order else [db.Books.sort]
     pagination = None
 
     cc = get_cc_columns(filter_config_custom_read=True)
@@ -1288,8 +1269,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                   int(current_user.id) == ub.ArchivedBook.user_id))
 
-    q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
-        .outerjoin(db.Series)\
+    q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book) \
+        .outerjoin(db.Series) \
         .filter(calibre_db.common_filters(True))
 
     # parse multiselects to a complete dict
@@ -1315,43 +1296,43 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     if publisher:
         publisher = publisher.strip().lower()
 
-    searchterm = []
+    search_term = []
     cc_present = False
     for c in cc:
         if c.datatype == "datetime":
             column_start = term.get('custom_column_' + str(c.id) + '_start')
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
-                searchterm.extend([u"{} >= {}".format(c.name,
-                                                      format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
-                                                                      format='medium',
-                                                                      locale=get_locale())
-                                                      )])
+                search_term.extend([u"{} >= {}".format(c.name,
+                                                       format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
+                                                                   format='medium',
+                                                                   locale=get_locale())
+                                                       )])
                 cc_present = True
             if column_end:
-                searchterm.extend([u"{} <= {}".format(c.name,
-                                                      format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
-                                                                      format='medium',
-                                                                      locale=get_locale())
-                                                      )])
+                search_term.extend([u"{} <= {}".format(c.name,
+                                                       format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
+                                                                   format='medium',
+                                                                   locale=get_locale())
+                                                       )])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
-            searchterm.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
+            search_term.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
             cc_present = True
 
-
-    if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
-       or rating_high or description or cc_present or read_status:
-        searchterm, pub_start, pub_end = extend_search_term(searchterm,
-                                                            author_name,
-                                                            book_title,
-                                                            publisher,
-                                                            pub_start,
-                                                            pub_end,
-                                                            tags,
-                                                            rating_high,
-                                                            rating_low,
-                                                            read_status)
+    if any(tags.values()) or author_name or book_title or \
+        publisher or pub_start or pub_end or rating_low or rating_high \
+            or description or cc_present or read_status:
+        search_term, pub_start, pub_end = extend_search_term(search_term,
+                                                             author_name,
+                                                             book_title,
+                                                             publisher,
+                                                             pub_start,
+                                                             pub_end,
+                                                             tags,
+                                                             rating_high,
+                                                             rating_low,
+                                                             read_status)
         # q = q.filter()
         if author_name:
             q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_name + "%")))
@@ -1364,12 +1345,12 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         q = adv_search_read_status(q, read_status)
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
-        q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])
-        q = adv_search_serie(q, tags['include_serie'], tags['exclude_serie'])
+        q = adv_search_text(q, tags['include_tag'], tags['exclude_tag'], db.Tags.id)
+        q = adv_search_text(q, tags['include_serie'], tags['exclude_serie'], db.Series.id)
+        q = adv_search_text(q, tags['include_extension'], tags['exclude_extension'], db.Data.format)
         q = adv_search_shelf(q, tags['include_shelf'], tags['exclude_shelf'])
-        q = adv_search_extension(q, tags['include_extension'], tags['exclude_extension'])
         q = adv_search_language(q, tags['include_language'], tags['exclude_language'])
-        q = adv_search_ratings(q, rating_high, rating_low)
+        q = adv_search_ratings(q, rating_high, rating_low, )
 
         if description:
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
@@ -1378,10 +1359,10 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         try:
             q = adv_search_custom_columns(cc, term, q)
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
 
-    q = q.order_by(*sort).all()
+    q = q.order_by(*sort_param).all()
     flask_session['query'] = json.dumps(term)
     ub.store_combo_ids(q)
     result_count = len(q)
@@ -1394,7 +1375,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         limit_all = result_count
     entries = calibre_db.order_authors(q[offset:limit_all], list_return=True, combined=True)
     return render_title_template('search.html',
-                                 adv_searchterm=searchterm,
+                                 adv_searchterm=search_term,
                                  pagination=pagination,
                                  entries=entries,
                                  result_count=result_count,
@@ -1442,6 +1423,7 @@ def get_series_cover(series_id, resolution=None):
     return get_series_cover_thumbnail(series_id, cover_resolution)
 
 
+
 @web.route("/robots.txt")
 def get_robots():
     return send_from_directory(constants.STATIC_DIR, "robots.txt")
@@ -1465,7 +1447,7 @@ def serve_book(book_id, book_format, anyname):
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
             return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
@@ -1590,7 +1572,7 @@ def login():
                       category="success")
                 return redirect_back(url_for("web.index"))
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
-                and user.name != "Guest":
+                    and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
                 ub.store_user_session()
                 log.info("Local Fallback Login as: '%s'", user.name)
@@ -1602,23 +1584,23 @@ def login():
                 log.info(error)
                 flash(_(u"Could not login: %(message)s", message=error), category="error")
             else:
-                ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
+                ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_address)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
-            ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
+            ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
             if 'forgot' in form and form['forgot'] == 'forgot':
                 if user is not None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")
-                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_Address)
+                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_address)
                     else:
                         log.error(u"An unknown error occurred. Please try again later")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
-                    log.warning('Username missing for password reset IP-address: %s', ip_Address)
+                    log.warning('Username missing for password reset IP-address: %s', ip_address)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
@@ -1628,7 +1610,7 @@ def login():
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
-                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ip_Address)
+                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ip_address)
                     flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
@@ -1646,7 +1628,7 @@ def login():
 @login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
-        ub.delete_user_session(current_user.id, flask_session.get('_id',""))
+        ub.delete_user_session(current_user.id, flask_session.get('_id', ""))
         logout_user()
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
@@ -1668,7 +1650,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
             current_user.email = check_email(to_save["email"])
         if current_user.role_admin():
             if to_save.get("name", current_user.name) != current_user.name:
-                # Query User name, if not existing, change
+                # Query username, if not existing, change
                 current_user.name = check_username(to_save["name"])
         current_user.random_books = 1 if to_save.get("show_random") == "on" else 0
         if to_save.get("default_language"):
@@ -1722,7 +1704,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
 @login_required
 def profile():
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [LC('en')]
+    translations = babel.list_translations() + [Locale('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth'] and config.config_login_type == 2:
         oauth_status = get_oauth_status()
@@ -1753,12 +1735,15 @@ def profile():
 @viewer_required
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
+    book.ordered_authors = calibre_db.order_authors([book], False)
+
     if not book:
-        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+              category="error")
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
 
-    # check if book has bookmark
+    # check if book has a bookmark
     bookmark = None
     if current_user.is_authenticated:
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
@@ -1795,7 +1780,8 @@ def read_book(book_id, book_format):
                 return render_title_template('readcbr.html', comicfile=all_name, title=title,
                                              extension=fileExt)
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
-        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+              category="error")
         return redirect(url_for("web.index"))
 
 
@@ -1809,18 +1795,18 @@ def show_book(book_id):
         entry = entries[0]
         entry.read_status = read_book == ub.ReadBook.STATUS_FINISHED
         entry.is_archived = archived_book
-        for index in range(0, len(entry.languages)):
-            entry.languages[index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
-                index].lang_code)
+        for lang_index in range(0, len(entry.languages)):
+            entry.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
+                lang_index].lang_code)
         cc = get_cc_columns(filter_config_custom_read=True)
-        book_in_shelfs = []
+        book_in_shelves = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for sh in shelfs:
-            book_in_shelfs.append(sh.shelf)
+            book_in_shelves.append(sh.shelf)
 
         entry.tags = sort(entry.tags, key=lambda tag: tag.name)
 
-        entry.authors = calibre_db.order_authors([entry])
+        entry.ordered_authors = calibre_db.order_authors([entry])
 
         entry.kindle_list = check_send_to_kindle(entry)
         entry.reader_list = check_read_formats(entry)
@@ -1833,9 +1819,9 @@ def show_book(book_id):
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
-                                     is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest',
+                                     is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
-                                     books_shelfs=book_in_shelfs,
+                                     books_shelfs=book_in_shelves,
                                      page="book")
     else:
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")

@@ -198,7 +198,7 @@ class CalibreTask:
             self.run(*args)
         except Exception as ex:
             self._handleError(str(ex))
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
 
         self.end_time = datetime.now()
 

@@ -23,7 +23,7 @@
 
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
-      <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+      <form class="padded-bottom" action="{{ url_for('edit-book.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
               <div class="text-left">
@@ -49,7 +49,7 @@
 {% endif %}
 
   </div>
-<form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+<form role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
