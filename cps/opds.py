@@ -26,7 +26,7 @@ from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
-from sqlalchemy.sql.expression import func, text, or_, and_, true
+from sqlalchemy.sql.expression import func, text, or_, and_, any_, true
 from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
@@ -34,7 +34,7 @@ from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
-
+from sqlalchemy.orm import InstrumentedAttribute
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
@@ -298,7 +298,7 @@ def feed_ratingindex():
 @opds.route("/opds/ratings/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_ratings(book_id):
-    return render_xml_dataset(db.Tags, book_id)
+    return render_xml_dataset(db.Ratings, book_id)
 
 
 @opds.route("/opds/formats")
@@ -493,7 +493,7 @@ def render_xml_dataset(data_table, book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
-                                                        data_table.any(data_table.id == book_id),
+                                                        getattr(db.Books, data_table.__tablename__).any(data_table.id == book_id),
                                                         [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -502,7 +502,7 @@ def render_element_index(database_column, linked_table, folder):
     shift = 0
     off = int(request.args.get("offset") or 0)
     entries = calibre_db.session.query(func.upper(func.substr(database_column, 1, 1)).label('id'))
-    if linked_table:
+    if linked_table is not None:
         entries = entries.join(linked_table).join(db.Books)
     entries = entries.filter(calibre_db.common_filters()).group_by(func.upper(func.substr(database_column, 1, 1))).all()
     elements = []

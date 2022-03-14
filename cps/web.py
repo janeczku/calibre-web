@@ -1129,27 +1129,6 @@ def adv_search_custom_columns(cc, term, q):
     return q
 
 
-def adv_search_language(q, include_languages_inputs, exclude_languages_inputs):
-    if current_user.filter_language() != "all":
-        q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
-    else:
-        for language in include_languages_inputs:
-            q = q.filter(db.Books.languages.any(db.Languages.id == language))
-        for language in exclude_languages_inputs:
-            q = q.filter(not_(db.Books.series.any(db.Languages.id == language)))
-    return q
-
-
-def adv_search_ratings(q, rating_high, rating_low):
-    if rating_high:
-        rating_high = int(rating_high) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
-    if rating_low:
-        rating_low = int(rating_low) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
-    return q
-
-
 def adv_search_read_status(q, read_status):
     if read_status:
         if config.config_read_column:
@@ -1178,36 +1157,30 @@ def adv_search_read_status(q, read_status):
     return q
 
 
-def adv_search_text(q, include_inputs, exclude_inputs, data_value):
+def adv_search_language(q, include_languages_inputs, exclude_languages_inputs):
+    if current_user.filter_language() != "all":
+        q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
+    else:
+        return adv_search_text(q, include_languages_inputs, exclude_languages_inputs, db.Languages.id)
+    return q
+
+
+def adv_search_ratings(q, rating_high, rating_low):
+    if rating_high:
+        rating_high = int(rating_high) * 2
+        q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
+    if rating_low:
+        rating_low = int(rating_low) * 2
+        q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
+    return q
+
+
+def adv_search_text(q, include_inputs, exclude_inputs, data_table):
     for inp in include_inputs:
-        q = q.filter(db.Books.data.any(data_value == inp))
+        q = q.filter(getattr(db.Books, data_table.class_.__tablename__).any(data_table == inp))
     for excl in exclude_inputs:
-        q = q.filter(not_(db.Books.data.any(data_value == excl)))
+        q = q.filter(not_(getattr(db.Books, data_table.class_.__tablename__).any(data_table == excl)))
     return q
-
-
-'''def adv_search_extension(q, include_extension_inputs, exclude_extension_inputs):
-    for extension in include_extension_inputs:
-        q = q.filter(db.Books.data.any(db.Data.format == extension))
-    for extension in exclude_extension_inputs:
-        q = q.filter(not_(db.Books.data.any(db.Data.format == extension)))
-    return q
-
-
-def adv_search_tag(q, include_tag_inputs, exclude_tag_inputs):
-    for tag in include_tag_inputs:
-        q = q.filter(db.Books.tags.any(db.Tags.id == tag))
-    for tag in exclude_tag_inputs:
-        q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-    return q
-
-
-def adv_search_serie(q, include_series_inputs, exclude_series_inputs):
-    for serie in include_series_inputs:
-        q = q.filter(db.Books.series.any(db.Series.id == serie))
-    for serie in exclude_series_inputs:
-        q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
-    return q'''
 
 
 def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
@@ -1376,7 +1349,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         q = adv_search_text(q, tags['include_serie'], tags['exclude_serie'], db.Series.id)
         q = adv_search_text(q, tags['include_extension'], tags['exclude_extension'], db.Data.format)
         q = adv_search_shelf(q, tags['include_shelf'], tags['exclude_shelf'])
-        q = adv_search_language(q, tags['include_language'], tags['exclude_language'], )
+        q = adv_search_language(q, tags['include_language'], tags['exclude_language'])
         q = adv_search_ratings(q, rating_high, rating_low, )
 
         if description:
