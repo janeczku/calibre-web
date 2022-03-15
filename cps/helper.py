@@ -738,16 +738,18 @@ def save_cover_from_url(url, book_path):
         return save_cover(img, book_path)
     except (socket.gaierror,
             requests.exceptions.HTTPError,
+            requests.exceptions.InvalidURL,
             requests.exceptions.ConnectionError,
             requests.exceptions.Timeout) as ex:
-        log.info(u'Cover Download Error %s', ex)
+        # "Invalid host" can be the result of a redirect response
+        log.error(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
     except MissingDelegateError as ex:
         log.info(u'File Format Error %s', ex)
         return False, _("Cover Format Error")
-    except UnacceptableAddressException:
-        log.error("Localhost was accessed for cover upload")
-        return False, _("You are not allowed to access localhost for cover uploads")
+    except UnacceptableAddressException as e:
+        log.error("Localhost or local network was accessed for cover upload")
+        return False, _("You are not allowed to access localhost or the local network for cover uploads")
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
