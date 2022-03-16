@@ -1074,3 +1074,6 @@ def get_download_link(book_id, book_format, client):
 
 def clear_cover_thumbnail_cache(book_id):
     WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))
+
+def delete_thumbnail_cache():
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
