@@ -84,10 +84,14 @@ if args.k == "":
 
 # dry run updater
 dry_run = args.d or None
+# enable reconnect endpoint for docker database reconnect
+reconnect_enable = args.r or os.environ.get("CALIBRE_RECONNECT", None)
 # load covers from localhost
-allow_localhost = args.l or None
+allow_localhost = args.l or os.environ.get("CALIBRE_LOCALHOST", None)
 # handle and check ip address argument
 ip_address = args.i or None
+
+
 if ip_address:
     try:
         # try to parse the given ip address with socket

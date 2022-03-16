@@ -435,8 +435,7 @@ def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=
                         new_author_path = os.path.join(calibre_path, new_author_rename_dir)
                         shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
                     except OSError as ex:
-                        log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                        log.debug(ex, exc_info=True)
+                        log.error_or_exception("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
                         return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                                  src=old_author_path, dest=new_author_path, error=str(ex))
     else:
@@ -550,8 +549,7 @@ def move_files_on_change(calibre_path, new_authordir, new_titledir, localbook, d
         # change location in database to new author/title path
         localbook.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
     except OSError as ex:
-        log.error("Rename title from: %s to %s: %s", path, new_path, ex)
-        log.debug(ex, exc_info=True)
+        log.error_or_exception("Rename title from: %s to %s: %s", path, new_path, ex)
         return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                  src=path, dest=new_path, error=str(ex))
     return False
@@ -572,8 +570,7 @@ def rename_files_on_change(first_author,
         if not gdrive and not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
             shutil.rmtree(os.path.dirname(path))
     except (OSError, FileNotFoundError) as ex:
-        log.error("Error in rename file in path %s", ex)
-        log.debug(ex, exc_info=True)
+        log.error_or_exception("Error in rename file in path %s", ex)
         return _("Error in rename file in path: %(error)s", error=str(ex))
     return False
 
