@@ -1248,6 +1248,7 @@ def _db_configuration_update_helper():
             ub.session.query(ub.KoboReadingState).delete()
             ub.session.query(ub.KoboStatistics).delete()
             ub.session.query(ub.KoboSyncedBooks).delete()
+            helper.delete_thumbnail_cache()
             ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)

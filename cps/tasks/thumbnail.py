@@ -214,6 +214,9 @@ class TaskGenerateCoverThumbnails(CalibreTask):
     def name(self):
         return 'GenerateCoverThumbnails'
 
+    def __str__(self):
+        return "GenerateCoverThumbnails"
+
     @property
     def is_cancellable(self):
         return True
@@ -421,6 +424,9 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
     def name(self):
         return 'GenerateSeriesThumbnails'
 
+    def __str__(self):
+        return "GenerateSeriesThumbnails"
+
     @property
     def is_cancellable(self):
         return True
@@ -436,10 +442,12 @@ class TaskClearCoverThumbnailCache(CalibreTask):
 
     def run(self, worker_thread):
         if self.app_db_session:
-            if self.book_id:
+            if self.book_id > 0:    # make sure all thumbnails aren't getting deleted due to a bug
                 thumbnails = self.get_thumbnails_for_book(self.book_id)
                 for thumbnail in thumbnails:
                     self.delete_thumbnail(thumbnail)
+            else:
+                self.delete_all_thumbnails()
 
         self._handleSuccess()
         self.app_db_session.remove()
@@ -452,14 +460,27 @@ class TaskClearCoverThumbnailCache(CalibreTask):
             .all()
 
     def delete_thumbnail(self, thumbnail):
-        thumbnail.expiration = datetime.utcnow()
-
+        # thumbnail.expiration = datetime.utcnow()
         try:
-            self.app_db_session.commit()
             self.cache.delete_cache_file(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
+            self.app_db_session \
+                .query(ub.Thumbnail) \
+                .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_COVER) \
+                .filter(ub.Thumbnail.entity_id == thumbnail.entity_id) \
+                .delete()
+            self.app_db_session.commit()
         except Exception as ex:
             self.log.info(u'Error deleting book thumbnail: ' + str(ex))
             self._handleError(u'Error deleting book thumbnail: ' + str(ex))
+
+    def delete_all_thumbnails(self):
+        try:
+            self.app_db_session.query(ub.Thumbnail).filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_COVER).delete()
+            self.app_db_session.commit()
+            self.cache.delete_cache_dir(constants.CACHE_TYPE_THUMBNAILS)
+        except Exception as ex:
+            self.log.info(u'Error deleting thumbnail directory: ' + str(ex))
+            self._handleError(u'Error deleting thumbnail directory: ' + str(ex))
 
     @property
     def name(self):
