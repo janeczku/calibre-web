@@ -486,6 +486,9 @@ class TaskClearCoverThumbnailCache(CalibreTask):
     def name(self):
         return 'ThumbnailsClear'
 
+    def __str__(self):
+        return "Delete Thumbnail cache directory"
+
     @property
     def is_cancellable(self):
         return False
