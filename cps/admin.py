@@ -159,7 +159,7 @@ def shutdown():
 # needed for docker applications, as changes on metadata.db from host are not visible to application
 @admi.route("/reconnect", methods=['GET'])
 def reconnect():
-    if cli.args.r:
+    if cli.reconnect_enable:
         calibre_db.reconnect_db(config, ub.app_DB_path)
         return json.dumps({})
     else:
