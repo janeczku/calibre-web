@@ -36,6 +36,6 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.17      | The SSRF Protection can no longer be bypassed via 0.0.0.0 and it's ipv6 equivalent. Thanks to @r0hanSH             ||
 
 
-## Staement regarding Log4j (CVE-2021-44228 and related)
+## Statement regarding Log4j (CVE-2021-44228 and related)
 
 Calibre-web is not affected by bugs related to Log4j. Calibre-Web is a python program, therefore not using Java, and not using the Java logging feature log4j. 
