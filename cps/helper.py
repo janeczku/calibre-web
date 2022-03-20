@@ -327,8 +327,9 @@ def edit_book_read_status(book_id, read_status=None):
                 new_cc = cc_class(value=read_status or 1, book=book_id)
                 calibre_db.session.add(new_cc)
                 calibre_db.session.commit()
-        except (KeyError, AttributeError):
-            log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+        except (KeyError, AttributeError, IndexError):
+            log.error(
+                "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
             return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column)
         except (OperationalError, InvalidRequestError) as ex:
             calibre_db.session.rollback()
@@ -435,7 +436,8 @@ def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=
                         new_author_path = os.path.join(calibre_path, new_author_rename_dir)
                         shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
                     except OSError as ex:
-                        log.error_or_exception("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
+                        log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
+                        log.debug(ex, exc_info=True)
                         return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                                  src=old_author_path, dest=new_author_path, error=str(ex))
     else:
@@ -446,31 +448,31 @@ def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=
 # Moves files in file storage during author/title rename, or from temp dir to file storage
 def update_dir_structure_file(book_id, calibre_path, first_author, original_filepath, db_filename, renamed_author):
     # get book database entry from id, if original path overwrite source with original_filepath
-    localbook = calibre_db.get_book(book_id)
+    local_book = calibre_db.get_book(book_id)
     if original_filepath:
         path = original_filepath
     else:
-        path = os.path.join(calibre_path, localbook.path)
+        path = os.path.join(calibre_path, local_book.path)
 
-    # Create (current) authordir and titledir from database
-    authordir = localbook.path.split('/')[0]
-    titledir = localbook.path.split('/')[1]
+    # Create (current) author_dir and title_dir from database
+    author_dir = local_book.path.split('/')[0]
+    title_dir = local_book.path.split('/')[1]
 
-    # Create new_authordir from parameter or from database
-    # Create new titledir from database and add id
-    new_authordir = rename_all_authors(first_author, renamed_author, calibre_path, localbook)
+    # Create new_author_dir from parameter or from database
+    # Create new title_dir from database and add id
+    new_author_dir = rename_all_authors(first_author, renamed_author, calibre_path, local_book)
     if first_author:
         if first_author.lower() in [r.lower() for r in renamed_author]:
-            if os.path.isdir(os.path.join(calibre_path, new_authordir)):
-                path = os.path.join(calibre_path, new_authordir, titledir)
+            if os.path.isdir(os.path.join(calibre_path, new_author_dir)):
+                path = os.path.join(calibre_path, new_author_dir, title_dir)
 
-    new_titledir = get_valid_filename(localbook.title, chars=96) + " (" + str(book_id) + ")"
+    new_title_dir = get_valid_filename(local_book.title, chars=96) + " (" + str(book_id) + ")"
 
-    if titledir != new_titledir or authordir != new_authordir or original_filepath:
+    if title_dir != new_title_dir or author_dir != new_author_dir or original_filepath:
         error = move_files_on_change(calibre_path,
-                                     new_authordir,
-                                     new_titledir,
-                                     localbook,
+                                     new_author_dir,
+                                     new_title_dir,
+                                     local_book,
                                      db_filename,
                                      original_filepath,
                                      path)
@@ -478,7 +480,7 @@ def update_dir_structure_file(book_id, calibre_path, first_author, original_file
             return error
 
     # Rename all files from old names to new names
-    return rename_files_on_change(first_author, renamed_author, localbook, original_filepath, path, calibre_path)
+    return rename_files_on_change(first_author, renamed_author, local_book, original_filepath, path, calibre_path)
 
 
 def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_dir, original_filepath, filename_ext):
@@ -490,7 +492,7 @@ def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_d
                                title_dir + " (" + str(book_id) + ")")
     book.path = gdrive_path.replace("\\", "/")
     gd.uploadFileToEbooksFolder(os.path.join(gdrive_path, file_name).replace("\\", "/"), original_filepath)
-    return rename_files_on_change(first_author, renamed_author, localbook=book, gdrive=True)
+    return rename_files_on_change(first_author, renamed_author, local_book=book, gdrive=True)
 
 
 def update_dir_structure_gdrive(book_id, first_author, renamed_author):
@@ -549,7 +551,7 @@ def move_files_on_change(calibre_path, new_authordir, new_titledir, localbook, d
         # change location in database to new author/title path
         localbook.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
     except OSError as ex:
-        log.error_or_exception("Rename title from: %s to %s: %s", path, new_path, ex)
+        log.error_or_exception("Rename title from {} to {} failed with error: {}".format(path, new_path, ex))
         return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                  src=path, dest=new_path, error=str(ex))
     return False
@@ -557,8 +559,8 @@ def move_files_on_change(calibre_path, new_authordir, new_titledir, localbook, d
 
 def rename_files_on_change(first_author,
                            renamed_author,
-                           localbook,
-                           orignal_filepath="",
+                           local_book,
+                           original_filepath="",
                            path="",
                            calibre_path="",
                            gdrive=False):
@@ -566,12 +568,12 @@ def rename_files_on_change(first_author,
     try:
         clean_author_database(renamed_author, calibre_path, gdrive=gdrive)
         if first_author and first_author not in renamed_author:
-            clean_author_database([first_author], calibre_path, localbook, gdrive)
-        if not gdrive and not renamed_author and not orignal_filepath and len(os.listdir(os.path.dirname(path))) == 0:
+            clean_author_database([first_author], calibre_path, local_book, gdrive)
+        if not gdrive and not renamed_author and not original_filepath and len(os.listdir(os.path.dirname(path))) == 0:
             shutil.rmtree(os.path.dirname(path))
     except (OSError, FileNotFoundError) as ex:
-        log.error_or_exception("Error in rename file in path %s", ex)
-        return _("Error in rename file in path: %(error)s", error=str(ex))
+        log.error_or_exception("Error in rename file in path {}".format(ex))
+        return _("Error in rename file in path: {}".format(str(ex)))
     return False
 
 

@@ -67,6 +67,7 @@ logged_in = dict()
 def signal_store_user_session(object, user):
     store_user_session()
 
+
 def store_user_session():
     if flask_session.get('user_id', ""):
         flask_session['_user_id'] = flask_session.get('user_id', "")
@@ -85,15 +86,16 @@ def store_user_session():
     else:
         log.error("No user id in session")
 
+
 def delete_user_session(user_id, session_key):
     try:
         log.debug("Deleted session_key: " + session_key)
-        session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                            User_Sessions.session_key==session_key).delete()
+        session.query(User_Sessions).filter(User_Sessions.user_id == user_id,
+                                            User_Sessions.session_key == session_key).delete()
         session.commit()
-    except (exc.OperationalError, exc.InvalidRequestError) as e:
+    except (exc.OperationalError, exc.InvalidRequestError) as ex:
         session.rollback()
-        log.exception(e)
+        log.exception(ex)
 
 
 def check_user_session(user_id, session_key):
@@ -209,9 +211,9 @@ class UserBase:
             pass
         try:
             session.commit()
-        except (exc.OperationalError, exc.InvalidRequestError):
+        except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
-            # ToDo: Error message
+            log.error_or_exception(e)
 
     def __repr__(self):
         return '<User %r>' % self.name

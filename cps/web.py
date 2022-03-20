@@ -87,7 +87,7 @@ def add_security_headers(resp):
     csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
     csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
     resp.headers['Content-Security-Policy'] = csp
-    if request.endpoint == "edit-book.edit_book" or config.config_use_google_drive:
+    if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     elif request.endpoint == "web.read_book":
         resp.headers['Content-Security-Policy'] += " blob:;style-src-elem 'self' blob: 'unsafe-inline';"
@@ -646,8 +646,8 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                                                     db.Books.id == db.books_series_link.c.book,
                                                                     db.Series,
                                                                     db.cc_classes[config.config_read_column])
-        except (KeyError, AttributeError):
-            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+        except (KeyError, AttributeError, IndexError):
+            log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
             if not as_xml:
                 flash(_("Custom Column No.%(column)d is not existing in calibre database",
                         column=config.config_read_column),
@@ -826,8 +826,9 @@ def list_books():
                     books = (calibre_db.session.query(db.Books, read_column.value, ub.ArchivedBook.is_archived)
                              .select_from(db.Books)
                              .outerjoin(read_column, read_column.book == db.Books.id))
-                except (KeyError, AttributeError):
-                    log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                except (KeyError, AttributeError, IndexError):
+                    log.error(
+                        "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
                     # Skip linking read column and return None instead of read status
                     books = calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
             books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
@@ -1139,8 +1140,9 @@ def adv_search_read_status(q, read_status):
                 else:
                     q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
                         .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
-            except (KeyError, AttributeError):
-                log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            except (KeyError, AttributeError, IndexError):
+                log.error(
+                    "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
                 flash(_("Custom Column No.%(column)d is not existing in calibre database",
                         column=config.config_read_column),
                       category="error")
@@ -1262,8 +1264,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, read_column.value)
                      .select_from(db.Books)
                      .outerjoin(read_column, read_column.book == db.Books.id))
-        except (KeyError, AttributeError):
-            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+        except (KeyError, AttributeError, IndexError):
+            log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
             # Skip linking read column
             query = calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, None)
     query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
