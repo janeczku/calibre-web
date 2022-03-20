@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-03-14 21:13:33</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-03-19 22:04:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-03-15 02:05:20</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-03-20 02:50:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>4h 3 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>3h 58 min</p>
         </div>
       </div>
       </div>
@@ -1589,8 +1589,8 @@
     <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">17</td>
-        <td class="text-center">3</td>
+        <td class="text-center">16</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1735,11 +1735,31 @@
     
     
     
-        <tr id='pt16.16' class='hiddenRow bg-success'>
+        <tr id="ft16.16" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 145, in test_edit_title
+    self.assertTrue(self.check_element_on_page((By.ID, &#39;flash_success&#39;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1761,7 +1781,7 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 853, in test_upload_book_epub
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 855, in test_upload_book_epub
     self.assertEqual(&#39;8936&#39;, resp.headers[&#39;Content-Length&#39;])
 AssertionError: &#39;8936&#39; != &#39;1103&#39;
 - 8936
@@ -1801,7 +1821,7 @@ AssertionError: &#39;8936&#39; != &#39;1103&#39;
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 766, in test_upload_cover_hdd
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 768, in test_upload_cover_hdd
     self.assertGreater(diff(&#39;original.png&#39;, &#39;jpeg.png&#39;, delete_diff_file=True), 0.02)
 AssertionError: 0.0 not greater than 0.02</pre>
                     </div>
@@ -1830,9 +1850,9 @@ AssertionError: 0.0 not greater than 0.02</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 935, in test_watch_metadata
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 937, in test_watch_metadata
     self.assertNotIn(&#39;series&#39;, book)
-AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5?edit=2e081d1c-86d2-461f-a309-e51e1e378161&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5?edit=34e51cc2-2413-4a23-8324-26d568a421ba&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2825,34 +2845,65 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestMergeBooksList</td>
-        <td class="text-center">2</td>
-        <td class="text-center">2</td>
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 2)">Detail</a>
+            <a onclick="showClassDetail('c31', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="et31.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestMergeBooksList - test_book_merge</div>
+                <div class='testcase'>setUpClass (test_merge_books_list)</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt31.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestMergeBooksList - test_delete_book</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et31.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 24, in setUpClass
+    startup(cls, cls.py_version, {&#39;config_calibre_dir&#39;: TEST_DB})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 175, in startup
+    inst.driver = webdriver.Firefox()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/firefox/webdriver.py&#34;, line 178, in __init__
+    RemoteWebDriver.__init__(
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 269, in __init__
+    self.start_session(capabilities, browser_profile)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 360, in start_session
+    response = self.execute(Command.NEW_SESSION, parameters)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: Process unexpectedly closed with status 0
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 28, in setUpClass
+    cls.driver.quit()
+AttributeError: &#39;NoneType&#39; object has no attribute &#39;quit&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4600,10 +4651,10 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>405</td>
-        <td>396</td>
-        <td>3</td>
-        <td>0</td>
+        <td>404</td>
+        <td>393</td>
+        <td>4</td>
+        <td>1</td>
         <td>6</td>
         <td>&nbsp;</td>
     </tr>
@@ -4776,7 +4827,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4806,7 +4857,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4836,7 +4887,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4878,7 +4929,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -4914,7 +4965,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -4956,7 +5007,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.40.0</td>
+              <td>2.41.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5046,7 +5097,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 </div>
 
 <script>
-    drawCircle(396, 3, 0, 6);
+    drawCircle(393, 4, 1, 6);
     showCase(5);
 </script>
 
