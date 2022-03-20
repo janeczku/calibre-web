@@ -289,13 +289,13 @@ def delete_whole_book(book_id, book):
 def render_delete_book_result(book_format, json_response, warning, book_id):
     if book_format:
         if json_response:
-            return json.dumps([warning, {"location": url_for("edit-book.edit_book", book_id=book_id),
+            return json.dumps([warning, {"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                          "type": "success",
                                          "format": book_format,
                                          "message": _('Book Format Successfully Deleted')}])
         else:
             flash(_('Book Format Successfully Deleted'), category="success")
-            return redirect(url_for('edit-book.edit_book', book_id=book_id))
+            return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
     else:
         if json_response:
             return json.dumps([warning, {"location": url_for('web.index'),
@@ -316,16 +316,16 @@ def delete_book_from_table(book_id, book_format, json_response):
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
                     if json_response:
-                        return json.dumps([{"location": url_for("edit-book.edit_book", book_id=book_id),
+                        return json.dumps([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                             "type": "danger",
                                             "format": "",
                                             "message": error}])
                     else:
                         flash(error, category="error")
-                        return redirect(url_for('edit-book.edit_book', book_id=book_id))
+                        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
                 if error:
                     if json_response:
-                        warning = {"location": url_for("edit-book.edit_book", book_id=book_id),
+                        warning = {"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                    "type": "warning",
                                    "format": "",
                                    "message": error}
@@ -343,13 +343,13 @@ def delete_book_from_table(book_id, book_format, json_response):
                 log.error_or_exception(ex)
                 calibre_db.session.rollback()
                 if json_response:
-                    return json.dumps([{"location": url_for("edit-book.edit_book", book_id=book_id),
+                    return json.dumps([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                         "type": "danger",
                                         "format": "",
                                         "message": ex}])
                 else:
                     flash(str(ex), category="error")
-                    return redirect(url_for('edit-book.edit_book', book_id=book_id))
+                    return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
         else:
             # book not found
@@ -357,13 +357,13 @@ def delete_book_from_table(book_id, book_format, json_response):
         return render_delete_book_result(book_format, json_response, warning, book_id)
     message = _("You are missing permissions to delete books")
     if json_response:
-        return json.dumps({"location": url_for("edit-book.edit_book", book_id=book_id),
+        return json.dumps({"location": url_for("edit-book.show_edit_book", book_id=book_id),
                            "type": "danger",
                            "format": "",
                            "message": message})
     else:
         flash(message, category="error")
-        return redirect(url_for('edit-book.edit_book', book_id=book_id))
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
 
 def render_edit_book(book_id):
@@ -413,18 +413,18 @@ def render_edit_book(book_id):
 
 def edit_book_ratings(to_save, book):
     changed = False
-    if to_save["rating"].strip():
+    if to_save.get("rating","").strip():
         old_rating = False
         if len(book.ratings) > 0:
             old_rating = book.ratings[0].rating
-        ratingx2 = int(float(to_save["rating"]) * 2)
-        if ratingx2 != old_rating:
+        rating_x2 = int(float(to_save.get("rating","")) * 2)
+        if rating_x2 != old_rating:
             changed = True
-            is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+            is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
             if is_rating:
                 book.ratings.append(is_rating)
             else:
-                new_rating = db.Ratings(rating=ratingx2)
+                new_rating = db.Ratings(rating=rating_x2)
                 book.ratings.append(new_rating)
             if old_rating:
                 book.ratings.remove(book.ratings[0])
@@ -622,24 +622,26 @@ def edit_cc_data(book_id, book, to_save, cc):
                                               'custom')
     return changed
 
-
+# returns None if no file is uploaded
+# returns False if an error occours, in all other cases the ebook metadata is returned
 def upload_single_file(file_request, book, book_id):
     # Check and handle Uploaded file
-    if 'btn-upload-format' in file_request.files:
-        requested_file = file_request.files['btn-upload-format']
+    requested_file = file_request.files.get('btn-upload-format', None)
+    if requested_file:
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
-                abort(403)
+                flash(_(u"User has no rights to upload additional file formats"), category="error")
+                return False
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
+                    return False
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
+                return False
 
             file_name = book.path.rsplit('/', 1)[-1]
             filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
@@ -651,12 +653,12 @@ def upload_single_file(file_request, book, book_id):
                     os.makedirs(filepath)
                 except OSError:
                     flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
+                    return False
             try:
                 requested_file.save(saved_filename)
             except OSError:
                 flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
+                return False
 
             file_size = os.path.getsize(saved_filename)
             is_format = calibre_db.get_book_format(book_id, file_ext.upper())
@@ -674,7 +676,7 @@ def upload_single_file(file_request, book, book_id):
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
                     flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
+                    return False # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
@@ -684,15 +686,16 @@ def upload_single_file(file_request, book, book_id):
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
                 rarExecutable=config.config_rarfile_location)
-
+    return None
 
 def upload_cover(cover_request, book):
-    if 'btn-upload-cover' in cover_request.files:
-        requested_file = cover_request.files['btn-upload-cover']
+    requested_file = cover_request.files.get('btn-upload-cover', None)
+    if requested_file:
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
-                abort(403)
+                flash(_(u"User has no rights to upload cover"), category="error")
+                return False
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
                 helper.clear_cover_thumbnail_cache(book.id)
@@ -717,25 +720,6 @@ def handle_title_on_edit(book, book_title):
 def handle_author_on_edit(book, author_name, update_stored=True):
     # handle author(s)
     input_authors, renamed = prepare_authors(author_name)
-    '''input_authors = author_name.split('&')
-    input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
-    # Remove duplicates in authors list
-    input_authors = helper.uniq(input_authors)
-    # we have all author names now
-    if input_authors == ['']:
-        input_authors = [_(u'Unknown')]  # prevent empty Author
-
-    renamed = list()
-    for in_aut in input_authors:
-        renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
-        if renamed_author and in_aut != renamed_author.name:
-            renamed.append(renamed_author.name)
-            all_books = calibre_db.session.query(db.Books) \
-                .filter(db.Books.authors.any(db.Authors.name == renamed_author.name)).all()
-            sorted_renamed_author = helper.get_sorted_author(renamed_author.name)
-            sorted_old_author = helper.get_sorted_author(in_aut)
-            for one_book in all_books:
-                one_book.author_sort = one_book.author_sort.replace(sorted_renamed_author, sorted_old_author)'''
 
     change = modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
@@ -755,12 +739,19 @@ def handle_author_on_edit(book, author_name, update_stored=True):
         change = True
     return input_authors, change, renamed
 
+@EditBook.route("/admin/book/<int:book_id>", methods=['GET'])
+@login_required_if_no_ano
+@edit_required
+def show_edit_book(book_id):
+    return render_edit_book(book_id)
 
-@EditBook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
+
+@EditBook.route("/admin/book/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
     modify_date = False
+    edit_error = False
 
     # create the function for sorting...
     try:
@@ -769,110 +760,120 @@ def edit_book(book_id):
         log.error_or_exception(e)
         calibre_db.session.rollback()
 
-    # Show form
-    if request.method != 'POST':
-        return render_edit_book(book_id)
-
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-
     # Book not found
     if not book:
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
 
-    meta = upload_single_file(request, book, book_id)
-    if upload_cover(request, book) is True:
-        book.has_cover = 1
-        modify_date = True
+    to_save = request.form.to_dict()
+
     try:
-        to_save = request.form.to_dict()
-        merge_metadata(to_save, meta)
-        # Update book
+        # Update folder of book on local disk
         edited_books_id = None
-
-        # handle book title
+        title_author_error = None
+        # handle book title change
         title_change = handle_title_on_edit(book, to_save["book_title"])
-
-        input_authors, authorchange, renamed = handle_author_on_edit(book, to_save["author_name"])
-        if authorchange or title_change:
+        # handle book author change
+        input_authors, author_change, renamed = handle_author_on_edit(book, to_save["author_name"])
+        if author_change or title_change:
             edited_books_id = book.id
             modify_date = True
+            title_author_error = helper.update_dir_structure(edited_books_id,
+                                                             config.config_calibre_dir,
+                                                             input_authors[0],
+                                                             renamed_author=renamed)
+        if title_author_error:
+            flash(title_author_error, category="error")
+            calibre_db.session.rollback()
+            book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
 
+        # handle upload other formats from local disk
+        meta = upload_single_file(request, book, book_id)
+        # only merge metadata if file was uploaded and no error occurred (meta equals not false or none)
+        if meta:
+            merge_metadata(to_save, meta)
+        # handle upload covers from local disk
+        cover_upload_success = upload_cover(request, book)
+        if cover_upload_success:
+            book.has_cover = 1
+            modify_date = True
+
+        # upload new covers or new file formats to google drive
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
 
-        error = ""
-        if edited_books_id:
-            error = helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
-                                                renamed_author=renamed)
+        if to_save.get("cover_url", None):
+            if not current_user.role_upload():
+                edit_error = True
+                flash(_(u"User has no rights to upload cover"), category="error")
+            if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
+                book.has_cover = 0
+            else:
+                result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
+                if result is True:
+                    book.has_cover = 1
+                    modify_date = True
+                else:
+                    flash(error, category="error")
 
-        if not error:
-            if "cover_url" in to_save:
-                if to_save["cover_url"]:
-                    if not current_user.role_upload():
-                        calibre_db.session.rollback()
-                        return "", 403
-                    if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
-                        book.has_cover = 0
-                    else:
-                        result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
-                        if result is True:
-                            book.has_cover = 1
-                            modify_date = True
-                            helper.clear_cover_thumbnail_cache(book.id)
-                        else:
-                            flash(error, category="error")
-
-            # Add default series_index to book
-            modify_date |= edit_book_series_index(to_save["series_index"], book)
-            # Handle book comments/description
-            modify_date |= edit_book_comments(Markup(to_save['description']).unescape(), book)
-            # Handle identifiers
-            input_identifiers = identifier_list(to_save, book)
-            modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
-            if warning:
-                flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
-            modify_date |= modification
-            # Handle book tags
-            modify_date |= edit_book_tags(to_save['tags'], book)
-            # Handle book series
-            modify_date |= edit_book_series(to_save["series"], book)
-            # handle book publisher
-            modify_date |= edit_book_publisher(to_save['publisher'], book)
-            # handle book languages
+        # Add default series_index to book
+        modify_date |= edit_book_series_index(to_save["series_index"], book)
+        # Handle book comments/description
+        modify_date |= edit_book_comments(Markup(to_save['description']).unescape(), book)
+        # Handle identifiers
+        input_identifiers = identifier_list(to_save, book)
+        modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
+        if warning:
+            flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+        modify_date |= modification
+        # Handle book tags
+        modify_date |= edit_book_tags(to_save['tags'], book)
+        # Handle book series
+        modify_date |= edit_book_series(to_save["series"], book)
+        # handle book publisher
+        modify_date |= edit_book_publisher(to_save['publisher'], book)
+        # handle book languages
+        try:
             modify_date |= edit_book_languages(to_save['languages'], book)
-            # handle book ratings
-            modify_date |= edit_book_ratings(to_save, book)
-            # handle cc data
-            modify_date |= edit_all_cc_data(book_id, book, to_save)
+        except ValueError as e:
+            flash(str(e), category="error")
+            edit_error = True
+        # handle book ratings
+        modify_date |= edit_book_ratings(to_save, book)
+        # handle cc data
+        modify_date |= edit_all_cc_data(book_id, book, to_save)
 
-            if to_save["pubdate"]:
-                try:
-                    book.pubdate = datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
-                except ValueError:
-                    book.pubdate = db.Books.DEFAULT_PUBDATE
-            else:
+        if to_save.get("pubdate", None):
+            try:
+                book.pubdate = datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
+            except ValueError as e:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-
-            if modify_date:
-                book.last_modified = datetime.utcnow()
-                kobo_sync_status.remove_synced_book(edited_books_id, all=True)
-
-            calibre_db.session.merge(book)
-            calibre_db.session.commit()
-            if config.config_use_google_drive:
-                gdriveutils.updateGdriveCalibreFromLocal()
-            if "detail_view" in to_save:
-                return redirect(url_for('web.show_book', book_id=book.id))
-            else:
-                flash(_("Metadata successfully updated"), category="success")
-                return render_edit_book(book_id)
+                flash(str(e), category="error")
+                edit_error = True
         else:
-            calibre_db.session.rollback()
-            flash(error, category="error")
+            book.pubdate = db.Books.DEFAULT_PUBDATE
+
+        if modify_date:
+            book.last_modified = datetime.utcnow()
+            kobo_sync_status.remove_synced_book(edited_books_id, all=True)
+
+        calibre_db.session.merge(book)
+        calibre_db.session.commit()
+        if config.config_use_google_drive:
+            gdriveutils.updateGdriveCalibreFromLocal()
+        if meta is not False \
+            and edit_error is not True \
+                and title_author_error is not True \
+                and cover_upload_success is not False:
+            flash(_("Metadata successfully updated"), category="success")
+        if "detail_view" in to_save:
+            return redirect(url_for('web.show_book', book_id=book.id))
+        else:
             return render_edit_book(book_id)
     except ValueError as e:
+        log.error_or_exception("Error: {}".format(e))
         calibre_db.session.rollback()
         flash(str(e), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
@@ -884,14 +885,14 @@ def edit_book(book_id):
     except Exception as ex:
         log.error_or_exception(ex)
         calibre_db.session.rollback()
-        flash(_("Error editing book, please check logfile for details"), category="error")
+        flash(_("Error editing book: {}".format(ex)), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
 
 
 def merge_metadata(to_save, meta):
-    if to_save['author_name'] == _(u'Unknown'):
+    if to_save.get('author_name', "") == _(u'Unknown'):
         to_save['author_name'] = ''
-    if to_save['book_title'] == _(u'Unknown'):
+    if to_save.get('book_title', "") == _(u'Unknown'):
         to_save['book_title'] = ''
     for s_field, m_field in [
             ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
@@ -1119,7 +1120,7 @@ def upload():
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
-                        resp = {"location": url_for('edit-book.edit_book', book_id=book_id)}
+                        resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
                         return Response(json.dumps(resp), mimetype='application/json')
                     else:
                         resp = {"location": url_for('web.show_book', book_id=book_id)}
@@ -1141,7 +1142,7 @@ def convert_bookformat(book_id):
 
     if (book_format_from is None) or (book_format_to is None):
         flash(_(u"Source or destination format for conversion missing"), category="error")
-        return redirect(url_for('edit-book.edit_book', book_id=book_id))
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
@@ -1153,7 +1154,7 @@ def convert_bookformat(book_id):
               category="success")
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
-    return redirect(url_for('edit-book.edit_book', book_id=book_id))
+    return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
 
 @EditBook.route("/ajax/getcustomenum/<int:c_id>")
@@ -1213,10 +1214,15 @@ def edit_list_book(param):
                            mimetype='application/json')
         elif param == 'title':
             sort_param = book.sort
-            handle_title_on_edit(book, vals.get('value', ""))
-            helper.update_dir_structure(book.id, config.config_calibre_dir)
-            ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
-                           mimetype='application/json')
+            if handle_title_on_edit(book, vals.get('value', "")):
+                rename_error = helper.update_dir_structure(book.id, config.config_calibre_dir)
+                if not rename_error:
+                    ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
+                                   mimetype='application/json')
+                else:
+                    ret = Response(json.dumps({'success': False,
+                                               'msg': rename_error}),
+                                   mimetype='application/json')
         elif param == 'sort':
             book.sort = vals['value']
             ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
@@ -1227,11 +1233,17 @@ def edit_list_book(param):
                            mimetype='application/json')
         elif param == 'authors':
             input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
-            helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0], renamed_author=renamed)
-            ret = Response(json.dumps({
-                'success': True,
-                'newValue':  ' & '.join([author.replace('|', ',') for author in input_authors])}),
-                mimetype='application/json')
+            rename_error = helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0],
+                                                       renamed_author=renamed)
+            if not rename_error:
+                ret = Response(json.dumps({
+                    'success': True,
+                    'newValue':  ' & '.join([author.replace('|', ',') for author in input_authors])}),
+                    mimetype='application/json')
+            else:
+                ret = Response(json.dumps({'success': False,
+                                           'msg': rename_error}),
+                               mimetype='application/json')
         elif param == 'is_archived':
             is_archived = change_archived_books(book.id, vals['value'] == "True",
                                                 message="Book {} archive bit set to: {}".format(book.id, vals['value']))
@@ -1358,8 +1370,8 @@ def table_xchange_author_title():
                 author_names.append(authr.name.replace('|', ','))
 
             title_change = handle_title_on_edit(book, " ".join(author_names))
-            input_authors, authorchange, renamed = handle_author_on_edit(book, authors)
-            if authorchange or title_change:
+            input_authors, author_change, renamed = handle_author_on_edit(book, authors)
+            if author_change or title_change:
                 edited_books_id = book.id
                 modify_date = True
 
@@ -1367,8 +1379,9 @@ def table_xchange_author_title():
                 gdriveutils.updateGdriveCalibreFromLocal()
 
             if edited_books_id:
-                helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
-                                            renamed_author=renamed)
+                # toDo: Handle error
+                edit_error = helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
+                                                         renamed_author=renamed)
             if modify_date:
                 book.last_modified = datetime.utcnow()
             try:

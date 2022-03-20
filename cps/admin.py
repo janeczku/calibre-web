@@ -161,7 +161,7 @@ def shutdown():
 # needed for docker applications, as changes on metadata.db from host are not visible to application
 @admi.route("/reconnect", methods=['GET'])
 def reconnect():
-    if cli.args.r:
+    if cli.reconnect_enable:
         calibre_db.reconnect_db(config, ub.app_DB_path)
         return json.dumps({})
     else:
@@ -1239,7 +1239,7 @@ def _db_configuration_update_helper():
         config.store_calibre_uuid(calibre_db, db.LibraryId)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         if db_change:
-            log.info("Calibre Database changed, delete all Calibre-Web info related to old Database")
+            log.info("Calibre Database changed, all Calibre-Web info related to old Database gets deleted")
             ub.session.query(ub.Downloads).delete()
             ub.session.query(ub.ArchivedBook).delete()
             ub.session.query(ub.ReadBook).delete()
