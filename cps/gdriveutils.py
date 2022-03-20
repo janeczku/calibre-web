@@ -81,7 +81,7 @@ if gdrive_support:
     if not logger.is_debug_enabled():
         logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
 else:
-    log.debug("Cannot import pydrive,httplib2, using gdrive will not work: %s", importError)
+    log.debug("Cannot import pydrive, httplib2, using gdrive will not work: %s", importError)
 
 
 class Singleton:
@@ -272,8 +272,7 @@ def getEbooksFolderId(drive=None):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error("gdrive.db DB is not Writeable")
-            log.debug('Database error: %s', ex)
+            log.error_or_exception('Database error: %s', ex)
             session.rollback()
         return gDriveId.gdrive_id
 
@@ -322,8 +321,7 @@ def getFolderId(path, drive):
         else:
             currentFolderId = storedPathName.gdrive_id
     except OperationalError as ex:
-        log.error("gdrive.db DB is not Writeable")
-        log.debug('Database error: %s', ex)
+        log.error_or_exception('Database error: %s', ex)
         session.rollback()
     except ApiRequestError as ex:
         log.error('{} {}'.format(ex.error['message'], path))
@@ -547,8 +545,7 @@ def deleteDatabaseOnChange():
         session.commit()
     except (OperationalError, InvalidRequestError) as ex:
         session.rollback()
-        log.debug('Database error: %s', ex)
-        log.error(u"GDrive DB is not Writeable")
+        log.error_or_exception('Database error: %s', ex)
 
 
 def updateGdriveCalibreFromLocal():
@@ -566,8 +563,7 @@ def updateDatabaseOnEdit(ID,newPath):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error("gdrive.db DB is not Writeable")
-            log.debug('Database error: %s', ex)
+            log.error_or_exception('Database error: %s', ex)
             session.rollback()
 
 
@@ -577,8 +573,7 @@ def deleteDatabaseEntry(ID):
     try:
         session.commit()
     except OperationalError as ex:
-        log.error("gdrive.db DB is not Writeable")
-        log.debug('Database error: %s', ex)
+        log.error_or_exception('Database error: %s', ex)
         session.rollback()
 
 
@@ -599,8 +594,7 @@ def get_cover_via_gdrive(cover_path):
             try:
                 session.commit()
             except OperationalError as ex:
-                log.error("gdrive.db DB is not Writeable")
-                log.debug('Database error: %s', ex)
+                log.error_or_exception('Database error: %s', ex)
                 session.rollback()
         return df.metadata.get('webContentLink')
     else:

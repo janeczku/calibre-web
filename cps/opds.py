@@ -34,7 +34,6 @@ from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
-from sqlalchemy.orm import InstrumentedAttribute
 opds = Blueprint('opds', __name__)
 
 log = logger.create()

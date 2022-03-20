@@ -620,8 +620,8 @@ class CalibreDB:
                 bd = (self.session.query(Books, read_column.value, ub.ArchivedBook.is_archived).select_from(Books)
                       .join(read_column, read_column.book == book_id,
                       isouter=True))
-            except (KeyError, AttributeError):
-                log.error("Custom Column No.%d is not existing in calibre database", read_column)
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
                 # Skip linking read column and return None instead of read status
                 bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
         return (bd.filter(Books.id == book_id)
@@ -665,11 +665,11 @@ class CalibreDB:
                 neg_content_cc_filter = false() if neg_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
                     any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
-            except (KeyError, AttributeError):
+            except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
-                log.error(u"Custom Column No.%d is not existing in calibre database",
-                          self.config.config_restricted_column)
+                log.error("Custom Column No.{} is not existing in calibre database".format(
+                    self.config.config_restricted_column))
                 flash(_("Custom Column No.%(column)d is not existing in calibre database",
                         column=self.config.config_restricted_column),
                       category="error")
@@ -728,8 +728,8 @@ class CalibreDB:
                     query = (self.session.query(database, read_column.value, ub.ArchivedBook.is_archived)
                              .select_from(Books)
                              .outerjoin(read_column, read_column.book == Books.id))
-                except (KeyError, AttributeError):
-                    log.error("Custom Column No.%d is not existing in calibre database", read_column)
+                except (KeyError, AttributeError, IndexError):
+                    log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
                     # Skip linking read column and return None instead of read status
                     query = self.session.query(database, None, ub.ArchivedBook.is_archived)
             query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
@@ -840,8 +840,8 @@ class CalibreDB:
                 read_column = cc_classes[config_read_column]
                 query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value).select_from(Books)
                          .outerjoin(read_column, read_column.book == Books.id))
-            except (KeyError, AttributeError):
-                log.error("Custom Column No.%d is not existing in calibre database", config_read_column)
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
                 # Skip linking read column
                 query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
         query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
