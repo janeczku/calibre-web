@@ -38,7 +38,7 @@
         <p title="{{entry.title}}" class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
           {% for author in entry.ordered_authors %}
-            <a href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -46,7 +46,7 @@
         </p>
         {% if entry.series.__len__() > 0 %}
         <p class="series">
-          <a href="{{url_for('web.books_list', data='series', sort_param='new', book_id=entry.series[0].id )}}">
+          <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id )}}">
             {{entry.series[0].name}}
           </a>
           ({{entry.series_index}})

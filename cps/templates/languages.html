@@ -23,7 +23,7 @@
     {% endif %}
     <div class="row" data-id="{{lang[0].name}}">
         <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{lang[1]}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('web.books_list', book_id=lang[0].lang_code, data=data, sort_param='new')}}">{{lang[0].name}}</a></div>
+        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('web.books_list', book_id=lang[0].lang_code, data=data, sort_param='stored')}}">{{lang[0].name}}</a></div>
     </div>
   {% endfor %}
       </div>
