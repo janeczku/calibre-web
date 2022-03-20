@@ -487,7 +487,10 @@ class TaskClearCoverThumbnailCache(CalibreTask):
         return 'ThumbnailsClear'
 
     def __str__(self):
-        return "Delete Thumbnail cache directory"
+        if self.book_id > 0:
+            return "Delete Thumbnail cache for book " + str(self.book_id)
+        else:
+            return "Delete Thumbnail cache directory"
 
     @property
     def is_cancellable(self):
