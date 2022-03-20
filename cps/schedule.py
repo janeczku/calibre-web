@@ -30,15 +30,15 @@ def get_scheduled_tasks(reconnect=True):
 
     # Reconnect Calibre database (metadata.db)
     if reconnect:
-        tasks.append(lambda: TaskReconnectDatabase())
+        tasks.append([lambda: TaskReconnectDatabase(), 'reconnect'])
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:
-        tasks.append(lambda: TaskGenerateCoverThumbnails())
+        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers'])
 
     # Generate all missing series thumbnails
     if config.schedule_generate_series_covers:
-        tasks.append(lambda: TaskGenerateSeriesThumbnails())
+        tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers'])
 
     return tasks
 
@@ -63,7 +63,7 @@ def register_scheduled_tasks():
         # Register scheduled tasks
         if start != end:
             scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
-            scheduler.schedule(func=end_scheduled_tasks, trigger='cron', hour=end)
+            scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end)
 
         # Kick-off tasks, if they should currently be running
         if should_task_be_running(start, end):
