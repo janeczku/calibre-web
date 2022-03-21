@@ -125,9 +125,13 @@
         </p>
         {% if entry.series.__len__() > 0 %}
         <p class="series">
+        {% if page != "series" %}
           <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id )}}">
             {{entry.series[0].name}}
           </a>
+        {% else %}
+            <span>{{entry.series[0].name}}</span>
+        {% endif %}
           ({{entry.series_index|formatseriesindex}})
         </p>
         {% endif %}
