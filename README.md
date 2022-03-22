@@ -45,7 +45,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 3. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
 4. Calibre-Web can be started afterwards by typing `cps` 
 
-In the Wiki there are also examples for a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation) and for installation on [Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20)
+In the Wiki there are also examples for: a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [installation on Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [installation on a Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
 
 ## Quick start
 
