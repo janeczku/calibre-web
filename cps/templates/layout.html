@@ -69,7 +69,7 @@
                     </form>
                   </li>
               {% endif %}
-              {% if not g.user.is_anonymous %}
+              {% if not g.user.is_anonymous and not simple%}
                 <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if g.user.role_admin() %}

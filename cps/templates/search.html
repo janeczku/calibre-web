@@ -43,7 +43,7 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         {% if entry.Books.has_cover is defined %}
-           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img" title="{{entry.Books.title}}" >
                 <img src="{{ url_for('web.get_cover', book_id=entry.Books.id) }}" alt="{{ entry.Books.title }}" />
                 {% if entry.Books.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
@@ -52,7 +52,7 @@
         {% endif %}
       </div>
       <div class="meta">
-        <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+        <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
           <p title="{{entry.Books.title}}" class="title">{{entry.Books.title|shortentitle}}</p>
         </a>
         <p class="author">
