@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from flask import render_template
+from flask import render_template, request
 from flask_babel import gettext as _
 from flask import g
 from werkzeug.local import LocalProxy
@@ -30,6 +30,7 @@ log = logger.create()
 
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
+    simple = bool([e for e in ['kindle', 'tolino', "kobo"] if (e in request.headers.get('User-Agent', "").lower())])
     if 'content' in kwargs:
         content = kwargs['content']
         content = isinstance(content, (User, LocalProxy)) and not content.role_anonymous()
@@ -93,12 +94,12 @@ def get_sidebar_config(kwargs=None):
         {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
          "show_text": _('Show archived books'), "config_show": content})
-    sidebar.append(
-        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
-         "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
-         "show_text": _('Show Books List'), "config_show": content})
-
-    return sidebar
+    if not simple:
+        sidebar.append(
+            {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
+             "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
+             "show_text": _('Show Books List'), "config_show": content})
+    return sidebar, simple
 
 def get_readbooks_ids():
     if not config.config_read_column:
@@ -116,7 +117,7 @@ def get_readbooks_ids():
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar = get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
+    sidebar, simple = get_sidebar_config(kwargs)
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
                            accept=constants.EXTENSIONS_UPLOAD, read_book_ids=get_readbooks_ids(),
                            *args, **kwargs)
