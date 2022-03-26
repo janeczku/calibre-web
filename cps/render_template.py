@@ -101,7 +101,7 @@ def get_sidebar_config(kwargs=None):
              "show_text": _('Show Books List'), "config_show": content})
     return sidebar, simple
 
-def get_readbooks_ids():
+'''def get_readbooks_ids():
     if not config.config_read_column:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
             .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
@@ -113,11 +113,11 @@ def get_readbooks_ids():
             return frozenset([x.book for x in readBooks])
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-            return []
+            return []'''
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar, simple = get_sidebar_config(kwargs)
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
-                           accept=constants.EXTENSIONS_UPLOAD, read_book_ids=get_readbooks_ids(),
+                           accept=constants.EXTENSIONS_UPLOAD, # read_book_ids=get_readbooks_ids(),
                            *args, **kwargs)

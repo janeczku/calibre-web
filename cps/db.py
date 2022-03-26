@@ -680,6 +680,25 @@ class CalibreDB:
         return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
+    def generate_linked_query(self, config_read_column, database):
+        if not config_read_column:
+            query = (self.session.query(database, ub.ArchivedBook.is_archived, ub.ReadBook.read_status)
+                     .select_from(Books)
+                     .outerjoin(ub.ReadBook,
+                                and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
+        else:
+            try:
+                read_column = cc_classes[config_read_column]
+                query = (self.session.query(database, ub.ArchivedBook.is_archived, read_column.value)
+                         .select_from(Books)
+                         .outerjoin(read_column, read_column.book == Books.id))
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
+                # Skip linking read column and return None instead of read status
+                query = self.session.query(database, None, ub.ArchivedBook.is_archived)
+        return query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                     int(current_user.id) == ub.ArchivedBook.user_id))
+
     @staticmethod
     def get_checkbox_sorted(inputlist, state, offset, limit, order, combo=False):
         outcome = list()
@@ -709,30 +728,14 @@ class CalibreDB:
                                            join_archive_read, config_read_column, *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
-            randm = self.session.query(Books) \
-                .filter(self.common_filters(allow_show_archived)) \
-                .order_by(func.random()) \
-                .limit(self.config.config_random_books).all()
+            random_query = self.generate_linked_query(config_read_column, database)
+            randm = (random_query.filter(self.common_filters(allow_show_archived))
+                     .order_by(func.random())
+                     .limit(self.config.config_random_books).all())
         else:
             randm = false()
         if join_archive_read:
-            if not config_read_column:
-                query = (self.session.query(database, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
-                         .select_from(Books)
-                         .outerjoin(ub.ReadBook,
-                                    and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
-            else:
-                try:
-                    read_column = cc_classes[config_read_column]
-                    query = (self.session.query(database, read_column.value, ub.ArchivedBook.is_archived)
-                             .select_from(Books)
-                             .outerjoin(read_column, read_column.book == Books.id))
-                except (KeyError, AttributeError, IndexError):
-                    log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
-                    # Skip linking read column and return None instead of read status
-                    query = self.session.query(database, None, ub.ArchivedBook.is_archived)
-            query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                                          int(current_user.id) == ub.ArchivedBook.user_id))
+            query = self.generate_linked_query(config_read_column, database)
         else:
             query = self.session.query(database)
         off = int(int(pagesize) * (page - 1))
@@ -830,21 +833,23 @@ class CalibreDB:
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        if not config_read_column:
+        query = self.generate_linked_query(config_read_column, Books)
+        '''if not config_read_column:
             query = (self.session.query(Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(Books)
                      .outerjoin(ub.ReadBook, and_(Books.id == ub.ReadBook.book_id,
                                                   int(current_user.id) == ub.ReadBook.user_id)))
         else:
             try:
                 read_column = cc_classes[config_read_column]
-                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value).select_from(Books)
+                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value)
+                         .select_from(Books)
                          .outerjoin(read_column, read_column.book == Books.id))
             except (KeyError, AttributeError, IndexError):
                 log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
                 # Skip linking read column
                 query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
         query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                                      int(current_user.id) == ub.ArchivedBook.user_id))
+                                                      int(current_user.id) == ub.ArchivedBook.user_id))'''
 
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
