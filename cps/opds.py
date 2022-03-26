@@ -26,7 +26,8 @@ from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
-from sqlalchemy.sql.expression import func, text, or_, and_, any_, true
+from sqlalchemy.sql.expression import func, text, or_, and_, true
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.security import check_password_hash
 from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
 from .helper import get_download_link, get_book_cover
@@ -108,7 +109,8 @@ def feed_letter_books(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         letter,
-                                                        [db.Books.sort])
+                                                        [db.Books.sort],
+                                                        True, config.config_read_column)
 
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -118,15 +120,16 @@ def feed_letter_books(book_id):
 def feed_new():
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books, True, [db.Books.timestamp.desc()])
+                                                        db.Books, True, [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    entries = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).order_by(func.random())\
-        .limit(config.config_books_per_page)
+    query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+    entries = query.filter(calibre_db.common_filters()).order_by(func.random()).limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -137,7 +140,8 @@ def feed_best_rated():
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -150,11 +154,11 @@ def feed_hot():
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        download_book = calibre_db.get_book(book.Downloads.book_id)
+        query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+        download_book = query.filter(calibre_db.common_filters()).filter(
+            book.Downloads.book_id == db.Books.id).first()
         if download_book:
-            entries.append(
-                calibre_db.get_filtered_book(book.Downloads.book_id)
-            )
+            entries.append(download_book)
         else:
             ub.delete_download(book.Downloads.book_id)
     num_books = entries.__len__()
@@ -270,7 +274,8 @@ def feed_series(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.series.any(db.Series.id == book_id),
-                                                        [db.Books.series_index])
+                                                        [db.Books.series_index],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -324,7 +329,8 @@ def feed_format(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.data.any(db.Data.format == book_id.upper()),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -351,7 +357,8 @@ def feed_languages(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.languages.any(db.Languages.id == book_id),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -381,13 +388,25 @@ def feed_shelf(book_id):
     result = list()
     # user is allowed to access shelf
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == book_id).order_by(
-            ub.BookShelf.order.asc()).all()
-        for book in books_in_shelf:
-            cur_book = calibre_db.get_book(book.book_id)
-            result.append(cur_book)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(result))
+        result, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                                           config.config_books_per_page,
+                                                           db.Books,
+                                                           ub.BookShelf.shelf == shelf.id,
+                                                           [ub.BookShelf.order.asc()],
+                                                           True, config.config_read_column,
+                                                           ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
+        # delete shelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        wrong_entries = calibre_db.session.query(ub.BookShelf) \
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
+            .filter(db.Books.id == None).all()
+        for entry in wrong_entries:
+            log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
+            try:
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == entry.book_id).delete()
+                ub.session.commit()
+            except (OperationalError, InvalidRequestError) as e:
+                ub.session.rollback()
+                log.error_or_exception("Settings Database error: {}".format(e))
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
@@ -451,8 +470,7 @@ def feed_search(term):
         entries, __, ___ = calibre_db.get_search_results(term, config_read_column=config.config_read_column)
         entries_count = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entries_count, entries_count)
-        items = [entry[0] for entry in entries]
-        return render_xml_template('feed.xml', searchterm=term, entries=items, pagination=pagination)
+        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
     else:
         return render_xml_template('feed.xml', searchterm="")
 
@@ -493,14 +511,16 @@ def render_xml_dataset(data_table, book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         getattr(db.Books, data_table.__tablename__).any(data_table.id == book_id),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 def render_element_index(database_column, linked_table, folder):
     shift = 0
     off = int(request.args.get("offset") or 0)
-    entries = calibre_db.session.query(func.upper(func.substr(database_column, 1, 1)).label('id'))
+    entries = calibre_db.session.query(func.upper(func.substr(database_column, 1, 1)).label('id'), None, None)
+    # query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
     if linked_table is not None:
         entries = entries.join(linked_table).join(db.Books)
     entries = entries.filter(calibre_db.common_filters()).group_by(func.upper(func.substr(database_column, 1, 1))).all()
