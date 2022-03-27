@@ -467,7 +467,7 @@ def feed_unread_books():
 
 def feed_search(term):
     if term:
-        entries, __, ___ = calibre_db.get_search_results(term, config_read_column=config.config_read_column)
+        entries, __, ___ = calibre_db.get_search_results(term, config=config)
         entries_count = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entries_count, entries_count)
         return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)

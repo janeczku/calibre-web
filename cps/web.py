@@ -50,7 +50,7 @@ from . import babel, db, ub, config, get_locale, app
 from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, check_email, check_username, \
-    get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
+    get_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status
 from .pagination import Pagination
@@ -724,10 +724,10 @@ def render_prepare_search_form(cc):
 def render_search_results(term, offset=None, order=None, limit=None):
     join = db.books_series_link, db.books_series_link.c.book == db.Books.id, db.Series
     entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                      config,
                                                                       offset,
                                                                       order,
                                                                       limit,
-                                                                      config.config_read_column,
                                                                       *join)
     return render_title_template('search.html',
                                  searchterm=term,
@@ -765,7 +765,7 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
@@ -809,7 +809,7 @@ def list_books():
         calibre_db.common_filters(allow_show_archived=True)).count()
     if state is not None:
         if search_param:
-            books = calibre_db.search_query(search_param, config.config_read_column).all()
+            books = calibre_db.search_query(search_param, config).all()
             filtered_count = len(books)
         else:
             query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
@@ -817,10 +817,10 @@ def list_books():
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
     elif search_param:
         entries, filtered_count, __ = calibre_db.get_search_results(search_param,
+                                                                    config,
                                                                     off,
                                                                     [order, ''],
                                                                     limit,
-                                                                    config.config_read_column,
                                                                     *join)
     else:
         entries, __, __ = calibre_db.fill_indexpage_with_archived_books((int(off) / (int(limit)) + 1),
@@ -1232,26 +1232,9 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     sort_param = order[0] if order else [db.Books.sort]
     pagination = None
 
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
-    '''if not config.config_read_column:
-        query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(db.Books)
-                 .outerjoin(ub.ReadBook, and_(db.Books.id == ub.ReadBook.book_id,
-                                              int(current_user.id) == ub.ReadBook.user_id)))
-    else:
-        try:
-            read_column = db.cc_classes[config.config_read_column]
-            query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, read_column.value)
-                    .select_from(db.Books)
-                    .outerjoin(read_column, read_column.book == db.Books.id))
-        except (KeyError, AttributeError, IndexError):
-            log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-            # Skip linking read column
-            query = calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, None)
-    query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                  int(current_user.id) == ub.ArchivedBook.user_id))'''
-
     q = query.outerjoin(db.books_series_link, db.books_series_link.c.book == db.Books.id) \
         .outerjoin(db.Series) \
         .filter(calibre_db.common_filters(True))
@@ -1338,7 +1321,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         if description:
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
 
-        # search custom culumns
+        # search custom columns
         try:
             q = adv_search_custom_columns(cc, term, q)
         except AttributeError as ex:
@@ -1370,7 +1353,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 @login_required_if_no_ano
 def advanced_search_form():
     # Build custom columns names
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     return render_prepare_search_form(cc)
 
 
@@ -1757,10 +1740,10 @@ def show_book(book_id):
         for lang_index in range(0, len(entry.languages)):
             entry.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 lang_index].lang_code)
-        cc = get_cc_columns(filter_config_custom_read=True)
+        cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
         book_in_shelves = []
-        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
-        for sh in shelfs:
+        shelves = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
+        for sh in shelves:
             book_in_shelves.append(sh.shelf)
 
         entry.tags = sort(entry.tags, key=lambda tag: tag.name)
