@@ -953,24 +953,6 @@ def check_valid_domain(domain_text):
     return not len(result)
 
 
-def get_cc_columns(filter_config_custom_read=False):
-    tmpcc = calibre_db.session.query(db.CustomColumns)\
-        .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions)).all()
-    cc = []
-    r = None
-    if config.config_columns_to_ignore:
-        r = re.compile(config.config_columns_to_ignore)
-
-    for col in tmpcc:
-        if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
-            continue
-        if r and r.match(col.name):
-            continue
-        cc.append(col)
-
-    return cc
-
-
 def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)

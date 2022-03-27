@@ -819,38 +819,21 @@ class CalibreDB:
     def check_exists_book(self, authr, title):
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split(r'\s*&\s*', authr)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
+        author_terms = re.split(r'\s*&\s*', authr)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
 
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, config_read_column, *join):
+    def search_query(self, term, config, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split("[, ]+", term)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        query = self.generate_linked_query(config_read_column, Books)
-        '''if not config_read_column:
-            query = (self.session.query(Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(Books)
-                     .outerjoin(ub.ReadBook, and_(Books.id == ub.ReadBook.book_id,
-                                                  int(current_user.id) == ub.ReadBook.user_id)))
-        else:
-            try:
-                read_column = cc_classes[config_read_column]
-                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value)
-                         .select_from(Books)
-                         .outerjoin(read_column, read_column.book == Books.id))
-            except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
-                # Skip linking read column
-                query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
-        query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                                      int(current_user.id) == ub.ArchivedBook.user_id))'''
-
+        author_terms = re.split("[, ]+", term)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
+        query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
@@ -859,20 +842,42 @@ class CalibreDB:
             query = query.outerjoin(join[0], join[1])
         elif len(join) == 1:
             query = query.outerjoin(join[0])
-        return query.filter(self.common_filters(True)).filter(
-            or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
-                Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
-                Books.authors.any(and_(*q)),
-                Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
-                func.lower(Books.title).ilike("%" + term + "%")
-                ))
+
+        cc = self.get_cc_columns(config, filter_config_custom_read=True)
+        filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
+                             Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
+                             Books.authors.any(and_(*q)),
+                             Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
+                             func.lower(Books.title).ilike("%" + term + "%")]
+        for c in cc:
+            if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
+                filter_expression.append(
+                    getattr(Books,
+                            'custom_column_' + str(c.id)).any(
+                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
+        return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
+
+    def get_cc_columns(self, config, filter_config_custom_read=False):
+        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
+        cc = []
+        r = None
+        if config.config_columns_to_ignore:
+            r = re.compile(config.config_columns_to_ignore)
+
+        for col in tmp_cc:
+            if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
+                continue
+            if r and r.match(col.name):
+                continue
+            cc.append(col)
+
+        return cc
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None,
-                           config_read_column=False, *join):
+    def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config_read_column, *join).order_by(*order).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
