@@ -708,7 +708,7 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
                 if path:
                     return redirect(path)
                 else:
-                    log.error('%s/cover.jpg not found on Google Drive', book.path)
+                    log.error('{}/cover.jpg not found on Google Drive'.format(book.path))
                     return get_cover_on_failure(use_generic_cover_on_failure)
             except Exception as ex:
                 log.error_or_exception(ex)
