@@ -37,14 +37,14 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-03-28 06:40:49</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-03-28 21:45:14</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-03-28 12:18:13</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-03-29 03:21:52</p>
             
         </div>
       </div>
@@ -1562,11 +1562,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1576,11 +1576,31 @@
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id="ft15.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft15.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft15.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 167, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4548,8 +4568,8 @@
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>406</td>
-        <td>400</td>
-        <td>0</td>
+        <td>399</td>
+        <td>1</td>
         <td>0</td>
         <td>6</td>
         <td>&nbsp;</td>
@@ -4644,6 +4664,12 @@
             </tr>
           
             <tr>
+              <th>gevent</th>
+              <td>21.12.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>greenlet</th>
               <td>1.1.2</td>
               <td>Basic</td>
@@ -4694,12 +4720,6 @@
             <tr>
               <th>SQLAlchemy</th>
               <td>1.4.32</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>tornado</th>
-              <td>6.1</td>
               <td>Basic</td>
             </tr>
           
@@ -4993,7 +5013,7 @@
 </div>
 
 <script>
-    drawCircle(400, 0, 0, 6);
+    drawCircle(399, 1, 0, 6);
     showCase(5);
 </script>
 

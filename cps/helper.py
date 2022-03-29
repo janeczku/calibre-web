@@ -19,6 +19,7 @@
 
 import os
 import io
+import sys
 import mimetypes
 import re
 import shutil
@@ -224,11 +225,23 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
+def shorten_component(s, by_what):
+    l = len(s)
+    if l < by_what:
+        return s
+    l = (l - by_what)//2
+    if l <= 0:
+        return s
+    return s[:l] + s[-l:]
+
+
 def get_valid_filename(value, replace_whitespace=True, chars=128):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
+
+
     if value[-1:] == u'.':
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
@@ -239,7 +252,10 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', u',', value, flags=re.U)
-    value = value[:chars].strip()
+
+    filename_encoding_for_length = 'utf-16' if sys.platform == "win32" or sys.platform == "darwin" else 'utf-8'
+    value = value.encode(filename_encoding_for_length)[:chars].decode('utf-8', errors='ignore').strip()
+
     if not value:
         raise ValueError("Filename cannot be empty")
     return value
