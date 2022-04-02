@@ -1,6 +1,6 @@
 # About
 
-Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
 
 [![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web?style=flat-square)](https://github.com/janeczku/calibre-web/blob/master/LICENSE)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github&style=flat-square&label=commits)]()
