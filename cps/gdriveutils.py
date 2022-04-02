@@ -32,7 +32,7 @@ try:
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError, InvalidRequestError
+from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
 from sqlalchemy.sql.expression import text
 
 #try:
@@ -81,7 +81,7 @@ if gdrive_support:
     if not logger.is_debug_enabled():
         logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
 else:
-    log.debug("Cannot import pydrive, httplib2, using gdrive will not work: %s", importError)
+    log.debug("Cannot import pydrive, httplib2, using gdrive will not work: {}".format(importError))
 
 
 class Singleton:
@@ -213,7 +213,7 @@ def getDrive(drive=None, gauth=None):
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                log.error("Google Drive error: %s", e)
+                log.error("Google Drive error: {}".format(e))
             except Exception as ex:
                 log.error_or_exception(ex)
         else:
@@ -225,7 +225,7 @@ def getDrive(drive=None, gauth=None):
         try:
             drive.auth.Refresh()
         except RefreshError as e:
-            log.error("Google Drive error: %s", e)
+            log.error("Google Drive error: {}".format(e))
     return drive
 
 def listRootFolders():
@@ -234,7 +234,7 @@ def listRootFolders():
         folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
         fileList = drive.ListFile({'q': folder}).GetList()
     except (ServerNotFoundError, ssl.SSLError, RefreshError) as e:
-        log.info("GDrive Error %s" % e)
+        log.info("GDrive Error {}".format(e))
         fileList = []
     return fileList
 
@@ -272,7 +272,7 @@ def getEbooksFolderId(drive=None):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error_or_exception('Database error: %s', ex)
+            log.error_or_exception('Database error: {}'.format(ex))
             session.rollback()
         return gDriveId.gdrive_id
 
@@ -288,6 +288,7 @@ def getFile(pathId, fileName, drive):
 
 def getFolderId(path, drive):
     # drive = getDrive(drive)
+    currentFolderId = None
     try:
         currentFolderId = getEbooksFolderId(drive)
         sqlCheckPath = path if path[-1] == '/' else path + '/'
@@ -320,8 +321,8 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except OperationalError as ex:
-        log.error_or_exception('Database error: %s', ex)
+    except (OperationalError, IntegrityError) as ex:
+        log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
         log.error('{} {}'.format(ex.error['message'], path))
@@ -545,7 +546,7 @@ def deleteDatabaseOnChange():
         session.commit()
     except (OperationalError, InvalidRequestError) as ex:
         session.rollback()
-        log.error_or_exception('Database error: %s', ex)
+        log.error_or_exception('Database error: {}'.format(ex))
 
 
 def updateGdriveCalibreFromLocal():
@@ -563,7 +564,7 @@ def updateDatabaseOnEdit(ID,newPath):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error_or_exception('Database error: %s', ex)
+            log.error_or_exception('Database error: {}'.format(ex))
             session.rollback()
 
 
@@ -573,7 +574,7 @@ def deleteDatabaseEntry(ID):
     try:
         session.commit()
     except OperationalError as ex:
-        log.error_or_exception('Database error: %s', ex)
+        log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
 
 
@@ -594,7 +595,7 @@ def get_cover_via_gdrive(cover_path):
             try:
                 session.commit()
             except OperationalError as ex:
-                log.error_or_exception('Database error: %s', ex)
+                log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
         return df.metadata.get('webContentLink')
     else:
@@ -616,7 +617,7 @@ def do_gdrive_download(df, headers, convert_encoding=False):
 
     def stream(convert_encoding):
         for byte in s:
-            headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
+            headers = {"Range": 'bytes={}-{}'.format(byte[0], byte[1])}
             resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
             if resp.status == 206:
                 if convert_encoding:
@@ -624,7 +625,7 @@ def do_gdrive_download(df, headers, convert_encoding=False):
                     content = content.decode(result['encoding']).encode('utf-8')
                 yield content
             else:
-                log.warning('An error occurred: %s', resp)
+                log.warning('An error occurred: {}'.format(resp))
                 return
     return Response(stream_with_context(stream(convert_encoding)), headers=headers)
 

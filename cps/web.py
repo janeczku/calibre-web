@@ -49,7 +49,7 @@ from . import constants, logger, isoLanguages, services
 from . import babel, db, ub, config, get_locale, app
 from . import calibre_db, kobo_sync_status
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, check_email, check_username, get_cc_columns, \
+from .helper import check_valid_domain, render_task_status, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status
@@ -85,7 +85,10 @@ except ImportError:
 def add_security_headers(resp):
     csp = "default-src 'self'"
     csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
-    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' data:"
+    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' "
+    if request.path.startswith("/author/") and config.config_use_goodreads:
+        csp += "images.gr-assets.com i.gr-assets.com s.gr-assets.com"
+    csp += " data:"
     resp.headers['Content-Security-Policy'] = csp
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
@@ -350,7 +353,7 @@ def render_books_list(data, sort_param, book_id, page):
     if data == "rated":
         return render_rated_books(page, book_id, order=order)
     elif data == "discover":
-        return render_discover_books(page, book_id)
+        return render_discover_books(book_id)
     elif data == "unread":
         return render_read_books(page, False, order=order)
     elif data == "read":
@@ -386,7 +389,7 @@ def render_books_list(data, sort_param, book_id, page):
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order[0],
-                                                                False, 0,
+                                                                True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -400,7 +403,7 @@ def render_rated_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.ratings.any(db.Ratings.rating > 9),
                                                                 order[0],
-                                                                False, 0,
+                                                                True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -411,11 +414,13 @@ def render_rated_books(page, book_id, order):
         abort(404)
 
 
-def render_discover_books(page, book_id):
+def render_discover_books(book_id):
     if current_user.check_visibility(constants.SIDEBAR_RANDOM):
-        entries, __, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, [func.randomblob(2)])
+        entries, __, ___ = calibre_db.fill_indexpage(1, 0, db.Books, True, [func.randomblob(2)],
+                                                            join_archive_read=True,
+                                                            config_read_column=config.config_read_column)
         pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
-        return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
+        return render_title_template('index.html', random=false(), entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Discover (Random Books)"), page="discover")
     else:
         abort(404)
@@ -429,18 +434,22 @@ def render_hot_books(page, order):
             #        order[0][0].compare(func.count(ub.Downloads.book_id).asc())):
             order = [func.count(ub.Downloads.book_id).desc()], 'hotdesc'
         if current_user.show_detail_random():
-            random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
-                .order_by(func.random()).limit(config.config_random_books)
+            random_query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+            random = (random_query.filter(calibre_db.common_filters())
+                     .order_by(func.random())
+                     .limit(config.config_random_books).all())
         else:
             random = false()
+
         off = int(int(config.config_books_per_page) * (page - 1))
         all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)) \
             .order_by(*order[0]).group_by(ub.Downloads.book_id)
         hot_books = all_books.offset(off).limit(config.config_books_per_page)
         entries = list()
         for book in hot_books:
-            download_book = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).filter(
-                db.Books.id == book.Downloads.book_id).first()
+            query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+            download_book = query.filter(calibre_db.common_filters()).filter(
+                book.Downloads.book_id == db.Books.id).first()
             if download_book:
                 entries.append(download_book)
             else:
@@ -459,26 +468,20 @@ def render_downloaded_books(page, order, user_id):
     else:
         user_id = current_user.id
     if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD):
-        if current_user.show_detail_random():
-            random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
-                .order_by(func.random()).limit(config.config_random_books)
-        else:
-            random = false()
-
-        entries, __, pagination = calibre_db.fill_indexpage(page,
+        entries, random, pagination = calibre_db.fill_indexpage(page,
                                                             0,
                                                             db.Books,
                                                             ub.Downloads.user_id == user_id,
                                                             order[0],
-                                                            False, 0,
+                                                            True, config.config_read_column,
                                                             db.books_series_link,
                                                             db.Books.id == db.books_series_link.c.book,
                                                             db.Series,
                                                             ub.Downloads, db.Books.id == ub.Downloads.book_id)
         for book in entries:
-            if not calibre_db.session.query(db.Books).\
-                                            filter(calibre_db.common_filters()).filter(db.Books.id == book.id).first():
-                ub.delete_download(book.id)
+            if not (calibre_db.session.query(db.Books).filter(calibre_db.common_filters())
+                    .filter(db.Books.id == book.Books.id).first()):
+                ub.delete_download(book.Books.id)
         user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
         return render_title_template('index.html',
                                      random=random,
@@ -497,9 +500,9 @@ def render_author_books(page, author_id, order):
                                                         db.Books,
                                                         db.Books.authors.any(db.Authors.id == author_id),
                                                         [order[0][0], db.Series.name, db.Books.series_index],
-                                                        False, 0,
+                                                        True, config.config_read_column,
                                                         db.books_series_link,
-                                                        db.Books.id == db.books_series_link.c.book,
+                                                        db.books_series_link.c.book == db.Books.id,
                                                         db.Series)
     if entries is None or not len(entries):
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
@@ -515,7 +518,8 @@ def render_author_books(page, author_id, order):
     other_books = []
     if services.goodreads_support and config.config_use_goodreads:
         author_info = services.goodreads_support.get_author_info(author_name)
-        other_books = services.goodreads_support.get_other_books(author_info, entries)
+        book_entries = [entry.Books for entry in entries]
+        other_books = services.goodreads_support.get_other_books(author_info, book_entries)
     return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
                                  title=_(u"Author: %(name)s", name=author_name), author=author_info,
                                  other_books=other_books, page="author", order=order[1])
@@ -528,7 +532,7 @@ def render_publisher_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.publishers.any(db.Publishers.id == book_id),
                                                                 [db.Series.name, order[0][0], db.Books.series_index],
-                                                                False, 0,
+                                                                True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -546,7 +550,8 @@ def render_series_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.series.any(db.Series.id == book_id),
-                                                                [order[0][0]])
+                                                                [order[0][0]],
+                                                                True, config.config_read_column)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Series: %(serie)s", serie=name.name), page="series", order=order[1])
     else:
@@ -558,7 +563,8 @@ def render_ratings_books(page, book_id, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.ratings.any(db.Ratings.id == book_id),
-                                                            [order[0][0]])
+                                                            [order[0][0]],
+                                                            True, config.config_read_column)
     if name and name.rating <= 10:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)),
@@ -574,7 +580,8 @@ def render_formats_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.data.any(db.Data.format == book_id.upper()),
-                                                                [order[0][0]])
+                                                                [order[0][0]],
+                                                                True, config.config_read_column)
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format),
                                      page="formats",
@@ -590,7 +597,7 @@ def render_category_books(page, book_id, order):
                                                                 db.Books,
                                                                 db.Books.tags.any(db.Tags.id == book_id),
                                                                 [order[0][0], db.Series.name, db.Books.series_index],
-                                                                False, 0,
+                                                                True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
@@ -609,7 +616,8 @@ def render_language_books(page, name, order):
     entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                             db.Books,
                                                             db.Books.languages.any(db.Languages.lang_code == name),
-                                                            [order[0][0]])
+                                                            [order[0][0]],
+                                                            True, config.config_read_column)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language", order=order[1])
 
@@ -622,30 +630,12 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                              ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
         else:
             db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
-        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                                db.Books,
-                                                                db_filter,
-                                                                sort_param,
-                                                                False, 0,
-                                                                db.books_series_link,
-                                                                db.Books.id == db.books_series_link.c.book,
-                                                                db.Series,
-                                                                ub.ReadBook, db.Books.id == ub.ReadBook.book_id)
     else:
         try:
             if are_read:
                 db_filter = db.cc_classes[config.config_read_column].value == True
             else:
                 db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
-            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                                    db.Books,
-                                                                    db_filter,
-                                                                    sort_param,
-                                                                    False, 0,
-                                                                    db.books_series_link,
-                                                                    db.Books.id == db.books_series_link.c.book,
-                                                                    db.Series,
-                                                                    db.cc_classes[config.config_read_column])
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
             if not as_xml:
@@ -654,6 +644,15 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                       category="error")
                 return redirect(url_for("web.index"))
             return []  # ToDo: Handle error Case for opds
+
+    entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                            db.Books,
+                                                            db_filter,
+                                                            sort_param,
+                                                            True, config.config_read_column,
+                                                            db.books_series_link,
+                                                            db.Books.id == db.books_series_link.c.book,
+                                                            db.Series)
 
     if as_xml:
         return entries, pagination
@@ -683,7 +682,7 @@ def render_archived_books(page, sort_param):
                                                                                 archived_filter,
                                                                                 order,
                                                                                 True,
-                                                                                False, 0)
+                                                                                True, config.config_read_column)
 
     name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     page_name = "archived"
@@ -723,12 +722,12 @@ def render_prepare_search_form(cc):
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
-    join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
+    join = db.books_series_link, db.books_series_link.c.book == db.Books.id, db.Series
     entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                      config,
                                                                       offset,
                                                                       order,
                                                                       limit,
-                                                                      config.config_read_column,
                                                                       *join)
     return render_title_template('search.html',
                                  searchterm=term,
@@ -766,7 +765,7 @@ def books_list(data, sort_param, book_id, page):
 @login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     return render_title_template('book_table.html', title=_(u"Books List"), cc=cc, page="book_table",
                                  visiblility=visibility)
 
@@ -810,37 +809,18 @@ def list_books():
         calibre_db.common_filters(allow_show_archived=True)).count()
     if state is not None:
         if search_param:
-            books = calibre_db.search_query(search_param, config.config_read_column).all()
+            books = calibre_db.search_query(search_param, config).all()
             filtered_count = len(books)
         else:
-            if not config.config_read_column:
-                books = (calibre_db.session.query(db.Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
-                         .select_from(db.Books)
-                         .outerjoin(ub.ReadBook,
-                                    and_(ub.ReadBook.user_id == int(current_user.id),
-                                         ub.ReadBook.book_id == db.Books.id)))
-            else:
-                read_column = ""
-                try:
-                    read_column = db.cc_classes[config.config_read_column]
-                    books = (calibre_db.session.query(db.Books, read_column.value, ub.ArchivedBook.is_archived)
-                             .select_from(db.Books)
-                             .outerjoin(read_column, read_column.book == db.Books.id))
-                except (KeyError, AttributeError, IndexError):
-                    log.error(
-                        "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-                    # Skip linking read column and return None instead of read status
-                    books = calibre_db.session.query(db.Books, None, ub.ArchivedBook.is_archived)
-            books = (books.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                           int(current_user.id) == ub.ArchivedBook.user_id))
-                     .filter(calibre_db.common_filters(allow_show_archived=True)).all())
+            query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+            books = query.filter(calibre_db.common_filters(allow_show_archived=True)).all()
         entries = calibre_db.get_checkbox_sorted(books, state, off, limit, order, True)
     elif search_param:
         entries, filtered_count, __ = calibre_db.get_search_results(search_param,
+                                                                    config,
                                                                     off,
                                                                     [order, ''],
                                                                     limit,
-                                                                    config.config_read_column,
                                                                     *join)
     else:
         entries, __, __ = calibre_db.fill_indexpage_with_archived_books((int(off) / (int(limit)) + 1),
@@ -856,8 +836,8 @@ def list_books():
     result = list()
     for entry in entries:
         val = entry[0]
-        val.read_status = entry[1] == ub.ReadBook.STATUS_FINISHED
-        val.is_archived = entry[2] is True
+        val.is_archived = entry[1] is True
+        val.read_status = entry[2] == ub.ReadBook.STATUS_FINISHED
         for lang_index in range(0, len(val.languages)):
             val.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), val.languages[
                 lang_index].lang_code)
@@ -1252,26 +1232,10 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     sort_param = order[0] if order else [db.Books.sort]
     pagination = None
 
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    if not config.config_read_column:
-        query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(db.Books)
-                 .outerjoin(ub.ReadBook, and_(db.Books.id == ub.ReadBook.book_id,
-                                              int(current_user.id) == ub.ReadBook.user_id)))
-    else:
-        try:
-            read_column = cc[config.config_read_column]
-            query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, read_column.value)
-                     .select_from(db.Books)
-                     .outerjoin(read_column, read_column.book == db.Books.id))
-        except (KeyError, AttributeError, IndexError):
-            log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-            # Skip linking read column
-            query = calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, None)
-    query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                  int(current_user.id) == ub.ArchivedBook.user_id))
-
-    q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book) \
+    query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+    q = query.outerjoin(db.books_series_link, db.books_series_link.c.book == db.Books.id) \
         .outerjoin(db.Series) \
         .filter(calibre_db.common_filters(True))
 
@@ -1357,7 +1321,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         if description:
             q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
 
-        # search custom culumns
+        # search custom columns
         try:
             q = adv_search_custom_columns(cc, term, q)
         except AttributeError as ex:
@@ -1390,7 +1354,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 @login_required_if_no_ano
 def advanced_search_form():
     # Build custom columns names
-    cc = get_cc_columns(filter_config_custom_read=True)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     return render_prepare_search_form(cc)
 
 
@@ -1800,10 +1764,10 @@ def show_book(book_id):
         for lang_index in range(0, len(entry.languages)):
             entry.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 lang_index].lang_code)
-        cc = get_cc_columns(filter_config_custom_read=True)
+        cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
         book_in_shelves = []
-        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
-        for sh in shelfs:
+        shelves = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
+        for sh in shelves:
             book_in_shelves.append(sh.shelf)
 
         entry.tags = sort(entry.tags, key=lambda tag: tag.name)

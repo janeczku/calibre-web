@@ -19,6 +19,7 @@
 
 import os
 import io
+import sys
 import mimetypes
 import re
 import shutil
@@ -226,11 +227,23 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
+def shorten_component(s, by_what):
+    l = len(s)
+    if l < by_what:
+        return s
+    l = (l - by_what)//2
+    if l <= 0:
+        return s
+    return s[:l] + s[-l:]
+
+
 def get_valid_filename(value, replace_whitespace=True, chars=128):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
+
+
     if value[-1:] == u'.':
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
@@ -241,7 +254,10 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', u',', value, flags=re.U)
-    value = value[:chars].strip()
+
+    filename_encoding_for_length = 'utf-16' if sys.platform == "win32" or sys.platform == "darwin" else 'utf-8'
+    value = value.encode(filename_encoding_for_length)[:chars].decode('utf-8', errors='ignore').strip()
+
     if not value:
         raise ValueError("Filename cannot be empty")
     return value
@@ -722,7 +738,7 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
                 if path:
                     return redirect(path)
                 else:
-                    log.error('%s/cover.jpg not found on Google Drive', book.path)
+                    log.error('{}/cover.jpg not found on Google Drive'.format(book.path))
                     return get_cover_on_failure(use_generic_cover_on_failure)
             except Exception as ex:
                 log.error_or_exception(ex)
@@ -1027,24 +1043,6 @@ def check_valid_domain(domain_text):
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 0);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     return not len(result)
-
-
-def get_cc_columns(filter_config_custom_read=False):
-    tmpcc = calibre_db.session.query(db.CustomColumns)\
-        .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions)).all()
-    cc = []
-    r = None
-    if config.config_columns_to_ignore:
-        r = re.compile(config.config_columns_to_ignore)
-
-    for col in tmpcc:
-        if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
-            continue
-        if r and r.match(col.name):
-            continue
-        cc.append(col)
-
-    return cc
 
 
 def get_download_link(book_id, book_format, client):
