@@ -30,7 +30,8 @@ log = logger.create()
 
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
-    simple = bool([e for e in ['kindle', 'tolino', "kobo"] if (e in request.headers.get('User-Agent', "").lower())])
+    simple = bool([e for e in ['kindle', 'tolino', "kobo", "bookeen"]
+                   if (e in request.headers.get('User-Agent', "").lower())])
     if 'content' in kwargs:
         content = kwargs['content']
         content = isinstance(content, (User, LocalProxy)) and not content.role_anonymous()
