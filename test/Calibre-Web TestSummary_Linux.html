@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-03-28 21:45:14</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-04-03 07:19:10</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-03-29 03:21:52</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-04-03 12:55:38</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>4h 46 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>4h 47 min</p>
         </div>
       </div>
       </div>
@@ -1593,9 +1593,11 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 167, in test_load_metadata
-    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
-AssertionError: 0.0 not greater than or equal to 0.05</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 235, in test_load_metadata
+    self.assertEqual(&#34;奇想西遊記1&#34;, results[3][&#39;title&#39;])
+AssertionError: &#39;奇想西遊記1&#39; != &#39;巧讀西遊記&#39;
+- 奇想西遊記1
++ 巧讀西遊記</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4599,7 +4601,7 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.13.0-37-generic #42~20.04.1-Ubuntu SMP Tue Mar 15 15:44:28 UTC 2022 x86_64 x86_64</td>
+              <td>Linux 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -4659,13 +4661,7 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
           
             <tr>
               <th>Flask-WTF</th>
-              <td>1.0.0</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>gevent</th>
-              <td>21.12.0</td>
+              <td>1.0.1</td>
               <td>Basic</td>
             </tr>
           
@@ -4719,7 +4715,13 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.32</td>
+              <td>1.4.34</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>tornado</th>
+              <td>6.1</td>
               <td>Basic</td>
             </tr>
           
