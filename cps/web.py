@@ -1368,7 +1368,11 @@ def get_cover(book_id):
 
 @web.route("/robots.txt")
 def get_robots():
-    return send_from_directory(constants.STATIC_DIR, "robots.txt")
+    try:
+        return send_from_directory(constants.STATIC_DIR, "robots.txt")
+    except PermissionError:
+        log.error("No permission to access robots.txt file.")
+        abort(403)
 
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})

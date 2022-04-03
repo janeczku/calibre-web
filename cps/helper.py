@@ -698,9 +698,12 @@ def delete_book(book, calibrepath, book_format):
 
 def get_cover_on_failure(use_generic_cover):
     if use_generic_cover:
-        return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
-    else:
-        return None
+        try:
+            return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+        except PermissionError:
+            log.error("No permission to access generic_cover.jpg file.")
+            abort(403)
+    abort(404)
 
 
 def get_book_cover(book_id):
