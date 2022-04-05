@@ -113,17 +113,18 @@ class LubimyCzytac(Metadata):
     ) -> Optional[List[MetaRecord]]:
         if self.active:
             result = requests.get(self._prepare_query(title=query))
-            root = fromstring(result.text)
-            lc_parser = LubimyCzytacParser(root=root, metadata=self)
-            matches = lc_parser.parse_search_results()
-            if matches:
-                with ThreadPool(processes=10) as pool:
-                    final_matches = pool.starmap(
-                        lc_parser.parse_single_book,
-                        [(match, generic_cover, locale) for match in matches],
-                    )
-                return final_matches
-            return matches
+            if result.text:
+                root = fromstring(result.text)
+                lc_parser = LubimyCzytacParser(root=root, metadata=self)
+                matches = lc_parser.parse_search_results()
+                if matches:
+                    with ThreadPool(processes=10) as pool:
+                        final_matches = pool.starmap(
+                            lc_parser.parse_single_book,
+                            [(match, generic_cover, locale) for match in matches],
+                        )
+                    return final_matches
+                return matches
 
     def _prepare_query(self, title: str) -> str:
         query = ""
