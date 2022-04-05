@@ -1,6 +1,6 @@
 # About
 
-Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
 
 [![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web?style=flat-square)](https://github.com/janeczku/calibre-web/blob/master/LICENSE)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github&style=flat-square&label=commits)]()
@@ -49,10 +49,11 @@ In the Wiki there are also examples for: a [manual installation](https://github.
 
 ## Quick start
 
-Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
-Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button\
-Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration)
-Go to Login page
+Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog \
+Login with default admin login \
+Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button \
+Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration) \
+Afterwards you can configure your Calibre-Web instance ([Basic Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#ui-configuration) on admin page)  
 
 #### Default admin login:
 *Username:* admin\
@@ -67,7 +68,7 @@ Optionally, to enable on-the-fly conversion from one ebook format to another whe
 
 [Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including program name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
 
-[Download](https://github.com/pgaskin/kepubify/releases/latest) Kepubify tool for your platform and place the binary starting with `kepubify` in Linux: `\opt\kepubify` Windows: `C:\Program Files\kepubify`.
+[Download](https://github.com/pgaskin/kepubify/releases/latest) Kepubify tool for your platform and place the binary starting with `kepubify` in Linux: `/opt/kepubify` Windows: `C:\Program Files\kepubify`.
 
 ## Docker Images
 

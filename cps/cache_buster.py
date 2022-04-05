@@ -47,13 +47,16 @@ def init_cache_busting(app):
         for filename in filenames:
             # compute version component
             rooted_filename = os.path.join(dirpath, filename)
-            with open(rooted_filename, 'rb') as f:
-                file_hash = hashlib.md5(f.read()).hexdigest()[:7] # nosec
+            try:
+                with open(rooted_filename, 'rb') as f:
+                    file_hash = hashlib.md5(f.read()).hexdigest()[:7] # nosec
+                # save version to tables
+                file_path = rooted_filename.replace(static_folder, "")
+                file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
+                hash_table[file_path] = file_hash
+            except PermissionError:
+                log.error("No permission to access {} file.".format(rooted_filename))
 
-            # save version to tables
-            file_path = rooted_filename.replace(static_folder, "")
-            file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
-            hash_table[file_path] = file_hash
     log.debug('Finished computing cache-busting values')
 
     def bust_filename(filename):

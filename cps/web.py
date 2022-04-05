@@ -383,7 +383,7 @@ def render_books_list(data, sort_param, book_id, page):
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_search_results(term, offset, order, config.config_books_per_page)
     elif data == "advsearch":
-        term = json.loads(flask_session['query'])
+        term = json.loads(flask_session.get('query', '{}'))
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_adv_search_results(term, offset, order, config.config_books_per_page)
     else:
@@ -1392,7 +1392,11 @@ def get_series_cover(series_id, resolution=None):
 
 @web.route("/robots.txt")
 def get_robots():
-    return send_from_directory(constants.STATIC_DIR, "robots.txt")
+    try:
+        return send_from_directory(constants.STATIC_DIR, "robots.txt")
+    except PermissionError:
+        log.error("No permission to access robots.txt file.")
+        abort(403)
 
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
@@ -1576,7 +1580,7 @@ def login():
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
-                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ip_address)
+                    log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
                     flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
