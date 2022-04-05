@@ -592,6 +592,7 @@ class CalibreDB:
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
                 log.error_or_exception(e)
+                return False
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,

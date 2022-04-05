@@ -18,11 +18,11 @@
 
 from flask import render_template, request
 from flask_babel import gettext as _
-from flask import g
+from flask import g, abort
 from werkzeug.local import LocalProxy
 from flask_login import current_user
 
-from . import config, constants, ub, logger, db, calibre_db
+from . import config, constants, logger
 from .ub import User
 
 
@@ -119,6 +119,10 @@ def get_sidebar_config(kwargs=None):
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar, simple = get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
-                           accept=constants.EXTENSIONS_UPLOAD, # read_book_ids=get_readbooks_ids(),
-                           *args, **kwargs)
+    try:
+        return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
+                               accept=constants.EXTENSIONS_UPLOAD,
+                               *args, **kwargs)
+    except PermissionError:
+        log.error("No permission to access {} file.".format(args[0]))
+        abort(403)
