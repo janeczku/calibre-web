@@ -983,8 +983,13 @@ def create_book_on_upload(modify_date, meta):
     # combine path and normalize path from Windows systems
     path = os.path.join(author_dir, title_dir).replace('\\', '/')
 
+    if meta.pubdate != "":
+        pubdate = datetime.strptime(meta.pubdate[:10], "%Y-%m-%d")
+    else:
+        pubdate = datetime(101, 1, 1)
+
     # Calibre adds books with utc as timezone
-    db_book = db.Books(title, "", sort_authors, datetime.utcnow(), datetime(101, 1, 1),
+    db_book = db.Books(title, "", sort_authors, datetime.utcnow(), pubdate,
                        '1', datetime.utcnow(), path, meta.cover, db_author, [], "")
 
     modify_date |= modify_database_object(input_authors, db_book.authors, db.Authors, calibre_db.session,
@@ -1017,6 +1022,16 @@ def create_book_on_upload(modify_date, meta):
 
     # flush content, get db_book.id available
     calibre_db.session.flush()
+
+    # Handle identifiers now that db_book.id is available
+    identifier_list = []
+    for type_key, type_value in meta.identifiers:
+        identifier_list.append(db.Identifiers(type_value, type_key, db_book.id))
+    modification, warning = modify_identifiers(identifier_list, db_book.identifiers, calibre_db.session)
+    if warning:
+        flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+    modify_date |= modification
+
     return db_book, input_authors, title_dir, renamed_authors
 
 

@@ -63,13 +63,15 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     epub_metadata = {}
 
-    for s in ['title', 'description', 'creator', 'language', 'subject']:
+    for s in ['title', 'description', 'creator', 'language', 'subject', 'publisher', 'date']:
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
             if s == 'creator':
                 epub_metadata[s] = ' & '.join(split_authors(tmp))
             elif s == 'subject':
                 epub_metadata[s] = ', '.join(tmp)
+            elif s == 'date':
+                epub_metadata[s] = tmp[0][:10]
             else:
                 epub_metadata[s] = tmp[0]
         else:
@@ -77,6 +79,12 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     if epub_metadata['subject'] == 'Unknown':
         epub_metadata['subject'] = ''
+
+    if epub_metadata['publisher'] == u'Unknown':
+        epub_metadata['publisher'] = ''
+
+    if epub_metadata['date'] == u'Unknown':
+        epub_metadata['date'] = ''
 
     if epub_metadata['description'] == u'Unknown':
         description = tree.xpath("//*[local-name() = 'description']/text()")
@@ -91,6 +99,14 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
     cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+
+    identifiers = []
+    for node in p.xpath('dc:identifier', namespaces=ns):
+        identifier_name=node.attrib.values()[-1];
+        identifier_value=node.text;
+        if identifier_name in ('uuid','calibre'):
+            continue;
+        identifiers.append( [identifier_name, identifier_value] )
 
     if not epub_metadata['title']:
         title = original_file_name
@@ -108,7 +124,9 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         series=epub_metadata['series'].encode('utf-8').decode('utf-8'),
         series_id=epub_metadata['series_id'].encode('utf-8').decode('utf-8'),
         languages=epub_metadata['language'],
-        publisher="")
+        publisher=epub_metadata['publisher'].encode('utf-8').decode('utf-8'),
+        pubdate=epub_metadata['date'],
+        identifiers=identifiers)
 
 
 def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
