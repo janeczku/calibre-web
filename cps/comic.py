@@ -130,7 +130,9 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 series=loaded_metadata.series or "",
                 series_id=loaded_metadata.issue or "",
                 languages=loaded_metadata.language,
-                publisher="")
+                publisher="",
+                pubdate="",
+                identifiers=[])
 
     return BookMeta(
         file_path=tmp_file_path,
@@ -143,4 +145,6 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
         series="",
         series_id="",
         languages="",
-        publisher="")
+        publisher="",
+        pubdate="",
+        identifiers=[])
