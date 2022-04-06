@@ -313,7 +313,7 @@ msgid "E-mail is not from valid domain"
 msgstr ""
 
 #: cps/admin.py:1384 cps/admin.py:1543
-msgid "Add new user"
+msgid "Add New User"
 msgstr ""
 
 #: cps/admin.py:1395
@@ -3170,4 +3170,3 @@ msgstr ""
 #: cps/templates/user_table.html:159
 msgid "Show random books"
 msgstr ""
-

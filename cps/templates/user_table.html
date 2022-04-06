@@ -132,8 +132,8 @@
             <th data-name="state" data-field="state" data-checkbox="true" data-visible="{{visiblility.get('state')}}" data-sortable="true"></th>
             <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ user_table_row('name', _('Enter Username'), _('Username'), true) }}
-            {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
-            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail Address'), _('Kindle E-mail'), false) }}
+            {{ user_table_row('email', _('Enter E-mail'), _('E-mail'), true) }}
+            {{ user_table_row('kindle_mail', _('Enter Kindle E-mail'), _('Kindle E-mail'), false) }}
             {{ user_select_translations('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
             {{ user_select_languages('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
             {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}

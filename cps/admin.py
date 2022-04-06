@@ -1413,7 +1413,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         return render_title_template("user_edit.html", new_user=1, content=content,
                                      config=config,
                                      translations=translations,
-                                     languages=languages, title=_(u"Add new user"), page="newuser",
+                                     languages=languages, title=_(u"Add New User"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
         content.allowed_tags = config.config_allowed_tags
@@ -1573,7 +1573,7 @@ def new_user():
         content.default_language = config.config_default_language
     return render_title_template("user_edit.html", new_user=1, content=content,
                                  config=config, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser",
+                                 languages=languages, title=_(u"Add New User"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
