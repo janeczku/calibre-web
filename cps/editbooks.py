@@ -983,9 +983,9 @@ def create_book_on_upload(modify_date, meta):
     # combine path and normalize path from Windows systems
     path = os.path.join(author_dir, title_dir).replace('\\', '/')
 
-    if meta.pubdate != "":
+    try:
         pubdate = datetime.strptime(meta.pubdate[:10], "%Y-%m-%d")
-    else:
+    except:
         pubdate = datetime(101, 1, 1)
 
     # Calibre adds books with utc as timezone
