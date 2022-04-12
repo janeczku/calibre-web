@@ -753,6 +753,9 @@ def save_cover_from_url(url, book_path):
             log.error("python modul advocate is not installed but is needed")
             return False, _("Python modul 'advocate' is not installed but is needed for cover downloads")
         img.raise_for_status()
+        #            # cover_processing()
+            # move_coverfile(meta, db_book)
+
         return save_cover(img, book_path)
     except (socket.gaierror,
             requests.exceptions.HTTPError,
@@ -802,24 +805,23 @@ def save_cover(img, book_path):
     content_type = img.headers.get('content-type')
 
     if use_IM:
-        if content_type not in ('image/jpeg', 'image/png', 'image/webp', 'image/bmp'):
+        if content_type not in ('image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/bmp'):
             log.error("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
             return False, _("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
-        if content_type != 'image/jpg':
-            try:
-                if hasattr(img, 'stream'):
-                    imgc = Image(blob=img.stream)
-                else:
-                    imgc = Image(blob=io.BytesIO(img.content))
-                imgc.format = 'jpeg'
-                imgc.transform_colorspace("rgb")
-                img = imgc
-            except (BlobError, MissingDelegateError):
-                log.error("Invalid cover file content")
-                return False, _("Invalid cover file content")
+        try:
+            if hasattr(img, 'stream'):
+                imgc = Image(blob=img.stream)
+            else:
+                imgc = Image(blob=io.BytesIO(img.content))
+            imgc.format = 'jpeg'
+            imgc.transform_colorspace("rgb")
+            img = imgc
+        except (BlobError, MissingDelegateError):
+            log.error("Invalid cover file content")
+            return False, _("Invalid cover file content")
     else:
-        if content_type not in 'image/jpeg':
+        if content_type not in ['image/jpeg', 'image/jpg']:
             log.error("Only jpg/jpeg files are supported as coverfile")
             return False, _("Only jpg/jpeg files are supported as coverfile")
 
