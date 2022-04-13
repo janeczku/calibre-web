@@ -125,6 +125,7 @@ class LubimyCzytac(Metadata):
                         )
                     return final_matches
                 return matches
+            return []
 
     def _prepare_query(self, title: str) -> str:
         query = ""
