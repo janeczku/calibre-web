@@ -857,7 +857,7 @@ def init_db(app_db_path):
 
 
 def get_new_session_instance():
-    new_engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
+    new_engine = create_engine(u'sqlite:///{0}'.format(cli.settings_path), echo=False)
     new_session = scoped_session(sessionmaker())
     new_session.configure(bind=new_engine)
 
