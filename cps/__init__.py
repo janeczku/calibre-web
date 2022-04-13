@@ -91,7 +91,7 @@ if wtf_present:
 else:
     csrf = None
 
-ub.init_db(cli.settingspath)
+ub.init_db(cli.settings_path)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
 
@@ -106,7 +106,7 @@ log = logger.create()
 from . import services
 
 db.CalibreDB.update_config(config)
-db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
+db.CalibreDB.setup_db(config.config_calibre_dir, cli.settings_path)
 
 
 calibre_db = db.CalibreDB()

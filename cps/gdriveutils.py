@@ -35,10 +35,6 @@ except ImportError:
 from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
 from sqlalchemy.sql.expression import text
 
-#try:
-#    from six import __version__ as six_version
-#except ImportError:
-#    six_version = "not installed"
 try:
     from httplib2 import __version__ as httplib2_version
 except ImportError:
@@ -141,11 +137,12 @@ class Gdrive:
     def __init__(self):
         self.drive = getDrive(gauth=Gauth.Instance().auth)
 
+
 def is_gdrive_ready():
     return os.path.exists(SETTINGS_YAML) and os.path.exists(CREDENTIALS)
 
 
-engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(cli.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
@@ -193,11 +190,11 @@ def migrate():
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
             break
 
-if not os.path.exists(cli.gdpath):
+if not os.path.exists(cli.gd_path):
     try:
         Base.metadata.create_all(engine)
     except Exception as ex:
-        log.error("Error connect to database: {} - {}".format(cli.gdpath, ex))
+        log.error("Error connect to database: {} - {}".format(cli.gd_path, ex))
         raise
 migrate()
 

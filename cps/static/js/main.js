@@ -381,8 +381,8 @@ $(function() {
             //extraScrollPx: 300
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
+            $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
             if ($("body").hasClass("blur")) {
-                $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
                 $(" a:not(.dropdown-toggle) ")
                   .removeAttr("data-toggle");
             }

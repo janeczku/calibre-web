@@ -811,7 +811,7 @@ def edit_book(book_id):
             if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
                 book.has_cover = 0
             else:
-                result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
+                result, error = helper.save_cover_from_url(to_save["cover_url"].strip(), book.path)
                 if result is True:
                     book.has_cover = 1
                     modify_date = True

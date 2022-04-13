@@ -50,6 +50,8 @@ if HOME_CONFIG:
 else:
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
 
+DEFAULT_SETTINGS_FILE = "app.db"
+DEFAULT_GDRIVE_FILE = "gdrive.db"
 
 ROLE_USER               = 0 << 0
 ROLE_ADMIN              = 1 << 0
