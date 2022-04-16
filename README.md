@@ -1,15 +1,12 @@
 # About
+The Timbuktu Pan-African Library is a public, internet repository for African literature from Across the African Diasprose. This project uses Calibre-Web, which is a web app providing a clean interface for browsing, reading and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
 
-Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
+[![GitHub License](https://img.shields.io/github/license/that-gai-gai/the-timbuktu-panafrican-library?style=flat-square)](https://github.com/that-gai-gai/the-timbuktu-panafrican-library/blob/master/LICENSE)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/that-gai-gai/the-timbuktu-panafrican-library?logo=github&style=flat-square&label=commits)]()
+[![GitHub all releases](https://img.shields.io/github/downloads/that-gai-gai/the-timbuktu-panafrican-library/total?logo=github&style=flat-square)](https://github.com/that-gai-gai/the-timbuktu-panafrican-library/releases)
 
-[![GitHub License](https://img.shields.io/github/license/janeczku/calibre-web?style=flat-square)](https://github.com/janeczku/calibre-web/blob/master/LICENSE)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github&style=flat-square&label=commits)]()
-[![GitHub all releases](https://img.shields.io/github/downloads/janeczku/calibre-web/total?logo=github&style=flat-square)](https://github.com/janeczku/calibre-web/releases)
-[![PyPI](https://img.shields.io/pypi/v/calibreweb?logo=pypi&logoColor=fff&style=flat-square)](https://pypi.org/project/calibreweb/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/calibreweb?logo=pypi&logoColor=fff&style=flat-square)](https://pypi.org/project/calibreweb/)
-[![Discord](https://img.shields.io/discord/838810113564344381?label=Discord&logo=discord&style=flat-square)](https://discord.gg/h2VsJ2NEfB)
 
-*This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
+*This software is a fork of [library](https://github.com/janeczku/calibre-web) and licensed under the GPL v3 License.*
 
 ![Main screen](https://github.com/janeczku/calibre-web/wiki/images/main_screen.png)
 
