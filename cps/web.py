@@ -307,10 +307,20 @@ def get_matching_tags():
     return json_dumps
 
 
-def generate_char_list(data_colum, db_link):
-    return (calibre_db.session.query(func.upper(func.substr(data_colum, 1, 1)).label('char'))
+def generate_char_list(entries): # data_colum, db_link):
+    char_list = list()
+    for entry in entries:
+        upper_char = entry[0].name[0].upper()
+        if upper_char not in char_list:
+            char_list.append(upper_char)
+    return char_list
+
+
+def query_char_list(data_colum, db_link):
+    results = (calibre_db.session.query(func.upper(func.substr(data_colum, 1, 1)).label('char'))
             .join(db_link).join(db.Books).filter(calibre_db.common_filters())
             .group_by(func.upper(func.substr(data_colum, 1, 1))).all())
+    return results
 
 
 def get_sort_function(sort_param, data):
@@ -526,36 +536,66 @@ def render_author_books(page, author_id, order):
 
 
 def render_publisher_books(page, book_id, order):
-    publisher = calibre_db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
-    if publisher:
+    if book_id == '-1':
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.publishers.any(db.Publishers.id == book_id),
+                                                                db.Publishers.name == None,
                                                                 [db.Series.name, order[0][0], db.Books.series_index],
+                                                                True, config.config_read_column,
+                                                                db.books_publishers_link,
+                                                                db.Books.id == db.books_publishers_link.c.book,
+                                                                db.Publishers,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
+        publisher = _("None")
+    else:
+        publisher = calibre_db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
+        if publisher:
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    db.Books.publishers.any(
+                                                                        db.Publishers.id == book_id),
+                                                                    [db.Series.name, order[0][0],
+                                                                     db.Books.series_index],
+                                                                    True, config.config_read_column,
+                                                                    db.books_series_link,
+                                                                    db.Books.id == db.books_series_link.c.book,
+                                                                    db.Series)
+            publisher = publisher.name
+        else:
+            abort(404)
+
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
+                                 title=_(u"Publisher: %(name)s", name=publisher),
+                                 page="publisher",
+                                 order=order[1])
+
+
+def render_series_books(page, book_id, order):
+    if book_id == '-1':
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Series.name == None,
+                                                                [order[0][0]],
                                                                 True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
-                                     title=_(u"Publisher: %(name)s", name=publisher.name),
-                                     page="publisher",
-                                     order=order[1])
+        series_name = _("None")
     else:
-        abort(404)
-
-
-def render_series_books(page, book_id, order):
-    name = calibre_db.session.query(db.Series).filter(db.Series.id == book_id).first()
-    if name:
-        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                                db.Books,
-                                                                db.Books.series.any(db.Series.id == book_id),
-                                                                [order[0][0]],
-                                                                True, config.config_read_column)
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_(u"Series: %(serie)s", serie=name.name), page="series", order=order[1])
-    else:
-        abort(404)
+        series_name = calibre_db.session.query(db.Series).filter(db.Series.id == book_id).first()
+        if series_name:
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    db.Books.series.any(db.Series.id == book_id),
+                                                                    [order[0][0]],
+                                                                    True, config.config_read_column)
+            series_name = series_name.name
+        else:
+            abort(404)
+    return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
+                                 title=_(u"Series: %(serie)s", serie=series_name), page="series", order=order[1])
 
 
 def render_ratings_books(page, book_id, order):
@@ -591,33 +631,61 @@ def render_formats_books(page, book_id, order):
 
 
 def render_category_books(page, book_id, order):
-    name = calibre_db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
-    if name:
+    if book_id == '-1':
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.tags.any(db.Tags.id == book_id),
+                                                                db.Tags.name == None,
                                                                 [order[0][0], db.Series.name, db.Books.series_index],
                                                                 True, config.config_read_column,
+                                                                db.books_tags_link,
+                                                                db.Books.id == db.books_tags_link.c.book,
+                                                                db.Tags,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
-                                     title=_(u"Category: %(name)s", name=name.name), page="category", order=order[1])
+        tagsname = _("None")
     else:
-        abort(404)
+        tagsname = calibre_db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
+        if tagsname:
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    db.Books.tags.any(db.Tags.id == book_id),
+                                                                    [order[0][0], db.Series.name,
+                                                                     db.Books.series_index],
+                                                                    True, config.config_read_column,
+                                                                    db.books_series_link,
+                                                                    db.Books.id == db.books_series_link.c.book,
+                                                                    db.Series)
+            tagsname = tagsname.name
+        else:
+            abort(404)
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
+                                 title=_(u"Category: %(name)s", name=tagsname), page="category", order=order[1])
 
 
 def render_language_books(page, name, order):
     try:
-        lang_name = isoLanguages.get_language_name(get_locale(), name)
+        if name.lower() != "none":
+            lang_name = isoLanguages.get_language_name(get_locale(), name)
+        else:
+            lang_name = _("None")
     except KeyError:
         abort(404)
-
-    entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                            db.Books,
-                                                            db.Books.languages.any(db.Languages.lang_code == name),
-                                                            [order[0][0]],
-                                                            True, config.config_read_column)
+    if name == "none":
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Languages.lang_code == None,
+                                                                [order[0][0]],
+                                                                True, config.config_read_column,
+                                                                db.books_languages_link,
+                                                                db.Books.id == db.books_languages_link.c.book,
+                                                                db.Languages)
+    else:
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Books.languages.any(db.Languages.lang_code == name),
+                                                                [order[0][0]],
+                                                                True, config.config_read_column)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
                                  title=_(u"Language: %(name)s", name=lang_name), page="language", order=order[1])
 
@@ -880,7 +948,7 @@ def author_list():
         entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_authors_link.author')).order_by(order).all()
-        char_list = generate_char_list(db.Authors.sort, db.books_authors_link)
+        char_list = query_char_list(db.Authors.sort, db.books_authors_link)
         # If not creating a copy, readonly databases can not display authornames with "|" in it as changing the name
         # starts a change session
         author_copy = copy.deepcopy(entries)
@@ -926,7 +994,14 @@ def publisher_list():
         entries = calibre_db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_publishers_link.publisher')).order_by(order).all()
-        char_list = generate_char_list(db.Publishers.name, db.books_publishers_link)
+        no_publisher_count = (calibre_db.session.query(db.Books)
+                           .outerjoin(db.books_publishers_link).outerjoin(db.Publishers)
+                           .filter(db.Publishers.name == None)
+                           .filter(calibre_db.common_filters())
+                           .count())
+        if no_publisher_count:
+            entries.append([db.Category(_("None"), "-1"), no_publisher_count])
+        char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
     else:
@@ -943,11 +1018,18 @@ def series_list():
         else:
             order = db.Series.sort.asc()
             order_no = 1
-        char_list = generate_char_list(db.Series.sort, db.books_series_link)
+        char_list = query_char_list(db.Series.sort, db.books_series_link)
         if current_user.get_view_property('series', 'series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(text('books_series_link.series')).order_by(order).all()
+            no_series_count = (calibre_db.session.query(db.Books)
+                            .outerjoin(db.books_series_link).outerjoin(db.Series)
+                            .filter(db.Series.name == None)
+                            .filter(calibre_db.common_filters())
+                            .count())
+            if no_series_count:
+                entries.append([db.Category(_("None"), "-1"), no_series_count])
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
@@ -976,6 +1058,12 @@ def ratings_list():
                                            (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_ratings_link.rating')).order_by(order).all()
+        no_rating_count = (calibre_db.session.query(db.Books)
+                           .outerjoin(db.books_ratings_link).outerjoin(db.Ratings)
+                           .filter(db.Ratings.name == None)
+                           .filter(calibre_db.common_filters())
+                           .count())
+        entries.append([db.Category(_("None"), "-1"), no_rating_count])
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist", data="ratings", order=order_no)
     else:
@@ -997,6 +1085,12 @@ def formats_list():
                                            db.Data.format.label('format')) \
             .join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(db.Data.format).order_by(order).all()
+        no_format_count = (calibre_db.session.query(db.Books).outerjoin(db.Data)
+                           .filter(db.Data.format == None)
+                           .filter(calibre_db.common_filters())
+                           .count())
+        if no_format_count:
+            entries.append([db.Category(_("None"), "-1"), no_format_count])
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"File formats list"), page="formatslist", data="formats", order=order_no)
     else:
@@ -1008,15 +1102,10 @@ def formats_list():
 def language_overview():
     if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
         order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
-        char_list = list()
         languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
-        for lang in languages:
-            upper_lang = lang[0].name[0].upper()
-            if upper_lang not in char_list:
-                char_list.append(upper_lang)
-        return render_title_template('languages.html', languages=languages,
-                                     charlist=char_list, title=_(u"Languages"), page="langlist",
-                                     data="language", order=order_no)
+        char_list = generate_char_list(languages)
+        return render_title_template('list.html', entries=languages, folder='web.books_list', charlist=char_list,
+                                     title=_(u"Languages"), page="langlist", data="language", order=order_no)
     else:
         abort(404)
 
@@ -1034,7 +1123,14 @@ def category_list():
         entries = calibre_db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
             .join(db.books_tags_link).join(db.Books).order_by(order).filter(calibre_db.common_filters()) \
             .group_by(text('books_tags_link.tag')).all()
-        char_list = generate_char_list(db.Tags.name, db.books_tags_link)
+        no_tag_count = (calibre_db.session.query(db.Books)
+                         .outerjoin(db.books_tags_link).outerjoin(db.Tags)
+                        .filter(db.Tags.name == None)
+                         .filter(calibre_db.common_filters())
+                         .count())
+        if no_tag_count:
+            entries.append([db.Category(_("None"), "-1"), no_tag_count])
+        char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Categories"), page="catlist", data="category", order=order_no)
     else:

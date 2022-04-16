@@ -903,9 +903,19 @@ class CalibreDB:
                     .join(books_languages_link).join(Books)\
                     .filter(self.common_filters(return_all_languages=return_all_languages)) \
                     .group_by(text('books_languages_link.lang_code')).all()
+            tags = list()
             for lang in languages:
-                lang[0].name = isoLanguages.get_language_name(get_locale(), lang[0].lang_code)
-            return sorted(languages, key=lambda x: x[0].name, reverse=reverse_order)
+                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
+                tags.append([tag, lang[1]])
+            # Append all books without language to list
+            if not return_all_languages:
+                no_lang_count = (self.session.query(Books)
+                                 .outerjoin(books_languages_link).outerjoin(Languages)
+                                 .filter(Languages.lang_code == None)
+                                 .filter(self.common_filters())
+                                 .count())
+                tags.append([Category(_("None"), "none"), no_lang_count])
+            return sorted(tags, key=lambda x: x[0].name, reverse=reverse_order)
         else:
             if not languages:
                 languages = self.session.query(Languages) \
@@ -977,3 +987,20 @@ def lcase(s):
         _log = logger.create()
         _log.error_or_exception(ex)
         return s.lower()
+
+
+class Category:
+    name = None
+    id = None
+    count = None
+
+    def __init__(self, name, cat_id):
+        self.name = name
+        self.id = cat_id
+        self.count = 1
+
+'''class Count:
+    count = None
+
+    def __init__(self, count):
+        self.count = count'''
