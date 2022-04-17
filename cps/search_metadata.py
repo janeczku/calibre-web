@@ -57,7 +57,7 @@ for f in modules:
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
-        except ImportError as e:
+        except (ImportError, IndentationError, SyntaxError) as e:
             log.error("Import error for metadata source: {} - {}".format(a, e))
             pass
 
