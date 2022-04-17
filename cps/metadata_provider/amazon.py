@@ -113,9 +113,9 @@ class Amazon(Metadata):
                     except (AttributeError, TypeError):
                         match.cover = ""
                     return match, index
-            except Exception as e:
-                log.error_or_exception(e)
-                return
+                except Exception as e:
+                    log.error_or_exception(e)
+                    return
 
         val = list()
         if self.active:
