@@ -27,8 +27,11 @@ from html2text import HTML2Text
 from lxml.html import HtmlElement, fromstring, tostring
 from markdown2 import Markdown
 
+from cps import logger
 from cps.isoLanguages import get_language_name
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+
+log = logger.create()
 
 SYMBOLS_TO_TRANSLATE = (
     "öÖüÜóÓőŐúÚéÉáÁűŰíÍąĄćĆęĘłŁńŃóÓśŚźŹżŻ",
@@ -112,20 +115,23 @@ class LubimyCzytac(Metadata):
         self, query: str, generic_cover: str = "", locale: str = "en"
     ) -> Optional[List[MetaRecord]]:
         if self.active:
-            result = requests.get(self._prepare_query(title=query))
-            if result.text:
-                root = fromstring(result.text)
-                lc_parser = LubimyCzytacParser(root=root, metadata=self)
-                matches = lc_parser.parse_search_results()
-                if matches:
-                    with ThreadPool(processes=10) as pool:
-                        final_matches = pool.starmap(
-                            lc_parser.parse_single_book,
-                            [(match, generic_cover, locale) for match in matches],
-                        )
-                    return final_matches
-                return matches
-            return []
+            try:
+                result = requests.get(self._prepare_query(title=query))
+                result.raise_for_status()
+            except Exception as e:
+                log.warning(e)
+                return None
+            root = fromstring(result.text)
+            lc_parser = LubimyCzytacParser(root=root, metadata=self)
+            matches = lc_parser.parse_search_results()
+            if matches:
+                with ThreadPool(processes=10) as pool:
+                    final_matches = pool.starmap(
+                        lc_parser.parse_single_book,
+                        [(match, generic_cover, locale) for match in matches],
+                    )
+                return final_matches
+            return matches
 
     def _prepare_query(self, title: str) -> str:
         query = ""
@@ -202,7 +208,12 @@ class LubimyCzytacParser:
     def parse_single_book(
         self, match: MetaRecord, generic_cover: str, locale: str
     ) -> MetaRecord:
-        response = requests.get(match.url)
+        try:
+            response = requests.get(match.url)
+            response.raise_for_status()
+        except Exception as e:
+            log.warning(e)
+            return None
         self.root = fromstring(response.text)
         match.cover = self._parse_cover(generic_cover=generic_cover)
         match.description = self._parse_description()

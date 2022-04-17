@@ -22,8 +22,11 @@ from urllib.parse import quote
 
 import requests
 
+from cps import logger
 from cps.isoLanguages import get_lang3, get_language_name
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+
+log = logger.create()
 
 
 class Google(Metadata):
@@ -45,7 +48,12 @@ class Google(Metadata):
             if title_tokens:
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "+".join(tokens)
-            results = requests.get(Google.SEARCH_URL + query)
+            try:
+                results = requests.get(Google.SEARCH_URL + query)
+                results.raise_for_status()
+            except Exception as e:
+                log.warning(e)
+                return None
             for result in results.json().get("items", []):
                 val.append(
                     self._parse_search_result(
