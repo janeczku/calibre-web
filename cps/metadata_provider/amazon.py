@@ -19,17 +19,22 @@
 import concurrent.futures
 import requests
 from bs4 import BeautifulSoup as BS  # requirement
+from typing import List, Optional
 
 try:
     import cchardet #optional for better speed
 except ImportError:
     pass
+from cps import logger
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 import cps.logger as logger
 
 #from time import time
 from operator import itemgetter
 log = logger.create()
+
+log = logger.create()
+
 
 class Amazon(Metadata):
     __name__ = "Amazon"
@@ -49,17 +54,21 @@ class Amazon(Metadata):
 
     def search(
         self, query: str, generic_cover: str = "", locale: str = "en"
-    ):
+    ) -> Optional[List[MetaRecord]]:
         #timer=time()
-        def inner(link, index) -> [dict, int]:
-            try:
-                with self.session as session:
-                    r = session.get(f"https://www.amazon.com{link}")
+        def inner(link,index) -> tuple[dict,int]:
+            with self.session as session:
+                try:
+                    r = session.get(f"https://www.amazon.com/{link}")
                     r.raise_for_status()
-                    long_soup = BS(r.text, "lxml")  #~4sec :/
-                    soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
-                    if soup2 is None:
-                        return
+                except Exception as e:
+                    log.warning(e)
+                    return
+                long_soup = BS(r.text, "lxml")  #~4sec :/
+                soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
+                if soup2 is None:
+                    return
+                try:
                     match = MetaRecord(
                         title = "",
                         authors = "",
@@ -109,22 +118,24 @@ class Amazon(Metadata):
                 return
 
         val = list()
-        try:
-            if self.active:
+        if self.active:
+            try:
                 results = self.session.get(
-                    f"https://www.amazon.com/s?k={query.replace(' ', '+')}"
-                    f"&i=digital-text&sprefix={query.replace(' ', '+')}"
+                    f"https://www.amazon.com/s?k={query.replace(' ', '+')}&i=digital-text&sprefix={query.replace(' ', '+')}"
                     f"%2Cdigital-text&ref=nb_sb_noss",
                     headers=self.headers)
                 results.raise_for_status()
-                soup = BS(results.text, 'html.parser')
-                links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
-                              soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
-                with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-                    fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
-                    val = list(map(lambda x: x.result(), concurrent.futures.as_completed(fut)))
-            result = list(filter(lambda x: x, val))
-            return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
-        except requests.exceptions.HTTPError as e:
-            log.error_or_exception(e)
-            return []
+            except requests.exceptions.HTTPError as e:
+               log.error_or_exception(e)
+               return None
+            except Exception as e:
+               log.warning(e)
+               return None
+            soup = BS(results.text, 'html.parser')
+            links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
+                          soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
+            with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
+                val=list(map(lambda x : x.result() ,concurrent.futures.as_completed(fut)))
+        result=list(filter(lambda x: x, val))
+        return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
