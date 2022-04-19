@@ -914,7 +914,8 @@ class CalibreDB:
                                  .filter(Languages.lang_code == None)
                                  .filter(self.common_filters())
                                  .count())
-                tags.append([Category(_("None"), "none"), no_lang_count])
+                if no_lang_count:
+                    tags.append([Category(_("None"), "none"), no_lang_count])
             return sorted(tags, key=lambda x: x[0].name, reverse=reverse_order)
         else:
             if not languages:
@@ -993,10 +994,12 @@ class Category:
     name = None
     id = None
     count = None
+    rating = None
 
-    def __init__(self, name, cat_id):
+    def __init__(self, name, cat_id, rating=None):
         self.name = name
         self.id = cat_id
+        self.rating = rating
         self.count = 1
 
 '''class Count:

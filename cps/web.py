@@ -599,17 +599,29 @@ def render_series_books(page, book_id, order):
 
 
 def render_ratings_books(page, book_id, order):
-    name = calibre_db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
-    entries, random, pagination = calibre_db.fill_indexpage(page, 0,
-                                                            db.Books,
-                                                            db.Books.ratings.any(db.Ratings.id == book_id),
-                                                            [order[0][0]],
-                                                            True, config.config_read_column)
-    if name and name.rating <= 10:
+    if book_id == '-1':
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Books.ratings == None,
+                                                                [order[0][0]],
+                                                                True, config.config_read_column,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
+        title = _(u"Rating: None")
+        rating = -1
+    else:
+        name = calibre_db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Books.ratings.any(db.Ratings.id == book_id),
+                                                                [order[0][0]],
+                                                                True, config.config_read_column)
+        title = _(u"Rating: %(rating)s stars", rating=int(name.rating / 2))
+        rating = name.rating
+    if title and rating <= 10:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)),
-                                     page="ratings",
-                                     order=order[1])
+                                     title=title, page="ratings", order=order[1])
     else:
         abort(404)
 
@@ -1001,6 +1013,7 @@ def publisher_list():
                            .count())
         if no_publisher_count:
             entries.append([db.Category(_("None"), "-1"), no_publisher_count])
+        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
@@ -1030,6 +1043,7 @@ def series_list():
                             .count())
             if no_series_count:
                 entries.append([db.Category(_("None"), "-1"), no_series_count])
+            entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
@@ -1060,10 +1074,11 @@ def ratings_list():
             .group_by(text('books_ratings_link.rating')).order_by(order).all()
         no_rating_count = (calibre_db.session.query(db.Books)
                            .outerjoin(db.books_ratings_link).outerjoin(db.Ratings)
-                           .filter(db.Ratings.name == None)
+                           .filter(db.Ratings.rating == None)
                            .filter(calibre_db.common_filters())
                            .count())
-        entries.append([db.Category(_("None"), "-1"), no_rating_count])
+        entries.append([db.Category(_("None"), "-1", -1), no_rating_count])
+        entries = sorted(entries, key=lambda x: x[0].rating, reverse=not order_no)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist", data="ratings", order=order_no)
     else:
@@ -1130,6 +1145,7 @@ def category_list():
                          .count())
         if no_tag_count:
             entries.append([db.Category(_("None"), "-1"), no_tag_count])
+        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Categories"), page="catlist", data="category", order=order_no)
