@@ -56,13 +56,13 @@ class Amazon(Metadata):
         self, query: str, generic_cover: str = "", locale: str = "en"
     ) -> Optional[List[MetaRecord]]:
         #timer=time()
-        def inner(link,index) -> tuple[dict,int]:
+        def inner(link, index) -> [dict, int]:
             with self.session as session:
                 try:
                     r = session.get(f"https://www.amazon.com/{link}")
                     r.raise_for_status()
-                except Exception as e:
-                    log.warning(e)
+                except Exception as ex:
+                    log.warning(ex)
                     return
                 long_soup = BS(r.text, "lxml")  #~4sec :/
                 soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
@@ -126,16 +126,16 @@ class Amazon(Metadata):
                     headers=self.headers)
                 results.raise_for_status()
             except requests.exceptions.HTTPError as e:
-               log.error_or_exception(e)
-               return None
+                log.error_or_exception(e)
+                return None
             except Exception as e:
-               log.warning(e)
-               return None
+                log.warning(e)
+                return None
             soup = BS(results.text, 'html.parser')
             links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
                           soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
-                val=list(map(lambda x : x.result() ,concurrent.futures.as_completed(fut)))
-        result=list(filter(lambda x: x, val))
+                val = list(map(lambda x : x.result() ,concurrent.futures.as_completed(fut)))
+        result = list(filter(lambda x: x, val))
         return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance
