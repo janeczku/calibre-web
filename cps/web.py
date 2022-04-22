@@ -1568,13 +1568,13 @@ def register():
 
     if request.method == "POST":
         to_save = request.form.to_dict()
-        nickname = to_save["email"].strip() if config.config_register_email else to_save.get('name')
+        nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
         if not nickname or not to_save.get("email"):
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_("Register"), page="register")
         try:
             nickname = check_username(nickname)
-            email = check_email(to_save["email"])
+            email = check_email(to_save.get("email", ""))
         except Exception as ex:
             flash(str(ex), category="error")
             return render_title_template('register.html', title=_("Register"), page="register")
@@ -1592,14 +1592,15 @@ def register():
                 ub.session.commit()
                 if feature_support['oauth']:
                     register_user_with_oauth(content)
-                send_registration_mail(to_save["email"].strip(), nickname, password)
+                send_registration_mail(to_save.get("email", "").strip(), nickname, password)
             except Exception:
                 ub.session.rollback()
                 flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 return render_title_template('register.html', title=_("Register"), page="register")
         else:
             flash(_(u"Your e-mail is not allowed to register"), category="error")
-            log.warning('Registering failed for user "%s" e-mail address: %s', nickname, to_save["email"])
+            log.warning('Registering failed for user "{}" e-mail address: {}'.format(nickname,
+                                                                                     to_save.get("email","")))
             return render_title_template('register.html', title=_("Register"), page="register")
         flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
         return redirect(url_for('web.login'))
@@ -1625,7 +1626,7 @@ def login():
             if login_result:
                 login_user(user, remember=bool(form.get('remember_me')))
                 ub.store_user_session()
-                log.debug(u"You are now logged in as: '%s'", user.name)
+                log.debug(u"You are now logged in as: '{}'".format(user.name))
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
                       category="success")
                 return redirect_back(url_for("web.index"))
@@ -1633,7 +1634,7 @@ def login():
                     and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))
                 ub.store_user_session()
-                log.info("Local Fallback Login as: '%s'", user.name)
+                log.info("Local Fallback Login as: '{}'".format(user.name))
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.name),
                       category="warning")
@@ -1647,7 +1648,7 @@ def login():
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
             ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-            if 'forgot' in form and form['forgot'] == 'forgot':
+            if form.get('forgot', "") == 'forgot':
                 if user is not None and user.name != "Guest":
                     ret, __ = reset_password(user.id)
                     if ret == 1:
@@ -1700,21 +1701,19 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     current_user.random_books = 0
     if current_user.role_passwd() or current_user.role_admin():
         if to_save.get("password"):
-            current_user.password = generate_password_hash(to_save["password"])
+            current_user.password = generate_password_hash(to_save.get("password"))
     try:
         if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
-            current_user.kindle_mail = valid_email(to_save["kindle_mail"])
+            current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
         if to_save.get("email", current_user.email) != current_user.email:
-            current_user.email = check_email(to_save["email"])
+            current_user.email = check_email(to_save.get("email"))
         if current_user.role_admin():
             if to_save.get("name", current_user.name) != current_user.name:
                 # Query username, if not existing, change
-                current_user.name = check_username(to_save["name"])
+                current_user.name = check_username(to_save.get("name"))
         current_user.random_books = 1 if to_save.get("show_random") == "on" else 0
-        if to_save.get("default_language"):
-            current_user.default_language = to_save["default_language"]
-        if to_save.get("locale"):
-            current_user.locale = to_save["locale"]
+        current_user.default_language = to_save.get("default_language", "all")
+        current_user.locale = to_save.get("locale", "en")
         old_state = current_user.kobo_only_shelves_sync
         # 1 -> 0: nothing has to be done
         # 0 -> 1: all synced books have to be added to archived books, + currently synced shelfs which
