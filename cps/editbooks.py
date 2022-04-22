@@ -1132,6 +1132,7 @@ def upload():
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
                 upload_text = _(u"File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
+                helper.add_book_to_thumbnail_cache(book_id)
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
