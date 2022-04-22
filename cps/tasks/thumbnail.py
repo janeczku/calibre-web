@@ -64,9 +64,10 @@ def get_best_fit(width, height, image_width, image_height):
 
 
 class TaskGenerateCoverThumbnails(CalibreTask):
-    def __init__(self, task_message=''):
+    def __init__(self, book_id=-1, task_message=''):
         super(TaskGenerateCoverThumbnails, self).__init__(task_message)
         self.log = logger.create()
+        self.book_id = book_id
         self.app_db_session = ub.get_new_session_instance()
         self.calibre_db = db.CalibreDB(expire_on_commit=False)
         self.cache = fs.FileSystem()
@@ -77,31 +78,20 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     def run(self, worker_thread):
         if self.calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
+            if self.book_id < 0:
+                self.create_book_cover_thumbnails(self.book_id)
+                self._handleSuccess()
+                self.app_db_session.remove()
+                return
             self.message = 'Scanning Books'
             books_with_covers = self.get_books_with_covers()
             count = len(books_with_covers)
 
             total_generated = 0
             for i, book in enumerate(books_with_covers):
-                generated = 0
-                book_cover_thumbnails = self.get_book_cover_thumbnails(book.id)
 
                 # Generate new thumbnails for missing covers
-                resolutions = list(map(lambda t: t.resolution, book_cover_thumbnails))
-                missing_resolutions = list(set(self.resolutions).difference(resolutions))
-                for resolution in missing_resolutions:
-                    generated += 1
-                    self.create_book_cover_thumbnail(book, resolution)
-
-                # Replace outdated or missing thumbnails
-                for thumbnail in book_cover_thumbnails:
-                    if book.last_modified > thumbnail.generated_at:
-                        generated += 1
-                        self.update_book_cover_thumbnail(book, thumbnail)
-
-                    elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
-                        generated += 1
-                        self.update_book_cover_thumbnail(book, thumbnail)
+                generated = self.create_book_cover_thumbnails(book)
 
                 # Increment the progress
                 self.progress = (1.0 / count) * i
@@ -139,7 +129,29 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
             .all()
 
-    def create_book_cover_thumbnail(self, book, resolution):
+    def create_book_cover_thumbnails(self, book):
+        generated = 0
+        book_cover_thumbnails = self.get_book_cover_thumbnails(book.id)
+
+        # Generate new thumbnails for missing covers
+        resolutions = list(map(lambda t: t.resolution, book_cover_thumbnails))
+        missing_resolutions = list(set(self.resolutions).difference(resolutions))
+        for resolution in missing_resolutions:
+            generated += 1
+            self.create_book_cover_single_thumbnail(book, resolution)
+
+        # Replace outdated or missing thumbnails
+        for thumbnail in book_cover_thumbnails:
+            if book.last_modified > thumbnail.generated_at:
+                generated += 1
+                self.update_book_cover_thumbnail(book, thumbnail)
+
+            elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
+                generated += 1
+                self.update_book_cover_thumbnail(book, thumbnail)
+        return generated
+
+    def create_book_cover_single_thumbnail(self, book, resolution):
         thumbnail = ub.Thumbnail()
         thumbnail.type = constants.THUMBNAIL_TYPE_COVER
         thumbnail.entity_id = book.id

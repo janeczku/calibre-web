@@ -60,7 +60,7 @@ from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
     STAT_CANCELLED
 from .tasks.mail import TaskEmail
-from .tasks.thumbnail import TaskClearCoverThumbnailCache
+from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 
 log = logger.create()
 
@@ -715,9 +715,10 @@ def get_book_cover(book_id, resolution=None):
     return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
+# Called only by kobo sync -> cover not found should be answered with 404 and not with default cover
+def get_book_cover_with_uuid(book_uuid, resolution=None):
     book = calibre_db.get_book_by_uuid(book_uuid)
-    return get_book_cover_internal(book, use_generic_cover_on_failure)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=False, resolution=resolution)
 
 
 def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
@@ -1079,5 +1080,10 @@ def get_download_link(book_id, book_format, client):
 def clear_cover_thumbnail_cache(book_id):
     WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))
 
+
 def delete_thumbnail_cache():
     WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
+
+
+def add_book_to_thumbnail_cache(book_id):
+    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id))

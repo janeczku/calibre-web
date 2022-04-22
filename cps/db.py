@@ -940,7 +940,10 @@ class CalibreDB:
             return title.strip()
 
         conn = conn or self.session.connection().connection.connection
-        conn.create_function("title_sort", 1, _title_sort)
+        try:
+            conn.create_function("title_sort", 1, _title_sort)
+        except OperationalError:
+            pass
 
     @classmethod
     def dispose(cls):

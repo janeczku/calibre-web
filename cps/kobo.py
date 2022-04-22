@@ -45,7 +45,7 @@ import requests
 
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
-from .constants import sqlalchemy_version2
+from .constants import sqlalchemy_version2, COVER_THUMBNAIL_SMALL
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
 from .web import download_required
@@ -915,10 +915,8 @@ def get_current_bookmark_response(current_bookmark):
 @kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
 @kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
-def HandleCoverImageRequest(book_uuid, width, height,Quality, isGreyscale):
-    book_cover = helper.get_book_cover_with_uuid(
-        book_uuid, use_generic_cover_on_failure=False
-    )
+def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
+    book_cover = helper.get_book_cover_with_uuid(book_uuid, resolution=COVER_THUMBNAIL_SMALL)
     if not book_cover:
         if config.config_kobo_proxy:
             log.debug("Cover for unknown book: %s proxied to kobo" % book_uuid)
