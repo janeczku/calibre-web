@@ -43,7 +43,7 @@ STAT_CANCELLED = 5
 # Only retain this many tasks in dequeued list
 TASK_CLEANUP_TRIGGER = 20
 
-QueuedTask = namedtuple('QueuedTask', 'num, user, added, task')
+QueuedTask = namedtuple('QueuedTask', 'num, user, added, task, hidden')
 
 
 def _get_main_thread():
@@ -84,7 +84,7 @@ class WorkerThread(threading.Thread):
         self.start()
 
     @classmethod
-    def add(cls, user, task):
+    def add(cls, user, task, hidden=False):
         ins = cls.get_instance()
         ins.num += 1
         username = user if user is not None else 'System'
@@ -94,6 +94,7 @@ class WorkerThread(threading.Thread):
             user=username,
             added=datetime.now(),
             task=task,
+            hidden=hidden
         ))
 
     @property
@@ -114,10 +115,10 @@ class WorkerThread(threading.Thread):
             if delta > TASK_CLEANUP_TRIGGER:
                 ret = alive
             else:
-                # otherwise, lop off the oldest dead tasks until we hit the target trigger
-                ret = sorted(dead, key=lambda x: x.task.end_time)[-TASK_CLEANUP_TRIGGER:] + alive
+                # otherwise, loop off the oldest dead tasks until we hit the target trigger
+                ret = sorted(dead, key=lambda y: y.task.end_time)[-TASK_CLEANUP_TRIGGER:] + alive
 
-            self.dequeued = sorted(ret, key=lambda x: x.num)
+            self.dequeued = sorted(ret, key=lambda y: y.num)
 
     # Main thread loop starting the different tasks
     def run(self):
@@ -144,11 +145,11 @@ class WorkerThread(threading.Thread):
 
             # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
             if item.task.stat is STAT_WAITING:
-                # CalibreTask.start() should wrap all exceptions in it's own error handling
+                # CalibreTask.start() should wrap all exceptions in its own error handling
                 item.task.start(self)
 
-            # remove self_cleanup tasks from list
-            if item.task.self_cleanup:
+            # remove self_cleanup tasks and hidden "System Tasks" from list
+            if item.task.self_cleanup or item.hidden:
                 self.dequeued.remove(item)
 
             self.queue.task_done()
@@ -240,14 +241,6 @@ class CalibreTask:
         """
         # By default, we're good to clean a task if it's "Done"
         return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL, STAT_ENDED, STAT_CANCELLED)
-
-    '''@progress.setter
-    def progress(self, x):        
-        if x > 1: 
-            x = 1
-        if x < 0: 
-            x = 0
-        self._progress = x'''
 
     @property
     def self_cleanup(self):
