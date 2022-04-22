@@ -991,7 +991,7 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for __, user, __, task in tasklist:
+    for __, user, __, task, __ in tasklist:
         if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
@@ -1078,7 +1078,8 @@ def get_download_link(book_id, book_format, client):
 
 
 def clear_cover_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id, _("Replace Thumbnail for book {}".format(book_id))),
+                     hidden=True)
 
 
 def delete_thumbnail_cache():
@@ -1086,4 +1087,4 @@ def delete_thumbnail_cache():
 
 
 def add_book_to_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id))
+    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)

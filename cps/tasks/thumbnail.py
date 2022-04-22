@@ -78,13 +78,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     def run(self, worker_thread):
         if self.calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
-            if self.book_id < 0:
-                self.create_book_cover_thumbnails(self.book_id)
-                self._handleSuccess()
-                self.app_db_session.remove()
-                return
             self.message = 'Scanning Books'
-            books_with_covers = self.get_books_with_covers()
+            books_with_covers = self.get_books_with_covers(self.book_id)
             count = len(books_with_covers)
 
             total_generated = 0
@@ -115,10 +110,12 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self._handleSuccess()
         self.app_db_session.remove()
 
-    def get_books_with_covers(self):
+    def get_books_with_covers(self, book_id=-1):
+        filter_exp = (db.Books.id == book_id) if book_id != -1 else True
         return self.calibre_db.session \
             .query(db.Books) \
             .filter(db.Books.has_cover == 1) \
+            .filter(filter_exp) \
             .all()
 
     def get_book_cover_thumbnails(self, book_id):
@@ -224,10 +221,13 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     @property
     def name(self):
-        return 'GenerateCoverThumbnails'
+        return 'Cover Thumbnails'
 
     def __str__(self):
-        return "GenerateCoverThumbnails"
+        if self.book_id > 0:
+            return "Add Thumbnail for book {}".format(self.book_id)
+        else:
+            return "Generate Cover Thumbnails"
 
     @property
     def is_cancellable(self):
@@ -434,7 +434,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
 
     @property
     def name(self):
-        return 'GenerateSeriesThumbnails'
+        return 'Cover Thumbnails'
 
     def __str__(self):
         return "GenerateSeriesThumbnails"
@@ -496,11 +496,12 @@ class TaskClearCoverThumbnailCache(CalibreTask):
 
     @property
     def name(self):
-        return 'ThumbnailsClear'
+        return 'Cover Thumbnails'
 
+    # needed for logging
     def __str__(self):
         if self.book_id > 0:
-            return "Delete Thumbnail cache for book " + str(self.book_id)
+            return "Replace Thumbnail cache for book " + str(self.book_id)
         else:
             return "Delete Thumbnail cache directory"
 
