@@ -50,7 +50,7 @@ def get_best_fit(width, height, image_width, image_height):
     resize_height = int(height / 2.0)
     aspect_ratio = image_width / image_height
 
-    # If this image's aspect ratio is different than the first image, then resize this image
+    # If this image's aspect ratio is different from the first image, then resize this image
     # to fill the width and height of the first image
     if aspect_ratio < width / height:
         resize_width = int(width / 2.0)
@@ -225,7 +225,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     def __str__(self):
         if self.book_id > 0:
-            return "Add Thumbnail for book {}".format(self.book_id)
+            return "Add Cover Thumbnails for Book {}".format(self.book_id)
         else:
             return "Generate Cover Thumbnails"
 
@@ -501,7 +501,7 @@ class TaskClearCoverThumbnailCache(CalibreTask):
     # needed for logging
     def __str__(self):
         if self.book_id > 0:
-            return "Replace Thumbnail cache for book " + str(self.book_id)
+            return "Replace/Delete Cover Thumbnails for book " + str(self.book_id)
         else:
             return "Delete Thumbnail cache directory"
 

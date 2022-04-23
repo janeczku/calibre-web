@@ -820,9 +820,6 @@ def save_cover_from_url(url, book_path):
             log.error("python modul advocate is not installed but is needed")
             return False, _("Python modul 'advocate' is not installed but is needed for cover downloads")
         img.raise_for_status()
-        #            # cover_processing()
-            # move_coverfile(meta, db_book)
-
         return save_cover(img, book_path)
     except (socket.gaierror,
             requests.exceptions.HTTPError,
@@ -1020,7 +1017,7 @@ def render_task_status(tasklist):
             ret['user'] = escape(user)  # prevent xss
 
             # Hidden fields
-            ret['id'] = task.id
+            ret['task_id'] = task.id
             ret['stat'] = task.stat
             ret['is_cancellable'] = task.is_cancellable
 
@@ -1078,8 +1075,12 @@ def get_download_link(book_id, book_format, client):
 
 
 def clear_cover_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id, _("Replace Thumbnail for book {}".format(book_id))),
-                     hidden=True)
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+
+
+def replace_cover_thumbnail_cache(book_id):
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
 
 
 def delete_thumbnail_cache():

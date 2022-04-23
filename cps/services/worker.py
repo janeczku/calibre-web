@@ -156,7 +156,7 @@ class WorkerThread(threading.Thread):
 
     def end_task(self, task_id):
         ins = self.get_instance()
-        for __, __, __, task in ins.tasks:
+        for __, __, __, task, __ in ins.tasks:
             if str(task.id) == str(task_id) and task.is_cancellable:
                 task.stat = STAT_CANCELLED if task.stat == STAT_WAITING else STAT_ENDED
 

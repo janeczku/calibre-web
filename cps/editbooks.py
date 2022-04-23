@@ -241,7 +241,7 @@ def delete_book_ajax(book_id, book_format):
 
 
 def delete_whole_book(book_id, book):
-    # delete book from Shelfs, Downloads, Read list
+    # delete book from shelves, Downloads, Read list
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
     ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
     ub.delete_download(book_id)
@@ -383,7 +383,7 @@ def render_edit_book(book_id):
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
-    # Option for showing convertbook button
+    # Option for showing convert_book button
     valid_source_formats = list()
     allowed_conversion_formats = list()
     kepub_possible = None
@@ -413,11 +413,11 @@ def render_edit_book(book_id):
 
 def edit_book_ratings(to_save, book):
     changed = False
-    if to_save.get("rating","").strip():
+    if to_save.get("rating", "").strip():
         old_rating = False
         if len(book.ratings) > 0:
             old_rating = book.ratings[0].rating
-        rating_x2 = int(float(to_save.get("rating","")) * 2)
+        rating_x2 = int(float(to_save.get("rating", "")) * 2)
         if rating_x2 != old_rating:
             changed = True
             is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
@@ -622,8 +622,9 @@ def edit_cc_data(book_id, book, to_save, cc):
                                               'custom')
     return changed
 
+
 # returns None if no file is uploaded
-# returns False if an error occours, in all other cases the ebook metadata is returned
+# returns False if an error occurs, in all other cases the ebook metadata is returned
 def upload_single_file(file_request, book, book_id):
     # Check and handle Uploaded file
     requested_file = file_request.files.get('btn-upload-format', None)
@@ -676,7 +677,7 @@ def upload_single_file(file_request, book, book_id):
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
                     flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
-                    return False # return redirect(url_for('web.show_book', book_id=book.id))
+                    return False  # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
@@ -688,6 +689,7 @@ def upload_single_file(file_request, book, book_id):
                 rarExecutable=config.config_rarfile_location)
     return None
 
+
 def upload_cover(cover_request, book):
     requested_file = cover_request.files.get('btn-upload-cover', None)
     if requested_file:
@@ -698,7 +700,7 @@ def upload_cover(cover_request, book):
                 return False
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
-                helper.clear_cover_thumbnail_cache(book.id)
+                helper.replace_cover_thumbnail_cache(book.id)
                 return True
             else:
                 flash(message, category="error")
@@ -738,6 +740,7 @@ def handle_author_on_edit(book, author_name, update_stored=True):
         book.author_sort = sort_authors
         change = True
     return input_authors, change, renamed
+
 
 @EditBook.route("/admin/book/<int:book_id>", methods=['GET'])
 @login_required_if_no_ano
@@ -815,6 +818,7 @@ def edit_book(book_id):
                 if result is True:
                     book.has_cover = 1
                     modify_date = True
+                    helper.replace_cover_thumbnail_cache(book.id)
                 else:
                     flash(error, category="error")
 
@@ -986,7 +990,7 @@ def create_book_on_upload(modify_date, meta):
 
     try:
         pubdate = datetime.strptime(meta.pubdate[:10], "%Y-%m-%d")
-    except:
+    except ValueError:
         pubdate = datetime(101, 1, 1)
 
     # Calibre adds books with utc as timezone
@@ -1063,18 +1067,18 @@ def file_handling_on_upload(requested_file):
 def move_coverfile(meta, db_book):
     # move cover to final directory, including book id
     if meta.cover:
-        coverfile = meta.cover
+        cover_file = meta.cover
     else:
-        coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path)
+        cover_file = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+    new_cover_path = os.path.join(config.config_calibre_dir, db_book.path)
     try:
-        os.makedirs(new_coverpath, exist_ok=True)
-        copyfile(coverfile, os.path.join(new_coverpath, "cover.jpg"))
+        os.makedirs(new_cover_path, exist_ok=True)
+        copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
         if meta.cover:
             os.unlink(meta.cover)
     except OSError as e:
-        log.error("Failed to move cover file %s: %s", new_coverpath, e)
-        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
+        log.error("Failed to move cover file %s: %s", new_cover_path, e)
+        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,
                 error=e),
               category="error")
 
@@ -1193,7 +1197,7 @@ def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
     sort_param = ""
-    # ret = ""
+    ret = ""
     try:
         if param == 'series_index':
             edit_book_series_index(vals['value'], book)
