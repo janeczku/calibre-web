@@ -45,7 +45,7 @@ def get_scheduled_tasks(reconnect=True):
 
 def end_scheduled_tasks():
     worker = WorkerThread.get_instance()
-    for __, __, __, task in worker.tasks:
+    for __, __, __, task, __ in worker.tasks:
         if task.scheduled and task.is_cancellable:
             worker.end_task(task.id)
 
