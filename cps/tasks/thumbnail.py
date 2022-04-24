@@ -16,7 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 from urllib.request import urlopen
 
@@ -449,18 +448,24 @@ class TaskClearCoverThumbnailCache(CalibreTask):
         super(TaskClearCoverThumbnailCache, self).__init__(task_message)
         self.log = logger.create()
         self.book_id = book_id
+        self.calibre_db = db.CalibreDB(expire_on_commit=False)
         self.app_db_session = ub.get_new_session_instance()
         self.cache = fs.FileSystem()
 
     def run(self, worker_thread):
         if self.app_db_session:
-            if self.book_id > 0:    # make sure all thumbnails aren't getting deleted due to a bug
+            if self.book_id == 0:  # delete superfluous thumbnails
+                thumbnails = (self.calibre_db.session.query(ub.Thumbnail)
+                              .join(db.Books, ub.Thumbnail.entity_id == db.Books.id, isouter=True)
+                              .filter(db.Books.id == None)
+                              .all())
+            elif self.book_id > 0:  # make sure single book is selected
                 thumbnails = self.get_thumbnails_for_book(self.book_id)
+            if self.book_id < 0:
+                self.delete_all_thumbnails()
+            else:
                 for thumbnail in thumbnails:
                     self.delete_thumbnail(thumbnail)
-            else:
-                self.delete_all_thumbnails()
-
         self._handleSuccess()
         self.app_db_session.remove()
 
@@ -472,7 +477,6 @@ class TaskClearCoverThumbnailCache(CalibreTask):
             .all()
 
     def delete_thumbnail(self, thumbnail):
-        # thumbnail.expiration = datetime.utcnow()
         try:
             self.cache.delete_cache_file(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
             self.app_db_session \
