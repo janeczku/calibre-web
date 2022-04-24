@@ -18,7 +18,8 @@
 
 import os
 import re
-from flask_babel import gettext as _
+
+from flask_babel import lazy_gettext as N_
 
 from . import config, logger
 from .subproc_wrapper import process_wait
@@ -26,9 +27,9 @@ from .subproc_wrapper import process_wait
 
 log = logger.create()
 
-# _() necessary to make babel aware of string for translation
-_NOT_INSTALLED = _('not installed')
-_EXECUTION_ERROR = _('Execution permissions missing')
+# strings getting translated when used
+_NOT_INSTALLED = N_('not installed')
+_EXECUTION_ERROR = N_('Execution permissions missing')
 
 
 def _get_command_version(path, pattern, argument=None):

@@ -25,7 +25,7 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
-from markupsafe import escape
+from markupsafe import escape  # dependency of flask
 from functools import wraps
 
 try:
@@ -35,6 +35,7 @@ except ImportError:
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as N_
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
 # from sqlite3 import OperationalError as sqliteOperationalError
@@ -681,7 +682,7 @@ def upload_single_file(file_request, book, book_id):
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
-            upload_text = _(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
+            upload_text = N_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
             WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(book.title)))
 
             return uploader.process(
@@ -1134,7 +1135,7 @@ def upload():
                 if error:
                     flash(error, category="error")
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
-                upload_text = _(u"File %(file)s uploaded", file=link)
+                upload_text = N_(u"File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
                 helper.add_book_to_thumbnail_cache(book_id)
 
