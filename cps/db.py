@@ -25,6 +25,7 @@ from datetime import datetime
 from urllib.parse import quote
 import unidecode
 
+from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
@@ -942,7 +943,7 @@ class CalibreDB:
         conn = conn or self.session.connection().connection.connection
         try:
             conn.create_function("title_sort", 1, _title_sort)
-        except OperationalError:
+        except sqliteOperationalError:
             pass
 
     @classmethod

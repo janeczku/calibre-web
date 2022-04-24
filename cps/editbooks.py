@@ -37,7 +37,7 @@ from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, R
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
-from sqlite3 import OperationalError as sqliteOperationalError
+# from sqlite3 import OperationalError as sqliteOperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, get_locale, ub, db
 from . import calibre_db
@@ -757,11 +757,11 @@ def edit_book(book_id):
     edit_error = False
 
     # create the function for sorting...
-    try:
-        calibre_db.update_title_sort(config)
-    except sqliteOperationalError as e:
-        log.error_or_exception(e)
-        calibre_db.session.rollback()
+    #try:
+    calibre_db.update_title_sort(config)
+    #except sqliteOperationalError as e:
+    #    log.error_or_exception(e)
+    #    calibre_db.session.rollback()
 
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     # Book not found
