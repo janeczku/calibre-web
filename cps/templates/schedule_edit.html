@@ -28,10 +28,10 @@
       <input type="checkbox" id="schedule_generate_book_covers" name="schedule_generate_book_covers" {% if config.schedule_generate_book_covers %}checked{% endif %}>
       <label for="schedule_generate_book_covers">{{_('Generate Book Cover Thumbnails')}}</label>
     </div>
-    <div class="form-group">
+    <!--div class="form-group">
       <input type="checkbox" id="schedule_generate_series_covers" name="schedule_generate_series_covers" {% if config.schedule_generate_series_covers %}checked{% endif %}>
       <label for="schedule_generate_series_covers">{{_('Generate Series Cover Thumbnails')}}</label>
-    </div>
+    </div-->
     <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
     <a href="{{ url_for('admin.admin') }}" id="email_back" class="btn btn-default">{{_('Cancel')}}</a>
   </form>
