@@ -16,19 +16,16 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
+from urllib.request import urlopen
+
+from flask_babel import lazy_gettext as N_
 
 from cps import config, logger
 from cps.services.worker import CalibreTask
 
-try:
-    from urllib.request import urlopen
-except ImportError as e:
-    from urllib2 import urlopen
-
 
 class TaskReconnectDatabase(CalibreTask):
-    def __init__(self, task_message=u'Reconnecting Calibre database'):
+    def __init__(self, task_message=N_('Reconnecting Calibre database')):
         super(TaskReconnectDatabase, self).__init__(task_message)
         self.log = logger.create()
         self.listen_address = config.get_config_ipaddress()
