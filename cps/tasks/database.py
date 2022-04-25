@@ -39,7 +39,7 @@ class TaskReconnectDatabase(CalibreTask):
             urlopen('http://' + address + ':' + str(port) + '/reconnect')
             self._handleSuccess()
         except Exception as ex:
-            self._handleError(u'Unable to reconnect Calibre database: ' + str(ex))
+            self._handleError('Unable to reconnect Calibre database: ' + str(ex))
 
     @property
     def name(self):
