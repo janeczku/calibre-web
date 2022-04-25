@@ -24,13 +24,12 @@ import os
 import re
 import base64
 import json
-import time
 import operator
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from functools import wraps
 
 from babel import Locale
-from babel.dates import format_datetime
+from babel.dates import format_datetime, format_time, format_timedelta
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
@@ -58,7 +57,8 @@ feature_support = {
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo),
         'updater': constants.UPDATER_AVAILABLE,
-        'gmail': bool(services.gmail)
+        'gmail': bool(services.gmail),
+        'scheduler': schedule.use_APScheduler
     }
 
 try:
@@ -184,6 +184,7 @@ def update_thumbnails():
 @login_required
 @admin_required
 def admin():
+    locale = get_locale()
     version = updater_thread.get_current_version_info()
     if version is False:
         commit = _(u'Unknown')
@@ -198,15 +199,19 @@ def admin():
                     form_date -= timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
                 elif commit[19] == '-':
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+            commit = format_datetime(form_date - tz, format='short', locale=locale)
         else:
             commit = version['version']
 
     all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    kobo_support = feature_support['kobo'] and config.config_kobo_sync
+    schedule_time = format_time(time(hour=config.schedule_start_time), format="short", locale=locale)
+    t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
+    schedule_duration = format_timedelta(t, format="short", threshold=.99, locale=locale)
+
     return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
-                                 feature_support=feature_support, kobo_support=kobo_support,
+                                 feature_support=feature_support, schedule_time=schedule_time,
+                                 schedule_duration=schedule_duration,
                                  title=_(u"Admin page"), page="admin")
 
 
@@ -1660,36 +1665,57 @@ def update_mailsettings():
 @admin_required
 def edit_scheduledtasks():
     content = config.get_scheduled_task_settings()
-    return render_title_template("schedule_edit.html", config=content, title=_(u"Edit Scheduled Tasks Settings"))
+    time_field = list()
+    duration_field = list()
+
+    locale = get_locale()
+    for n in range(24):
+        time_field.append((n , format_time(time(hour=n), format="short", locale=locale)))
+    for n in range(5, 65, 5):
+        t = timedelta(hours=n // 60, minutes=n % 60)
+        duration_field.append((n, format_timedelta(t, format="short", threshold=.99, locale=locale)))
+
+    return render_title_template("schedule_edit.html", config=content, starttime=time_field, duration=duration_field, title=_(u"Edit Scheduled Tasks Settings"))
 
 
 @admi.route("/admin/scheduledtasks", methods=["POST"])
 @login_required
 @admin_required
 def update_scheduledtasks():
+    error = False
     to_save = request.form.to_dict()
-    _config_int(to_save, "schedule_start_time")
-    _config_int(to_save, "schedule_end_time")
+    if "0" <= to_save.get("schedule_start_time") <= "23":
+        _config_int(to_save, "schedule_start_time")
+    else:
+        flash(_(u"Invalid start time for task specified"), category="error")
+        error = True
+    if "0" < to_save.get("schedule_duration") <= "60":
+        _config_int(to_save, "schedule_duration")
+    else:
+        flash(_(u"Invalid duration for task specified"), category="error")
+        error = True
     _config_checkbox(to_save, "schedule_generate_book_covers")
     _config_checkbox(to_save, "schedule_generate_series_covers")
+    _config_checkbox(to_save, "schedule_reconnect")
 
-    try:
-        config.save()
-        flash(_(u"Scheduled tasks settings updated"), category="success")
+    if not error:
+        try:
+            config.save()
+            flash(_(u"Scheduled tasks settings updated"), category="success")
 
-        # Cancel any running tasks
-        schedule.end_scheduled_tasks()
+            # Cancel any running tasks
+            schedule.end_scheduled_tasks()
 
-        # Re-register tasks with new settings
-        schedule.register_scheduled_tasks(cli.reconnect_enable)
-    except IntegrityError as ex:
-        ub.session.rollback()
-        log.error("An unknown error occurred while saving scheduled tasks settings")
-        flash(_(u"An unknown error occurred. Please try again later."), category="error")
-    except OperationalError:
-        ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+            # Re-register tasks with new settings
+            schedule.register_scheduled_tasks(config.schedule_reconnect)
+        except IntegrityError:
+            ub.session.rollback()
+            log.error("An unknown error occurred while saving scheduled tasks settings")
+            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        except OperationalError:
+            ub.session.rollback()
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
 
     return edit_scheduledtasks()
 

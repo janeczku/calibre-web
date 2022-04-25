@@ -19,7 +19,7 @@
 import datetime
 
 from . import config, constants
-from .services.background_scheduler import BackgroundScheduler
+from .services.background_scheduler import BackgroundScheduler, use_APScheduler
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
@@ -27,7 +27,7 @@ from .services.worker import WorkerThread
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
-
+    # config.schedule_reconnect or
     # Reconnect Calibre database (metadata.db)
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
@@ -59,15 +59,14 @@ def register_scheduled_tasks(reconnect=True):
         scheduler.remove_all_jobs()
 
         start = config.schedule_start_time
-        end = config.schedule_end_time
+        duration = config.schedule_duration
 
         # Register scheduled tasks
-        if start != end:
-            scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
-            scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end)
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
+        scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=start) #  toDo
 
         # Kick-off tasks, if they should currently be running
-        if should_task_be_running(start, end):
+        if should_task_be_running(start, duration):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(reconnect))
 
 
@@ -76,14 +75,17 @@ def register_startup_tasks():
 
     if scheduler:
         start = config.schedule_start_time
-        end = config.schedule_end_time
+        duration = config.schedule_duration
 
         # Run scheduled tasks immediately for development and testing
         # Ignore tasks that should currently be running, as these will be added when registering scheduled tasks
-        if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, end):
+        if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, duration):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
 
 
-def should_task_be_running(start, end):
-    now = datetime.datetime.now().hour
-    return (start < end and start <= now < end) or (end < start and (now < end or start <= now ))
+def should_task_be_running(start, duration):
+    now = datetime.datetime.now()
+    start_time = datetime.datetime.now().replace(hour=start, minute=0, second=0, microsecond=0)
+    end_time = start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
+    return start_time < now < end_time
+    # return (start < end and start <= now < end) or (end < start and (now < end or start <= now ))
