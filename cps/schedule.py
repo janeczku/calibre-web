@@ -30,16 +30,16 @@ def get_scheduled_tasks(reconnect=True):
 
     # Reconnect Calibre database (metadata.db)
     if reconnect:
-        tasks.append([lambda: TaskReconnectDatabase(), 'reconnect'])
+        tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:
-        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers'])
-        tasks.append([lambda: TaskClearCoverThumbnailCache(0), 'delete superfluous book covers'])
+        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers', False])
+        tasks.append([lambda: TaskClearCoverThumbnailCache(0), 'delete superfluous book covers', True])
 
     # Generate all missing series thumbnails
     if config.schedule_generate_series_covers:
-        tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers'])
+        tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers', False])
 
     return tasks
 
@@ -86,4 +86,4 @@ def register_startup_tasks():
 
 def should_task_be_running(start, end):
     now = datetime.datetime.now().hour
-    return (start < end and start <= now < end) or (end < start <= now or now < end)
+    return (start < end and start <= now < end) or (end < start and (now < end or start <= now ))
