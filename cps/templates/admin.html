@@ -184,6 +184,9 @@
           </div-->
         </div>
       <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
+      {% if config.schedule_generate_book_covers %}
+        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cover Cache')}}</a>
+      {%  endif %}
     </div>
   </div>
 
@@ -278,4 +281,7 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block modal %}
+{{ change_confirm_modal() }}
 {% endblock %}

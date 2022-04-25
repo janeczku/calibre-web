@@ -550,7 +550,7 @@ $(function() {
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
-            ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
+            confirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
         }
     });
 

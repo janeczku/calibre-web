@@ -44,7 +44,7 @@ from . import constants, logger, helper, services, cli
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
-    valid_email, check_username
+    valid_email, check_username, update_thumbnail_cache
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
@@ -167,6 +167,17 @@ def reconnect():
     else:
         log.debug("'/reconnect' was accessed but is not enabled")
         abort(404)
+
+
+@admi.route("/ajax/updateThumbnails", methods=['POST'])
+@admin_required
+@login_required
+def update_thumbnails():
+    content = config.get_scheduled_task_settings()
+    if content['schedule_generate_book_covers']:
+        log.info("Update of Cover cache requested")
+        update_thumbnail_cache()
+    return ""
 
 
 @admi.route("/admin/view")
@@ -612,6 +623,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "admin_refresh_cover_cache":
+        texts["main"] = _('Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?')
     elif element_id == "btnfullsync":
         texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
                           "to force a full sync with your Kobo Reader?")

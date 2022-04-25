@@ -1091,3 +1091,7 @@ def delete_thumbnail_cache():
 
 def add_book_to_thumbnail_cache(book_id):
     WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+
+
+def update_thumbnail_cache():
+    WorkerThread.add(None, TaskGenerateCoverThumbnails())
