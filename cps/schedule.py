@@ -51,7 +51,7 @@ def end_scheduled_tasks():
             worker.end_task(task.id)
 
 
-def register_scheduled_tasks():
+def register_scheduled_tasks(reconnect=True):
     scheduler = BackgroundScheduler()
 
     if scheduler:
@@ -68,7 +68,7 @@ def register_scheduled_tasks():
 
         # Kick-off tasks, if they should currently be running
         if should_task_be_running(start, end):
-            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
+            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(reconnect))
 
 
 def register_startup_tasks():

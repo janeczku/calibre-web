@@ -1681,7 +1681,7 @@ def update_scheduledtasks():
         schedule.end_scheduled_tasks()
 
         # Re-register tasks with new settings
-        schedule.register_scheduled_tasks()
+        schedule.register_scheduled_tasks(cli.reconnect_enable)
     except IntegrityError as ex:
         ub.session.rollback()
         log.error("An unknown error occurred while saving scheduled tasks settings")
