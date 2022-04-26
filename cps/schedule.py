@@ -63,7 +63,9 @@ def register_scheduled_tasks(reconnect=True):
 
         # Register scheduled tasks
         scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
-        scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=start) #  toDo
+        end_time = calclulate_end_time(start, duration)
+        scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end_time.hour,
+                           minute=end_time.minute)
 
         # Kick-off tasks, if they should currently be running
         if should_task_be_running(start, duration):
@@ -88,4 +90,8 @@ def should_task_be_running(start, duration):
     start_time = datetime.datetime.now().replace(hour=start, minute=0, second=0, microsecond=0)
     end_time = start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
     return start_time < now < end_time
-    # return (start < end and start <= now < end) or (end < start and (now < end or start <= now ))
+
+def calclulate_end_time(start, duration):
+    start_time = datetime.datetime.now().replace(hour=start, minute=0)
+    return start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
+
