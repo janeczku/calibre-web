@@ -47,7 +47,9 @@
         {% endfor %}
       </table>
     {% endif %}
-        <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
+        {% if not simple %}
+          <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
+        {% endif %}
         <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
       {% if (config.config_login_type == 1) %}
         <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
@@ -159,16 +161,51 @@
       <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
     </div>
   </div>
+{%  if feature_support['scheduler'] %}
+  <div class="row">
+    <div class="col">
+      <h2>{{_('Scheduled Tasks')}}</h2>
+        <div class="col-xs-12 col-sm-12 scheduled_tasks_details">
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Time at which tasks start to run')}}</div>
+            <div class="col-xs-6 col-sm-3">{{schedule_time}}</div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Maximum tasks duration')}}</div>
+            <div class="col-xs-6 col-sm-3">{{schedule_duration}}</div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Generate book cover thumbnails')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_book_covers) }}</div>
+          </div>
+          <!--div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Generate series cover thumbnails')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_series_covers) }}</div>
+          </div-->
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Reconnect to Calibre Library')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
+          </div>
 
-    <div class="row form-group">
-    <h2>{{_('Administration')}}</h2>
-      <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
-      <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
+        </div>
+      <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
+      {% if config.schedule_generate_book_covers %}
+        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cover Cache')}}</a>
+      {%  endif %}
     </div>
-    <div class="row form-group">
-      <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
-      <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
-      <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
+  </div>
+{%  endif %}
+  <div class="row form-group">
+    <h2>{{_('Administration')}}</h2>
+    <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
+    <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
+  </div>
+  <div class="row form-group">
+    <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
+  </div>
+  <div class="row form-group">
+    <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
+    <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
   </div>
 
   <div class="row">
@@ -249,4 +286,7 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block modal %}
+{{ change_confirm_modal() }}
 {% endblock %}

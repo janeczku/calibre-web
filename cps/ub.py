@@ -17,6 +17,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import atexit
 import os
 import sys
 import datetime
@@ -67,6 +68,7 @@ logged_in = dict()
 def signal_store_user_session(object, user):
     store_user_session()
 
+
 def store_user_session():
     if flask_session.get('user_id', ""):
         flask_session['_user_id'] = flask_session.get('user_id', "")
@@ -85,15 +87,16 @@ def store_user_session():
     else:
         log.error("No user id in session")
 
+
 def delete_user_session(user_id, session_key):
     try:
         log.debug("Deleted session_key: " + session_key)
-        session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                            User_Sessions.session_key==session_key).delete()
+        session.query(User_Sessions).filter(User_Sessions.user_id == user_id,
+                                            User_Sessions.session_key == session_key).delete()
         session.commit()
-    except (exc.OperationalError, exc.InvalidRequestError) as e:
+    except (exc.OperationalError, exc.InvalidRequestError) as ex:
         session.rollback()
-        log.exception(e)
+        log.exception(ex)
 
 
 def check_user_session(user_id, session_key):
@@ -209,9 +212,9 @@ class UserBase:
             pass
         try:
             session.commit()
-        except (exc.OperationalError, exc.InvalidRequestError):
+        except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
-            # ToDo: Error message
+            log.error_or_exception(e)
 
     def __repr__(self):
         return '<User %r>' % self.name
@@ -510,6 +513,28 @@ class RemoteAuthToken(Base):
         return '<Token %r>' % self.id
 
 
+def filename(context):
+    file_format = context.get_current_parameters()['format']
+    if file_format == 'jpeg':
+        return context.get_current_parameters()['uuid'] + '.jpg'
+    else:
+        return context.get_current_parameters()['uuid'] + '.' + file_format
+
+
+class Thumbnail(Base):
+    __tablename__ = 'thumbnail'
+
+    id = Column(Integer, primary_key=True)
+    entity_id = Column(Integer)
+    uuid = Column(String, default=lambda: str(uuid.uuid4()), unique=True)
+    format = Column(String, default='jpeg')
+    type = Column(SmallInteger, default=constants.THUMBNAIL_TYPE_COVER)
+    resolution = Column(SmallInteger, default=constants.COVER_THUMBNAIL_SMALL)
+    filename = Column(String, default=filename)
+    generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
+    expiration = Column(DateTime, nullable=True)
+
+
 # Add missing tables during migration of database
 def add_missing_tables(engine, _session):
     if not engine.dialect.has_table(engine.connect(), "book_read_link"):
@@ -524,6 +549,8 @@ def add_missing_tables(engine, _session):
         KoboStatistics.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "thumbnail"):
+        Thumbnail.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
         Registration.__table__.create(bind=engine)
         with engine.connect() as conn:
@@ -829,6 +856,16 @@ def init_db(app_db_path):
             sys.exit(3)
 
 
+def get_new_session_instance():
+    new_engine = create_engine(u'sqlite:///{0}'.format(cli.settings_path), echo=False)
+    new_session = scoped_session(sessionmaker())
+    new_session.configure(bind=new_engine)
+
+    atexit.register(lambda: new_session.remove() if new_session else True)
+
+    return new_session
+
+
 def dispose():
     global session
 
@@ -853,5 +890,5 @@ def session_commit(success=None, _session=None):
             log.info(success)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
         s.rollback()
-        log.debug_or_exception(e)
+        log.error_or_exception(e)
     return ""

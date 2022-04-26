@@ -18,6 +18,7 @@
 
 import base64
 import binascii
+from functools import wraps
 
 from sqlalchemy.sql.expression import func
 from werkzeug.security import check_password_hash
@@ -25,10 +26,6 @@ from flask_login import login_required, login_user
 
 from . import lm, ub, config, constants, services
 
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 def login_required_if_no_ano(func):
     @wraps(func)

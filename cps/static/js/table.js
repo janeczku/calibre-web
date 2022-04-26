@@ -15,7 +15,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+/* exported TableActions, RestrictionActions, EbookActions, TaskActions, responseHandler */
 /* global getPath, confirmDialog */
 
 var selections = [];
@@ -41,6 +41,24 @@ $(function() {
             });
         }, 1000);
     }
+
+    $("#cancel_task_confirm").click(function() {
+        //get data-id attribute of the clicked element
+        var taskId = $(this).data("task-id");
+        $.ajax({
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/canceltask",
+            data: JSON.stringify({"task_id": taskId}),
+        });
+    });
+    //triggered when modal is about to be shown
+    $("#cancelTaskModal").on("show.bs.modal", function(e) {
+        //get data-id attribute of the clicked element and store in button
+        var taskId = $(e.relatedTarget).data("task-id");
+        $(e.currentTarget).find("#cancel_task_confirm").data("task-id", taskId);
+    });
 
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
         function (e, rowsAfter, rowsBefore) {
@@ -107,8 +125,9 @@ $(function() {
             url: window.location.pathname + "/../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success(booTitles) {
+                $('#merge_from').empty();
                 $.each(booTitles.from, function(i, item) {
-                    $("<span>- " + item + "</span>").appendTo("#merge_from");
+                    $("<span>- " + item + "</span><p></p>").appendTo("#merge_from");
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
@@ -531,7 +550,7 @@ $(function() {
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
-            ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
+            confirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
         }
     });
 
@@ -581,6 +600,7 @@ function handle_header_buttons () {
         $(".header_select").removeAttr("disabled");
     }
 }
+
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
@@ -616,6 +636,19 @@ function UserActions (value, row) {
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
+}
+
+/* Function for cancelling tasks */
+function TaskActions (value, row) {
+    var cancellableStats = [0, 1, 2];
+    if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
+        return [
+            "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
+            "<i class=\"glyphicon glyphicon-ban-circle\"></i>",
+            "</div>"
+        ].join("");
+    }
+    return '';
 }
 
 /* Function for keeping checked rows */
@@ -811,11 +844,13 @@ function checkboxChange(checkbox, userId, field, field_index) {
 
 function BookCheckboxChange(checkbox, userId, field) {
     var value = checkbox.checked ? "True" : "False";
+    var element = checkbox;
     $.ajax({
         method: "post",
         url: getPath() + "/ajax/editbooks/" + field,
         data: {"pk": userId, "value": value},
         error: function(data) {
+            element.checked = !element.checked;
             handleListServerResponse([{type:"danger", message:data.responseText}])
         },
         success: handleListServerResponse

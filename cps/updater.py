@@ -117,7 +117,7 @@ class Updater(threading.Thread):
         except (IOError, OSError) as ex:
             self.status = 12
             log.error(u'Possible Reason for error: update file could not be saved in temp dir')
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         self.pause()
         return False
 
@@ -214,7 +214,7 @@ class Updater(threading.Thread):
             if not os.path.exists(dst_dir):
                 try:
                     os.makedirs(dst_dir)
-                    log.debug('Create directory: {}', dst_dir)
+                    log.debug('Create directory: {}'.format(dst_dir))
                 except OSError as e:
                     log.error('Failed creating folder: {} with error {}'.format(dst_dir, e))
                 if change_permissions:
@@ -233,7 +233,7 @@ class Updater(threading.Thread):
                         permission = os.stat(dst_file)
                     try:
                         os.remove(dst_file)
-                        log.debug('Remove file before copy: %s', dst_file)
+                        log.debug('Remove file before copy: {}'.format(dst_file))
                     except OSError as e:
                         log.error('Failed removing file: {} with error {}'.format(dst_file, e))
                 else:
@@ -398,7 +398,7 @@ class Updater(threading.Thread):
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
             os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
             os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
-            os.sep + 'gmail.json', os.sep + 'exclude.txt'
+            os.sep + 'gmail.json', os.sep + 'exclude.txt', os.sep + 'cps' + os.sep + 'cache'
         ]
         try:
             with open(os.path.join(constants.BASE_DIR, "exclude.txt"), "r") as f:
