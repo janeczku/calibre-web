@@ -200,7 +200,7 @@ def admin():
                     form_date -= timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
                 elif commit[19] == '-':
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            commit = format_datetime(form_date - tz, format='short', locale=locale)
+            commit = format_datetime(form_date - tz, format='short')
         else:
             commit = version['version']
 

@@ -19,12 +19,13 @@ from markupsafe import escape
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 from flask_babel import gettext as _
-from flask_babel import get_locale, format_datetime
+from flask_babel import format_datetime
 from babel.units import format_unit
 
 from . import logger
 from .render_template import render_title_template
-from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
+    STAT_CANCELLED
 
 tasks = Blueprint('tasks', __name__)
 
@@ -50,11 +51,11 @@ def get_tasks_status():
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     rendered_tasklist = list()
-    for __, user, __, task in tasklist:
+    for __, user, __, task, __ in tasklist:
         if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
-                ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
+                ret['starttime'] = format_datetime(task.start_time, format='short')
                 ret['runtime'] = format_runtime(task.runtime)
 
             # localize the task status
@@ -67,12 +68,22 @@ def render_task_status(tasklist):
                     ret['status'] = _(u'Started')
                 elif task.stat == STAT_FINISH_SUCCESS:
                     ret['status'] = _(u'Finished')
+                elif task.stat == STAT_ENDED:
+                    ret['status'] = _(u'Ended')
+                elif task.stat == STAT_CANCELLED:
+                    ret['status'] = _(u'Cancelled')
                 else:
                     ret['status'] = _(u'Unknown Status')
 
-            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
+            ret['taskMessage'] = "{}: {}".format(task.name, task.message) if task.message else task.name
             ret['progress'] = "{} %".format(int(task.progress * 100))
             ret['user'] = escape(user)  # prevent xss
+
+            # Hidden fields
+            ret['task_id'] = task.id
+            ret['stat'] = task.stat
+            ret['is_cancellable'] = task.is_cancellable
+
             rendered_tasklist.append(ret)
 
     return rendered_tasklist
@@ -82,7 +93,7 @@ def render_task_status(tasklist):
 def format_runtime(runtime):
     ret_val = ""
     if runtime.days:
-        ret_val = format_unit(runtime.days, 'duration-day', length="long", locale=get_locale()) + ', '
+        ret_val = format_unit(runtime.days, 'duration-day', length="long") + ', '
     minutes, seconds = divmod(runtime.seconds, 60)
     hours, minutes = divmod(minutes, 60)
     # ToDo: locale.number_symbols._data['timeSeparator'] -> localize time separator ?
