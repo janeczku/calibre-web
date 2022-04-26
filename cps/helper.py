@@ -29,11 +29,9 @@ from tempfile import gettempdir
 import requests
 import unidecode
 
-
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
-from flask_babel import format_datetime, get_locale
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -41,7 +39,6 @@ from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
 from urllib.parse import quote
-
 
 try:
     import advocate
@@ -52,14 +49,13 @@ except ImportError:
     advocate = requests
     UnacceptableAddressException = MissingSchema = BaseException
 
-from . import calibre_db, cli
+from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
-from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
-    STAT_CANCELLED
+from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 
@@ -76,10 +72,10 @@ except (ImportError, RuntimeError) as e:
 
 
 # Convert existing book entry to new format
-def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
+def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
-    file_path = os.path.join(calibrepath, book.path, data.name)
+    file_path = os.path.join(calibre_path, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
@@ -144,20 +140,20 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
 
 
 def check_send_to_kindle_with_converter(formats):
-    bookformats = list()
+    book_formats = list()
     if 'EPUB' in formats and 'MOBI' not in formats:
-        bookformats.append({'format': 'Mobi',
-                            'convert': 1,
-                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                      orig='Epub',
-                                      format='Mobi')})
+        book_formats.append({'format': 'Mobi',
+                             'convert': 1,
+                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                       orig='Epub',
+                                       format='Mobi')})
     if 'AZW3' in formats and 'MOBI' not in formats:
-        bookformats.append({'format': 'Mobi',
-                            'convert': 2,
-                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                      orig='Azw3',
-                                      format='Mobi')})
-    return bookformats
+        book_formats.append({'format': 'Mobi',
+                             'convert': 2,
+                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                       orig='Azw3',
+                                       format='Mobi')})
+    return book_formats
 
 
 def check_send_to_kindle(entry):
@@ -165,26 +161,26 @@ def check_send_to_kindle(entry):
         returns all available book formats for sending to Kindle
     """
     formats = list()
-    bookformats = list()
+    book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
             if ele.uncompressed_size < config.mail_size:
                 formats.append(ele.format)
         if 'MOBI' in formats:
-            bookformats.append({'format': 'Mobi',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Mobi')})
+            book_formats.append({'format': 'Mobi',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Mobi')})
         if 'PDF' in formats:
-            bookformats.append({'format': 'Pdf',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Pdf')})
+            book_formats.append({'format': 'Pdf',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Pdf')})
         if 'AZW' in formats:
-            bookformats.append({'format': 'Azw',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Azw')})
+            book_formats.append({'format': 'Azw',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Azw')})
         if config.config_converterpath:
-            bookformats.extend(check_send_to_kindle_with_converter(formats))
-        return bookformats
+            book_formats.extend(check_send_to_kindle_with_converter(formats))
+        return book_formats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
         return None
@@ -194,12 +190,12 @@ def check_send_to_kindle(entry):
 # list with supported formats
 def check_read_formats(entry):
     extensions_reader = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR', 'DJVU'}
-    bookformats = list()
+    book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
             if ele.format.upper() in extensions_reader:
-                bookformats.append(ele.format.lower())
-    return bookformats
+                book_formats.append(ele.format.lower())
+    return book_formats
 
 
 # Files are processed in the following order/priority:
@@ -229,23 +225,11 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
-def shorten_component(s, by_what):
-    l = len(s)
-    if l < by_what:
-        return s
-    l = (l - by_what)//2
-    if l <= 0:
-        return s
-    return s[:l] + s[-l:]
-
-
 def get_valid_filename(value, replace_whitespace=True, chars=128):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-
-
     if value[-1:] == u'.':
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
@@ -814,7 +798,7 @@ def get_series_thumbnail(series_id, resolution):
 # saves book cover from url
 def save_cover_from_url(url, book_path):
     try:
-        if cli.allow_localhost:
+        if cli_param.allow_localhost:
             img = requests.get(url, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
         elif use_advocate:
             img = advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling

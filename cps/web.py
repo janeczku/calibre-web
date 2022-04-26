@@ -72,10 +72,10 @@ except ImportError:
 
 from functools import wraps
 
-#try:
-#    from natsort import natsorted as sort
-#except ImportError:
-#    sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
+try:
+    from natsort import natsorted as sort
+except ImportError:
+    sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
 @app.after_request
