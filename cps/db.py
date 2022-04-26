@@ -89,7 +89,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
-class LibraryId(Base):
+class Library_Id(Base):
     __tablename__ = 'library_id'
     id = Column(Integer, primary_key=True)
     uuid = Column(String, nullable=False)
@@ -440,10 +440,12 @@ class CalibreDB:
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self, expire_on_commit=True):
+    def __init__(self):
         """ Initialize a new CalibreDB session
         """
         self.session = None
+
+    def init_db(self, expire_on_commit=True):
         if self._init:
             self.init_session(expire_on_commit)
 
@@ -543,7 +545,7 @@ class CalibreDB:
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
-                database_uuid = local_session().query(LibraryId).one_or_none()
+                database_uuid = local_session().query(Library_Id).one_or_none()
                 # local_session.dispose()
 
             check_engine.connect()

@@ -53,7 +53,7 @@ except ImportError:
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_session
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger, cli
+from . import constants, logger
 
 log = logger.create()
 
@@ -816,7 +816,7 @@ def init_db_thread():
     return Session()
 
 
-def init_db(app_db_path):
+def init_db(app_db_path, user_credentials=None):
     # Open session for database connection
     global session
     global app_DB_path
@@ -837,8 +837,8 @@ def init_db(app_db_path):
         create_admin_user(session)
         create_anonymous_user(session)
 
-    if cli.user_credentials:
-        username, password = cli.user_credentials.split(':', 1)
+    if user_credentials:
+        username, password = user_credentials.split(':', 1)
         user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
         if user:
             if not password:

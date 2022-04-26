@@ -29,7 +29,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
-from . import constants, cli, logger
+from . import constants, logger
 
 
 log = logger.create()
@@ -154,12 +154,16 @@ class _Settings(_Base):
 # Class holds all application specific settings in calibre-web
 class _ConfigSQL(object):
     # pylint: disable=no-member
-    def __init__(self, session):
+    def __init__(self):
+        pass
+
+    def init_config(self, session, cli):
         self._session = session
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
         self.load()
+        self.cli = cli
 
         change = False
         if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
@@ -184,22 +188,21 @@ class _ConfigSQL(object):
         return self._settings
 
     def get_config_certfile(self):
-        if cli.certfilepath:
-            return cli.certfilepath
-        if cli.certfilepath == "":
+        if self.cli.certfilepath:
+            return self.cli.certfilepath
+        if self.cli.certfilepath == "":
             return None
         return self.config_certfile
 
     def get_config_keyfile(self):
-        if cli.keyfilepath:
-            return cli.keyfilepath
-        if cli.certfilepath == "":
+        if self.cli.keyfilepath:
+            return self.cli.keyfilepath
+        if self.cli.certfilepath == "":
             return None
         return self.config_keyfile
 
-    @staticmethod
-    def get_config_ipaddress():
-        return cli.ip_address or ""
+    def get_config_ipaddress(self):
+        return self.cli.ip_address or ""
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -449,14 +452,15 @@ def _migrate_database(session):
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(session):
+def load_configuration(conf, session, cli):
     _migrate_database(session)
 
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-    conf = _ConfigSQL(session)
-    return conf
+    # conf = _ConfigSQL()
+    conf.init_config(session, cli)
+    # return conf
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()

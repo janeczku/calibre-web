@@ -19,8 +19,6 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
-__package__ = "cps"
-
 import sys
 import os
 import mimetypes
@@ -28,15 +26,23 @@ import mimetypes
 from babel import Locale as LC
 from babel import negotiate_locale
 from babel.core import UnknownLocaleError
-from flask import Flask, request, g
+from flask import request, g
+from flask import Flask
 from .MyLoginManager import MyLoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
-from . import config_sql, logger, cache_buster, cli, ub, db
+from . import config_sql
+from . import logger
+from . import cache_buster
+from .cli import CliParameter
+from .constants import CONFIG_DIR
+from . import ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
+from . import services
+from .updater import Updater
 
 try:
     import lxml
@@ -49,6 +55,7 @@ try:
     wtf_present = True
 except ImportError:
     wtf_present = False
+
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -81,37 +88,55 @@ app.config.update(
 
 
 lm = MyLoginManager()
-lm.login_view = 'web.login'
-lm.anonymous_user = ub.Anonymous
-lm.session_protection = 'strong'
-
-if wtf_present:
-    csrf = CSRFProtect()
-    csrf.init_app(app)
-else:
-    csrf = None
-
-ub.init_db(cli.settings_path)
-# pylint: disable=no-member
-config = config_sql.load_configuration(ub.session)
-
-web_server = WebServer()
 
 babel = Babel()
 _BABEL_TRANSLATIONS = set()
 
 log = logger.create()
 
+config = config_sql._ConfigSQL()
 
-from . import services
+cli_param = CliParameter()
 
-db.CalibreDB.update_config(config)
-db.CalibreDB.setup_db(config.config_calibre_dir, cli.settings_path)
-
+if wtf_present:
+    csrf = CSRFProtect()
+else:
+    csrf = None
 
 calibre_db = db.CalibreDB()
 
+web_server = WebServer()
+
+updater_thread = Updater()
+
+
 def create_app():
+    lm.login_view = 'web.login'
+    lm.anonymous_user = ub.Anonymous
+    lm.session_protection = 'strong'
+
+    if csrf:
+        csrf.init_app(app)
+
+    cli_param.init()
+
+    ub.init_db(os.path.join(CONFIG_DIR, "app.db"), cli_param.user_credentials)
+
+    # ub.init_db(os.path.join(CONFIG_DIR, "app.db"))
+    # pylint: disable=no-member
+    config_sql.load_configuration(config, ub.session, cli_param)
+
+    db.CalibreDB.update_config(config)
+    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
+    calibre_db.init_db()
+
+    updater_thread.init_updater(config, web_server)
+    # Perform dry run of updater and exit afterwards
+    if cli_param.dry_run:
+        updater_thread.dry_run()
+        sys.exit(0)
+    updater_thread.start()
+
     if sys.version_info < (3, 0):
         log.info(
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
@@ -156,7 +181,7 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-    config.store_calibre_uuid(calibre_db, db.LibraryId)
+    config.store_calibre_uuid(calibre_db, db.Library_Id)
     return app
 
 
@@ -179,11 +204,8 @@ def get_locale():
     return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
 
 
-from .updater import Updater
-updater_thread = Updater()
+'''@babel.timezoneselector
+def get_timezone():
+    user = getattr(g, 'user', None)
+    return user.timezone if user else None'''
 
-# Perform dry run of updater and exit afterwards
-if cli.dry_run:
-    updater_thread.dry_run()
-    sys.exit(0)
-updater_thread.start()

@@ -24,11 +24,10 @@ import mimetypes
 
 from io import StringIO
 from email.message import EmailMessage
-from email.utils import parseaddr
-
+from email.utils import formatdate, parseaddr
+from email.generator import Generator
 from flask_babel import lazy_gettext as N_
 from email.utils import formatdate
-from email.generator import Generator
 
 from cps.services.worker import CalibreTask
 from cps.services import gmail
