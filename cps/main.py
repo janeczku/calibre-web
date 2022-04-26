@@ -24,6 +24,7 @@ from .shelf import shelf
 from .remotelogin import remotelogin
 from .search_metadata import meta
 from .error_handler import init_errorhandler
+from .tasks_status import tasks
 
 try:
     from kobo import kobo, get_kobo_activated
@@ -48,16 +49,19 @@ def main():
     from .gdrive import gdrive
     from .editbooks import editbook
     from .about import about
+    from .search import search
 
     from . import web_server
     init_errorhandler()
 
+    app.register_blueprint(search)
+    app.register_blueprint(tasks)
     app.register_blueprint(web)
     app.register_blueprint(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
     app.register_blueprint(shelf)
-    app.register_blueprint(admi)  #
+    app.register_blueprint(admi)
     app.register_blueprint(remotelogin)
     app.register_blueprint(meta)
     app.register_blueprint(gdrive)

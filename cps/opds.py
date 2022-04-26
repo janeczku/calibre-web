@@ -26,15 +26,18 @@ from functools import wraps
 
 from flask import Blueprint, request, render_template, Response, g, make_response, abort
 from flask_login import current_user
+from flask_babel import get_locale
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.security import check_password_hash
-from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
+
+from . import constants, logger, config, db, calibre_db, ub, services, isoLanguages
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
+
 opds = Blueprint('opds', __name__)
 
 log = logger.create()

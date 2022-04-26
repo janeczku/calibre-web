@@ -29,11 +29,11 @@ from tempfile import gettempdir
 import requests
 import unidecode
 
-from babel.dates import format_datetime
-from babel.units import format_unit
+
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
+from flask_babel import format_datetime, get_locale
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -54,7 +54,7 @@ except ImportError:
 
 from . import calibre_db, cli
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub, fs
+from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
@@ -968,64 +968,6 @@ def json_serial(obj):
             'microseconds': obj.microseconds,
         }
     raise TypeError("Type %s not serializable" % type(obj))
-
-
-# helper function for displaying the runtime of tasks
-def format_runtime(runtime):
-    ret_val = ""
-    if runtime.days:
-        ret_val = format_unit(runtime.days, 'duration-day', length="long", locale=get_locale()) + ', '
-    mins, seconds = divmod(runtime.seconds, 60)
-    hours, minutes = divmod(mins, 60)
-    # ToDo: locale.number_symbols._data['timeSeparator'] -> localize time separator ?
-    if hours:
-        ret_val += '{:d}:{:02d}:{:02d}s'.format(hours, minutes, seconds)
-    elif minutes:
-        ret_val += '{:2d}:{:02d}s'.format(minutes, seconds)
-    else:
-        ret_val += '{:2d}s'.format(seconds)
-    return ret_val
-
-
-# helper function to apply localize status information in tasklist entries
-def render_task_status(tasklist):
-    renderedtasklist = list()
-    for __, user, __, task, __ in tasklist:
-        if user == current_user.name or current_user.role_admin():
-            ret = {}
-            if task.start_time:
-                ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
-                ret['runtime'] = format_runtime(task.runtime)
-
-            # localize the task status
-            if isinstance(task.stat, int):
-                if task.stat == STAT_WAITING:
-                    ret['status'] = _(u'Waiting')
-                elif task.stat == STAT_FAIL:
-                    ret['status'] = _(u'Failed')
-                elif task.stat == STAT_STARTED:
-                    ret['status'] = _(u'Started')
-                elif task.stat == STAT_FINISH_SUCCESS:
-                    ret['status'] = _(u'Finished')
-                elif task.stat == STAT_ENDED:
-                    ret['status'] = _(u'Ended')
-                elif task.stat == STAT_CANCELLED:
-                    ret['status'] = _(u'Cancelled')
-                else:
-                    ret['status'] = _(u'Unknown Status')
-
-            ret['taskMessage'] = "{}: {}".format(task.name, task.message) if task.message else task.name
-            ret['progress'] = "{} %".format(int(task.progress * 100))
-            ret['user'] = escape(user)  # prevent xss
-
-            # Hidden fields
-            ret['task_id'] = task.id
-            ret['stat'] = task.stat
-            ret['is_cancellable'] = task.is_cancellable
-
-            renderedtasklist.append(ret)
-
-    return renderedtasklist
 
 
 def tags_filters():

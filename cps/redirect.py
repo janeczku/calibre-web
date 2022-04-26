@@ -29,7 +29,6 @@
 
 from urllib.parse import urlparse, urljoin
 
-
 from flask import request, url_for, redirect
 
 

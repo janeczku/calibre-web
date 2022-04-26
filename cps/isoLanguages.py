@@ -49,7 +49,7 @@ except ImportError:
 
 
 def get_language_names(locale):
-    return _LANGUAGE_NAMES.get(locale)
+    return _LANGUAGE_NAMES.get(str(locale))
 
 
 def get_language_name(locale, lang_code):

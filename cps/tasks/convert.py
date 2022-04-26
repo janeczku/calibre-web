@@ -55,7 +55,8 @@ class TaskConvert(CalibreTask):
     def run(self, worker_thread):
         self.worker_thread = worker_thread
         if config.config_use_google_drive:
-            worker_db = db.CalibreDB(expire_on_commit=False)
+            worker_db = db.CalibreDB()
+            worker_db.init_db(expire_on_commit=False)
             cur_book = worker_db.get_book(self.book_id)
             self.title = cur_book.title
             data = worker_db.get_book_format(self.book_id, self.settings['old_book_format'])
@@ -104,7 +105,8 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
-        local_db = db.CalibreDB(expire_on_commit=False)
+        local_db = db.CalibreDB()
+        local_db.init_db(expire_on_commit=False)
         file_path = self.file_path
         book_id = self.book_id
         format_old_ext = u'.' + self.settings['old_book_format'].lower()

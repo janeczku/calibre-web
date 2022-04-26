@@ -68,7 +68,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self.log = logger.create()
         self.book_id = book_id
         self.app_db_session = ub.get_new_session_instance()
-        self.calibre_db = db.CalibreDB(expire_on_commit=False)
+        self.calibre_db = db.CalibreDB()
+        self.calibre_db.init_db(expire_on_commit=False)
         self.cache = fs.FileSystem()
         self.resolutions = [
             constants.COVER_THUMBNAIL_SMALL,
@@ -238,7 +239,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
         super(TaskGenerateSeriesThumbnails, self).__init__(task_message)
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
-        self.calibre_db = db.CalibreDB(expire_on_commit=False)
+        self.calibre_db = db.CalibreDB()
+        self.calibre_db.init_db(expire_on_commit=False)
         self.cache = fs.FileSystem()
         self.resolutions = [
             constants.COVER_THUMBNAIL_SMALL,
@@ -448,7 +450,8 @@ class TaskClearCoverThumbnailCache(CalibreTask):
         super(TaskClearCoverThumbnailCache, self).__init__(task_message)
         self.log = logger.create()
         self.book_id = book_id
-        self.calibre_db = db.CalibreDB(expire_on_commit=False)
+        self.calibre_db = db.CalibreDB()
+        self.calibre_db.init_db(expire_on_commit=False)
         self.app_db_session = ub.get_new_session_instance()
         self.cache = fs.FileSystem()
 
