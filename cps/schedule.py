@@ -34,8 +34,8 @@ def get_scheduled_tasks(reconnect=True):
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:
-        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers', False])
         tasks.append([lambda: TaskClearCoverThumbnailCache(0), 'delete superfluous book covers', True])
+        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers', False])
 
     # Generate all missing series thumbnails
     if config.schedule_generate_series_covers:
