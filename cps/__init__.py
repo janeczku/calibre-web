@@ -91,7 +91,7 @@ if wtf_present:
 else:
     csrf = None
 
-ub.init_db(cli.settingspath)
+ub.init_db(cli.settings_path)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
 
@@ -106,7 +106,7 @@ log = logger.create()
 from . import services
 
 db.CalibreDB.update_config(config)
-db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
+db.CalibreDB.setup_db(config.config_calibre_dir, cli.settings_path)
 
 
 calibre_db = db.CalibreDB()
@@ -156,8 +156,9 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
-    config.store_calibre_uuid(calibre_db, db.Library_Id)
+    config.store_calibre_uuid(calibre_db, db.LibraryId)
     return app
+
 
 @babel.localeselector
 def get_locale():
@@ -176,12 +177,6 @@ def get_locale():
                 log.debug('Could not parse locale "%s": %s', x, e)
 
     return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
-
-
-@babel.timezoneselector
-def get_timezone():
-    user = getattr(g, 'user', None)
-    return user.timezone if user else None
 
 
 from .updater import Updater

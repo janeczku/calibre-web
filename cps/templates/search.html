@@ -1,3 +1,4 @@
+{% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
 <div class="discover">
@@ -43,16 +44,16 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         {% if entry.Books.has_cover is defined %}
-           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img" title="{{entry.Books.title}}" >
-                <img src="{{ url_for('web.get_cover', book_id=entry.Books.id) }}" alt="{{ entry.Books.title }}" />
-                {% if entry.Books.id in read_book_ids %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+                {{ image.book_cover(entry.Books) }}
+                {% if entry[2] == True %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
           </a>
         {% endif %}
       </div>
       <div class="meta">
-        <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+        <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
           <p title="{{entry.Books.title}}" class="title">{{entry.Books.title|shortentitle}}</p>
         </a>
         <p class="author">
@@ -61,7 +62,7 @@
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
               {% endif %}
-              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
               {% if loop.last %}
                 <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
               {% endif %}
@@ -69,7 +70,7 @@
               {% if not loop.first %}
                 <span>&amp;</span>
               {% endif %}
-              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort_param='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
           {% for format in entry.Books.data %}
@@ -80,7 +81,7 @@
         </p>
         {% if entry.Books.series.__len__() > 0 %}
         <p class="series">
-          <a href="{{url_for('web.books_list', data='series', sort_param='new', book_id=entry.Books.series[0].id )}}">
+          <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.Books.series[0].id )}}">
             {{entry.Books.series[0].name}}
           </a>
           ({{entry.Books.series_index|formatseriesindex}})

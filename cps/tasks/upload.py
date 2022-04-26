@@ -17,11 +17,14 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
+
+from flask_babel import lazy_gettext as N_
+
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
 
 class TaskUpload(CalibreTask):
-    def __init__(self, taskMessage, book_title):
-        super(TaskUpload, self).__init__(taskMessage)
+    def __init__(self, task_message, book_title):
+        super(TaskUpload, self).__init__(task_message)
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_FINISH_SUCCESS
         self.progress = 1
@@ -32,7 +35,11 @@ class TaskUpload(CalibreTask):
 
     @property
     def name(self):
-        return "Upload"
+        return N_("Upload")
 
     def __str__(self):
         return "Upload {}".format(self.book_title)
+
+    @property
+    def is_cancellable(self):
+        return False

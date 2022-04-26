@@ -33,7 +33,7 @@ $(".datepicker").datepicker({
     if (results) {
         pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
         $(this).next('input')
-            .val(pubDate.toLocaleDateString(language))
+            .val(pubDate.toLocaleDateString(language.replaceAll("_","-")))
             .removeClass("hidden");
     }
 }).trigger("change");

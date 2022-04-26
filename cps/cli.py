@@ -24,7 +24,7 @@ import socket
 from .constants import CONFIG_DIR as _CONFIG_DIR
 from .constants import STABLE_VERSION as _STABLE_VERSION
 from .constants import NIGHTLY_VERSION as _NIGHTLY_VERSION
-
+from .constants import DEFAULT_SETTINGS_FILE, DEFAULT_GDRIVE_FILE
 
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
@@ -51,8 +51,15 @@ parser.add_argument('-d', action='store_true', help='Dry run of updater to check
 parser.add_argument('-r', action='store_true', help='Enable public database reconnect route under /reconnect')
 args = parser.parse_args()
 
-settingspath = args.p or os.path.join(_CONFIG_DIR, "app.db")
-gdpath       = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
+settings_path = args.p or os.path.join(_CONFIG_DIR, DEFAULT_SETTINGS_FILE)
+gd_path = args.g or os.path.join(_CONFIG_DIR, DEFAULT_GDRIVE_FILE)
+
+if os.path.isdir(settings_path):
+    settings_path = os.path.join(settings_path, DEFAULT_SETTINGS_FILE)
+
+if os.path.isdir(gd_path):
+    gd_path = os.path.join(gd_path, DEFAULT_GDRIVE_FILE)
+
 
 # handle and check parameter for ssl encryption
 certfilepath = None
@@ -84,10 +91,14 @@ if args.k == "":
 
 # dry run updater
 dry_run = args.d or None
+# enable reconnect endpoint for docker database reconnect
+reconnect_enable = args.r or os.environ.get("CALIBRE_RECONNECT", None)
 # load covers from localhost
-allow_localhost = args.l or None
+allow_localhost = args.l or os.environ.get("CALIBRE_LOCALHOST", None)
 # handle and check ip address argument
 ip_address = args.i or None
+
+
 if ip_address:
     try:
         # try to parse the given ip address with socket

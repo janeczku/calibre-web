@@ -1,3 +1,4 @@
+{% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
 <h1 class="{{page}}">{{_(title)}}</h1>
@@ -27,7 +28,7 @@
                   <div class="cover">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
                           <span class="img" title="{{entry[0].series[0].name}}">
-                              <img src="{{ url_for('web.get_cover', book_id=entry[3]) }}" alt="{{ entry[0].series[0].name }}"/>
+                              {{ image.series(entry[0].series[0], alt=entry[0].series[0].name|shortentitle) }}
                               <span class="badge">{{entry.count}}</span>
                             </span>
                       </a>

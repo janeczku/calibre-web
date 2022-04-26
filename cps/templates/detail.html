@@ -4,7 +4,8 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img id="detailcover" title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
+        <!-- Always use full-sized image for the detail page -->
+        <img id="detailcover" title="{{entry.title}}" src="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
@@ -99,7 +100,7 @@
       </div>
       <h2 id="title">{{entry.title}}</h2>
       <p class="author">
-          {% for author in entry.authors %}
+          {% for author in entry.ordered_authors %}
             <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
@@ -138,7 +139,7 @@
         <p>
         <span class="glyphicon glyphicon-link"></span>
         {% for identifier in entry.identifiers %}
-          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.formatType()}}</a>
+          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
         {%endfor%}
       </p>
       </div>
@@ -295,7 +296,7 @@
       {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
+          <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
         </div>
       </div>
       {% endif %}

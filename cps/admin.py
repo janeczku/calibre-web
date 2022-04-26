@@ -24,12 +24,12 @@ import os
 import re
 import base64
 import json
-import time
 import operator
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
+from functools import wraps
 
-from babel import Locale as LC
-from babel.dates import format_datetime
+from babel import Locale
+from babel.dates import format_datetime, format_time, format_timedelta
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
@@ -40,14 +40,15 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services, cli
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, \
+    kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
-    valid_email, check_username
+    valid_email, check_username, update_thumbnail_cache
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
+from .services.worker import WorkerThread
 from . import debug_info, _BABEL_TRANSLATIONS
 
-from functools import wraps
 
 log = logger.create()
 
@@ -56,7 +57,8 @@ feature_support = {
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo),
         'updater': constants.UPDATER_AVAILABLE,
-        'gmail': bool(services.gmail)
+        'gmail': bool(services.gmail),
+        'scheduler': schedule.use_APScheduler
     }
 
 try:
@@ -159,7 +161,7 @@ def shutdown():
 # needed for docker applications, as changes on metadata.db from host are not visible to application
 @admi.route("/reconnect", methods=['GET'])
 def reconnect():
-    if cli.args.r:
+    if cli.reconnect_enable:
         calibre_db.reconnect_db(config, ub.app_DB_path)
         return json.dumps({})
     else:
@@ -167,10 +169,22 @@ def reconnect():
         abort(404)
 
 
+@admi.route("/ajax/updateThumbnails", methods=['POST'])
+@admin_required
+@login_required
+def update_thumbnails():
+    content = config.get_scheduled_task_settings()
+    if content['schedule_generate_book_covers']:
+        log.info("Update of Cover cache requested")
+        update_thumbnail_cache()
+    return ""
+
+
 @admi.route("/admin/view")
 @login_required
 @admin_required
 def admin():
+    locale = get_locale()
     version = updater_thread.get_current_version_info()
     if version is False:
         commit = _(u'Unknown')
@@ -185,15 +199,19 @@ def admin():
                     form_date -= timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
                 elif commit[19] == '-':
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+            commit = format_datetime(form_date - tz, format='short', locale=locale)
         else:
             commit = version['version']
 
-    allUser = ub.session.query(ub.User).all()
+    all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
-                                 feature_support=feature_support, kobo_support=kobo_support,
+    schedule_time = format_time(time(hour=config.schedule_start_time), format="short", locale=locale)
+    t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
+    schedule_duration = format_timedelta(t, format="short", threshold=.99, locale=locale)
+
+    return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
+                                 feature_support=feature_support, schedule_time=schedule_time,
+                                 schedule_duration=schedule_duration,
                                  title=_(u"Admin page"), page="admin")
 
 
@@ -242,12 +260,12 @@ def calibreweb_alive():
 @login_required
 @admin_required
 def view_configuration():
-    read_column = calibre_db.session.query(db.Custom_Columns)\
-        .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
-    restrict_columns = calibre_db.session.query(db.Custom_Columns)\
-        .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    read_column = calibre_db.session.query(db.CustomColumns)\
+        .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all()
+    restrict_columns = calibre_db.session.query(db.CustomColumns)\
+        .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
     languages = calibre_db.speaking_language()
-    translations = [LC('en')] + babel.list_translations()
+    translations = [Locale('en')] + babel.list_translations()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
                                  languages=languages,
@@ -261,8 +279,8 @@ def view_configuration():
 def edit_user_table():
     visibility = current_user.view_settings.get('useredit', {})
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [LC('en')]
-    allUser = ub.session.query(ub.User)
+    translations = babel.list_translations() + [Locale('en')]
+    all_user = ub.session.query(ub.User)
     tags = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\
         .join(db.Books)\
@@ -274,10 +292,10 @@ def edit_user_table():
     else:
         custom_values = []
     if not config.config_anonbrowse:
-        allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
+        all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("user_table.html",
-                                 users=allUser.all(),
+                                 users=all_user.all(),
                                  tags=tags,
                                  custom_values=custom_values,
                                  translations=translations,
@@ -298,10 +316,13 @@ def list_users():
     limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
     sort = request.args.get("sort", "id")
-    order = request.args.get("order", "").lower()
     state = None
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
+    else:
+        if sort not in ub.User.__table__.columns.keys():
+            sort = "id"
+    order = request.args.get("order", "").lower()
 
     if sort != "state" and order:
         order = text(sort + " " + order)
@@ -329,7 +350,7 @@ def list_users():
         if user.default_language == "all":
             user.default = _("All")
         else:
-            user.default = LC.parse(user.default_language).get_language_name(get_locale())
+            user.default = Locale.parse(user.default_language).get_language_name(get_locale())
 
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": users}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
@@ -377,7 +398,7 @@ def delete_user():
 @login_required
 @admin_required
 def table_get_locale():
-    locale = babel.list_translations() + [LC('en')]
+    locale = babel.list_translations() + [Locale('en')]
     ret = list()
     current_locale = get_locale()
     for loc in locale:
@@ -441,7 +462,7 @@ def edit_list_user(param):
                 elif param.endswith('role'):
                     value = int(vals['field_index'])
                     if user.name == "Guest" and value in \
-                                 [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                            [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                         raise Exception(_("Guest can't have this role"))
                     # check for valid value, last on checks for power of 2 value
                     if value > 0 and value <= constants.ROLE_VIEWER and (value & value-1 == 0 or value == 1):
@@ -496,7 +517,7 @@ def edit_list_user(param):
                 else:
                     return _("Parameter not found"), 400
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             return str(ex), 400
     ub.session_commit()
     return ""
@@ -521,16 +542,16 @@ def update_table_settings():
 
 def check_valid_read_column(column):
     if column != "0":
-        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
-              .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all():
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+              .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 
 
 def check_valid_restricted_column(column):
     if column != "0":
-        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
-              .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all():
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+              .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 
@@ -607,6 +628,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "admin_refresh_cover_cache":
+        texts["main"] = _('Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?')
     elif element_id == "btnfullsync":
         texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
                           "to force a full sync with your Kobo Reader?")
@@ -860,10 +883,10 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, element['Element']))
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted denied tag of user {}: {}".format(usr.name, element['Element']))
     elif res_type == 3:  # Columns per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -872,12 +895,12 @@ def delete_restriction(res_type, user_id):
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
             ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.name,
-                                                                              usr.list_allowed_column_values))
+                                                                              usr.list_allowed_column_values()))
 
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
             ub.session_commit("Deleted denied columns of user {}: {}".format(usr.name,
-                                                                             usr.list_denied_column_values))
+                                                                             usr.list_denied_column_values()))
     return ""
 
 
@@ -1075,12 +1098,12 @@ def _configuration_oauth_helper(to_save):
     reboot_required = False
     for element in oauthblueprints:
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
-            or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+                or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
             reboot_required = True
             element['oauth_client_id'] = to_save["config_" + str(element['id']) + "_oauth_client_id"]
             element['oauth_client_secret'] = to_save["config_" + str(element['id']) + "_oauth_client_secret"]
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] \
-            and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
+                and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
             active_oauths += 1
             element["active"] = 1
         else:
@@ -1133,7 +1156,7 @@ def _configuration_ldap_helper(to_save):
     if not config.config_ldap_provider_url \
         or not config.config_ldap_port \
         or not config.config_ldap_dn \
-        or not config.config_ldap_user_object:
+            or not config.config_ldap_user_object:
         return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
                                                         'Port, DN and User Object Identifier'))
 
@@ -1208,15 +1231,16 @@ def _db_configuration_update_helper():
                                            '',
                                            to_save['config_calibre_dir'],
                                            flags=re.IGNORECASE)
+    db_valid = False
     try:
         db_change, db_valid = _db_simulate_change()
 
         # gdrive_error drive setup
         gdrive_error = _configuration_gdrive_helper(to_save)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _db_configuration_result(_("Settings DB is not Writeable"), gdrive_error)
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _db_configuration_result(_(u"Database error: %(error)s.", error=e.orig), gdrive_error)
     try:
         metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
@@ -1226,14 +1250,14 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-          or config.config_calibre_dir != to_save["config_calibre_dir"]:
+            or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
-        config.store_calibre_uuid(calibre_db, db.Library_Id)
+        config.store_calibre_uuid(calibre_db, db.LibraryId)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         if db_change:
-            log.info("Calibre Database changed, delete all Calibre-Web info related to old Database")
+            log.info("Calibre Database changed, all Calibre-Web info related to old Database gets deleted")
             ub.session.query(ub.Downloads).delete()
             ub.session.query(ub.ArchivedBook).delete()
             ub.session.query(ub.ReadBook).delete()
@@ -1242,6 +1266,7 @@ def _db_configuration_update_helper():
             ub.session.query(ub.KoboReadingState).delete()
             ub.session.query(ub.KoboStatistics).delete()
             ub.session.query(ub.KoboSyncedBooks).delete()
+            helper.delete_thumbnail_cache()
             ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
@@ -1269,7 +1294,7 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_unicode_filename")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
         reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
-                             and config.config_login_type == constants.LOGIN_LDAP)
+                            and config.config_login_type == constants.LOGIN_LDAP)
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
@@ -1329,10 +1354,10 @@ def _configuration_update_helper():
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
                 return _configuration_result(unrar_status)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _configuration_result(_("Settings DB is not Writeable"))
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _configuration_result(_(u"Database error: %(error)s.", error=e.orig))
 
     config.save()
     if reboot_required:
@@ -1427,10 +1452,10 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("Found an existing account for {} or {}".format(content.name, content.email))
         flash(_("Found an existing account for this e-mail address or name."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
 
 
 def _delete_user(content):
@@ -1489,7 +1514,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             content.role &= ~constants.ROLE_ANONYMOUS
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
-        sidebar = get_sidebar_config()
+        sidebar, __ = get_sidebar_config()
         for element in sidebar:
             value = element['visibility']
             if value in val and not content.check_visibility(value):
@@ -1544,10 +1569,10 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
         flash(_(u"An unknown error occurred. Please try again later."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
     return ""
 
 
@@ -1557,7 +1582,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
 def new_user():
     content = ub.User()
     languages = calibre_db.speaking_language()
-    translations = [LC('en')] + babel.list_translations()
+    translations = [Locale('en')] + babel.list_translations()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1613,10 +1638,10 @@ def update_mailsettings():
         _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
     try:
         config.save()
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
         return edit_mailsettings()
 
     if to_save.get("test"):
@@ -1635,6 +1660,66 @@ def update_mailsettings():
     return edit_mailsettings()
 
 
+@admi.route("/admin/scheduledtasks")
+@login_required
+@admin_required
+def edit_scheduledtasks():
+    content = config.get_scheduled_task_settings()
+    time_field = list()
+    duration_field = list()
+
+    locale = get_locale()
+    for n in range(24):
+        time_field.append((n , format_time(time(hour=n), format="short", locale=locale)))
+    for n in range(5, 65, 5):
+        t = timedelta(hours=n // 60, minutes=n % 60)
+        duration_field.append((n, format_timedelta(t, format="short", threshold=.99, locale=locale)))
+
+    return render_title_template("schedule_edit.html", config=content, starttime=time_field, duration=duration_field, title=_(u"Edit Scheduled Tasks Settings"))
+
+
+@admi.route("/admin/scheduledtasks", methods=["POST"])
+@login_required
+@admin_required
+def update_scheduledtasks():
+    error = False
+    to_save = request.form.to_dict()
+    if 0 <= int(to_save.get("schedule_start_time")) <= 23:
+        _config_int(to_save, "schedule_start_time")
+    else:
+        flash(_(u"Invalid start time for task specified"), category="error")
+        error = True
+    if 0 < int(to_save.get("schedule_duration")) <= 60:
+        _config_int(to_save, "schedule_duration")
+    else:
+        flash(_(u"Invalid duration for task specified"), category="error")
+        error = True
+    _config_checkbox(to_save, "schedule_generate_book_covers")
+    _config_checkbox(to_save, "schedule_generate_series_covers")
+    _config_checkbox(to_save, "schedule_reconnect")
+
+    if not error:
+        try:
+            config.save()
+            flash(_(u"Scheduled tasks settings updated"), category="success")
+
+            # Cancel any running tasks
+            schedule.end_scheduled_tasks()
+
+            # Re-register tasks with new settings
+            schedule.register_scheduled_tasks(config.schedule_reconnect)
+        except IntegrityError:
+            ub.session.rollback()
+            log.error("An unknown error occurred while saving scheduled tasks settings")
+            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        except OperationalError:
+            ub.session.rollback()
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
+
+    return edit_scheduledtasks()
+
+
 @admi.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @admin_required
@@ -1644,7 +1729,7 @@ def edit_user(user_id):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
     languages = calibre_db.speaking_language(return_all_languages=True)
-    translations = babel.list_translations() + [LC('en')]
+    translations = babel.list_translations() + [Locale('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1848,7 +1933,7 @@ def import_ldap_users():
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
     except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.debug_or_exception(e)
+        log.error_or_exception(e)
         showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
         return json.dumps(showtext)
     if not new_users:
@@ -1876,7 +1961,7 @@ def import_ldap_users():
         try:
             user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
         except AttributeError as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             continue
         if user_data:
             user_count, message = ldap_import_create_user(user, user_data)
@@ -1911,3 +1996,13 @@ def extract_dynamic_field_from_filter(user, filtr):
 def extract_user_identifier(user, filtr):
     dynamic_field = extract_dynamic_field_from_filter(user, filtr)
     return extract_user_data_from_field(user, dynamic_field)
+
+
+@admi.route("/ajax/canceltask", methods=['POST'])
+@login_required
+@admin_required
+def cancel_task():
+    task_id = request.get_json().get('task_id', None)
+    worker = WorkerThread.get_instance()
+    worker.end_task(task_id)
+    return ""

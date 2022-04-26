@@ -134,12 +134,18 @@ class _Settings(_Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
-    config_unicode_filename =Column(Boolean, default=False)
+    config_unicode_filename = Column(Boolean, default=False)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     config_reverse_proxy_login_header_name = Column(String)
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
+
+    schedule_start_time = Column(Integer, default=4)
+    schedule_duration = Column(Integer, default=10)
+    schedule_generate_book_covers = Column(Boolean, default=False)
+    schedule_generate_series_covers = Column(Boolean, default=False)
+    schedule_reconnect = Column(Boolean, default=False)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -170,7 +176,6 @@ class _ConfigSQL(object):
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
             self.save()
-
 
     def _read_from_storage(self):
         if self._settings is None:
@@ -255,6 +260,8 @@ class _ConfigSQL(object):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
                     or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
+    def get_scheduled_task_settings(self):
+        return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
@@ -289,7 +296,6 @@ class _ConfigSQL(object):
             if k[0] != '_' and not k.endswith("password") and not k.endswith("secret"):
                 storage[k] = v
         return storage
-
 
     def load(self):
         '''Load all configuration values from the underlying storage.'''
@@ -411,6 +417,7 @@ def autodetect_calibre_binary():
             return element
     return ""
 
+
 def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
@@ -422,6 +429,7 @@ def autodetect_unrar_binary():
             return element
     return ""
 
+
 def autodetect_kepubify_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
@@ -432,6 +440,7 @@ def autodetect_kepubify_binary():
         if os.path.isfile(element) and os.access(element, os.X_OK):
             return element
     return ""
+
 
 def _migrate_database(session):
     # make sure the table is created, if it does not exist

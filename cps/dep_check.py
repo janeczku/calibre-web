@@ -5,7 +5,7 @@ import json
 
 from .constants import BASE_DIR
 try:
-    from importlib_metadata import version
+    from importlib.metadata import version
     importlib = True
     ImportNotFound = BaseException
 except ImportError:

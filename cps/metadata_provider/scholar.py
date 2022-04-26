@@ -17,7 +17,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 import itertools
 from typing import Dict, List, Optional
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 try:
     from fake_useragent.errors import FakeUserAgentError
@@ -28,7 +28,11 @@ try:
 except FakeUserAgentError:
     raise ImportError("No module named 'scholarly'")
 
+from cps import logger
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+
+log = logger.create()
+
 
 class scholar(Metadata):
     __name__ = "Google Scholar"
@@ -44,10 +48,14 @@ class scholar(Metadata):
             if title_tokens:
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = " ".join(tokens)
-            scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
+            try:
+                scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
+            except Exception as e:
+                log.warning(e)
+                return None
             for result in scholar_gen:
                 match = self._parse_search_result(
-                    result=result, generic_cover=generic_cover, locale=locale
+                    result=result, generic_cover="", locale=locale
                 )
                 val.append(match)
         return val
@@ -66,7 +74,7 @@ class scholar(Metadata):
         )
 
         match.cover = result.get("image", {}).get("original_url", generic_cover)
-        match.description = result["bib"].get("abstract", "")
+        match.description = unquote(result["bib"].get("abstract", ""))
         match.publisher = result["bib"].get("venue", "")
         match.publishedDate = result["bib"].get("pub_year") + "-01-01"
         match.identifiers = {"scholar": match.id}

@@ -107,52 +107,10 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         series="",
         series_id="",
         languages="",
-        publisher="")
-
-
-def parse_xmp(pdf_file):
-    """
-    Parse XMP Metadata and prepare for BookMeta object
-    """
-    try:
-        xmp_info = pdf_file.getXmpMetadata()
-    except Exception as ex:
-        log.debug('Can not read XMP metadata {}'.format(ex))
-        return None
-
-    if xmp_info:
-        try:
-            xmp_author = xmp_info.dc_creator # list
-        except AttributeError:
-            xmp_author = ['']
-
-        if xmp_info.dc_title:
-            xmp_title = xmp_info.dc_title['x-default']
-        else:
-            xmp_title = ''
-
-        if xmp_info.dc_description:
-            xmp_description = xmp_info.dc_description['x-default']
-        else:
-            xmp_description = ''
-
-        languages = []
-        try:
-            for i in xmp_info.dc_language:
-                #calibre-web currently only takes one language.
-                languages.append(isoLanguages.get_lang3(i))
-        except AttributeError:
-            languages.append('')
-
-        xmp_tags = ', '.join(xmp_info.dc_subject)
-        xmp_publisher = ', '.join(xmp_info.dc_publisher)
-
-        return {'author': xmp_author,
-                    'title': xmp_title,
-                    'subject': xmp_description,
-                    'tags': xmp_tags, 'languages': languages,
-                    'publisher': xmp_publisher
-                    }
+        publisher="",
+        pubdate="",
+        identifiers=[]
+        )
 
 
 def parse_xmp(pdf_file):
@@ -231,7 +189,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         if title == '':
             title = doc_info.title if doc_info.title else original_file_name
         if subject == '':
-            subject = doc_info.subject
+            subject = doc_info.subject or ""
         if tags == '' and '/Keywords' in doc_info:
             if isinstance(doc_info['/Keywords'], bytes):
                 tags = doc_info['/Keywords'].decode('utf-8')
@@ -251,7 +209,9 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         series="",
         series_id="",
         languages=','.join(languages),
-        publisher=publisher)
+        publisher=publisher,
+        pubdate="",
+        identifiers=[])
 
 
 def pdf_preview(tmp_file_path, tmp_dir):

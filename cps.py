@@ -16,11 +16,6 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 
 import sys
 import os
@@ -40,10 +35,11 @@ from cps.about import about
 from cps.shelf import shelf
 from cps.admin import admi
 from cps.gdrive import gdrive
-from cps.editbooks import editbook
+from cps.editbooks import EditBook
 from cps.remotelogin import remotelogin
 from cps.search_metadata import meta
 from cps.error_handler import init_errorhandler
+from cps.schedule import register_scheduled_tasks, register_startup_tasks
 
 try:
     from cps.kobo import kobo, get_kobo_activated
@@ -73,12 +69,17 @@ def main():
     app.register_blueprint(remotelogin)
     app.register_blueprint(meta)
     app.register_blueprint(gdrive)
-    app.register_blueprint(editbook)
+    app.register_blueprint(EditBook)
     if kobo_available:
         app.register_blueprint(kobo)
         app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
+
+    # Register scheduled tasks
+    register_scheduled_tasks()  # ToDo only reconnect if reconnect is enabled
+    register_startup_tasks()
+
     success = web_server.start()
     sys.exit(0 if success else 1)
 

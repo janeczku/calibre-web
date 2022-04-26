@@ -32,13 +32,9 @@ try:
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError, InvalidRequestError
+from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
 from sqlalchemy.sql.expression import text
 
-#try:
-#    from six import __version__ as six_version
-#except ImportError:
-#    six_version = "not installed"
 try:
     from httplib2 import __version__ as httplib2_version
 except ImportError:
@@ -81,7 +77,7 @@ if gdrive_support:
     if not logger.is_debug_enabled():
         logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
 else:
-    log.debug("Cannot import pydrive,httplib2, using gdrive will not work: %s", importError)
+    log.debug("Cannot import pydrive, httplib2, using gdrive will not work: {}".format(importError))
 
 
 class Singleton:
@@ -141,11 +137,12 @@ class Gdrive:
     def __init__(self):
         self.drive = getDrive(gauth=Gauth.Instance().auth)
 
+
 def is_gdrive_ready():
     return os.path.exists(SETTINGS_YAML) and os.path.exists(CREDENTIALS)
 
 
-engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(cli.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
@@ -193,11 +190,11 @@ def migrate():
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
             break
 
-if not os.path.exists(cli.gdpath):
+if not os.path.exists(cli.gd_path):
     try:
         Base.metadata.create_all(engine)
     except Exception as ex:
-        log.error("Error connect to database: {} - {}".format(cli.gdpath, ex))
+        log.error("Error connect to database: {} - {}".format(cli.gd_path, ex))
         raise
 migrate()
 
@@ -213,9 +210,9 @@ def getDrive(drive=None, gauth=None):
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                log.error("Google Drive error: %s", e)
+                log.error("Google Drive error: {}".format(e))
             except Exception as ex:
-                log.debug_or_exception(ex)
+                log.error_or_exception(ex)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -225,7 +222,7 @@ def getDrive(drive=None, gauth=None):
         try:
             drive.auth.Refresh()
         except RefreshError as e:
-            log.error("Google Drive error: %s", e)
+            log.error("Google Drive error: {}".format(e))
     return drive
 
 def listRootFolders():
@@ -234,7 +231,7 @@ def listRootFolders():
         folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
         fileList = drive.ListFile({'q': folder}).GetList()
     except (ServerNotFoundError, ssl.SSLError, RefreshError) as e:
-        log.info("GDrive Error %s" % e)
+        log.info("GDrive Error {}".format(e))
         fileList = []
     return fileList
 
@@ -272,8 +269,7 @@ def getEbooksFolderId(drive=None):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error("gdrive.db DB is not Writeable")
-            log.debug('Database error: %s', ex)
+            log.error_or_exception('Database error: {}'.format(ex))
             session.rollback()
         return gDriveId.gdrive_id
 
@@ -289,6 +285,7 @@ def getFile(pathId, fileName, drive):
 
 def getFolderId(path, drive):
     # drive = getDrive(drive)
+    currentFolderId = None
     try:
         currentFolderId = getEbooksFolderId(drive)
         sqlCheckPath = path if path[-1] == '/' else path + '/'
@@ -321,9 +318,8 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except OperationalError as ex:
-        log.error("gdrive.db DB is not Writeable")
-        log.debug('Database error: %s', ex)
+    except (OperationalError, IntegrityError) as ex:
+        log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
         log.error('{} {}'.format(ex.error['message'], path))
@@ -547,8 +543,7 @@ def deleteDatabaseOnChange():
         session.commit()
     except (OperationalError, InvalidRequestError) as ex:
         session.rollback()
-        log.debug('Database error: %s', ex)
-        log.error(u"GDrive DB is not Writeable")
+        log.error_or_exception('Database error: {}'.format(ex))
 
 
 def updateGdriveCalibreFromLocal():
@@ -566,8 +561,7 @@ def updateDatabaseOnEdit(ID,newPath):
         try:
             session.commit()
         except OperationalError as ex:
-            log.error("gdrive.db DB is not Writeable")
-            log.debug('Database error: %s', ex)
+            log.error_or_exception('Database error: {}'.format(ex))
             session.rollback()
 
 
@@ -577,8 +571,7 @@ def deleteDatabaseEntry(ID):
     try:
         session.commit()
     except OperationalError as ex:
-        log.error("gdrive.db DB is not Writeable")
-        log.debug('Database error: %s', ex)
+        log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
 
 
@@ -599,8 +592,7 @@ def get_cover_via_gdrive(cover_path):
             try:
                 session.commit()
             except OperationalError as ex:
-                log.error("gdrive.db DB is not Writeable")
-                log.debug('Database error: %s', ex)
+                log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
         return df.metadata.get('webContentLink')
     else:
@@ -622,7 +614,7 @@ def do_gdrive_download(df, headers, convert_encoding=False):
 
     def stream(convert_encoding):
         for byte in s:
-            headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
+            headers = {"Range": 'bytes={}-{}'.format(byte[0], byte[1])}
             resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
             if resp.status == 206:
                 if convert_encoding:
@@ -630,7 +622,7 @@ def do_gdrive_download(df, headers, convert_encoding=False):
                     content = content.decode(result['encoding']).encode('utf-8')
                 yield content
             else:
-                log.warning('An error occurred: %s', resp)
+                log.warning('An error occurred: {}'.format(resp))
                 return
     return Response(stream_with_context(stream(convert_encoding)), headers=headers)
 
