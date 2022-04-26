@@ -43,6 +43,7 @@ from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_login import current_user
 from flask_babel import gettext as _
+from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
@@ -898,7 +899,6 @@ class CalibreDB:
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
-        from . import get_locale
 
         if with_count:
             if not languages:

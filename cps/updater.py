@@ -28,7 +28,7 @@ from io import BytesIO
 from tempfile import gettempdir
 
 import requests
-from babel.dates import format_datetime
+from flask_babel import format_datetime
 from flask_babel import gettext as _
 
 from . import constants, logger  #  config, web_server

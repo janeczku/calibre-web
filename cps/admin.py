@@ -28,11 +28,10 @@ import operator
 from datetime import datetime, timedelta, time
 from functools import wraps
 
-from babel import Locale
-from babel.dates import format_datetime, format_time, format_timedelta
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
+from flask_babel import get_locale,  format_time, format_datetime, format_timedelta
 from flask import session as flask_session
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
@@ -40,14 +39,14 @@ from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services, cli
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, \
+from . import db, calibre_db, ub, web_server, config, updater_thread, babel, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username, update_thumbnail_cache
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
-from . import debug_info, _BABEL_TRANSLATIONS
+from . import debug_info, BABEL_TRANSLATIONS
 
 
 log = logger.create()
@@ -205,9 +204,9 @@ def admin():
 
     all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    schedule_time = format_time(time(hour=config.schedule_start_time), format="short", locale=locale)
+    schedule_time = format_time(time(hour=config.schedule_start_time), format="short")
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
-    schedule_duration = format_timedelta(t, format="short", threshold=.99, locale=locale)
+    schedule_duration = format_timedelta(t, threshold=.99)
 
     return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
@@ -279,7 +278,7 @@ def view_configuration():
 def edit_user_table():
     visibility = current_user.view_settings.get('useredit', {})
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [Locale('en')]
+    translations = [LC('en')] + babel.list_translations()
     all_user = ub.session.query(ub.User)
     tags = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\
@@ -398,7 +397,7 @@ def delete_user():
 @login_required
 @admin_required
 def table_get_locale():
-    locale = babel.list_translations() + [Locale('en')]
+    locale = [LC('en')] + babel.list_translations()
     ret = list()
     current_locale = get_locale()
     for loc in locale:
@@ -499,7 +498,7 @@ def edit_list_user(param):
                 elif param == 'locale':
                     if user.name == "Guest":
                         raise Exception(_("Guest's Locale is determined automatically and can't be set"))
-                    if vals['value'] in _BABEL_TRANSLATIONS:
+                    if vals['value'] in BABEL_TRANSLATIONS:
                         user.locale = vals['value']
                     else:
                         raise Exception(_("No Valid Locale Given"))
@@ -1668,12 +1667,11 @@ def edit_scheduledtasks():
     time_field = list()
     duration_field = list()
 
-    locale = get_locale()
     for n in range(24):
-        time_field.append((n , format_time(time(hour=n), format="short", locale=locale)))
+        time_field.append((n , format_time(time(hour=n), format="short",)))
     for n in range(5, 65, 5):
         t = timedelta(hours=n // 60, minutes=n % 60)
-        duration_field.append((n, format_timedelta(t, format="short", threshold=.99, locale=locale)))
+        duration_field.append((n, format_timedelta(t, threshold=.9)))
 
     return render_title_template("schedule_edit.html", config=content, starttime=time_field, duration=duration_field, title=_(u"Edit Scheduled Tasks Settings"))
 

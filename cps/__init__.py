@@ -23,32 +23,22 @@ import sys
 import os
 import mimetypes
 
-from babel import Locale as LC
-from babel import negotiate_locale
-from babel.core import UnknownLocaleError
-from flask import request, g
 from flask import Flask
 from .MyLoginManager import MyLoginManager
-from flask_babel import Babel
 from flask_principal import Principal
 
-from . import config_sql
-from . import logger
-from . import cache_buster
 from .cli import CliParameter
 from .constants import CONFIG_DIR
-from . import ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
 from . import services
 from .updater import Updater
-
-try:
-    import lxml
-    lxml_present = True
-except ImportError:
-    lxml_present = False
+from .babel import babel, BABEL_TRANSLATIONS
+from . import config_sql
+from . import logger
+from . import cache_buster
+from . import ub, db
 
 try:
     from flask_wtf.csrf import CSRFProtect
@@ -78,6 +68,8 @@ mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
 mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
+log = logger.create()
+
 app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
@@ -86,13 +78,7 @@ app.config.update(
     WTF_CSRF_SSL_STRICT=False
 )
 
-
 lm = MyLoginManager()
-
-babel = Babel()
-_BABEL_TRANSLATIONS = set()
-
-log = logger.create()
 
 config = config_sql._ConfigSQL()
 
@@ -120,9 +106,8 @@ def create_app():
 
     cli_param.init()
 
-    ub.init_db(os.path.join(CONFIG_DIR, "app.db"), cli_param.user_credentials)
+    ub.init_db(cli_param.settings_path, cli_param.user_credentials)
 
-    # ub.init_db(os.path.join(CONFIG_DIR, "app.db"))
     # pylint: disable=no-member
     config_sql.load_configuration(config, ub.session, cli_param)
 
@@ -139,26 +124,26 @@ def create_app():
 
     if sys.version_info < (3, 0):
         log.info(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            'please update your installation to Python3 ***')
         print(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            'please update your installation to Python3 ***')
         web_server.stop(True)
         sys.exit(5)
-    if not lxml_present:
-        log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
-        print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
-        web_server.stop(True)
-        sys.exit(6)
     if not wtf_present:
-        log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
-        print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        log.info('*** "flask-WTF" is needed for calibre-web to run. '
+                 'Please install it using pip: "pip install flask-WTF" ***')
+        print('*** "flask-WTF" is needed for calibre-web to run. '
+              'Please install it using pip: "pip install flask-WTF" ***')
         web_server.stop(True)
         sys.exit(7)
     for res in dependency_check() + dependency_check(True):
-        log.info('*** "{}" version does not fit the requirements. Should: {}, Found: {}, please consider installing required version ***'
-            .format(res['name'],
-                 res['target'],
-                 res['found']))
+        log.info('*** "{}" version does not fit the requirements. '
+                 'Should: {}, Found: {}, please consider installing required version ***'
+                 .format(res['name'],
+                         res['target'],
+                         res['found']))
     app.wsgi_app = ReverseProxied(app.wsgi_app)
 
     if os.environ.get('FLASK_DEBUG'):
@@ -172,8 +157,8 @@ def create_app():
     web_server.init_app(app, config)
 
     babel.init_app(app)
-    _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
-    _BABEL_TRANSLATIONS.add('en')
+    BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
+    BABEL_TRANSLATIONS.add('en')
 
     if services.ldap:
         services.ldap.init_app(app, config)
@@ -184,28 +169,4 @@ def create_app():
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     return app
 
-
-@babel.localeselector
-def get_locale():
-    # if a user is logged in, use the locale from the user settings
-    user = getattr(g, 'user', None)
-    if user is not None and hasattr(user, "locale"):
-        if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
-            return user.locale
-
-    preferred = list()
-    if request.accept_languages:
-        for x in request.accept_languages.values():
-            try:
-                preferred.append(str(LC.parse(x.replace('-', '_'))))
-            except (UnknownLocaleError, ValueError) as e:
-                log.debug('Could not parse locale "%s": %s', x, e)
-
-    return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
-
-
-'''@babel.timezoneselector
-def get_timezone():
-    user = getattr(g, 'user', None)
-    return user.timezone if user else None'''
 

@@ -680,8 +680,3 @@ def get_error_text(client_secrets=None):
         return 'Callback url (redirect url) is missing in client_secrets.json'
     if client_secrets:
         client_secrets.update(filedata['web'])
-
-
-def get_versions():
-    return { # 'six': six_version,
-            'httplib2': httplib2_version}

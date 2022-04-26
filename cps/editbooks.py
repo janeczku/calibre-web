@@ -36,11 +36,12 @@ except ImportError:
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
+from flask_babel import get_locale
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
 # from sqlite3 import OperationalError as sqliteOperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
-from . import config, get_locale, ub, db
+from . import config, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload

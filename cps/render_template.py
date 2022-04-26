@@ -16,9 +16,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from flask import render_template, request
+from flask import render_template, g, abort, request
 from flask_babel import gettext as _
-from flask import g, abort
 from werkzeug.local import LocalProxy
 from flask_login import current_user
 

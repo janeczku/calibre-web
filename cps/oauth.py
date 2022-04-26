@@ -19,18 +19,12 @@
 from flask import session
 
 try:
-    from flask_dance.consumer.backend.sqla import SQLAlchemyBackend, first, _get_real_user
+    from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
+    from flask_dance.consumer.storage.sqla import first, _get_real_user
     from sqlalchemy.orm.exc import NoResultFound
-    backend_resultcode = False       # prevent storing values with this resultcode
+    backend_resultcode = True  # prevent storing values with this resultcode
 except ImportError:
-    # fails on flask-dance >1.3, due to renaming
-    try:
-        from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
-        from flask_dance.consumer.storage.sqla import first, _get_real_user
-        from sqlalchemy.orm.exc import NoResultFound
-        backend_resultcode = True  # prevent storing values with this resultcode
-    except ImportError:
-        pass
+    pass
 
 
 class OAuthBackend(SQLAlchemyBackend):

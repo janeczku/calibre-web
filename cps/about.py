@@ -65,7 +65,7 @@ _VERSIONS = OrderedDict(
     SQLite=sqlite3.sqlite_version,
 )
 _VERSIONS.update(ret)
-_VERSIONS.update(uploader.get_versions(False))
+_VERSIONS.update(uploader.get_versions())
 
 
 def collect_stats():
