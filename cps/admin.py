@@ -1684,12 +1684,12 @@ def edit_scheduledtasks():
 def update_scheduledtasks():
     error = False
     to_save = request.form.to_dict()
-    if "0" <= to_save.get("schedule_start_time") <= "23":
+    if 0 <= int(to_save.get("schedule_start_time")) <= 23:
         _config_int(to_save, "schedule_start_time")
     else:
         flash(_(u"Invalid start time for task specified"), category="error")
         error = True
-    if "0" < to_save.get("schedule_duration") <= "60":
+    if 0 < int(to_save.get("schedule_duration")) <= 60:
         _config_int(to_save, "schedule_duration")
     else:
         flash(_(u"Invalid duration for task specified"), category="error")
