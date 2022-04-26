@@ -56,20 +56,6 @@ def requires_basic_auth_if_no_ano(f):
     return decorated
 
 
-class FeedObject:
-    def __init__(self, rating_id, rating_name):
-        self.rating_id = rating_id
-        self.rating_name = rating_name
-
-    @property
-    def id(self):
-        return self.rating_id
-
-    @property
-    def name(self):
-        return self.rating_name
-
-
 @opds.route("/opds/")
 @opds.route("/opds")
 @requires_basic_auth_if_no_ano
@@ -466,6 +452,20 @@ def feed_unread_books():
     off = request.args.get("offset") or 0
     result, pagination = render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
+
+
+class FeedObject:
+    def __init__(self, rating_id, rating_name):
+        self.rating_id = rating_id
+        self.rating_name = rating_name
+
+    @property
+    def id(self):
+        return self.rating_id
+
+    @property
+    def name(self):
+        return self.rating_name
 
 
 def feed_search(term):

@@ -71,46 +71,7 @@ from flask_babel import gettext as _
 from . import logger, config, calibre_db, db, helper, ub, lm
 from .render_template import render_title_template
 
-
 log = logger.create()
-
-
-def register_url_value_preprocessor(kobo):
-    @kobo.url_value_preprocessor
-    # pylint: disable=unused-variable
-    def pop_auth_token(__, values):
-        g.auth_token = values.pop("auth_token")
-
-
-def disable_failed_auth_redirect_for_blueprint(bp):
-    lm.blueprint_login_views[bp.name] = None
-
-
-def get_auth_token():
-    if "auth_token" in g:
-        return g.get("auth_token")
-    else:
-        return None
-
-
-def requires_kobo_auth(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        auth_token = get_auth_token()
-        if auth_token is not None:
-            user = (
-                ub.session.query(ub.User)
-                .join(ub.RemoteAuthToken)
-                .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
-                .first()
-            )
-            if user is not None:
-                login_user(user)
-                return f(*args, **kwargs)
-            log.debug("Received Kobo request without a recognizable auth token.")
-            return abort(401)
-    return inner
-
 
 kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 
@@ -165,3 +126,40 @@ def delete_auth_token(user_id):
         .filter(ub.RemoteAuthToken.token_type==1).delete()
 
     return ub.session_commit()
+
+
+def disable_failed_auth_redirect_for_blueprint(bp):
+    lm.blueprint_login_views[bp.name] = None
+
+
+def get_auth_token():
+    if "auth_token" in g:
+        return g.get("auth_token")
+    else:
+        return None
+
+
+def register_url_value_preprocessor(kobo):
+    @kobo.url_value_preprocessor
+    # pylint: disable=unused-variable
+    def pop_auth_token(__, values):
+        g.auth_token = values.pop("auth_token")
+
+
+def requires_kobo_auth(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        auth_token = get_auth_token()
+        if auth_token is not None:
+            user = (
+                ub.session.query(ub.User)
+                .join(ub.RemoteAuthToken)
+                .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
+                .first()
+            )
+            if user is not None:
+                login_user(user)
+                return f(*args, **kwargs)
+            log.debug("Received Kobo request without a recognizable auth token.")
+            return abort(401)
+    return inner

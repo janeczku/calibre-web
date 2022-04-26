@@ -5,7 +5,7 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks')}}</h2>
-    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('task.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ g.user.locale }}">
+    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ g.user.locale }}">
       <thead>
         <tr>
             {% if g.user.role_admin() %}

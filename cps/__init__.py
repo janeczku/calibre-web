@@ -27,16 +27,15 @@ from flask import Flask
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
+from . import logger
 from .cli import CliParameter
 from .constants import CONFIG_DIR
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
-from . import services
 from .updater import Updater
-from .babel import babel, BABEL_TRANSLATIONS
+from .babel import babel
 from . import config_sql
-from . import logger
 from . import cache_buster
 from . import ub, db
 
@@ -157,8 +156,8 @@ def create_app():
     web_server.init_app(app, config)
 
     babel.init_app(app)
-    BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
-    BABEL_TRANSLATIONS.add('en')
+
+    from . import services
 
     if services.ldap:
         services.ldap.init_app(app, config)

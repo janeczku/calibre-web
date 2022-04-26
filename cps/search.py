@@ -406,7 +406,6 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                                                       offset,
                                                                       order,
                                                                       limit,
-                                                                      False,
                                                                       *join)
     return render_title_template('search.html',
                                  searchterm=term,

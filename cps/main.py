@@ -20,11 +20,7 @@ import sys
 
 from . import create_app
 from .jinjia import jinjia
-from .shelf import shelf
 from .remotelogin import remotelogin
-from .search_metadata import meta
-from .error_handler import init_errorhandler
-from .tasks_status import tasks
 
 try:
     from kobo import kobo, get_kobo_activated
@@ -50,6 +46,10 @@ def main():
     from .editbooks import editbook
     from .about import about
     from .search import search
+    from .search_metadata import meta
+    from .shelf import shelf
+    from .tasks_status import tasks
+    from .error_handler import init_errorhandler
 
     from . import web_server
     init_errorhandler()
