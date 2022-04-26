@@ -63,7 +63,7 @@ except ImportError as err:
         importError = err
         gdrive_support = False
 
-from . import logger, cli, config
+from . import logger, cli_param, config
 from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
@@ -142,7 +142,7 @@ def is_gdrive_ready():
     return os.path.exists(SETTINGS_YAML) and os.path.exists(CREDENTIALS)
 
 
-engine = create_engine('sqlite:///{0}'.format(cli.gd_path), echo=False)
+engine = create_engine('sqlite:///{0}'.format(cli_param.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
@@ -190,11 +190,11 @@ def migrate():
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
             break
 
-if not os.path.exists(cli.gd_path):
+if not os.path.exists(cli_param.gd_path):
     try:
         Base.metadata.create_all(engine)
     except Exception as ex:
-        log.error("Error connect to database: {} - {}".format(cli.gd_path, ex))
+        log.error("Error connect to database: {} - {}".format(cli_param.gd_path, ex))
         raise
 migrate()
 
@@ -544,6 +544,7 @@ def deleteDatabaseOnChange():
     except (OperationalError, InvalidRequestError) as ex:
         session.rollback()
         log.error_or_exception('Database error: {}'.format(ex))
+        session.rollback()
 
 
 def updateGdriveCalibreFromLocal():

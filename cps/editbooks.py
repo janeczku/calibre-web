@@ -49,7 +49,7 @@ from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
 
 
-EditBook = Blueprint('edit-book', __name__)
+editbook = Blueprint('edit-book', __name__)
 log = logger.create()
 
 
@@ -228,14 +228,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
     return changed, error
 
 
-@EditBook.route("/ajax/delete/<int:book_id>", methods=["POST"])
+@editbook.route("/ajax/delete/<int:book_id>", methods=["POST"])
 @login_required
 def delete_book_from_details(book_id):
     return Response(delete_book_from_table(book_id, "", True), mimetype='application/json')
 
 
-@EditBook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])
-@EditBook.route("/delete/<int:book_id>/<string:book_format>", methods=["POST"])
+@editbook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])
+@editbook.route("/delete/<int:book_id>/<string:book_format>", methods=["POST"])
 @login_required
 def delete_book_ajax(book_id, book_format):
     return delete_book_from_table(book_id, book_format, False)
@@ -743,14 +743,14 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     return input_authors, change, renamed
 
 
-@EditBook.route("/admin/book/<int:book_id>", methods=['GET'])
+@editbook.route("/admin/book/<int:book_id>", methods=['GET'])
 @login_required_if_no_ano
 @edit_required
 def show_edit_book(book_id):
     return render_edit_book(book_id)
 
 
-@EditBook.route("/admin/book/<int:book_id>", methods=['POST'])
+@editbook.route("/admin/book/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
@@ -1084,7 +1084,7 @@ def move_coverfile(meta, db_book):
               category="error")
 
 
-@EditBook.route("/upload", methods=["POST"])
+@editbook.route("/upload", methods=["POST"])
 @login_required_if_no_ano
 @upload_required
 def upload():
@@ -1153,7 +1153,7 @@ def upload():
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
-@EditBook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
+@editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def convert_bookformat(book_id):
@@ -1178,7 +1178,7 @@ def convert_bookformat(book_id):
     return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
 
-@EditBook.route("/ajax/getcustomenum/<int:c_id>")
+@editbook.route("/ajax/getcustomenum/<int:c_id>")
 @login_required
 def table_get_custom_enum(c_id):
     ret = list()
@@ -1191,7 +1191,7 @@ def table_get_custom_enum(c_id):
     return json.dumps(ret)
 
 
-@EditBook.route("/ajax/editbooks/<param>", methods=['POST'])
+@editbook.route("/ajax/editbooks/<param>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_list_book(param):
@@ -1303,7 +1303,7 @@ def edit_list_book(param):
     return ret
 
 
-@EditBook.route("/ajax/sort_value/<field>/<int:bookid>")
+@editbook.route("/ajax/sort_value/<field>/<int:bookid>")
 @login_required
 def get_sorted_entry(field, bookid):
     if field in ['title', 'authors', 'sort', 'author_sort']:
@@ -1320,7 +1320,7 @@ def get_sorted_entry(field, bookid):
     return ""
 
 
-@EditBook.route("/ajax/simulatemerge", methods=['POST'])
+@editbook.route("/ajax/simulatemerge", methods=['POST'])
 @login_required
 @edit_required
 def simulate_merge_list_book():
@@ -1336,7 +1336,7 @@ def simulate_merge_list_book():
     return ""
 
 
-@EditBook.route("/ajax/mergebooks", methods=['POST'])
+@editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required
 @edit_required
 def merge_list_book():
@@ -1374,7 +1374,7 @@ def merge_list_book():
     return ""
 
 
-@EditBook.route("/ajax/xchange", methods=['POST'])
+@editbook.route("/ajax/xchange", methods=['POST'])
 @login_required
 @edit_required
 def table_xchange_author_title():

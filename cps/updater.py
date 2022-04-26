@@ -31,7 +31,7 @@ import requests
 from babel.dates import format_datetime
 from flask_babel import gettext as _
 
-from . import constants, logger, config, web_server
+from . import constants, logger  #  config, web_server
 
 
 log = logger.create()
@@ -58,13 +58,17 @@ class Updater(threading.Thread):
         self.status = -1
         self.updateIndex = None
 
+    def init_updater(self, config, web_server):
+        self.config = config
+        self.web_server = web_server
+
     def get_current_version_info(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_version_info()
         return self._nightly_version_info()
 
     def get_available_updates(self, request_method, locale):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
         return self._nightly_available_updates(request_method, locale)
 
@@ -95,7 +99,7 @@ class Updater(threading.Thread):
                 self.status = 6
                 log.debug(u'Preparing restart of server')
                 time.sleep(2)
-                web_server.stop(True)
+                self.web_server.stop(True)
                 self.status = 7
                 time.sleep(2)
                 return True

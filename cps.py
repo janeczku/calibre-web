@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2012-2019  OzzieIsaacs
+#    Copyright (C) 2022 OzzieIsaacs
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -17,72 +17,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
+import sys
 
+# Are we running from commandline?
+if __package__ == '':
+    # Add local path to sys.path so we can import cps
+    path = os.path.dirname(os.path.dirname(__file__))
+    sys.path.insert(0, path)
 
-# Insert local directories into path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
-
-
-from cps import create_app
-from cps import web_server
-from cps.opds import opds
-from cps.web import web
-from cps.jinjia import jinjia
-from cps.about import about
-from cps.shelf import shelf
-from cps.admin import admi
-from cps.gdrive import gdrive
-from cps.editbooks import EditBook
-from cps.remotelogin import remotelogin
-from cps.search_metadata import meta
-from cps.error_handler import init_errorhandler
-from cps.schedule import register_scheduled_tasks, register_startup_tasks
-
-try:
-    from cps.kobo import kobo, get_kobo_activated
-    from cps.kobo_auth import kobo_auth
-    kobo_available = get_kobo_activated()
-except (ImportError, AttributeError):   # Catch also error for not installed flask-WTF (missing csrf decorator)
-    kobo_available = False
-
-try:
-    from cps.oauth_bb import oauth
-    oauth_available = True
-except ImportError:
-    oauth_available = False
-
-
-def main():
-    app = create_app()
-
-    init_errorhandler()
-
-    app.register_blueprint(web)
-    app.register_blueprint(opds)
-    app.register_blueprint(jinjia)
-    app.register_blueprint(about)
-    app.register_blueprint(shelf)
-    app.register_blueprint(admi)
-    app.register_blueprint(remotelogin)
-    app.register_blueprint(meta)
-    app.register_blueprint(gdrive)
-    app.register_blueprint(EditBook)
-    if kobo_available:
-        app.register_blueprint(kobo)
-        app.register_blueprint(kobo_auth)
-    if oauth_available:
-        app.register_blueprint(oauth)
-
-    # Register scheduled tasks
-    register_scheduled_tasks()  # ToDo only reconnect if reconnect is enabled
-    register_startup_tasks()
-
-    success = web_server.start()
-    sys.exit(0 if success else 1)
-
+from cps.main import main as _main
 
 if __name__ == '__main__':
-    main()
+    _main()
+
+
+
