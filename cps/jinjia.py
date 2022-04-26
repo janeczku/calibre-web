@@ -22,15 +22,16 @@
 
 # custom jinja filters
 
+from markupsafe import escape
 import datetime
 import mimetypes
 from uuid import uuid4
 
-from babel.dates import format_date
+# from babel.dates import format_date
 from flask import Blueprint, request, url_for
-from flask_babel import get_locale
+from flask_babel import format_date
 from flask_login import current_user
-from markupsafe import escape
+
 from . import constants, logger
 
 jinjia = Blueprint('jinjia', __name__)
@@ -76,7 +77,7 @@ def mimetype_filter(val):
 @jinjia.app_template_filter('formatdate')
 def formatdate_filter(val):
     try:
-        return format_date(val, format='medium', locale=get_locale())
+        return format_date(val, format='medium')
     except AttributeError as e:
         log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
                   current_user.locale,

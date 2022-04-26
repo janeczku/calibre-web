@@ -22,7 +22,6 @@ import inspect
 import json
 import os
 import sys
-from dataclasses import asdict
 
 from flask import Blueprint, Response, request, url_for
 from flask_login import current_user
@@ -57,9 +56,10 @@ for f in modules:
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
-        except (ImportError, IndentationError, SyntaxError) as e:
-            log.error("Import error for metadata source: {} - {}".format(a, e))
-            pass
+        except (IndentationError, SyntaxError) as e:
+            log.error("Syntax error for metadata source: {} - {}".format(a, e))
+        except ImportError as e:
+            log.debug("Import error for metadata source: {} - {}".format(a, e))
 
 
 def list_classes(provider_list):

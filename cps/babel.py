@@ -1,6 +1,5 @@
-from babel import Locale
 from babel import negotiate_locale
-from flask_babel import Babel
+from flask_babel import Babel, Locale
 from babel.core import UnknownLocaleError
 from flask import request, g
 

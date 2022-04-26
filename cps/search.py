@@ -20,7 +20,7 @@ from datetime import datetime
 from flask import Blueprint, request, redirect, url_for, flash
 from flask import session as flask_session
 from flask_login import current_user
-from flask_babel import get_locale, format_date
+from flask_babel import format_date
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, not_, and_, or_, text
 from sqlalchemy.sql.functions import coalesce
@@ -193,14 +193,14 @@ def extend_search_term(searchterm,
         try:
             searchterm.extend([_(u"Published after ") +
                                format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
-                                           format='medium', locale=get_locale())])
+                                           format='medium')])
         except ValueError:
             pub_start = u""
     if pub_end:
         try:
             searchterm.extend([_(u"Published before ") +
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
-                                           format='medium', locale=get_locale())])
+                                           format='medium')])
         except ValueError:
             pub_end = u""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
@@ -291,21 +291,18 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             if column_start:
                 search_term.extend([u"{} >= {}".format(c.name,
                                                        format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
-                                                                   format='medium',
-                                                                   locale=get_locale())
+                                                                   format='medium')
                                                        )])
                 cc_present = True
             if column_end:
                 search_term.extend([u"{} <= {}".format(c.name,
                                                        format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
-                                                                   format='medium',
-                                                                   locale=get_locale())
+                                                                   format='medium')
                                                        )])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
             search_term.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
             cc_present = True
-
 
     if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
        or rating_high or description or cc_present or read_status:

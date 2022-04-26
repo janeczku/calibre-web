@@ -919,7 +919,7 @@ class CalibreDB:
                                  .count())
                 if no_lang_count:
                     tags.append([Category(_("None"), "none"), no_lang_count])
-            return sorted(tags, key=lambda x: x[0].name, reverse=reverse_order)
+            return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:
                 languages = self.session.query(Languages) \

@@ -24,7 +24,6 @@ import mimetypes
 import chardet  # dependency of requests
 import copy
 
-from babel import Locale
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
@@ -40,7 +39,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
-from . import babel, db, ub, config, app
+from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
 from .search import render_search_results, render_adv_search_results
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
@@ -50,6 +49,7 @@ from .helper import check_valid_domain, check_email, check_username, \
     edit_book_read_status
 from .pagination import Pagination
 from .redirect import redirect_back
+from .babel import get_available_locale
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
@@ -960,7 +960,7 @@ def publisher_list():
                            .count())
         if no_publisher_count:
             entries.append([db.Category(_("None"), "-1"), no_publisher_count])
-        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+        entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
@@ -990,7 +990,7 @@ def series_list():
                             .count())
             if no_series_count:
                 entries.append([db.Category(_("None"), "-1"), no_series_count])
-            entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+            entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
@@ -1092,7 +1092,7 @@ def category_list():
                          .count())
         if no_tag_count:
             entries.append([db.Category(_("None"), "-1"), no_tag_count])
-        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+        entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Categories"), page="catlist", data="category", order=order_no)
@@ -1417,7 +1417,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
 @login_required
 def profile():
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [Locale('en')]
+    translations = get_available_locale()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth'] and config.config_login_type == 2:
         oauth_status = get_oauth_status()
