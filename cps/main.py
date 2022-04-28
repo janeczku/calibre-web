@@ -22,13 +22,6 @@ from . import create_app
 from .jinjia import jinjia
 from .remotelogin import remotelogin
 
-try:
-    from oauth_bb import oauth
-    oauth_available = True
-except ImportError:
-    oauth_available = False
-
-
 def main():
     app = create_app()
 
@@ -49,6 +42,12 @@ def main():
         kobo_available = get_kobo_activated()
     except (ImportError, AttributeError):  # Catch also error for not installed flask-WTF (missing csrf decorator)
         kobo_available = False
+
+    try:
+        from .oauth_bb import oauth
+        oauth_available = True
+    except ImportError:
+        oauth_available = False
 
     from . import web_server
     init_errorhandler()
