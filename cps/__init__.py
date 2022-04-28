@@ -166,6 +166,11 @@ def create_app():
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
+    # Register scheduled tasks
+    from .schedule import register_scheduled_tasks, register_startup_tasks
+    register_scheduled_tasks(config.schedule_reconnect)
+    register_startup_tasks()
+
     return app
 
 

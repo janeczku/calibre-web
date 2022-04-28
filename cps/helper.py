@@ -342,9 +342,9 @@ def edit_book_read_status(book_id, read_status=None):
     return ""
 
 
-# Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
+# Deletes a book from the local filestorage, returns True if deleting is successful, otherwise false
 def delete_book_file(book, calibrepath, book_format=None):
-    # check that path is 2 elements deep, check that target path has no subfolders
+    # check that path is 2 elements deep, check that target path has no sub folders
     if book.path.count('/') == 1:
         path = os.path.join(calibrepath, book.path)
         if book_format:
@@ -679,7 +679,8 @@ def update_dir_structure(book_id,
 
 
 def delete_book(book, calibrepath, book_format):
-    clear_cover_thumbnail_cache(book.id)
+    if not book_format:
+        clear_cover_thumbnail_cache(book.id)        ## here it breaks
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
@@ -1003,21 +1004,26 @@ def get_download_link(book_id, book_format, client):
 
 
 def clear_cover_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
 
 
 def replace_cover_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
-    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+        WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
 
 
 def delete_thumbnail_cache():
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
 
 
 def add_book_to_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
 
 
 def update_thumbnail_cache():
-    WorkerThread.add(None, TaskGenerateCoverThumbnails())
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskGenerateCoverThumbnails())
