@@ -23,13 +23,6 @@ from .jinjia import jinjia
 from .remotelogin import remotelogin
 
 try:
-    from kobo import kobo, get_kobo_activated
-    from kobo_auth import kobo_auth
-    kobo_available = get_kobo_activated()
-except (ImportError, AttributeError):   # Catch also error for not installed flask-WTF (missing csrf decorator)
-    kobo_available = False
-
-try:
     from oauth_bb import oauth
     oauth_available = True
 except ImportError:
@@ -50,6 +43,12 @@ def main():
     from .shelf import shelf
     from .tasks_status import tasks
     from .error_handler import init_errorhandler
+    try:
+        from .kobo import kobo, get_kobo_activated
+        from .kobo_auth import kobo_auth
+        kobo_available = get_kobo_activated()
+    except (ImportError, AttributeError):  # Catch also error for not installed flask-WTF (missing csrf decorator)
+        kobo_available = False
 
     from . import web_server
     init_errorhandler()
