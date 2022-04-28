@@ -71,9 +71,9 @@
                 {% endif %}
               </div>
             {% endif %}
-            {% if entry.audioentries|length > 0 and g.user.role_viewer() %}
+            {% if entry.audio_entries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
-              {% if entry.audioentries|length > 1 %}
+              {% if entry.audio_entries|length > 1 %}
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
@@ -86,13 +86,13 @@
                   <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
 
               {% for format in entry.data %}
-                  {% if format.format|lower in entry.audioentries %}
+                  {% if format.format|lower in entry.audio_entries %}
                     <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
                 {% else %}
-                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=entry.audioentries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{entry.audioentries[0]}}</a>
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=entry.audio_entries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{entry.audio_entries[0]}}</a>
                 {% endif %}
               </div>
             {% endif %}
