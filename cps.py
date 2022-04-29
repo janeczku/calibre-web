@@ -20,16 +20,15 @@
 import os
 import sys
 
-# Are we running from commandline?
-if __package__ == '':
-    # Add local path to sys.path so we can import cps
-    path = os.path.dirname(os.path.dirname(__file__))
-    sys.path.insert(0, path)
 
-from cps.main import main as _main
+# Add local path to sys.path so we can import cps
+path = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, path)
+
+from cps.main import main
 
 if __name__ == '__main__':
-    _main()
+    main()
 
 
 
