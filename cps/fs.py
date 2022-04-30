@@ -39,7 +39,7 @@ class FileSystem:
                 makedirs(self._cache_dir)
             except OSError:
                 self.log.info(f'Failed to create path {self._cache_dir} (Permission denied).')
-                return False
+                raise
 
         path = join(self._cache_dir, cache_type)
         if cache_type and not isdir(path):
@@ -47,7 +47,7 @@ class FileSystem:
                 makedirs(path)
             except OSError:
                 self.log.info(f'Failed to create path {path} (Permission denied).')
-                return False
+                raise
 
         return path if cache_type else self._cache_dir
 
@@ -58,7 +58,7 @@ class FileSystem:
                 makedirs(path)
             except OSError:
                 self.log.info(f'Failed to create path {path} (Permission denied).')
-                return False
+                raise
 
         return path
 
@@ -75,7 +75,7 @@ class FileSystem:
                 rmtree(self._cache_dir)
             except OSError:
                 self.log.info(f'Failed to delete path {self._cache_dir} (Permission denied).')
-                return False
+                raise
 
         path = join(self._cache_dir, cache_type)
         if cache_type and isdir(path):
@@ -83,7 +83,7 @@ class FileSystem:
                 rmtree(path)
             except OSError:
                 self.log.info(f'Failed to delete path {path} (Permission denied).')
-                return False
+                raise
 
     def delete_cache_file(self, filename, cache_type=None):
         path = self.get_cache_file_path(filename, cache_type)
@@ -92,4 +92,4 @@ class FileSystem:
                 remove(path)
             except OSError:
                 self.log.info(f'Failed to delete path {path} (Permission denied).')
-                return False
+                raise

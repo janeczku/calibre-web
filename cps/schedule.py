@@ -62,7 +62,7 @@ def register_scheduled_tasks(reconnect=True):
         duration = config.schedule_duration
 
         # Register scheduled tasks
-        scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger='cron', hour=start)
         end_time = calclulate_end_time(start, duration)
         scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end_time.hour,
                            minute=end_time.minute)
