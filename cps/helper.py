@@ -33,6 +33,7 @@ from babel.dates import format_datetime
 from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as N_
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -53,14 +54,14 @@ except ImportError:
 
 from . import calibre_db, cli
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub, kobo_sync_status, fs
+from . import logger, config, get_locale, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
     STAT_CANCELLED
 from .tasks.mail import TaskEmail
-from .tasks.thumbnail import TaskClearCoverThumbnailCache
+from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 
 log = logger.create()
 
@@ -111,9 +112,10 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
     return None
 
 
+# Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(kindle_mail, user_name):
     WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
+                     config.get_mail_settings(), kindle_mail, N_(u"Test e-mail"),
                                           _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
@@ -135,7 +137,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         attachment=None,
         settings=config.get_mail_settings(),
         recipient=e_mail,
-        taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
+        task_message=N_(u"Registration e-mail for user: %(name)s", name=user_name),
         text=txt
     ))
     return
@@ -219,7 +221,7 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
-            email_text = _(u"%(book)s send to Kindle", book=link)
+            email_text = N_(u"%(book)s send to Kindle", book=link)
             WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
                              config.get_mail_settings(), kindle_mail,
                              email_text, _(u'This e-mail has been sent via Calibre-Web.')))
@@ -715,9 +717,10 @@ def get_book_cover(book_id, resolution=None):
     return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-def get_book_cover_with_uuid(book_uuid, use_generic_cover_on_failure=True):
+# Called only by kobo sync -> cover not found should be answered with 404 and not with default cover
+def get_book_cover_with_uuid(book_uuid, resolution=None):
     book = calibre_db.get_book_by_uuid(book_uuid)
-    return get_book_cover_internal(book, use_generic_cover_on_failure)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=False, resolution=resolution)
 
 
 def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
@@ -819,9 +822,6 @@ def save_cover_from_url(url, book_path):
             log.error("python modul advocate is not installed but is needed")
             return False, _("Python modul 'advocate' is not installed but is needed for cover downloads")
         img.raise_for_status()
-        #            # cover_processing()
-            # move_coverfile(meta, db_book)
-
         return save_cover(img, book_path)
     except (socket.gaierror,
             requests.exceptions.HTTPError,
@@ -990,7 +990,7 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for __, user, __, task in tasklist:
+    for __, user, __, task, __ in tasklist:
         if user == current_user.name or current_user.role_admin():
             ret = {}
             if task.start_time:
@@ -1014,12 +1014,12 @@ def render_task_status(tasklist):
                 else:
                     ret['status'] = _(u'Unknown Status')
 
-            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message) if task.message else _(task.name)
+            ret['taskMessage'] = "{}: {}".format(task.name, task.message) if task.message else task.name
             ret['progress'] = "{} %".format(int(task.progress * 100))
             ret['user'] = escape(user)  # prevent xss
 
             # Hidden fields
-            ret['id'] = task.id
+            ret['task_id'] = task.id
             ret['stat'] = task.stat
             ret['is_cancellable'] = task.is_cancellable
 
@@ -1077,7 +1077,21 @@ def get_download_link(book_id, book_format, client):
 
 
 def clear_cover_thumbnail_cache(book_id):
-    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id))
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+
+
+def replace_cover_thumbnail_cache(book_id):
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+
 
 def delete_thumbnail_cache():
     WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
+
+
+def add_book_to_thumbnail_cache(book_id):
+    WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+
+
+def update_thumbnail_cache():
+    WorkerThread.add(None, TaskGenerateCoverThumbnails())

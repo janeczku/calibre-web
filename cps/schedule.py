@@ -19,38 +19,39 @@
 import datetime
 
 from . import config, constants
-from .services.background_scheduler import BackgroundScheduler
+from .services.background_scheduler import BackgroundScheduler, use_APScheduler
 from .tasks.database import TaskReconnectDatabase
-from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails
+from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
 
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
-
+    # config.schedule_reconnect or
     # Reconnect Calibre database (metadata.db)
     if reconnect:
-        tasks.append([lambda: TaskReconnectDatabase(), 'reconnect'])
+        tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:
-        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers'])
+        tasks.append([lambda: TaskClearCoverThumbnailCache(0), 'delete superfluous book covers', True])
+        tasks.append([lambda: TaskGenerateCoverThumbnails(), 'generate book covers', False])
 
     # Generate all missing series thumbnails
     if config.schedule_generate_series_covers:
-        tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers'])
+        tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers', False])
 
     return tasks
 
 
 def end_scheduled_tasks():
     worker = WorkerThread.get_instance()
-    for __, __, __, task in worker.tasks:
+    for __, __, __, task, __ in worker.tasks:
         if task.scheduled and task.is_cancellable:
             worker.end_task(task.id)
 
 
-def register_scheduled_tasks():
+def register_scheduled_tasks(reconnect=True):
     scheduler = BackgroundScheduler()
 
     if scheduler:
@@ -58,16 +59,17 @@ def register_scheduled_tasks():
         scheduler.remove_all_jobs()
 
         start = config.schedule_start_time
-        end = config.schedule_end_time
+        duration = config.schedule_duration
 
         # Register scheduled tasks
-        if start != end:
-            scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
-            scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end)
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(), trigger='cron', hour=start)
+        end_time = calclulate_end_time(start, duration)
+        scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end_time.hour,
+                           minute=end_time.minute)
 
         # Kick-off tasks, if they should currently be running
-        if should_task_be_running(start, end):
-            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
+        if should_task_be_running(start, duration):
+            scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(reconnect))
 
 
 def register_startup_tasks():
@@ -75,14 +77,21 @@ def register_startup_tasks():
 
     if scheduler:
         start = config.schedule_start_time
-        end = config.schedule_end_time
+        duration = config.schedule_duration
 
         # Run scheduled tasks immediately for development and testing
         # Ignore tasks that should currently be running, as these will be added when registering scheduled tasks
-        if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, end):
+        if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, duration):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
 
 
-def should_task_be_running(start, end):
-    now = datetime.datetime.now().hour
-    return (start < end and start <= now < end) or (end < start <= now or now < end)
+def should_task_be_running(start, duration):
+    now = datetime.datetime.now()
+    start_time = datetime.datetime.now().replace(hour=start, minute=0, second=0, microsecond=0)
+    end_time = start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
+    return start_time < now < end_time
+
+def calclulate_end_time(start, duration):
+    start_time = datetime.datetime.now().replace(hour=start, minute=0)
+    return start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
+

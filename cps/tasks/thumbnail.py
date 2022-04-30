@@ -16,7 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import division, print_function, unicode_literals
 import os
 from urllib.request import urlopen
 
@@ -25,7 +24,7 @@ from cps import config, db, fs, gdriveutils, logger, ub
 from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
 from datetime import datetime
 from sqlalchemy import func, text, or_
-
+from flask_babel import lazy_gettext as N_
 
 try:
     from wand.image import Image
@@ -50,7 +49,7 @@ def get_best_fit(width, height, image_width, image_height):
     resize_height = int(height / 2.0)
     aspect_ratio = image_width / image_height
 
-    # If this image's aspect ratio is different than the first image, then resize this image
+    # If this image's aspect ratio is different from the first image, then resize this image
     # to fill the width and height of the first image
     if aspect_ratio < width / height:
         resize_width = int(width / 2.0)
@@ -64,9 +63,10 @@ def get_best_fit(width, height, image_width, image_height):
 
 
 class TaskGenerateCoverThumbnails(CalibreTask):
-    def __init__(self, task_message=''):
+    def __init__(self, book_id=-1, task_message=''):
         super(TaskGenerateCoverThumbnails, self).__init__(task_message)
         self.log = logger.create()
+        self.book_id = book_id
         self.app_db_session = ub.get_new_session_instance()
         self.calibre_db = db.CalibreDB(expire_on_commit=False)
         self.cache = fs.FileSystem()
@@ -78,37 +78,21 @@ class TaskGenerateCoverThumbnails(CalibreTask):
     def run(self, worker_thread):
         if self.calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
             self.message = 'Scanning Books'
-            books_with_covers = self.get_books_with_covers()
+            books_with_covers = self.get_books_with_covers(self.book_id)
             count = len(books_with_covers)
 
             total_generated = 0
             for i, book in enumerate(books_with_covers):
-                generated = 0
-                book_cover_thumbnails = self.get_book_cover_thumbnails(book.id)
 
                 # Generate new thumbnails for missing covers
-                resolutions = list(map(lambda t: t.resolution, book_cover_thumbnails))
-                missing_resolutions = list(set(self.resolutions).difference(resolutions))
-                for resolution in missing_resolutions:
-                    generated += 1
-                    self.create_book_cover_thumbnail(book, resolution)
-
-                # Replace outdated or missing thumbnails
-                for thumbnail in book_cover_thumbnails:
-                    if book.last_modified > thumbnail.generated_at:
-                        generated += 1
-                        self.update_book_cover_thumbnail(book, thumbnail)
-
-                    elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
-                        generated += 1
-                        self.update_book_cover_thumbnail(book, thumbnail)
+                generated = self.create_book_cover_thumbnails(book)
 
                 # Increment the progress
                 self.progress = (1.0 / count) * i
 
                 if generated > 0:
                     total_generated += generated
-                    self.message = u'Generated {0} cover thumbnails'.format(total_generated)
+                    self.message = N_(u'Generated %(count)s cover thumbnails', count=total_generated)
 
                 # Check if job has been cancelled or ended
                 if self.stat == STAT_CANCELLED:
@@ -125,10 +109,12 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self._handleSuccess()
         self.app_db_session.remove()
 
-    def get_books_with_covers(self):
+    def get_books_with_covers(self, book_id=-1):
+        filter_exp = (db.Books.id == book_id) if book_id != -1 else True
         return self.calibre_db.session \
             .query(db.Books) \
             .filter(db.Books.has_cover == 1) \
+            .filter(filter_exp) \
             .all()
 
     def get_book_cover_thumbnails(self, book_id):
@@ -139,7 +125,29 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
             .all()
 
-    def create_book_cover_thumbnail(self, book, resolution):
+    def create_book_cover_thumbnails(self, book):
+        generated = 0
+        book_cover_thumbnails = self.get_book_cover_thumbnails(book.id)
+
+        # Generate new thumbnails for missing covers
+        resolutions = list(map(lambda t: t.resolution, book_cover_thumbnails))
+        missing_resolutions = list(set(self.resolutions).difference(resolutions))
+        for resolution in missing_resolutions:
+            generated += 1
+            self.create_book_cover_single_thumbnail(book, resolution)
+
+        # Replace outdated or missing thumbnails
+        for thumbnail in book_cover_thumbnails:
+            if book.last_modified > thumbnail.generated_at:
+                generated += 1
+                self.update_book_cover_thumbnail(book, thumbnail)
+
+            elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
+                generated += 1
+                self.update_book_cover_thumbnail(book, thumbnail)
+        return generated
+
+    def create_book_cover_single_thumbnail(self, book, resolution):
         thumbnail = ub.Thumbnail()
         thumbnail.type = constants.THUMBNAIL_TYPE_COVER
         thumbnail.entity_id = book.id
@@ -151,8 +159,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             self.app_db_session.commit()
             self.generate_book_thumbnail(book, thumbnail)
         except Exception as ex:
-            self.log.info(u'Error creating book thumbnail: ' + str(ex))
-            self._handleError(u'Error creating book thumbnail: ' + str(ex))
+            self.log.info('Error creating book thumbnail: ' + str(ex))
+            self._handleError('Error creating book thumbnail: ' + str(ex))
             self.app_db_session.rollback()
 
     def update_book_cover_thumbnail(self, book, thumbnail):
@@ -163,8 +171,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             self.cache.delete_cache_file(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
             self.generate_book_thumbnail(book, thumbnail)
         except Exception as ex:
-            self.log.info(u'Error updating book thumbnail: ' + str(ex))
-            self._handleError(u'Error updating book thumbnail: ' + str(ex))
+            self.log.info('Error updating book thumbnail: ' + str(ex))
+            self._handleError('Error updating book thumbnail: ' + str(ex))
             self.app_db_session.rollback()
 
     def generate_book_thumbnail(self, book, thumbnail):
@@ -191,7 +199,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                             img.save(filename=filename)
                 except Exception as ex:
                     # Bubble exception to calling function
-                    self.log.info(u'Error generating thumbnail file: ' + str(ex))
+                    self.log.info('Error generating thumbnail file: ' + str(ex))
                     raise ex
                 finally:
                     if stream is not None:
@@ -212,10 +220,13 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
     @property
     def name(self):
-        return 'GenerateCoverThumbnails'
+        return N_('Cover Thumbnails')
 
     def __str__(self):
-        return "GenerateCoverThumbnails"
+        if self.book_id > 0:
+            return "Add Cover Thumbnails for Book {}".format(self.book_id)
+        else:
+            return "Generate Cover Thumbnails"
 
     @property
     def is_cancellable(self):
@@ -268,7 +279,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
 
                 if generated > 0:
                     total_generated += generated
-                    self.message = u'Generated {0} series thumbnails'.format(total_generated)
+                    self.message = N_('Generated {0} series thumbnails').format(total_generated)
 
                 # Check if job has been cancelled or ended
                 if self.stat == STAT_CANCELLED:
@@ -324,8 +335,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             self.app_db_session.commit()
             self.generate_series_thumbnail(series_books, thumbnail)
         except Exception as ex:
-            self.log.info(u'Error creating book thumbnail: ' + str(ex))
-            self._handleError(u'Error creating book thumbnail: ' + str(ex))
+            self.log.info('Error creating book thumbnail: ' + str(ex))
+            self._handleError('Error creating book thumbnail: ' + str(ex))
             self.app_db_session.rollback()
 
     def update_series_thumbnail(self, series_books, thumbnail):
@@ -336,8 +347,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             self.cache.delete_cache_file(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
             self.generate_series_thumbnail(series_books, thumbnail)
         except Exception as ex:
-            self.log.info(u'Error updating book thumbnail: ' + str(ex))
-            self._handleError(u'Error updating book thumbnail: ' + str(ex))
+            self.log.info('Error updating book thumbnail: ' + str(ex))
+            self._handleError('Error updating book thumbnail: ' + str(ex))
             self.app_db_session.rollback()
 
     def generate_series_thumbnail(self, series_books, thumbnail):
@@ -380,7 +391,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                             canvas.composite(img, left, top)
 
                     except Exception as ex:
-                        self.log.info(u'Error generating thumbnail file: ' + str(ex))
+                        self.log.info('Error generating thumbnail file: ' + str(ex))
                         raise ex
                     finally:
                         if stream is not None:
@@ -422,7 +433,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
 
     @property
     def name(self):
-        return 'GenerateSeriesThumbnails'
+        return N_('Cover Thumbnails')
 
     def __str__(self):
         return "GenerateSeriesThumbnails"
@@ -433,22 +444,28 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
 
 
 class TaskClearCoverThumbnailCache(CalibreTask):
-    def __init__(self, book_id, task_message=u'Clearing cover thumbnail cache'):
+    def __init__(self, book_id, task_message=N_('Clearing cover thumbnail cache')):
         super(TaskClearCoverThumbnailCache, self).__init__(task_message)
         self.log = logger.create()
         self.book_id = book_id
+        self.calibre_db = db.CalibreDB(expire_on_commit=False)
         self.app_db_session = ub.get_new_session_instance()
         self.cache = fs.FileSystem()
 
     def run(self, worker_thread):
         if self.app_db_session:
-            if self.book_id > 0:    # make sure all thumbnails aren't getting deleted due to a bug
+            if self.book_id == 0:  # delete superfluous thumbnails
+                thumbnails = (self.calibre_db.session.query(ub.Thumbnail)
+                              .join(db.Books, ub.Thumbnail.entity_id == db.Books.id, isouter=True)
+                              .filter(db.Books.id == None)
+                              .all())
+            elif self.book_id > 0:  # make sure single book is selected
                 thumbnails = self.get_thumbnails_for_book(self.book_id)
+            if self.book_id < 0:
+                self.delete_all_thumbnails()
+            else:
                 for thumbnail in thumbnails:
                     self.delete_thumbnail(thumbnail)
-            else:
-                self.delete_all_thumbnails()
-
         self._handleSuccess()
         self.app_db_session.remove()
 
@@ -460,7 +477,6 @@ class TaskClearCoverThumbnailCache(CalibreTask):
             .all()
 
     def delete_thumbnail(self, thumbnail):
-        # thumbnail.expiration = datetime.utcnow()
         try:
             self.cache.delete_cache_file(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
             self.app_db_session \
@@ -470,8 +486,8 @@ class TaskClearCoverThumbnailCache(CalibreTask):
                 .delete()
             self.app_db_session.commit()
         except Exception as ex:
-            self.log.info(u'Error deleting book thumbnail: ' + str(ex))
-            self._handleError(u'Error deleting book thumbnail: ' + str(ex))
+            self.log.info('Error deleting book thumbnail: ' + str(ex))
+            self._handleError('Error deleting book thumbnail: ' + str(ex))
 
     def delete_all_thumbnails(self):
         try:
@@ -479,16 +495,17 @@ class TaskClearCoverThumbnailCache(CalibreTask):
             self.app_db_session.commit()
             self.cache.delete_cache_dir(constants.CACHE_TYPE_THUMBNAILS)
         except Exception as ex:
-            self.log.info(u'Error deleting thumbnail directory: ' + str(ex))
-            self._handleError(u'Error deleting thumbnail directory: ' + str(ex))
+            self.log.info('Error deleting thumbnail directory: ' + str(ex))
+            self._handleError('Error deleting thumbnail directory: ' + str(ex))
 
     @property
     def name(self):
-        return 'ThumbnailsClear'
+        return N_('Cover Thumbnails')
 
+    # needed for logging
     def __str__(self):
         if self.book_id > 0:
-            return "Delete Thumbnail cache for book " + str(self.book_id)
+            return "Replace/Delete Cover Thumbnails for book " + str(self.book_id)
         else:
             return "Delete Thumbnail cache directory"
 
