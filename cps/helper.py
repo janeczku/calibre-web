@@ -1015,8 +1015,7 @@ def replace_cover_thumbnail_cache(book_id):
 
 
 def delete_thumbnail_cache():
-    if config.schedule_generate_book_covers:
-        WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
 
 
 def add_book_to_thumbnail_cache(book_id):

@@ -67,10 +67,10 @@ class Updater(threading.Thread):
             return self._stable_version_info()
         return self._nightly_version_info()
 
-    def get_available_updates(self, request_method, locale):
+    def get_available_updates(self, request_method):
         if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
-        return self._nightly_available_updates(request_method, locale)
+        return self._nightly_available_updates(request_method)
 
     def do_work(self):
         try:
@@ -335,7 +335,7 @@ class Updater(threading.Thread):
         print("\n*** Finished ***")
 
     @staticmethod
-    def _populate_parent_commits(update_data, status, locale, tz, parents):
+    def _populate_parent_commits(update_data, status, tz, parents):
         try:
             parent_commit = update_data['parents'][0]
             # limit the maximum search depth
@@ -360,7 +360,7 @@ class Updater(threading.Thread):
                         parent_commit_date = datetime.datetime.strptime(
                             parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                         parent_commit_date = format_datetime(
-                            parent_commit_date, format='short', locale=locale)
+                            parent_commit_date, format='short')
 
                         parents.append([parent_commit_date,
                                         parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
@@ -418,7 +418,7 @@ class Updater(threading.Thread):
             log_function("Excluded file list for updater not found, or not accessible")
         return excluded_files
 
-    def _nightly_available_updates(self, request_method, locale):
+    def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
             repository_url = _REPOSITORY_API_URL
@@ -459,14 +459,14 @@ class Updater(threading.Thread):
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=locale),
+                        format_datetime(new_commit_date, format='short'),
                         update_data['message'],
                         update_data['sha']
                     ]
                 )
                 # it only makes sense to analyze the parents if we know the current commit hash
                 if status['current_commit_hash'] != '':
-                    parents = self._populate_parent_commits(update_data, status, locale, tz, parents)
+                    parents = self._populate_parent_commits(update_data, status, tz, parents)
                 status['history'] = parents[::-1]
             except (IndexError, KeyError):
                 status['success'] = False
@@ -595,7 +595,7 @@ class Updater(threading.Thread):
         return json.dumps(status)
 
     def _get_request_path(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self.updateFile
         return _REPOSITORY_API_URL + '/zipball/master'
 
@@ -623,7 +623,7 @@ class Updater(threading.Thread):
                     status['message'] = _(u'HTTP Error') + ': ' + commit['message']
             else:
                 status['message'] = _(u'HTTP Error') + ': ' + str(e)
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
             status['message'] = _(u'Timeout while establishing connection')

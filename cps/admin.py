@@ -185,7 +185,6 @@ def update_thumbnails():
 @login_required
 @admin_required
 def admin():
-    locale = get_locale()
     version = updater_thread.get_current_version_info()
     if version is False:
         commit = _(u'Unknown')
@@ -1460,7 +1459,7 @@ def download_debug():
 def get_update_status():
     if feature_support['updater']:
         log.info(u"Update status requested")
-        return updater_thread.get_available_updates(request.method, locale=get_locale())
+        return updater_thread.get_available_updates(request.method)
     else:
         return ''
 
