@@ -550,7 +550,7 @@ $(function() {
 
     $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
-            ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
+            confirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
         }
     });
 
@@ -641,9 +641,9 @@ function UserActions (value, row) {
 /* Function for cancelling tasks */
 function TaskActions (value, row) {
     var cancellableStats = [0, 1, 2];
-    if (row.id && row.is_cancellable && cancellableStats.includes(row.stat)) {
+    if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
         return [
-            "<div class=\"task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.id + "\" title=\"Cancel\">",
+            "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
             "<i class=\"glyphicon glyphicon-ban-circle\"></i>",
             "</div>"
         ].join("");

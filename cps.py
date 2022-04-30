@@ -77,7 +77,7 @@ def main():
         app.register_blueprint(oauth)
 
     # Register scheduled tasks
-    register_scheduled_tasks()
+    register_scheduled_tasks()  # ToDo only reconnect if reconnect is enabled
     register_startup_tasks()
 
     success = web_server.start()

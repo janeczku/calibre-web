@@ -57,7 +57,7 @@ for f in modules:
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
-        except ImportError as e:
+        except (ImportError, IndentationError, SyntaxError) as e:
             log.error("Import error for metadata source: {} - {}".format(a, e))
             pass
 
@@ -138,6 +138,6 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in future.result()])
+                data.extend([asdict(x) for x in future.result() if x])
     # log.info({'Time elapsed {}'.format(current_milli_time()-start)})
     return Response(json.dumps(data), mimetype="application/json")

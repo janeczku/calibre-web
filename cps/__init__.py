@@ -179,12 +179,6 @@ def get_locale():
     return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
 
 
-@babel.timezoneselector
-def get_timezone():
-    user = getattr(g, 'user', None)
-    return user.timezone if user else None
-
-
 from .updater import Updater
 updater_thread = Updater()
 

@@ -25,7 +25,7 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
-from markupsafe import escape
+from markupsafe import escape  # dependency of flask
 from functools import wraps
 
 try:
@@ -35,9 +35,10 @@ except ImportError:
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as N_
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
-from sqlite3 import OperationalError as sqliteOperationalError
+# from sqlite3 import OperationalError as sqliteOperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, get_locale, ub, db
 from . import calibre_db
@@ -241,7 +242,7 @@ def delete_book_ajax(book_id, book_format):
 
 
 def delete_whole_book(book_id, book):
-    # delete book from Shelfs, Downloads, Read list
+    # delete book from shelves, Downloads, Read list
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
     ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
     ub.delete_download(book_id)
@@ -383,7 +384,7 @@ def render_edit_book(book_id):
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
-    # Option for showing convertbook button
+    # Option for showing convert_book button
     valid_source_formats = list()
     allowed_conversion_formats = list()
     kepub_possible = None
@@ -413,11 +414,11 @@ def render_edit_book(book_id):
 
 def edit_book_ratings(to_save, book):
     changed = False
-    if to_save.get("rating","").strip():
+    if to_save.get("rating", "").strip():
         old_rating = False
         if len(book.ratings) > 0:
             old_rating = book.ratings[0].rating
-        rating_x2 = int(float(to_save.get("rating","")) * 2)
+        rating_x2 = int(float(to_save.get("rating", "")) * 2)
         if rating_x2 != old_rating:
             changed = True
             is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
@@ -622,8 +623,9 @@ def edit_cc_data(book_id, book, to_save, cc):
                                               'custom')
     return changed
 
+
 # returns None if no file is uploaded
-# returns False if an error occours, in all other cases the ebook metadata is returned
+# returns False if an error occurs, in all other cases the ebook metadata is returned
 def upload_single_file(file_request, book, book_id):
     # Check and handle Uploaded file
     requested_file = file_request.files.get('btn-upload-format', None)
@@ -676,17 +678,18 @@ def upload_single_file(file_request, book, book_id):
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
                     flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
-                    return False # return redirect(url_for('web.show_book', book_id=book.id))
+                    return False  # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
-            upload_text = _(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
+            upload_text = N_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
             WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(book.title)))
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
                 rarExecutable=config.config_rarfile_location)
     return None
+
 
 def upload_cover(cover_request, book):
     requested_file = cover_request.files.get('btn-upload-cover', None)
@@ -698,7 +701,7 @@ def upload_cover(cover_request, book):
                 return False
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
-                helper.clear_cover_thumbnail_cache(book.id)
+                helper.replace_cover_thumbnail_cache(book.id)
                 return True
             else:
                 flash(message, category="error")
@@ -739,6 +742,7 @@ def handle_author_on_edit(book, author_name, update_stored=True):
         change = True
     return input_authors, change, renamed
 
+
 @EditBook.route("/admin/book/<int:book_id>", methods=['GET'])
 @login_required_if_no_ano
 @edit_required
@@ -754,11 +758,11 @@ def edit_book(book_id):
     edit_error = False
 
     # create the function for sorting...
-    try:
-        calibre_db.update_title_sort(config)
-    except sqliteOperationalError as e:
-        log.error_or_exception(e)
-        calibre_db.session.rollback()
+    #try:
+    calibre_db.update_title_sort(config)
+    #except sqliteOperationalError as e:
+    #    log.error_or_exception(e)
+    #    calibre_db.session.rollback()
 
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     # Book not found
@@ -815,6 +819,7 @@ def edit_book(book_id):
                 if result is True:
                     book.has_cover = 1
                     modify_date = True
+                    helper.replace_cover_thumbnail_cache(book.id)
                 else:
                     flash(error, category="error")
 
@@ -984,8 +989,13 @@ def create_book_on_upload(modify_date, meta):
     # combine path and normalize path from Windows systems
     path = os.path.join(author_dir, title_dir).replace('\\', '/')
 
+    try:
+        pubdate = datetime.strptime(meta.pubdate[:10], "%Y-%m-%d")
+    except ValueError:
+        pubdate = datetime(101, 1, 1)
+
     # Calibre adds books with utc as timezone
-    db_book = db.Books(title, "", sort_authors, datetime.utcnow(), datetime(101, 1, 1),
+    db_book = db.Books(title, "", sort_authors, datetime.utcnow(), pubdate,
                        '1', datetime.utcnow(), path, meta.cover, db_author, [], "")
 
     modify_date |= modify_database_object(input_authors, db_book.authors, db.Authors, calibre_db.session,
@@ -1018,6 +1028,16 @@ def create_book_on_upload(modify_date, meta):
 
     # flush content, get db_book.id available
     calibre_db.session.flush()
+
+    # Handle identifiers now that db_book.id is available
+    identifier_list = []
+    for type_key, type_value in meta.identifiers:
+        identifier_list.append(db.Identifiers(type_value, type_key, db_book.id))
+    modification, warning = modify_identifiers(identifier_list, db_book.identifiers, calibre_db.session)
+    if warning:
+        flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+    modify_date |= modification
+
     return db_book, input_authors, title_dir, renamed_authors
 
 
@@ -1048,18 +1068,18 @@ def file_handling_on_upload(requested_file):
 def move_coverfile(meta, db_book):
     # move cover to final directory, including book id
     if meta.cover:
-        coverfile = meta.cover
+        cover_file = meta.cover
     else:
-        coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path)
+        cover_file = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+    new_cover_path = os.path.join(config.config_calibre_dir, db_book.path)
     try:
-        os.makedirs(new_coverpath, exist_ok=True)
-        copyfile(coverfile, os.path.join(new_coverpath, "cover.jpg"))
+        os.makedirs(new_cover_path, exist_ok=True)
+        copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
         if meta.cover:
             os.unlink(meta.cover)
     except OSError as e:
-        log.error("Failed to move cover file %s: %s", new_coverpath, e)
-        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
+        log.error("Failed to move cover file %s: %s", new_cover_path, e)
+        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,
                 error=e),
               category="error")
 
@@ -1115,8 +1135,9 @@ def upload():
                 if error:
                     flash(error, category="error")
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
-                upload_text = _(u"File %(file)s uploaded", file=link)
+                upload_text = N_(u"File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
+                helper.add_book_to_thumbnail_cache(book_id)
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
@@ -1177,7 +1198,7 @@ def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
     sort_param = ""
-    # ret = ""
+    ret = ""
     try:
         if param == 'series_index':
             edit_book_series_index(vals['value'], book)

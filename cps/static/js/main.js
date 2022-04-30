@@ -474,6 +474,17 @@ $(function() {
             }
         });
     });
+    $("#admin_refresh_cover_cache").click(function() {
+        confirmDialog("admin_refresh_cover_cache", "GeneralChangeModal", 0, function () {
+            $.ajax({
+                method:"post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: getPath() + "/ajax/updateThumbnails",
+            });
+        });
+    });
+
     $("#restart_database").click(function() {
         $("#DialogHeader").addClass("hidden");
         $("#DialogFinished").addClass("hidden");

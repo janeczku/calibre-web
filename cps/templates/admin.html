@@ -161,32 +161,40 @@
       <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
     </div>
   </div>
-
+{%  if feature_support['scheduler'] %}
   <div class="row">
     <div class="col">
       <h2>{{_('Scheduled Tasks')}}</h2>
         <div class="col-xs-12 col-sm-12 scheduled_tasks_details">
           <div class="row">
             <div class="col-xs-6 col-sm-3">{{_('Time at which tasks start to run')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.schedule_start_time}}:00</div>
+            <div class="col-xs-6 col-sm-3">{{schedule_time}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Time at which tasks stop running')}}</div>
-            <div class="col-xs-6 col-sm-3">{{config.schedule_end_time}}:00</div>
+            <div class="col-xs-6 col-sm-3">{{_('Maximum tasks duration')}}</div>
+            <div class="col-xs-6 col-sm-3">{{schedule_duration}}</div>
           </div>
           <div class="row">
             <div class="col-xs-6 col-sm-3">{{_('Generate book cover thumbnails')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_book_covers) }}</div>
           </div>
-          <div class="row">
+          <!--div class="row">
             <div class="col-xs-6 col-sm-3">{{_('Generate series cover thumbnails')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_series_covers) }}</div>
+          </div-->
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Reconnect to Calibre Library')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
           </div>
+
         </div>
       <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
+      {% if config.schedule_generate_book_covers %}
+        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cover Cache')}}</a>
+      {%  endif %}
     </div>
   </div>
-
+{%  endif %}
   <div class="row form-group">
     <h2>{{_('Administration')}}</h2>
     <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
@@ -278,4 +286,7 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block modal %}
+{{ change_confirm_modal() }}
 {% endblock %}

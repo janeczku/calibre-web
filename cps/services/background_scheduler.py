@@ -52,32 +52,32 @@ class BackgroundScheduler:
             return self.scheduler.add_job(func=func, trigger=trigger, name=name, **trigger_args)
 
     # Expects a lambda expression for the task
-    def schedule_task(self, task, user=None, name=None, trigger='cron', **trigger_args):
+    def schedule_task(self, task, user=None, name=None, hidden=False, trigger='cron', **trigger_args):
         if use_APScheduler:
             def scheduled_task():
                 worker_task = task()
                 worker_task.scheduled = True
-                WorkerThread.add(user, worker_task)
+                WorkerThread.add(user, worker_task, hidden=hidden)
             return self.schedule(func=scheduled_task, trigger=trigger, name=name, **trigger_args)
 
     # Expects a list of lambda expressions for the tasks
     def schedule_tasks(self, tasks, user=None, trigger='cron', **trigger_args):
         if use_APScheduler:
             for task in tasks:
-                self.schedule_task(task[0], user=user, trigger=trigger, name=task[1], **trigger_args)
+                self.schedule_task(task[0], user=user, trigger=trigger, name=task[1], hidden=task[2], **trigger_args)
 
     # Expects a lambda expression for the task
-    def schedule_task_immediately(self, task, user=None, name=None):
+    def schedule_task_immediately(self, task, user=None, name=None, hidden=False):
         if use_APScheduler:
             def immediate_task():
-                WorkerThread.add(user, task())
+                WorkerThread.add(user, task(), hidden)
             return self.schedule(func=immediate_task, trigger='date', name=name)
 
     # Expects a list of lambda expressions for the tasks
     def schedule_tasks_immediately(self, tasks, user=None):
         if use_APScheduler:
             for task in tasks:
-                self.schedule_task_immediately(task[0], user, name="immediately " + task[1])
+                self.schedule_task_immediately(task[0], user, name="immediately " + task[1], hidden=task[2])
 
     # Remove all jobs
     def remove_all_jobs(self):
