@@ -25,7 +25,9 @@ import re
 import base64
 import json
 import operator
-from datetime import datetime, timedelta, time
+import time
+from datetime import datetime, timedelta
+from datetime import time as datetime_time
 from functools import wraps
 
 
@@ -205,7 +207,7 @@ def admin():
 
     all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    schedule_time = format_time(time(hour=config.schedule_start_time), format="short")
+    schedule_time = format_time(datetime_time(hour=config.schedule_start_time), format="short")
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
     schedule_duration = format_timedelta(t, threshold=.99)
 
