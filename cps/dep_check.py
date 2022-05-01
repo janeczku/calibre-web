@@ -20,7 +20,8 @@ if not importlib:
     except ImportError as e:
         pkgresources = False
 
-def load_dependencys(optional=False):
+
+def load_dependencies(optional=False):
     deps = list()
     if getattr(sys, 'frozen', False):
         pip_installed = os.path.join(BASE_DIR, ".pip_installed")
@@ -57,7 +58,7 @@ def load_dependencys(optional=False):
 
 def dependency_check(optional=False):
     d = list()
-    deps = load_dependencys(optional)
+    deps = load_dependencies(optional)
     for dep in deps:
         try:
             dep_version_int = [int(x) for x in dep[0].split('.')]
@@ -67,28 +68,28 @@ def dependency_check(optional=False):
             high_check = None
         except ValueError:
             d.append({'name': dep[1],
-                     'target': "available",
-                     'found': "Not available"
-                     })
+                      'target': "available",
+                      'found': "Not available"
+                      })
             continue
 
         if dep[2].strip() == "==":
             if dep_version_int != low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         elif dep[2].strip() == ">=":
             if dep_version_int < low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         elif dep[2].strip() == ">":
             if dep_version_int <= low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         if dep[4] and dep[5]:
             if dep[4].strip() == "<":
