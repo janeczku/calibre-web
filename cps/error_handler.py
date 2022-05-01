@@ -17,6 +17,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import traceback
+
 from flask import render_template
 from werkzeug.exceptions import default_exceptions
 try:

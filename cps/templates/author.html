@@ -36,7 +36,7 @@
       <div class="cover">
         <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img" title="{{entry.Books.title}}">
-              <img src="{{ url_for('web.get_cover', book_id=entry.Books.id) }}" />
+              {{ image.book_cover(entry.Books, alt=author.name|safe) }}
               {% if entry[2] == True %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
             </span>
         </a>

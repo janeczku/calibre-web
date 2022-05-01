@@ -18,11 +18,10 @@
 
 from .. import logger
 
-
 log = logger.create()
 
-
-try: from . import goodreads_support
+try:
+    from . import goodreads_support
 except ImportError as err:
     log.debug("Cannot import goodreads, showing authors-metadata will not work: %s", err)
     goodreads_support = None

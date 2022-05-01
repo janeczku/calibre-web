@@ -65,13 +65,13 @@ _VERSIONS = OrderedDict(
     SQLite=sqlite3.sqlite_version,
 )
 _VERSIONS.update(ret)
-_VERSIONS.update(uploader.get_versions(False))
+_VERSIONS.update(uploader.get_versions())
 
 
 def collect_stats():
-    _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
-    _VERSIONS['unrar'] = _(converter.get_unrar_version())
-    _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
+    _VERSIONS['ebook converter'] = converter.get_calibre_version()
+    _VERSIONS['unrar'] = converter.get_unrar_version()
+    _VERSIONS['kepubify'] = converter.get_kepubify_version()
     return _VERSIONS
 
 

@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-04-19 20:47:12</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-04-30 21:05:13</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-04-20 02:31:36</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-05-01 02:54:00</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>4h 53 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>4h 55 min</p>
         </div>
       </div>
       </div>
@@ -236,13 +236,13 @@
 
     <tr id="su" class="passClass">
         <td>TestCli</td>
-        <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c2', 9)">Detail</a>
+            <a onclick="showClassDetail('c2', 10)">Detail</a>
         </td>
     </tr>
 
@@ -322,6 +322,15 @@
     
         <tr id='pt2.9' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestCli - test_no_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.10' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -332,13 +341,13 @@
 
     <tr id="su" class="passClass">
         <td>TestCliGdrivedb</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c3', 3)">Detail</a>
+            <a onclick="showClassDetail('c3', 4)">Detail</a>
         </td>
     </tr>
 
@@ -365,6 +374,15 @@
         <tr id='pt3.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_gdrive_db_nonwrite</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt3.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCliGdrivedb - test_no_database</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -579,15 +597,15 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
+        <td class="text-center">7</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c7', 6)">Detail</a>
+            <a onclick="showClassDetail('c7', 7)">Detail</a>
         </td>
     </tr>
 
@@ -643,6 +661,35 @@
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft7.7" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft7.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft7.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 443, in test_thumbnail_cache
+    self.assertEqual(10*2, count_files(thumbnail_cache_path))
+AssertionError: 20 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1394,11 +1441,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksList</td>
         <td class="text-center">18</td>
-        <td class="text-center">15</td>
-        <td class="text-center">3</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1417,31 +1464,11 @@
     
     
     
-        <tr id="ft14.2" class="none bg-danger">
+        <tr id='pt14.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft14.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft14.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 155, in test_bookslist_edit_categories
-    self.assertEqual(2, len(elements))
-AssertionError: 2 != 3</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1527,33 +1554,11 @@ AssertionError: 2 != 3</pre>
     
     
     
-        <tr id="ft14.12" class="none bg-danger">
+        <tr id='pt14.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.12')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft14.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft14.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 206, in test_bookslist_edit_publisher
-    self.assertEqual(&#34;Pandöm,Ti|s@d&#34;, elements[0].text)
-AssertionError: &#39;Pandöm,Ti|s@d&#39; != &#39;None&#39;
-- Pandöm,Ti|s@d
-+ None</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1603,33 +1608,11 @@ AssertionError: &#39;Pandöm,Ti|s@d&#39; != &#39;None&#39;
     
     
     
-        <tr id="ft14.18" class="none bg-danger">
+        <tr id='pt14.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft14.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft14.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 51, in test_search_books_list
-    bl = self.check_search(bl, &#34;genot&#34;, 4, &#34;Categories&#34;, &#34;Gênot&#34;)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 43, in check_search
-    self.assertEqual(count, len(bl[&#39;table&#39;]))
-AssertionError: 4 != 5</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2278,13 +2261,13 @@ AssertionError: 4 != 5</pre>
 
     <tr id="su" class="passClass">
         <td>TestKoboSyncBig</td>
-        <td class="text-center">5</td>
-        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 5)">Detail</a>
+            <a onclick="showClassDetail('c26', 6)">Detail</a>
         </td>
     </tr>
 
@@ -2292,7 +2275,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
+                <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2301,7 +2284,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelfs</div>
+                <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2310,7 +2293,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt26.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
+                <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2319,7 +2302,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt26.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
+                <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2327,6 +2310,15 @@ AssertionError: 4 != 5</pre>
     
     
         <tr id='pt26.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt26.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -3603,15 +3595,15 @@ AssertionError: 4 != 5</pre>
     
 
 
-    <tr id="su" class="skipClass">
-        <td>TestUpdater</td>
-        <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+    <tr id="su" class="passClass">
+        <td>TestThumbnailsEnv</td>
         <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 9)">Detail</a>
+            <a onclick="showClassDetail('c42', 1)">Detail</a>
         </td>
     </tr>
 
@@ -3619,96 +3611,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id="st42.7" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st42.7')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st42.7" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st42.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Takes too long</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_reconnect_database</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt42.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_update_write_protect</div>
+                <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3717,14 +3620,14 @@ AssertionError: 4 != 5</pre>
 
 
     <tr id="su" class="failClass">
-        <td>TestUploadEPubs</td>
-        <td class="text-center">4</td>
-        <td class="text-center">3</td>
+        <td>TestThumbnails</td>
+        <td class="text-center">8</td>
+        <td class="text-center">5</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 4)">Detail</a>
+            <a onclick="showClassDetail('c43', 8)">Detail</a>
         </td>
     </tr>
 
@@ -3732,7 +3635,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt43.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
+                <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3741,7 +3644,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt43.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
+                <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3750,7 +3653,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id='pt43.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
+                <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3759,7 +3662,7 @@ AssertionError: 4 != 5</pre>
     
         <tr id="ft43.4" class="none bg-danger">
             <td>
-                <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
+                <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
@@ -3774,16 +3677,234 @@ AssertionError: 4 != 5</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 94, in test_upload_epub_lang
-    self.assertEqual(&#34;Lingua: Tedesco&#34;, self.driver.find_elements(By.TAG_NAME, &#34;h2&#34;)[1].text)
-AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
-- Lingua: Tedesco
-+ Lingua: Norvegese bokmål</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 135, in test_cover_change_on_upload_new_cover
+    self.assertGreaterEqual(diff(BytesIO(updated_cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.038404302739168276 not greater than or equal to 0.05</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
+        </tr>
+    
+    
+    
+        <tr id='st43.5' class='none bg-warning'>
+            <td>
+                <div class='testcase'>TestThumbnails - test_cover_for_series</div>
+            </td>
+            <td colspan='6' align='center'>SKIP</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft43.8" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft43.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft43.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft43.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 308, in test_sideloaded_book
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(old_cover), delete_diff_file=True), 0.04)
+AssertionError: 0.03724830839072722 not greater than or equal to 0.04</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestUpdater</td>
+        <td class="text-center">9</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c44', 9)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt44.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st44.7" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st44.7')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st44.7" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_st44.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Takes too long</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_reconnect_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_update_write_protect</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestUploadEPubs</td>
+        <td class="text-center">4</td>
+        <td class="text-center">4</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c45', 4)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt45.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt45.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt45.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt45.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3797,13 +3918,13 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 18)">Detail</a>
+            <a onclick="showClassDetail('c46', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -3812,7 +3933,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.2' class='hiddenRow bg-success'>
+        <tr id='pt46.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -3821,7 +3942,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.3' class='hiddenRow bg-success'>
+        <tr id='pt46.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -3830,7 +3951,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.4' class='hiddenRow bg-success'>
+        <tr id='pt46.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -3839,7 +3960,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.5' class='hiddenRow bg-success'>
+        <tr id='pt46.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -3848,7 +3969,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.6' class='hiddenRow bg-success'>
+        <tr id='pt46.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -3857,7 +3978,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.7' class='hiddenRow bg-success'>
+        <tr id='pt46.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -3866,7 +3987,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.8' class='hiddenRow bg-success'>
+        <tr id='pt46.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -3875,7 +3996,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.9' class='hiddenRow bg-success'>
+        <tr id='pt46.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -3884,7 +4005,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.10' class='hiddenRow bg-success'>
+        <tr id='pt46.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -3893,7 +4014,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.11' class='hiddenRow bg-success'>
+        <tr id='pt46.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -3902,7 +4023,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.12' class='hiddenRow bg-success'>
+        <tr id='pt46.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -3911,7 +4032,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.13' class='hiddenRow bg-success'>
+        <tr id='pt46.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -3920,7 +4041,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.14' class='hiddenRow bg-success'>
+        <tr id='pt46.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -3929,7 +4050,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.15' class='hiddenRow bg-success'>
+        <tr id='pt46.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -3938,7 +4059,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.16' class='hiddenRow bg-success'>
+        <tr id='pt46.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -3947,7 +4068,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.17' class='hiddenRow bg-success'>
+        <tr id='pt46.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -3956,7 +4077,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt44.18' class='hiddenRow bg-success'>
+        <tr id='pt46.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -3974,13 +4095,13 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 1)">Detail</a>
+            <a onclick="showClassDetail('c47', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -3998,13 +4119,13 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 21)">Detail</a>
+            <a onclick="showClassDetail('c48', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -4013,7 +4134,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt48.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -4022,7 +4143,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt48.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -4031,7 +4152,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt48.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -4040,7 +4161,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt48.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -4049,7 +4170,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt48.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -4058,7 +4179,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.7' class='hiddenRow bg-success'>
+        <tr id='pt48.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -4067,7 +4188,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt48.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -4076,7 +4197,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt48.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -4085,7 +4206,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.10' class='hiddenRow bg-success'>
+        <tr id='pt48.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -4094,7 +4215,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.11' class='hiddenRow bg-success'>
+        <tr id='pt48.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -4103,7 +4224,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.12' class='hiddenRow bg-success'>
+        <tr id='pt48.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -4112,7 +4233,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.13' class='hiddenRow bg-success'>
+        <tr id='pt48.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -4121,7 +4242,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.14' class='hiddenRow bg-success'>
+        <tr id='pt48.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -4130,7 +4251,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.15' class='hiddenRow bg-success'>
+        <tr id='pt48.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -4139,7 +4260,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.16' class='hiddenRow bg-success'>
+        <tr id='pt48.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -4148,7 +4269,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.17' class='hiddenRow bg-success'>
+        <tr id='pt48.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -4157,7 +4278,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.18' class='hiddenRow bg-success'>
+        <tr id='pt48.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -4166,7 +4287,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.19' class='hiddenRow bg-success'>
+        <tr id='pt48.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -4175,7 +4296,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.20' class='hiddenRow bg-success'>
+        <tr id='pt48.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -4184,7 +4305,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt46.21' class='hiddenRow bg-success'>
+        <tr id='pt48.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -4202,13 +4323,13 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 35)">Detail</a>
+            <a onclick="showClassDetail('c49', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -4217,7 +4338,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.2' class='hiddenRow bg-success'>
+        <tr id='pt49.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -4226,7 +4347,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.3' class='hiddenRow bg-success'>
+        <tr id='pt49.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -4235,7 +4356,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.4' class='hiddenRow bg-success'>
+        <tr id='pt49.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -4244,7 +4365,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.5' class='hiddenRow bg-success'>
+        <tr id='pt49.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -4253,7 +4374,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.6' class='hiddenRow bg-success'>
+        <tr id='pt49.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -4262,7 +4383,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.7' class='hiddenRow bg-success'>
+        <tr id='pt49.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -4271,7 +4392,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.8' class='hiddenRow bg-success'>
+        <tr id='pt49.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -4280,7 +4401,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.9' class='hiddenRow bg-success'>
+        <tr id='pt49.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -4289,7 +4410,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.10' class='hiddenRow bg-success'>
+        <tr id='pt49.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -4298,7 +4419,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.11' class='hiddenRow bg-success'>
+        <tr id='pt49.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -4307,7 +4428,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.12' class='hiddenRow bg-success'>
+        <tr id='pt49.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -4316,7 +4437,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.13' class='hiddenRow bg-success'>
+        <tr id='pt49.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -4325,7 +4446,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.14' class='hiddenRow bg-success'>
+        <tr id='pt49.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -4334,7 +4455,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.15' class='hiddenRow bg-success'>
+        <tr id='pt49.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -4343,7 +4464,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.16' class='hiddenRow bg-success'>
+        <tr id='pt49.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -4352,7 +4473,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.17' class='hiddenRow bg-success'>
+        <tr id='pt49.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -4361,7 +4482,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.18' class='hiddenRow bg-success'>
+        <tr id='pt49.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -4370,7 +4491,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.19' class='hiddenRow bg-success'>
+        <tr id='pt49.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -4379,7 +4500,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.20' class='hiddenRow bg-success'>
+        <tr id='pt49.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -4388,7 +4509,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.21' class='hiddenRow bg-success'>
+        <tr id='pt49.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -4397,7 +4518,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.22' class='hiddenRow bg-success'>
+        <tr id='pt49.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -4406,7 +4527,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.23' class='hiddenRow bg-success'>
+        <tr id='pt49.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -4415,7 +4536,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.24' class='hiddenRow bg-success'>
+        <tr id='pt49.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -4424,7 +4545,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.25' class='hiddenRow bg-success'>
+        <tr id='pt49.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -4433,7 +4554,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.26' class='hiddenRow bg-success'>
+        <tr id='pt49.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -4442,7 +4563,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.27' class='hiddenRow bg-success'>
+        <tr id='pt49.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -4451,7 +4572,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.28' class='hiddenRow bg-success'>
+        <tr id='pt49.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -4460,7 +4581,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.29' class='hiddenRow bg-success'>
+        <tr id='pt49.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -4469,7 +4590,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.30' class='hiddenRow bg-success'>
+        <tr id='pt49.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -4478,7 +4599,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.31' class='hiddenRow bg-success'>
+        <tr id='pt49.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -4487,7 +4608,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.32' class='hiddenRow bg-success'>
+        <tr id='pt49.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -4496,7 +4617,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.33' class='hiddenRow bg-success'>
+        <tr id='pt49.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -4505,7 +4626,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.34' class='hiddenRow bg-success'>
+        <tr id='pt49.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -4514,7 +4635,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt47.35' class='hiddenRow bg-success'>
+        <tr id='pt49.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -4532,13 +4653,13 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 16)">Detail</a>
+            <a onclick="showClassDetail('c50', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -4547,7 +4668,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.2' class='hiddenRow bg-success'>
+        <tr id='pt50.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -4556,7 +4677,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.3' class='hiddenRow bg-success'>
+        <tr id='pt50.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -4565,7 +4686,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id='pt50.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -4574,7 +4695,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.5' class='hiddenRow bg-success'>
+        <tr id='pt50.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -4583,7 +4704,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.6' class='hiddenRow bg-success'>
+        <tr id='pt50.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -4592,7 +4713,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.7' class='hiddenRow bg-success'>
+        <tr id='pt50.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -4601,7 +4722,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.8' class='hiddenRow bg-success'>
+        <tr id='pt50.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -4610,7 +4731,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.9' class='hiddenRow bg-success'>
+        <tr id='pt50.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -4619,7 +4740,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.10' class='hiddenRow bg-success'>
+        <tr id='pt50.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -4628,7 +4749,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.11' class='hiddenRow bg-success'>
+        <tr id='pt50.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -4637,7 +4758,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.12' class='hiddenRow bg-success'>
+        <tr id='pt50.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -4646,7 +4767,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.13' class='hiddenRow bg-success'>
+        <tr id='pt50.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -4655,7 +4776,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.14' class='hiddenRow bg-success'>
+        <tr id='pt50.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -4664,7 +4785,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.15' class='hiddenRow bg-success'>
+        <tr id='pt50.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -4673,7 +4794,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
     
     
     
-        <tr id='pt48.16' class='hiddenRow bg-success'>
+        <tr id='pt50.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -4684,11 +4805,11 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>410</td>
-        <td>400</td>
-        <td>4</td>
+        <td>423</td>
+        <td>413</td>
+        <td>3</td>
         <td>0</td>
-        <td>6</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -4716,7 +4837,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64</td>
+              <td>Linux 5.13.0-40-generic #45~20.04.1-Ubuntu SMP Mon Apr 4 09:38:31 UTC 2022 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -4733,8 +4854,14 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
             </tr>
           
             <tr>
+              <th>APScheduler</th>
+              <td>3.9.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>Babel</th>
-              <td>2.9.1</td>
+              <td>2.10.1</td>
               <td>Basic</td>
             </tr>
           
@@ -4794,7 +4921,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>Jinja2</th>
-              <td>3.1.1</td>
+              <td>3.1.2</td>
               <td>Basic</td>
             </tr>
           
@@ -4830,7 +4957,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.35</td>
+              <td>1.4.36</td>
               <td>Basic</td>
             </tr>
           
@@ -4860,7 +4987,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4890,7 +5017,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -4920,7 +5047,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -4962,7 +5089,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -4998,7 +5125,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5040,7 +5167,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.45.0</td>
+              <td>2.46.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5130,7 +5257,7 @@ AssertionError: &#39;Lingua: Tedesco&#39; != &#39;Lingua: Norvegese bokmål&#39;
 </div>
 
 <script>
-    drawCircle(400, 4, 0, 6);
+    drawCircle(413, 3, 0, 7);
     showCase(5);
 </script>
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
 #    Copyright (C) 2018-2019 OzzieIsaacs, cervinko, jkrehm, bodybybuddha, ok11,
 #                            andy29485, idalin, Kyosfonica, wuqi, Kennyl, lemmsh,
@@ -21,40 +19,37 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from datetime import datetime
 import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
-from functools import wraps
 
-from babel.dates import format_date
-from babel import Locale
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
+from flask_babel import get_locale
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
-from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
+from sqlalchemy.sql.expression import text, func, false, not_, and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
-
-from .services.worker import WorkerThread
 
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
-from . import babel, db, ub, config, get_locale, app
+from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
+from .search import render_search_results, render_adv_search_results
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, check_email, check_username, \
-    get_book_cover, get_download_link, send_mail, generate_random_password, \
+from .helper import check_valid_domain, check_email, check_username, \
+    get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status
 from .pagination import Pagination
 from .redirect import redirect_back
+from .babel import get_available_locale
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
@@ -74,6 +69,8 @@ except ImportError:
     feature_support['oauth'] = False
     oauth_check = {}
     register_user_with_oauth = logout_oauth_user = get_oauth_status = None
+
+from functools import wraps
 
 try:
     from natsort import natsorted as sort
@@ -102,6 +99,7 @@ def add_security_headers(resp):
 
 
 web = Blueprint('web', __name__)
+
 log = logger.create()
 
 
@@ -134,7 +132,7 @@ def viewer_required(f):
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = WorkerThread.getInstance().tasks
+    tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
@@ -770,57 +768,6 @@ def render_archived_books(page, sort_param):
                                  title=name, page=page_name, order=sort_param[1])
 
 
-def render_prepare_search_form(cc):
-    # prepare data for search-form
-    tags = calibre_db.session.query(db.Tags) \
-        .join(db.books_tags_link) \
-        .join(db.Books) \
-        .filter(calibre_db.common_filters()) \
-        .group_by(text('books_tags_link.tag')) \
-        .order_by(db.Tags.name).all()
-    series = calibre_db.session.query(db.Series) \
-        .join(db.books_series_link) \
-        .join(db.Books) \
-        .filter(calibre_db.common_filters()) \
-        .group_by(text('books_series_link.series')) \
-        .order_by(db.Series.name) \
-        .filter(calibre_db.common_filters()).all()
-    shelves = ub.session.query(ub.Shelf) \
-        .filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == int(current_user.id))) \
-        .order_by(ub.Shelf.name).all()
-    extensions = calibre_db.session.query(db.Data) \
-        .join(db.Books) \
-        .filter(calibre_db.common_filters()) \
-        .group_by(db.Data.format) \
-        .order_by(db.Data.format).all()
-    if current_user.filter_language() == u"all":
-        languages = calibre_db.speaking_language()
-    else:
-        languages = None
-    return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series, shelves=shelves, title=_(u"Advanced Search"), cc=cc, page="advsearch")
-
-
-def render_search_results(term, offset=None, order=None, limit=None):
-    join = db.books_series_link, db.books_series_link.c.book == db.Books.id, db.Series
-    entries, result_count, pagination = calibre_db.get_search_results(term,
-                                                                      config,
-                                                                      offset,
-                                                                      order,
-                                                                      limit,
-                                                                      *join)
-    return render_title_template('search.html',
-                                 searchterm=term,
-                                 pagination=pagination,
-                                 query=term,
-                                 adv_searchterm=term,
-                                 entries=entries,
-                                 result_count=result_count,
-                                 title=_(u"Search"),
-                                 page="search",
-                                 order=order[1])
-
-
 # ################################### View Books list ##################################################################
 
 
@@ -1013,7 +960,7 @@ def publisher_list():
                            .count())
         if no_publisher_count:
             entries.append([db.Category(_("None"), "-1"), no_publisher_count])
-        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+        entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher", order=order_no)
@@ -1043,7 +990,7 @@ def series_list():
                             .count())
             if no_series_count:
                 entries.append([db.Category(_("None"), "-1"), no_series_count])
-            entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+            entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
             return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_(u"Series"), page="serieslist", data="series", order=order_no)
         else:
@@ -1145,7 +1092,7 @@ def category_list():
                          .count())
         if no_tag_count:
             entries.append([db.Category(_("None"), "-1"), no_tag_count])
-        entries = sorted(entries, key=lambda x: x[0].name, reverse=not order_no)
+        entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
         char_list = generate_char_list(entries)
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
                                      title=_(u"Categories"), page="catlist", data="category", order=order_no)
@@ -1153,329 +1100,38 @@ def category_list():
         abort(404)
 
 
-# ################################### Task functions ################################################################
-
-
-@web.route("/tasks")
-@login_required
-def get_tasks_status():
-    # if current user admin, show all email, otherwise only own emails
-    tasks = WorkerThread.getInstance().tasks
-    answer = render_task_status(tasks)
-    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
-
-
-# ################################### Search functions ################################################################
-
-@web.route("/search", methods=["GET"])
-@login_required_if_no_ano
-def search():
-    term = request.args.get("query")
-    if term:
-        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term.strip()))
-    else:
-        return render_title_template('search.html',
-                                     searchterm="",
-                                     result_count=0,
-                                     title=_(u"Search"),
-                                     page="search")
-
-
-@web.route("/advsearch", methods=['POST'])
-@login_required_if_no_ano
-def advanced_search():
-    values = dict(request.form)
-    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_shelf', 'exclude_shelf',
-              'include_language', 'exclude_language', 'include_extension', 'exclude_extension']
-    for param in params:
-        values[param] = list(request.form.getlist(param))
-    flask_session['query'] = json.dumps(values)
-    return redirect(url_for('web.books_list', data="advsearch", sort_param='stored', query=""))
-
-
-def adv_search_custom_columns(cc, term, q):
-    for c in cc:
-        if c.datatype == "datetime":
-            custom_start = term.get('custom_column_' + str(c.id) + '_start')
-            custom_end = term.get('custom_column_' + str(c.id) + '_end')
-            if custom_start:
-                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    func.datetime(db.cc_classes[c.id].value) >= func.datetime(custom_start)))
-            if custom_end:
-                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    func.datetime(db.cc_classes[c.id].value) <= func.datetime(custom_end)))
-        else:
-            custom_query = term.get('custom_column_' + str(c.id))
-            if custom_query != '' and custom_query is not None:
-                if c.datatype == 'bool':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == (custom_query == "True")))
-                elif c.datatype == 'int' or c.datatype == 'float':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == custom_query))
-                elif c.datatype == 'rating':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
-                else:
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
-    return q
-
-
-def adv_search_read_status(q, read_status):
-    if read_status:
-        if config.config_read_column:
-            try:
-                if read_status == "True":
-                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                        .filter(db.cc_classes[config.config_read_column].value == True)
-                else:
-                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
-            except (KeyError, AttributeError, IndexError):
-                log.error(
-                    "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
-                        column=config.config_read_column),
-                      category="error")
-                return q
-        else:
-            if read_status == "True":
-                q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
-                    .filter(ub.ReadBook.user_id == int(current_user.id),
-                            ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
-            else:
-                q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
-                    .filter(ub.ReadBook.user_id == int(current_user.id),
-                            coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
-    return q
-
-
-def adv_search_language(q, include_languages_inputs, exclude_languages_inputs):
-    if current_user.filter_language() != "all":
-        q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
-    else:
-        return adv_search_text(q, include_languages_inputs, exclude_languages_inputs, db.Languages.id)
-    return q
-
-
-def adv_search_ratings(q, rating_high, rating_low):
-    if rating_high:
-        rating_high = int(rating_high) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
-    if rating_low:
-        rating_low = int(rating_low) * 2
-        q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
-    return q
-
-
-def adv_search_text(q, include_inputs, exclude_inputs, data_table):
-    for inp in include_inputs:
-        q = q.filter(getattr(db.Books, data_table.class_.__tablename__).any(data_table == inp))
-    for excl in exclude_inputs:
-        q = q.filter(not_(getattr(db.Books, data_table.class_.__tablename__).any(data_table == excl)))
-    return q
-
-
-def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
-    q = q.outerjoin(ub.BookShelf, db.Books.id == ub.BookShelf.book_id) \
-        .filter(or_(ub.BookShelf.shelf == None, ub.BookShelf.shelf.notin_(exclude_shelf_inputs)))
-    if len(include_shelf_inputs) > 0:
-        q = q.filter(ub.BookShelf.shelf.in_(include_shelf_inputs))
-    return q
-
-
-def extend_search_term(searchterm,
-                       author_name,
-                       book_title,
-                       publisher,
-                       pub_start,
-                       pub_end,
-                       tags,
-                       rating_high,
-                       rating_low,
-                       read_status,
-                       ):
-    searchterm.extend((author_name.replace('|', ','), book_title, publisher))
-    if pub_start:
-        try:
-            searchterm.extend([_(u"Published after ") +
-                               format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
-                                           format='medium', locale=get_locale())])
-        except ValueError:
-            pub_start = u""
-    if pub_end:
-        try:
-            searchterm.extend([_(u"Published before ") +
-                               format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
-                                           format='medium', locale=get_locale())])
-        except ValueError:
-            pub_end = u""
-    elements = {'tag': db.Tags, 'serie': db.Series, 'shelf': ub.Shelf}
-    for key, db_element in elements.items():
-        tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
-        searchterm.extend(tag.name for tag in tag_names)
-        tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['exclude_' + key])).all()
-        searchterm.extend(tag.name for tag in tag_names)
-    language_names = calibre_db.session.query(db.Languages). \
-        filter(db.Languages.id.in_(tags['include_language'])).all()
-    if language_names:
-        language_names = calibre_db.speaking_language(language_names)
-    searchterm.extend(language.name for language in language_names)
-    language_names = calibre_db.session.query(db.Languages). \
-        filter(db.Languages.id.in_(tags['exclude_language'])).all()
-    if language_names:
-        language_names = calibre_db.speaking_language(language_names)
-    searchterm.extend(language.name for language in language_names)
-    if rating_high:
-        searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
-    if rating_low:
-        searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
-    if read_status:
-        searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
-    searchterm.extend(ext for ext in tags['include_extension'])
-    searchterm.extend(ext for ext in tags['exclude_extension'])
-    # handle custom columns
-    searchterm = " + ".join(filter(None, searchterm))
-    return searchterm, pub_start, pub_end
-
-
-def render_adv_search_results(term, offset=None, order=None, limit=None):
-    sort_param = order[0] if order else [db.Books.sort]
-    pagination = None
-
-    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
-    q = query.outerjoin(db.books_series_link, db.books_series_link.c.book == db.Books.id) \
-        .outerjoin(db.Series) \
-        .filter(calibre_db.common_filters(True))
-
-    # parse multiselects to a complete dict
-    tags = dict()
-    elements = ['tag', 'serie', 'shelf', 'language', 'extension']
-    for element in elements:
-        tags['include_' + element] = term.get('include_' + element)
-        tags['exclude_' + element] = term.get('exclude_' + element)
-
-    author_name = term.get("author_name")
-    book_title = term.get("book_title")
-    publisher = term.get("publisher")
-    pub_start = term.get("publishstart")
-    pub_end = term.get("publishend")
-    rating_low = term.get("ratinghigh")
-    rating_high = term.get("ratinglow")
-    description = term.get("comment")
-    read_status = term.get("read_status")
-    if author_name:
-        author_name = author_name.strip().lower().replace(',', '|')
-    if book_title:
-        book_title = book_title.strip().lower()
-    if publisher:
-        publisher = publisher.strip().lower()
-
-    search_term = []
-    cc_present = False
-    for c in cc:
-        if c.datatype == "datetime":
-            column_start = term.get('custom_column_' + str(c.id) + '_start')
-            column_end = term.get('custom_column_' + str(c.id) + '_end')
-            if column_start:
-                search_term.extend([u"{} >= {}".format(c.name,
-                                                       format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
-                                                                   format='medium',
-                                                                   locale=get_locale())
-                                                       )])
-                cc_present = True
-            if column_end:
-                search_term.extend([u"{} <= {}".format(c.name,
-                                                       format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
-                                                                   format='medium',
-                                                                   locale=get_locale())
-                                                       )])
-                cc_present = True
-        elif term.get('custom_column_' + str(c.id)):
-            search_term.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
-            cc_present = True
-
-    if any(tags.values()) or author_name or book_title or \
-        publisher or pub_start or pub_end or rating_low or rating_high \
-            or description or cc_present or read_status:
-        search_term, pub_start, pub_end = extend_search_term(search_term,
-                                                             author_name,
-                                                             book_title,
-                                                             publisher,
-                                                             pub_start,
-                                                             pub_end,
-                                                             tags,
-                                                             rating_high,
-                                                             rating_low,
-                                                             read_status)
-        # q = q.filter()
-        if author_name:
-            q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_name + "%")))
-        if book_title:
-            q = q.filter(func.lower(db.Books.title).ilike("%" + book_title + "%"))
-        if pub_start:
-            q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
-        if pub_end:
-            q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
-        q = adv_search_read_status(q, read_status)
-        if publisher:
-            q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
-        q = adv_search_text(q, tags['include_tag'], tags['exclude_tag'], db.Tags.id)
-        q = adv_search_text(q, tags['include_serie'], tags['exclude_serie'], db.Series.id)
-        q = adv_search_text(q, tags['include_extension'], tags['exclude_extension'], db.Data.format)
-        q = adv_search_shelf(q, tags['include_shelf'], tags['exclude_shelf'])
-        q = adv_search_language(q, tags['include_language'], tags['exclude_language'])
-        q = adv_search_ratings(q, rating_high, rating_low, )
-
-        if description:
-            q = q.filter(db.Books.comments.any(func.lower(db.Comments.text).ilike("%" + description + "%")))
-
-        # search custom columns
-        try:
-            q = adv_search_custom_columns(cc, term, q)
-        except AttributeError as ex:
-            log.error_or_exception(ex)
-            flash(_("Error on search for custom columns, please restart Calibre-Web"), category="error")
-
-    q = q.order_by(*sort_param).all()
-    flask_session['query'] = json.dumps(term)
-    ub.store_combo_ids(q)
-    result_count = len(q)
-    if offset is not None and limit is not None:
-        offset = int(offset)
-        limit_all = offset + int(limit)
-        pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
-    else:
-        offset = 0
-        limit_all = result_count
-    entries = calibre_db.order_authors(q[offset:limit_all], list_return=True, combined=True)
-    return render_title_template('search.html',
-                                 adv_searchterm=search_term,
-                                 pagination=pagination,
-                                 entries=entries,
-                                 result_count=result_count,
-                                 title=_(u"Advanced Search"), page="advsearch",
-                                 order=order[1])
-
-
-@web.route("/advsearch", methods=['GET'])
-@login_required_if_no_ano
-def advanced_search_form():
-    # Build custom columns names
-    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
-    return render_prepare_search_form(cc)
 
 
 # ################################### Download/Send ##################################################################
 
 
 @web.route("/cover/<int:book_id>")
+@web.route("/cover/<int:book_id>/<string:resolution>")
 @login_required_if_no_ano
-def get_cover(book_id):
-    return get_book_cover(book_id)
+def get_cover(book_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_book_cover(book_id, cover_resolution)
+
+
+@web.route("/series_cover/<int:series_id>")
+@web.route("/series_cover/<int:series_id>/<string:resolution>")
+@login_required_if_no_ano
+def get_series_cover(series_id, resolution=None):
+    resolutions = {
+        'og': constants.COVER_THUMBNAIL_ORIGINAL,
+        'sm': constants.COVER_THUMBNAIL_SMALL,
+        'md': constants.COVER_THUMBNAIL_MEDIUM,
+        'lg': constants.COVER_THUMBNAIL_LARGE,
+    }
+    cover_resolution = resolutions.get(resolution, None)
+    return get_series_cover_thumbnail(series_id, cover_resolution)
+
 
 
 @web.route("/robots.txt")
@@ -1761,7 +1417,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
 @login_required
 def profile():
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [Locale('en')]
+    translations = get_available_locale()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth'] and config.config_login_type == 2:
         oauth_status = get_oauth_status()
@@ -1868,10 +1524,10 @@ def show_book(book_id):
         entry.kindle_list = check_send_to_kindle(entry)
         entry.reader_list = check_read_formats(entry)
 
-        entry.audioentries = []
+        entry.audio_entries = []
         for media_format in entry.data:
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
-                entry.audioentries.append(media_format.format.lower())
+                entry.audio_entries.append(media_format.format.lower())
 
         return render_title_template('detail.html',
                                      entry=entry,

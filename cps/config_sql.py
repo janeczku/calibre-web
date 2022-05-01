@@ -29,7 +29,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
-from . import constants, cli, logger
+from . import constants, logger
 
 
 log = logger.create()
@@ -134,12 +134,18 @@ class _Settings(_Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
-    config_unicode_filename =Column(Boolean, default=False)
+    config_unicode_filename = Column(Boolean, default=False)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     config_reverse_proxy_login_header_name = Column(String)
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
+
+    schedule_start_time = Column(Integer, default=4)
+    schedule_duration = Column(Integer, default=10)
+    schedule_generate_book_covers = Column(Boolean, default=False)
+    schedule_generate_series_covers = Column(Boolean, default=False)
+    schedule_reconnect = Column(Boolean, default=False)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -148,12 +154,16 @@ class _Settings(_Base):
 # Class holds all application specific settings in calibre-web
 class _ConfigSQL(object):
     # pylint: disable=no-member
-    def __init__(self, session):
+    def __init__(self):
+        pass
+
+    def init_config(self, session, cli):
         self._session = session
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
         self.load()
+        self.cli = cli
 
         change = False
         if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
@@ -171,7 +181,6 @@ class _ConfigSQL(object):
         if change:
             self.save()
 
-
     def _read_from_storage(self):
         if self._settings is None:
             log.debug("_ConfigSQL._read_from_storage")
@@ -179,22 +188,21 @@ class _ConfigSQL(object):
         return self._settings
 
     def get_config_certfile(self):
-        if cli.certfilepath:
-            return cli.certfilepath
-        if cli.certfilepath == "":
+        if self.cli.certfilepath:
+            return self.cli.certfilepath
+        if self.cli.certfilepath == "":
             return None
         return self.config_certfile
 
     def get_config_keyfile(self):
-        if cli.keyfilepath:
-            return cli.keyfilepath
-        if cli.certfilepath == "":
+        if self.cli.keyfilepath:
+            return self.cli.keyfilepath
+        if self.cli.certfilepath == "":
             return None
         return self.config_keyfile
 
-    @staticmethod
-    def get_config_ipaddress():
-        return cli.ip_address or ""
+    def get_config_ipaddress(self):
+        return self.cli.ip_address or ""
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -255,6 +263,8 @@ class _ConfigSQL(object):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
                     or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
+    def get_scheduled_task_settings(self):
+        return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
@@ -286,10 +296,9 @@ class _ConfigSQL(object):
     def toDict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret"):
+            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret") and not k == "cli":
                 storage[k] = v
         return storage
-
 
     def load(self):
         '''Load all configuration values from the underlying storage.'''
@@ -411,6 +420,7 @@ def autodetect_calibre_binary():
             return element
     return ""
 
+
 def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
@@ -421,6 +431,7 @@ def autodetect_unrar_binary():
         if os.path.isfile(element) and os.access(element, os.X_OK):
             return element
     return ""
+
 
 def autodetect_kepubify_binary():
     if sys.platform == "win32":
@@ -433,6 +444,7 @@ def autodetect_kepubify_binary():
             return element
     return ""
 
+
 def _migrate_database(session):
     # make sure the table is created, if it does not exist
     _Base.metadata.create_all(session.bind)
@@ -440,14 +452,15 @@ def _migrate_database(session):
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(session):
+def load_configuration(conf, session, cli):
     _migrate_database(session)
 
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-    conf = _ConfigSQL(session)
-    return conf
+    # conf = _ConfigSQL()
+    conf.init_config(session, cli)
+    # return conf
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()

@@ -22,17 +22,16 @@ import inspect
 import json
 import os
 import sys
-# from time import time
-
 
 from flask import Blueprint, Response, request, url_for
 from flask_login import current_user
 from flask_login import login_required
+from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
 
 from cps.services.Metadata import Metadata
-from . import constants, get_locale, logger, ub, web_server
+from . import constants, logger, ub, web_server
 
 # current_milli_time = lambda: int(round(time() * 1000))
 
@@ -57,9 +56,10 @@ for f in modules:
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
-        except (ImportError, IndentationError, SyntaxError) as e:
-            log.error("Import error for metadata source: {} - {}".format(a, e))
-            pass
+        except (IndentationError, SyntaxError) as e:
+            log.error("Syntax error for metadata source: {} - {}".format(a, e))
+        except ImportError as e:
+            log.debug("Import error for metadata source: {} - {}".format(a, e))
 
 
 def list_classes(provider_list):
