@@ -29,18 +29,16 @@ from tempfile import gettempdir
 import requests
 import unidecode
 
-from babel.dates import format_datetime
-from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as N_
 from flask_login import current_user
-from sqlalchemy.sql.expression import true, false, and_, text, func
+from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from markupsafe import escape
 from urllib.parse import quote
-
 
 try:
     import advocate
@@ -51,14 +49,15 @@ except ImportError:
     advocate = requests
     UnacceptableAddressException = MissingSchema = BaseException
 
-from . import calibre_db, cli
+from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
-from . import logger, config, get_locale, db, ub
+from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
 from .subproc_wrapper import process_wait
-from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
+from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 
 log = logger.create()
 
@@ -73,10 +72,10 @@ except (ImportError, RuntimeError) as e:
 
 
 # Convert existing book entry to new format
-def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
+def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
-    file_path = os.path.join(calibrepath, book.path, data.name)
+    file_path = os.path.join(calibre_path, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
@@ -109,9 +108,10 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
     return None
 
 
+# Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(kindle_mail, user_name):
     WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
+                     config.get_mail_settings(), kindle_mail, N_(u"Test e-mail"),
                                           _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
@@ -133,27 +133,27 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         attachment=None,
         settings=config.get_mail_settings(),
         recipient=e_mail,
-        taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
+        task_message=N_(u"Registration e-mail for user: %(name)s", name=user_name),
         text=txt
     ))
     return
 
 
 def check_send_to_kindle_with_converter(formats):
-    bookformats = list()
+    book_formats = list()
     if 'EPUB' in formats and 'MOBI' not in formats:
-        bookformats.append({'format': 'Mobi',
-                            'convert': 1,
-                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                      orig='Epub',
-                                      format='Mobi')})
+        book_formats.append({'format': 'Mobi',
+                             'convert': 1,
+                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                       orig='Epub',
+                                       format='Mobi')})
     if 'AZW3' in formats and 'MOBI' not in formats:
-        bookformats.append({'format': 'Mobi',
-                            'convert': 2,
-                            'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                      orig='Azw3',
-                                      format='Mobi')})
-    return bookformats
+        book_formats.append({'format': 'Mobi',
+                             'convert': 2,
+                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                                       orig='Azw3',
+                                       format='Mobi')})
+    return book_formats
 
 
 def check_send_to_kindle(entry):
@@ -161,26 +161,26 @@ def check_send_to_kindle(entry):
         returns all available book formats for sending to Kindle
     """
     formats = list()
-    bookformats = list()
+    book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
             if ele.uncompressed_size < config.mail_size:
                 formats.append(ele.format)
         if 'MOBI' in formats:
-            bookformats.append({'format': 'Mobi',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Mobi')})
+            book_formats.append({'format': 'Mobi',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Mobi')})
         if 'PDF' in formats:
-            bookformats.append({'format': 'Pdf',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Pdf')})
+            book_formats.append({'format': 'Pdf',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Pdf')})
         if 'AZW' in formats:
-            bookformats.append({'format': 'Azw',
-                                'convert': 0,
-                                'text': _('Send %(format)s to Kindle', format='Azw')})
+            book_formats.append({'format': 'Azw',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to Kindle', format='Azw')})
         if config.config_converterpath:
-            bookformats.extend(check_send_to_kindle_with_converter(formats))
-        return bookformats
+            book_formats.extend(check_send_to_kindle_with_converter(formats))
+        return book_formats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
         return None
@@ -190,12 +190,12 @@ def check_send_to_kindle(entry):
 # list with supported formats
 def check_read_formats(entry):
     extensions_reader = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR', 'DJVU'}
-    bookformats = list()
+    book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
             if ele.format.upper() in extensions_reader:
-                bookformats.append(ele.format.lower())
-    return bookformats
+                book_formats.append(ele.format.lower())
+    return book_formats
 
 
 # Files are processed in the following order/priority:
@@ -217,7 +217,7 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
-            email_text = _(u"%(book)s send to Kindle", book=link)
+            email_text = N_(u"%(book)s send to Kindle", book=link)
             WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
                              config.get_mail_settings(), kindle_mail,
                              email_text, _(u'This e-mail has been sent via Calibre-Web.')))
@@ -225,23 +225,11 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
-def shorten_component(s, by_what):
-    l = len(s)
-    if l < by_what:
-        return s
-    l = (l - by_what)//2
-    if l <= 0:
-        return s
-    return s[:l] + s[-l:]
-
-
 def get_valid_filename(value, replace_whitespace=True, chars=128):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-
-
     if value[-1:] == u'.':
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
@@ -354,9 +342,9 @@ def edit_book_read_status(book_id, read_status=None):
     return ""
 
 
-# Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
+# Deletes a book from the local filestorage, returns True if deleting is successful, otherwise false
 def delete_book_file(book, calibrepath, book_format=None):
-    # check that path is 2 elements deep, check that target path has no subfolders
+    # check that path is 2 elements deep, check that target path has no sub folders
     if book.path.count('/') == 1:
         path = os.path.join(calibrepath, book.path)
         if book_format:
@@ -509,6 +497,7 @@ def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_d
     book.path = gdrive_path.replace("\\", "/")
     gd.uploadFileToEbooksFolder(os.path.join(gdrive_path, file_name).replace("\\", "/"), original_filepath)
     return rename_files_on_change(first_author, renamed_author, local_book=book, gdrive=True)
+
 
 
 def update_dir_structure_gdrive(book_id, first_author, renamed_author):
@@ -690,6 +679,8 @@ def update_dir_structure(book_id,
 
 
 def delete_book(book, calibrepath, book_format):
+    if not book_format:
+        clear_cover_thumbnail_cache(book.id)        ## here it breaks
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
@@ -706,19 +697,30 @@ def get_cover_on_failure(use_generic_cover):
     abort(404)
 
 
-def get_book_cover(book_id):
+def get_book_cover(book_id, resolution=None):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-def get_book_cover_with_uuid(book_uuid,
-                             use_generic_cover_on_failure=True):
+# Called only by kobo sync -> cover not found should be answered with 404 and not with default cover
+def get_book_cover_with_uuid(book_uuid, resolution=None):
     book = calibre_db.get_book_by_uuid(book_uuid)
-    return get_book_cover_internal(book, use_generic_cover_on_failure)
+    return get_book_cover_internal(book, use_generic_cover_on_failure=False, resolution=resolution)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure):
+def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
     if book and book.has_cover:
+
+        # Send the book cover thumbnail if it exists in cache
+        if resolution:
+            thumbnail = get_book_cover_thumbnail(book, resolution)
+            if thumbnail:
+                cache = fs.FileSystem()
+                if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                    return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                               thumbnail.filename)
+
+        # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
@@ -732,6 +734,8 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
             except Exception as ex:
                 log.error_or_exception(ex)
                 return get_cover_on_failure(use_generic_cover_on_failure)
+
+        # Send the book cover from the Calibre directory
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
@@ -742,20 +746,67 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
         return get_cover_on_failure(use_generic_cover_on_failure)
 
 
+def get_book_cover_thumbnail(book, resolution):
+    if book and book.has_cover:
+        return ub.session \
+            .query(ub.Thumbnail) \
+            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
+            .filter(ub.Thumbnail.entity_id == book.id) \
+            .filter(ub.Thumbnail.resolution == resolution) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+            .first()
+
+
+def get_series_thumbnail_on_failure(series_id, resolution):
+    book = calibre_db.session \
+        .query(db.Books) \
+        .join(db.books_series_link) \
+        .join(db.Series) \
+        .filter(db.Series.id == series_id) \
+        .filter(db.Books.has_cover == 1) \
+        .first()
+
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+
+
+def get_series_cover_thumbnail(series_id, resolution=None):
+    return get_series_cover_internal(series_id, resolution)
+
+
+def get_series_cover_internal(series_id, resolution=None):
+    # Send the series thumbnail if it exists in cache
+    if resolution:
+        thumbnail = get_series_thumbnail(series_id, resolution)
+        if thumbnail:
+            cache = fs.FileSystem()
+            if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
+                return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                           thumbnail.filename)
+
+    return get_series_thumbnail_on_failure(series_id, resolution)
+
+
+def get_series_thumbnail(series_id, resolution):
+    return ub.session \
+        .query(ub.Thumbnail) \
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
+        .filter(ub.Thumbnail.entity_id == series_id) \
+        .filter(ub.Thumbnail.resolution == resolution) \
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+        .first()
+
+
 # saves book cover from url
 def save_cover_from_url(url, book_path):
     try:
-        if cli.allow_localhost:
+        if cli_param.allow_localhost:
             img = requests.get(url, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
         elif use_advocate:
             img = advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         else:
-            log.error("python modul advocate is not installed but is needed")
-            return False, _("Python modul 'advocate' is not installed but is needed for cover downloads")
+            log.error("python module advocate is not installed but is needed")
+            return False, _("Python module 'advocate' is not installed but is needed for cover downloads")
         img.raise_for_status()
-        #            # cover_processing()
-            # move_coverfile(meta, db_book)
-
         return save_cover(img, book_path)
     except (socket.gaierror,
             requests.exceptions.HTTPError,
@@ -904,54 +955,6 @@ def json_serial(obj):
     raise TypeError("Type %s not serializable" % type(obj))
 
 
-# helper function for displaying the runtime of tasks
-def format_runtime(runtime):
-    ret_val = ""
-    if runtime.days:
-        ret_val = format_unit(runtime.days, 'duration-day', length="long", locale=get_locale()) + ', '
-    mins, seconds = divmod(runtime.seconds, 60)
-    hours, minutes = divmod(mins, 60)
-    # ToDo: locale.number_symbols._data['timeSeparator'] -> localize time separator ?
-    if hours:
-        ret_val += '{:d}:{:02d}:{:02d}s'.format(hours, minutes, seconds)
-    elif minutes:
-        ret_val += '{:2d}:{:02d}s'.format(minutes, seconds)
-    else:
-        ret_val += '{:2d}s'.format(seconds)
-    return ret_val
-
-
-# helper function to apply localize status information in tasklist entries
-def render_task_status(tasklist):
-    renderedtasklist = list()
-    for __, user, __, task in tasklist:
-        if user == current_user.name or current_user.role_admin():
-            ret = {}
-            if task.start_time:
-                ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
-                ret['runtime'] = format_runtime(task.runtime)
-
-            # localize the task status
-            if isinstance(task.stat, int):
-                if task.stat == STAT_WAITING:
-                    ret['status'] = _(u'Waiting')
-                elif task.stat == STAT_FAIL:
-                    ret['status'] = _(u'Failed')
-                elif task.stat == STAT_STARTED:
-                    ret['status'] = _(u'Started')
-                elif task.stat == STAT_FINISH_SUCCESS:
-                    ret['status'] = _(u'Finished')
-                else:
-                    ret['status'] = _(u'Unknown Status')
-
-            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
-            ret['progress'] = "{} %".format(int(task.progress * 100))
-            ret['user'] = escape(user)  # prevent xss
-            renderedtasklist.append(ret)
-
-    return renderedtasklist
-
-
 def tags_filters():
     negtags_list = current_user.list_denied_tags()
     postags_list = current_user.list_allowed_tags()
@@ -998,3 +1001,28 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def clear_cover_thumbnail_cache(book_id):
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+
+
+def replace_cover_thumbnail_cache(book_id):
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskClearCoverThumbnailCache(book_id), hidden=True)
+        WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+
+
+def delete_thumbnail_cache():
+    WorkerThread.add(None, TaskClearCoverThumbnailCache(-1))
+
+
+def add_book_to_thumbnail_cache(book_id):
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskGenerateCoverThumbnails(book_id), hidden=True)
+
+
+def update_thumbnail_cache():
+    if config.schedule_generate_book_covers:
+        WorkerThread.add(None, TaskGenerateCoverThumbnails())

@@ -18,12 +18,12 @@
 
 import os
 import re
-
 from glob import glob
 from shutil import copyfile
 from markupsafe import escape
 
 from sqlalchemy.exc import SQLAlchemyError
+from flask_babel import lazy_gettext as N_
 
 from cps.services.worker import CalibreTask
 from cps import db
@@ -41,10 +41,10 @@ log = logger.create()
 
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail, user=None):
-        super(TaskConvert, self).__init__(taskMessage)
+    def __init__(self, file_path, book_id, task_message, settings, kindle_mail, user=None):
+        super(TaskConvert, self).__init__(task_message)
         self.file_path = file_path
-        self.bookid = bookid
+        self.book_id = book_id
         self.title = ""
         self.settings = settings
         self.kindle_mail = kindle_mail
@@ -55,10 +55,10 @@ class TaskConvert(CalibreTask):
     def run(self, worker_thread):
         self.worker_thread = worker_thread
         if config.config_use_google_drive:
-            worker_db = db.CalibreDB(expire_on_commit=False)
-            cur_book = worker_db.get_book(self.bookid)
+            worker_db = db.CalibreDB(expire_on_commit=False, init=True)
+            cur_book = worker_db.get_book(self.book_id)
             self.title = cur_book.title
-            data = worker_db.get_book_format(self.bookid, self.settings['old_book_format'])
+            data = worker_db.get_book_format(self.book_id, self.settings['old_book_format'])
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             if df:
@@ -89,7 +89,7 @@ class TaskConvert(CalibreTask):
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = _(u"%(book)s send to Kindle", book=escape(self.title))
+                    EmailText = N_(u"%(book)s send to Kindle", book=escape(self.title))
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
@@ -104,9 +104,9 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
-        local_db = db.CalibreDB(expire_on_commit=False)
+        local_db = db.CalibreDB(expire_on_commit=False, init=True)
         file_path = self.file_path
-        book_id = self.bookid
+        book_id = self.book_id
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
         format_new_ext = u'.' + self.settings['new_book_format'].lower()
 
@@ -114,7 +114,7 @@ class TaskConvert(CalibreTask):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext) or\
-            local_db.get_book_format(self.bookid, self.settings['new_book_format']):
+                local_db.get_book_format(self.book_id, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
             cur_book = local_db.get_book(book_id)
             self.title = cur_book.title
@@ -133,7 +133,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
-                    self._handleError(error_message)
+                    self._handleError(N_("Database error: %(error)s.", error=e))
                     return
                 self._handleSuccess()
                 local_db.session.close()
@@ -150,8 +150,7 @@ class TaskConvert(CalibreTask):
         else:
             # check if calibre converter-executable is existing
             if not os.path.exists(config.config_converterpath):
-                # ToDo Text is not translated
-                self._handleError(_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
+                self._handleError(N_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
                 return
             check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext)
 
@@ -184,11 +183,11 @@ class TaskConvert(CalibreTask):
                     self._handleSuccess()
                 return os.path.basename(file_path + format_new_ext)
             else:
-                error_message = _('%(format)s format not found on disk', format=format_new_ext.upper())
+                error_message = N_('%(format)s format not found on disk', format=format_new_ext.upper())
         local_db.session.close()
         log.info("ebook converter failed with error while converting book")
         if not error_message:
-            error_message = _('Ebook converter failed with unknown error')
+            error_message = N_('Ebook converter failed with unknown error')
         self._handleError(error_message)
         return
 
@@ -198,7 +197,7 @@ class TaskConvert(CalibreTask):
         try:
             p = process_open(command, quotes)
         except OSError as e:
-            return 1, _(u"Kepubify-converter failed: %(error)s", error=e)
+            return 1, N_(u"Kepubify-converter failed: %(error)s", error=e)
         self.progress = 0.01
         while True:
             nextline = p.stdout.readlines()
@@ -219,7 +218,7 @@ class TaskConvert(CalibreTask):
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
             else:
-                return 1, _(u"Converted file not found or more than one file in folder %(folder)s",
+                return 1, N_(u"Converted file not found or more than one file in folder %(folder)s",
                             folder=os.path.dirname(file_path))
         return check, None
 
@@ -243,7 +242,7 @@ class TaskConvert(CalibreTask):
 
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
-            return 1, _(u"Ebook-converter failed: %(error)s", error=e)
+            return 1, N_(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()
@@ -266,12 +265,16 @@ class TaskConvert(CalibreTask):
             ele = ele.decode('utf-8', errors="ignore").strip('\n')
             log.debug(ele)
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
-                error_message = _("Calibre failed with error: %(error)s", error=ele)
+                error_message = N_("Calibre failed with error: %(error)s", error=ele)
         return check, error_message
 
     @property
     def name(self):
-        return "Convert"
+        return N_("Convert")
 
     def __str__(self):
-        return "Convert {} {}".format(self.bookid, self.kindle_mail)
+        return "Convert {} {}".format(self.book_id, self.kindle_mail)
+
+    @property
+    def is_cancellable(self):
+        return False

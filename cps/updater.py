@@ -28,10 +28,10 @@ from io import BytesIO
 from tempfile import gettempdir
 
 import requests
-from babel.dates import format_datetime
+from flask_babel import format_datetime
 from flask_babel import gettext as _
 
-from . import constants, logger, config, web_server
+from . import constants, logger  #  config, web_server
 
 
 log = logger.create()
@@ -58,15 +58,19 @@ class Updater(threading.Thread):
         self.status = -1
         self.updateIndex = None
 
+    def init_updater(self, config, web_server):
+        self.config = config
+        self.web_server = web_server
+
     def get_current_version_info(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_version_info()
         return self._nightly_version_info()
 
-    def get_available_updates(self, request_method, locale):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+    def get_available_updates(self, request_method):
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
-        return self._nightly_available_updates(request_method, locale)
+        return self._nightly_available_updates(request_method)
 
     def do_work(self):
         try:
@@ -95,7 +99,7 @@ class Updater(threading.Thread):
                 self.status = 6
                 log.debug(u'Preparing restart of server')
                 time.sleep(2)
-                web_server.stop(True)
+                self.web_server.stop(True)
                 self.status = 7
                 time.sleep(2)
                 return True
@@ -262,8 +266,9 @@ class Updater(threading.Thread):
         if additional_path:
             exclude.append(additional_path)
         exclude = tuple(exclude)
-        # check if we are in a package, rename cps.py to __init__.py
+        # check if we are in a package, rename cps.py to __init__.py and __main__.py
         if constants.HOME_CONFIG:
+            shutil.copy(os.path.join(source, 'cps.py'), os.path.join(source, '__main__.py'))
             shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
 
         for root, dirs, files in os.walk(destination, topdown=True):
@@ -331,7 +336,7 @@ class Updater(threading.Thread):
         print("\n*** Finished ***")
 
     @staticmethod
-    def _populate_parent_commits(update_data, status, locale, tz, parents):
+    def _populate_parent_commits(update_data, status, tz, parents):
         try:
             parent_commit = update_data['parents'][0]
             # limit the maximum search depth
@@ -356,7 +361,7 @@ class Updater(threading.Thread):
                         parent_commit_date = datetime.datetime.strptime(
                             parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                         parent_commit_date = format_datetime(
-                            parent_commit_date, format='short', locale=locale)
+                            parent_commit_date, format='short')
 
                         parents.append([parent_commit_date,
                                         parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
@@ -398,7 +403,7 @@ class Updater(threading.Thread):
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
             os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
             os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
-            os.sep + 'gmail.json', os.sep + 'exclude.txt'
+            os.sep + 'gmail.json', os.sep + 'exclude.txt', os.sep + 'cps' + os.sep + 'cache'
         ]
         try:
             with open(os.path.join(constants.BASE_DIR, "exclude.txt"), "r") as f:
@@ -414,7 +419,7 @@ class Updater(threading.Thread):
             log_function("Excluded file list for updater not found, or not accessible")
         return excluded_files
 
-    def _nightly_available_updates(self, request_method, locale):
+    def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
             repository_url = _REPOSITORY_API_URL
@@ -455,14 +460,14 @@ class Updater(threading.Thread):
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=locale),
+                        format_datetime(new_commit_date, format='short'),
                         update_data['message'],
                         update_data['sha']
                     ]
                 )
                 # it only makes sense to analyze the parents if we know the current commit hash
                 if status['current_commit_hash'] != '':
-                    parents = self._populate_parent_commits(update_data, status, locale, tz, parents)
+                    parents = self._populate_parent_commits(update_data, status, tz, parents)
                 status['history'] = parents[::-1]
             except (IndexError, KeyError):
                 status['success'] = False
@@ -591,7 +596,7 @@ class Updater(threading.Thread):
         return json.dumps(status)
 
     def _get_request_path(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self.updateFile
         return _REPOSITORY_API_URL + '/zipball/master'
 
@@ -619,7 +624,7 @@ class Updater(threading.Thread):
                     status['message'] = _(u'HTTP Error') + ': ' + commit['message']
             else:
                 status['message'] = _(u'HTTP Error') + ': ' + str(e)
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
             status['message'] = _(u'Timeout while establishing connection')

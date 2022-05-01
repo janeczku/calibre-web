@@ -27,12 +27,6 @@ from .helper import split_authors
 
 log = logger.create()
 
-
-try:
-    from lxml.etree import LXML_VERSION as lxmlversion
-except ImportError:
-    lxmlversion = None
-
 try:
     from wand.image import Image, Color
     from wand import version as ImageVersion
@@ -101,7 +95,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         extension=original_file_extension,
         title=original_file_name,
         author=_(u'Unknown'),
-        cover=None, #pdf_preview(tmp_file_path, original_file_name),
+        cover=None,
         description="",
         tags="",
         series="",
@@ -237,29 +231,12 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
 
 
-def get_versions(all=True):
+def get_versions():
     ret = dict()
     if not use_generic_pdf_cover:
         ret['Image Magick'] = ImageVersion.MAGICK_VERSION
     else:
         ret['Image Magick'] = u'not installed'
-    if all:
-        if not use_generic_pdf_cover:
-            ret['Wand'] = ImageVersion.VERSION
-        else:
-            ret['Wand'] = u'not installed'
-        if use_pdf_meta:
-            ret['PyPdf'] = PyPdfVersion
-        else:
-            ret['PyPdf'] = u'not installed'
-        if lxmlversion:
-            ret['lxml'] = '.'.join(map(str, lxmlversion))
-        else:
-            ret['lxml'] = u'not installed'
-        if comic.use_comic_meta:
-            ret['Comic_API'] = comic.comic_version or u'installed'
-        else:
-            ret['Comic_API'] = u'not installed'
     return ret
 
 

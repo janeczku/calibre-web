@@ -25,6 +25,7 @@ from datetime import datetime
 from urllib.parse import quote
 import unidecode
 
+from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
@@ -42,6 +43,7 @@ from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_login import current_user
 from flask_babel import gettext as _
+from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
@@ -88,7 +90,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
-class LibraryId(Base):
+class Library_Id(Base):
     __tablename__ = 'library_id'
     id = Column(Integer, primary_key=True)
     uuid = Column(String, nullable=False)
@@ -439,10 +441,15 @@ class CalibreDB:
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self, expire_on_commit=True):
+    def __init__(self, expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
         self.session = None
+        if init:
+            self.init_db(expire_on_commit)
+
+
+    def init_db(self, expire_on_commit=True):
         if self._init:
             self.init_session(expire_on_commit)
 
@@ -542,7 +549,7 @@ class CalibreDB:
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
-                database_uuid = local_session().query(LibraryId).one_or_none()
+                database_uuid = local_session().query(Library_Id).one_or_none()
                 # local_session.dispose()
 
             check_engine.connect()
@@ -895,7 +902,6 @@ class CalibreDB:
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
-        from . import get_locale
 
         if with_count:
             if not languages:
@@ -916,7 +922,7 @@ class CalibreDB:
                                  .count())
                 if no_lang_count:
                     tags.append([Category(_("None"), "none"), no_lang_count])
-            return sorted(tags, key=lambda x: x[0].name, reverse=reverse_order)
+            return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:
                 languages = self.session.query(Languages) \
@@ -940,7 +946,10 @@ class CalibreDB:
             return title.strip()
 
         conn = conn or self.session.connection().connection.connection
-        conn.create_function("title_sort", 1, _title_sort)
+        try:
+            conn.create_function("title_sort", 1, _title_sort)
+        except sqliteOperationalError:
+            pass
 
     @classmethod
     def dispose(cls):
