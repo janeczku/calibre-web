@@ -805,7 +805,7 @@ def save_cover_from_url(url, book_path):
             img = advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         else:
             log.error("python module advocate is not installed but is needed")
-            return False, _("Python module 'advocate' is not installed but is needed for cover downloads")
+            return False, _("Python module 'advocate' is not installed but is needed for cover uploads")
         img.raise_for_status()
         return save_cover(img, book_path)
     except (socket.gaierror,
