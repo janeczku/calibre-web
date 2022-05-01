@@ -1302,7 +1302,7 @@ def edit_scheduledtasks():
     duration_field = list()
 
     for n in range(24):
-        time_field.append((n , format_time(time(hour=n), format="short",)))
+        time_field.append((n, format_time(datetime_time(hour=n), format="short",)))
     for n in range(5, 65, 5):
         t = timedelta(hours=n // 60, minutes=n % 60)
         duration_field.append((n, format_timedelta(t, threshold=.9)))
