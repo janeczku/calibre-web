@@ -266,8 +266,9 @@ class Updater(threading.Thread):
         if additional_path:
             exclude.append(additional_path)
         exclude = tuple(exclude)
-        # check if we are in a package, rename cps.py to __init__.py
+        # check if we are in a package, rename cps.py to __init__.py and __main__.py
         if constants.HOME_CONFIG:
+            shutil.copy(os.path.join(source, 'cps.py'), os.path.join(source, '__main__.py'))
             shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
 
         for root, dirs, files in os.walk(destination, topdown=True):
