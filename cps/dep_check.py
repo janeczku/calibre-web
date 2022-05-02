@@ -65,7 +65,7 @@ def dependency_check(optional=False):
             low_check = [int(x) for x in dep[3].split('.')]
             high_check = [int(x) for x in dep[5].split('.')]
         except AttributeError:
-            high_check = None
+            high_check = []
         except ValueError:
             d.append({'name': dep[1],
                       'target': "available",
