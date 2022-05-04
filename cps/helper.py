@@ -241,8 +241,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', u',', value, flags=re.U)
 
-    filename_encoding_for_length = 'utf-16' if sys.platform == "win32" or sys.platform == "darwin" else 'utf-8'
-    value = value.encode(filename_encoding_for_length)[:chars].decode('utf-8', errors='ignore').strip()
+    value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
 
     if not value:
         raise ValueError("Filename cannot be empty")
