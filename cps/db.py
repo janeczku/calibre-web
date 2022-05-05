@@ -19,7 +19,6 @@
 
 import os
 import re
-import ast
 import json
 from datetime import datetime
 from urllib.parse import quote
@@ -388,7 +387,7 @@ class CustomColumns(Base):
     normalized = Column(Boolean)
 
     def get_display_dict(self):
-        display_dict = ast.literal_eval(self.display)
+        display_dict = json.loads(self.display)
         return display_dict
 
 
