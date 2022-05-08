@@ -1521,11 +1521,11 @@ def ldap_import_create_user(user, user_data):
         log.warning("LDAP User  %s Already in Database", user_data)
         return 0, None
 
-    kindlemail = ''
+    ereader_mail = ''
     if 'mail' in user_data:
         useremail = user_data['mail'][0].decode('utf-8')
         if len(user_data['mail']) > 1:
-            kindlemail = user_data['mail'][1].decode('utf-8')
+            ereader_mail = user_data['mail'][1].decode('utf-8')
 
     else:
         log.debug('No Mail Field Found in LDAP Response')
@@ -1541,7 +1541,7 @@ def ldap_import_create_user(user, user_data):
     content.name = username
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
-    content.kindle_mail = kindlemail
+    content.kindle_mail = ereader_mail
     content.default_language = config.config_default_language
     content.locale = config.config_default_locale
     content.role = config.config_default_role

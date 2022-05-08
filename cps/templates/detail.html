@@ -10,7 +10,7 @@
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
+        <div class="btn-group" role="group" aria-label="Download, send to E-Reader, reading">
           {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
@@ -37,18 +37,18 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and entry.kindle_list %}
-              {% if entry.kindle_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=entry.kindle_list[0]['format'], convert=entry.kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.kindle_list[0]['text']}}</div>
+            {% if g.user.kindle_mail and entry.email_share_list %}
+              {% if entry.email_share_list.__len__() == 1 %}
+                <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to E-Reader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-send"></span>{{_('Send to Kindle')}}
+                    <span class="glyphicon glyphicon-send"></span>{{_('Send to E-Reader')}}
                     <span class="caret"></span>
                   </button>
-                    <ul class="dropdown-menu" aria-labelledby="send-to-kindle">
-                    {% for format in entry.kindle_list %}
-                      <li><a class="postAction" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
+                    {% for format in entry.email_share_list %}
+                      <li><a class="postAction" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
                     {%endfor%}
                     </ul>
                 </div>

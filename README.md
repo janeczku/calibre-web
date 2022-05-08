@@ -28,7 +28,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - Support for converting eBooks through Calibre binaries
 - Restrict eBook download to logged-in users
 - Support for public user registration
-- Send eBooks to Kindle devices with the click of a button
+- Send eBooks to E-Readers with the click of a button
 - Sync your Kobo devices through Calibre-Web with your Calibre library
 - Support for reading eBooks directly in the browser (.txt, .epub, .pdf, .cbr, .cbt, .cbz, .djvu)
 - Upload new books in many formats, including audio formats (.mp3, .m4a, .m4b)
@@ -65,7 +65,7 @@ Afterwards you can configure your Calibre-Web instance ([Basic Configuration](ht
 
 python 3.5+
 
-Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-kindle feature, or during editing of ebooks metadata:
+Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-ereader feature, or during editing of ebooks metadata:
 
 [Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including program name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
 

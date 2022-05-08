@@ -41,13 +41,13 @@ log = logger.create()
 
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, book_id, task_message, settings, kindle_mail, user=None):
+    def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
         super(TaskConvert, self).__init__(task_message)
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
         self.settings = settings
-        self.kindle_mail = kindle_mail
+        self.ereader_mail = ereader_mail
         self.user = user
 
         self.results = dict()
@@ -85,16 +85,16 @@ class TaskConvert(CalibreTask):
                 # Upload files to gdrive
                 gdriveutils.updateGdriveCalibreFromLocal()
                 self._handleSuccess()
-            if self.kindle_mail:
-                # if we're sending to kindle after converting, create a one-off task and run it immediately
+            if self.ereader_mail:
+                # if we're sending to E-Reader after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = N_(u"%(book)s send to Kindle", book=escape(self.title))
+                    EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
                                                            self.settings,
-                                                           self.kindle_mail,
+                                                           self.ereader_mail,
                                                            EmailText,
                                                            self.settings['body'],
                                                            internal=True)
@@ -112,7 +112,7 @@ class TaskConvert(CalibreTask):
 
         # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
-        # this will allow send to kindle workflow to continue to work
+        # this will allow send to E-Reader workflow to continue to work
         if os.path.isfile(file_path + format_new_ext) or\
                 local_db.get_book_format(self.book_id, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
@@ -273,7 +273,7 @@ class TaskConvert(CalibreTask):
         return N_("Convert")
 
     def __str__(self):
-        return "Convert {} {}".format(self.book_id, self.kindle_mail)
+        return "Convert {} {}".format(self.book_id, self.ereader_mail)
 
     @property
     def is_cancellable(self):
