@@ -201,7 +201,7 @@ if ($("body.book").length > 0) {
 
     // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
     $('ul[aria-labelledby="read-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
-    $('ul[aria-labelledby="send-to-kindle"]').insertBefore(".blur-wrapper").addClass("sendtokindle-drop");
+    $('ul[aria-labelledby="send-to-kereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
     $(".leramslist").insertBefore(".blur-wrapper");
     $('ul[aria-labelledby="btnGroupDrop1"]').insertBefore(".blur-wrapper").addClass("leramslist");
     $("#add-to-shelves").insertBefore(".blur-wrapper");
@@ -215,7 +215,7 @@ if ($("body.book").length > 0) {
     });
 
     $("#sendbtn2").click(function () {
-        $(".sendtokindle-drop").toggle();
+        $(".sendtoereader-drop").toggle();
     });
 
 
@@ -242,12 +242,12 @@ if ($("body.book").length > 0) {
 
         if ($("#sendbtn2").length > 0) {
             position = $("#sendbtn2").offset().left
-            if (position + $(".sendtokindle-drop").width() > $(window).width()) {
-                positionOff = position + $(".sendtokindle-drop").width() - $(window).width();
+            if (position + $(".sendtoereader-drop").width() > $(window).width()) {
+                positionOff = position + $(".sendtoereader-drop").width() - $(window).width();
                 ribPosition = position - positionOff - 5
-                $(".sendtokindle-drop").attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
+                $(".sendtoereader-drop").attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
             } else {
-                $(".sendtokindle-drop").attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
+                $(".sendtoereader-drop").attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
             }
         }
 
@@ -300,7 +300,7 @@ if ($("body.book").length > 0) {
 $(document).mouseup(function (e) {
     var container = new Array();
     container.push($('ul[aria-labelledby="read-in-browser"]'));
-    container.push($(".sendtokindle-drop"));
+    container.push($(".sendtoereader-drop"));
     container.push($(".leramslist"));
     container.push($("#add-to-shelves"));
     container.push($(".navbar-collapse.collapse.in"));
@@ -666,7 +666,7 @@ $("#sendbtn").attr({
 
 $("#sendbtn2").attr({
     "data-toggle-two": "tooltip",
-    "title": $("#sendbtn2").text(),                 // "Send to Kindle",
+    "title": $("#sendbtn2").text(),                 // "Send to E-Reader",
     "data-placement": "bottom",
     "data-viewport": ".btn-toolbar"
 })
