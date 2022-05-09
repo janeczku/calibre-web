@@ -204,6 +204,7 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, handler_class=MyWSGIHandler,
+                                         error_log=log,
                                          spawn=Pool(), **ssl_args)
             if ssl_args:
                 wrap_socket = self.wsgiserver.wrap_socket
