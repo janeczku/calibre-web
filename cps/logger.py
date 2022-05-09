@@ -159,6 +159,7 @@ def setup(log_file, log_level=None):
         r.removeHandler(h)
         h.close()
     r.addHandler(file_handler)
+    logging.captureWarnings(True)
     return "" if log_file == DEFAULT_LOG_FILE else log_file
 
 
