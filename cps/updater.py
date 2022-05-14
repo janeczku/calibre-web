@@ -28,10 +28,10 @@ from io import BytesIO
 from tempfile import gettempdir
 
 import requests
-from babel.dates import format_datetime
+from flask_babel import format_datetime
 from flask_babel import gettext as _
 
-from . import constants, logger, config, web_server
+from . import constants, logger  #  config, web_server
 
 
 log = logger.create()
@@ -53,22 +53,24 @@ class Updater(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.paused = False
-        # self.pause_cond = threading.Condition(threading.Lock())
         self.can_run = threading.Event()
         self.pause()
         self.status = -1
         self.updateIndex = None
-        # self.run()
+
+    def init_updater(self, config, web_server):
+        self.config = config
+        self.web_server = web_server
 
     def get_current_version_info(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_version_info()
         return self._nightly_version_info()
 
-    def get_available_updates(self, request_method, locale):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+    def get_available_updates(self, request_method):
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
-        return self._nightly_available_updates(request_method, locale)
+        return self._nightly_available_updates(request_method)
 
     def do_work(self):
         try:
@@ -85,19 +87,19 @@ class Updater(threading.Thread):
             log.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
-            foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
-            if not os.path.isdir(foldername):
+            folder_name = os.path.join(tmp_dir, z.namelist()[0])[:-1]
+            if not os.path.isdir(folder_name):
                 self.status = 11
                 log.info(u'Extracted contents of zipfile not found in temp folder')
                 self.pause()
                 return False
             self.status = 4
             log.debug(u'Replacing files')
-            if self.update_source(foldername, constants.BASE_DIR):
+            if self.update_source(folder_name, constants.BASE_DIR):
                 self.status = 6
                 log.debug(u'Preparing restart of server')
                 time.sleep(2)
-                web_server.stop(True)
+                self.web_server.stop(True)
                 self.status = 7
                 time.sleep(2)
                 return True
@@ -119,7 +121,7 @@ class Updater(threading.Thread):
         except (IOError, OSError) as ex:
             self.status = 12
             log.error(u'Possible Reason for error: update file could not be saved in temp dir')
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         self.pause()
         return False
 
@@ -184,29 +186,30 @@ class Updater(threading.Thread):
         return rf
 
     @classmethod
-    def check_permissions(cls, root_src_dir, root_dst_dir):
+    def check_permissions(cls, root_src_dir, root_dst_dir, log_function):
         access = True
         remove_path = len(root_src_dir) + 1
         for src_dir, __, files in os.walk(root_src_dir):
             root_dir = os.path.join(root_dst_dir, src_dir[remove_path:])
-            # Skip non existing folders on check
-            if not os.path.isdir(root_dir): # root_dir.lstrip(os.sep).startswith('.') or
+            # Skip non-existing folders on check
+            if not os.path.isdir(root_dir):
                 continue
-            if not os.access(root_dir, os.R_OK|os.W_OK):
-                log.debug("Missing permissions for {}".format(root_dir))
+            if not os.access(root_dir, os.R_OK | os.W_OK):
+                log_function("Missing permissions for {}".format(root_dir))
                 access = False
             for file_ in files:
                 curr_file = os.path.join(root_dir, file_)
-                # Skip non existing files on check
-                if not os.path.isfile(curr_file): # or curr_file.startswith('.'):
+                # Skip non-existing files on check
+                if not os.path.isfile(curr_file):  # or curr_file.startswith('.'):
                     continue
-                if not os.access(curr_file, os.R_OK|os.W_OK):
-                    log.debug("Missing permissions for {}".format(curr_file))
+                if not os.access(curr_file, os.R_OK | os.W_OK):
+                    log_function("Missing permissions for {}".format(curr_file))
                     access = False
         return access
 
     @classmethod
-    def moveallfiles(cls, root_src_dir, root_dst_dir):
+    def move_all_files(cls, root_src_dir, root_dst_dir):
+        permission = None
         new_permissions = os.stat(root_dst_dir)
         log.debug('Performing Update on OS-System: %s', sys.platform)
         change_permissions = not (sys.platform == "win32" or sys.platform == "darwin")
@@ -215,7 +218,7 @@ class Updater(threading.Thread):
             if not os.path.exists(dst_dir):
                 try:
                     os.makedirs(dst_dir)
-                    log.debug('Create directory: {}', dst_dir)
+                    log.debug('Create directory: {}'.format(dst_dir))
                 except OSError as e:
                     log.error('Failed creating folder: {} with error {}'.format(dst_dir, e))
                 if change_permissions:
@@ -234,7 +237,7 @@ class Updater(threading.Thread):
                         permission = os.stat(dst_file)
                     try:
                         os.remove(dst_file)
-                        log.debug('Remove file before copy: %s', dst_file)
+                        log.debug('Remove file before copy: {}'.format(dst_file))
                     except OSError as e:
                         log.error('Failed removing file: {} with error {}'.format(dst_file, e))
                 else:
@@ -258,20 +261,14 @@ class Updater(threading.Thread):
     def update_source(self, source, destination):
         # destination files
         old_list = list()
-        exclude = (
-            os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
-            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
-            os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
-            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
-            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
-            os.sep + 'gmail.json'
-        )
+        exclude = self._add_excluded_files(log.info)
         additional_path = self.is_venv()
         if additional_path:
-            exclude = exclude + (additional_path,)
-
-        # check if we are in a package, rename cps.py to __init__.py
+            exclude.append(additional_path)
+        exclude = tuple(exclude)
+        # check if we are in a package, rename cps.py to __init__.py and __main__.py
         if constants.HOME_CONFIG:
+            shutil.copy(os.path.join(source, 'cps.py'), os.path.join(source, '__main__.py'))
             shutil.move(os.path.join(source, 'cps.py'), os.path.join(source, '__init__.py'))
 
         for root, dirs, files in os.walk(destination, topdown=True):
@@ -293,8 +290,8 @@ class Updater(threading.Thread):
 
         remove_items = self.reduce_dirs(rf, new_list)
 
-        if self.check_permissions(source, destination):
-            self.moveallfiles(source, destination)
+        if self.check_permissions(source, destination, log.debug):
+            self.move_all_files(source, destination)
 
             for item in remove_items:
                 item_path = os.path.join(destination, item[1:])
@@ -332,14 +329,21 @@ class Updater(threading.Thread):
         log.debug("Stable version: {}".format(constants.STABLE_VERSION))
         return constants.STABLE_VERSION  # Current version
 
+    @classmethod
+    def dry_run(cls):
+        cls._add_excluded_files(print)
+        cls.check_permissions(constants.BASE_DIR, constants.BASE_DIR, print)
+        print("\n*** Finished ***")
+
     @staticmethod
-    def _populate_parent_commits(update_data, status, locale, tz, parents):
+    def _populate_parent_commits(update_data, status, tz, parents):
         try:
             parent_commit = update_data['parents'][0]
             # limit the maximum search depth
             remaining_parents_cnt = 10
         except (IndexError, KeyError):
             remaining_parents_cnt = None
+            parent_commit = None
 
         if remaining_parents_cnt is not None:
             while True:
@@ -357,7 +361,7 @@ class Updater(threading.Thread):
                         parent_commit_date = datetime.datetime.strptime(
                             parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                         parent_commit_date = format_datetime(
-                            parent_commit_date, format='short', locale=locale)
+                            parent_commit_date, format='short')
 
                         parents.append([parent_commit_date,
                                         parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
@@ -391,7 +395,31 @@ class Updater(threading.Thread):
             status['message'] = _(u'General error')
         return status, update_data
 
-    def _nightly_available_updates(self, request_method, locale):
+    @staticmethod
+    def _add_excluded_files(log_function):
+        excluded_files = [
+            os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
+            os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
+            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
+            os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
+            os.sep + 'gmail.json', os.sep + 'exclude.txt', os.sep + 'cps' + os.sep + 'cache'
+        ]
+        try:
+            with open(os.path.join(constants.BASE_DIR, "exclude.txt"), "r") as f:
+                lines = f.readlines()
+            for line in lines:
+                processed_line = line.strip("\n\r ").strip("\"'").lstrip("\\/ ").\
+                    replace("\\", os.sep).replace("/", os.sep)
+                if os.path.exists(os.path.join(constants.BASE_DIR, processed_line)):
+                    excluded_files.append(os.sep + processed_line)
+                else:
+                    log_function("File list for updater: {} not found".format(line))
+        except (PermissionError, FileNotFoundError):
+            log_function("Excluded file list for updater not found, or not accessible")
+        return excluded_files
+
+    def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
             repository_url = _REPOSITORY_API_URL
@@ -432,14 +460,14 @@ class Updater(threading.Thread):
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=locale),
+                        format_datetime(new_commit_date, format='short'),
                         update_data['message'],
                         update_data['sha']
                     ]
                 )
                 # it only makes sense to analyze the parents if we know the current commit hash
                 if status['current_commit_hash'] != '':
-                    parents = self._populate_parent_commits(update_data, status, locale, tz, parents)
+                    parents = self._populate_parent_commits(update_data, status, tz, parents)
                 status['history'] = parents[::-1]
             except (IndexError, KeyError):
                 status['success'] = False
@@ -449,7 +477,7 @@ class Updater(threading.Thread):
         return ''
 
     def _stable_updater_set_status(self, i, newer, status, parents, commit):
-        if i == -1 and newer == False:
+        if i == -1 and newer is False:
             status.update({
                 'update': True,
                 'success': True,
@@ -458,7 +486,7 @@ class Updater(threading.Thread):
                 'history': parents
             })
             self.updateFile = commit[0]['zipball_url']
-        elif i == -1 and newer == True:
+        elif i == -1 and newer is True:
             status.update({
                 'update': True,
                 'success': True,
@@ -495,6 +523,7 @@ class Updater(threading.Thread):
         return status, parents
 
     def _stable_available_updates(self, request_method):
+        status = None
         if request_method == "GET":
             parents = []
             # repository_url = 'https://api.github.com/repos/flatpak/flatpak/releases'  # test URL
@@ -539,7 +568,7 @@ class Updater(threading.Thread):
                 except ValueError:
                     current_version[2] = int(current_version[2].split(' ')[0])-1
 
-                # Check if major versions are identical search for newest non equal commit and update to this one
+                # Check if major versions are identical search for newest non-equal commit and update to this one
                 if major_version_update == current_version[0]:
                     if (minor_version_update == current_version[1] and
                             patch_version_update > current_version[2]) or \
@@ -552,7 +581,7 @@ class Updater(threading.Thread):
                     i -= 1
                     continue
                 if major_version_update > current_version[0]:
-                    # found update update to last version before major update, unless current version is on last version
+                    # found update to last version before major update, unless current version is on last version
                     # before major update
                     if i == (len(commit) - 1):
                         i -= 1
@@ -567,7 +596,7 @@ class Updater(threading.Thread):
         return json.dumps(status)
 
     def _get_request_path(self):
-        if config.config_updatechannel == constants.UPDATE_STABLE:
+        if self.config.config_updatechannel == constants.UPDATE_STABLE:
             return self.updateFile
         return _REPOSITORY_API_URL + '/zipball/master'
 
@@ -595,7 +624,7 @@ class Updater(threading.Thread):
                     status['message'] = _(u'HTTP Error') + ': ' + commit['message']
             else:
                 status['message'] = _(u'HTTP Error') + ': ' + str(e)
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as e:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
             status['message'] = _(u'Timeout while establishing connection')

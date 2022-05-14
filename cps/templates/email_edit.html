@@ -69,7 +69,7 @@
    {% endif %}
       <a href="{{ url_for('admin.admin') }}" id="email_back" class="btn btn-default">{{_('Back')}}</a>
   </form>
-    {% if g.allow_registration %}
+    {% if g.allow_registration and not simple%}
   <div class="col-md-10 col-lg-6">
     <h2>{{_('Allowed Domains (Whitelist)')}}</h2>
     <form id="domain_add_allow" action="{{ url_for('admin.add_domain',allow=1)}}" method="POST">

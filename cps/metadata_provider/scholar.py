@@ -15,47 +15,67 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
+import itertools
+from typing import Dict, List, Optional
+from urllib.parse import quote, unquote
 
-from scholarly import scholarly
+try:
+    from fake_useragent.errors import FakeUserAgentError
+except (ImportError):
+    FakeUserAgentError = BaseException
+try:
+    from scholarly import scholarly
+except FakeUserAgentError:
+    raise ImportError("No module named 'scholarly'")
 
-from cps.services.Metadata import Metadata
+from cps import logger
+from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
+
+log = logger.create()
 
 
 class scholar(Metadata):
     __name__ = "Google Scholar"
     __id__ = "googlescholar"
+    META_URL = "https://scholar.google.com/"
 
-    def search(self, query, generic_cover=""):
+    def search(
+        self, query: str, generic_cover: str = "", locale: str = "en"
+    ) -> Optional[List[MetaRecord]]:
         val = list()
         if self.active:
-            scholar_gen = scholarly.search_pubs(' '.join(query.split('+')))
-            i = 0
-            for publication in scholar_gen:
-                v = dict()
-                v['id'] = "1234" # publication['bib'].get('title')
-                v['title'] = publication['bib'].get('title')
-                v['authors'] = publication['bib'].get('author', [])
-                v['description'] = publication['bib'].get('abstract', "")
-                v['publisher'] = publication['bib'].get('venue', "")
-                if publication['bib'].get('pub_year'):
-                    v['publishedDate'] = publication['bib'].get('pub_year')+"-01-01"
-                else:
-                    v['publishedDate'] = ""
-                v['tags'] = ""
-                v['ratings'] = 0
-                v['series'] = ""
-                v['cover'] = generic_cover
-                v['url'] = publication.get('pub_url') or publication.get('eprint_url') or "",
-                v['source'] = {
-                    "id": self.__id__,
-                    "description": "Google Scholar",
-                    "link": "https://scholar.google.com/"
-                }
-                val.append(v)
-                i += 1
-                if (i >= 10):
-                    break
+            title_tokens = list(self.get_title_tokens(query, strip_joiners=False))
+            if title_tokens:
+                tokens = [quote(t.encode("utf-8")) for t in title_tokens]
+                query = " ".join(tokens)
+            try:
+                scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
+            except Exception as e:
+                log.warning(e)
+                return None
+            for result in scholar_gen:
+                match = self._parse_search_result(
+                    result=result, generic_cover="", locale=locale
+                )
+                val.append(match)
         return val
 
+    def _parse_search_result(
+        self, result: Dict, generic_cover: str, locale: str
+    ) -> MetaRecord:
+        match = MetaRecord(
+            id=result.get("pub_url", result.get("eprint_url", "")),
+            title=result["bib"].get("title"),
+            authors=result["bib"].get("author", []),
+            url=result.get("pub_url", result.get("eprint_url", "")),
+            source=MetaSourceInfo(
+                id=self.__id__, description=self.__name__, link=scholar.META_URL
+            ),
+        )
 
-
+        match.cover = result.get("image", {}).get("original_url", generic_cover)
+        match.description = unquote(result["bib"].get("abstract", ""))
+        match.publisher = result["bib"].get("venue", "")
+        match.publishedDate = result["bib"].get("pub_year") + "-01-01"
+        match.identifiers = {"scholar": match.id}
+        return match

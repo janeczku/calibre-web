@@ -25,7 +25,7 @@ from google.oauth2.credentials import Credentials
 from datetime import datetime
 import base64
 from flask_babel import gettext as _
-from ..constants import BASE_DIR
+from ..constants import CONFIG_DIR
 from .. import logger
 
 
@@ -53,11 +53,11 @@ def setup_gmail(token):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            cred_file = os.path.join(BASE_DIR, 'gmail.json')
+            cred_file = os.path.join(CONFIG_DIR, 'gmail.json')
             if not os.path.exists(cred_file):
                 raise Exception(_("Found no valid gmail.json file with OAuth information"))
             flow = InstalledAppFlow.from_client_secrets_file(
-                os.path.join(BASE_DIR, 'gmail.json'), SCOPES)
+                os.path.join(CONFIG_DIR, 'gmail.json'), SCOPES)
             creds = flow.run_local_server(port=0)
             user_info = get_user_info(creds)
         return {

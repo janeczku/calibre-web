@@ -25,30 +25,28 @@ import sys
 import os
 import mimetypes
 
-from babel import Locale as LC
-from babel import negotiate_locale
-from babel.core import UnknownLocaleError
-from flask import Flask, request, g
+from flask import Flask
 from .MyLoginManager import MyLoginManager
-from flask_babel import Babel
 from flask_principal import Principal
 
-from . import config_sql, logger, cache_buster, cli, ub, db
+from . import logger
+from .cli import CliParameter
+from .constants import CONFIG_DIR
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
-
-try:
-    import lxml
-    lxml_present = True
-except ImportError:
-    lxml_present = False
+from .updater import Updater
+from .babel import babel
+from . import config_sql
+from . import cache_buster
+from . import ub, db
 
 try:
     from flask_wtf.csrf import CSRFProtect
     wtf_present = True
 except ImportError:
     wtf_present = False
+
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -71,6 +69,8 @@ mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
 mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
+log = logger.create()
+
 app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
@@ -79,61 +79,72 @@ app.config.update(
     WTF_CSRF_SSL_STRICT=False
 )
 
-
 lm = MyLoginManager()
-lm.login_view = 'web.login'
-lm.anonymous_user = ub.Anonymous
-lm.session_protection = 'strong'
+
+config = config_sql._ConfigSQL()
+
+cli_param = CliParameter()
 
 if wtf_present:
     csrf = CSRFProtect()
-    csrf.init_app(app)
 else:
     csrf = None
 
-ub.init_db(cli.settingspath)
-# pylint: disable=no-member
-config = config_sql.load_configuration(ub.session)
+calibre_db = db.CalibreDB()
 
 web_server = WebServer()
 
-babel = Babel()
-_BABEL_TRANSLATIONS = set()
+updater_thread = Updater()
 
-log = logger.create()
-
-
-from . import services
-
-db.CalibreDB.update_config(config)
-db.CalibreDB.setup_db(config.config_calibre_dir, cli.settingspath)
-
-
-calibre_db = db.CalibreDB()
 
 def create_app():
+    lm.login_view = 'web.login'
+    lm.anonymous_user = ub.Anonymous
+    lm.session_protection = 'strong'
+
+    if csrf:
+        csrf.init_app(app)
+
+    cli_param.init()
+
+    ub.init_db(cli_param.settings_path, cli_param.user_credentials)
+
+    # pylint: disable=no-member
+    config_sql.load_configuration(config, ub.session, cli_param)
+
+    db.CalibreDB.update_config(config)
+    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
+    calibre_db.init_db()
+
+    updater_thread.init_updater(config, web_server)
+    # Perform dry run of updater and exit afterwards
+    if cli_param.dry_run:
+        updater_thread.dry_run()
+        sys.exit(0)
+    updater_thread.start()
+
     if sys.version_info < (3, 0):
         log.info(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            'please update your installation to Python3 ***')
         print(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, please update your installation to Python3 ***')
+            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            'please update your installation to Python3 ***')
         web_server.stop(True)
         sys.exit(5)
-    if not lxml_present:
-        log.info('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
-        print('*** "lxml" is needed for calibre-web to run. Please install it using pip: "pip install lxml" ***')
-        web_server.stop(True)
-        sys.exit(6)
     if not wtf_present:
-        log.info('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
-        print('*** "flask-WTF" is needed for calibre-web to run. Please install it using pip: "pip install flask-WTF" ***')
+        log.info('*** "flask-WTF" is needed for calibre-web to run. '
+                 'Please install it using pip: "pip install flask-WTF" ***')
+        print('*** "flask-WTF" is needed for calibre-web to run. '
+              'Please install it using pip: "pip install flask-WTF" ***')
         web_server.stop(True)
         sys.exit(7)
     for res in dependency_check() + dependency_check(True):
-        log.info('*** "{}" version does not fit the requirements. Should: {}, Found: {}, please consider installing required version ***'
-            .format(res['name'],
-                 res['target'],
-                 res['found']))
+        log.info('*** "{}" version does not fit the requirements. '
+                 'Should: {}, Found: {}, please consider installing required version ***'
+                 .format(res['name'],
+                         res['target'],
+                         res['found']))
     app.wsgi_app = ReverseProxied(app.wsgi_app)
 
     if os.environ.get('FLASK_DEBUG'):
@@ -147,8 +158,8 @@ def create_app():
     web_server.init_app(app, config)
 
     babel.init_app(app)
-    _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
-    _BABEL_TRANSLATIONS.add('en')
+
+    from . import services
 
     if services.ldap:
         services.ldap.init_app(app, config)
@@ -156,34 +167,12 @@ def create_app():
         services.goodreads_support.connect(config.config_goodreads_api_key,
                                            config.config_goodreads_api_secret,
                                            config.config_use_goodreads)
+    config.store_calibre_uuid(calibre_db, db.Library_Id)
+    # Register scheduled tasks
+    from .schedule import register_scheduled_tasks, register_startup_tasks
+    register_scheduled_tasks(config.schedule_reconnect)
+    register_startup_tasks()
 
     return app
 
-@babel.localeselector
-def get_locale():
-    # if a user is logged in, use the locale from the user settings
-    user = getattr(g, 'user', None)
-    if user is not None and hasattr(user, "locale"):
-        if user.name != 'Guest':   # if the account is the guest account bypass the config lang settings
-            return user.locale
 
-    preferred = list()
-    if request.accept_languages:
-        for x in request.accept_languages.values():
-            try:
-                preferred.append(str(LC.parse(x.replace('-', '_'))))
-            except (UnknownLocaleError, ValueError) as e:
-                log.debug('Could not parse locale "%s": %s', x, e)
-
-    return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
-
-
-@babel.timezoneselector
-def get_timezone():
-    user = getattr(g, 'user', None)
-    return user.timezone if user else None
-
-
-from .updater import Updater
-updater_thread = Updater()
-updater_thread.start()
