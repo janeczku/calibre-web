@@ -3,7 +3,8 @@
 {% if book %}
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-        <img id="detailcover" title="{{book.title}}" src="{{ url_for('web.get_cover', book_id=book.id, edit=1|uuidfilter)  }}" alt="{{ book.title }}"/>
+        <!-- Always use full-sized image for the book edit page -->
+        <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
@@ -22,7 +23,7 @@
 
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
-      <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+      <form class="padded-bottom" action="{{ url_for('edit-book.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
               <div class="text-left">
@@ -48,7 +49,7 @@
 {% endif %}
 
   </div>
-<form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+<form role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
@@ -226,7 +227,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
+        <h4 class="modal-title text-center" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
         <form class="padded-bottom" id="meta-search">
           <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
@@ -247,7 +248,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+        <button id="meta_close" type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
   </div>
@@ -265,17 +266,17 @@
     >
     <div class="media-body">
       <h4 class="media-heading">
-        <a href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
+        <a class="meta_title" href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
       </h4>
-      <p>{{_('Author')}}：<%= authors.join(" & ") %></p>
+      <p class="meta_author">{{_('Author')}}：<%= authors.join(" & ") %></p>
       <% if (publisher) { %>
-        <p>{{_('Publisher')}}：<%= publisher %></p>
+        <p class="meta_publisher">{{_('Publisher')}}：<%= publisher %></p>
       <% } %>
       <% if (description) { %>
-        <p>{{_('Description')}}: <%= description %></p>
+        <p class="meta_description">{{_('Description')}}: <%= description %></p>
       <% } %>
       <p>{{_('Source')}}:
-        <a href="<%= source.url %>" target="_blank" rel="noopener"><%= source.description %></a>
+        <a class="meta_source" href="<%= source.link %>" target="_blank" rel="noopener"><%= source.description %></a>
       </p>
     </div>
   </li>

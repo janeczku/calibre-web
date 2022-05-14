@@ -109,7 +109,7 @@ def revoke_watch_gdrive():
         try:
             gdriveutils.stopChannel(gdriveutils.Gdrive.Instance().drive, last_watch_response['id'],
                                     last_watch_response['resourceId'])
-        except HttpError:
+        except (HttpError, AttributeError):
             pass
         config.config_google_drive_watch_changes_response = {}
         config.save()
@@ -152,7 +152,7 @@ try:
                     move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                     calibre_db.reconnect_db(config, ub.app_DB_path)
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         return ''
 except AttributeError:
     pass

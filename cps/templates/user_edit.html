@@ -17,7 +17,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-        <a class="btn btn-default" id="resend_password" href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
+        <a class="btn btn-default postAction" id="resend_password" role="button" data-action="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
@@ -83,7 +83,7 @@
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
-      {% if ( g.user and g.user.role_admin() and not new_user ) %}
+      {% if ( g.user and g.user.role_admin() and not new_user ) and not simple %}
       <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
       <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
       {% endif %}
@@ -131,7 +131,7 @@
       </div>
     {% endif %}
   {% endif %}
-    {% if kobo_support and not content.role_anonymous() %}
+    {% if kobo_support and not content.role_anonymous() and not simple%}
     <div class="form-group">
       <input type="checkbox" name="kobo_only_shelves_sync" id="kobo_only_shelves_sync" {% if content.kobo_only_shelves_sync %}checked{% endif %}>
       <label for="kobo_only_shelves_sync">{{_('Sync only books in selected shelves with Kobo')}}</label>

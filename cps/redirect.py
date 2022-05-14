@@ -27,10 +27,7 @@
 
 # http://flask.pocoo.org/snippets/62/
 
-try:
-    from urllib.parse import urlparse, urljoin
-except ImportError:
-    from urlparse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin
 
 from flask import request, url_for, redirect
 

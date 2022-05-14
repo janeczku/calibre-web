@@ -24,33 +24,32 @@ import os
 import re
 import base64
 import json
-import time
 import operator
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
+from functools import wraps
 
-from babel import Locale as LC
-from babel.dates import format_datetime
+
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user, confirm_login
 from flask_babel import gettext as _
+from flask_babel import get_locale,  format_time, format_datetime, format_timedelta
 from flask import session as flask_session
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services
-from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils, kobo_sync_status
+from . import constants, logger, helper, services, cli_param
+from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
+    kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
-from . import debug_info, _BABEL_TRANSLATIONS
+from .services.worker import WorkerThread
+from .babel import get_available_translations, get_available_locale, get_user_locale_language
+from . import debug_info
 
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 log = logger.create()
 
@@ -59,7 +58,9 @@ feature_support = {
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo),
         'updater': constants.UPDATER_AVAILABLE,
-        'gmail': bool(services.gmail)
+        'gmail': bool(services.gmail),
+        'scheduler': schedule.use_APScheduler,
+        'gdrive': gdrive_support
     }
 
 try:
@@ -78,7 +79,6 @@ except ImportError as err:
     oauth_check = {}
 
 
-feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
 
 
@@ -129,11 +129,11 @@ def admin_forbidden():
     abort(403)
 
 
-@admi.route("/shutdown")
+@admi.route("/shutdown", methods=["POST"])
 @login_required
 @admin_required
 def shutdown():
-    task = int(request.args.get("parameter").strip())
+    task = request.get_json().get('parameter', -1)
     showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
@@ -158,6 +158,29 @@ def shutdown():
     return json.dumps(showtext), 400
 
 
+# method is available without login and not protected by CSRF to make it easy reachable, is per default switched of
+# needed for docker applications, as changes on metadata.db from host are not visible to application
+@admi.route("/reconnect", methods=['GET'])
+def reconnect():
+    if cli_param.reconnect_enable:
+        calibre_db.reconnect_db(config, ub.app_DB_path)
+        return json.dumps({})
+    else:
+        log.debug("'/reconnect' was accessed but is not enabled")
+        abort(404)
+
+
+@admi.route("/ajax/updateThumbnails", methods=['POST'])
+@admin_required
+@login_required
+def update_thumbnails():
+    content = config.get_scheduled_task_settings()
+    if content['schedule_generate_book_covers']:
+        log.info("Update of Cover cache requested")
+        helper.update_thumbnail_cache()
+    return ""
+
+
 @admi.route("/admin/view")
 @login_required
 @admin_required
@@ -176,16 +199,21 @@ def admin():
                     form_date -= timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
                 elif commit[19] == '-':
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+            commit = format_datetime(form_date - tz, format='short')
         else:
             commit = version['version']
 
-    allUser = ub.session.query(ub.User).all()
+    all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
-                                 feature_support=feature_support, kobo_support=kobo_support,
+    schedule_time = format_time(time(hour=config.schedule_start_time), format="short")
+    t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
+    schedule_duration = format_timedelta(t, threshold=.99)
+
+    return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
+                                 feature_support=feature_support, schedule_time=schedule_time,
+                                 schedule_duration=schedule_duration,
                                  title=_(u"Admin page"), page="admin")
+
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
 @login_required
@@ -227,21 +255,23 @@ def ajax_db_config():
 def calibreweb_alive():
     return "", 200
 
+
 @admi.route("/admin/viewconfig")
 @login_required
 @admin_required
 def view_configuration():
-    read_column = calibre_db.session.query(db.Custom_Columns)\
-        .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
-    restrict_columns = calibre_db.session.query(db.Custom_Columns)\
-        .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
+    read_column = calibre_db.session.query(db.CustomColumns)\
+        .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all()
+    restrict_columns = calibre_db.session.query(db.CustomColumns)\
+        .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
     languages = calibre_db.speaking_language()
-    translations = [LC('en')] + babel.list_translations()
+    translations = get_available_locale()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
                                  languages=languages,
                                  translations=translations,
                                  title=_(u"UI Configuration"), page="uiconfig")
+
 
 @admi.route("/admin/usertable")
 @login_required
@@ -249,8 +279,8 @@ def view_configuration():
 def edit_user_table():
     visibility = current_user.view_settings.get('useredit', {})
     languages = calibre_db.speaking_language()
-    translations = babel.list_translations() + [LC('en')]
-    allUser = ub.session.query(ub.User)
+    translations = get_available_locale()
+    all_user = ub.session.query(ub.User)
     tags = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\
         .join(db.Books)\
@@ -262,10 +292,10 @@ def edit_user_table():
     else:
         custom_values = []
     if not config.config_anonbrowse:
-        allUser = allUser.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
+        all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     return render_title_template("user_table.html",
-                                 users=allUser.all(),
+                                 users=all_user.all(),
                                  tags=tags,
                                  custom_values=custom_values,
                                  translations=translations,
@@ -286,10 +316,13 @@ def list_users():
     limit = int(request.args.get("limit") or 10)
     search = request.args.get("search")
     sort = request.args.get("sort", "id")
-    order = request.args.get("order", "").lower()
     state = None
     if sort == "state":
         state = json.loads(request.args.get("state", "[]"))
+    else:
+        if sort not in ub.User.__table__.columns.keys():
+            sort = "id"
+    order = request.args.get("order", "").lower()
 
     if sort != "state" and order:
         order = text(sort + " " + order)
@@ -304,8 +337,8 @@ def list_users():
 
     if search:
         all_user = all_user.filter(or_(func.lower(ub.User.name).ilike("%" + search + "%"),
-                                    func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
-                                    func.lower(ub.User.email).ilike("%" + search + "%")))
+                                       func.lower(ub.User.kindle_mail).ilike("%" + search + "%"),
+                                       func.lower(ub.User.email).ilike("%" + search + "%")))
     if state:
         users = calibre_db.get_checkbox_sorted(all_user.all(), state, off, limit, request.args.get("order", "").lower())
     else:
@@ -317,7 +350,7 @@ def list_users():
         if user.default_language == "all":
             user.default = _("All")
         else:
-            user.default = LC.parse(user.default_language).get_language_name(get_locale())
+            user.default = get_user_locale_language(user.default_language)
 
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": users}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
@@ -325,12 +358,14 @@ def list_users():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+
 @admi.route("/ajax/deleteuser", methods=['POST'])
 @login_required
 @admin_required
 def delete_user():
     user_ids = request.form.to_dict(flat=False)
     users = None
+    message = ""
     if "userid[]" in user_ids:
         users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids['userid[]'])).all()
     elif "userid" in user_ids:
@@ -358,11 +393,12 @@ def delete_user():
     success.extend(errors)
     return Response(json.dumps(success), mimetype='application/json')
 
+
 @admi.route("/ajax/getlocale")
 @login_required
 @admin_required
 def table_get_locale():
-    locale = babel.list_translations() + [LC('en')]
+    locale = get_available_locale()
     ret = list()
     current_locale = get_locale()
     for loc in locale:
@@ -417,16 +453,16 @@ def edit_list_user(param):
                     if user.name == "Guest":
                         raise Exception(_("Guest Name can't be changed"))
                     user.name = check_username(vals['value'])
-                elif param =='email':
+                elif param == 'email':
                     user.email = check_email(vals['value'])
-                elif param =='kobo_only_shelves_sync':
+                elif param == 'kobo_only_shelves_sync':
                     user.kobo_only_shelves_sync = int(vals['value'] == 'true')
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
                 elif param.endswith('role'):
                     value = int(vals['field_index'])
                     if user.name == "Guest" and value in \
-                                 [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                            [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                         raise Exception(_("Guest can't have this role"))
                     # check for valid value, last on checks for power of 2 value
                     if value > 0 and value <= constants.ROLE_VIEWER and (value & value-1 == 0 or value == 1):
@@ -439,8 +475,8 @@ def edit_list_user(param):
                                               ub.User.id != user.id).count():
                                     return Response(
                                         json.dumps([{'type': "danger",
-                                                     'message':_(u"No admin user remaining, can't remove admin role",
-                                                                 nick=user.name)}]), mimetype='application/json')
+                                                     'message': _(u"No admin user remaining, can't remove admin role",
+                                                                  nick=user.name)}]), mimetype='application/json')
                             user.role &= ~value
                         else:
                             raise Exception(_("Value has to be true or false"))
@@ -463,7 +499,7 @@ def edit_list_user(param):
                 elif param == 'locale':
                     if user.name == "Guest":
                         raise Exception(_("Guest's Locale is determined automatically and can't be set"))
-                    if vals['value'] in _BABEL_TRANSLATIONS:
+                    if vals['value'] in get_available_translations():
                         user.locale = vals['value']
                     else:
                         raise Exception(_("No Valid Locale Given"))
@@ -481,7 +517,7 @@ def edit_list_user(param):
                 else:
                     return _("Parameter not found"), 400
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
             return str(ex), 400
     ub.session_commit()
     return ""
@@ -502,20 +538,6 @@ def update_table_settings():
         log.error("Invalid request received: {}".format(request))
         return "Invalid request", 400
     return ""
-
-def check_valid_read_column(column):
-    if column != "0":
-        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
-              .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all():
-            return False
-    return True
-
-def check_valid_restricted_column(column):
-    if column != "0":
-        if not calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.id == column) \
-              .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all():
-            return False
-    return True
 
 
 @admi.route("/admin/viewconfig", methods=["POST"])
@@ -547,7 +569,6 @@ def update_view_configuration():
     _config_int(to_save, "config_authors_max")
     _config_string(to_save, "config_default_language")
     _config_string(to_save, "config_default_locale")
-
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
@@ -585,13 +606,17 @@ def load_dialogtexts(element_id):
     elif element_id == "restrictions":
         texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":
-        texts["main"] = _('Are you sure you want to change the selected visibility restrictions for the selected user(s)?')
+        texts["main"] = _('Are you sure you want to change the selected visibility restrictions '
+                          'for the selected user(s)?')
     elif element_id == "kobo_only_shelves_sync":
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "admin_refresh_cover_cache":
+        texts["main"] = _('Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?')
     elif element_id == "btnfullsync":
-        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?")
+        texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
+                          "to force a full sync with your Kobo Reader?")
     return json.dumps(texts)
 
 
@@ -719,44 +744,13 @@ def edit_restriction(res_type, user_id):
             ub.session_commit("Changed denied columns of user {} to {}".format(usr.name, usr.denied_column_value))
     return ""
 
-
-def restriction_addition(element, list_func):
-    elementlist = list_func()
-    if elementlist == ['']:
-        elementlist = []
-    if not element['add_element'] in elementlist:
-        elementlist += [element['add_element']]
-    return ','.join(elementlist)
+@admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def add_user_0_restriction(res_type):
+    return add_restriction(res_type, 0)
 
 
-def restriction_deletion(element, list_func):
-    elementlist = list_func()
-    if element['Element'] in elementlist:
-        elementlist.remove(element['Element'])
-    return ','.join(elementlist)
-
-
-def prepare_tags(user, action, tags_name, id_list):
-    if "tags" in tags_name:
-        tags = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(id_list)).all()
-        if not tags:
-            raise Exception(_("Tag not found"))
-        new_tags_list = [x.name for x in tags]
-    else:
-        tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column])\
-            .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
-        new_tags_list = [x.value for x in tags]
-    saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
-    if action == "remove":
-        saved_tags_list = [x for x in saved_tags_list if x not in new_tags_list]
-    elif action == "add":
-        saved_tags_list.extend(x for x in new_tags_list if x not in saved_tags_list)
-    else:
-        raise Exception(_("Invalid Action"))
-    return ",".join(saved_tags_list)
-
-
-@admi.route("/ajax/addrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -803,7 +797,13 @@ def add_restriction(res_type, user_id):
     return ""
 
 
-@admi.route("/ajax/deleterestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
+@admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
+@login_required
+@admin_required
+def delete_user_0_restriction(res_type):
+    return delete_restriction(res_type, 0)
+
+
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
 @login_required
 @admin_required
@@ -830,10 +830,10 @@ def delete_restriction(res_type, user_id):
             usr = current_user
         if element['id'].startswith('a'):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
-            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted allowed tags of user {}: {}".format(usr.name, element['Element']))
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
-            ub.session_commit("Deleted denied tags of user {}: {}".format(usr.name, usr.list_allowed_tags))
+            ub.session_commit("Deleted denied tag of user {}: {}".format(usr.name, element['Element']))
     elif res_type == 3:  # Columns per user
         if isinstance(user_id, int):
             usr = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
@@ -842,12 +842,12 @@ def delete_restriction(res_type, user_id):
         if element['id'].startswith('a'):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
             ub.session_commit("Deleted allowed columns of user {}: {}".format(usr.name,
-                                                                              usr.list_allowed_column_values))
+                                                                              usr.list_allowed_column_values()))
 
         elif element['id'].startswith('d'):
             usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
             ub.session_commit("Deleted denied columns of user {}: {}".format(usr.name,
-                                                                             usr.list_denied_column_values))
+                                                                             usr.list_denied_column_values()))
     return ""
 
 
@@ -857,8 +857,8 @@ def delete_restriction(res_type, user_id):
 @admin_required
 def list_restriction(res_type, user_id):
     if res_type == 0:   # Tags as template
-        restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_denied_tags()) if x != '']
+        restrict = [{'Element': x, 'type': _('Deny'), 'id': 'd'+str(i)}
+                    for i, x in enumerate(config.list_denied_tags()) if x != '']
         allow = [{'Element': x, 'type': _('Allow'), 'id': 'a'+str(i)}
                  for i, x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
@@ -895,7 +895,8 @@ def list_restriction(res_type, user_id):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/fullsync")
+
+@admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
 def ajax_fullsync():
     count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
@@ -909,6 +910,58 @@ def ajax_fullsync():
 @admin_required
 def ajax_pathchooser():
     return pathchooser()
+
+
+def check_valid_read_column(column):
+    if column != "0":
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+              .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+
+def check_valid_restricted_column(column):
+    if column != "0":
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+              .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+
+def restriction_addition(element, list_func):
+    elementlist = list_func()
+    if elementlist == ['']:
+        elementlist = []
+    if not element['add_element'] in elementlist:
+        elementlist += [element['add_element']]
+    return ','.join(elementlist)
+
+
+def restriction_deletion(element, list_func):
+    elementlist = list_func()
+    if element['Element'] in elementlist:
+        elementlist.remove(element['Element'])
+    return ','.join(elementlist)
+
+
+def prepare_tags(user, action, tags_name, id_list):
+    if "tags" in tags_name:
+        tags = calibre_db.session.query(db.Tags).filter(db.Tags.id.in_(id_list)).all()
+        if not tags:
+            raise Exception(_("Tag not found"))
+        new_tags_list = [x.name for x in tags]
+    else:
+        tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column])\
+            .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        new_tags_list = [x.value for x in tags]
+    saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
+    if action == "remove":
+        saved_tags_list = [x for x in saved_tags_list if x not in new_tags_list]
+    elif action == "add":
+        saved_tags_list.extend(x for x in new_tags_list if x not in saved_tags_list)
+    else:
+        raise Exception(_("Invalid Action"))
+    return ",".join(saved_tags_list)
 
 
 def pathchooser():
@@ -1044,12 +1097,12 @@ def _configuration_oauth_helper(to_save):
     reboot_required = False
     for element in oauthblueprints:
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
-            or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+                or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
             reboot_required = True
             element['oauth_client_id'] = to_save["config_" + str(element['id']) + "_oauth_client_id"]
             element['oauth_client_secret'] = to_save["config_" + str(element['id']) + "_oauth_client_secret"]
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] \
-            and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
+                and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
             active_oauths += 1
             element["active"] = 1
         else:
@@ -1102,7 +1155,7 @@ def _configuration_ldap_helper(to_save):
     if not config.config_ldap_provider_url \
         or not config.config_ldap_port \
         or not config.config_ldap_dn \
-        or not config.config_ldap_user_object:
+            or not config.config_ldap_user_object:
         return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
                                                         'Port, DN and User Object Identifier'))
 
@@ -1154,15 +1207,431 @@ def simulatedbchange():
     return Response(json.dumps({"change": db_change, "valid": db_valid}), mimetype='application/json')
 
 
+@admi.route("/admin/user/new", methods=["GET", "POST"])
+@login_required
+@admin_required
+def new_user():
+    content = ub.User()
+    languages = calibre_db.speaking_language()
+    translations = get_available_locale()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        _handle_new_user(to_save, content, languages, translations, kobo_support)
+    else:
+        content.role = config.config_default_role
+        content.sidebar_view = config.config_default_show
+        content.locale = config.config_default_locale
+        content.default_language = config.config_default_language
+    return render_title_template("user_edit.html", new_user=1, content=content,
+                                 config=config, translations=translations,
+                                 languages=languages, title=_(u"Add new user"), page="newuser",
+                                 kobo_support=kobo_support, registered_oauth=oauth_check)
+
+
+@admi.route("/admin/mailsettings")
+@login_required
+@admin_required
+def edit_mailsettings():
+    content = config.get_mail_settings()
+    return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
+                                 page="mailset", feature_support=feature_support)
+
+
+@admi.route("/admin/mailsettings", methods=["POST"])
+@login_required
+@admin_required
+def update_mailsettings():
+    to_save = request.form.to_dict()
+    _config_int(to_save, "mail_server_type")
+    if to_save.get("invalidate"):
+        config.mail_gmail_token = {}
+        try:
+            flag_modified(config, "mail_gmail_token")
+        except AttributeError:
+            pass
+    elif to_save.get("gmail"):
+        try:
+            config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
+            flash(_(u"Gmail Account Verification Successful"), category="success")
+        except Exception as ex:
+            flash(str(ex), category="error")
+            log.error(ex)
+            return edit_mailsettings()
+
+    else:
+        _config_string(to_save, "mail_server")
+        _config_int(to_save, "mail_port")
+        _config_int(to_save, "mail_use_ssl")
+        _config_string(to_save, "mail_login")
+        _config_string(to_save, "mail_password")
+        _config_string(to_save, "mail_from")
+        _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
+    try:
+        config.save()
+    except (OperationalError, InvalidRequestError) as e:
+        ub.session.rollback()
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        return edit_mailsettings()
+
+    if to_save.get("test"):
+        if current_user.email:
+            result = send_test_mail(current_user.email, current_user.name)
+            if result is None:
+                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result",
+                        email=current_user.email), category="info")
+            else:
+                flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
+        else:
+            flash(_(u"Please configure your e-mail address first..."), category="error")
+    else:
+        flash(_(u"E-mail server settings updated"), category="success")
+
+    return edit_mailsettings()
+
+
+@admi.route("/admin/scheduledtasks")
+@login_required
+@admin_required
+def edit_scheduledtasks():
+    content = config.get_scheduled_task_settings()
+    time_field = list()
+    duration_field = list()
+
+    for n in range(24):
+        time_field.append((n , format_time(time(hour=n), format="short",)))
+    for n in range(5, 65, 5):
+        t = timedelta(hours=n // 60, minutes=n % 60)
+        duration_field.append((n, format_timedelta(t, threshold=.9)))
+
+    return render_title_template("schedule_edit.html",
+                                 config=content,
+                                 starttime=time_field,
+                                 duration=duration_field,
+                                 title=_(u"Edit Scheduled Tasks Settings"))
+
+
+@admi.route("/admin/scheduledtasks", methods=["POST"])
+@login_required
+@admin_required
+def update_scheduledtasks():
+    error = False
+    to_save = request.form.to_dict()
+    if 0 <= int(to_save.get("schedule_start_time")) <= 23:
+        _config_int(to_save, "schedule_start_time")
+    else:
+        flash(_(u"Invalid start time for task specified"), category="error")
+        error = True
+    if 0 < int(to_save.get("schedule_duration")) <= 60:
+        _config_int(to_save, "schedule_duration")
+    else:
+        flash(_(u"Invalid duration for task specified"), category="error")
+        error = True
+    _config_checkbox(to_save, "schedule_generate_book_covers")
+    _config_checkbox(to_save, "schedule_generate_series_covers")
+    _config_checkbox(to_save, "schedule_reconnect")
+
+    if not error:
+        try:
+            config.save()
+            flash(_(u"Scheduled tasks settings updated"), category="success")
+
+            # Cancel any running tasks
+            schedule.end_scheduled_tasks()
+
+            # Re-register tasks with new settings
+            schedule.register_scheduled_tasks(config.schedule_reconnect)
+        except IntegrityError:
+            ub.session.rollback()
+            log.error("An unknown error occurred while saving scheduled tasks settings")
+            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        except OperationalError:
+            ub.session.rollback()
+            log.error("Settings DB is not Writeable")
+            flash(_("Settings DB is not Writeable"), category="error")
+
+    return edit_scheduledtasks()
+
+
+@admi.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_user(user_id):
+    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
+    if not content or (not config.config_anonbrowse and content.name == "Guest"):
+        flash(_(u"User not found"), category="error")
+        return redirect(url_for('admin.admin'))
+    languages = calibre_db.speaking_language(return_all_languages=True)
+    translations = get_available_locale()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        resp = _handle_edit_user(to_save, content, languages, translations, kobo_support)
+        if resp:
+            return resp
+    return render_title_template("user_edit.html",
+                                 translations=translations,
+                                 languages=languages,
+                                 new_user=0,
+                                 content=content,
+                                 config=config,
+                                 registered_oauth=oauth_check,
+                                 mail_configured=config.get_mail_server_configured(),
+                                 kobo_support=kobo_support,
+                                 title=_(u"Edit User %(nick)s", nick=content.name),
+                                 page="edituser")
+
+
+@admi.route("/admin/resetpassword/<int:user_id>", methods=["POST"])
+@login_required
+@admin_required
+def reset_user_password(user_id):
+    if current_user is not None and current_user.is_authenticated:
+        ret, message = reset_password(user_id)
+        if ret == 1:
+            log.debug(u"Password for user %s reset", message)
+            flash(_(u"Password for user %(user)s reset", user=message), category="success")
+        elif ret == 0:
+            log.error(u"An unknown error occurred. Please try again later.")
+            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        else:
+            log.error(u"Please configure the SMTP mail settings first...")
+            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+    return redirect(url_for('admin.admin'))
+
+
+@admi.route("/admin/logfile")
+@login_required
+@admin_required
+def view_logfile():
+    logfiles = {0: logger.get_logfile(config.config_logfile),
+                1: logger.get_accesslogfile(config.config_access_logfile)}
+    return render_title_template("logviewer.html",
+                                 title=_(u"Logfile viewer"),
+                                 accesslog_enable=config.config_access_log,
+                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+                                 logfiles=logfiles,
+                                 page="logfile")
+
+
+@admi.route("/ajax/log/<int:logtype>")
+@login_required
+@admin_required
+def send_logfile(logtype):
+    if logtype == 1:
+        logfile = logger.get_accesslogfile(config.config_access_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    if logtype == 0:
+        logfile = logger.get_logfile(config.config_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    else:
+        return ""
+
+
+@admi.route("/admin/logdownload/<int:logtype>")
+@login_required
+@admin_required
+def download_log(logtype):
+    if logtype == 0:
+        file_name = logger.get_logfile(config.config_logfile)
+    elif logtype == 1:
+        file_name = logger.get_accesslogfile(config.config_access_logfile)
+    else:
+        abort(404)
+    if logger.is_valid_logfile(file_name):
+        return debug_info.assemble_logfiles(file_name)
+    abort(404)
+
+
+@admi.route("/admin/debug")
+@login_required
+@admin_required
+def download_debug():
+    return debug_info.send_debug()
+
+
+@admi.route("/get_update_status", methods=['GET'])
+@login_required
+@admin_required
+def get_update_status():
+    if feature_support['updater']:
+        log.info(u"Update status requested")
+        return updater_thread.get_available_updates(request.method)
+    else:
+        return ''
+
+
+@admi.route("/get_updater_status", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def get_updater_status():
+    status = {}
+    if feature_support['updater']:
+        if request.method == "POST":
+            commit = request.form.to_dict()
+            if "start" in commit and commit['start'] == 'True':
+                txt = {
+                    "1": _(u'Requesting update package'),
+                    "2": _(u'Downloading update package'),
+                    "3": _(u'Unzipping update package'),
+                    "4": _(u'Replacing files'),
+                    "5": _(u'Database connections are closed'),
+                    "6": _(u'Stopping server'),
+                    "7": _(u'Update finished, please press okay and reload page'),
+                    "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
+                    "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
+                    "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
+                    "11": _(u'Update failed:') + u' ' + _(u'General error'),
+                    "12": _(u'Update failed:') + u' ' + _(u'Update file could not be saved in temp dir'),
+                    "13": _(u'Update failed:') + u' ' + _(u'Files could not be replaced during update')
+                }
+                status['text'] = txt
+                updater_thread.status = 0
+                updater_thread.resume()
+                status['status'] = updater_thread.get_update_status()
+        elif request.method == "GET":
+            try:
+                status['status'] = updater_thread.get_update_status()
+                if status['status'] == -1:
+                    status['status'] = 7
+            except Exception:
+                status['status'] = 11
+        return json.dumps(status)
+    return ''
+
+
+def ldap_import_create_user(user, user_data):
+    user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
+
+    try:
+        username = user_data[user_login_field][0].decode('utf-8')
+    except KeyError as ex:
+        log.error("Failed to extract LDAP user: %s - %s", user, ex)
+        message = _(u'Failed to extract at least One LDAP User')
+        return 0, message
+
+    # check for duplicate username
+    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first():
+        # if ub.session.query(ub.User).filter(ub.User.name == username).first():
+        log.warning("LDAP User  %s Already in Database", user_data)
+        return 0, None
+
+    kindlemail = ''
+    if 'mail' in user_data:
+        useremail = user_data['mail'][0].decode('utf-8')
+        if len(user_data['mail']) > 1:
+            kindlemail = user_data['mail'][1].decode('utf-8')
+
+    else:
+        log.debug('No Mail Field Found in LDAP Response')
+        useremail = username + '@email.com'
+
+    try:
+        # check for duplicate email
+        useremail = check_email(useremail)
+    except Exception as ex:
+        log.warning("LDAP Email Error: {}, {}".format(user_data, ex))
+        return 0, None
+    content = ub.User()
+    content.name = username
+    content.password = ''  # dummy password which will be replaced by ldap one
+    content.email = useremail
+    content.kindle_mail = kindlemail
+    content.default_language = config.config_default_language
+    content.locale = config.config_default_locale
+    content.role = config.config_default_role
+    content.sidebar_view = config.config_default_show
+    content.allowed_tags = config.config_allowed_tags
+    content.denied_tags = config.config_denied_tags
+    content.allowed_column_value = config.config_allowed_column_value
+    content.denied_column_value = config.config_denied_column_value
+    ub.session.add(content)
+    try:
+        ub.session.commit()
+        return 1, None    # increase no of users
+    except Exception as ex:
+        log.warning("Failed to create LDAP user: %s - %s", user, ex)
+        ub.session.rollback()
+        message = _(u'Failed to Create at Least One LDAP User')
+        return 0, message
+
+
+@admi.route('/import_ldap_users', methods=["POST"])
+@login_required
+@admin_required
+def import_ldap_users():
+    showtext = {}
+    try:
+        new_users = services.ldap.get_group_members(config.config_ldap_group_name)
+    except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
+        log.error_or_exception(e)
+        showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
+        return json.dumps(showtext)
+    if not new_users:
+        log.debug('LDAP empty response')
+        showtext['text'] = _(u'Error: No user returned in response of LDAP server')
+        return json.dumps(showtext)
+
+    imported = 0
+    for username in new_users:
+        user = username.decode('utf-8')
+        if '=' in user:
+            # if member object field is empty take user object as filter
+            if config.config_ldap_member_user_object:
+                query_filter = config.config_ldap_member_user_object
+            else:
+                query_filter = config.config_ldap_user_object
+            try:
+                user_identifier = extract_user_identifier(user, query_filter)
+            except Exception as ex:
+                log.warning(ex)
+                continue
+        else:
+            user_identifier = user
+            query_filter = None
+        try:
+            user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
+        except AttributeError as ex:
+            log.error_or_exception(ex)
+            continue
+        if user_data:
+            user_count, message = ldap_import_create_user(user, user_data)
+            if message:
+                showtext['text'] = message
+            else:
+                imported += user_count
+        else:
+            log.warning("LDAP User: %s Not Found", user)
+            showtext['text'] = _(u'At Least One LDAP User Not Found in Database')
+    if not showtext:
+        showtext['text'] = _(u'{} User Successfully Imported'.format(imported))
+    return json.dumps(showtext)
+
+
+@admi.route("/ajax/canceltask", methods=['POST'])
+@login_required
+@admin_required
+def cancel_task():
+    task_id = request.get_json().get('task_id', None)
+    worker = WorkerThread.get_instance()
+    worker.end_task(task_id)
+    return ""
+
+
 def _db_simulate_change():
     param = request.form.to_dict()
-    to_save = {}
+    to_save = dict()
     to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
                                            '',
                                            param['config_calibre_dir'],
                                            flags=re.IGNORECASE).strip()
-    db_change = config.config_calibre_dir != to_save["config_calibre_dir"] and config.config_calibre_dir
-    db_valid = calibre_db.check_valid_db(to_save["config_calibre_dir"], ub.app_DB_path)
+    db_valid, db_change = calibre_db.check_valid_db(to_save["config_calibre_dir"],
+                                                    ub.app_DB_path,
+                                                    config.config_calibre_uuid)
+    db_change = bool(db_change and config.config_calibre_dir)
     return db_change, db_valid
 
 
@@ -1175,15 +1644,16 @@ def _db_configuration_update_helper():
                                            '',
                                            to_save['config_calibre_dir'],
                                            flags=re.IGNORECASE)
+    db_valid = False
     try:
         db_change, db_valid = _db_simulate_change()
 
         # gdrive_error drive setup
         gdrive_error = _configuration_gdrive_helper(to_save)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _db_configuration_result(_("Settings DB is not Writeable"), gdrive_error)
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _db_configuration_result(_(u"Database error: %(error)s.", error=e.orig), gdrive_error)
     try:
         metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
@@ -1192,26 +1662,32 @@ def _db_configuration_update_helper():
     except Exception as ex:
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
-    if db_change or not db_valid or not config.db_configured:
+    if db_change or not db_valid or not config.db_configured \
+            or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)
+        config.store_calibre_uuid(calibre_db, db.Library_Id)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
-        ub.session.query(ub.Downloads).delete()
-        ub.session.query(ub.ArchivedBook).delete()
-        ub.session.query(ub.ReadBook).delete()
-        ub.session.query(ub.BookShelf).delete()
-        ub.session.query(ub.Bookmark).delete()
-        ub.session.query(ub.KoboReadingState).delete()
-        ub.session.query(ub.KoboStatistics).delete()
-        ub.session.query(ub.KoboSyncedBooks).delete()
-        ub.session_commit()
+        if db_change:
+            log.info("Calibre Database changed, all Calibre-Web info related to old Database gets deleted")
+            ub.session.query(ub.Downloads).delete()
+            ub.session.query(ub.ArchivedBook).delete()
+            ub.session.query(ub.ReadBook).delete()
+            ub.session.query(ub.BookShelf).delete()
+            ub.session.query(ub.Bookmark).delete()
+            ub.session.query(ub.KoboReadingState).delete()
+            ub.session.query(ub.KoboStatistics).delete()
+            ub.session.query(ub.KoboSyncedBooks).delete()
+            helper.delete_thumbnail_cache()
+            ub.session_commit()
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
     config.save()
     return _db_configuration_result(None, gdrive_error)
+
 
 def _configuration_update_helper():
     reboot_required = False
@@ -1231,7 +1707,7 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_unicode_filename")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
         reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
-                             and config.config_login_type == constants.LOGIN_LDAP)
+                            and config.config_login_type == constants.LOGIN_LDAP)
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
@@ -1291,16 +1767,17 @@ def _configuration_update_helper():
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
                 return _configuration_result(unrar_status)
-    except (OperationalError, InvalidRequestError):
+    except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        _configuration_result(_("Settings DB is not Writeable"))
+        log.error_or_exception("Settings Database error: {}".format(e))
+        _configuration_result(_(u"Database error: %(error)s.", error=e.orig))
 
     config.save()
     if reboot_required:
         web_server.stop(True)
 
     return _configuration_result(None, reboot_required)
+
 
 def _configuration_result(error_flash=None, reboot=False):
     resp = {}
@@ -1309,9 +1786,9 @@ def _configuration_result(error_flash=None, reboot=False):
         config.load()
         resp['result'] = [{'type': "danger", 'message': error_flash}]
     else:
-        resp['result'] = [{'type': "success", 'message':_(u"Calibre-Web configuration updated")}]
+        resp['result'] = [{'type': "success", 'message': _(u"Calibre-Web configuration updated")}]
     resp['reboot'] = reboot
-    resp['config_upload']= config.config_upload_formats
+    resp['config_upload'] = config.config_upload_formats
     return Response(json.dumps(resp), mimetype='application/json')
 
 
@@ -1388,10 +1865,11 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("Found an existing account for {} or {}".format(content.name, content.email))
         flash(_("Found an existing account for this e-mail address or name."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+
 
 def _delete_user(content):
     if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
@@ -1404,16 +1882,25 @@ def _delete_user(content):
             for us in ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id):
                 ub.session.query(ub.BookShelf).filter(us.id == ub.BookShelf.shelf).delete()
             ub.session.query(ub.Shelf).filter(content.id == ub.Shelf.user_id).delete()
+            ub.session.query(ub.Bookmark).filter(content.id == ub.Bookmark.user_id).delete()
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session.query(ub.ArchivedBook).filter(ub.ArchivedBook.user_id == content.id).delete()
+            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == content.id).delete()
+            ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.user_id == content.id).delete()
+            ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == content.id).delete()
+            # delete KoboReadingState and all it's children
+            kobo_entries = ub.session.query(ub.KoboReadingState).filter(ub.KoboReadingState.user_id == content.id).all()
+            for kobo_entry in kobo_entries:
+                ub.session.delete(kobo_entry)
             ub.session_commit()
-            log.info(u"User {} deleted".format(content.name))
-            return(_(u"User '%(nick)s' deleted", nick=content.name))
+            log.info("User {} deleted".format(content.name))
+            return _("User '%(nick)s' deleted", nick=content.name)
         else:
-            log.warning(_(u"Can't delete Guest User"))
-            raise Exception(_(u"Can't delete Guest User"))
+            log.warning(_("Can't delete Guest User"))
+            raise Exception(_("Can't delete Guest User"))
     else:
-        log.warning(u"No admin user remaining, can't delete user")
-        raise Exception(_(u"No admin user remaining, can't delete user"))
+        log.warning("No admin user remaining, can't delete user")
+        raise Exception(_("No admin user remaining, can't delete user"))
 
 
 def _handle_edit_user(to_save, content, languages, translations, kobo_support):
@@ -1440,7 +1927,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             content.role &= ~constants.ROLE_ANONYMOUS
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
-        sidebar = get_sidebar_config()
+        sidebar, __ = get_sidebar_config()
         for element in sidebar:
             value = element['visibility']
             if value in val and not content.check_visibility(value):
@@ -1495,352 +1982,11 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
         flash(_(u"An unknown error occurred. Please try again later."), category="error")
-    except OperationalError:
+    except OperationalError as e:
         ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
     return ""
-
-
-@admi.route("/admin/user/new", methods=["GET", "POST"])
-@login_required
-@admin_required
-def new_user():
-    content = ub.User()
-    languages = calibre_db.speaking_language()
-    translations = [LC('en')] + babel.list_translations()
-    kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    if request.method == "POST":
-        to_save = request.form.to_dict()
-        _handle_new_user(to_save, content, languages, translations, kobo_support)
-    else:
-        content.role = config.config_default_role
-        content.sidebar_view = config.config_default_show
-        content.locale = config.config_default_locale
-        content.default_language = config.config_default_language
-    return render_title_template("user_edit.html", new_user=1, content=content,
-                                 config=config, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser",
-                                 kobo_support=kobo_support, registered_oauth=oauth_check)
-
-
-@admi.route("/admin/mailsettings")
-@login_required
-@admin_required
-def edit_mailsettings():
-    content = config.get_mail_settings()
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
-                                 page="mailset", feature_support=feature_support)
-
-
-@admi.route("/admin/mailsettings", methods=["POST"])
-@login_required
-@admin_required
-def update_mailsettings():
-    to_save = request.form.to_dict()
-    _config_int(to_save, "mail_server_type")
-    if to_save.get("invalidate"):
-        config.mail_gmail_token = {}
-        try:
-            flag_modified(config, "mail_gmail_token")
-        except AttributeError:
-            pass
-    elif to_save.get("gmail"):
-        try:
-            config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"Gmail Account Verification Successful"), category="success")
-        except Exception as ex:
-            flash(str(ex), category="error")
-            log.error(ex)
-            return edit_mailsettings()
-
-    else:
-        _config_string(to_save, "mail_server")
-        _config_int(to_save, "mail_port")
-        _config_int(to_save, "mail_use_ssl")
-        _config_string(to_save, "mail_login")
-        _config_string(to_save, "mail_password")
-        _config_string(to_save, "mail_from")
-        _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
-    try:
-        config.save()
-    except (OperationalError, InvalidRequestError):
-        ub.session.rollback()
-        log.error("Settings DB is not Writeable")
-        flash(_("Settings DB is not Writeable"), category="error")
-        return edit_mailsettings()
-
-    if to_save.get("test"):
-        if current_user.email:
-            result = send_test_mail(current_user.email, current_user.name)
-            if result is None:
-                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result",
-                        email=current_user.email), category="info")
-            else:
-                flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
-        else:
-            flash(_(u"Please configure your e-mail address first..."), category="error")
-    else:
-        flash(_(u"E-mail server settings updated"), category="success")
-
-    return edit_mailsettings()
-
-
-@admi.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
-@login_required
-@admin_required
-def edit_user(user_id):
-    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
-    if not content or (not config.config_anonbrowse and content.name == "Guest"):
-        flash(_(u"User not found"), category="error")
-        return redirect(url_for('admin.admin'))
-    languages = calibre_db.speaking_language(return_all_languages=True)
-    translations = babel.list_translations() + [LC('en')]
-    kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    if request.method == "POST":
-        to_save = request.form.to_dict()
-        resp = _handle_edit_user(to_save, content, languages, translations, kobo_support)
-        if resp:
-            return resp
-    return render_title_template("user_edit.html",
-                                 translations=translations,
-                                 languages=languages,
-                                 new_user=0,
-                                 content=content,
-                                 config=config,
-                                 registered_oauth=oauth_check,
-                                 mail_configured=config.get_mail_server_configured(),
-                                 kobo_support=kobo_support,
-                                 title=_(u"Edit User %(nick)s", nick=content.name),
-                                 page="edituser")
-
-
-@admi.route("/admin/resetpassword/<int:user_id>")
-@login_required
-@admin_required
-def reset_user_password(user_id):
-    if current_user is not None and current_user.is_authenticated:
-        ret, message = reset_password(user_id)
-        if ret == 1:
-            log.debug(u"Password for user %s reset", message)
-            flash(_(u"Password for user %(user)s reset", user=message), category="success")
-        elif ret == 0:
-            log.error(u"An unknown error occurred. Please try again later.")
-            flash(_(u"An unknown error occurred. Please try again later."), category="error")
-        else:
-            log.error(u"Please configure the SMTP mail settings first...")
-            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
-    return redirect(url_for('admin.admin'))
-
-
-@admi.route("/admin/logfile")
-@login_required
-@admin_required
-def view_logfile():
-    logfiles = {0: logger.get_logfile(config.config_logfile),
-                1: logger.get_accesslogfile(config.config_access_logfile)}
-    return render_title_template("logviewer.html",
-                                 title=_(u"Logfile viewer"),
-                                 accesslog_enable=config.config_access_log,
-                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
-                                 logfiles=logfiles,
-                                 page="logfile")
-
-
-@admi.route("/ajax/log/<int:logtype>")
-@login_required
-@admin_required
-def send_logfile(logtype):
-    if logtype == 1:
-        logfile = logger.get_accesslogfile(config.config_access_logfile)
-        return send_from_directory(os.path.dirname(logfile),
-                                   os.path.basename(logfile))
-    if logtype == 0:
-        logfile = logger.get_logfile(config.config_logfile)
-        return send_from_directory(os.path.dirname(logfile),
-                                   os.path.basename(logfile))
-    else:
-        return ""
-
-
-@admi.route("/admin/logdownload/<int:logtype>")
-@login_required
-@admin_required
-def download_log(logtype):
-    if logtype == 0:
-        file_name = logger.get_logfile(config.config_logfile)
-    elif logtype == 1:
-        file_name = logger.get_accesslogfile(config.config_access_logfile)
-    else:
-        abort(404)
-    if logger.is_valid_logfile(file_name):
-        return debug_info.assemble_logfiles(file_name)
-    abort(404)
-
-
-@admi.route("/admin/debug")
-@login_required
-@admin_required
-def download_debug():
-    return debug_info.send_debug()
-
-
-@admi.route("/get_update_status", methods=['GET'])
-@login_required
-@admin_required
-def get_update_status():
-    if feature_support['updater']:
-        log.info(u"Update status requested")
-        return updater_thread.get_available_updates(request.method, locale=get_locale())
-    else:
-        return ''
-
-
-@admi.route("/get_updater_status", methods=['GET', 'POST'])
-@login_required
-@admin_required
-def get_updater_status():
-    status = {}
-    if feature_support['updater']:
-        if request.method == "POST":
-            commit = request.form.to_dict()
-            if "start" in commit and commit['start'] == 'True':
-                text = {
-                    "1": _(u'Requesting update package'),
-                    "2": _(u'Downloading update package'),
-                    "3": _(u'Unzipping update package'),
-                    "4": _(u'Replacing files'),
-                    "5": _(u'Database connections are closed'),
-                    "6": _(u'Stopping server'),
-                    "7": _(u'Update finished, please press okay and reload page'),
-                    "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
-                    "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
-                    "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
-                    "11": _(u'Update failed:') + u' ' + _(u'General error'),
-                    "12": _(u'Update failed:') + u' ' + _(u'Update file could not be saved in temp dir'),
-                    "13": _(u'Update failed:') + u' ' + _(u'Files could not be replaced during update')
-                }
-                status['text'] = text
-                updater_thread.status = 0
-                updater_thread.resume()
-                status['status'] = updater_thread.get_update_status()
-        elif request.method == "GET":
-            try:
-                status['status'] = updater_thread.get_update_status()
-                if status['status'] == -1:
-                    status['status'] = 7
-            except Exception:
-                status['status'] = 11
-        return json.dumps(status)
-    return ''
-
-
-def ldap_import_create_user(user, user_data):
-    user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
-
-    try:
-        username = user_data[user_login_field][0].decode('utf-8')
-    except KeyError as ex:
-        log.error("Failed to extract LDAP user: %s - %s", user, ex)
-        message = _(u'Failed to extract at least One LDAP User')
-        return 0, message
-
-    # check for duplicate username
-    if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first():
-        # if ub.session.query(ub.User).filter(ub.User.name == username).first():
-        log.warning("LDAP User  %s Already in Database", user_data)
-        return 0, None
-
-    kindlemail = ''
-    if 'mail' in user_data:
-        useremail = user_data['mail'][0].decode('utf-8')
-        if len(user_data['mail']) > 1:
-            kindlemail = user_data['mail'][1].decode('utf-8')
-
-    else:
-        log.debug('No Mail Field Found in LDAP Response')
-        useremail = username + '@email.com'
-
-    try:
-        # check for duplicate email
-        useremail = check_email(useremail)
-    except Exception as ex:
-        log.warning("LDAP Email Error: {}, {}".format(user_data, ex))
-        return 0, None
-    content = ub.User()
-    content.name = username
-    content.password = ''  # dummy password which will be replaced by ldap one
-    content.email = useremail
-    content.kindle_mail = kindlemail
-    content.default_language = config.config_default_language
-    content.locale = config.config_default_locale
-    content.role = config.config_default_role
-    content.sidebar_view = config.config_default_show
-    content.allowed_tags = config.config_allowed_tags
-    content.denied_tags = config.config_denied_tags
-    content.allowed_column_value = config.config_allowed_column_value
-    content.denied_column_value = config.config_denied_column_value
-    ub.session.add(content)
-    try:
-        ub.session.commit()
-        return 1, None    # increase no of users
-    except Exception as ex:
-        log.warning("Failed to create LDAP user: %s - %s", user, ex)
-        ub.session.rollback()
-        message = _(u'Failed to Create at Least One LDAP User')
-        return 0, message
-
-
-@admi.route('/import_ldap_users')
-@login_required
-@admin_required
-def import_ldap_users():
-    showtext = {}
-    try:
-        new_users = services.ldap.get_group_members(config.config_ldap_group_name)
-    except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
-        log.debug_or_exception(e)
-        showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
-        return json.dumps(showtext)
-    if not new_users:
-        log.debug('LDAP empty response')
-        showtext['text'] = _(u'Error: No user returned in response of LDAP server')
-        return json.dumps(showtext)
-
-    imported = 0
-    for username in new_users:
-        user = username.decode('utf-8')
-        if '=' in user:
-            # if member object field is empty take user object as filter
-            if config.config_ldap_member_user_object:
-                query_filter = config.config_ldap_member_user_object
-            else:
-                query_filter = config.config_ldap_user_object
-            try:
-                user_identifier = extract_user_identifier(user, query_filter)
-            except Exception as ex:
-                log.warning(ex)
-                continue
-        else:
-            user_identifier = user
-            query_filter = None
-        try:
-            user_data = services.ldap.get_object_details(user=user_identifier, query_filter=query_filter)
-        except AttributeError as ex:
-            log.debug_or_exception(ex)
-            continue
-        if user_data:
-            user_count, message = ldap_import_create_user(user, user_data)
-            if message:
-                showtext['text'] = message
-            else:
-                imported += user_count
-        else:
-            log.warning("LDAP User: %s Not Found", user)
-            showtext['text'] = _(u'At Least One LDAP User Not Found in Database')
-    if not showtext:
-        showtext['text'] = _(u'{} User Successfully Imported'.format(imported))
-    return json.dumps(showtext)
 
 
 def extract_user_data_from_field(user, field):

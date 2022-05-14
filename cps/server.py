@@ -25,6 +25,7 @@ import subprocess  # nosec
 
 try:
     from gevent.pywsgi import WSGIServer
+    from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
     from gevent import __version__ as _version
     from greenlet import GreenletExit
@@ -32,7 +33,7 @@ try:
     VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
-    from tornado.wsgi import WSGIContainer
+    from .tornado_wsgi import MyWSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
     from tornado import version as _version
@@ -202,7 +203,8 @@ class WebServer(object):
             if output is None:
                 output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
-            self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
+            self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, handler_class=MyWSGIHandler,
+                                         spawn=Pool(), **ssl_args)
             if ssl_args:
                 wrap_socket = self.wsgiserver.wrap_socket
                 def my_wrap_socket(*args, **kwargs):
@@ -225,8 +227,8 @@ class WebServer(object):
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))
 
-        # Max Buffersize set to 200MB            )
-        http_server = HTTPServer(WSGIContainer(self.app),
+        # Max Buffersize set to 200MB
+        http_server = HTTPServer(MyWSGIContainer(self.app),
                                  max_buffer_size=209700000,
                                  ssl_options=self.ssl_args)
         http_server.listen(self.listen_port, self.listen_address)

@@ -1,4 +1,5 @@
 {% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
+{% import 'image.html' as image %}
 <!DOCTYPE html>
 <html lang="{{ g.user.locale }}">
   <head>
@@ -40,7 +41,7 @@
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
         {% if g.user.is_authenticated or g.allow_anonymous %}
-          <form class="navbar-form navbar-left" role="search" action="{{url_for('web.search')}}" method="GET">
+          <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
@@ -53,14 +54,14 @@
         <div class="navbar-collapse collapse">
           {% if g.user.is_authenticated or g.allow_anonymous %}
           <ul class="nav navbar-nav ">
-            <li><a href="{{url_for('web.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
+            <li><a href="{{url_for('search.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if g.user.is_authenticated or g.allow_anonymous %}
               {% if g.user.role_upload() and g.allow_upload %}
                   <li>
-                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
+                    <form id="form-upload" class="navbar-form" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
                       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
@@ -69,8 +70,8 @@
                     </form>
                   </li>
               {% endif %}
-              {% if not g.user.is_anonymous %}
-                <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
+              {% if not g.user.is_anonymous and not simple%}
+                <li><a id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if g.user.role_admin() %}
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
@@ -183,7 +184,7 @@
           </div>
           <div class="modal-body">...</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+            <button type="button" id="details_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
           </div>
         </div>
       </div>
