@@ -35,7 +35,7 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.16      | It's prevented to get the name of a private shelfs. Thanks to @nhiephon                                            |CVE-2022-0405|
 | V 0.6.17      | The SSRF Protection can no longer be bypassed via an HTTP redirect. Thanks to @416e6e61                            |CVE-2022-0767|
 | V 0.6.17      | The SSRF Protection can no longer be bypassed via 0.0.0.0 and it's ipv6 equivalent. Thanks to @r0hanSH             |CVE-2022-0766|
-| V 0.6.18      | Possible SQL Injection is prevented in user table  Thanks to Iman Sharafaldin (Forward Security)                   ||
+| V 0.6.18      | Possible SQL Injection is prevented in user table  Thanks to Iman Sharafaldin (Forward Security)                   |CVE-2022-30765|
 | V 0.6.18      | The SSRF protection no longer can be bypassed by IPV6/IPV4 embedding. Thanks to  @416e6e61                         |CVE-2022-0939|
 | V 0.6.18      | The SSRF protection no longer can be bypassed to connect to other servers in the local network. Thanks to @michaellrowley |CVE-2022-0990|
 
