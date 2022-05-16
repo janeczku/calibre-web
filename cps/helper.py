@@ -141,7 +141,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
 
 def check_send_to_ereader_with_converter(formats):
     book_formats = list()
-    if 'EPUB' in formats and 'EPUB' not in formats:
+    if 'MOBI' in formats and 'EPUB' not in formats:
         book_formats.append({'format': 'Epub',
                              'convert': 1,
                              'text': _('Convert %(orig)s to %(format)s and send to E-Reader',
