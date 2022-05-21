@@ -43,7 +43,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 #### Installation via pip (recommended)
 1. To avoid problems with already installed python dependencies, it's recommended to create a virtual environment for Calibre-Web
 2. Install Calibre-Web via pip with the command `pip install calibreweb` (Depending on your OS and or distro the command could also be `pip3`). 
-3. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-Windows) for details 
+3. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details 
 4. Calibre-Web can be started afterwards by typing `cps` 
 
 In the Wiki there are also examples for: a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [installation on Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [installation on a Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
@@ -53,7 +53,7 @@ In the Wiki there are also examples for: a [manual installation](https://github.
 Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog \
 Login with default admin login \
 Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button \
-Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration) \
+Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/G-Drive-Setup#using-google-drive-integration) \
 Afterwards you can configure your Calibre-Web instance ([Basic Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#ui-configuration) on admin page)  
 
 #### Default admin login:
