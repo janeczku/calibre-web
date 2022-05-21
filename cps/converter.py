@@ -54,10 +54,9 @@ def get_calibre_version():
 def get_unrar_version():
     unrar_version = _get_command_version(config.config_rarfile_location, r'UNRAR.*\d')
     if unrar_version == "not installed":
-        unrar_version = _get_command_version(config.config_rarfile_location, r'unrar.*\d','-V')
+        unrar_version = _get_command_version(config.config_rarfile_location, r'unrar.*\d', '-V')
     return unrar_version
 
+
 def get_kepubify_version():
-    return _get_command_version(config.config_kepubifypath, r'kepubify\s','--version')
-
-
+    return _get_command_version(config.config_kepubifypath, r'kepubify\s', '--version')

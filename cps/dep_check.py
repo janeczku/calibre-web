@@ -42,7 +42,7 @@ def load_dependencies(optional=False):
                         res = re.match(r'(.*?)([<=>\s]+)([\d\.]+),?\s?([<=>\s]+)?([\d\.]+)?', line.strip())
                         try:
                             if getattr(sys, 'frozen', False):
-                                dep_version = exe_deps[res.group(1).lower().replace('_','-')]
+                                dep_version = exe_deps[res.group(1).lower().replace('_', '-')]
                             else:
                                 if importlib:
                                     dep_version = version(res.group(1))

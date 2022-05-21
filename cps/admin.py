@@ -160,7 +160,7 @@ def shutdown():
     return json.dumps(showtext), 400
 
 
-# method is available without login and not protected by CSRF to make it easy reachable, is per default switched of
+# method is available without login and not protected by CSRF to make it easy reachable, is per default switched off
 # needed for docker applications, as changes on metadata.db from host are not visible to application
 @admi.route("/reconnect", methods=['GET'])
 def reconnect():
@@ -615,7 +615,8 @@ def load_dialogtexts(element_id):
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
     elif element_id == "admin_refresh_cover_cache":
-        texts["main"] = _('Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?')
+        texts["main"] = _('Calibre-Web will search for updated Covers '
+                          'and update Cover Thumbnails, this may take a while?')
     elif element_id == "btnfullsync":
         texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
                           "to force a full sync with your Kobo Reader?")
@@ -745,6 +746,7 @@ def edit_restriction(res_type, user_id):
             usr.denied_column_value = ','.join(elementlist)
             ub.session_commit("Changed denied columns of user {} to {}".format(usr.name, usr.denied_column_value))
     return ""
+
 
 @admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
 @login_required
@@ -1084,7 +1086,7 @@ def _configuration_gdrive_helper(to_save):
                                 gdrive_secrets['redirect_uris'][0]
                             )
 
-    # always show google drive settings, but in case of error deny support
+    # always show Google Drive settings, but in case of error deny support
     new_gdrive_value = (not gdrive_error) and ("config_use_google_drive" in to_save)
     if config.config_use_google_drive and not new_gdrive_value:
         config.config_google_drive_watch_changes_response = {}
@@ -1837,7 +1839,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
             log.info("Missing entries on new user")
             raise Exception(_(u"Please fill out all fields!"))
         content.email = check_email(to_save["email"])
-        # Query User name, if not existing, change
+        # Query username, if not existing, change
         content.name = check_username(to_save["name"])
         if to_save.get("kindle_mail"):
             content.kindle_mail = valid_email(to_save["kindle_mail"])
@@ -1956,7 +1958,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         try:
             if to_save.get("email", content.email) != content.email:
                 content.email = check_email(to_save["email"])
-            # Query User name, if not existing, change
+            # Query username, if not existing, change
             if to_save.get("name", content.name) != content.name:
                 if to_save.get("name") == "Guest":
                     raise Exception(_("Guest Name can't be changed"))
