@@ -26,6 +26,7 @@ import base64
 import json
 import operator
 import time
+from shutil import copyfile, Error as SHError
 from datetime import datetime, timedelta
 from datetime import time as datetime_time
 from functools import wraps
@@ -614,6 +615,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
+    elif element_id == "db_create":
+        texts["main"] = _('No Database at this location. Create and use new Database?')
     elif element_id == "admin_refresh_cover_cache":
         texts["main"] = _('Calibre-Web will search for updated Covers '
                           'and update Cover Thumbnails, this may take a while?')
@@ -1207,8 +1210,8 @@ def _configuration_ldap_helper(to_save):
 @login_required
 @admin_required
 def simulatedbchange():
-    db_change, db_valid = _db_simulate_change()
-    return Response(json.dumps({"change": db_change, "valid": db_valid}), mimetype='application/json')
+    db_change, db_valid, path_valid = _db_simulate_change()
+    return Response(json.dumps({"change": db_change, "valid": db_valid, "path_valid": path_valid}), mimetype='application/json')
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
@@ -1636,7 +1639,8 @@ def _db_simulate_change():
                                                     ub.app_DB_path,
                                                     config.config_calibre_uuid)
     db_change = bool(db_change and config.config_calibre_dir)
-    return db_change, db_valid
+    path_valid = os.path.exists(to_save['config_calibre_dir'])
+    return db_change, db_valid, path_valid
 
 
 def _db_configuration_update_helper():
@@ -1650,7 +1654,7 @@ def _db_configuration_update_helper():
                                            flags=re.IGNORECASE)
     db_valid = False
     try:
-        db_change, db_valid = _db_simulate_change()
+        db_change, db_valid, valid_path = _db_simulate_change()
 
         # gdrive_error drive setup
         gdrive_error = _configuration_gdrive_helper(to_save)
@@ -1668,6 +1672,13 @@ def _db_configuration_update_helper():
 
     if db_change or not db_valid or not config.db_configured \
             or config.config_calibre_dir != to_save["config_calibre_dir"]:
+        if not db_change and not db_valid and valid_path:
+            try:
+                filepath_dbtemplate = os.path.join(constants.TEMPLATES_DIR, "metadata.db.template")
+                copyfile(filepath_dbtemplate, metadata_db)
+            except (SHError, OSError) as ex:
+                log.error("Failed to copy database template: {}".format(ex))
+                return _db_configuration_result(_(u"Failed to copy database template: %(error)s", error=ex), gdrive_error)
         if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
                                             gdrive_error)

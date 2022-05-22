@@ -677,8 +677,8 @@ $(function() {
                 if ( data.change ) {
                     if ( data.valid ) {
                         confirmDialog(
-                        "db_submit",
-                    "GeneralChangeModal",
+                            "db_submit",
+                            "GeneralChangeModal",
                             0,
                             changeDbSettings
                         );
@@ -686,6 +686,13 @@ $(function() {
                     else {
                         $("#InvalidDialog").modal('show');
                     }
+                } else if ( !data.valid && data.path_valid ) {
+                    confirmDialog(
+                        "db_create",
+                        "GeneralChangeModal",
+                        0,
+                        changeDbSettings
+                    );
                 } else {
                     changeDbSettings();
                 }
