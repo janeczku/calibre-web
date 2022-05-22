@@ -43,16 +43,17 @@
     <title>{{entry.Books.title}}</title>
     <id>urn:uuid:{{entry.Books.uuid}}</id>
     <updated>{{entry.Books.atom_timestamp}}</updated>
-    {% if entry.Books.authors.__len__() > 0 %}
+    {% for author in entry.Books.authors %}
       <author>
-        <name>{{entry.Books.authors[0].name}}</name>
+        <name>{{author.name}}</name>
       </author>
-    {% endif %}
+    {% endfor %}
     {% if entry.Books.publishers.__len__() > 0 %}
       <publisher>
         <name>{{entry.Books.publishers[0].name}}</name>
       </publisher>
     {% endif %}
+    <published>{{entry.Books.pubdate}}</published>
     {% for lang in entry.Books.languages %}
       <dcterms:language>{{lang.lang_code}}</dcterms:language>
     {% endfor %}
