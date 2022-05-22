@@ -76,11 +76,11 @@ def init_cache_busting(app):
             if file_hash:
                 values["q"] = file_hash
 
-    def debusting_static_view(file_name):
+    def debusting_static_view(filename):
         """
         Serve a request for a static file having a busted name.
         """
-        return original_static_view(filename=unbust_filename(file_name))
+        return original_static_view(filename=unbust_filename(filename))
 
     # Replace the default static file view with our debusting view.
     original_static_view = app.view_functions["static"]
