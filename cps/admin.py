@@ -1994,7 +1994,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
 
 
 def extract_user_data_from_field(user, field):
-    match = re.search(field + r"=([\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    match = re.search(field + r"=([@\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:
