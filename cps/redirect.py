@@ -25,7 +25,7 @@
 # THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE AND DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# http://flask.pocoo.org/snippets/62/
+# https://web.archive.org/web/20120517003641/http://flask.pocoo.org/snippets/62/
 
 from urllib.parse import urlparse, urljoin
 
