@@ -677,8 +677,8 @@ $(function() {
                 if ( data.change ) {
                     if ( data.valid ) {
                         confirmDialog(
-                        "db_submit",
-                    "GeneralChangeModal",
+                            "db_submit",
+                            "GeneralChangeModal",
                             0,
                             changeDbSettings
                         );

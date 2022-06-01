@@ -1668,9 +1668,10 @@ def _db_configuration_update_helper():
 
     if db_change or not db_valid or not config.db_configured \
             or config.config_calibre_dir != to_save["config_calibre_dir"]:
-        if not calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path):
-            return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'),
-                                            gdrive_error)
+        if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
+            return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
+        else:
+            calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path)
         config.store_calibre_uuid(calibre_db, db.Library_Id)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         if db_change:
