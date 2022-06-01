@@ -567,12 +567,12 @@ class CalibreDB:
 
         if not config_calibre_dir:
             cls.config.invalidate()
-            return False
+            return None
 
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
             cls.config.invalidate()
-            return False
+            return None
 
         try:
             cls.engine = create_engine('sqlite://',
@@ -588,7 +588,7 @@ class CalibreDB:
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
-            return False
+            return None
 
         cls.config.db_configured = True
 
@@ -598,7 +598,7 @@ class CalibreDB:
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
                 log.error_or_exception(e)
-                return False
+                return None
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
@@ -607,7 +607,6 @@ class CalibreDB:
             inst.init_session()
 
         cls._init = True
-        return True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
