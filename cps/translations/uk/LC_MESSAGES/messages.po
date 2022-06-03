@@ -31,11 +31,11 @@ msgstr "Виконується зупинка серверу, будь-ласк�
 
 #: cps/admin.py:156
 msgid "Reconnect successful"
-msgstr ""
+msgstr "Підключення успішне"
 
 #: cps/admin.py:159
 msgid "Unknown command"
-msgstr ""
+msgstr "Невідома команда"
 
 #: cps/admin.py:192 cps/editbooks.py:571 cps/editbooks.py:573
 #: cps/editbooks.py:609 cps/editbooks.py:626 cps/editbooks.py:1233
@@ -63,15 +63,15 @@ msgstr "Керування сервером"
 #: cps/admin.py:353 cps/opds.py:532 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
-msgstr ""
+msgstr "Всі"
 
 #: cps/admin.py:380 cps/admin.py:1365
 msgid "User not found"
-msgstr ""
+msgstr "Користувача не знайдено"
 
 #: cps/admin.py:394
 msgid "{} users deleted successfully"
-msgstr ""
+msgstr "{} користувачі видалені успішно"
 
 #: cps/admin.py:417 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
@@ -100,7 +100,7 @@ msgstr ""
 
 #: cps/admin.py:486
 msgid "Invalid role"
-msgstr ""
+msgstr "Не правильна роль"
 
 #: cps/admin.py:490
 msgid "Guest can't have this view"
@@ -890,7 +890,7 @@ msgstr "Вдалося! Будь-ласка, поверніться до ваш�
 
 #: cps/render_template.py:40 cps/web.py:405
 msgid "Books"
-msgstr ""
+msgstr "Книжки"
 
 #: cps/render_template.py:42
 msgid "Show recent books"
@@ -937,7 +937,7 @@ msgstr "Непрочитані книги"
 
 #: cps/render_template.py:66
 msgid "Show unread"
-msgstr ""
+msgstr "Показати не прочитані"
 
 #: cps/render_template.py:67
 msgid "Discover"
@@ -979,7 +979,7 @@ msgstr "Показувати вибір автора"
 #: cps/render_template.py:80 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:966
 msgid "Publishers"
-msgstr ""
+msgstr "Видавництва"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
 msgid "Show publisher selection"
@@ -997,7 +997,7 @@ msgstr "Показувати вибір мови"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
 msgid "Ratings"
-msgstr ""
+msgstr "Рейтинги"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
 msgid "Show ratings selection"
@@ -1005,7 +1005,7 @@ msgstr ""
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
-msgstr ""
+msgstr "Формати файлів"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
 msgid "Show file formats selection"
@@ -1013,7 +1013,7 @@ msgstr ""
 
 #: cps/render_template.py:94 cps/web.py:765
 msgid "Archived Books"
-msgstr ""
+msgstr "Архівні книжки"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
 msgid "Show archived books"
@@ -1021,7 +1021,7 @@ msgstr ""
 
 #: cps/render_template.py:99 cps/web.py:796
 msgid "Books List"
-msgstr ""
+msgstr "Список книжок"
 
 #: cps/render_template.py:101 cps/templates/user_table.html:168
 msgid "Show Books List"
@@ -1036,21 +1036,21 @@ msgstr "Пошук"
 
 #: cps/search.py:194
 msgid "Published after "
-msgstr ""
+msgstr "Опубліковані після "
 
 #: cps/search.py:201
 msgid "Published before "
-msgstr "Опубліковано до"
+msgstr "Опубліковано до "
 
 #: cps/search.py:223
 #, python-format
 msgid "Rating <= %(rating)s"
-msgstr ""
+msgstr "Рейтинг <= %(rating)s"
 
 #: cps/search.py:225
 #, python-format
 msgid "Rating >= %(rating)s"
-msgstr ""
+msgstr "Рейтинг >= %(rating)s"
 
 #: cps/search.py:227
 #, python-format
@@ -2803,7 +2803,7 @@ msgstr ""
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Введіть тег"
 
 #: cps/templates/modal_dialogs.html:24
 msgid "Add View Restriction"
@@ -2831,7 +2831,7 @@ msgstr ""
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr ""
+msgstr "Оберіть розташування файлу"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
@@ -2928,15 +2928,15 @@ msgstr ""
 
 #: cps/templates/readcbr.html:125
 msgid "Best"
-msgstr ""
+msgstr "Краще"
 
 #: cps/templates/readcbr.html:126
 msgid "Width"
-msgstr ""
+msgstr "Ширина"
 
 #: cps/templates/readcbr.html:127
 msgid "Height"
-msgstr ""
+msgstr "Висота"
 
 #: cps/templates/readcbr.html:128
 msgid "Native"
@@ -2944,7 +2944,7 @@ msgstr ""
 
 #: cps/templates/readcbr.html:133
 msgid "Rotate"
-msgstr ""
+msgstr "Повернути"
 
 #: cps/templates/readcbr.html:144
 msgid "Flip"
@@ -2956,11 +2956,11 @@ msgstr ""
 
 #: cps/templates/readcbr.html:148
 msgid "Vertical"
-msgstr ""
+msgstr "Вертикально"
 
 #: cps/templates/readcbr.html:153
 msgid "Direction"
-msgstr ""
+msgstr "Напрям"
 
 #: cps/templates/readcbr.html:156
 msgid "Left to Right"
@@ -2984,11 +2984,11 @@ msgstr ""
 
 #: cps/templates/readcbr.html:174
 msgid "Show"
-msgstr ""
+msgstr "Показати"
 
 #: cps/templates/readcbr.html:175
 msgid "Hide"
-msgstr ""
+msgstr "Сховати"
 
 #: cps/templates/readdjvu.html:5
 msgid "DJVU Reader"
@@ -3078,7 +3078,7 @@ msgstr "Виключити мови"
 
 #: cps/templates/search_form.html:126
 msgid "Extensions"
-msgstr ""
+msgstr "Розширення"
 
 #: cps/templates/search_form.html:134
 msgid "Exclude Extensions"
@@ -3094,11 +3094,11 @@ msgstr ""
 
 #: cps/templates/search_form.html:180
 msgid "From:"
-msgstr ""
+msgstr "Від:"
 
 #: cps/templates/search_form.html:190
 msgid "To:"
-msgstr ""
+msgstr "До:"
 
 #: cps/templates/shelf.html:13
 msgid "Delete this Shelf"
@@ -3158,11 +3158,11 @@ msgstr "Серій в цій бібліотеці"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr ""
+msgstr "Статистика системи"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "Програма"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3170,31 +3170,31 @@ msgstr "Встановлена версія"
 
 #: cps/templates/tasks.html:12
 msgid "User"
-msgstr ""
+msgstr "Користувач"
 
 #: cps/templates/tasks.html:14
 msgid "Task"
-msgstr ""
+msgstr "Завдання"
 
 #: cps/templates/tasks.html:15
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: cps/templates/tasks.html:16
 msgid "Progress"
-msgstr ""
+msgstr "Прогрес"
 
 #: cps/templates/tasks.html:17
 msgid "Run Time"
-msgstr ""
+msgstr "Тривалість"
 
 #: cps/templates/tasks.html:18
 msgid "Start Time"
-msgstr ""
+msgstr "Час початку"
 
 #: cps/templates/tasks.html:20
 msgid "Actions"
-msgstr ""
+msgstr "Дії"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
@@ -3206,7 +3206,7 @@ msgstr ""
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
-msgstr ""
+msgstr "Скинути пароль користувача"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
@@ -3214,7 +3214,7 @@ msgstr "Показувати книги на мовах"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr ""
+msgstr "Налаштування OAuth"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
@@ -3230,7 +3230,7 @@ msgstr ""
 
 #: cps/templates/user_edit.html:66
 msgid "Create/View"
-msgstr ""
+msgstr "Створити/Переглянути"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
@@ -3254,7 +3254,7 @@ msgstr ""
 
 #: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
-msgstr ""
+msgstr "Обрати..."
 
 #: cps/templates/user_table.html:131
 #, fuzzy
@@ -3274,7 +3274,7 @@ msgstr "Ваш email-адрес"
 #: cps/templates/user_table.html:136
 #, fuzzy
 msgid "Enter Kindle E-mail Address"
-msgstr "Kindle"
+msgstr ""
 
 #: cps/templates/user_table.html:136
 msgid "Kindle E-mail"
@@ -3282,7 +3282,7 @@ msgstr ""
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
-msgstr ""
+msgstr "Локалізація"
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
@@ -3294,15 +3294,15 @@ msgstr ""
 
 #: cps/templates/user_table.html:139
 msgid "Allowed Tags"
-msgstr ""
+msgstr "Дозволені теги"
 
 #: cps/templates/user_table.html:140
 msgid "Edit Denied Tags"
-msgstr ""
+msgstr "Змінити заборонені теги"
 
 #: cps/templates/user_table.html:140
 msgid "Denied Tags"
-msgstr ""
+msgstr "Заборонені теги"
 
 #: cps/templates/user_table.html:141
 msgid "Edit Allowed Column Values"
@@ -3327,7 +3327,7 @@ msgstr "Дозволити зміну пароля"
 
 #: cps/templates/user_table.html:147
 msgid "View"
-msgstr ""
+msgstr "Показати"
 
 #: cps/templates/user_table.html:150
 #, fuzzy
