@@ -26,10 +26,12 @@ from .constants import STABLE_VERSION as _STABLE_VERSION
 from .constants import NIGHTLY_VERSION as _NIGHTLY_VERSION
 from .constants import DEFAULT_SETTINGS_FILE, DEFAULT_GDRIVE_FILE
 
+
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
         return "Calibre-Web version: %s - unkown git-clone" % _STABLE_VERSION['version']
     return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'], _NIGHTLY_VERSION[1])
+
 
 class CliParameter(object):
 
@@ -37,15 +39,15 @@ class CliParameter(object):
         self.arg_parser()
 
     def arg_parser(self):
-        parser = argparse.ArgumentParser(description='Calibre Web is a web app'
-                                                     ' providing a interface for browsing, reading and downloading eBooks\n',
+        parser = argparse.ArgumentParser(description='Calibre Web is a web app providing '
+                                                     'a interface for browsing, reading and downloading eBooks\n',
                                          prog='cps.py')
         parser.add_argument('-p', metavar='path', help='path and name to settings db, e.g. /opt/cw.db')
         parser.add_argument('-g', metavar='path', help='path and name to gdrive db, e.g. /opt/gd.db')
-        parser.add_argument('-c', metavar='path',
-                            help='path and name to SSL certfile, e.g. /opt/test.cert, works only in combination with keyfile')
-        parser.add_argument('-k', metavar='path',
-                            help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
+        parser.add_argument('-c', metavar='path', help='path and name to SSL certfile, e.g. /opt/test.cert, '
+                                                       'works only in combination with keyfile')
+        parser.add_argument('-k', metavar='path', help='path and name to SSL keyfile, e.g. /opt/test.key, '
+                                                       'works only in combination with certfile')
         parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-Web',
                             version=version_info())
         parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
@@ -66,7 +68,6 @@ class CliParameter(object):
 
         if os.path.isdir(self.gd_path):
             self.gd_path = os.path.join(self.gd_path, DEFAULT_GDRIVE_FILE)
-
 
         # handle and check parameter for ssl encryption
         self.certfilepath = None
@@ -96,7 +97,7 @@ class CliParameter(object):
             self.keyfilepath = ""
 
         # dry run updater
-        self.dry_run =args.d or None
+        self.dry_run = args.d or None
         # enable reconnect endpoint for docker database reconnect
         self.reconnect_enable = args.r or os.environ.get("CALIBRE_RECONNECT", None)
         # load covers from localhost
@@ -112,7 +113,7 @@ class CliParameter(object):
                     else:
                         socket.inet_pton(socket.AF_INET, self.ip_address)
                 else:
-                    # on windows python < 3.4, inet_pton is not available
+                    # on Windows python < 3.4, inet_pton is not available
                     # inet_atom only handles IPv4 addresses
                     socket.inet_aton(self.ip_address)
             except socket.error as err:

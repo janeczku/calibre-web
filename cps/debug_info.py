@@ -32,6 +32,7 @@ from .about import collect_stats
 
 log = logger.create()
 
+
 def assemble_logfiles(file_name):
     log_list = sorted(glob.glob(file_name + '*'), reverse=True)
     wfd = BytesIO()

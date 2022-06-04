@@ -49,7 +49,7 @@ def init_cache_busting(app):
             rooted_filename = os.path.join(dirpath, filename)
             try:
                 with open(rooted_filename, 'rb') as f:
-                    file_hash = hashlib.md5(f.read()).hexdigest()[:7] # nosec
+                    file_hash = hashlib.md5(f.read()).hexdigest()[:7]  # nosec
                 # save version to tables
                 file_path = rooted_filename.replace(static_folder, "")
                 file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
@@ -59,11 +59,11 @@ def init_cache_busting(app):
 
     log.debug('Finished computing cache-busting values')
 
-    def bust_filename(filename):
-        return hash_table.get(filename, "")
+    def bust_filename(file_name):
+        return hash_table.get(file_name, "")
 
-    def unbust_filename(filename):
-        return filename.split("?", 1)[0]
+    def unbust_filename(file_name):
+        return file_name.split("?", 1)[0]
 
     @app.url_defaults
     # pylint: disable=unused-variable

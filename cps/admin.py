@@ -25,7 +25,9 @@ import re
 import base64
 import json
 import operator
-from datetime import datetime, timedelta, time
+import time
+from datetime import datetime, timedelta
+from datetime import time as datetime_time
 from functools import wraps
 
 
@@ -158,7 +160,7 @@ def shutdown():
     return json.dumps(showtext), 400
 
 
-# method is available without login and not protected by CSRF to make it easy reachable, is per default switched of
+# method is available without login and not protected by CSRF to make it easy reachable, is per default switched off
 # needed for docker applications, as changes on metadata.db from host are not visible to application
 @admi.route("/reconnect", methods=['GET'])
 def reconnect():
@@ -205,7 +207,7 @@ def admin():
 
     all_user = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
-    schedule_time = format_time(time(hour=config.schedule_start_time), format="short")
+    schedule_time = format_time(datetime_time(hour=config.schedule_start_time), format="short")
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
     schedule_duration = format_timedelta(t, threshold=.99)
 
@@ -613,7 +615,8 @@ def load_dialogtexts(element_id):
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
     elif element_id == "admin_refresh_cover_cache":
-        texts["main"] = _('Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?')
+        texts["main"] = _('Calibre-Web will search for updated Covers '
+                          'and update Cover Thumbnails, this may take a while?')
     elif element_id == "btnfullsync":
         texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
                           "to force a full sync with your Kobo Reader?")
@@ -743,6 +746,7 @@ def edit_restriction(res_type, user_id):
             usr.denied_column_value = ','.join(elementlist)
             ub.session_commit("Changed denied columns of user {} to {}".format(usr.name, usr.denied_column_value))
     return ""
+
 
 @admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
 @login_required
@@ -1082,7 +1086,7 @@ def _configuration_gdrive_helper(to_save):
                                 gdrive_secrets['redirect_uris'][0]
                             )
 
-    # always show google drive settings, but in case of error deny support
+    # always show Google Drive settings, but in case of error deny support
     new_gdrive_value = (not gdrive_error) and ("config_use_google_drive" in to_save)
     if config.config_use_google_drive and not new_gdrive_value:
         config.config_google_drive_watch_changes_response = {}
@@ -1300,7 +1304,7 @@ def edit_scheduledtasks():
     duration_field = list()
 
     for n in range(24):
-        time_field.append((n , format_time(time(hour=n), format="short",)))
+        time_field.append((n, format_time(datetime_time(hour=n), format="short",)))
     for n in range(5, 65, 5):
         t = timedelta(hours=n // 60, minutes=n % 60)
         duration_field.append((n, format_timedelta(t, threshold=.9)))
@@ -1519,11 +1523,11 @@ def ldap_import_create_user(user, user_data):
         log.warning("LDAP User  %s Already in Database", user_data)
         return 0, None
 
-    kindlemail = ''
+    ereader_mail = ''
     if 'mail' in user_data:
         useremail = user_data['mail'][0].decode('utf-8')
         if len(user_data['mail']) > 1:
-            kindlemail = user_data['mail'][1].decode('utf-8')
+            ereader_mail = user_data['mail'][1].decode('utf-8')
 
     else:
         log.debug('No Mail Field Found in LDAP Response')
@@ -1539,7 +1543,7 @@ def ldap_import_create_user(user, user_data):
     content.name = username
     content.password = ''  # dummy password which will be replaced by ldap one
     content.email = useremail
-    content.kindle_mail = kindlemail
+    content.kindle_mail = ereader_mail
     content.default_language = config.config_default_language
     content.locale = config.config_default_locale
     content.role = config.config_default_role
@@ -1835,7 +1839,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
             log.info("Missing entries on new user")
             raise Exception(_(u"Please fill out all fields!"))
         content.email = check_email(to_save["email"])
-        # Query User name, if not existing, change
+        # Query username, if not existing, change
         content.name = check_username(to_save["name"])
         if to_save.get("kindle_mail"):
             content.kindle_mail = valid_email(to_save["kindle_mail"])
@@ -1954,7 +1958,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         try:
             if to_save.get("email", content.email) != content.email:
                 content.email = check_email(to_save["email"])
-            # Query User name, if not existing, change
+            # Query username, if not existing, change
             if to_save.get("name", content.name) != content.name:
                 if to_save.get("name") == "Guest":
                     raise Exception(_("Guest Name can't be changed"))
@@ -1990,7 +1994,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
 
 
 def extract_user_data_from_field(user, field):
-    match = re.search(field + r"=([\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    match = re.search(field + r"=([@\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:

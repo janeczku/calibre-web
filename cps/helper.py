@@ -72,7 +72,7 @@ except (ImportError, RuntimeError) as e:
 
 
 # Convert existing book entry to new format
-def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, kindle_mail=None):
+def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, ereader_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
     file_path = os.path.join(calibre_path, book.path, data.name)
@@ -91,9 +91,9 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
                               format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
     # read settings and append converter task to queue
-    if kindle_mail:
+    if ereader_mail:
         settings = config.get_mail_settings()
-        settings['subject'] = _('Send to Kindle')  # pretranslate Subject for e-mail
+        settings['subject'] = _('Send to E-Reader')  # pretranslate Subject for e-mail
         settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
     else:
         settings = dict()
@@ -104,14 +104,14 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
            link)
     settings['old_book_format'] = old_book_format
     settings['new_book_format'] = new_book_format
-    WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
+    WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, ereader_mail, user_id))
     return None
 
 
 # Texts are not lazy translated as they are supposed to get send out as is
-def send_test_mail(kindle_mail, user_name):
+def send_test_mail(ereader_mail, user_name):
     WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, N_(u"Test e-mail"),
+                     config.get_mail_settings(), ereader_mail, N_(u"Test e-mail"),
                                           _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
@@ -139,26 +139,26 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     return
 
 
-def check_send_to_kindle_with_converter(formats):
+def check_send_to_ereader_with_converter(formats):
     book_formats = list()
-    if 'EPUB' in formats and 'MOBI' not in formats:
-        book_formats.append({'format': 'Mobi',
+    if 'MOBI' in formats and 'EPUB' not in formats:
+        book_formats.append({'format': 'Epub',
                              'convert': 1,
-                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
-                                       orig='Epub',
-                                       format='Mobi')})
-    if 'AZW3' in formats and 'MOBI' not in formats:
-        book_formats.append({'format': 'Mobi',
+                             'text': _('Convert %(orig)s to %(format)s and send to E-Reader',
+                                       orig='Mobi',
+                                       format='Epub')})
+    if 'AZW3' in formats and 'EPUB' not in formats:
+        book_formats.append({'format': 'Epub',
                              'convert': 2,
-                             'text': _('Convert %(orig)s to %(format)s and send to Kindle',
+                             'text': _('Convert %(orig)s to %(format)s and send to E-Reader',
                                        orig='Azw3',
-                                       format='Mobi')})
+                                       format='Epub')})
     return book_formats
 
 
-def check_send_to_kindle(entry):
+def check_send_to_ereader(entry):
     """
-        returns all available book formats for sending to Kindle
+        returns all available book formats for sending to E-Reader
     """
     formats = list()
     book_formats = list()
@@ -166,20 +166,24 @@ def check_send_to_kindle(entry):
         for ele in iter(entry.data):
             if ele.uncompressed_size < config.mail_size:
                 formats.append(ele.format)
+        if 'EPUB' in formats:
+            book_formats.append({'format': 'Epub',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to E-Reader', format='Epub')})
         if 'MOBI' in formats:
             book_formats.append({'format': 'Mobi',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to Kindle', format='Mobi')})
+                                 'text': _('Send %(format)s to E-Reader', format='Mobi')})
         if 'PDF' in formats:
             book_formats.append({'format': 'Pdf',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to Kindle', format='Pdf')})
+                                 'text': _('Send %(format)s to E-Reader', format='Pdf')})
         if 'AZW' in formats:
             book_formats.append({'format': 'Azw',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to Kindle', format='Azw')})
+                                 'text': _('Send %(format)s to E-Reader', format='Azw')})
         if config.config_converterpath:
-            book_formats.extend(check_send_to_kindle_with_converter(formats))
+            book_formats.extend(check_send_to_ereader_with_converter(formats))
         return book_formats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
@@ -199,27 +203,27 @@ def check_read_formats(entry):
 
 
 # Files are processed in the following order/priority:
-# 1: If Mobi file is existing, it's directly send to kindle email,
-# 2: If Epub file is existing, it's converted and send to kindle email,
-# 3: If Pdf file is existing, it's directly send to kindle email
-def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
+# 1: If Mobi file is existing, it's directly send to E-Reader email,
+# 2: If Epub file is existing, it's converted and send to E-Reader email,
+# 3: If Pdf file is existing, it's directly send to E-Reader email
+def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id):
     """Send email with attachments"""
     book = calibre_db.get_book(book_id)
 
     if convert == 1:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, kindle_mail)
+        return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, ereader_mail)
     if convert == 2:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, kindle_mail)
+        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, ereader_mail)
 
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
-            email_text = N_(u"%(book)s send to Kindle", book=link)
-            WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
-                             config.get_mail_settings(), kindle_mail,
+            email_text = N_(u"%(book)s send to E-Reader", book=link)
+            WorkerThread.add(user_id, TaskEmail(_(u"Send to E-Reader"), book.path, converted_file_name,
+                             config.get_mail_settings(), ereader_mail,
                              email_text, _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
@@ -241,8 +245,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', u',', value, flags=re.U)
 
-    filename_encoding_for_length = 'utf-16' if sys.platform == "win32" or sys.platform == "darwin" else 'utf-8'
-    value = value.encode(filename_encoding_for_length)[:chars].decode('utf-8', errors='ignore').strip()
+    value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
 
     if not value:
         raise ValueError("Filename cannot be empty")
@@ -805,7 +808,7 @@ def save_cover_from_url(url, book_path):
             img = advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         else:
             log.error("python module advocate is not installed but is needed")
-            return False, _("Python module 'advocate' is not installed but is needed for cover downloads")
+            return False, _("Python module 'advocate' is not installed but is needed for cover uploads")
         img.raise_for_status()
         return save_cover(img, book_path)
     except (socket.gaierror,

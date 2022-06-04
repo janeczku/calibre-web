@@ -45,7 +45,7 @@ from .search import render_search_results, render_adv_search_results
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
-    send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password, valid_email, \
+    send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status
 from .pagination import Pagination
 from .redirect import redirect_back
@@ -1189,7 +1189,7 @@ def download_link(book_id, book_format, anyname):
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>', methods=["POST"])
 @login_required
 @download_required
-def send_to_kindle(book_id, book_format, convert):
+def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
@@ -1521,7 +1521,7 @@ def show_book(book_id):
 
         entry.ordered_authors = calibre_db.order_authors([entry])
 
-        entry.kindle_list = check_send_to_kindle(entry)
+        entry.email_share_list = check_send_to_ereader(entry)
         entry.reader_list = check_read_formats(entry)
 
         entry.audio_entries = []
