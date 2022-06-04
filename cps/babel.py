@@ -32,8 +32,10 @@ def get_locale():
 def get_user_locale_language(user_language):
     return Locale.parse(user_language).get_language_name(get_locale())
 
+
 def get_available_locale():
     return [Locale('en')] + babel.list_translations()
+
 
 def get_available_translations():
     return set(str(item) for item in get_available_locale())

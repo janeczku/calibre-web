@@ -35,6 +35,7 @@ from . import constants, logger
 log = logger.create()
 _Base = declarative_base()
 
+
 class _Flask_Settings(_Base):
     __tablename__ = 'flask_settings'
 
@@ -67,14 +68,14 @@ class _Settings(_Base):
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
-    config_trustedhosts = Column(String,default='')
+    config_trustedhosts = Column(String, default='')
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_mature_content_tags = Column(String, default='')
+    # config_mature_content_tags = Column(String, default='')
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -123,7 +124,7 @@ class _Settings(_Base):
     config_ldap_key_path = Column(String, default="")
     config_ldap_dn = Column(String, default='dc=example,dc=org')
     config_ldap_user_object = Column(String, default='uid=%s')
-    config_ldap_member_user_object = Column(String, default='') #
+    config_ldap_member_user_object = Column(String, default='')
     config_ldap_openldap = Column(Boolean, default=True)
     config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
     config_ldap_group_members_field = Column(String, default='memberUid')
@@ -171,7 +172,6 @@ class _ConfigSQL(object):
             self.config_converterpath = autodetect_calibre_binary()
 
         if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
-
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
@@ -257,14 +257,14 @@ class _ConfigSQL(object):
         return logger.get_level_name(self.config_log_level)
 
     def get_mail_settings(self):
-        return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
+        return {k: v for k, v in self.__dict__.items() if k.startswith('mail_')}
 
     def get_mail_server_configured(self):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
                     or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
     def get_scheduled_task_settings(self):
-        return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
+        return {k: v for k, v in self.__dict__.items() if k.startswith('schedule_')}
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
@@ -301,7 +301,7 @@ class _ConfigSQL(object):
         return storage
 
     def load(self):
-        '''Load all configuration values from the underlying storage.'''
+        """Load all configuration values from the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
         for k, v in s.__dict__.items():
             if k[0] != '_':
@@ -334,7 +334,7 @@ class _ConfigSQL(object):
                 self._session.rollback()
 
     def save(self):
-        '''Apply all configuration values to the underlying storage.'''
+        """Apply all configuration values to the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
 
         for k, v in self.__dict__.items():
@@ -369,6 +369,7 @@ class _ConfigSQL(object):
         except AttributeError:
             pass
 
+
 def _migrate_table(session, orm_class):
     changed = False
 
@@ -390,9 +391,9 @@ def _migrate_table(session, orm_class):
                 else:
                     column_type = column.type
                 alter_table = text("ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
-                                                                        column_name,
-                                                                        column_type,
-                                                                        column_default))
+                                                                             column_name,
+                                                                             column_type,
+                                                                             column_default))
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
@@ -461,6 +462,7 @@ def load_configuration(conf, session, cli):
     # conf = _ConfigSQL()
     conf.init_config(session, cli)
     # return conf
+
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()

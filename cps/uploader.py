@@ -231,7 +231,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
 
 
-def get_versions():
+def get_magick_version():
     ret = dict()
     if not use_generic_pdf_cover:
         ret['Image Magick'] = ImageVersion.MAGICK_VERSION
