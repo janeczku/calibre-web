@@ -1264,18 +1264,21 @@ def update_mailsettings():
             return edit_mailsettings()
 
     else:
-        _config_string(to_save, "mail_server")
         _config_int(to_save, "mail_port")
         _config_int(to_save, "mail_use_ssl")
-        _config_string(to_save, "mail_login")
         _config_string(to_save, "mail_password")
-        _config_string(to_save, "mail_from")
         _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
+        config.mail_server = to_save.get('mail_server', "").strip()
+        config.mail_from = to_save.get('mail_login', "").strip()
+        config.email = to_save.get('mail_login', "").strip()
     try:
         config.save()
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        return edit_mailsettings()
+    except Exception as e:
         flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
         return edit_mailsettings()
 
