@@ -388,8 +388,9 @@ function setImage(url, _canvas) {
     }
 }
 
+// reloadImages is a slow process when multiple images are involved. Only used when rotating/mirroring
 function reloadImages() {
-    for(i=0; imageFiles.length; i++) {
+    for(i=0; i < imageFiles.length; i++) {
         setImage(imageFiles[i].dataURI, $(".mainImage")[i]);
     }
 }
@@ -511,6 +512,7 @@ function keyHandler(evt) {
                 settings.rotateTimes = 3;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.R:
             if (hasModifier) break;
@@ -519,6 +521,7 @@ function keyHandler(evt) {
                 settings.rotateTimes = 0;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.F:
             if (hasModifier) break;
@@ -534,6 +537,7 @@ function keyHandler(evt) {
                 settings.hflip = true;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.W:
             if (hasModifier) break;
@@ -663,8 +667,7 @@ function init(filename) {
         settings[this.name] = value;
 
         if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
-            //reloadImages is a slow process when multiple images are involved. Only used when rotating/mirroring
-            reloadImages(); 
+            reloadImages();
         } else if(this.name === "direction") {
             return updateProgress();
         }
@@ -676,6 +679,7 @@ function init(filename) {
     // Close modal
     $(".closer, .overlay").click(function() {
         $(".md-show").removeClass("md-show");
+		$("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
@@ -688,7 +692,7 @@ function init(filename) {
     if (typeof screenfull !== "undefined") {
         $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
-			// Focus so you can use up/down keys immediately after fullscreen
+			// Focus on main container so you can use up/down keys immediately after fullscreen
 			$("#mainContent").focus();
         });
 
@@ -749,7 +753,7 @@ function init(filename) {
         }
     });
 
-    //Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
+    // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
     $("#mainContent").scroll(function(){
         var scroll = $("#mainContent").scrollTop();
         if(settings.pageDisplay === 0) {
