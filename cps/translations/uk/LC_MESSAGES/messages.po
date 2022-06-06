@@ -198,13 +198,13 @@ msgstr ""
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
-msgstr ""
+msgstr "Заборонити"
 
 #: cps/admin.py:866 cps/admin.py:872 cps/admin.py:882 cps/admin.py:892
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
-msgstr ""
+msgstr "Дозволити"
 
 #: cps/admin.py:907
 msgid "{} sync entries deleted"
@@ -212,7 +212,7 @@ msgstr ""
 
 #: cps/admin.py:955
 msgid "Tag not found"
-msgstr ""
+msgstr "Тег не знайдено"
 
 #: cps/admin.py:967
 msgid "Invalid Action"
@@ -684,7 +684,7 @@ msgstr ""
 #: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180 cps/helper.py:184
 #, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr ""
+msgstr "Надіслати %(format)s до E-Reader"
 
 #: cps/helper.py:224 cps/tasks/convert.py:92
 #, fuzzy, python-format
