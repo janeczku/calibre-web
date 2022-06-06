@@ -369,7 +369,7 @@ msgstr "Розпакування оновлення"
 
 #: cps/admin.py:1484
 msgid "Replacing files"
-msgstr ""
+msgstr "Заміна файлів"
 
 #: cps/admin.py:1485
 msgid "Database connections are closed"
@@ -377,7 +377,7 @@ msgstr "З'єднання з базою даних закрите"
 
 #: cps/admin.py:1486
 msgid "Stopping server"
-msgstr ""
+msgstr "Сервер зупиняється"
 
 #: cps/admin.py:1487
 msgid "Update finished, please press okay and reload page"
@@ -386,15 +386,15 @@ msgstr "Оновлення встановлені, натисніть ok і пе
 #: cps/admin.py:1488 cps/admin.py:1489 cps/admin.py:1490 cps/admin.py:1491
 #: cps/admin.py:1492 cps/admin.py:1493
 msgid "Update failed:"
-msgstr ""
+msgstr "Оновлення неуспішне:"
 
 #: cps/admin.py:1488 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
-msgstr ""
+msgstr "HTTP помилка"
 
 #: cps/admin.py:1489 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
-msgstr ""
+msgstr "Помилка зʼєднання"
 
 #: cps/admin.py:1490 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
@@ -402,7 +402,7 @@ msgstr ""
 
 #: cps/admin.py:1491 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
-msgstr ""
+msgstr "Помилка"
 
 #: cps/admin.py:1492
 msgid "Update file could not be saved in temp dir"
@@ -870,7 +870,7 @@ msgstr ""
 
 #: cps/opds.py:287
 msgid "{} Stars"
-msgstr ""
+msgstr "{} зірок"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:85
 #: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1335
@@ -1179,11 +1179,11 @@ msgstr "Помилка при відкриванні полиці. Полиця 
 #: cps/tasks_status.py:48 cps/templates/layout.html:74
 #: cps/templates/tasks.html:7
 msgid "Tasks"
-msgstr ""
+msgstr "Завдання"
 
 #: cps/tasks_status.py:64
 msgid "Waiting"
-msgstr ""
+msgstr "Очікує"
 
 #: cps/tasks_status.py:66
 msgid "Failed"
@@ -1191,23 +1191,23 @@ msgstr ""
 
 #: cps/tasks_status.py:68
 msgid "Started"
-msgstr ""
+msgstr "Розпочато"
 
 #: cps/tasks_status.py:70
 msgid "Finished"
-msgstr ""
+msgstr "Завершено"
 
 #: cps/tasks_status.py:72
 msgid "Ended"
-msgstr ""
+msgstr "Закінчено"
 
 #: cps/tasks_status.py:74
 msgid "Cancelled"
-msgstr ""
+msgstr "Відмінено"
 
 #: cps/tasks_status.py:76
 msgid "Unknown Status"
-msgstr ""
+msgstr "Невідомий статус"
 
 #: cps/updater.py:431 cps/updater.py:442 cps/updater.py:543 cps/updater.py:558
 msgid "Unexpected data while reading update information"
@@ -1259,7 +1259,7 @@ msgstr ""
 #: cps/web.py:568
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Видавництво: %(name)s"
 
 #: cps/web.py:596
 #, python-format
@@ -1268,17 +1268,17 @@ msgstr "Серії: %(serie)s"
 
 #: cps/web.py:609
 msgid "Rating: None"
-msgstr ""
+msgstr "Рейтинг: Відсутній"
 
 #: cps/web.py:618
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr ""
+msgstr "Рейтинг: %(rating)s зірок"
 
 #: cps/web.py:636
 #, python-format
 msgid "File format: %(format)s"
-msgstr ""
+msgstr "Формат файлу: %(format)s"
 
 #: cps/web.py:673
 #, python-format
@@ -1292,15 +1292,15 @@ msgstr "Мова: %(name)s"
 
 #: cps/templates/admin.html:16 cps/web.py:938
 msgid "Downloads"
-msgstr "DLS"
+msgstr "Завантаження"
 
 #: cps/web.py:1030
 msgid "Ratings list"
-msgstr ""
+msgstr "Список рейтингів"
 
 #: cps/web.py:1057
 msgid "File formats list"
-msgstr ""
+msgstr "Список форматів файлу"
 
 #: cps/web.py:1199
 #, python-format
@@ -1554,7 +1554,7 @@ msgstr "Папка Calibre DB"
 
 #: cps/templates/admin.html:113 cps/templates/config_edit.html:68
 msgid "Log Level"
-msgstr ""
+msgstr "Рівень логування"
 
 #: cps/templates/admin.html:117
 msgid "Port"
@@ -1562,7 +1562,7 @@ msgstr "Порт"
 
 #: cps/templates/admin.html:122
 msgid "External Port"
-msgstr ""
+msgstr "Зовнішній порт"
 
 #: cps/templates/admin.html:129 cps/templates/config_view_edit.html:28
 msgid "Books per Page"
@@ -1607,7 +1607,7 @@ msgstr ""
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
-msgstr ""
+msgstr "Заплановані завдання"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 msgid "Time at which tasks start to run"
@@ -1615,7 +1615,7 @@ msgstr ""
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum tasks duration"
-msgstr ""
+msgstr "Максимальний час завдання"
 
 #: cps/templates/admin.html:178
 msgid "Generate book cover thumbnails"
@@ -1643,7 +1643,7 @@ msgstr ""
 
 #: cps/templates/admin.html:201
 msgid "View Logs"
-msgstr ""
+msgstr "Переглянути логи"
 
 #: cps/templates/admin.html:204
 msgid "Reconnect Calibre Database"
@@ -1651,27 +1651,27 @@ msgstr "Повторне підключення до БД Calibre"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
-msgstr ""
+msgstr "Перезавантажити"
 
 #: cps/templates/admin.html:208
 msgid "Shutdown"
-msgstr ""
+msgstr "Вимкнути"
 
 #: cps/templates/admin.html:213
 msgid "Version Information"
-msgstr ""
+msgstr "Інформація про версію"
 
 #: cps/templates/admin.html:217
 msgid "Version"
-msgstr ""
+msgstr "Версія"
 
 #: cps/templates/admin.html:218
 msgid "Details"
-msgstr ""
+msgstr "Деталі"
 
 #: cps/templates/admin.html:224
 msgid "Current version"
-msgstr ""
+msgstr "Поточна версія"
 
 #: cps/templates/admin.html:231
 msgid "Check for Update"
@@ -1683,7 +1683,7 @@ msgstr "Встановити оновлення"
 
 #: cps/templates/admin.html:245
 msgid "Are you sure you want to restart?"
-msgstr ""
+msgstr "Впевнені що хочете перезавантажити?"
 
 #: cps/templates/admin.html:250 cps/templates/admin.html:264
 #: cps/templates/admin.html:284 cps/templates/config_db.html:70
@@ -1699,7 +1699,7 @@ msgstr "Ok"
 #: cps/templates/shelf_edit.html:27 cps/templates/tasks.html:46
 #: cps/templates/user_edit.html:144
 msgid "Cancel"
-msgstr ""
+msgstr "Скасувати"
 
 #: cps/templates/admin.html:263
 msgid "Are you sure you want to shutdown?"
@@ -1763,7 +1763,7 @@ msgstr "Видалити книгу"
 
 #: cps/templates/book_edit.html:14
 msgid "Delete formats:"
-msgstr ""
+msgstr "Видалити формати:"
 
 #: cps/templates/book_edit.html:25
 msgid "Convert book format:"
@@ -1771,7 +1771,7 @@ msgstr ""
 
 #: cps/templates/book_edit.html:30
 msgid "Convert from:"
-msgstr ""
+msgstr "Конвертувати з:"
 
 #: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
 msgid "select an option"
@@ -1779,11 +1779,11 @@ msgstr ""
 
 #: cps/templates/book_edit.html:37
 msgid "Convert to:"
-msgstr ""
+msgstr "Конвертувати в:"
 
 #: cps/templates/book_edit.html:46
 msgid "Convert book"
-msgstr ""
+msgstr "Конвертувати книгу"
 
 #: cps/templates/book_edit.html:56 cps/templates/search_form.html:8
 msgid "Book Title"
@@ -1801,7 +1801,7 @@ msgstr "Опис"
 
 #: cps/templates/book_edit.html:73
 msgid "Identifiers"
-msgstr ""
+msgstr "Ідентифікатори"
 
 #: cps/templates/book_edit.html:77 cps/templates/book_edit.html:300
 msgid "Identifier Type"
@@ -1814,11 +1814,11 @@ msgstr ""
 #: cps/templates/book_edit.html:79 cps/templates/book_edit.html:302
 #: cps/templates/user_table.html:24
 msgid "Remove"
-msgstr ""
+msgstr "Видалити"
 
 #: cps/templates/book_edit.html:83
 msgid "Add Identifier"
-msgstr ""
+msgstr "Додати ідентифікатор"
 
 #: cps/templates/book_edit.html:87 cps/templates/search_form.html:51
 msgid "Tags"
@@ -1883,7 +1883,7 @@ msgstr "Отримати метадані"
 #: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
 #: cps/templates/user_edit.html:142
 msgid "Save"
-msgstr ""
+msgstr "Зберегти"
 
 #: cps/templates/book_edit.html:233
 msgid "Keyword"
@@ -1993,7 +1993,7 @@ msgstr ""
 
 #: cps/templates/book_table.html:71
 msgid "Publishing Date"
-msgstr ""
+msgstr "Дата публікації"
 
 #: cps/templates/book_table.html:72
 msgid "Enter Publishers"
@@ -2001,11 +2001,11 @@ msgstr ""
 
 #: cps/templates/book_table.html:73
 msgid "Enter comments"
-msgstr ""
+msgstr "Введіть коментар"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "Коментарі"
 
 #: cps/templates/book_table.html:75
 msgid "Archiv Status"
@@ -2038,7 +2038,7 @@ msgstr ""
 
 #: cps/templates/book_table.html:126
 msgid "Merge"
-msgstr ""
+msgstr "Обʼєднати"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
@@ -2086,19 +2086,19 @@ msgstr "Розташування ключових слів SSL (залиште �
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
-msgstr ""
+msgstr "Канал оновлення"
 
 #: cps/templates/config_edit.html:45
 msgid "Stable"
-msgstr ""
+msgstr "Стабільний"
 
 #: cps/templates/config_edit.html:46
 msgid "Nightly"
-msgstr ""
+msgstr "Нічний"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
+msgstr "Довірені хости (розділені комою)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
@@ -2186,7 +2186,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:180
 msgid "Login type"
-msgstr ""
+msgstr "Тип логіну"
 
 #: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
@@ -2214,11 +2214,11 @@ msgstr ""
 
 #: cps/templates/config_edit.html:205
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #: cps/templates/config_edit.html:206
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
@@ -2238,7 +2238,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:235
 msgid "Anonymous"
-msgstr ""
+msgstr "Анонім"
 
 #: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
@@ -2290,7 +2290,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
-msgstr ""
+msgstr "Автовизначення"
 
 #: cps/templates/config_edit.html:281
 msgid "Custom Filter"
@@ -2444,7 +2444,7 @@ msgstr "Відкрити в браузері"
 
 #: cps/templates/detail.html:78 cps/templates/detail.html:95
 msgid "Listen in Browser"
-msgstr ""
+msgstr "Прослухати в браузері"
 
 #: cps/templates/detail.html:125
 #, python-format
@@ -2453,15 +2453,15 @@ msgstr ""
 
 #: cps/templates/detail.html:174
 msgid "Published"
-msgstr ""
+msgstr "Опубліковано"
 
 #: cps/templates/detail.html:222
 msgid "Mark As Unread"
-msgstr ""
+msgstr "Відмітити як не прочитане"
 
 #: cps/templates/detail.html:222
 msgid "Mark As Read"
-msgstr ""
+msgstr "Відмітити як прочитане"
 
 #: cps/templates/detail.html:223
 msgid "Read"
@@ -2469,15 +2469,15 @@ msgstr "Прочитано"
 
 #: cps/templates/detail.html:232
 msgid "Restore from archive"
-msgstr ""
+msgstr "Відновити з архіву"
 
 #: cps/templates/detail.html:232
 msgid "Add to archive"
-msgstr ""
+msgstr "Додати в архів"
 
 #: cps/templates/detail.html:233
 msgid "Archived"
-msgstr ""
+msgstr "Заархівовано"
 
 #: cps/templates/detail.html:244
 msgid "Description:"
@@ -2491,7 +2491,7 @@ msgstr "Додати на книжкову полицю"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:138
 #: cps/templates/search.html:22
 msgid "(Public)"
-msgstr ""
+msgstr "(Публічно)"
 
 #: cps/templates/detail.html:299
 msgid "Edit Metadata"
@@ -2531,7 +2531,7 @@ msgstr "Пароль SMTP"
 
 #: cps/templates/email_edit.html:58
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Обмеження розміру вкладення"
 
 #: cps/templates/email_edit.html:66
 msgid "Save and Send Test E-mail"
@@ -2548,20 +2548,20 @@ msgstr ""
 
 #: cps/templates/email_edit.html:78 cps/templates/email_edit.html:105
 msgid "Add Domain"
-msgstr ""
+msgstr "Додати домен"
 
 #: cps/templates/email_edit.html:81 cps/templates/email_edit.html:108
 #: cps/templates/user_table.html:27
 msgid "Add"
-msgstr ""
+msgstr "Додати"
 
 #: cps/templates/email_edit.html:86 cps/templates/email_edit.html:96
 msgid "Enter domainname"
-msgstr ""
+msgstr "Введіть домен"
 
 #: cps/templates/email_edit.html:92
 msgid "Denied Domains (Blacklist)"
-msgstr ""
+msgstr "Заборонені домени (Чорний список)"
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:171
 msgid "Next"
@@ -2577,7 +2577,7 @@ msgstr ""
 
 #: cps/templates/grid.html:21
 msgid "List"
-msgstr ""
+msgstr "Список"
 
 #: cps/templates/http_error.html:31
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
@@ -2708,7 +2708,7 @@ msgstr "Завантаження..."
 
 #: cps/templates/layout.html:64
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
 #: cps/templates/layout.html:64
 msgid "Upload done, processing, please wait..."
