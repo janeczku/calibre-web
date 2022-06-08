@@ -19,12 +19,12 @@
 
 import os
 import re
-import ast
 import json
 from datetime import datetime
 from urllib.parse import quote
 import unidecode
 
+from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
@@ -42,6 +42,7 @@ from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_login import current_user
 from flask_babel import gettext as _
+from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
@@ -88,7 +89,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
-class LibraryId(Base):
+class Library_Id(Base):
     __tablename__ = 'library_id'
     id = Column(Integer, primary_key=True)
     uuid = Column(String, nullable=False)
@@ -386,7 +387,7 @@ class CustomColumns(Base):
     normalized = Column(Boolean)
 
     def get_display_dict(self):
-        display_dict = ast.literal_eval(self.display)
+        display_dict = json.loads(self.display)
         return display_dict
 
 
@@ -439,10 +440,15 @@ class CalibreDB:
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self, expire_on_commit=True):
+    def __init__(self, expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
         self.session = None
+        if init:
+            self.init_db(expire_on_commit)
+
+
+    def init_db(self, expire_on_commit=True):
         if self._init:
             self.init_session(expire_on_commit)
 
@@ -542,7 +548,7 @@ class CalibreDB:
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
-                database_uuid = local_session().query(LibraryId).one_or_none()
+                database_uuid = local_session().query(Library_Id).one_or_none()
                 # local_session.dispose()
 
             check_engine.connect()
@@ -561,12 +567,12 @@ class CalibreDB:
 
         if not config_calibre_dir:
             cls.config.invalidate()
-            return False
+            return None
 
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
             cls.config.invalidate()
-            return False
+            return None
 
         try:
             cls.engine = create_engine('sqlite://',
@@ -582,7 +588,7 @@ class CalibreDB:
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
-            return False
+            return None
 
         cls.config.db_configured = True
 
@@ -592,6 +598,7 @@ class CalibreDB:
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
                 log.error_or_exception(e)
+                return None
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
@@ -600,7 +607,6 @@ class CalibreDB:
             inst.init_session()
 
         cls._init = True
-        return True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -621,7 +627,7 @@ class CalibreDB:
                       .join(read_column, read_column.book == book_id,
                       isouter=True))
             except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
+                log.error("Custom Column No.{} does not exist in calibre database".format(read_column))
                 # Skip linking read column and return None instead of read status
                 bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
         return (bd.filter(Books.id == book_id)
@@ -668,9 +674,9 @@ class CalibreDB:
             except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
-                log.error("Custom Column No.{} is not existing in calibre database".format(
+                log.error("Custom Column No.{} does not exist in calibre database".format(
                     self.config.config_restricted_column))
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                flash(_("Custom Column No.%(column)d does not exist in calibre database",
                         column=self.config.config_restricted_column),
                       category="error")
 
@@ -679,6 +685,25 @@ class CalibreDB:
             neg_content_cc_filter = false()
         return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
+
+    def generate_linked_query(self, config_read_column, database):
+        if not config_read_column:
+            query = (self.session.query(database, ub.ArchivedBook.is_archived, ub.ReadBook.read_status)
+                     .select_from(Books)
+                     .outerjoin(ub.ReadBook,
+                                and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
+        else:
+            try:
+                read_column = cc_classes[config_read_column]
+                query = (self.session.query(database, ub.ArchivedBook.is_archived, read_column.value)
+                         .select_from(Books)
+                         .outerjoin(read_column, read_column.book == Books.id))
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} does not exist in calibre database".format(config_read_column))
+                # Skip linking read column and return None instead of read status
+                query = self.session.query(database, None, ub.ArchivedBook.is_archived)
+        return query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                     int(current_user.id) == ub.ArchivedBook.user_id))
 
     @staticmethod
     def get_checkbox_sorted(inputlist, state, offset, limit, order, combo=False):
@@ -709,30 +734,14 @@ class CalibreDB:
                                            join_archive_read, config_read_column, *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
-            randm = self.session.query(Books) \
-                .filter(self.common_filters(allow_show_archived)) \
-                .order_by(func.random()) \
-                .limit(self.config.config_random_books).all()
+            random_query = self.generate_linked_query(config_read_column, database)
+            randm = (random_query.filter(self.common_filters(allow_show_archived))
+                     .order_by(func.random())
+                     .limit(self.config.config_random_books).all())
         else:
             randm = false()
         if join_archive_read:
-            if not config_read_column:
-                query = (self.session.query(database, ub.ReadBook.read_status, ub.ArchivedBook.is_archived)
-                         .select_from(Books)
-                         .outerjoin(ub.ReadBook,
-                                    and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
-            else:
-                try:
-                    read_column = cc_classes[config_read_column]
-                    query = (self.session.query(database, read_column.value, ub.ArchivedBook.is_archived)
-                             .select_from(Books)
-                             .outerjoin(read_column, read_column.book == Books.id))
-                except (KeyError, AttributeError, IndexError):
-                    log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
-                    # Skip linking read column and return None instead of read status
-                    query = self.session.query(database, None, ub.ArchivedBook.is_archived)
-            query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                                          int(current_user.id) == ub.ArchivedBook.user_id))
+            query = self.generate_linked_query(config_read_column, database)
         else:
             query = self.session.query(database)
         off = int(int(pagesize) * (page - 1))
@@ -816,36 +825,21 @@ class CalibreDB:
     def check_exists_book(self, authr, title):
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split(r'\s*&\s*', authr)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
+        author_terms = re.split(r'\s*&\s*', authr)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
 
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, config_read_column, *join):
+    def search_query(self, term, config, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split("[, ]+", term)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        if not config_read_column:
-            query = (self.session.query(Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(Books)
-                     .outerjoin(ub.ReadBook, and_(Books.id == ub.ReadBook.book_id,
-                                                  int(current_user.id) == ub.ReadBook.user_id)))
-        else:
-            try:
-                read_column = cc_classes[config_read_column]
-                query = (self.session.query(Books, ub.ArchivedBook.is_archived, read_column.value).select_from(Books)
-                         .outerjoin(read_column, read_column.book == Books.id))
-            except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
-                # Skip linking read column
-                query = self.session.query(Books, ub.ArchivedBook.is_archived, None)
-        query = query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
-                                                      int(current_user.id) == ub.ArchivedBook.user_id))
-
+        author_terms = re.split("[, ]+", term)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
+        query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
@@ -854,20 +848,42 @@ class CalibreDB:
             query = query.outerjoin(join[0], join[1])
         elif len(join) == 1:
             query = query.outerjoin(join[0])
-        return query.filter(self.common_filters(True)).filter(
-            or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
-                Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
-                Books.authors.any(and_(*q)),
-                Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
-                func.lower(Books.title).ilike("%" + term + "%")
-                ))
+
+        cc = self.get_cc_columns(config, filter_config_custom_read=True)
+        filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
+                             Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
+                             Books.authors.any(and_(*q)),
+                             Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
+                             func.lower(Books.title).ilike("%" + term + "%")]
+        for c in cc:
+            if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
+                filter_expression.append(
+                    getattr(Books,
+                            'custom_column_' + str(c.id)).any(
+                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
+        return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
+
+    def get_cc_columns(self, config, filter_config_custom_read=False):
+        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
+        cc = []
+        r = None
+        if config.config_columns_to_ignore:
+            r = re.compile(config.config_columns_to_ignore)
+
+        for col in tmp_cc:
+            if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
+                continue
+            if r and r.match(col.name):
+                continue
+            cc.append(col)
+
+        return cc
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None,
-                           config_read_column=False, *join):
+    def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config_read_column, *join).order_by(*order).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
@@ -884,7 +900,6 @@ class CalibreDB:
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
-        from . import get_locale
 
         if with_count:
             if not languages:
@@ -892,9 +907,20 @@ class CalibreDB:
                     .join(books_languages_link).join(Books)\
                     .filter(self.common_filters(return_all_languages=return_all_languages)) \
                     .group_by(text('books_languages_link.lang_code')).all()
+            tags = list()
             for lang in languages:
-                lang[0].name = isoLanguages.get_language_name(get_locale(), lang[0].lang_code)
-            return sorted(languages, key=lambda x: x[0].name, reverse=reverse_order)
+                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
+                tags.append([tag, lang[1]])
+            # Append all books without language to list
+            if not return_all_languages:
+                no_lang_count = (self.session.query(Books)
+                                 .outerjoin(books_languages_link).outerjoin(Languages)
+                                 .filter(Languages.lang_code == None)
+                                 .filter(self.common_filters())
+                                 .count())
+                if no_lang_count:
+                    tags.append([Category(_("None"), "none"), no_lang_count])
+            return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:
                 languages = self.session.query(Languages) \
@@ -918,7 +944,10 @@ class CalibreDB:
             return title.strip()
 
         conn = conn or self.session.connection().connection.connection
-        conn.create_function("title_sort", 1, _title_sort)
+        try:
+            conn.create_function("title_sort", 1, _title_sort)
+        except sqliteOperationalError:
+            pass
 
     @classmethod
     def dispose(cls):
@@ -966,3 +995,22 @@ def lcase(s):
         _log = logger.create()
         _log.error_or_exception(ex)
         return s.lower()
+
+
+class Category:
+    name = None
+    id = None
+    count = None
+    rating = None
+
+    def __init__(self, name, cat_id, rating=None):
+        self.name = name
+        self.id = cat_id
+        self.rating = rating
+        self.count = 1
+
+'''class Count:
+    count = None
+
+    def __init__(self, count):
+        self.count = count'''

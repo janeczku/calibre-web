@@ -4,12 +4,13 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-          <img id="detailcover" title="{{entry.title}}" src="{{ url_for('web.get_cover', book_id=entry.id, edit=1|uuidfilter) }}" alt="{{ entry.title }}" />
+        <!-- Always use full-sized image for the detail page -->
+        <img id="detailcover" title="{{entry.title}}" src="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" />
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
+        <div class="btn-group" role="group" aria-label="Download, send to E-Reader, reading">
           {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
@@ -36,18 +37,18 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and entry.kindle_list %}
-              {% if entry.kindle_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=entry.kindle_list[0]['format'], convert=entry.kindle_list[0]['convert'])}}" data-text="{{_('Send to Kindle')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.kindle_list[0]['text']}}</div>
+            {% if g.user.kindle_mail and entry.email_share_list %}
+              {% if entry.email_share_list.__len__() == 1 %}
+                <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to E-Reader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-send"></span>{{_('Send to Kindle')}}
+                    <span class="glyphicon glyphicon-send"></span>{{_('Send to E-Reader')}}
                     <span class="caret"></span>
                   </button>
-                    <ul class="dropdown-menu" aria-labelledby="send-to-kindle">
-                    {% for format in entry.kindle_list %}
-                      <li><a class="postAction" data-action="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
+                    {% for format in entry.email_share_list %}
+                      <li><a class="postAction" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{format['text']}}</a></li>
                     {%endfor%}
                     </ul>
                 </div>
@@ -70,9 +71,9 @@
                 {% endif %}
               </div>
             {% endif %}
-            {% if entry.audioentries|length > 0 and g.user.role_viewer() %}
+            {% if entry.audio_entries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
-              {% if entry.audioentries|length > 1 %}
+              {% if entry.audio_entries|length > 1 %}
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
@@ -85,13 +86,13 @@
                   <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
 
               {% for format in entry.data %}
-                  {% if format.format|lower in entry.audioentries %}
+                  {% if format.format|lower in entry.audio_entries %}
                     <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
                 {% else %}
-                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=entry.audioentries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{entry.audioentries[0]}}</a>
+                  <a target="_blank" href="{{url_for('web.read_book', book_id=entry.id, book_format=entry.audio_entries[0])}}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}} - {{entry.audio_entries[0]}}</a>
                 {% endif %}
               </div>
             {% endif %}

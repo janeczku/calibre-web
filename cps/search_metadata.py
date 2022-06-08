@@ -22,23 +22,30 @@ import inspect
 import json
 import os
 import sys
-# from time import time
-from dataclasses import asdict
 
 from flask import Blueprint, Response, request, url_for
 from flask_login import current_user
 from flask_login import login_required
+from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
 
 from cps.services.Metadata import Metadata
-from . import constants, get_locale, logger, ub
+from . import constants, logger, ub, web_server
 
 # current_milli_time = lambda: int(round(time() * 1000))
 
 meta = Blueprint("metadata", __name__)
 
 log = logger.create()
+
+try:
+    from dataclasses import asdict
+except ImportError:
+    log.info('*** "dataclasses" is needed for calibre-web to run. Please install it using pip: "pip install dataclasses" ***')
+    print('*** "dataclasses" is needed for calibre-web to run. Please install it using pip: "pip install dataclasses" ***')
+    web_server.stop(True)
+    sys.exit(6)
 
 new_list = list()
 meta_dir = os.path.join(constants.BASE_DIR, "cps", "metadata_provider")
@@ -49,9 +56,10 @@ for f in modules:
         try:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
+        except (IndentationError, SyntaxError) as e:
+            log.error("Syntax error for metadata source: {} - {}".format(a, e))
         except ImportError as e:
-            log.error("Import error for metadata source: {} - {}".format(a, e))
-            pass
+            log.debug("Import error for metadata source: {} - {}".format(a, e))
 
 
 def list_classes(provider_list):
@@ -130,6 +138,6 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in future.result()])
+                data.extend([asdict(x) for x in future.result() if x])
     # log.info({'Time elapsed {}'.format(current_milli_time()-start)})
     return Response(json.dumps(data), mimetype="application/json")

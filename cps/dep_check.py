@@ -5,7 +5,7 @@ import json
 
 from .constants import BASE_DIR
 try:
-    from importlib_metadata import version
+    from importlib.metadata import version
     importlib = True
     ImportNotFound = BaseException
 except ImportError:
@@ -20,7 +20,8 @@ if not importlib:
     except ImportError as e:
         pkgresources = False
 
-def load_dependencys(optional=False):
+
+def load_dependencies(optional=False):
     deps = list()
     if getattr(sys, 'frozen', False):
         pip_installed = os.path.join(BASE_DIR, ".pip_installed")
@@ -41,7 +42,7 @@ def load_dependencys(optional=False):
                         res = re.match(r'(.*?)([<=>\s]+)([\d\.]+),?\s?([<=>\s]+)?([\d\.]+)?', line.strip())
                         try:
                             if getattr(sys, 'frozen', False):
-                                dep_version = exe_deps[res.group(1).lower().replace('_','-')]
+                                dep_version = exe_deps[res.group(1).lower().replace('_', '-')]
                             else:
                                 if importlib:
                                     dep_version = version(res.group(1))
@@ -57,38 +58,38 @@ def load_dependencys(optional=False):
 
 def dependency_check(optional=False):
     d = list()
-    deps = load_dependencys(optional)
+    deps = load_dependencies(optional)
     for dep in deps:
         try:
             dep_version_int = [int(x) for x in dep[0].split('.')]
             low_check = [int(x) for x in dep[3].split('.')]
             high_check = [int(x) for x in dep[5].split('.')]
         except AttributeError:
-            high_check = None
+            high_check = []
         except ValueError:
             d.append({'name': dep[1],
-                     'target': "available",
-                     'found': "Not available"
-                     })
+                      'target': "available",
+                      'found': "Not available"
+                      })
             continue
 
         if dep[2].strip() == "==":
             if dep_version_int != low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         elif dep[2].strip() == ">=":
             if dep_version_int < low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         elif dep[2].strip() == ">":
             if dep_version_int <= low_check:
                 d.append({'name': dep[1],
-                            'found': dep[0],
-                            "target": dep[2] + dep[3]})
+                          'found': dep[0],
+                          "target": dep[2] + dep[3]})
                 continue
         if dep[4] and dep[5]:
             if dep[4].strip() == "<":

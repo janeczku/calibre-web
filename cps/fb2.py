@@ -77,4 +77,6 @@ def get_fb2_info(tmp_file_path, original_file_extension):
         series="",
         series_id="",
         languages="",
-        publisher="")
+        publisher="",
+        pubdate="",
+        identifiers=[])

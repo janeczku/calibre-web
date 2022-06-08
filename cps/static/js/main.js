@@ -381,8 +381,8 @@ $(function() {
             //extraScrollPx: 300
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
+            $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
             if ($("body").hasClass("blur")) {
-                $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
                 $(" a:not(.dropdown-toggle) ")
                   .removeAttr("data-toggle");
             }
@@ -474,6 +474,17 @@ $(function() {
             }
         });
     });
+    $("#admin_refresh_cover_cache").click(function() {
+        confirmDialog("admin_refresh_cover_cache", "GeneralChangeModal", 0, function () {
+            $.ajax({
+                method:"post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: getPath() + "/ajax/updateThumbnails",
+            });
+        });
+    });
+
     $("#restart_database").click(function() {
         $("#DialogHeader").addClass("hidden");
         $("#DialogFinished").addClass("hidden");
@@ -666,8 +677,8 @@ $(function() {
                 if ( data.change ) {
                     if ( data.valid ) {
                         confirmDialog(
-                        "db_submit",
-                    "GeneralChangeModal",
+                            "db_submit",
+                            "GeneralChangeModal",
                             0,
                             changeDbSettings
                         );

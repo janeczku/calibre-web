@@ -24,12 +24,10 @@ import mimetypes
 
 from io import StringIO
 from email.message import EmailMessage
-from email.utils import parseaddr
-
-
-from email import encoders
-from email.utils import formatdate, make_msgid
+from email.utils import formatdate, parseaddr
 from email.generator import Generator
+from flask_babel import lazy_gettext as N_
+from email.utils import formatdate
 
 from cps.services.worker import CalibreTask
 from cps.services import gmail
@@ -111,13 +109,13 @@ class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
 
 class TaskEmail(CalibreTask):
-    def __init__(self, subject, filepath, attachment, settings, recipient, taskMessage, text, internal=False):
-        super(TaskEmail, self).__init__(taskMessage)
+    def __init__(self, subject, filepath, attachment, settings, recipient, task_message, text, internal=False):
+        super(TaskEmail, self).__init__(task_message)
         self.subject = subject
         self.attachment = attachment
         self.settings = settings
         self.filepath = filepath
-        self.recipent = recipient
+        self.recipient = recipient
         self.text = text
         self.asyncSMTP = None
         self.results = dict()
@@ -139,7 +137,7 @@ class TaskEmail(CalibreTask):
         message = EmailMessage()
         # message = MIMEMultipart()
         message['From'] = self.settings["mail_from"]
-        message['To'] = self.recipent
+        message['To'] = self.recipient
         message['Subject'] = self.subject
         message['Date'] = formatdate(localtime=True)
         message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain()) # f"<{uuid.uuid4()}@{get_msgid_domain(from_)}>" # make_msgid('calibre-web')
@@ -212,7 +210,7 @@ class TaskEmail(CalibreTask):
         gen = Generator(fp, mangle_from_=False)
         gen.flatten(msg)
 
-        self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipent, fp.getvalue())
+        self.asyncSMTP.sendmail(self.settings["mail_from"], self.recipient, fp.getvalue())
         self.asyncSMTP.quit()
         self._handleSuccess()
         log.debug("E-mail send successfully")
@@ -264,7 +262,11 @@ class TaskEmail(CalibreTask):
 
     @property
     def name(self):
-        return "E-mail"
+        return N_("E-mail")
+
+    @property
+    def is_cancellable(self):
+        return False
 
     def __str__(self):
         return "E-mail {}, {}".format(self.name, self.subject)

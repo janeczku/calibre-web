@@ -23,6 +23,9 @@ from sqlalchemy import __version__ as sql_version
 
 sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
+# APP_MODE - production, development, or test
+APP_MODE             = os.environ.get('APP_MODE', 'production')
+
 # if installed via pip this variable is set to true (empty file with name .HOMEDIR present)
 HOME_CONFIG = os.path.isfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.HOMEDIR'))
 
@@ -35,6 +38,10 @@ STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
 
+# Cache dir - use CACHE_DIR environment variable, otherwise use the default directory: cps/cache
+DEFAULT_CACHE_DIR   = os.path.join(BASE_DIR, 'cps', 'cache')
+CACHE_DIR           = os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
+
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"), ".calibre-web")
     if not os.path.exists(home_dir):
@@ -43,6 +50,8 @@ if HOME_CONFIG:
 else:
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
 
+DEFAULT_SETTINGS_FILE = "app.db"
+DEFAULT_GDRIVE_FILE = "gdrive.db"
 
 ROLE_USER               = 0 << 0
 ROLE_ADMIN              = 1 << 0
@@ -152,9 +161,9 @@ def selected_roles(dictionary):
 
 # :rtype: BookMeta
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
-                                  'series_id, languages, publisher')
+                                  'series_id, languages, publisher, pubdate, identifiers')
 
-STABLE_VERSION = {'version': '0.6.18 Beta'}
+STABLE_VERSION = {'version': '0.6.19 Beta'}
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
@@ -162,6 +171,19 @@ NIGHTLY_VERSION[1] = '$Format:%cI$'
 # NIGHTLY_VERSION[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
 # NIGHTLY_VERSION[1] = '2018-09-09T10:13:08+02:00'
 
+# CACHE
+CACHE_TYPE_THUMBNAILS    = 'thumbnails'
+
+# Thumbnail Types
+THUMBNAIL_TYPE_COVER     = 1
+THUMBNAIL_TYPE_SERIES    = 2
+THUMBNAIL_TYPE_AUTHOR    = 3
+
+# Thumbnails Sizes
+COVER_THUMBNAIL_ORIGINAL = 0
+COVER_THUMBNAIL_SMALL    = 1
+COVER_THUMBNAIL_MEDIUM   = 2
+COVER_THUMBNAIL_LARGE    = 3
 
 # clean-up the module namespace
 del sys, os, namedtuple

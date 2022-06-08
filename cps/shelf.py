@@ -33,27 +33,9 @@ from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 
-shelf = Blueprint('shelf', __name__)
 log = logger.create()
 
-
-def check_shelf_edit_permissions(cur_shelf):
-    if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id):
-        log.error("User {} not allowed to edit shelf: {}".format(current_user.id, cur_shelf.name))
-        return False
-    if cur_shelf.is_public and not current_user.role_edit_shelfs():
-        log.info("User {} not allowed to edit public shelves".format(current_user.id))
-        return False
-    return True
-
-
-def check_shelf_view_permissions(cur_shelf):
-    if cur_shelf.is_public:
-        return True
-    if current_user.is_anonymous or cur_shelf.user_id != current_user.id:
-        log.error("User is unauthorized to view non-public shelf: {}".format(cur_shelf.name))
-        return False
-    return True
+shelf = Blueprint('shelf', __name__)
 
 
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>", methods=["POST"])
@@ -238,96 +220,6 @@ def edit_shelf(shelf_id):
     return create_edit_shelf(shelf, page_title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
 
-# if shelf ID is set, we are editing a shelf
-def create_edit_shelf(shelf, page_title, page, shelf_id=False):
-    sync_only_selected_shelves = current_user.kobo_only_shelves_sync
-    # calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id).filter(ub.Shelf.kobo_sync).count()
-    if request.method == "POST":
-        to_save = request.form.to_dict()
-        if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
-            flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
-            return redirect(url_for('web.index'))
-        is_public = 1 if to_save.get("is_public") == "on" else 0
-        if config.config_kobo_sync:
-            shelf.kobo_sync = True if to_save.get("kobo_sync") else False
-            if shelf.kobo_sync:
-                ub.session.query(ub.ShelfArchive).filter(ub.ShelfArchive.user_id == current_user.id).filter(
-                    ub.ShelfArchive.uuid == shelf.uuid).delete()
-                ub.session_commit()
-        shelf_title = to_save.get("title", "")
-        if check_shelf_is_unique(shelf, shelf_title, is_public, shelf_id):
-            shelf.name = shelf_title
-            shelf.is_public = is_public
-            if not shelf_id:
-                shelf.user_id = int(current_user.id)
-                ub.session.add(shelf)
-                shelf_action = "created"
-                flash_text = _(u"Shelf %(title)s created", title=shelf_title)
-            else:
-                shelf_action = "changed"
-                flash_text = _(u"Shelf %(title)s changed", title=shelf_title)
-            try:
-                ub.session.commit()
-                log.info(u"Shelf {} {}".format(shelf_title, shelf_action))
-                flash(flash_text, category="success")
-                return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
-            except (OperationalError, InvalidRequestError) as ex:
-                ub.session.rollback()
-                log.error_or_exception(ex)
-                log.error_or_exception("Settings Database error: {}".format(ex))
-                flash(_(u"Database error: %(error)s.", error=ex.orig), category="error")
-            except Exception as ex:
-                ub.session.rollback()
-                log.error_or_exception(ex)
-                flash(_(u"There was an error"), category="error")
-    return render_title_template('shelf_edit.html',
-                                 shelf=shelf,
-                                 title=page_title,
-                                 page=page,
-                                 kobo_sync_enabled=config.config_kobo_sync,
-                                 sync_only_selected_shelves=sync_only_selected_shelves)
-
-
-def check_shelf_is_unique(shelf, title, is_public, shelf_id=False):
-    if shelf_id:
-        ident = ub.Shelf.id != shelf_id
-    else:
-        ident = true()
-    if is_public == 1:
-        is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 1)) \
-                                   .filter(ident) \
-                                   .first() is None
-
-        if not is_shelf_name_unique:
-            log.error("A public shelf with the name '{}' already exists.".format(title))
-            flash(_(u"A public shelf with the name '%(title)s' already exists.", title=title),
-                  category="error")
-    else:
-        is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 0) &
-                                           (ub.Shelf.user_id == int(current_user.id))) \
-                                   .filter(ident) \
-                                   .first() is None
-
-        if not is_shelf_name_unique:
-            log.error("A private shelf with the name '{}' already exists.".format(title))
-            flash(_(u"A private shelf with the name '%(title)s' already exists.", title=title),
-                  category="error")
-    return is_shelf_name_unique
-
-
-def delete_shelf_helper(cur_shelf):
-    if not cur_shelf or not check_shelf_edit_permissions(cur_shelf):
-        return False
-    shelf_id = cur_shelf.id
-    ub.session.delete(cur_shelf)
-    ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
-    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
-    ub.session_commit("successfully deleted Shelf {}".format(cur_shelf.name))
-    return True
-
-
 @shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
 @login_required
 def delete_shelf(shelf_id):
@@ -392,6 +284,115 @@ def order_shelf(shelf_id):
         abort(404)
 
 
+def check_shelf_edit_permissions(cur_shelf):
+    if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id):
+        log.error("User {} not allowed to edit shelf: {}".format(current_user.id, cur_shelf.name))
+        return False
+    if cur_shelf.is_public and not current_user.role_edit_shelfs():
+        log.info("User {} not allowed to edit public shelves".format(current_user.id))
+        return False
+    return True
+
+
+def check_shelf_view_permissions(cur_shelf):
+    if cur_shelf.is_public:
+        return True
+    if current_user.is_anonymous or cur_shelf.user_id != current_user.id:
+        log.error("User is unauthorized to view non-public shelf: {}".format(cur_shelf.name))
+        return False
+    return True
+
+
+# if shelf ID is set, we are editing a shelf
+def create_edit_shelf(shelf, page_title, page, shelf_id=False):
+    sync_only_selected_shelves = current_user.kobo_only_shelves_sync
+    # calibre_db.session.query(ub.Shelf).filter(ub.Shelf.user_id == current_user.id).filter(ub.Shelf.kobo_sync).count()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
+            flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
+            return redirect(url_for('web.index'))
+        is_public = 1 if to_save.get("is_public") == "on" else 0
+        if config.config_kobo_sync:
+            shelf.kobo_sync = True if to_save.get("kobo_sync") else False
+            if shelf.kobo_sync:
+                ub.session.query(ub.ShelfArchive).filter(ub.ShelfArchive.user_id == current_user.id).filter(
+                    ub.ShelfArchive.uuid == shelf.uuid).delete()
+                ub.session_commit()
+        shelf_title = to_save.get("title", "")
+        if check_shelf_is_unique(shelf_title, is_public, shelf_id):
+            shelf.name = shelf_title
+            shelf.is_public = is_public
+            if not shelf_id:
+                shelf.user_id = int(current_user.id)
+                ub.session.add(shelf)
+                shelf_action = "created"
+                flash_text = _(u"Shelf %(title)s created", title=shelf_title)
+            else:
+                shelf_action = "changed"
+                flash_text = _(u"Shelf %(title)s changed", title=shelf_title)
+            try:
+                ub.session.commit()
+                log.info(u"Shelf {} {}".format(shelf_title, shelf_action))
+                flash(flash_text, category="success")
+                return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
+            except (OperationalError, InvalidRequestError) as ex:
+                ub.session.rollback()
+                log.error_or_exception(ex)
+                log.error_or_exception("Settings Database error: {}".format(ex))
+                flash(_(u"Database error: %(error)s.", error=ex.orig), category="error")
+            except Exception as ex:
+                ub.session.rollback()
+                log.error_or_exception(ex)
+                flash(_(u"There was an error"), category="error")
+    return render_title_template('shelf_edit.html',
+                                 shelf=shelf,
+                                 title=page_title,
+                                 page=page,
+                                 kobo_sync_enabled=config.config_kobo_sync,
+                                 sync_only_selected_shelves=sync_only_selected_shelves)
+
+
+def check_shelf_is_unique(title, is_public, shelf_id=False):
+    if shelf_id:
+        ident = ub.Shelf.id != shelf_id
+    else:
+        ident = true()
+    if is_public == 1:
+        is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 1)) \
+                                   .filter(ident) \
+                                   .first() is None
+
+        if not is_shelf_name_unique:
+            log.error("A public shelf with the name '{}' already exists.".format(title))
+            flash(_(u"A public shelf with the name '%(title)s' already exists.", title=title),
+                  category="error")
+    else:
+        is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                                   .filter((ub.Shelf.name == title) & (ub.Shelf.is_public == 0) &
+                                           (ub.Shelf.user_id == int(current_user.id))) \
+                                   .filter(ident) \
+                                   .first() is None
+
+        if not is_shelf_name_unique:
+            log.error("A private shelf with the name '{}' already exists.".format(title))
+            flash(_(u"A private shelf with the name '%(title)s' already exists.", title=title),
+                  category="error")
+    return is_shelf_name_unique
+
+
+def delete_shelf_helper(cur_shelf):
+    if not cur_shelf or not check_shelf_edit_permissions(cur_shelf):
+        return False
+    shelf_id = cur_shelf.id
+    ub.session.delete(cur_shelf)
+    ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
+    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
+    ub.session_commit("successfully deleted Shelf {}".format(cur_shelf.name))
+    return True
+
+
 def change_shelf_order(shelf_id, order):
     result = calibre_db.session.query(db.Books).outerjoin(db.books_series_link,
                                                           db.Books.id == db.books_series_link.c.book)\
@@ -439,7 +440,7 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                                            db.Books,
                                                            ub.BookShelf.shelf == shelf_id,
                                                            [ub.BookShelf.order.asc()],
-                                                           False, 0,
+                                                           True, config.config_read_column,
                                                            ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
         # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
         wrong_entries = calibre_db.session.query(ub.BookShelf) \

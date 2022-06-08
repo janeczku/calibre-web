@@ -92,14 +92,19 @@ $(function () {
                 data: {"query": keyword},
                 dataType: "json",
                 success: function success(data) {
-                    $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
-                    data.forEach(function(book) {
-                        var $book = $(templates.bookResult(book));
-                        $book.find("img").on("click", function () {
-                            populateForm(book);
+                    if (data.length) {
+                        $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
+                        data.forEach(function(book) {
+                            var $book = $(templates.bookResult(book));
+                            $book.find("img").on("click", function () {
+                                populateForm(book);
+                            });
+                            $("#book-list").append($book);
                         });
-                        $("#book-list").append($book);
-                    });
+                    }
+                    else {
+                        $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "!</p>" + $("#meta-info")[0].innerHTML)
+                    }
                 },
                 error: function error() {
                     $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
