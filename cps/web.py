@@ -715,9 +715,9 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             else:
                 db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
         except (KeyError, AttributeError, IndexError):
-            log.error("Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
+            log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
             if not as_xml:
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                flash(_("Custom Column No.%(column)d does not exist in calibre database",
                         column=config.config_read_column),
                       category="error")
                 return redirect(url_for("web.index"))

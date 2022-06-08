@@ -627,7 +627,7 @@ class CalibreDB:
                       .join(read_column, read_column.book == book_id,
                       isouter=True))
             except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
+                log.error("Custom Column No.{} does not exist in calibre database".format(read_column))
                 # Skip linking read column and return None instead of read status
                 bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
         return (bd.filter(Books.id == book_id)
@@ -674,9 +674,9 @@ class CalibreDB:
             except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
-                log.error("Custom Column No.{} is not existing in calibre database".format(
+                log.error("Custom Column No.{} does not exist in calibre database".format(
                     self.config.config_restricted_column))
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                flash(_("Custom Column No.%(column)d does not exist in calibre database",
                         column=self.config.config_restricted_column),
                       category="error")
 
@@ -699,7 +699,7 @@ class CalibreDB:
                          .select_from(Books)
                          .outerjoin(read_column, read_column.book == Books.id))
             except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
+                log.error("Custom Column No.{} does not exist in calibre database".format(config_read_column))
                 # Skip linking read column and return None instead of read status
                 query = self.session.query(database, None, ub.ArchivedBook.is_archived)
         return query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
