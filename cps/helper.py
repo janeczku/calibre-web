@@ -336,8 +336,8 @@ def edit_book_read_status(book_id, read_status=None):
                 calibre_db.session.commit()
         except (KeyError, AttributeError, IndexError):
             log.error(
-                "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column)
+                "Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
+            return "Custom Column No.{} does not exist in calibre database".format(config.config_read_column)
         except (OperationalError, InvalidRequestError) as ex:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: {}".format(ex))
