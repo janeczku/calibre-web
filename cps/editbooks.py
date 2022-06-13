@@ -39,6 +39,7 @@ from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, ub, db, calibre_db
@@ -221,7 +222,7 @@ def edit_book(book_id):
         calibre_db.session.rollback()
         flash(str(e), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
-    except (OperationalError, IntegrityError) as e:
+    except (OperationalError, IntegrityError, StaleDataError) as e:
         log.error_or_exception("Database error: {}".format(e))
         calibre_db.session.rollback()
         flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
@@ -295,7 +296,7 @@ def upload():
                     else:
                         resp = {"location": url_for('web.show_book', book_id=book_id)}
                         return Response(json.dumps(resp), mimetype='application/json')
-            except (OperationalError, IntegrityError) as e:
+            except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
                 flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
@@ -443,7 +444,7 @@ def edit_list_book(param):
         if param == 'title' and vals.get('checkT') == "false":
             book.sort = sort_param
             calibre_db.session.commit()
-    except (OperationalError, IntegrityError) as e:
+    except (OperationalError, IntegrityError, StaleDataError) as e:
         calibre_db.session.rollback()
         log.error_or_exception("Database error: {}".format(e))
         ret = Response(json.dumps({'success': False,
@@ -556,7 +557,7 @@ def table_xchange_author_title():
                 book.last_modified = datetime.utcnow()
             try:
                 calibre_db.session.commit()
-            except (OperationalError, IntegrityError) as e:
+            except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: %s", e)
                 return json.dumps({'success': False})
@@ -1190,7 +1191,7 @@ def upload_single_file(file_request, book, book_id):
                     calibre_db.session.add(db_format)
                     calibre_db.session.commit()
                     calibre_db.update_title_sort(config)
-                except (OperationalError, IntegrityError) as e:
+                except (OperationalError, IntegrityError, StaleDataError) as e:
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
                     flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
