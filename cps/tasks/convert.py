@@ -188,6 +188,8 @@ class TaskConvert(CalibreTask):
         log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = N_('Ebook converter failed with unknown error')
+        else:
+            log.error(error_message)
         self._handleError(error_message)
         return
 
@@ -273,7 +275,10 @@ class TaskConvert(CalibreTask):
         return N_("Convert")
 
     def __str__(self):
-        return "Convert {} {}".format(self.book_id, self.ereader_mail)
+        if self.ereader_mail:
+            return "Convert {} {}".format(self.book_id, self.ereader_mail)
+        else:
+            return "Convert {}".format(self.book_id)
 
     @property
     def is_cancellable(self):

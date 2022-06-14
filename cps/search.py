@@ -22,7 +22,7 @@ from flask import session as flask_session
 from flask_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
-from sqlalchemy.sql.expression import func, not_, and_, or_, text
+from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
 from . import logger, db, calibre_db, config, ub
@@ -119,32 +119,23 @@ def adv_search_ratings(q, rating_high, rating_low):
     return q
 
 
-def adv_search_read_status(q, read_status):
-    if read_status:
-        if config.config_read_column:
-            try:
-                if read_status == "True":
-                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                        .filter(db.cc_classes[config.config_read_column].value == True)
-                else:
-                    q = q.join(db.cc_classes[config.config_read_column], isouter=True) \
-                        .filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
-            except (KeyError, AttributeError):
-                log.error(u"Custom Column No.%d is not existing in calibre database", config.config_read_column)
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
-                        column=config.config_read_column),
-                      category="error")
-                return q
+def adv_search_read_status(read_status):
+    if not config.config_read_column:
+        if read_status == "True":
+            db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
+                             ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
         else:
+            db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
+    else:
+        try:
             if read_status == "True":
-                q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
-                    .filter(ub.ReadBook.user_id == int(current_user.id),
-                            ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
+                db_filter = db.cc_classes[config.config_read_column].value == True
             else:
-                q = q.join(ub.ReadBook, db.Books.id == ub.ReadBook.book_id, isouter=True) \
-                    .filter(ub.ReadBook.user_id == int(current_user.id),
-                            coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED)
-    return q
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+        except (KeyError, AttributeError, IndexError):
+            log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
+            return true()
+    return db_filter
 
 
 def adv_search_extension(q, include_extension_inputs, exclude_extension_inputs):
@@ -238,23 +229,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 
     cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    if not config.config_read_column:
-        query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, ub.ReadBook).select_from(db.Books)
-                 .outerjoin(ub.ReadBook, and_(db.Books.id == ub.ReadBook.book_id,
-                                              int(current_user.id) == ub.ReadBook.user_id)))
-    else:
-        try:
-            read_column = cc[config.config_read_column]
-            query = (calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, read_column.value)
-                     .select_from(db.Books)
-                     .outerjoin(read_column, read_column.book == db.Books.id))
-        except (KeyError, AttributeError):
-            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            # Skip linking read column
-            query = calibre_db.session.query(db.Books, ub.ArchivedBook.is_archived, None)
-    query = query.outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
-                                                  int(current_user.id) == ub.ArchivedBook.user_id))
-
+    query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
     q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
         .outerjoin(db.Series)\
         .filter(calibre_db.common_filters(True))
@@ -324,7 +299,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
         if pub_end:
             q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
-        q = adv_search_read_status(q, read_status)
+        q = q.filter(adv_search_read_status(read_status))
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])

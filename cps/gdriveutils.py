@@ -33,6 +33,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import text
 
 try:
@@ -318,7 +319,7 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except (OperationalError, IntegrityError) as ex:
+    except (OperationalError, IntegrityError, StaleDataError) as ex:
         log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:

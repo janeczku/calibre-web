@@ -322,12 +322,12 @@ def edit_book_read_status(book_id, read_status=None):
         try:
             calibre_db.update_title_sort(config)
             book = calibre_db.get_filtered_book(book_id)
-            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
-            if len(read_status):
+            book_read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
+            if len(book_read_status):
                 if read_status is None:
-                    read_status[0].value = not read_status[0].value
+                    book_read_status[0].value = not book_read_status[0].value
                 else:
-                    read_status[0].value = read_status is True
+                    book_read_status[0].value = read_status is True
                 calibre_db.session.commit()
             else:
                 cc_class = db.cc_classes[config.config_read_column]
@@ -336,8 +336,8 @@ def edit_book_read_status(book_id, read_status=None):
                 calibre_db.session.commit()
         except (KeyError, AttributeError, IndexError):
             log.error(
-                "Custom Column No.{} is not existing in calibre database".format(config.config_read_column))
-            return "Custom Column No.{} is not existing in calibre database".format(config.config_read_column)
+                "Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
+            return "Custom Column No.{} does not exist in calibre database".format(config.config_read_column)
         except (OperationalError, InvalidRequestError) as ex:
             calibre_db.session.rollback()
             log.error(u"Read status could not set: {}".format(ex))
