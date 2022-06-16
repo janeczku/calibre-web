@@ -24,35 +24,40 @@ $(document).ready(function() {
           },
 
         }, function () {
-        // Initialized and ready to go
-        var options = {};
-        options.ui = {
-            bootstrap3: true,
-            showProgressBar: false,
-            showErrors: true,
-            showVerdicts: false,
-        }
-        options.rules= {
-            activated: {
-                wordNotEmail: false,
-                wordMinLength: true,
-                // wordMaxLength: false,
-                // wordInvalidChar: true,
-                wordSimilarToUsername: false,
-                wordSequences: false,
-                wordTwoCharacterClasses: false,
-                wordRepetitions: false,
-                //wordLowercase: true,
-                //wordUppercase: true,
-                wordOneNumber: true,
-                wordThreeNumbers: false,
-                wordOneSpecialChar: true,
-                // wordTwoSpecialChar: true,
-                wordUpperLowerCombo: false,
-                wordLetterNumberCombo: false,
-                wordLetterNumberCharCombo: false
+        if ($('#password').data("verify")) {
+            // Initialized and ready to go
+            var options = {};
+            options.common = {
+                minChar: $('#password').data("min")
             }
+            options.ui = {
+                bootstrap3: true,
+                showProgressBar: false,
+                showErrors: true,
+                showVerdicts: false,
+            }
+            options.rules= {
+                activated: {
+                    wordNotEmail: false,
+                    wordMinLength: $('#password').data("min") ? true : false,
+                    // wordMaxLength: false,
+                    // wordInvalidChar: true,
+                    wordSimilarToUsername: false,
+                    wordSequences: false,
+                    wordTwoCharacterClasses: false,
+                    wordRepetitions: false,
+                    wordLowercase: $('#password').data("lower") ? true : false,
+                    wordUppercase: $('#password').data("upper") ? true : false,
+                    wordOneNumber: $('#password').data("number") ? true : false,
+                    wordThreeNumbers: false,
+                    wordOneSpecialChar: $('#password').data("special") ? true : false,
+                    // wordTwoSpecialChar: true,
+                    wordUpperLowerCombo: false,
+                    wordLetterNumberCombo: false,
+                    wordLetterNumberCharCombo: false
+                }
+            }
+            $('#password').pwstrength(options);
         }
-        $('#password').pwstrength(options);
     });
 });

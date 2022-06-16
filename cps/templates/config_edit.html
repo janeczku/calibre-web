@@ -352,6 +352,7 @@
         {% endif %}
       </div>
     </div>
+  </div>
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -370,9 +371,8 @@
                   <option value="1" {% if config.config_session == 1 %}selected{% endif %}>{{_('Strong')}}</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <input type="checkbox" id="config_password_policy" data-control="password_settings" name="config_password_policy" {% if config.config_password %}checked{% endif %}>
+                <input type="checkbox" id="config_password_policy" data-control="password_settings" name="config_password_policy" {% if config.config_password_policy %}checked{% endif %}>
                 <label for="config_password_policy">{{_('User Password policy')}}</label>
             </div>
             <div data-related="password_settings">
@@ -393,13 +393,14 @@
                 <label for="config_password_upper">{{_('Enforce uppercase characters')}}</label>
               </div>
               <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_special" name="config_password_special"  {% if config.config_kobo_proxy %}checked{% endif %}>
+                <input type="checkbox" id="config_password_special" name="config_password_special"  {% if config.config_password_special %}checked{% endif %}>
                 <label for="config_password_special">{{_('Enforce special characters')}}</label>
               </div>
             </div>
       </div>
     </div>
   </div>
+</div>
 </div>
     <div class="col-sm-12">
     <button type="button" name="submit" id="config_submit" class="btn btn-default">{{_('Save')}}</button>
