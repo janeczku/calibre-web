@@ -23,7 +23,6 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
-import re
 
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
@@ -47,7 +46,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status
+    edit_book_read_status, valid_password
 from .pagination import Pagination
 from .redirect import redirect_back
 from .babel import get_available_locale
@@ -1359,23 +1358,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     current_user.random_books = 0
     try:
         if current_user.role_passwd() or current_user.role_admin():
-            if to_save.get("password"):
-                if config.config_password_policy:
-                    verify = ""
-                    if config.config_password_min_length > 0:
-                        verify += "^(?=\S{" + str(config.config_password_min_length) + ",}$)"
-                    if config.config_password_number:
-                        verify += "(?=.*?\d)"
-                    if config.config_password_lower:
-                        verify += "(?=.*?[a-z])"
-                    if config.config_password_upper:
-                        verify += "(?=.*?[A-Z])"
-                    if config.config_password_special:
-                        verify += "(?=.*?[^A-Za-z\s0-9])"
-                    match = re.match(verify, to_save.get("password"))
-                    if not match:
-                        raise Exception(_("Password doesn't comply with password validation rules"))
-                current_user.password = generate_password_hash(to_save.get("password"))
+            if 'password' in to_save:
+                current_user.password = generate_password_hash(valid_password(to_save('password')))
         if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
             current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
         if to_save.get("email", current_user.email) != current_user.email:

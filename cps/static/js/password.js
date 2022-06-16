@@ -28,7 +28,8 @@ $(document).ready(function() {
             // Initialized and ready to go
             var options = {};
             options.common = {
-                minChar: $('#password').data("min")
+                minChar: $('#password').data("min"),
+                maxChar: -1
             }
             options.ui = {
                 bootstrap3: true,

@@ -661,6 +661,23 @@ def valid_email(email):
         raise Exception(_(u"Invalid e-mail address format"))
     return email
 
+def valid_password(check_password):
+    if config.config_password_policy:
+        verify = ""
+        if config.config_password_min_length > 0:
+            verify += "^(?=\S{" + str(config.config_password_min_length) + ",}$)"
+        if config.config_password_number:
+            verify += "(?=.*?\d)"
+        if config.config_password_lower:
+            verify += "(?=.*?[a-z])"
+        if config.config_password_upper:
+            verify += "(?=.*?[A-Z])"
+        if config.config_password_special:
+            verify += "(?=.*?[^A-Za-z\s0-9])"
+        match = re.match(verify, check_password)
+        if not match:
+            raise Exception(_("Password doesn't comply with password validation rules"))
+    return check_password
 # ################################# External interface #################################
 
 
