@@ -25,10 +25,6 @@ var i18n = {};
         wordTwoCharacterClasses: 'Use different character classes',
         wordRepetitions: 'Too many repetitions',
         wordSequences: 'Your password contains sequences',
-        // wordLowercase: "Use at least one lowercase character",
-        //         wordUppercase: "Use at least one uppercase character",
-        //         wordOneNumber: "Use at least one number",
-        //         wordOneSpecialChar: "Use at least one special character",
         errorList: 'Errors:',
         veryWeak: 'Very Weak',
         weak: 'Weak',
@@ -376,7 +372,7 @@ defaultOptions.rules.activated = {
     wordIsACommonPassword: true
 };
 defaultOptions.rules.raisePower = 1.4;
-defaultOptions.rules.specialCharClass = '[!,@,#,$,%,^,&,*,?,_,~]';
+defaultOptions.rules.specialCharClass = "(?=.*?[^A-Za-z\s0-9])"; //'[!,@,#,$,%,^,&,*,?,_,~]';
 // List taken from https://github.com/danielmiessler/SecLists (MIT License)
 defaultOptions.rules.commonPasswords = [
     '123456',
