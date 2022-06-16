@@ -75,7 +75,6 @@ class _Settings(_Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    # config_mature_content_tags = Column(String, default='')
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -147,6 +146,14 @@ class _Settings(_Base):
     schedule_generate_book_covers = Column(Boolean, default=False)
     schedule_generate_series_covers = Column(Boolean, default=False)
     schedule_reconnect = Column(Boolean, default=False)
+
+    config_password_policy = Column(Boolean, default=True)
+    config_password_min_length = Column(Integer, default=8)
+    config_password_number = Column(Boolean, default=True)
+    config_password_lower = Column(Boolean, default=True)
+    config_password_upper = Column(Boolean, default=True)
+    config_password_special = Column(Boolean, default=True)
+    config_session = Column(Integer, default=1)
 
     def __repr__(self):
         return self.__class__.__name__

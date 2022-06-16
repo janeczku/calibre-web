@@ -21,7 +21,7 @@
       {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
-          <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
+          <input type="password" class="form-control" name="password" id="password" data-lang="{{ g.user.locale }}" value="" autocomplete="off">
         </div>
     {% endif %}
     <div class="form-group">
@@ -175,5 +175,9 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pwstrength/i18next.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pwstrength/i18nextHttpBackend.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pwstrength/pwstrength-bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/password.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}
