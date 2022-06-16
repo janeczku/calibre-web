@@ -1765,10 +1765,21 @@ def _configuration_update_helper():
         if config.config_login_type == constants.LOGIN_OAUTH:
             reboot_required |= _configuration_oauth_helper(to_save)
 
+        # logfile configuration
         reboot, message = _configuration_logfile_helper(to_save)
         if message:
             return message
         reboot_required |= reboot
+
+        # security configuration
+        _config_checkbox(to_save, "config_password_policy")
+        _config_checkbox(to_save, "config_password_number")
+        _config_checkbox(to_save, "config_password_lower")
+        _config_checkbox(to_save, "config_password_upper")
+        _config_checkbox(to_save, "config_password_special")
+        _config_int(to_save, "config_password_min_length")
+        _config_int(to_save, "config_session")
+
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
         if "config_rarfile_location" in to_save:

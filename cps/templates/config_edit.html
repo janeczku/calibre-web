@@ -352,6 +352,53 @@
         {% endif %}
       </div>
     </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
+          <span class="glyphicon glyphicon-plus"></span>
+           {{_('Securitiy Settings')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapsesix" class="panel-collapse collapse">
+      <div class="panel-body">
+            <div class="form-group">
+              <label for="config_session">{{_('Session protection')}}</label>
+                <select name="config_session" id="config_session" class="form-control">
+                  <option value="0" {% if config.config_session == 0 %}selected{% endif %}>{{_('Basic')}}</option>
+                  <option value="1" {% if config.config_session == 1 %}selected{% endif %}>{{_('Strong')}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" id="config_password_policy" data-control="password_settings" name="config_password_policy" {% if config.config_password %}checked{% endif %}>
+                <label for="config_password_policy">{{_('User Password policy')}}</label>
+            </div>
+            <div data-related="password_settings">
+              <div class="form-group" style="margin-left:10px;">
+                <label for="config_password_min_length">{{_('Minimum password length')}}</label>
+                <input type="number" min="0" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_number" name="config_password_number"  {% if config.config_password_number %}checked{% endif %}>
+                <label for="config_password_number">{{_('Enforce number')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_lower" name="config_password_lower"  {% if config.config_password_lower %}checked{% endif %}>
+                <label for="config_password_lower">{{_('Enforce lowercase characters')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_lower" name="config_password_upper"  {% if config.config_password_upper %}checked{% endif %}>
+                <label for="config_password_upper">{{_('Enforce uppercase characters')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_special" name="config_password_special"  {% if config.config_kobo_proxy %}checked{% endif %}>
+                <label for="config_password_special">{{_('Enforce special characters')}}</label>
+              </div>
+            </div>
+      </div>
+    </div>
   </div>
 </div>
     <div class="col-sm-12">
