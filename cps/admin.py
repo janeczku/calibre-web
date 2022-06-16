@@ -1778,7 +1778,7 @@ def _configuration_update_helper():
         _config_checkbox(to_save, "config_password_upper")
         _config_checkbox(to_save, "config_password_special")
         _config_int(to_save, "config_password_min_length")
-        _config_int(to_save, "config_session")
+        reboot_required |= _config_int(to_save, "config_session")
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")

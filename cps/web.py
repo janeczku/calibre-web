@@ -23,6 +23,7 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+import re
 
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
@@ -54,6 +55,7 @@ from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 from .kobo_sync_status import change_archived_books
+
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -1355,10 +1357,25 @@ def logout():
 def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
     to_save = request.form.to_dict()
     current_user.random_books = 0
-    if current_user.role_passwd() or current_user.role_admin():
-        if to_save.get("password"):
-            current_user.password = generate_password_hash(to_save.get("password"))
     try:
+        if current_user.role_passwd() or current_user.role_admin():
+            if to_save.get("password"):
+                if config.config_password_policy:
+                    verify = ""
+                    if config.config_password_min_length > 0:
+                        verify += "^(?=\S{" + str(config.config_password_min_length) + ",}$)"
+                    if config.config_password_number:
+                        verify += "(?=.*?\d)"
+                    if config.config_password_lower:
+                        verify += "(?=.*?[a-z])"
+                    if config.config_password_upper:
+                        verify += "(?=.*?[A-Z])"
+                    if config.config_password_special:
+                        verify += "(?=.*?[^A-Za-z\s0-9])"
+                    match = re.match(verify, to_save.get("password"))
+                    if not match:
+                        raise Exception(_("Password doesn't comply with password validation rules"))
+                current_user.password = generate_password_hash(to_save.get("password"))
         if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
             current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
         if to_save.get("email", current_user.email) != current_user.email:
