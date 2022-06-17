@@ -1849,10 +1849,10 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
 
     content.role = constants.selected_roles(to_save)
     try:
-        content.password = generate_password_hash(helper.valid_password(to_save["password"]))
         if not to_save["name"] or not to_save["email"] or not to_save["password"]:
             log.info("Missing entries on new user")
             raise Exception(_(u"Please fill out all fields!"))
+        content.password = generate_password_hash(helper.valid_password(to_save.get("password", "")))
         content.email = check_email(to_save["email"])
         # Query username, if not existing, change
         content.name = check_username(to_save["name"])
@@ -1936,8 +1936,6 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             log.warning("No admin user remaining, can't remove admin role from {}".format(content.name))
             flash(_("No admin user remaining, can't remove admin role"), category="error")
             return redirect(url_for('admin.admin'))
-        if 'password' in to_save:
-            content.password = generate_password_hash(helper.valid_password(to_save('password')))
         anonymous = content.is_anonymous
         content.role = constants.selected_roles(to_save)
         if anonymous:
@@ -1971,6 +1969,8 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         if to_save.get("locale"):
             content.locale = to_save["locale"]
         try:
+            if to_save.get('password', "") != "":
+                content.password = generate_password_hash(helper.valid_password(to_save['password']))
             if to_save.get("email", content.email) != content.email:
                 content.email = check_email(to_save["email"])
             # Query username, if not existing, change
