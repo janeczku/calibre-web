@@ -665,7 +665,7 @@ def valid_password(check_password):
     if config.config_password_policy:
         verify = ""
         if config.config_password_min_length > 0:
-            verify += "^(?=\S{" + str(config.config_password_min_length) + ",}$)"
+            verify += "^(?=.{" + str(config.config_password_min_length) + ",}$)"
         if config.config_password_number:
             verify += "(?=.*?\d)"
         if config.config_password_lower:
