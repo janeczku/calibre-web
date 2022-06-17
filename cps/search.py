@@ -17,12 +17,12 @@
 import json
 from datetime import datetime
 
-from flask import Blueprint, request, redirect, url_for, flash
+from flask import Blueprint, request, redirect, url_for, flash, get_flashed_messages
 from flask import session as flask_session
 from flask_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
-from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
+from sqlalchemy.sql.expression import func, not_, and_, or_, text, false
 from sqlalchemy.sql.functions import coalesce
 
 from . import logger, db, calibre_db, config, ub
@@ -134,7 +134,9 @@ def adv_search_read_status(read_status):
                 db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
-            return true()
+            flash(_("Custom Column No.{} does not exist in calibre database".format(config.config_read_column)),
+                    category="error")
+            return false()
     return db_filter
 
 
