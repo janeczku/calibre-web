@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-06-04 08:48+0200\n"
+"POT-Creation-Date: 2022-06-18 18:44+0200\n"
 "PO-Revision-Date: 2020-04-29 01:20+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -39,8 +39,8 @@ msgstr "Успешно переподключено"
 msgid "Unknown command"
 msgstr "Неизвестная команда"
 
-#: cps/admin.py:192 cps/editbooks.py:571 cps/editbooks.py:573
-#: cps/editbooks.py:609 cps/editbooks.py:626 cps/editbooks.py:1233
+#: cps/admin.py:192 cps/editbooks.py:572 cps/editbooks.py:574
+#: cps/editbooks.py:610 cps/editbooks.py:627 cps/editbooks.py:1234
 #: cps/updater.py:613 cps/uploader.py:87 cps/uploader.py:97
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -67,7 +67,7 @@ msgstr "Управление сервером"
 msgid "All"
 msgstr "Все"
 
-#: cps/admin.py:380 cps/admin.py:1367
+#: cps/admin.py:380 cps/admin.py:1370
 msgid "User not found"
 msgstr ""
 
@@ -84,7 +84,7 @@ msgstr "Показать все"
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:456 cps/admin.py:1964
+#: cps/admin.py:456 cps/admin.py:1968
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:480 cps/admin.py:1922
+#: cps/admin.py:480 cps/admin.py:1926
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
@@ -124,7 +124,7 @@ msgstr ""
 msgid "No Valid Book Language Given"
 msgstr ""
 
-#: cps/admin.py:520 cps/editbooks.py:438
+#: cps/admin.py:520 cps/editbooks.py:439
 msgid "Parameter not found"
 msgstr ""
 
@@ -136,7 +136,7 @@ msgstr ""
 msgid "Invalid Restricted Column"
 msgstr ""
 
-#: cps/admin.py:583 cps/admin.py:1793
+#: cps/admin.py:583 cps/admin.py:1797
 msgid "Calibre-Web configuration updated"
 msgstr "Конфигурация Calibre-Web обновлена"
 
@@ -276,7 +276,7 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1232 cps/admin.py:1854
+#: cps/admin.py:1232 cps/admin.py:1858
 msgid "Add new user"
 msgstr "Добавить пользователя"
 
@@ -288,218 +288,218 @@ msgstr "Изменить настройки SMTP"
 msgid "Gmail Account Verification Successful"
 msgstr ""
 
-#: cps/admin.py:1279 cps/admin.py:1660 cps/admin.py:1777 cps/admin.py:1875
-#: cps/admin.py:1992 cps/editbooks.py:227 cps/editbooks.py:301
-#: cps/editbooks.py:1196 cps/shelf.py:82 cps/shelf.py:142 cps/shelf.py:185
-#: cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343 cps/shelf.py:457
-#: cps/tasks/convert.py:136 cps/web.py:1413
+#: cps/admin.py:1279 cps/admin.py:1282 cps/admin.py:1663 cps/admin.py:1781
+#: cps/admin.py:1879 cps/admin.py:1996 cps/editbooks.py:228
+#: cps/editbooks.py:302 cps/editbooks.py:1197 cps/shelf.py:82 cps/shelf.py:142
+#: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
+#: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1413
 #, python-format
 msgid "Database error: %(error)s."
 msgstr ""
 
-#: cps/admin.py:1286
+#: cps/admin.py:1289
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1289
+#: cps/admin.py:1292
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Произошла ошибка при отправке тестового письма на: %(res)s"
 
-#: cps/admin.py:1291
+#: cps/admin.py:1294
 msgid "Please configure your e-mail address first..."
 msgstr "Пожалуйста, сначала настройте свой адрес электронной почты ..."
 
-#: cps/admin.py:1293
+#: cps/admin.py:1296
 msgid "E-mail server settings updated"
 msgstr "Настройки E-mail сервера обновлены"
 
-#: cps/admin.py:1316 cps/templates/admin.html:191
+#: cps/admin.py:1319 cps/templates/admin.html:191
 msgid "Edit Scheduled Tasks Settings"
 msgstr ""
 
-#: cps/admin.py:1328
+#: cps/admin.py:1331
 msgid "Invalid start time for task specified"
 msgstr ""
 
-#: cps/admin.py:1333
+#: cps/admin.py:1336
 msgid "Invalid duration for task specified"
 msgstr ""
 
-#: cps/admin.py:1342
+#: cps/admin.py:1345
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1352 cps/admin.py:1401 cps/admin.py:1988 cps/web.py:1254
+#: cps/admin.py:1355 cps/admin.py:1404 cps/admin.py:1992 cps/web.py:1254
 #: cps/web.py:1315
 msgid "An unknown error occurred. Please try again later."
 msgstr "Неизвестная ошибка. Попробуйте позже."
 
-#: cps/admin.py:1356
+#: cps/admin.py:1359
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1386 cps/admin.py:1980
+#: cps/admin.py:1389 cps/admin.py:1984
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Изменить пользователя %(nick)s"
 
-#: cps/admin.py:1398
+#: cps/admin.py:1401
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Пароль для пользователя %(user)s сброшен"
 
-#: cps/admin.py:1404 cps/web.py:1194
+#: cps/admin.py:1407 cps/web.py:1194
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Пожалуйста, сперва настройте параметры SMTP....."
 
-#: cps/admin.py:1415
+#: cps/admin.py:1418
 msgid "Logfile viewer"
 msgstr "Просмотр лога"
 
-#: cps/admin.py:1481
+#: cps/admin.py:1484
 msgid "Requesting update package"
 msgstr "Проверка обновлений"
 
-#: cps/admin.py:1482
+#: cps/admin.py:1485
 msgid "Downloading update package"
 msgstr "Загрузка обновлений"
 
-#: cps/admin.py:1483
+#: cps/admin.py:1486
 msgid "Unzipping update package"
 msgstr "Распаковка обновлений"
 
-#: cps/admin.py:1484
+#: cps/admin.py:1487
 msgid "Replacing files"
 msgstr "Замена файлов"
 
-#: cps/admin.py:1485
+#: cps/admin.py:1488
 msgid "Database connections are closed"
 msgstr "Соединения с базой данных закрыты"
 
-#: cps/admin.py:1486
+#: cps/admin.py:1489
 msgid "Stopping server"
 msgstr "Остановка сервера"
 
-#: cps/admin.py:1487
+#: cps/admin.py:1490
 msgid "Update finished, please press okay and reload page"
 msgstr "Обновления установлены, нажмите ок и перезагрузите страницу"
 
-#: cps/admin.py:1488 cps/admin.py:1489 cps/admin.py:1490 cps/admin.py:1491
-#: cps/admin.py:1492 cps/admin.py:1493
+#: cps/admin.py:1491 cps/admin.py:1492 cps/admin.py:1493 cps/admin.py:1494
+#: cps/admin.py:1495 cps/admin.py:1496
 msgid "Update failed:"
 msgstr "Ошибка обновления:"
 
-#: cps/admin.py:1488 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
+#: cps/admin.py:1491 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
 msgstr "Ошибка HTTP"
 
-#: cps/admin.py:1489 cps/updater.py:391 cps/updater.py:628
+#: cps/admin.py:1492 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
 msgstr "Ошибка соединения"
 
-#: cps/admin.py:1490 cps/updater.py:393 cps/updater.py:630
+#: cps/admin.py:1493 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
 msgstr "Тайм-аут при установлении соединения"
 
-#: cps/admin.py:1491 cps/updater.py:395 cps/updater.py:632
+#: cps/admin.py:1494 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
 msgstr "Общая ошибка"
 
-#: cps/admin.py:1492
+#: cps/admin.py:1495
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "Не удалось сохранить файл обновления во временной папке."
 
-#: cps/admin.py:1493
+#: cps/admin.py:1496
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1517
+#: cps/admin.py:1520
 #, fuzzy
 msgid "Failed to extract at least One LDAP User"
 msgstr "Не удалось создать хотя бы одного пользователя LDAP"
 
-#: cps/admin.py:1562
+#: cps/admin.py:1565
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Не удалось создать хотя бы одного пользователя LDAP"
 
-#: cps/admin.py:1575
+#: cps/admin.py:1578
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Ошибка: %(ldaperror)s"
 
-#: cps/admin.py:1579
+#: cps/admin.py:1582
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Ошибка: ни одного пользователя не найдено в ответ на запрос сервер LDAP"
 
-#: cps/admin.py:1612
+#: cps/admin.py:1615
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "По крайней мере, один пользователь LDAP не найден в базе данных"
 
-#: cps/admin.py:1614
+#: cps/admin.py:1617
 msgid "{} User Successfully Imported"
 msgstr ""
 
-#: cps/admin.py:1672
+#: cps/admin.py:1675
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "Расположение Базы Данных неверно, пожалуйста, введите правильный путь."
 
-#: cps/admin.py:1691
+#: cps/admin.py:1695
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1704
+#: cps/admin.py:1708
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr "Расположение ключевого файла неверно, пожалуйста, введите правильный путь"
 
-#: cps/admin.py:1708
+#: cps/admin.py:1712
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Расположение Certfile не является действительным, пожалуйста, введите правильный путь"
 
-#: cps/admin.py:1816
+#: cps/admin.py:1820
 #, fuzzy
 msgid "Database Settings updated"
 msgstr "Настройки E-mail сервера обновлены"
 
-#: cps/admin.py:1824
+#: cps/admin.py:1828
 #, fuzzy
 msgid "Database Configuration"
 msgstr "Дополнительный Настройки"
 
-#: cps/admin.py:1840 cps/web.py:1229
+#: cps/admin.py:1844 cps/web.py:1229
 msgid "Please fill out all fields!"
 msgstr "Пожалуйста, заполните все поля!"
 
-#: cps/admin.py:1848
+#: cps/admin.py:1852
 msgid "E-mail is not from valid domain"
 msgstr "E-mail не из существующей доменной зоны"
 
-#: cps/admin.py:1865
+#: cps/admin.py:1869
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Пользователь '%(user)s' добавлен"
 
-#: cps/admin.py:1871
+#: cps/admin.py:1875
 #, fuzzy
 msgid "Found an existing account for this e-mail address or name."
 msgstr "Для этого адреса электронной почты или логина уже есть учётная запись."
 
-#: cps/admin.py:1901
+#: cps/admin.py:1905
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Пользователь '%(nick)s' удалён"
 
-#: cps/admin.py:1903 cps/admin.py:1904
+#: cps/admin.py:1907 cps/admin.py:1908
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:1907
+#: cps/admin.py:1911
 msgid "No admin user remaining, can't delete user"
 msgstr "Это последний администратор, невозможно удалить пользователя"
 
-#: cps/admin.py:1984
+#: cps/admin.py:1988
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Пользователь '%(nick)s' обновлён"
@@ -512,122 +512,122 @@ msgstr "не установлено"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:680 cps/search.py:134 cps/web.py:720
+#: cps/db.py:679 cps/web.py:720
 #, python-format
-msgid "Custom Column No.%(column)d is not existing in calibre database"
+msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
-#: cps/db.py:923 cps/templates/config_edit.html:204
+#: cps/db.py:922 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:549 cps/web.py:583 cps/web.py:656 cps/web.py:681 cps/web.py:962
 #: cps/web.py:992 cps/web.py:1027 cps/web.py:1055 cps/web.py:1094
 msgid "None"
 msgstr "Нет"
 
-#: cps/editbooks.py:109 cps/editbooks.py:890 cps/web.py:516 cps/web.py:1454
+#: cps/editbooks.py:110 cps/editbooks.py:891 cps/web.py:516 cps/web.py:1454
 #: cps/web.py:1496 cps/web.py:1541
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Невозможно открыть книгу. Файл не существует или недоступен"
 
-#: cps/editbooks.py:153 cps/editbooks.py:1216
+#: cps/editbooks.py:154 cps/editbooks.py:1217
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:173 cps/editbooks.py:711
+#: cps/editbooks.py:174 cps/editbooks.py:712
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:214
+#: cps/editbooks.py:215
 msgid "Metadata successfully updated"
 msgstr "Метаданные обновлены"
 
-#: cps/editbooks.py:232
+#: cps/editbooks.py:233
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:287
+#: cps/editbooks.py:288
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Файл %(file)s загружен"
 
-#: cps/editbooks.py:314
+#: cps/editbooks.py:315
 msgid "Source or destination format for conversion missing"
 msgstr "Исходный или целевой формат для конвертирования отсутствует"
 
-#: cps/editbooks.py:322
+#: cps/editbooks.py:323
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Книга успешно поставлена в очередь для конвертирования в %(book_format)s"
 
-#: cps/editbooks.py:326
+#: cps/editbooks.py:327
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Произошла ошибка при конвертирования этой книги: %(res)s"
 
-#: cps/editbooks.py:630
+#: cps/editbooks.py:631
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Загруженная книга, вероятно, существует в библиотеке, перед тем как загрузить новую, рассмотрите возможность изменения: "
 
-#: cps/editbooks.py:685 cps/editbooks.py:1010
+#: cps/editbooks.py:686 cps/editbooks.py:1011
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s не допустимый язык"
 
-#: cps/editbooks.py:723 cps/editbooks.py:1157
+#: cps/editbooks.py:724 cps/editbooks.py:1158
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Запрещена загрузка файлов с расширением '%(ext)s'"
 
-#: cps/editbooks.py:727 cps/editbooks.py:1161
+#: cps/editbooks.py:728 cps/editbooks.py:1162
 msgid "File to be uploaded must have an extension"
 msgstr "Загружаемый файл должен иметь расширение"
 
-#: cps/editbooks.py:735
+#: cps/editbooks.py:736
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Файл %(filename)s не удалось сохранить во временную папку"
 
-#: cps/editbooks.py:755
+#: cps/editbooks.py:756
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:812 cps/editbooks.py:814
+#: cps/editbooks.py:813 cps/editbooks.py:815
 msgid "Book Format Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:821 cps/editbooks.py:823
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:875
+#: cps/editbooks.py:876
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:925
+#: cps/editbooks.py:926
 msgid "edit metadata"
 msgstr "изменить метаданные"
 
-#: cps/editbooks.py:974
+#: cps/editbooks.py:975
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1152
+#: cps/editbooks.py:1153
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1173
+#: cps/editbooks.py:1174
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Ошибка при создании пути %(path)s (Доступ запрещён)."
 
-#: cps/editbooks.py:1178
+#: cps/editbooks.py:1179
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Не удалось сохранить файл %(file)s."
 
-#: cps/editbooks.py:1201
+#: cps/editbooks.py:1202
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Формат файла %(ext)s добавлен в %(book)s"
@@ -1036,41 +1036,41 @@ msgstr ""
 msgid "Show Books List"
 msgstr ""
 
-#: cps/search.py:48 cps/search.py:414 cps/templates/book_edit.html:236
+#: cps/search.py:48 cps/search.py:389 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "Поиск"
 
-#: cps/search.py:194
+#: cps/search.py:185
 msgid "Published after "
 msgstr "Опубликовано после "
 
-#: cps/search.py:201
+#: cps/search.py:192
 msgid "Published before "
 msgstr "Опубликовано до "
 
-#: cps/search.py:223
+#: cps/search.py:214
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Рейтинг <= %(rating)s"
 
-#: cps/search.py:225
+#: cps/search.py:216
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Рейтинг >= %(rating)s"
 
-#: cps/search.py:227
+#: cps/search.py:218
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/search.py:345
+#: cps/search.py:320
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/search.py:364 cps/search.py:396 cps/templates/layout.html:57
+#: cps/search.py:339 cps/search.py:371 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Расширенный поиск"
 
@@ -1401,27 +1401,27 @@ msgstr ""
 msgid "Ebook converter failed with unknown error"
 msgstr ""
 
-#: cps/tasks/convert.py:200
+#: cps/tasks/convert.py:202
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:222
+#: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""
 
-#: cps/tasks/convert.py:245
+#: cps/tasks/convert.py:247
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Ошибка Ebook-конвертора: %(error)s"
 
-#: cps/tasks/convert.py:268
+#: cps/tasks/convert.py:270
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:273
+#: cps/tasks/convert.py:275
 msgid "Convert"
 msgstr ""
 
@@ -2882,7 +2882,24 @@ msgstr "Каталог электронных книг Caliber-Web"
 msgid "epub Reader"
 msgstr "PDF reader"
 
-#: cps/templates/read.html:75
+#: cps/templates/read.html:77 cps/templates/readcbr.html:116
+msgid "Light"
+msgstr "Светлая"
+
+#: cps/templates/read.html:78 cps/templates/readcbr.html:117
+msgid "Dark"
+msgstr "Темная"
+
+#: cps/templates/read.html:79
+msgid "Sepia"
+msgstr ""
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Black"
+msgstr "Назад"
+
+#: cps/templates/read.html:84
 msgid "Reflow text when sidebars are open."
 msgstr "Обновить размещение текста при открытии боковой панели."
 
@@ -2930,14 +2947,6 @@ msgstr "Повернуть Влево"
 #: cps/templates/readcbr.html:100
 msgid "Flip Image"
 msgstr "Перевернуть изображение"
-
-#: cps/templates/readcbr.html:116
-msgid "Light"
-msgstr "Светлая"
-
-#: cps/templates/readcbr.html:117
-msgid "Dark"
-msgstr "Темная"
 
 #: cps/templates/readcbr.html:122
 msgid "Scale"
