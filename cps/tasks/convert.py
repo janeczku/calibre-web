@@ -19,8 +19,12 @@
 import os
 import re
 from glob import glob
-from shutil import copyfile
+from shutil import copyfile, copyfileobj
 from markupsafe import escape
+#donrar
+from tempfile import gettempdir
+from time import time
+#enddonrar
 
 from sqlalchemy.exc import SQLAlchemyError
 from flask_babel import lazy_gettext as N_
@@ -39,6 +43,7 @@ from cps import gdriveutils
 
 log = logger.create()
 
+current_milli_time = lambda: int(round(time() * 1000))
 
 class TaskConvert(CalibreTask):
     def __init__(self, file_path, book_id, task_message, settings, kindle_mail, user=None):
@@ -223,6 +228,7 @@ class TaskConvert(CalibreTask):
         return check, None
 
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext):
+        book_id = self.book_id
         try:
             # Linux py2.7 encode as list without quotes no empty element for parameters
             # linux py3.x no encode and as list without quotes no empty element for parameters
@@ -230,8 +236,18 @@ class TaskConvert(CalibreTask):
             # windows py 3.x no encode and as string with quotes empty element for parameters is okay
             # separate handling for windows and linux
             quotes = [1, 2]
+
+            # TODO: Clean up and make cli work with windows. Also, implement changing covers.
+            tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+            path_calibrecli = os.path.join(os.path.dirname(config.config_converterpath), "calibredb")
+            opf_command = [path_calibrecli, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
+            p = process_open(opf_command)
+            path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
+            with open(path_tmp_opf, 'w') as fd:
+                copyfileobj(p.stdout, fd)
+
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext)]
+                       (file_path + format_new_ext), '--from-opf', path_tmp_opf]
             quotes_index = 3
             if config.config_calibre:
                 parameters = config.config_calibre.split(" ")
