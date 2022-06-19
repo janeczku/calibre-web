@@ -21,10 +21,8 @@ import re
 from glob import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
-#donrar
 from tempfile import gettempdir
 from time import time
-#enddonrar
 
 from sqlalchemy.exc import SQLAlchemyError
 from flask_babel import lazy_gettext as N_
@@ -237,7 +235,7 @@ class TaskConvert(CalibreTask):
             # separate handling for windows and linux
             quotes = [1, 2]
 
-            # TODO: Clean up and make cli work with windows. Also, implement changing covers.
+            # TODO: Clean up and make cli work with windows.
             tmp_dir = os.path.join(gettempdir(), 'calibre_web')
             path_calibrecli = os.path.join(os.path.dirname(config.config_converterpath), "calibredb")
             opf_command = [path_calibrecli, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
@@ -247,7 +245,8 @@ class TaskConvert(CalibreTask):
                 copyfileobj(p.stdout, fd)
 
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext), '--from-opf', path_tmp_opf]
+                       (file_path + format_new_ext), '--from-opf', path_tmp_opf,
+                       '--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')]
             quotes_index = 3
             if config.config_calibre:
                 parameters = config.config_calibre.split(" ")
