@@ -152,6 +152,9 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr'
                      'opus', 'wav', 'flac', 'm4a', 'm4b'}
 
 
+SUPPORTED_CALIBRE_BINARIES = ["ebook-convert", "calibredb"]
+
+
 def has_flag(value, bit_flag):
     return bit_flag == (bit_flag & (value or 0))
 
