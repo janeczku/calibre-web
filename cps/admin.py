@@ -1721,6 +1721,7 @@ def _configuration_update_helper():
             constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
+        _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_converterpath")
         _config_string(to_save, "config_kepubifypath")
 

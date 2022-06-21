@@ -235,10 +235,11 @@ class TaskConvert(CalibreTask):
             # separate handling for windows and linux
             quotes = [1, 2]
 
-            # TODO: Clean up and make cli work with windows.
+            # TODO: Clean up.
+            # TODO: Maybe delete/clean-up tmp files directly.
             tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-            path_calibrecli = os.path.join(os.path.dirname(config.config_converterpath), "calibredb")
-            opf_command = [path_calibrecli, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
+            calibredb_binarypath = config.get_calibre_binarypath("calibredb")
+            opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
             p = process_open(opf_command)
             path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
             with open(path_tmp_opf, 'w') as fd:

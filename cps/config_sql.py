@@ -131,6 +131,7 @@ class _Settings(_Base):
 
     config_kepubifypath = Column(String, default=None)
     config_converterpath = Column(String, default=None)
+    config_binariesdir = Column(String, default=None)
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
@@ -166,12 +167,16 @@ class _ConfigSQL(object):
         self.cli = cli
 
         change = False
+
+        if self.config_binariesdir == None: # pylint: disable=access-member-before-definition
+            change = True
+            self.config_binariesdir = autodetect_calibre_binaries()
+
         if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
             change = True
-            self.config_converterpath = autodetect_calibre_binary()
+            self.config_converterpath = autodetect_converter_binary()
 
         if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
-
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
@@ -265,6 +270,21 @@ class _ConfigSQL(object):
 
     def get_scheduled_task_settings(self):
         return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
+
+    def get_calibre_binarypath(self, binary):
+        binariesdir = self.config_binariesdir
+        if binariesdir:
+            # TODO: Need to make sure that all supported calibre binaries are actually in the specified directory when set via UI
+            if sys.platform == "win32":
+                extension = ".exe"
+            else:
+                extension = ""
+            if binary in constants.SUPPORTED_CALIBRE_BINARIES:
+                return os.path.join(binariesdir, binary + extension)
+            else:
+                # TODO: Error handling
+                pass
+        return ""
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
@@ -407,17 +427,31 @@ def _migrate_table(session, orm_class):
             session.rollback()
 
 
-def autodetect_calibre_binary():
+def autodetect_calibre_binaries():
     if sys.platform == "win32":
-        calibre_path = ["C:\\program files\\calibre\\ebook-convert.exe",
-                        "C:\\program files(x86)\\calibre\\ebook-convert.exe",
-                        "C:\\program files(x86)\\calibre2\\ebook-convert.exe",
-                        "C:\\program files\\calibre2\\ebook-convert.exe"]
+        extension = ".exe"
+        calibre_path = ["C:\\program files\\calibre\\",
+                        "C:\\program files(x86)\\calibre\\",
+                        "C:\\program files(x86)\\calibre2\\",
+                        "C:\\program files\\calibre2\\"]
     else:
-        calibre_path = ["/opt/calibre/ebook-convert"]
+        extension = ""
+        calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        if os.path.isfile(element) and os.access(element, os.X_OK):
-            return element
+        supported_binary_paths = [os.path.join(element, binary + extension) for binary in constants.SUPPORTED_CALIBRE_BINARIES]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
+            return element 
+    return ""
+
+
+def autodetect_converter_binary():
+    calibre_path = autodetect_calibre_binaries()
+    if sys.platform == "win32":
+        converter_path = os.path.join(calibre_path, "ebook-convert.exe")
+    else:
+        converter_path = os.path.join(calibre_path, "ebook-convert")
+    if os.path.isfile(converter_path) and os.access(converter_path, os.X_OK):
+        return converter_path
     return ""
 
 
@@ -461,6 +495,7 @@ def load_configuration(conf, session, cli):
     # conf = _ConfigSQL()
     conf.init_config(session, cli)
     # return conf
+
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()
