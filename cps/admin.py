@@ -1724,6 +1724,10 @@ def _configuration_update_helper():
         _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_converterpath")
         _config_string(to_save, "config_kepubifypath")
+        if "config_binariesdir" in to_save:
+            calibre_status = helper.check_calibre(config.config_binariesdir)
+            if calibre_status:
+                return _configuration_result(calibre_status)
 
         reboot_required |= _config_int(to_save, "config_login_type")
 

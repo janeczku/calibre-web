@@ -53,7 +53,7 @@ from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
@@ -938,6 +938,33 @@ def check_unrar(unrar_location):
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
         return _('Error excecuting UnRar')
+
+
+def check_calibre(calibre_location):
+    if not calibre_location:
+        return
+
+    if not os.path.exists(calibre_location):
+        return _('Could not find the specified directory')
+
+    if not os.path.isdir(calibre_location):
+        return _('Please specify a directory, not a file')
+
+    try:
+        supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            if all(values):
+                version = values[0].group(1)
+                log.debug("calibre version %s", version)
+            else:
+                return _('Calibre binaries not viable')
+        else:
+            return _('Missing calibre binaries in the specified directory')
+
+    except (OSError, UnicodeDecodeError) as err:
+        log.error_or_exception(err)
+        return _('Error excecuting Calibre')
 
 
 def json_serial(obj):

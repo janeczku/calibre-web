@@ -30,6 +30,7 @@ except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, logger
+from .subproc_wrapper import process_wait
 
 
 log = logger.create()
@@ -274,13 +275,8 @@ class _ConfigSQL(object):
     def get_calibre_binarypath(self, binary):
         binariesdir = self.config_binariesdir
         if binariesdir:
-            # TODO: Need to make sure that all supported calibre binaries are actually in the specified directory when set via UI
-            if sys.platform == "win32":
-                extension = ".exe"
-            else:
-                extension = ""
             if binary in constants.SUPPORTED_CALIBRE_BINARIES:
-                return os.path.join(binariesdir, binary + extension)
+                return os.path.join(binariesdir, binary)
             else:
                 # TODO: Error handling
                 pass
@@ -429,18 +425,20 @@ def _migrate_table(session, orm_class):
 
 def autodetect_calibre_binaries():
     if sys.platform == "win32":
-        extension = ".exe"
         calibre_path = ["C:\\program files\\calibre\\",
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
     else:
-        extension = ""
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        supported_binary_paths = [os.path.join(element, binary + extension) for binary in constants.SUPPORTED_CALIBRE_BINARIES]
+        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES]
         if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
-            return element 
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            if all(values):
+                version = values[0].group(1)
+                log.debug("calibre version %s", version)
+                return element 
     return ""
 
 
