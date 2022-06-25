@@ -2802,11 +2802,11 @@ msgstr "このファイル形式はDBから完全に削除されます"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
-msgstr "この本はDBとローカルから完全に削除されます"
+msgstr "この本はDBと"
 
 #: cps/templates/modal_dialogs.html:52
 msgid "and hard disk"
-msgstr ""
+msgstr "ローカルから完全に削除されます"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
