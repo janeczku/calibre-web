@@ -710,7 +710,7 @@ msgstr "本 %(id)s はDBのみから削除されます。DB内の本のパスが
 #: cps/helper.py:449
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "エラー: %(error)s により、作者名を %(src)s から %(dest)s に変更できませんでした"
+msgstr "エラー: %(error)s により、著者名を %(src)s から %(dest)s に変更できませんでした"
 
 #: cps/helper.py:521 cps/helper.py:530
 #, python-format
@@ -964,11 +964,11 @@ msgstr "シリーズ選択を表示"
 #: cps/render_template.py:76 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
 msgid "Authors"
-msgstr "作者"
+msgstr "著者"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
 msgid "Show author selection"
-msgstr "作者選択を表示"
+msgstr "著者選択を表示"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:966
@@ -1245,7 +1245,7 @@ msgstr "%(user)s がダウンロードした本"
 #: cps/web.py:532
 #, python-format
 msgid "Author: %(name)s"
-msgstr "作者: %(name)s"
+msgstr "著者: %(name)s"
 
 #: cps/web.py:568
 #, python-format
@@ -1744,7 +1744,7 @@ msgstr "減らす"
 
 #: cps/templates/author.html:99
 msgid "More by"
-msgstr "同じ作者が書いた本: "
+msgstr "同じ著者が書いた本: "
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -1781,7 +1781,7 @@ msgstr "本のタイトル"
 #: cps/templates/book_edit.html:63 cps/templates/book_edit.html:271
 #: cps/templates/book_edit.html:289 cps/templates/search_form.html:12
 msgid "Author"
-msgstr "作者"
+msgstr "著者"
 
 #: cps/templates/book_edit.html:68 cps/templates/book_edit.html:276
 #: cps/templates/book_edit.html:291 cps/templates/search_form.html:153
@@ -1815,7 +1815,7 @@ msgstr "タグ"
 
 #: cps/templates/book_edit.html:95
 msgid "Series ID"
-msgstr "シリーズID"
+msgstr "巻数"
 
 #: cps/templates/book_edit.html:99
 msgid "Rating"
@@ -1924,7 +1924,7 @@ msgstr "選択した本を削除"
 
 #: cps/templates/book_table.html:41
 msgid "Exchange author and title"
-msgstr "作者とタイトルを交換"
+msgstr "著者とタイトルを交換"
 
 #: cps/templates/book_table.html:47
 msgid "Update Title Sort automatically"
@@ -1932,7 +1932,7 @@ msgstr "タイトルのよみがなを自動で更新"
 
 #: cps/templates/book_table.html:51
 msgid "Update Author Sort automatically"
-msgstr "作者のよみがなを自動で更新"
+msgstr "著者のよみがなを自動で更新"
 
 #: cps/templates/book_table.html:63 cps/templates/book_table.html:69
 msgid "Enter Title"
@@ -1953,15 +1953,15 @@ msgstr "タイトルのよみがな"
 
 #: cps/templates/book_table.html:65
 msgid "Enter Author Sort"
-msgstr "作者名のよみがなを入力"
+msgstr "著者名のよみがなを入力"
 
 #: cps/templates/book_table.html:65
 msgid "Author Sort"
-msgstr "作者名のよみがな"
+msgstr "著者名のよみがな"
 
 #: cps/templates/book_table.html:66
 msgid "Enter Authors"
-msgstr "作者名を入力"
+msgstr "著者名を入力"
 
 #: cps/templates/book_table.html:67
 msgid "Enter Categories"
@@ -2109,7 +2109,7 @@ msgstr "機能設定"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr "ダウンロード時にタイトルと作者名の中にある2バイト文字を変換する"
+msgstr "ダウンロード時にタイトルと著者名の中にある2バイト文字を変換する"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
@@ -2332,7 +2332,7 @@ msgstr "ランダムに表示する本の冊数"
 
 #: cps/templates/config_view_edit.html:36
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr "非表示にする前に表示する作者数 (0=非表示にしない)"
+msgstr "非表示にする前に表示する著者数 (0=非表示にしない)"
 
 #: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:113
 msgid "Theme"
@@ -2591,12 +2591,12 @@ msgstr "ダウンロード数が多い順にソート"
 #: cps/templates/index.html:78 cps/templates/search.html:35
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
-msgstr "作者名を五十音順にソート"
+msgstr "著者名を五十音順にソート"
 
 #: cps/templates/index.html:79 cps/templates/search.html:36
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
-msgstr "作者名を逆五十音順にソート"
+msgstr "著者名を逆五十音順にソート"
 
 #: cps/templates/index.html:83
 msgid "Sort ascending according to series index"
@@ -2640,7 +2640,7 @@ msgstr "ランダム"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by Author"
-msgstr "作者名順"
+msgstr "著者名順"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by publisher"
@@ -3138,7 +3138,7 @@ msgstr "このライブラリ内の本の冊数"
 
 #: cps/templates/stats.html:16
 msgid "Authors in this Library"
-msgstr "このライブラリ内の作者数"
+msgstr "このライブラリ内の著者数"
 
 #: cps/templates/stats.html:20
 msgid "Categories in this Library"
