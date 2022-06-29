@@ -952,7 +952,8 @@ def check_calibre(calibre_location):
 
     try:
         supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES]
-        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
+        binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
+        if all(binaries_available):
             values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
@@ -960,7 +961,8 @@ def check_calibre(calibre_location):
             else:
                 return _('Calibre binaries not viable')
         else:
-            return _('Missing calibre binaries in the specified directory')
+            missing_binaries=[path for path, available in zip(SUPPORTED_CALIBRE_BINARIES, binaries_available) if not available]
+            return _('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries))
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
