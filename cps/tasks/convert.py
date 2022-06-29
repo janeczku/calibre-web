@@ -233,18 +233,19 @@ class TaskConvert(CalibreTask):
             # windows py2.7 encode as string with quotes empty element for parameters is okay
             # windows py 3.x no encode and as string with quotes empty element for parameters is okay
             # separate handling for windows and linux
-            quotes = [1, 2]
 
-            # TODO: Clean up.
-            # TODO: Maybe delete/clean-up tmp files directly.
+            quotes = [3, 5]
             tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+            if not os.path.isdir(tmp_dir):
+                os.mkdir(tmp_dir)
             calibredb_binarypath = config.get_calibre_binarypath("calibredb")
             opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
-            p = process_open(opf_command)
+            p = process_open(opf_command, quotes)
             path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
             with open(path_tmp_opf, 'w') as fd:
                 copyfileobj(p.stdout, fd)
 
+            quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext), '--from-opf', path_tmp_opf,
                        '--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')]
@@ -257,7 +258,7 @@ class TaskConvert(CalibreTask):
                     quotes_index += 1
 
             p = process_open(command, quotes, newlines=False)
-        except OSError as e:
+        except (ValueError, OSError) as e:
             return 1, N_(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:

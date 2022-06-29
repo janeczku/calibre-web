@@ -278,8 +278,7 @@ class _ConfigSQL(object):
             if binary in constants.SUPPORTED_CALIBRE_BINARIES:
                 return os.path.join(binariesdir, binary)
             else:
-                # TODO: Error handling
-                pass
+                raise ValueError("'{}' is not a supported Calibre binary".format(binary))
         return ""
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
