@@ -1760,6 +1760,12 @@ def _configuration_update_helper():
         # Reverse proxy login configuration
         _config_checkbox(to_save, "config_allow_reverse_proxy_header_login")
         _config_string(to_save, "config_reverse_proxy_login_header_name")
+        _config_checkbox(to_save, "config_check_reverse_proxy_header_login_email")
+        _config_checkbox(to_save, "config_reverse_proxy_header_login_uses_jwt")
+        _config_string(to_save, "config_reverse_proxy_jwt_audience")
+        _config_string(to_save, "config_reverse_proxy_jwt_issuer")
+        _config_string(to_save, "config_reverse_proxy_jwt_jwks_url")
+        _config_string(to_save, "config_reverse_proxy_jwt_id_claim")
 
         # OAuth configuration
         if config.config_login_type == constants.LOGIN_OAUTH:
