@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 18:44+0200\n"
+"POT-Creation-Date: 2022-06-30 19:36+0800\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.1\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -184,7 +184,7 @@ msgstr "您确定要更改 Calibre 库位置吗？"
 
 #: cps/admin.py:618
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
-msgstr ""
+msgstr "Calibre-Web 将搜索更新封面，并更新缩略图，这可能需要一段时间"
 
 #: cps/admin.py:621
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
@@ -310,19 +310,19 @@ msgstr "邮件服务器设置已更新"
 
 #: cps/admin.py:1319 cps/templates/admin.html:191
 msgid "Edit Scheduled Tasks Settings"
-msgstr ""
+msgstr "编辑计划任务设置"
 
 #: cps/admin.py:1331
 msgid "Invalid start time for task specified"
-msgstr ""
+msgstr "指定任务的开始时间无效"
 
 #: cps/admin.py:1336
 msgid "Invalid duration for task specified"
-msgstr ""
+msgstr "指定任务的持续时间无效"
 
 #: cps/admin.py:1345
 msgid "Scheduled tasks settings updated"
-msgstr ""
+msgstr "已更新计划任务设置"
 
 #: cps/admin.py:1355 cps/admin.py:1404 cps/admin.py:1992 cps/web.py:1254
 #: cps/web.py:1315
@@ -331,7 +331,7 @@ msgstr "发生一个未知错误，请稍后再试。"
 
 #: cps/admin.py:1359
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "设置数据库不可写"
 
 #: cps/admin.py:1389 cps/admin.py:1984
 #, python-format
@@ -501,7 +501,7 @@ msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
 #: cps/db.py:679 cps/web.py:720
-#, fuzzy, python-format
+#, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "自定义列号：%(column)d在Calibre数据库中不存在"
 
@@ -645,9 +645,8 @@ msgstr "找不到 %(format)s：%(fn)s"
 
 #: cps/helper.py:96 cps/helper.py:225 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-#, fuzzy
 msgid "Send to E-Reader"
-msgstr "发送到Kindle"
+msgstr "发送到电子阅读器"
 
 #: cps/helper.py:97 cps/helper.py:115 cps/helper.py:227
 msgid "This e-mail has been sent via Calibre-Web."
@@ -671,19 +670,19 @@ msgid "Registration e-mail for user: %(name)s"
 msgstr "用户注册电子邮件：%(name)s"
 
 #: cps/helper.py:147 cps/helper.py:153
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to E-Reader"
-msgstr "转换 %(orig)s 到 %(format)s 并发送到Kindle"
+msgstr "转换 %(orig)s 到 %(format)s 并发送到电子阅读器"
 
 #: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180 cps/helper.py:184
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr "发送 %(format)s 到Kindle"
+msgstr "发送 %(format)s 到电子阅读器"
 
 #: cps/helper.py:224 cps/tasks/convert.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "%(book)s发送到Kindle"
+msgstr "%(book)s发送到电子阅读器"
 
 #: cps/helper.py:229
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -746,7 +745,7 @@ msgstr "无效的邮件地址格式"
 
 #: cps/helper.py:811
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr ""
+msgstr "上传封面需要的Python模块'advocate'未安装"
 
 #: cps/helper.py:821
 msgid "Error Downloading Cover"
@@ -1191,11 +1190,11 @@ msgstr "已完成"
 
 #: cps/tasks_status.py:72
 msgid "Ended"
-msgstr ""
+msgstr "已结束"
 
 #: cps/tasks_status.py:74
 msgid "Cancelled"
-msgstr ""
+msgstr "已取消"
 
 #: cps/tasks_status.py:76
 msgid "Unknown Status"
@@ -1260,7 +1259,7 @@ msgstr "丛书：%(serie)s"
 
 #: cps/web.py:609
 msgid "Rating: None"
-msgstr ""
+msgstr "评分：无"
 
 #: cps/web.py:618
 #, python-format
@@ -1406,33 +1405,33 @@ msgstr "Calibre 运行失败，错误信息：%(error)s"
 
 #: cps/tasks/convert.py:275
 msgid "Convert"
-msgstr ""
+msgstr "转换"
 
 #: cps/tasks/database.py:28
 msgid "Reconnecting Calibre database"
-msgstr ""
+msgstr "正在重新连接到Calibre数据库"
 
 #: cps/tasks/mail.py:265
 msgid "E-mail"
-msgstr ""
+msgstr "电子邮件"
 
 #: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
-msgstr ""
+msgstr "生成了 %(count)s 个封面缩略图"
 
 #: cps/tasks/thumbnail.py:222 cps/tasks/thumbnail.py:435
 #: cps/tasks/thumbnail.py:503
 msgid "Cover Thumbnails"
-msgstr ""
+msgstr "封面缩略图"
 
 #: cps/tasks/thumbnail.py:281
 msgid "Generated {0} series thumbnails"
-msgstr ""
+msgstr "生成了 %(count)s 个丛书缩略图"
 
 #: cps/tasks/thumbnail.py:446
 msgid "Clearing cover thumbnail cache"
-msgstr ""
+msgstr "正在清理封面缩略图缓存"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
 #: cps/templates/layout.html:67 cps/templates/user_table.html:145
@@ -1455,9 +1454,8 @@ msgid "E-mail Address"
 msgstr "邮箱地址"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-#, fuzzy
 msgid "Send to E-Reader E-mail Address"
-msgstr "接收书籍的Kindle邮箱地址"
+msgstr "接收书籍的电子阅读器邮箱地址"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
 #: cps/templates/user_table.html:143
@@ -1598,31 +1596,31 @@ msgstr "编辑界面配置"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
-msgstr ""
+msgstr "计划任务"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 msgid "Time at which tasks start to run"
-msgstr ""
+msgstr "任务开始运行的时间"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum tasks duration"
-msgstr ""
+msgstr "最长任务持续时间"
 
 #: cps/templates/admin.html:178
 msgid "Generate book cover thumbnails"
-msgstr ""
+msgstr "生成书籍封面缩略图"
 
 #: cps/templates/admin.html:182
 msgid "Generate series cover thumbnails"
-msgstr ""
+msgstr "生成丛书封面缩略图"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
 msgid "Reconnect to Calibre Library"
-msgstr ""
+msgstr "重新连接到Calibre库"
 
 #: cps/templates/admin.html:193
 msgid "Refresh Thumbnail Cover Cache"
-msgstr ""
+msgstr "刷新封面缩略图缓存"
 
 #: cps/templates/admin.html:199
 msgid "Administration"
@@ -1650,7 +1648,7 @@ msgstr "停止"
 
 #: cps/templates/admin.html:213
 msgid "Version Information"
-msgstr ""
+msgstr "版本信息"
 
 #: cps/templates/admin.html:217
 msgid "Version"
@@ -2564,7 +2562,7 @@ msgstr "Kobo Token:"
 
 #: cps/templates/grid.html:21
 msgid "List"
-msgstr ""
+msgstr "列表"
 
 #: cps/templates/http_error.html:31
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
@@ -2736,7 +2734,7 @@ msgstr "书籍详情"
 
 #: cps/templates/list.html:22
 msgid "Grid"
-msgstr ""
+msgstr "网格"
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
@@ -2864,12 +2862,11 @@ msgstr "深色"
 
 #: cps/templates/read.html:79
 msgid "Sepia"
-msgstr ""
+msgstr "棕色"
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Black"
-msgstr "后退"
+msgstr "黑色"
 
 #: cps/templates/read.html:84
 msgid "Reflow text when sidebars are open."
@@ -3029,11 +3026,11 @@ msgstr "此验证链接将在10分钟后失效。"
 
 #: cps/templates/schedule_edit.html:29
 msgid "Generate Book Cover Thumbnails"
-msgstr ""
+msgstr "生成书籍封面缩略图"
 
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
-msgstr ""
+msgstr "生成丛书封面缩略图"
 
 #: cps/templates/search.html:6
 msgid "No Results Found"
@@ -3157,7 +3154,7 @@ msgstr "系统统计"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "程序"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3189,15 +3186,15 @@ msgstr "开始时间"
 
 #: cps/templates/tasks.html:20
 msgid "Actions"
-msgstr ""
+msgstr "活动"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr ""
+msgstr "这个任务将被取消。此任务取得的所有进展都将被保存"
 
 #: cps/templates/tasks.html:41
 msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr ""
+msgstr "如果这是计划任务，则将在下一个计划的时间内重新运行"
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
@@ -3264,14 +3261,12 @@ msgid "Enter E-mail Address"
 msgstr "输入邮箱地址"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter E-Reader E-mail Address"
-msgstr "输入Kindle邮箱地址"
+msgstr "输入电子阅读器邮箱地址"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "E-Reader E-mail"
-msgstr "测试邮件"
+msgstr "电子阅读器邮箱"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
