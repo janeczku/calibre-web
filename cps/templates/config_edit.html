@@ -173,6 +173,32 @@
         <label for="config_reverse_proxy_login_header_name">{{_('Reverse Proxy Header Name')}}</label>
         <input type="text" class="form-control" id="config_reverse_proxy_login_header_name" name="config_reverse_proxy_login_header_name" value="{% if config.config_reverse_proxy_login_header_name != None %}{{ config.config_reverse_proxy_login_header_name }}{% endif %}" autocomplete="off">
       </div>
+      <div class="form-group">
+        <input type="checkbox" id="config_check_reverse_proxy_header_login_email" name="config_check_reverse_proxy_header_login_email" {% if config.config_check_reverse_proxy_header_login_email %}checked{% endif %}>
+        <label for="config_check_reverse_proxy_header_login_email">{{_('Reverse Proxy Header Also Matches Email')}}</label>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" id="config_reverse_proxy_header_login_uses_jwt" name="config_reverse_proxy_header_login_uses_jwt" data-control="reverse-proxy-jwt-settings" {% if config.config_reverse_proxy_header_login_uses_jwt %}checked{% endif %}>
+        <label for="config_reverse_proxy_header_login_uses_jwt">{{_('Reverse Proxy Header Uses JWT')}}</label>
+      </div>
+      <div data-related="reverse-proxy-jwt-settings">
+        <div class="form-group">
+          <label for="config_reverse_proxy_jwt_audience">{{_('Reverse Proxy JWT Audience')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_jwt_audience" name="config_reverse_proxy_jwt_audience" value="{% if config.config_reverse_proxy_jwt_audience != None %}{{ config.config_reverse_proxy_jwt_audience }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_reverse_proxy_jwt_issuer">{{_('Reverse Proxy JWT Issuer')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_jwt_issuer" name="config_reverse_proxy_jwt_issuer" value="{% if config.config_reverse_proxy_jwt_issuer != None %}{{ config.config_reverse_proxy_jwt_issuer }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_reverse_proxy_jwt_jwks_url">{{_('Reverse Proxy JWT JWKS URL')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_jwt_jwks_url" name="config_reverse_proxy_jwt_jwks_url" value="{% if config.config_reverse_proxy_jwt_jwks_url != None %}{{ config.config_reverse_proxy_jwt_jwks_url }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_reverse_proxy_jwt_id_claim">{{_('Reverse Proxy JWT ID Claim')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_jwt_id_claim" name="config_reverse_proxy_jwt_id_claim" value="{% if config.config_reverse_proxy_jwt_id_claim != None %}{{ config.config_reverse_proxy_jwt_id_claim }}{% endif %}" autocomplete="off">
+        </div>
+      </div>
     </div>
     {% if not config.config_is_initial %}
     {% if feature_support['ldap'] or feature_support['oauth'] %}

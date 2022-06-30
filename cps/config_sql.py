@@ -140,6 +140,12 @@ class _Settings(_Base):
 
     config_reverse_proxy_login_header_name = Column(String)
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
+    config_check_reverse_proxy_header_login_email = Column(Boolean, default=False)
+    config_reverse_proxy_header_login_uses_jwt = Column(Boolean, default=False)
+    config_reverse_proxy_jwt_audience = Column(String, default="")
+    config_reverse_proxy_jwt_issuer = Column(String, default="")
+    config_reverse_proxy_jwt_jwks_url = Column(String, default="")
+    config_reverse_proxy_jwt_id_claim = Column(String, default="sub")
 
     schedule_start_time = Column(Integer, default=4)
     schedule_duration = Column(Integer, default=10)
