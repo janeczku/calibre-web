@@ -330,13 +330,6 @@
              <button type="button" data-toggle="modal" id="binaries_modal_path" data-link="config_binariesdir" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
            </span>
            </div>
-           <label for="config_converterpath">{{_('Path to Calibre E-Book Converter')}}</label>
-           <div class="form-group input-group">
-            <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" data-toggle="modal" id="converter_modal_path" data-link="config_converterpath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-            </span>
-           </div>
            <div class="form-group">
               <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
               <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
