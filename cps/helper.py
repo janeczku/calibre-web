@@ -54,7 +54,7 @@ from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
-from .subproc_wrapper import process_wait
+from .subproc_wrapper import process_wait, process_open
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
@@ -911,7 +911,28 @@ def do_download_file(book, book_format, client, data, headers):
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
-        response = make_response(send_from_directory(filename, data.name + "." + book_format))
+        if config.config_binariesdir:
+            try:
+                quotes = [3, 5, 7, 9]
+                tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+                if not os.path.isdir(tmp_dir):
+                    os.mkdir(tmp_dir)
+                calibredb_binarypath = config.get_calibre_binarypath("calibredb")
+                opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
+                            '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
+                            '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
+                file_name = book.title
+                if len(book.authors) > 0:
+                    file_name = file_name + ' - ' + book.authors[0].name
+                p = process_open(opf_command, quotes)
+                _, err = p.communicate()
+                if err:
+                    log.error('Metadata embedder encountered an error: %s', err)
+            except (ValueError, OSError) as e:
+                # ToDo real error handling
+                log.error_or_exception(e)
+
+        response = make_response(send_from_directory(tmp_dir, file_name + "." + book_format))
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
