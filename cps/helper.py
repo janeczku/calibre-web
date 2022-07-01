@@ -121,7 +121,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     txt = "Hello %s!\r\n" % user_name
     if not resend:
         txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    txt += "Please log in to your account using the following informations:\r\n"
+    txt += "Please log in to your account using the following information:\r\n"
     txt += "User name: %s\r\n" % user_name
     txt += "Password: %s\r\n" % default_password
     txt += "Don't forget to change your password after first login.\r\n"
@@ -940,7 +940,7 @@ def check_unrar(unrar_location):
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
-        return _('Error excecuting UnRar')
+        return _('Error executing UnRar')
 
 
 def json_serial(obj):
