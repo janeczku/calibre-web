@@ -437,7 +437,7 @@ def render_discover_books(book_id):
 def render_hot_books(page, order):
     if current_user.check_visibility(constants.SIDEBAR_HOT):
         if order[1] not in ['hotasc', 'hotdesc']:
-            # Unary expression comparsion only working (for this expression) in sqlalchemy 1.4+
+            # Unary expression comparison only working (for this expression) in sqlalchemy 1.4+
             # if not (order[0][0].compare(func.count(ub.Downloads.book_id).desc()) or
             #        order[0][0].compare(func.count(ub.Downloads.book_id).asc())):
             order = [func.count(ub.Downloads.book_id).desc()], 'hotdesc'
