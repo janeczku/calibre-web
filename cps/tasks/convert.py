@@ -241,6 +241,7 @@ class TaskConvert(CalibreTask):
             calibredb_binarypath = config.get_calibre_binarypath("calibredb")
             opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
             p = process_open(opf_command, quotes)
+            p.wait()
             path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
             with open(path_tmp_opf, 'w') as fd:
                 copyfileobj(p.stdout, fd)
