@@ -172,10 +172,7 @@ class _ConfigSQL(object):
         if self.config_binariesdir == None: # pylint: disable=access-member-before-definition
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
-
-        if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
-            change = True
-            self.config_converterpath = autodetect_converter_binary()
+            self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
 
         if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
             change = True
@@ -441,13 +438,12 @@ def autodetect_calibre_binaries():
     return ""
 
 
-def autodetect_converter_binary():
-    calibre_path = autodetect_calibre_binaries()
+def autodetect_converter_binary(calibre_path):
     if sys.platform == "win32":
         converter_path = os.path.join(calibre_path, "ebook-convert.exe")
     else:
         converter_path = os.path.join(calibre_path, "ebook-convert")
-    if os.path.isfile(converter_path) and os.access(converter_path, os.X_OK):
+    if calibre_path and os.path.isfile(converter_path) and os.access(converter_path, os.X_OK):
         return converter_path
     return ""
 
