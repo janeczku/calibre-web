@@ -28,6 +28,7 @@ from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -54,6 +55,8 @@ from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 from .kobo_sync_status import change_archived_books
+from . import limiter
+from flask_limiter import RateLimitExceeded
 
 
 feature_support = {
@@ -1266,8 +1269,20 @@ def register():
         register_user_with_oauth()
     return render_title_template('register.html', config=config, title=_("Register"), page="register")
 
+def handle_login_user(user, remember, message, category):
+    login_user(user, remember=remember)
+    ub.store_user_session()
+    flash(message, category=category)
+    try:
+        limiter.check()
+    except RateLimitExceeded:
+        [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+    return redirect_back(url_for("web.index"))
+
 
 @web.route('/login', methods=['GET', 'POST'])
+@limiter.limit("40/day", key_func=lambda: request.form.get('username'), per_method=["POST"])
+@limiter.limit("2/minute", key_func=lambda: request.form.get('username'), per_method=["POST"])
 def login():
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
@@ -1276,26 +1291,25 @@ def login():
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form['username'].strip().lower()) \
+        user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
             .first()
+        remember_me = bool(form.get('remember_me'))
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
-                login_user(user, remember=bool(form.get('remember_me')))
-                ub.store_user_session()
                 log.debug(u"You are now logged in as: '{}'".format(user.name))
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
-                      category="success")
-                return redirect_back(url_for("web.index"))
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
+                                         "success")
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                     and user.name != "Guest":
-                login_user(user, remember=bool(form.get('remember_me')))
-                ub.store_user_session()
                 log.info("Local Fallback Login as: '{}'".format(user.name))
-                flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
-                        nickname=user.name),
-                      category="warning")
-                return redirect_back(url_for("web.index"))
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"Fallback Login as: '%(nickname)s', "
+                                           u"LDAP Server not reachable, or user not known", nickname=user.name),
+                                         "warning")
             elif login_result is None:
                 log.info(error)
                 flash(_(u"Could not login: %(message)s", message=error), category="error")
@@ -1319,12 +1333,12 @@ def login():
                     log.warning('Username missing for password reset IP-address: %s', ip_address)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
-                    login_user(user, remember=bool(form.get('remember_me')))
-                    ub.store_user_session()
-                    log.debug(u"You are now logged in as: '%s'", user.name)
-                    flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
                     config.config_is_initial = False
-                    return redirect_back(url_for("web.index"))
+                    log.debug(u"You are now logged in as: '{}'".format(user.name))
+                    return handle_login_user(user,
+                                             remember_me,
+                                             _(u"You are now logged in as: '%(nickname)s'", nickname=user.name),
+                                             "success")
                 else:
                     log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
                     flash(_(u"Wrong Username or Password"), category="error")
@@ -1332,6 +1346,12 @@ def login():
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
+    # Check rate limit and prevent displaying remaining flash messages from last attempt
+    try:
+        limiter.check()
+    except RateLimitExceeded:
+        flask_session['_flashes'].clear()
+        raise
     return render_title_template('login.html',
                                  title=_(u"Login"),
                                  next_url=next_url,

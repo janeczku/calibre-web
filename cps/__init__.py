@@ -97,7 +97,7 @@ web_server = WebServer()
 
 updater_thread = Updater()
 
-limiter = Limiter(key_func=True, headers_enabled=True)
+limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=True)
 
 def create_app():
     if csrf:
