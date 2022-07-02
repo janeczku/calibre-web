@@ -44,15 +44,15 @@ def init_app(app, config):
         app.config['LDAP_SCHEMA'] = 'ldap'
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
-            if config.config_ldap_serv_password is None:
-                config.config_ldap_serv_password = ''
-            app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
+            if config.config_ldap_serv_password_e is None:
+                config.config_ldap_serv_password_e = ''
+            app.config['LDAP_PASSWORD'] = config.config_ldap_serv_password_e
         else:
-            app.config['LDAP_PASSWORD'] = base64.b64decode("")
+            app.config['LDAP_PASSWORD'] = ""
         app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
     else:
         app.config['LDAP_USERNAME'] = ""
-        app.config['LDAP_PASSWORD'] = base64.b64decode("")
+        app.config['LDAP_PASSWORD'] = ""
     if bool(config.config_ldap_cert_path):
         app.config['LDAP_CUSTOM_OPTIONS'].update({
             pyLDAP.OPT_X_TLS_REQUIRE_CERT: pyLDAP.OPT_X_TLS_DEMAND,

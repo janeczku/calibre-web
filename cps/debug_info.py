@@ -65,7 +65,7 @@ def send_debug():
             file_list.remove(element)
     memory_zip = BytesIO()
     with zipfile.ZipFile(memory_zip, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
-        zf.writestr('settings.txt', json.dumps(config.toDict(), sort_keys=True, indent=2))
+        zf.writestr('settings.txt', json.dumps(config.to_dict(), sort_keys=True, indent=2))
         zf.writestr('libs.txt', json.dumps(collect_stats(), sort_keys=True, indent=2, cls=lazyEncoder))
         for fp in file_list:
             zf.write(fp, os.path.basename(fp))
