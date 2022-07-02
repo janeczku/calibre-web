@@ -159,8 +159,8 @@
         <input type="text" class="form-control" id="config_goodreads_api_key" name="config_goodreads_api_key" value="{% if config.config_goodreads_api_key != None %}{{ config.config_goodreads_api_key }}{% endif %}" autocomplete="off">
       </div>
       <div class="form-group">
-        <label for="config_goodreads_api_secret">{{_('Goodreads API Secret')}}</label>
-        <input type="text" class="form-control" id="config_goodreads_api_secret" name="config_goodreads_api_secret" value="{% if config.config_goodreads_api_secret != None %}{{ config.config_goodreads_api_secret }}{% endif %}" autocomplete="off">
+        <label for="config_goodreads_api_secret_e">{{_('Goodreads API Secret')}}</label>
+        <input type="password" class="form-control" id="config_goodreads_api_secret_e" name="config_goodreads_api_secret_e" value="{% if config.config_goodreads_api_secret_e != None %}{{ config.config_goodreads_api_secret_e }}{% endif %}" autocomplete="off">
       </div>
     </div>
     {% endif %}
@@ -245,8 +245,8 @@
         </div>
         <div data-related="ldap-auth-password-2">
           <div class="form-group">
-            <label for="config_ldap_serv_password">{{_('LDAP Administrator Password')}}</label>
-            <input type="password" class="form-control" id="config_ldap_serv_password" name="config_ldap_serv_password" value="" autocomplete="off">
+            <label for="config_ldap_serv_password_e">{{_('LDAP Administrator Password')}}</label>
+            <input type="password" class="form-control" id="config_ldap_serv_password_e" name="config_ldap_serv_password_e" value="" autocomplete="off">
           </div>
         </div>
         <div class="form-group">

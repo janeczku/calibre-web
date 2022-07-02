@@ -28,6 +28,7 @@ import mimetypes
 from flask import Flask
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
+from flask_limiter import Limiter
 
 from . import logger
 from .cli import CliParameter
@@ -81,7 +82,7 @@ app.config.update(
 
 lm = MyLoginManager()
 
-config = config_sql._ConfigSQL()
+config = config_sql.ConfigSQL()
 
 cli_param = CliParameter()
 
@@ -96,6 +97,7 @@ web_server = WebServer()
 
 updater_thread = Updater()
 
+limiter = Limiter(key_func=True, headers_enabled=True)
 
 def create_app():
     if csrf:
@@ -106,7 +108,12 @@ def create_app():
     ub.init_db(cli_param.settings_path, cli_param.user_credentials)
 
     # pylint: disable=no-member
-    config_sql.load_configuration(config, ub.session, cli_param)
+    encrypt_key, error = config_sql.get_encryption_key(os.path.dirname(cli_param.settings_path))
+
+    config_sql.load_configuration(ub.session, encrypt_key)
+    config.init_config(ub.session, encrypt_key, cli_param)
+    if error:
+        log.error(error)
 
     lm.login_view = 'web.login'
     lm.anonymous_user = ub.Anonymous
@@ -150,7 +157,7 @@ def create_app():
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
     log.info('Starting Calibre Web...')
-
+    limiter.init_app(app)
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
@@ -165,7 +172,7 @@ def create_app():
         services.ldap.init_app(app, config)
     if services.goodreads_support:
         services.goodreads_support.connect(config.config_goodreads_api_key,
-                                           config.config_goodreads_api_secret,
+                                           config.config_goodreads_api_secret_e,
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     # Register scheduled tasks

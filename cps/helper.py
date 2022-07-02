@@ -19,7 +19,6 @@
 
 import os
 import io
-import sys
 import mimetypes
 import re
 import shutil

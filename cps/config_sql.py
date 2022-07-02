@@ -23,6 +23,10 @@ import json
 from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql.expression import text
+from sqlalchemy import exists
+from cryptography.fernet import Fernet
+import cryptography.exceptions
+from base64 import urlsafe_b64decode
 try:
     # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
@@ -56,7 +60,8 @@ class _Settings(_Base):
     mail_port = Column(Integer, default=25)
     mail_use_ssl = Column(SmallInteger, default=0)
     mail_login = Column(String, default='mail@example.com')
-    mail_password = Column(String, default='mypassword')
+    mail_password_e = Column(String)
+    mail_password = Column(String)
     mail_from = Column(String, default='automailer <mail@example.com>')
     mail_size = Column(Integer, default=25*1024*1024)
     mail_server_type = Column(SmallInteger, default=0)
@@ -106,6 +111,7 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
+    config_goodreads_api_secret_e = Column(String)
     config_goodreads_api_secret = Column(String)
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
@@ -116,7 +122,8 @@ class _Settings(_Base):
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_authentication = Column(SmallInteger, default=constants.LDAP_AUTH_SIMPLE)
     config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
-    config_ldap_serv_password = Column(String, default="")
+    config_ldap_serv_password_e = Column(String)
+    config_ldap_serv_password = Column(String)
     config_ldap_encryption = Column(SmallInteger, default=0)
     config_ldap_cacert_path = Column(String, default="")
     config_ldap_cert_path = Column(String, default="")
@@ -159,19 +166,117 @@ class _Settings(_Base):
         return self.__class__.__name__
 
 
+class MailConfigSQL(object):
+
+    def __init__(self):
+        self.__dict__["dirty"] = list()
+
+    def init_config(self, session, secret_key):
+        self._session = session
+        self._settings = None
+        self._fernet = Fernet(secret_key)
+        self.load()
+
+    def _read_from_storage(self):
+        if self._settings is None:
+            log.debug("_MailConfigSQL._read_from_storage")
+            self._settings = self._session.query(_Mail_Settings).first()
+        return self._settings
+
+    def to_dict(self):
+        storage = {}
+        for k, v in self.__dict__.items():
+            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret") and not k == "cli":
+                storage[k] = v
+        return storage
+
+    def load(self):
+        """Load all configuration values from the underlying storage."""
+        s = self._read_from_storage()  # type: _Settings
+        for k, v in s.__dict__.items():
+            if k[0] != '_':
+                if v is None:
+                    # if the storage column has no value, apply the (possible) default
+                    column = s.__class__.__dict__.get(k)
+                    if column.default is not None:
+                        v = column.default.arg
+                if k.endswith("enc") and v is not None:
+                    try:
+                        setattr(s, k, self._fernet.decrypt(v).decode())
+                    except cryptography.exceptions.InvalidKey:
+                        setattr(s, k, None)
+                else:
+                    setattr(self, k, v)
+        self.__dict__["dirty"] = list()
+
+    def save(self):
+        """Apply all configuration values to the underlying storage."""
+        s = self._read_from_storage()  # type: _Settings
+        for k in self.dirty:
+            if k[0] == '_':
+                continue
+            if hasattr(s, k):
+                if k.endswith("enc"):
+                    setattr(s, k, self._fernet.encrypt(self.__dict__[k].encode()))
+                else:
+                    setattr(s, k, self.__dict__[k])
+
+        log.debug("_MailConfigSQL updating storage")
+        self._session.merge(s)
+        try:
+            self._session.commit()
+        except OperationalError as e:
+            log.error('Database error: %s', e)
+            self._session.rollback()
+        self.load()
+
+
+    def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
+        """Possibly updates a field of this object.
+        The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
+
+        :returns: `True` if the field has changed value
+        """
+        new_value = dictionary.get(field, default)
+        if new_value is None:
+            return False
+
+        if field not in self.__dict__:
+            log.warning("_ConfigSQL trying to set unknown field '%s' = %r", field, new_value)
+            return False
+
+        if convertor is not None:
+            if encode:
+                new_value = convertor(new_value.encode(encode))
+            else:
+                new_value = convertor(new_value)
+
+        current_value = self.__dict__.get(field)
+        if current_value == new_value:
+            return False
+
+        setattr(self, field, new_value)
+        return True
+
+    def __setattr__(self, attr_name, attr_value):
+        super().__setattr__(attr_name, attr_value)
+        self.__dict__["dirty"].append(attr_name)
+
+
 # Class holds all application specific settings in calibre-web
-class _ConfigSQL(object):
+class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
-        pass
+        self.__dict__["dirty"] = list()
 
-    def init_config(self, session, cli):
+    def init_config(self, session, secret_key, cli):
         self._session = session
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
-        self.load()
+        self._fernet = Fernet(secret_key)
         self.cli = cli
+        self.load()
 
         change = False
         if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
@@ -300,10 +405,10 @@ class _ConfigSQL(object):
         setattr(self, field, new_value)
         return True
 
-    def toDict(self):
+    def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret") and not k == "cli":
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli":
                 storage[k] = v
         return storage
 
@@ -317,7 +422,13 @@ class _ConfigSQL(object):
                     column = s.__class__.__dict__.get(k)
                     if column.default is not None:
                         v = column.default.arg
-                setattr(self, k, v)
+                if k.endswith("_e") and v is not None:
+                    try:
+                        setattr(self, k, self._fernet.decrypt(v).decode())
+                    except cryptography.fernet.InvalidToken:
+                        setattr(self, k, "")
+                else:
+                    setattr(self, k, v)
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:
@@ -339,16 +450,20 @@ class _ConfigSQL(object):
             except OperationalError as e:
                 log.error('Database error: %s', e)
                 self._session.rollback()
+        self.__dict__["dirty"] = list()
 
     def save(self):
         """Apply all configuration values to the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
 
-        for k, v in self.__dict__.items():
+        for k in self.dirty:
             if k[0] == '_':
                 continue
             if hasattr(s, k):
-                setattr(s, k, v)
+                if k.endswith("_e"):
+                    setattr(s, k, self._fernet.encrypt(self.__dict__[k].encode()))
+                else:
+                    setattr(s, k, self.__dict__[k])
 
         log.debug("_ConfigSQL updating storage")
         self._session.merge(s)
@@ -364,7 +479,6 @@ class _ConfigSQL(object):
             log.error(error)
         log.warning("invalidating configuration")
         self.db_configured = False
-        # self.config_calibre_dir = None
         self.save()
 
     def store_calibre_uuid(self, calibre_db, Library_table):
@@ -376,8 +490,40 @@ class _ConfigSQL(object):
         except AttributeError:
             pass
 
+    def __setattr__(self, attr_name, attr_value):
+        super().__setattr__(attr_name, attr_value)
+        self.__dict__["dirty"].append(attr_name)
 
-def _migrate_table(session, orm_class):
+
+def _encrypt_fields(session, secret_key):
+    try:
+        session.query(exists().where(_Settings.mail_password_e)).scalar()
+    except OperationalError:
+        with session.bind.connect() as conn:
+            conn.execute("ALTER TABLE settings ADD column 'mail_password_e' String")
+            conn.execute("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String")
+            conn.execute("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String")
+        session.commit()
+        crypter = Fernet(secret_key)
+        settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
+                                 _Settings.config_ldap_serv_password).first()
+        if settings.mail_password:
+            session.query(_Settings).update(
+                {_Settings.mail_password_e: crypter.encrypt(settings.mail_password.encode())})
+        if settings.config_goodreads_api_secret:
+            session.query(_Settings).update(
+                {_Settings.config_goodreads_api_secret_e:
+                     crypter.encrypt(settings.config_goodreads_api_secret.encode())})
+        if settings.config_ldap_serv_password:
+            session.query(_Settings).update(
+                {_Settings.config_ldap_serv_password_e:
+                     crypter.encrypt(settings.config_ldap_serv_password.encode())})
+        session.commit()
+
+
+def _migrate_table(session, orm_class, secret_key=None):
+    if secret_key:
+        _encrypt_fields(session, secret_key)
     changed = False
 
     for column_name, column in orm_class.__dict__.items():
@@ -453,22 +599,18 @@ def autodetect_kepubify_binary():
     return ""
 
 
-def _migrate_database(session):
+def _migrate_database(session, secret_key):
     # make sure the table is created, if it does not exist
     _Base.metadata.create_all(session.bind)
-    _migrate_table(session, _Settings)
+    _migrate_table(session, _Settings, secret_key)
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(conf, session, cli):
-    _migrate_database(session)
-
+def load_configuration(session, secret_key):
+    _migrate_database(session, secret_key)
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-    # conf = _ConfigSQL()
-    conf.init_config(session, cli)
-    # return conf
 
 
 def get_flask_session_key(_session):
@@ -478,3 +620,25 @@ def get_flask_session_key(_session):
         _session.add(flask_settings)
         _session.commit()
     return flask_settings.flask_session_key
+
+
+def get_encryption_key(key_path):
+    key_file = os.path.join(key_path, ".key")
+    generate = True
+    error = ""
+    if os.path.exists(key_file) and  os.path.getsize(key_file) > 32:
+        with open(key_file, "rb") as f:
+            key = f.read()
+        try:
+            urlsafe_b64decode(key)
+            generate = False
+        except ValueError:
+            pass
+    if generate:
+        key = Fernet.generate_key()
+        try:
+            with open(key_file, "wb") as f:
+                f.write(key)
+        except PermissionError as e:
+            error = e
+    return key, error

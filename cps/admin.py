@@ -206,12 +206,12 @@ def admin():
             commit = version['version']
 
     all_user = ub.session.query(ub.User).all()
-    email_settings = config.get_mail_settings()
+    # email_settings = mail_config.get_mail_settings()
     schedule_time = format_time(datetime_time(hour=config.schedule_start_time), format="short")
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
     schedule_duration = format_timedelta(t, threshold=.99)
 
-    return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
+    return render_title_template("admin.html", allUser=all_user, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
                                  schedule_duration=schedule_duration,
                                  title=_(u"Admin page"), page="admin")
@@ -1062,7 +1062,7 @@ def _config_checkbox_int(to_save, x):
 
 
 def _config_string(to_save, x):
-    return config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
+    return config.set_from_dictionary(to_save, x, lambda y: y.strip().strip(u'\u200B\u200C\u200D\ufeff') if y else y)
 
 
 def _configuration_gdrive_helper(to_save):
@@ -1151,9 +1151,9 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
-    if to_save.get("config_ldap_serv_password", "") != "":
+    if to_save.get("config_ldap_serv_password_e", "") != "":
         reboot_required |= 1
-        config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
+        config.set_from_dictionary(to_save, "config_ldap_serv_password_e")
     config.save()
 
     if not config.config_ldap_provider_url \
@@ -1165,7 +1165,7 @@ def _configuration_ldap_helper(to_save):
 
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
-            if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
+            if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password_e):
                 return reboot_required, _configuration_result(_('Please Enter a LDAP Service Account and Password'))
         else:
             if not config.config_ldap_serv_username:
@@ -1233,7 +1233,7 @@ def new_user():
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
-@admi.route("/admin/mailsettings")
+@admi.route("/admin/mailsettings", methods=["GET"])
 @login_required
 @admin_required
 def edit_mailsettings():
@@ -1266,11 +1266,12 @@ def update_mailsettings():
     else:
         _config_int(to_save, "mail_port")
         _config_int(to_save, "mail_use_ssl")
-        _config_string(to_save, "mail_password")
+        _config_string(to_save, "mail_password_e")
         _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
-        config.mail_server = to_save.get('mail_server', "").strip()
-        config.mail_from = to_save.get('mail_from', "").strip()
-        config.mail_login = to_save.get('mail_login', "").strip()
+        _config_string(to_save, "mail_server")
+        _config_string(to_save, "mail_from")
+        _config_string(to_save, "mail_login")
+
     try:
         config.save()
     except (OperationalError, InvalidRequestError) as e:
@@ -1326,7 +1327,7 @@ def update_scheduledtasks():
     error = False
     to_save = request.form.to_dict()
     if 0 <= int(to_save.get("schedule_start_time")) <= 23:
-        _config_int(to_save, "schedule_start_time")
+        _config_int( to_save, "schedule_start_time")
     else:
         flash(_(u"Invalid start time for task specified"), category="error")
         error = True
@@ -1749,10 +1750,10 @@ def _configuration_update_helper():
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
         _config_string(to_save, "config_goodreads_api_key")
-        _config_string(to_save, "config_goodreads_api_secret")
+        _config_string(to_save, "config_goodreads_api_secret_e")
         if services.goodreads_support:
             services.goodreads_support.connect(config.config_goodreads_api_key,
-                                               config.config_goodreads_api_secret,
+                                               config.config_goodreads_api_secret_e,
                                                config.config_use_goodreads)
 
         _config_int(to_save, "config_updatechannel")
