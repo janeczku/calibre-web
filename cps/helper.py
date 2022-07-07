@@ -951,7 +951,7 @@ def check_calibre(calibre_location):
         return _('Please specify a directory, not a file')
 
     try:
-        supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES]
+        supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES.values()]
         binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
         if all(binaries_available):
             values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
@@ -961,7 +961,7 @@ def check_calibre(calibre_location):
             else:
                 return _('Calibre binaries not viable')
         else:
-            missing_binaries=[path for path, available in zip(SUPPORTED_CALIBRE_BINARIES, binaries_available) if not available]
+            missing_binaries=[path for path, available in zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
             return _('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries))
 
     except (OSError, UnicodeDecodeError) as err:
@@ -1030,6 +1030,17 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def get_calibre_binarypath(binary):
+        binariesdir = config.config_binariesdir
+        if binariesdir:
+            try:
+                return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
+            except KeyError as ex:
+                log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
+                pass
+        return ""
 
 
 def clear_cover_thumbnail_cache(book_id):
