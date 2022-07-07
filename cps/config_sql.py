@@ -269,15 +269,6 @@ class _ConfigSQL(object):
     def get_scheduled_task_settings(self):
         return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
 
-    def get_calibre_binarypath(self, binary):
-        binariesdir = self.config_binariesdir
-        if binariesdir:
-            if binary in constants.SUPPORTED_CALIBRE_BINARIES:
-                return os.path.join(binariesdir, binary)
-            else:
-                raise ValueError("'{}' is not a supported Calibre binary".format(binary))
-        return ""
-
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
         The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
@@ -428,7 +419,7 @@ def autodetect_calibre_binaries():
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES]
+        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
         if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
             values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):
