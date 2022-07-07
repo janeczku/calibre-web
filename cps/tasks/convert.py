@@ -37,7 +37,7 @@ from cps.ub import init_db_thread
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
-
+from cps.constants import SUPPORTED_CALIBRE_BINARIES
 
 log = logger.create()
 
@@ -238,7 +238,7 @@ class TaskConvert(CalibreTask):
             tmp_dir = os.path.join(gettempdir(), 'calibre_web')
             if not os.path.isdir(tmp_dir):
                 os.mkdir(tmp_dir)
-            calibredb_binarypath = config.get_calibre_binarypath("calibredb")
+            calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
             opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
             p = process_open(opf_command, quotes)
             p.wait()
@@ -259,7 +259,7 @@ class TaskConvert(CalibreTask):
                     quotes_index += 1
 
             p = process_open(command, quotes, newlines=False)
-        except (ValueError, OSError) as e:
+        except OSError as e:
             return 1, N_(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
