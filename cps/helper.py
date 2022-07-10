@@ -112,9 +112,9 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 def send_test_mail(ereader_mail, user_name):
     for email in ereader_mail.split(','):
         email = email.strip()
-    	WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
-						config.get_mail_settings(), email, N_(u"Test e-mail"),
-											_(u'This e-mail has been sent via Calibre-Web.')))
+        WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
+                                              config.get_mail_settings(), email, N_(u"Test e-mail"),
+                                              _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
@@ -226,9 +226,9 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             email_text = N_(u"%(book)s send to E-Reader", book=link)
             for email in ereader_mail.split(','):
                 email = email.strip()
-	            WorkerThread.add(user_id, TaskEmail(_(u"Send to E-Reader"), book.path, converted_file_name,
-	                             config.get_mail_settings(), email,
-	                                 email_text, _(u'This e-mail has been sent via Calibre-Web.')))
+                WorkerThread.add(user_id, TaskEmail(_(u"Send to E-Reader"), book.path, converted_file_name,
+                                                    config.get_mail_settings(), email, email_text,
+                                                    _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
