@@ -96,11 +96,11 @@ class TaskConvert(CalibreTask):
                                                                self.results["path"],
                                                                filename,
                                                                self.settings,
-                                                           	   email,
+                                                               email,
                                                                EmailText,
                                                                self.settings['body'],
                                                                internal=True)
-                                      )
+                                          )
                 except Exception as ex:
                     return self._handleError(str(ex))
 
