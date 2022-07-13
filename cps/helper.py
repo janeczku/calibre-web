@@ -917,7 +917,7 @@ def do_download_file(book, book_format, client, data, headers):
                 tmp_dir = os.path.join(gettempdir(), 'calibre_web')
                 if not os.path.isdir(tmp_dir):
                     os.mkdir(tmp_dir)
-                calibredb_binarypath = config.get_calibre_binarypath("calibredb")
+                calibredb_binarypath = get_calibre_binarypath("calibredb")
                 opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
                             '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
                             '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
@@ -928,9 +928,9 @@ def do_download_file(book, book_format, client, data, headers):
                 _, err = p.communicate()
                 if err:
                     log.error('Metadata embedder encountered an error: %s', err)
-            except (ValueError, OSError) as e:
+            except OSError as ex:
                 # ToDo real error handling
-                log.error_or_exception(e)
+                log.error_or_exception(ex)
 
         response = make_response(send_from_directory(tmp_dir, file_name + "." + book_format))
         # ToDo Check headers parameter
