@@ -894,9 +894,10 @@ def save_cover(img, book_path):
 
 
 def do_download_file(book, book_format, client, data, headers):
+    book_name = data.name
     if config.config_use_google_drive:
         # startTime = time.time()
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
@@ -904,40 +905,46 @@ def do_download_file(book, book_format, client, data, headers):
             abort(404)
     else:
         filename = os.path.join(config.config_calibre_dir, book.path)
-        if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
+        if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
             # ToDo: improve error handling
-            log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
+            log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
 
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
         if config.config_binariesdir:
-            try:
-                quotes = [3, 5, 7, 9]
-                tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-                if not os.path.isdir(tmp_dir):
-                    os.mkdir(tmp_dir)
-                calibredb_binarypath = get_calibre_binarypath("calibredb")
-                opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
-                            '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
-                            '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
-                file_name = book.title
-                if len(book.authors) > 0:
-                    file_name = file_name + ' - ' + book.authors[0].name
-                p = process_open(opf_command, quotes)
-                _, err = p.communicate()
-                if err:
-                    log.error('Metadata embedder encountered an error: %s', err)
-            except OSError as ex:
-                # ToDo real error handling
-                log.error_or_exception(ex)
+            filename, book_name = do_calibre_export(book, book_format)
 
-        response = make_response(send_from_directory(tmp_dir, file_name + "." + book_format))
+        response = make_response(send_from_directory(filename, book_name + "." + book_format))
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
-        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
+        log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
         return response
+
+
+def do_calibre_export(book, book_format):
+    try:
+        quotes = [3, 5, 7, 9]
+        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+        calibredb_binarypath = get_calibre_binarypath("calibredb")
+        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
+                    '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
+                    '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
+        file_name = book.title
+        if len(book.authors) > 0:
+            file_name = file_name + ' - ' + book.authors[0].name
+        p = process_open(opf_command, quotes)
+        _, err = p.communicate()
+        if err:
+            log.error('Metadata embedder encountered an error: %s', err)
+        return tmp_dir, file_name
+    except OSError as ex:
+        # ToDo real error handling
+        log.error_or_exception(ex)
+
 
 ##################################
 
