@@ -126,7 +126,7 @@ def token_verified():
         ub.session_commit("User {} logged in via remotelogin, token deleted".format(user.name))
 
         data['status'] = 'success'
-        log.debug(u"Remote Login for userid %s succeded", user.id)
+        log.debug(u"Remote Login for userid %s succeeded", user.id)
         flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
 
     response = make_response(json.dumps(data, ensure_ascii=False))

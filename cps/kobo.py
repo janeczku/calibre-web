@@ -155,7 +155,7 @@ def HandleSyncRequest():
     new_archived_last_modified = datetime.datetime.min
     sync_results = []
 
-    # We reload the book database so that the user get's a fresh view of the library
+    # We reload the book database so that the user gets a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
 
@@ -508,7 +508,7 @@ def get_metadata(book):
 @requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
-    # catch delete requests, otherwise the are handeld in the book delete handler
+    # catch delete requests, otherwise the are handled in the book delete handler
     if request.method == "DELETE":
         abort(405)
     name, items = None, None
