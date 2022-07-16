@@ -598,14 +598,16 @@ def render_series_books(page, book_id, order):
 
 def render_ratings_books(page, book_id, order):
     if book_id == '-1':
+        db_filter = coalesce(db.Ratings.rating, 0) < 1
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.ratings == None,
+                                                                db_filter,
                                                                 [order[0][0]],
                                                                 True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
-                                                                db.Series)
+                                                                db.Series,
+                                                                db.books_ratings_link, db.Ratings)
         title = _(u"Rating: None")
         rating = -1
     else:
@@ -1018,10 +1020,11 @@ def ratings_list():
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                            (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
+            .filter(db.Ratings.rating > 0) \
             .group_by(text('books_ratings_link.rating')).order_by(order).all()
         no_rating_count = (calibre_db.session.query(db.Books)
                            .outerjoin(db.books_ratings_link).outerjoin(db.Ratings)
-                           .filter(db.Ratings.rating == None)
+                           .filter(or_(db.Ratings.rating == None, db.Ratings.rating == 0))
                            .filter(calibre_db.common_filters())
                            .count())
         entries.append([db.Category(_("None"), "-1", -1), no_rating_count])
