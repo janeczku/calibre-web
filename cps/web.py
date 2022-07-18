@@ -1269,95 +1269,107 @@ def register():
         register_user_with_oauth()
     return render_title_template('register.html', config=config, title=_("Register"), page="register")
 
+
 def handle_login_user(user, remember, message, category):
     login_user(user, remember=remember)
     ub.store_user_session()
     flash(message, category=category)
-    try:
-        limiter.check()
-    except RateLimitExceeded:
-        [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+    [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
     return redirect_back(url_for("web.index"))
 
+def error_logi():
+    flash(_(u"Wait one minute"), category="error")
+    return render_login()
 
-@web.route('/login', methods=['GET', 'POST'])
-@limiter.limit("40/day", key_func=lambda: request.form.get('username'), per_method=["POST"])
-@limiter.limit("2/minute", key_func=lambda: request.form.get('username'), per_method=["POST"])
-def login():
-    if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('web.index'))
-    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
-        log.error(u"Cannot activate LDAP authentication")
-        flash(_(u"Cannot activate LDAP authentication"), category="error")
-    if request.method == "POST":
-        form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
-            .first()
-        remember_me = bool(form.get('remember_me'))
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
-            login_result, error = services.ldap.bind_user(form['username'], form['password'])
-            if login_result:
-                log.debug(u"You are now logged in as: '{}'".format(user.name))
-                return handle_login_user(user,
-                                         remember_me,
-                                         _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
-                                         "success")
-            elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
-                    and user.name != "Guest":
-                log.info("Local Fallback Login as: '{}'".format(user.name))
-                return handle_login_user(user,
-                                         remember_me,
-                                         _(u"Fallback Login as: '%(nickname)s', "
-                                           u"LDAP Server not reachable, or user not known", nickname=user.name),
-                                         "warning")
-            elif login_result is None:
-                log.info(error)
-                flash(_(u"Could not login: %(message)s", message=error), category="error")
-            else:
-                ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_address)
-                flash(_(u"Wrong Username or Password"), category="error")
-        else:
-            ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-            if form.get('forgot', "") == 'forgot':
-                if user is not None and user.name != "Guest":
-                    ret, __ = reset_password(user.id)
-                    if ret == 1:
-                        flash(_(u"New Password was send to your email address"), category="info")
-                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_address)
-                    else:
-                        log.error(u"An unknown error occurred. Please try again later")
-                        flash(_(u"An unknown error occurred. Please try again later."), category="error")
-                else:
-                    flash(_(u"Please enter valid username to reset password"), category="error")
-                    log.warning('Username missing for password reset IP-address: %s', ip_address)
-            else:
-                if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
-                    config.config_is_initial = False
-                    log.debug(u"You are now logged in as: '{}'".format(user.name))
-                    return handle_login_user(user,
-                                             remember_me,
-                                             _(u"You are now logged in as: '%(nickname)s'", nickname=user.name),
-                                             "success")
-                else:
-                    log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
-                    flash(_(u"Wrong Username or Password"), category="error")
-
+def render_login():
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
-    # Check rate limit and prevent displaying remaining flash messages from last attempt
-    try:
-        limiter.check()
-    except RateLimitExceeded:
-        flask_session['_flashes'].clear()
-        raise
     return render_title_template('login.html',
                                  title=_(u"Login"),
                                  next_url=next_url,
                                  config=config,
                                  oauth_check=oauth_check,
                                  mail=config.get_mail_server_configured(), page="login")
+
+
+@web.route('/login', methods=['GET'])
+def login():
+    if current_user is not None and current_user.is_authenticated:
+        return redirect(url_for('web.index'))
+    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
+        log.error(u"Cannot activate LDAP authentication")
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
+    return render_login()
+
+
+@web.route('/login', methods=['POST'])
+@limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("2/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+def login_post():
+    try:
+        limiter.check()
+    except RateLimitExceeded:
+        flash(_(u"Wait one minute"), category="error")
+        return render_login()
+    if current_user is not None and current_user.is_authenticated:
+        return redirect(url_for('web.index'))
+    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
+        log.error(u"Cannot activate LDAP authentication")
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
+    form = request.form.to_dict()
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
+        .first()
+    remember_me = bool(form.get('remember_me'))
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+        login_result, error = services.ldap.bind_user(form['username'], form['password'])
+        if login_result:
+            log.debug(u"You are now logged in as: '{}'".format(user.name))
+            return handle_login_user(user,
+                                     remember_me,
+                                     _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
+                                     "success")
+        elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
+                and user.name != "Guest":
+            log.info("Local Fallback Login as: '{}'".format(user.name))
+            return handle_login_user(user,
+                                     remember_me,
+                                     _(u"Fallback Login as: '%(nickname)s', "
+                                       u"LDAP Server not reachable, or user not known", nickname=user.name),
+                                     "warning")
+        elif login_result is None:
+            log.info(error)
+            flash(_(u"Could not login: %(message)s", message=error), category="error")
+        else:
+            ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+            log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_address)
+            flash(_(u"Wrong Username or Password"), category="error")
+    else:
+        ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+        if form.get('forgot', "") == 'forgot':
+            if user is not None and user.name != "Guest":
+                ret, __ = reset_password(user.id)
+                if ret == 1:
+                    flash(_(u"New Password was send to your email address"), category="info")
+                    log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_address)
+                else:
+                    log.error(u"An unknown error occurred. Please try again later")
+                    flash(_(u"An unknown error occurred. Please try again later."), category="error")
+            else:
+                flash(_(u"Please enter valid username to reset password"), category="error")
+                log.warning('Username missing for password reset IP-address: %s', ip_address)
+        else:
+            if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
+                config.config_is_initial = False
+                log.debug(u"You are now logged in as: '{}'".format(user.name))
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"You are now logged in as: '%(nickname)s'", nickname=user.name),
+                                         "success")
+            else:
+                log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
+                flash(_(u"Wrong Username or Password"), category="error")
+    return render_login()
 
 
 @web.route('/logout')
