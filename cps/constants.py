@@ -154,7 +154,7 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr'
 _extension = ""
 if sys.platform == "win32":
     _extension = ".exe"
-SUPPORTED_CALIBRE_BINARIES = {binary:binary + _extension for binary in ["ebook-convert", "calibredb"]}
+SUPPORTED_CALIBRE_BINARIES = {binary:binary + _extension for binary in ["ebook-convert", "calibredb", "ebook-meta"]}
 
 
 def has_flag(value, bit_flag):

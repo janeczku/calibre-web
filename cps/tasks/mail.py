@@ -20,6 +20,7 @@ import os
 import smtplib
 import threading
 import socket
+from shutil import copy
 import mimetypes
 
 from io import StringIO
@@ -32,6 +33,8 @@ from email.utils import formatdate
 from cps.services.worker import CalibreTask
 from cps.services import gmail
 from cps import logger, config
+from cps.subproc_wrapper import process_open
+from cps.constants import SUPPORTED_CALIBRE_BINARIES
 
 from cps import gdriveutils
 import uuid
@@ -245,15 +248,23 @@ class TaskEmail(CalibreTask):
                 df.GetContentFile(datafile)
             else:
                 return None
+            if config.config_binariesdir:
+                datafile = cls._embed_metadata(calibre_path, book_path, filename, datafile)
+                os.remove(os.path.join(calibre_path, book_path, filename))
             file_ = open(datafile, 'rb')
             data = file_.read()
             file_.close()
             os.remove(datafile)
         else:
+            datafile = os.path.join(calibre_path, book_path, filename)
             try:
-                file_ = open(os.path.join(calibre_path, book_path, filename), 'rb')
+                if config.config_binariesdir:
+                    datafile = cls._embed_metadata(calibre_path, book_path, filename, datafile)
+                file_ = open(datafile, 'rb')
                 data = file_.read()
                 file_.close()
+                if config.config_binariesdir:
+                    os.remove(datafile)
             except IOError as e:
                 log.error_or_exception(e, stacklevel=3)
                 log.error(u'The requested file could not be read. Maybe wrong permissions?')
@@ -270,3 +281,17 @@ class TaskEmail(CalibreTask):
 
     def __str__(self):
         return "E-mail {}, {}".format(self.name, self.subject)
+
+    def _embed_metadata(self, calibre_path, book_path, filename, datafile):
+        datafile_tmp = os.path.join(calibre_path, book_path, "tmp_" + filename)
+        path_opf = os.path.join(calibre_path, book_path, "metadata.opf")
+        copy(datafile, datafile_tmp)
+
+        calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["ebook-meta"])
+        opf_command = [calibredb_binarypath, datafile_tmp, "--from-opf", path_opf]
+        p = process_open(opf_command)
+        _, err = p.communicate()
+        if err:
+            # ToDo: Improve error handling
+            log.error('Metadata embedder encountered an error: %s', err)
+        return datafile_tmp

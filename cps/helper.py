@@ -54,7 +54,7 @@ from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
-from .subproc_wrapper import process_wait
+from .subproc_wrapper import process_wait, process_open
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
@@ -213,6 +213,17 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, kindle_mail)
 
+    # ToDo: Delete when OPF creation has been implemented
+    if config.config_binariesdir:
+        quotes = [3, 5]
+        calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+        opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
+        p = process_open(opf_command, quotes)
+        p.wait()
+        path_opf = os.path.join(config.config_calibre_dir, book.path, "metadata.opf")
+        with open(path_opf, 'w') as fd:
+            shutil.copyfileobj(p.stdout, fd)
+    
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
