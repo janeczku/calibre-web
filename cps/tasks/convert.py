@@ -93,6 +93,16 @@ class TaskConvert(CalibreTask):
                 # todo: figure out how to incorporate this into the progress
                 try:
                     EmailText = N_(u"%(book)s send to Kindle", book=escape(self.title))
+                    # ToDo: Delete when OPF creation has been implemented
+                    if config.config_binariesdir:
+                        quotes = [3, 5]
+                        calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+                        opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id), '--with-library', config.config_calibre_dir]
+                        p = process_open(opf_command, quotes)
+                        p.wait()
+                        path_opf = os.path.join(config.config_calibre_dir, cur_book.path, "metadata.opf")
+                        with open(path_opf, 'w') as fd:
+                            copyfileobj(p.stdout, fd)
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
