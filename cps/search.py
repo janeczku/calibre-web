@@ -134,6 +134,9 @@ def adv_search_read_status(read_status):
                 db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
+            flash(_("Custom Column No.%(column)d does not exist in calibre database",
+                    column=config.config_read_column),
+                  category="error")
             return true()
     return db_filter
 
