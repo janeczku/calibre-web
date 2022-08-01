@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-18 18:44+0200\n"
+"POT-Creation-Date: 2022-07-31 11:29+0200\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -286,7 +286,7 @@ msgstr ""
 #: cps/admin.py:1879 cps/admin.py:1996 cps/editbooks.py:228
 #: cps/editbooks.py:302 cps/editbooks.py:1197 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
-#: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1413
+#: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1416
 #, python-format
 msgid "Database error: %(error)s."
 msgstr ""
@@ -325,8 +325,8 @@ msgstr ""
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1355 cps/admin.py:1404 cps/admin.py:1992 cps/web.py:1254
-#: cps/web.py:1315
+#: cps/admin.py:1355 cps/admin.py:1404 cps/admin.py:1992 cps/web.py:1257
+#: cps/web.py:1318
 msgid "An unknown error occurred. Please try again later."
 msgstr "Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
 
@@ -344,7 +344,7 @@ msgstr "%(nick)s kullanıcısını düzenle"
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s kullanıcısının şifresi sıfırlandı"
 
-#: cps/admin.py:1407 cps/web.py:1194
+#: cps/admin.py:1407 cps/web.py:1197
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Lütfen önce SMTP e-posta ayarlarını ayarlayın..."
 
@@ -461,7 +461,7 @@ msgstr "E-posta sunucusu ayarları güncellendi"
 msgid "Database Configuration"
 msgstr "Özellik Yapılandırması"
 
-#: cps/admin.py:1844 cps/web.py:1229
+#: cps/admin.py:1844 cps/web.py:1232
 msgid "Please fill out all fields!"
 msgstr "Lütfen tüm alanları doldurun!"
 
@@ -505,20 +505,20 @@ msgstr "yüklü değil"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:679 cps/web.py:720
+#: cps/db.py:679 cps/search.py:137 cps/web.py:722
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
 #: cps/db.py:922 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:549 cps/web.py:583 cps/web.py:656 cps/web.py:681 cps/web.py:962
-#: cps/web.py:992 cps/web.py:1027 cps/web.py:1055 cps/web.py:1094
+#: cps/web.py:549 cps/web.py:583 cps/web.py:658 cps/web.py:683 cps/web.py:964
+#: cps/web.py:994 cps/web.py:1030 cps/web.py:1058 cps/web.py:1097
 msgid "None"
 msgstr "Hiçbiri"
 
-#: cps/editbooks.py:110 cps/editbooks.py:891 cps/web.py:516 cps/web.py:1454
-#: cps/web.py:1496 cps/web.py:1541
+#: cps/editbooks.py:110 cps/editbooks.py:891 cps/web.py:516 cps/web.py:1457
+#: cps/web.py:1499 cps/web.py:1544
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr ""
 
@@ -633,7 +633,7 @@ msgstr "Google Drive kurulumu tamamlanmadı, Google Drive'ı devre dışı bıra
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Geri yönlendirme alanı (callback domain) doğrulanamadı, lütfen Google geliştirici konsolunda alan adını doğrulamak için gerekli adımları izleyin."
 
-#: cps/helper.py:80
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(book)d nolu kitap için %(format)s biçimi bulunamadı"
@@ -737,7 +737,7 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "eKitap yolu %(path)s Google Drive'da bulunamadı"
 
-#: cps/helper.py:643 cps/web.py:1408
+#: cps/helper.py:643 cps/web.py:1411
 #, fuzzy
 msgid "Found an existing account for this e-mail address"
 msgstr "Bu e-posta adresi için bir hesap mevcut."
@@ -791,7 +791,7 @@ msgid "Unrar binary file not found"
 msgstr ""
 
 #: cps/helper.py:943
-msgid "Error excecuting UnRar"
+msgid "Error executing UnRar"
 msgstr ""
 
 #: cps/kobo_auth.py:89
@@ -807,7 +807,7 @@ msgstr ""
 msgid "Register with %(provider)s"
 msgstr "%(provider)s ile Kaydol"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1286
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1289
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "giriş yaptınız: '%(nickname)s'"
@@ -873,7 +873,7 @@ msgid "{} Stars"
 msgstr ""
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:85
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1335
+#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1338
 msgid "Login"
 msgstr "Giriş"
 
@@ -923,7 +923,7 @@ msgid "Show Top Rated Books"
 msgstr ""
 
 #: cps/render_template.py:60 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:739
+#: cps/templates/index.xml:58 cps/web.py:741
 msgid "Read Books"
 msgstr "Okunanlar"
 
@@ -932,7 +932,7 @@ msgid "Show read and unread"
 msgstr "Okunan ve okunmayanları göster"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:742
+#: cps/templates/index.xml:65 cps/web.py:744
 msgid "Unread Books"
 msgstr "Okunmamışlar"
 
@@ -950,7 +950,7 @@ msgid "Show Random Books"
 msgstr "Rastgele Kitap Göster"
 
 #: cps/render_template.py:70 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1098
+#: cps/templates/index.xml:83 cps/web.py:1101
 msgid "Categories"
 msgstr "Kategoriler"
 
@@ -960,7 +960,7 @@ msgstr "Kategori seçimini göster"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:995 cps/web.py:1002
+#: cps/templates/search_form.html:69 cps/web.py:997 cps/web.py:1004
 msgid "Series"
 msgstr "Seriler"
 
@@ -978,7 +978,7 @@ msgid "Show author selection"
 msgstr "Yazar seçimini göster"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:966
+#: cps/templates/index.xml:76 cps/web.py:968
 msgid "Publishers"
 msgstr "Yayıncılar"
 
@@ -988,7 +988,7 @@ msgstr "Yayıncı seçimini göster"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1070
+#: cps/web.py:1073
 msgid "Languages"
 msgstr "Diller"
 
@@ -1012,7 +1012,7 @@ msgstr "Biçimler"
 msgid "Show file formats selection"
 msgstr "Dosya biçimi seçimini göster"
 
-#: cps/render_template.py:94 cps/web.py:765
+#: cps/render_template.py:94 cps/web.py:767
 msgid "Archived Books"
 msgstr ""
 
@@ -1020,7 +1020,7 @@ msgstr ""
 msgid "Show archived books"
 msgstr ""
 
-#: cps/render_template.py:99 cps/web.py:796
+#: cps/render_template.py:99 cps/web.py:798
 msgid "Books List"
 msgstr ""
 
@@ -1028,41 +1028,41 @@ msgstr ""
 msgid "Show Books List"
 msgstr ""
 
-#: cps/search.py:48 cps/search.py:389 cps/templates/book_edit.html:236
+#: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "Ara"
 
-#: cps/search.py:185
+#: cps/search.py:188
 msgid "Published after "
 msgstr "Yayınlanma (sonra)"
 
-#: cps/search.py:192
+#: cps/search.py:195
 msgid "Published before "
 msgstr "Yayınlanma (önce)"
 
-#: cps/search.py:214
+#: cps/search.py:217
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Değerlendirme <= %(rating)s"
 
-#: cps/search.py:216
+#: cps/search.py:219
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Değerlendirme >= %(rating)s"
 
-#: cps/search.py:218
+#: cps/search.py:221
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr ""
 
-#: cps/search.py:320
+#: cps/search.py:323
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/search.py:339 cps/search.py:371 cps/templates/layout.html:57
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Gelişmiş Arama"
 
@@ -1267,111 +1267,111 @@ msgstr "Yayınevi: %(name)s"
 msgid "Series: %(serie)s"
 msgstr "Seri: %(serie)s"
 
-#: cps/web.py:609
+#: cps/web.py:611
 msgid "Rating: None"
 msgstr ""
 
-#: cps/web.py:618
+#: cps/web.py:620
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Değerlendirme: %(rating)s yıldız"
 
-#: cps/web.py:636
+#: cps/web.py:638
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Biçim: %(format)s"
 
-#: cps/web.py:673
+#: cps/web.py:675
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategori: %(name)s"
 
-#: cps/web.py:700
+#: cps/web.py:702
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Dil: %(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:938
+#: cps/templates/admin.html:16 cps/web.py:940
 msgid "Downloads"
 msgstr ""
 
-#: cps/web.py:1030
+#: cps/web.py:1033
 msgid "Ratings list"
 msgstr "Değerlendirme listesi"
 
-#: cps/web.py:1057
+#: cps/web.py:1060
 msgid "File formats list"
 msgstr "Biçim listesi"
 
-#: cps/web.py:1199
+#: cps/web.py:1202
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "%(kindlemail)s'a gönderilmek üzere başarıyla sıraya alındı"
 
-#: cps/web.py:1203
+#: cps/web.py:1206
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:1205
+#: cps/web.py:1208
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr ""
 
-#: cps/web.py:1222
+#: cps/web.py:1225
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "E-Posta sunucusu ayarlanmadı, lütfen yöneticinizle iletişime geçin!"
 
-#: cps/templates/layout.html:86 cps/templates/register.html:17 cps/web.py:1223
-#: cps/web.py:1230 cps/web.py:1236 cps/web.py:1255 cps/web.py:1260
-#: cps/web.py:1266
+#: cps/templates/layout.html:86 cps/templates/register.html:17 cps/web.py:1226
+#: cps/web.py:1233 cps/web.py:1239 cps/web.py:1258 cps/web.py:1263
+#: cps/web.py:1269
 msgid "Register"
 msgstr "Kayıt ol"
 
-#: cps/web.py:1257
+#: cps/web.py:1260
 msgid "Your e-mail is not allowed to register"
 msgstr "E-posta adresinizle kaydolunmasına izin verilmiyor"
 
-#: cps/web.py:1261
+#: cps/web.py:1264
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Onay e-Postası hesabınıza gönderildi."
 
-#: cps/web.py:1275
+#: cps/web.py:1278
 msgid "Cannot activate LDAP authentication"
 msgstr "LDAP Kimlik Doğrulaması etkinleştirilemiyor"
 
-#: cps/web.py:1294
+#: cps/web.py:1297
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1300
+#: cps/web.py:1303
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1304 cps/web.py:1329
+#: cps/web.py:1307 cps/web.py:1332
 msgid "Wrong Username or Password"
 msgstr "Yanlış Kullanıcı adı ya da Şifre"
 
-#: cps/web.py:1311
+#: cps/web.py:1314
 msgid "New Password was send to your email address"
 msgstr "Yeni şifre e-Posta adresinize gönderildi"
 
-#: cps/web.py:1317
+#: cps/web.py:1320
 msgid "Please enter valid username to reset password"
 msgstr "Şifrenizi sıfırlayabilmek için lütfen geçerli bir kullanıcı adı giriniz"
 
-#: cps/web.py:1324
+#: cps/web.py:1327
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Giriş yaptınız: '%(nickname)s'"
 
-#: cps/web.py:1388 cps/web.py:1437
+#: cps/web.py:1391 cps/web.py:1440
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s Profili"
 
-#: cps/web.py:1404
+#: cps/web.py:1407
 msgid "Profile updated"
 msgstr "Profil güncellendi"
 

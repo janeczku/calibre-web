@@ -263,7 +263,7 @@ def order_shelf(shelf_id):
             for book in books_in_shelf:
                 setattr(book, 'order', to_save[str(book.book_id)])
                 counter += 1
-                # if order diffrent from before -> shelf.last_modified = datetime.utcnow()
+                # if order different from before -> shelf.last_modified = datetime.utcnow()
             try:
                 ub.session.commit()
             except (OperationalError, InvalidRequestError) as e:
