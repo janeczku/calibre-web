@@ -75,11 +75,11 @@ except (ImportError, RuntimeError) as e:
 def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, ereader_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
-    file_path = os.path.join(calibre_path, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
         return error_message
+    file_path = os.path.join(calibre_path, book.path, data.name)
     if config.config_use_google_drive:
         if not gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower()):
             error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
@@ -123,7 +123,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     txt = "Hello %s!\r\n" % user_name
     if not resend:
         txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    txt += "Please log in to your account using the following informations:\r\n"
+    txt += "Please log in to your account using the following information:\r\n"
     txt += "User name: %s\r\n" % user_name
     txt += "Password: %s\r\n" % default_password
     txt += "Don't forget to change your password after first login.\r\n"
@@ -945,7 +945,7 @@ def check_unrar(unrar_location):
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
-        return _('Error excecuting UnRar')
+        return _('Error executing UnRar')
 
 
 def json_serial(obj):

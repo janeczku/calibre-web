@@ -31,7 +31,7 @@ from flask_babel import gettext as _
 from flask_babel import get_locale
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
-from sqlalchemy.sql.expression import text, func, false, not_, and_
+from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
 
@@ -437,7 +437,7 @@ def render_discover_books(book_id):
 def render_hot_books(page, order):
     if current_user.check_visibility(constants.SIDEBAR_HOT):
         if order[1] not in ['hotasc', 'hotdesc']:
-            # Unary expression comparsion only working (for this expression) in sqlalchemy 1.4+
+            # Unary expression comparison only working (for this expression) in sqlalchemy 1.4+
             # if not (order[0][0].compare(func.count(ub.Downloads.book_id).desc()) or
             #        order[0][0].compare(func.count(ub.Downloads.book_id).asc())):
             order = [func.count(ub.Downloads.book_id).desc()], 'hotdesc'
@@ -598,14 +598,16 @@ def render_series_books(page, book_id, order):
 
 def render_ratings_books(page, book_id, order):
     if book_id == '-1':
+        db_filter = coalesce(db.Ratings.rating, 0) < 1
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.ratings == None,
+                                                                db_filter,
                                                                 [order[0][0]],
                                                                 True, config.config_read_column,
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
-                                                                db.Series)
+                                                                db.Series,
+                                                                db.books_ratings_link, db.Ratings)
         title = _(u"Rating: None")
         rating = -1
     else:
@@ -1018,10 +1020,11 @@ def ratings_list():
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                            (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
+            .filter(db.Ratings.rating > 0) \
             .group_by(text('books_ratings_link.rating')).order_by(order).all()
         no_rating_count = (calibre_db.session.query(db.Books)
                            .outerjoin(db.books_ratings_link).outerjoin(db.Ratings)
-                           .filter(db.Ratings.rating == None)
+                           .filter(or_(db.Ratings.rating == None, db.Ratings.rating == 0))
                            .filter(calibre_db.common_filters())
                            .count())
         entries.append([db.Category(_("None"), "-1", -1), no_rating_count])
