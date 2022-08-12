@@ -443,6 +443,12 @@ def get_seriesindex(book):
     return book.series_index or 1
 
 
+def get_language(book):
+    if not book.languages:
+        return 'en'
+    return book.languages[0].lang_code
+
+
 def get_metadata(book):
     download_urls = []
     kepub = [data for data in book.data if data.format == 'KEPUB']
@@ -480,7 +486,7 @@ def get_metadata(book):
         "IsInternetArchive": False,
         "IsPreOrder": False,
         "IsSocialEnabled": True,
-        "Language": "en",
+        "Language": get_language(book),
         "PhoneticPronunciations": {},
         "PublicationDate": convert_to_kobo_timestamp_string(book.pubdate),
         "Publisher": {"Imprint": "", "Name": get_publisher(book), },
