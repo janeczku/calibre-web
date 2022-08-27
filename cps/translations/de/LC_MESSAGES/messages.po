@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-07-31 11:29+0200\n"
-"PO-Revision-Date: 2022-05-01 13:22+0200\n"
+"POT-Creation-Date: 2022-08-27 10:01+0200\n"
+"PO-Revision-Date: 2022-08-27 10:00+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.1\n"
+"Generated-By: Babel 2.10.3\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -501,7 +501,7 @@ msgid "Execution permissions missing"
 msgstr "Ausführeberechtigung fehlt"
 
 #: cps/db.py:679 cps/search.py:137 cps/web.py:722
-#, fuzzy, python-format
+#, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Benutzerdefinierte Spalte Nr. %(column)d ist nicht in Calibre Datenbank vorhanden"
 
@@ -645,9 +645,8 @@ msgstr "%(format)s nicht gefunden: %(fn)s"
 
 #: cps/helper.py:96 cps/helper.py:225 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-#, fuzzy
 msgid "Send to E-Reader"
-msgstr "An Kindle senden"
+msgstr "An E-Reader senden"
 
 #: cps/helper.py:97 cps/helper.py:115 cps/helper.py:227
 msgid "This e-mail has been sent via Calibre-Web."
@@ -671,19 +670,19 @@ msgid "Registration e-mail for user: %(name)s"
 msgstr "Registrierungs-E-Mail für Benutzer %(name)s"
 
 #: cps/helper.py:147 cps/helper.py:153
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to E-Reader"
-msgstr "Konvertiere %(orig)s nach %(format)s und sende an Kindle"
+msgstr "Konvertiere %(orig)s nach %(format)s und sende an E-Reader"
 
 #: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180 cps/helper.py:184
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr "Sende %(format)s an Kindle"
+msgstr "Sende %(format)s an E-Reader"
 
 #: cps/helper.py:224 cps/tasks/convert.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "%(book)s an Kindle senden"
+msgstr "%(book)s an E-Reader gesendet"
 
 #: cps/helper.py:229
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -785,9 +784,8 @@ msgid "Unrar binary file not found"
 msgstr "UnRar Programm nicht gefunden"
 
 #: cps/helper.py:943
-#, fuzzy
 msgid "Error executing UnRar"
-msgstr "Fehler beim ausführen von UnRar"
+msgstr "Fehler beim Ausführen von UnRar"
 
 #: cps/kobo_auth.py:89
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
@@ -1456,9 +1454,8 @@ msgid "E-mail Address"
 msgstr "E-Mail"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-#, fuzzy
 msgid "Send to E-Reader E-mail Address"
-msgstr "Kindle"
+msgstr "An E-Reader E-Mail Adresse senden"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
 #: cps/templates/user_table.html:143
@@ -2865,12 +2862,11 @@ msgstr "Dunkel"
 
 #: cps/templates/read.html:79
 msgid "Sepia"
-msgstr ""
+msgstr "Sepia"
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Black"
-msgstr "Zurück"
+msgstr "Schwarz"
 
 #: cps/templates/read.html:84
 msgid "Reflow text when sidebars are open."
@@ -3265,14 +3261,12 @@ msgid "Enter E-mail Address"
 msgstr "E-Mail-Adresse eingeben"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter E-Reader E-mail Address"
-msgstr "Kindle E-mail Adresse eingeben"
+msgstr "E-Reader E-Mail Adresse eingeben"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "E-Reader E-mail"
-msgstr "Test-E-Mail"
+msgstr "E-Reader E-Mail"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
