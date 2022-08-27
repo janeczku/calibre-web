@@ -37,16 +37,15 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF3 import PdfFileReader
-    from PyPDF3 import __version__ as PyPdfVersion
+    from PyPDF2 import PdfFileReader
     use_pdf_meta = True
 except ImportError as ex:
+    log.debug('PyPDF2 is recommended for best performance in metadata extracting from pdf files: %s', ex)
     try:
-        from PyPDF2 import PdfFileReader
-        from PyPDF2 import __version__ as PyPdfVersion
+        from PyPDF3 import PdfFileReader
         use_pdf_meta = True
     except ImportError as e:
-        log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', ex, e)
+        log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
         use_pdf_meta = False
 
 try:
@@ -114,7 +113,7 @@ def parse_xmp(pdf_file):
     try:
         xmp_info = pdf_file.getXmpMetadata()
     except Exception as ex:
-        log.debug('Can not read XMP metadata {}'.format(ex))
+        log.debug('Can not read PDF XMP metadata {}'.format(ex))
         return None
 
     if xmp_info:
@@ -160,6 +159,10 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         with open(tmp_file_path, 'rb') as f:
             pdf_file = PdfFileReader(f)
             doc_info = pdf_file.getDocumentInfo()
+            try:
+                doc_info = pdf_file.getDocumentInfo()
+            except Exception as exc:
+                log.debug('Can not read PDF DocumentInfo {}'.format(exc))
             xmp_info = parse_xmp(pdf_file)
 
     if xmp_info:
