@@ -26,9 +26,9 @@ The Calibre-Web documentation is hosted in the Github [Wiki](https://github.com/
 
 Do not open up a GitHub issue if the bug is a **security vulnerability** in Calibre-Web. Instead, please write an email to "ozzie.fernandez.isaacs@googlemail.com".
 
-Ensure the ***bug was not already reported** by searching on GitHub under [Issues](https://github.com/janeczku/calibre-web/issues). Please also check if a solution for your problem can be found in the [wiki](https://github.com/janeczku/calibre-web/wiki).
+Ensure the **bug was not already reported** by searching on GitHub under [Issues](https://github.com/janeczku/calibre-web/issues). Please also check if a solution for your problem can be found in the [wiki](https://github.com/janeczku/calibre-web/wiki).
 
-If you're unable to find an **open issue** addressing the problem, open a [new one](https://github.com/janeczku/calibre-web/issues/new?assignees=&labels=&template=bug_report.md&title=). Be sure to include a **title** and **clear description**, as much relevant information as possible, the **issue form** helps you providing the right information. Deleting the form and just pasting the stack trace doesn't speed up fixing the problem. If your issue could be resolved, consider closing the issue.
+If you're unable to find an **open issue** addressing the problem, open a [new one](https://github.com/janeczku/calibre-web/issues/new/choose). Be sure to include a **title** and **clear description**, as much relevant information as possible, the **issue form** helps you providing the right information. Deleting the form and just pasting the stack trace doesn't speed up fixing the problem. If your issue could be resolved, consider closing the issue.
 
 ### **Feature Request**
 
