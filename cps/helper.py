@@ -654,11 +654,13 @@ def check_username(username):
 
 def valid_email(email):
     email = email.strip()
-    # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-    if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-                     email):
-        log.error(u"Invalid e-mail address format")
-        raise Exception(_(u"Invalid e-mail address format"))
+    # if email is not deleted
+    if email:
+        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                         email):
+            log.error(u"Invalid e-mail address format")
+            raise Exception(_(u"Invalid e-mail address format"))
     return email
 
 # ################################# External interface #################################
