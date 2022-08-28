@@ -1960,11 +1960,11 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         if to_save.get("locale"):
             content.locale = to_save["locale"]
         try:
-            new_email = check_email(to_save.get("email", content.email))
+            new_email = valid_email(to_save.get("email", content.email))
             if not new_email:
                 raise Exception(_(u"E-Mail Address can't be empty and has to be a valid E-Mail"))
             if new_email != content.email:
-                content.email = new_email
+                content.email = check_email(new_email)
             # Query username, if not existing, change
             if to_save.get("name", content.name) != content.name:
                 if to_save.get("name") == "Guest":
