@@ -1364,11 +1364,11 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     try:
         if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
             current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
-        new_email = check_email(to_save.get("email", current_user.email))
+        new_email = valid_email(to_save.get("email", current_user.email))
         if not new_email:
             raise Exception(_(u"E-Mail Address can't be empty and has to be a valid E-Mail"))
         if new_email != current_user.email:
-            current_user.email = new_email
+            current_user.email = check_email(new_email)
         if current_user.role_admin():
             if to_save.get("name", current_user.name) != current_user.name:
                 # Query username, if not existing, change
