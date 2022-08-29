@@ -1087,7 +1087,7 @@ def category_list():
             order_no = 1
         entries = calibre_db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
             .join(db.books_tags_link).join(db.Books).order_by(order).filter(calibre_db.common_filters()) \
-            .group_by(text('books_tags_link.tag')).all()
+            .group_by(db.Tags.id).all()
         no_tag_count = (calibre_db.session.query(db.Books)
                          .outerjoin(db.books_tags_link).outerjoin(db.Tags)
                         .filter(db.Tags.name == None)
