@@ -1277,9 +1277,6 @@ def handle_login_user(user, remember, message, category):
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
     return redirect_back(url_for("web.index"))
 
-def error_logi():
-    flash(_(u"Wait one minute"), category="error")
-    return render_login()
 
 def render_login():
     next_url = request.args.get('next', default=url_for("web.index"), type=str)

@@ -119,6 +119,7 @@ def before_request():
                                  'admin.simulatedbchange',
                                  'admin.db_configuration',
                                  'web.login',
+                                 'web.login_post',
                                  'web.logout',
                                  'admin.load_dialogtexts',
                                  'admin.ajax_pathchooser'):

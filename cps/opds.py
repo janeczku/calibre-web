@@ -31,12 +31,13 @@ from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.security import check_password_hash
 
-from . import constants, logger, config, db, calibre_db, ub, services, isoLanguages
+from . import constants, logger, config, db, calibre_db, ub, services, isoLanguages, limiter
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
 from .usermanagement import load_user_from_request
 from flask_babel import gettext as _
+from flask_limiter import RateLimitExceeded
 
 opds = Blueprint('opds', __name__)
 
@@ -480,12 +481,17 @@ def feed_search(term):
 
 def check_auth(username, password):
     try:
+        limiter.check()
+    except RateLimitExceeded:
+        return False
+    try:
         username = username.encode('windows-1252')
     except UnicodeEncodeError:
         username = username.encode('utf-8')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
                                             username.decode('utf-8').lower()).first()
     if bool(user and check_password_hash(str(user.password), password)):
+        [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
         return True
     else:
         ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
