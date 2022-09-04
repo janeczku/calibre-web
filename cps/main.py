@@ -18,9 +18,14 @@
 
 import sys
 
-from . import create_app
+from . import create_app, limiter
 from .jinjia import jinjia
 from .remotelogin import remotelogin
+from flask import request
+
+
+def request_username():
+    return request.authorization.username
 
 def main():
     app = create_app()
@@ -56,6 +61,7 @@ def main():
     app.register_blueprint(tasks)
     app.register_blueprint(web)
     app.register_blueprint(opds)
+    limiter.limit("10/minute",key_func=request_username)(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
     app.register_blueprint(shelf)

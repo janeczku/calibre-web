@@ -158,6 +158,7 @@ def create_app():
         cache_buster.init_cache_busting(app)
     log.info('Starting Calibre Web...')
     limiter.init_app(app)
+    # limiter.limit("2/minute")(parent)
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
