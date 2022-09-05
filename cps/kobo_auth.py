@@ -64,11 +64,12 @@ from datetime import datetime
 from os import urandom
 from functools import wraps
 
-from flask import g, Blueprint, url_for, abort, request
+from flask import g, Blueprint, abort, request
 from flask_login import login_user, current_user, login_required
 from flask_babel import gettext as _
+from flask_limiter import RateLimitExceeded
 
-from . import logger, config, calibre_db, db, helper, ub, lm
+from . import logger, config, calibre_db, db, helper, ub, lm, limiter
 from .render_template import render_title_template
 
 log = logger.create()
@@ -151,6 +152,10 @@ def requires_kobo_auth(f):
     def inner(*args, **kwargs):
         auth_token = get_auth_token()
         if auth_token is not None:
+            try:
+                limiter.check()
+            except RateLimitExceeded:
+                return abort(429)
             user = (
                 ub.session.query(ub.User)
                 .join(ub.RemoteAuthToken)
