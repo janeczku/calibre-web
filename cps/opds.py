@@ -483,7 +483,7 @@ def check_auth(username, password):
     try:
         limiter.check()
     except RateLimitExceeded:
-        return False
+        return abort(429) # False
     try:
         username = username.encode('windows-1252')
     except UnicodeEncodeError:
