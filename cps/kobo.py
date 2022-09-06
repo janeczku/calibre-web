@@ -45,6 +45,7 @@ import requests
 
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
+from . import isoLanguages
 from .constants import sqlalchemy_version2, COVER_THUMBNAIL_SMALL
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
@@ -443,6 +444,12 @@ def get_seriesindex(book):
     return book.series_index or 1
 
 
+def get_language(book):
+    if not book.languages:
+        return 'en'
+    return isoLanguages.get(part3=book.languages[0].lang_code).part1
+
+
 def get_metadata(book):
     download_urls = []
     kepub = [data for data in book.data if data.format == 'KEPUB']
@@ -480,7 +487,7 @@ def get_metadata(book):
         "IsInternetArchive": False,
         "IsPreOrder": False,
         "IsSocialEnabled": True,
-        "Language": "en",
+        "Language": get_language(book),
         "PhoneticPronunciations": {},
         "PublicationDate": convert_to_kobo_timestamp_string(book.pubdate),
         "Publisher": {"Imprint": "", "Name": get_publisher(book), },
