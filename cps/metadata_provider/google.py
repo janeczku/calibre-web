@@ -110,7 +110,6 @@ class Google(Metadata):
             # request 800x900 cover image (higher resolution)
             cover_url += "&fife=w800-h900"
             
-
             return cover_url.replace("http://", "https://")
         return generic_cover
 
