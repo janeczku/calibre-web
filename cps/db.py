@@ -322,6 +322,15 @@ class Data(Base):
         return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
 
+class Metadata_Dirtied(Base):
+    __tablename__ = 'metadata_dirtied'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
+
+    def __init__(self, book):
+        self.book = book
+
+
 class Books(Base):
     __tablename__ = 'books'
 
@@ -389,6 +398,9 @@ class CustomColumns(Base):
     def get_display_dict(self):
         display_dict = json.loads(self.display)
         return display_dict
+
+    def to_json(self):
+        pass
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -642,6 +654,16 @@ class CalibreDB:
 
     def get_book_format(self, book_id, file_format):
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
+    def set_metadata_dirty(self, book_id):
+        if not self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book==book_id).one_or_none():
+            self.session.add(Metadata_Dirtied(book_id))
+    def delete_dirty_metadata(self, book_id):
+        try:
+            self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book==book_id).delete()
+            self.session.commit()
+        except (OperationalError) as e:
+            self.session.rollback()
+            log.error("Database error: {}".format(e))
 
     # Language and content filters for displaying in the UI
     def common_filters(self, allow_show_archived=False, return_all_languages=False):

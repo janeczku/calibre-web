@@ -19,7 +19,6 @@
 
 import os
 import io
-import sys
 import mimetypes
 import re
 import shutil
@@ -685,7 +684,8 @@ def update_dir_structure(book_id,
 
 def delete_book(book, calibrepath, book_format):
     if not book_format:
-        clear_cover_thumbnail_cache(book.id)        ## here it breaks
+        clear_cover_thumbnail_cache(book.id) ## here it breaks
+        calibre_db.delete_dirty_metadata(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
