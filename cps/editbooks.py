@@ -203,6 +203,7 @@ def edit_book(book_id):
         if modify_date:
             book.last_modified = datetime.utcnow()
             kobo_sync_status.remove_synced_book(edited_books_id, all=True)
+            calibre_db.set_metadata_dirty(book.id)
 
         calibre_db.session.merge(book)
         calibre_db.session.commit()
@@ -277,6 +278,8 @@ def upload():
 
                 move_coverfile(meta, db_book)
 
+                if modify_date:
+                    calibre_db.set_metadata_dirty(book_id)
                 # save data to database, reread data
                 calibre_db.session.commit()
 
@@ -555,6 +558,7 @@ def table_xchange_author_title():
                                                          renamed_author=renamed)
             if modify_date:
                 book.last_modified = datetime.utcnow()
+                calibre_db.set_metadata_dirty(book.id)
             try:
                 calibre_db.session.commit()
             except (OperationalError, IntegrityError, StaleDataError) as e:
