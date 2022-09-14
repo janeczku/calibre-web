@@ -399,8 +399,29 @@ class CustomColumns(Base):
         display_dict = json.loads(self.display)
         return display_dict
 
-    def to_json(self):
-        pass
+    def to_json(self, value, extra):
+        content = dict()
+        content['table'] = "custom_column_" + str(self.id)
+        content['column'] = "value"
+        content['datatype'] = self.datatype
+        content['is_multiple'] = None if not self.is_multiple else self.is_multiple
+        content['kind'] = "field"
+        content['name'] = self.name
+        content['search_terms'] = ['#' + self.label]
+        content['label'] = self.label
+        content['colnum'] = self.id
+        content['display'] = self.get_display_dict()
+        content['is_custom'] = True
+        content['is_category'] = self.datatype in ['text', 'rating', 'enumeration', 'series']
+        content['link_column'] = "value"
+        content['category_sort'] = "value"
+        content['is_csp'] = False
+        content['is_editable'] = self.editable
+        content['rec_index'] = self.id + 22     # toDo why ??
+        content['#value#'] = value
+        content['#extra#'] = extra
+        content['is_multiple2'] = {}
+        return json.dumps(content, ensure_ascii=False)
 
 
 class AlchemyEncoder(json.JSONEncoder):

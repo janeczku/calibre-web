@@ -15,9 +15,9 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
-import datetime
+
 import os
-import json
+from lxml import objectify
 from urllib.request import urlopen
 from lxml import etree
 from html import escape
@@ -41,33 +41,35 @@ NSMAP = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
 
 class TaskBackupMetadata(CalibreTask):
 
-    def __init__(self, task_message=N_('Backing up Metadata')):
+    def __init__(self, export_language="en", translated_title="cover", task_message=N_('Backing up Metadata')):
         super(TaskBackupMetadata, self).__init__(task_message)
         self.log = logger.create()
-        self.db_session = db.CalibreDB(expire_on_commit=False, init=True).session
+        self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
+        self.export_language = export_language
+        self.translated_title = translated_title
 
     def run(self, worker_thread):
         try:
-            metadata_backup = self.db_session.query(db.Metadata_Dirtied).all()
-            custom_columns = self.db_session.query(db.CustomColumns).all()
+            metadata_backup = self.calibre_db.session.query(db.Metadata_Dirtied).all()
+            custom_columns = self.calibre_db.session.query(db.CustomColumns).order_by(db.CustomColumns.label).all()
             for backup in metadata_backup:
-                book = self.db_session.query(db.Books).filter(db.Books.id == backup.book).one_or_none()
-                # self.db_session.query(db.Metadata_Dirtied).filter(db.Metadata_Dirtied == backup.id).delete()
-                # self.db_session.commit()
+                book = self.calibre_db.session.query(db.Books).filter(db.Books.id == backup.book).one_or_none()
+                # self.calibre_db.session.query(db.Metadata_Dirtied).filter(db.Metadata_Dirtied == backup.id).delete()
+                # self.calibre_db.session.commit()
                 if book:
-                    metadata_file = self.open_metadata(book, custom_columns)
+                    self.open_metadata(book, custom_columns)
                     self._handleSuccess()
-                    self.db_session.remove()
+                    self.calibre_db.session.close()
                 else:
                     self.log.error("Book {} not found in database".format(backup.book))
                     self._handleError("Book {} not found in database".format(backup.book))
-                    self.db_session.remove()
+                    self.calibre_db.session.close()
 
         except Exception as ex:
             self.log.debug('Error creating metadata backup: ' + str(ex))
             self._handleError('Error creating metadata backup: ' + str(ex))
-            self.db_session.rollback()
-            self.db_session.remove()
+            self.calibre_db.session.rollback()
+            self.calibre_db.session.close()
 
     def open_metadata(self, book, custom_columns):
         if config.config_use_google_drive:
@@ -89,13 +91,27 @@ class TaskBackupMetadata(CalibreTask):
                 if stream is not None:
                     stream.close()
         else:
+            # ToDo: Handle book folder not found or not readable
             book_metadata_filepath = os.path.join(config.config_calibre_dir, book.path, 'metadata.opf')
-            if not os.path.isfile(book_metadata_filepath):
-                self.create_new_metadata_backup(book,  custom_columns, book_metadata_filepath)
-                # ToDo What to do
-                return open(book_metadata_filepath, "w")
-            else:
-                etree.parse(book_metadata_filepath)
+            #if not os.path.isfile(book_metadata_filepath):
+            self.create_new_metadata_backup(book,  custom_columns, book_metadata_filepath)
+            # else:
+                '''namespaces = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
+                test = etree.parse(book_metadata_filepath)
+                root = test.getroot()
+                for i in root.iter():
+                    self.log.info(i)
+                title = root.find("dc:metadata", namespaces)
+                pass'''
+                with open(book_metadata_filepath, "rb") as f:
+                    xml = f.read()
+
+                root = objectify.fromstring(xml)
+                # root.metadata['{http://purl.org/dc/elements/1.1/}title']
+                # root.metadata[PURL + 'title']
+                # getattr(root.metadata, PURL +'title')
+                # test = objectify.parse()
+                pass
                 # backup not found has to be created
                 #raise Exception('Book cover file not found')
 
@@ -124,16 +140,23 @@ class TaskBackupMetadata(CalibreTask):
         contributor.text = "calibre (5.7.2) [https://calibre-ebook.com]"
         contributor.set(OPF + "file-as", "calibre")     # ToDo Check
         contributor.set(OPF + "role", "bpk")
+
         date = etree.SubElement(metadata, PURL + "date", nsmap=NSMAP)
-        date.text = datetime.datetime.strftime(book.pubdate, "%Y-%m-%dT%H:%M:%S+00:00")
-        language = etree.SubElement(metadata, PURL + "language", nsmap=NSMAP)
-        if book.languages:
-            language.text = str(book.languages)
+        date.text = '{d.year:04}-{d.month:02}-{d.day:02}T{d.hour:02}:{d.minute:02}:{d.second:02}'.format(d=book.pubdate)
+
+        if not book.languages:
+            language = etree.SubElement(metadata, PURL + "language", nsmap=NSMAP)
+            language.text = self.export_language
         else:
-            language.text = ""  # ToDo: insert locale (2 letter code)
-        if book.tags:
+            for b in book.languages:
+                language = etree.SubElement(metadata, PURL + "language", nsmap=NSMAP)
+                language.text = str(b.languages)
+        for b in book.tags:
             subject = etree.SubElement(metadata, PURL + "subject", nsmap=NSMAP)
-            subject.text = str(book.tags)
+            subject.text = str(b.tags)
+        if book.comments:
+            description = etree.SubElement(metadata, PURL + "description", nsmap=NSMAP)
+            description.text = escape(str(book.comments))
         etree.SubElement(metadata, "meta", name="calibre:author_link_map",
                          content="{" + escape(",".join(['"' + str(a) + '":""' for a in book.authors])) + "}",
                          nsmap=NSMAP)
@@ -144,27 +167,36 @@ class TaskBackupMetadata(CalibreTask):
                          content=str(book.series_index),
                          nsmap=NSMAP)
         etree.SubElement(metadata, "meta", name="calibre:timestamp",
-                         content=datetime.datetime.strftime(book.timestamp, "%Y-%m-%dT%H:%M:%S+00:00"),
+                         content='{d.year:04}-{d.month:02}-{d.day:02}T{d.hour:02}:{d.minute:02}:{d.second:02}'.format(
+                             d=book.timestamp),
                          nsmap=NSMAP)
         etree.SubElement(metadata, "meta", name="calibre:title_sort",
                          content=book.sort,
                          nsmap=NSMAP)
         for cc in custom_columns:
+            value = None
+            extra = None
+            cc_entry = getattr(book, "custom_column_" + str(cc.id))
+            if cc_entry.__len__():
+                value = cc_entry[0].get("value")
+                extra = cc_entry[0].get("extra")
             etree.SubElement(metadata, "meta", name="calibre:user_metadata:#{}".format(cc.label),
-                             content=escape(cc.get_display_dict()),
+                             content=escape(cc.to_json(value, extra)),
                              nsmap=NSMAP)
 
-            pass
-
         # generate guide element and all sub elements of it
+        # Title is translated from default export language
         guide = etree.SubElement(package, "guide")
-        etree.SubElement(guide, "reference", type="cover", title="Titelbild", href="cover.jpg")
+        etree.SubElement(guide, "reference", type="cover", title=self.translated_title, href="cover.jpg")
 
         # prepare finalize everything and output
         doc = etree.ElementTree(package)
-        with open(book_metadata_filepath, 'wb') as f:
-            doc.write(f, xml_declaration=True, encoding='utf-8', pretty_print=True)
-
+        try:
+            with open(book_metadata_filepath, 'wb') as f:
+                doc.write(f, xml_declaration=True, encoding='utf-8', pretty_print=True)
+        except Exception:
+            # ToDo: Folder not writeable errror
+            pass
     @property
     def name(self):
         return "Backing up Metadata"
