@@ -399,7 +399,7 @@ class CustomColumns(Base):
         display_dict = json.loads(self.display)
         return display_dict
 
-    def to_json(self, value, extra):
+    def to_json(self, value, extra, sequence):
         content = dict()
         content['table'] = "custom_column_" + str(self.id)
         content['column'] = "value"
@@ -417,7 +417,7 @@ class CustomColumns(Base):
         content['category_sort'] = "value"
         content['is_csp'] = False
         content['is_editable'] = self.editable
-        content['rec_index'] = self.id + 22     # toDo why ??
+        content['rec_index'] = sequence + 22     # toDo why ??
         content['#value#'] = value
         content['#extra#'] = extra
         content['is_multiple2'] = {}

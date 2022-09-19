@@ -136,28 +136,38 @@ def admin_forbidden():
 @admin_required
 def shutdown():
     task = request.get_json().get('parameter', -1)
-    showtext = {}
+    show_text = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
         calibre_db.dispose()
         ub.dispose()
 
         if task == 0:
-            showtext['text'] = _(u'Server restarted, please reload page')
+            show_text['text'] = _(u'Server restarted, please reload page')
         else:
-            showtext['text'] = _(u'Performing shutdown of server, please close window')
+            show_text['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
         web_server.stop(task == 0)
-        return json.dumps(showtext)
+        return json.dumps(show_text)
 
     if task == 2:
         log.warning("reconnecting to calibre database")
         calibre_db.reconnect_db(config, ub.app_DB_path)
-        showtext['text'] = _(u'Reconnect successful')
-        return json.dumps(showtext)
+        show_text['text'] = _(u'Reconnect successful')
+        return json.dumps(show_text)
 
-    showtext['text'] = _(u'Unknown command')
-    return json.dumps(showtext), 400
+    show_text['text'] = _(u'Unknown command')
+    return json.dumps(show_text), 400
+
+@admi.route("/metadata_backup", methods=["POST"])
+@login_required
+@admin_required
+def queue_metadata_backup():
+    show_text = {}
+    log.warning("Queuing all books for metadata backup")
+    helper.set_all_metadata_dirty()
+    show_text['text'] = _(u'Books successfully queued fo Metadata Backup')
+    return json.dumps(show_text)
 
 
 # method is available without login and not protected by CSRF to make it easy reachable, is per default switched off
