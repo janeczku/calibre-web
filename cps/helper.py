@@ -1037,6 +1037,7 @@ def update_thumbnail_cache():
 
 def set_all_metadata_dirty():
     WorkerThread.add(None, TaskBackupMetadata(export_language=get_locale(),
-                                              translated_title=_("cover"),
-                                              set_dirty=True),
+                                              translated_title=_("Cover"),
+                                              set_dirty=True,
+                                              task_message=N_("Queue all books for metadata backup")),
                      hidden=False)
