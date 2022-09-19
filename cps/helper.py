@@ -31,6 +31,7 @@ import unidecode
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
+from flask_babel import get_locale
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -57,6 +58,7 @@ from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
+from .tasks.metadata_backup import TaskBackupMetadata
 
 log = logger.create()
 
@@ -1031,3 +1033,10 @@ def add_book_to_thumbnail_cache(book_id):
 def update_thumbnail_cache():
     if config.schedule_generate_book_covers:
         WorkerThread.add(None, TaskGenerateCoverThumbnails())
+
+
+def set_all_metadata_dirty():
+    WorkerThread.add(None, TaskBackupMetadata(export_language=get_locale(),
+                                              translated_title=_("cover"),
+                                              set_dirty=True),
+                     hidden=False)
