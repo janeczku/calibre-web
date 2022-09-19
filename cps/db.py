@@ -675,12 +675,14 @@ class CalibreDB:
 
     def get_book_format(self, book_id, file_format):
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
+
     def set_metadata_dirty(self, book_id):
-        if not self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book==book_id).one_or_none():
+        if not self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).one_or_none():
             self.session.add(Metadata_Dirtied(book_id))
+
     def delete_dirty_metadata(self, book_id):
         try:
-            self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book==book_id).delete()
+            self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).delete()
             self.session.commit()
         except (OperationalError) as e:
             self.session.rollback()

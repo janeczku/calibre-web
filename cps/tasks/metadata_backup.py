@@ -41,21 +41,43 @@ NSMAP = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
 
 class TaskBackupMetadata(CalibreTask):
 
-    def __init__(self, export_language="en", translated_title="cover", task_message=N_('Backing up Metadata')):
+    def __init__(self, export_language="en",
+                 translated_title="cover",
+                 set_dirty=False,
+                 task_message=N_('Backing up Metadata')):
         super(TaskBackupMetadata, self).__init__(task_message)
         self.log = logger.create()
         self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
         self.export_language = export_language
         self.translated_title = translated_title
+        self.set_dirty=set_dirty
 
     def run(self, worker_thread):
+        if self.set_dirty:
+            self.set_all_books_dirty()
+        else:
+            self.backup_metadata()
+
+    def set_all_books_dirty(self):
+        try:
+            books = self.calibre_db.session.query(db.Books).all()
+            for book in books:
+                self.calibre_db.set_metadata_dirty(book)
+                self._handleSuccess()
+        except Exception as ex:
+            self.log.debug('Error adding book for backup: ' + str(ex))
+            self._handleError('Error adding book for backup: ' + str(ex))
+            self.calibre_db.session.rollback()
+        self.calibre_db.session.close()
+
+    def backup_metadata(self):
         try:
             metadata_backup = self.calibre_db.session.query(db.Metadata_Dirtied).all()
             custom_columns = self.calibre_db.session.query(db.CustomColumns).order_by(db.CustomColumns.label).all()
             for backup in metadata_backup:
                 book = self.calibre_db.session.query(db.Books).filter(db.Books.id == backup.book).one_or_none()
-                # self.calibre_db.session.query(db.Metadata_Dirtied).filter(db.Metadata_Dirtied == backup.id).delete()
-                # self.calibre_db.session.commit()
+                self.calibre_db.session.query(db.Metadata_Dirtied).filter(db.Metadata_Dirtied == backup.id).delete()
+                self.calibre_db.session.commit()
                 if book:
                     self.open_metadata(book, custom_columns)
                     self._handleSuccess()
@@ -85,7 +107,7 @@ class TaskBackupMetadata(CalibreTask):
                 stream = urlopen(web_content_link)
             except Exception as ex:
                 # Bubble exception to calling function
-                self.log.debug('Error reading metadata.opf: ' + str(ex))       # ToDo Chek whats going on
+                self.log.debug('Error reading metadata.opf: ' + str(ex))       # ToDo Check whats going on
                 raise ex
             finally:
                 if stream is not None:
@@ -96,24 +118,24 @@ class TaskBackupMetadata(CalibreTask):
             #if not os.path.isfile(book_metadata_filepath):
             self.create_new_metadata_backup(book,  custom_columns, book_metadata_filepath)
             # else:
-                '''namespaces = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
-                test = etree.parse(book_metadata_filepath)
-                root = test.getroot()
-                for i in root.iter():
-                    self.log.info(i)
-                title = root.find("dc:metadata", namespaces)
-                pass'''
-                with open(book_metadata_filepath, "rb") as f:
-                    xml = f.read()
+            '''namespaces = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
+            test = etree.parse(book_metadata_filepath)
+            root = test.getroot()
+            for i in root.iter():
+                self.log.info(i)
+            title = root.find("dc:metadata", namespaces)
+            pass
+            with open(book_metadata_filepath, "rb") as f:
+                xml = f.read()
 
-                root = objectify.fromstring(xml)
-                # root.metadata['{http://purl.org/dc/elements/1.1/}title']
-                # root.metadata[PURL + 'title']
-                # getattr(root.metadata, PURL +'title')
-                # test = objectify.parse()
-                pass
-                # backup not found has to be created
-                #raise Exception('Book cover file not found')
+            root = objectify.fromstring(xml)
+            # root.metadata['{http://purl.org/dc/elements/1.1/}title']
+            # root.metadata[PURL + 'title']
+            # getattr(root.metadata, PURL +'title')
+            # test = objectify.parse()
+            pass
+            # backup not found has to be created
+            #raise Exception('Book cover file not found')'''
 
     def create_new_metadata_backup(self, book,  custom_columns, book_metadata_filepath):
         # generate root package element
@@ -195,7 +217,7 @@ class TaskBackupMetadata(CalibreTask):
             with open(book_metadata_filepath, 'wb') as f:
                 doc.write(f, xml_declaration=True, encoding='utf-8', pretty_print=True)
         except Exception:
-            # ToDo: Folder not writeable errror
+            # ToDo: Folder not writeable error
             pass
     @property
     def name(self):
