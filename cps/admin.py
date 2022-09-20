@@ -1320,7 +1320,7 @@ def edit_scheduledtasks():
         time_field.append((n, format_time(datetime_time(hour=n), format="short",)))
     for n in range(5, 65, 5):
         t = timedelta(hours=n // 60, minutes=n % 60)
-        duration_field.append((n, format_timedelta(t, threshold=.95)))
+        duration_field.append((n, format_timedelta(t, threshold=.97)))
 
     return render_title_template("schedule_edit.html",
                                  config=content,
