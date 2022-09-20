@@ -548,11 +548,11 @@ $(function() {
         },
     });
 
-    $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
+    /*$("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
         if (value === "denied_column_value") {
             confirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
         }
-    });
+    });*/
 
     $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
