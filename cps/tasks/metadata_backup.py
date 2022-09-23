@@ -93,7 +93,8 @@ class TaskBackupMetadata(CalibreTask):
             self.calibre_db.session.close()
 
         except Exception as ex:
-            self.log.debug('Error creating metadata backup for book {}: '.format(book.id) + str(ex))
+            b = "NaN" if not hasattr(book, 'id') else book.id
+            self.log.debug('Error creating metadata backup for book {}: '.format(b) + str(ex))
             self._handleError('Error creating metadata backup: ' + str(ex))
             self.calibre_db.session.rollback()
             self.calibre_db.session.close()
@@ -191,9 +192,10 @@ class TaskBackupMetadata(CalibreTask):
             etree.SubElement(metadata, "meta", name="calibre:series",
                              content=str(str(b.name)),
                              nsmap=NSMAP)
-        etree.SubElement(metadata, "meta", name="calibre:series_index",
-                         content=str(book.series_index),
-                         nsmap=NSMAP)
+        if book.series:
+            etree.SubElement(metadata, "meta", name="calibre:series_index",
+                             content=str(book.series_index),
+                             nsmap=NSMAP)
         etree.SubElement(metadata, "meta", name="calibre:timestamp",
                          content='{d.year:04}-{d.month:02}-{d.day:02}T{d.hour:02}:{d.minute:02}:{d.second:02}'.format(
                              d=book.timestamp),
