@@ -33,7 +33,7 @@ def get_scheduled_tasks(reconnect=True):
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
     # ToDo make configurable. Generate metadata.opf file for each changed book
-    if True:
+    if False:
         tasks.append([lambda: TaskBackupMetadata("en"), 'backup metadata', False])
 
     # Generate all missing book cover thumbnails
