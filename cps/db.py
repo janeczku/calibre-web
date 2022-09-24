@@ -53,7 +53,7 @@ from weakref import WeakSet
 
 log = logger.create()
 
-cc_exceptions = ['composite']
+cc_exceptions = ['composite', 'series']
 cc_classes = {}
 
 Base = declarative_base()
@@ -472,7 +472,6 @@ class CalibreDB:
     # This is a WeakSet so that references here don't keep other CalibreDB
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
-    series = False
 
     def __init__(self, expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
@@ -500,7 +499,6 @@ class CalibreDB:
         for row in cc:
             if row.datatype not in cc_exceptions:
                 if row.datatype == 'series':
-                    cls.series = True
                     dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
                                  'id': Column(Integer, primary_key=True),
                                  'book': Column(Integer, ForeignKey('books.id'),
@@ -1029,14 +1027,10 @@ class CalibreDB:
                     Base.metadata.remove(table)
 
     def reconnect_db(self, config, app_db_path):
-        if self.series:
-            from . import isoLanguages, web_server
-            web_server.stop(True)
-        else:
-            self.dispose()
-            self.engine.dispose()
-            self.setup_db(config.config_calibre_dir, app_db_path)
-            self.update_config(config)
+        self.dispose()
+        self.engine.dispose()
+        self.setup_db(config.config_calibre_dir, app_db_path)
+        self.update_config(config)
 
 
 def lcase(s):

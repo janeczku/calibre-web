@@ -796,6 +796,7 @@ def create_anonymous_user(_session):
 def create_admin_user(_session):
     user = User()
     user.name = "admin"
+    user.email = "admin@example.org"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
