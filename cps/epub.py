@@ -102,11 +102,11 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
-        identifier_name=node.attrib.values()[-1];
-        identifier_value=node.text;
-        if identifier_name in ('uuid','calibre'):
-            continue;
-        identifiers.append( [identifier_name, identifier_value] )
+        identifier_name = node.attrib.values()[-1]
+        identifier_value = node.text
+        if identifier_name in ('uuid', 'calibre') or identifier_value is None:
+            continue
+        identifiers.append([identifier_name, identifier_value])
 
     if not epub_metadata['title']:
         title = original_file_name
