@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-09-24 21:26:53</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-09-25 22:15:18</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-09-25 03:49:07</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-09-26 04:46:12</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 27 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 35 min</p>
         </div>
       </div>
       </div>
@@ -1651,12 +1651,12 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
+        <td class="text-center">17</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c16', 18)">Detail</a>
@@ -1800,11 +1800,31 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
     
     
     
-        <tr id='pt16.16' class='hiddenRow bg-success'>
+        <tr id="et16.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et16.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et16.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 185, in test_edit_title
+    self.assertEqual(&#39;The camicdemo&#39;, books[1][8][&#39;title&#39;])
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2112,11 +2132,11 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestGoodreads</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2126,31 +2146,11 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
 
     
     
-        <tr id="ft24.1" class="none bg-danger">
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft24.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft24.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft24.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_goodreads.py&#34;, line 108, in test_author_page
-    self.assertFalse(self.check_element_on_page((By.CLASS_NAME, &#34;author-photo&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;2520e615-2568-4cc5-b588-44e563fa14a2&#34;, element=&#34;138199ad-2df2-4990-8382-172c41178915&#34;)&gt; is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3624,11 +3624,11 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">2</td>
-        <td class="text-center">5</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3647,89 +3647,29 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     
     
     
-        <tr id="ft42.2" class="none bg-danger">
+        <tr id='pt42.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft42.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 193, in test_cache_of_deleted_book
-    self.assertEqual(len(res), 1)
-AssertionError: 2 != 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft42.3" class="none bg-danger">
+        <tr id='pt42.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft42.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 80, in test_cover_cache_on_database_change
-    self.assertLessEqual(len(res), 1, res)
-AssertionError: 2 not less than or equal to 1 : [{&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Metadata backup: Backing up Metadata&#39;, &#39;result&#39;: &#39;Failed&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 0s&#39;, &#39;start&#39;: &#39;9/25/22, 2:16 AM&#39;}, {&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Cover Thumbnails: Generated 222 cover thumbnails&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 5s&#39;, &#39;start&#39;: &#39;9/25/22, 2:16 AM&#39;}]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft42.4" class="none bg-danger">
+        <tr id='pt42.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft42.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 123, in test_cover_change_on_upload_new_cover
-    self.assertLessEqual(len(res), 1)
-AssertionError: 2 not less than or equal to 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3743,31 +3683,11 @@ AssertionError: 2 not less than or equal to 1</pre>
     
     
     
-        <tr id="ft42.6" class="none bg-danger">
+        <tr id='pt42.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft42.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 230, in test_cover_on_upload_book
-    self.assertLessEqual(len(res), 1)
-AssertionError: 2 not less than or equal to 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3781,26 +3701,101 @@ AssertionError: 2 not less than or equal to 1</pre>
     
     
     
-        <tr id="ft42.8" class="none bg-danger">
+        <tr id='pt42.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="skipClass">
+        <td>TestUpdater</td>
+        <td class="text-center">9</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c43', 9)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt43.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st43.7" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.8')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st43.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft42.8" class="popup_window test_output" style="display:block;">
+                <div id="div_st43.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.8').style.display='none'"><span
+                                onclick="document.getElementById('div_st43.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 320, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.0 not greater than or equal to 0.04</pre>
+                        <pre class="text-left">Takes too long</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3809,52 +3804,21 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
         </tr>
     
     
-
-
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c43', 1)">Detail</a>
-        </td>
-    </tr>
-
     
-    
-        <tr id="et43.1" class="none bg-info">
+        <tr id='pt43.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_updater</div>
+                <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et43.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et43.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et43.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_updater
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 20
-    p = None
-IndentationError: unexpected indent</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3911,11 +3875,11 @@ IndentationError: unexpected indent</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4078,33 +4042,11 @@ IndentationError: unexpected indent</pre>
     
     
     
-        <tr id="ft45.18" class="none bg-danger">
+        <tr id='pt45.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_user_list.py&#34;, line 556, in test_user_list_sort
-    self.assertEqual(&#34;+&#34;, ul[&#39;table&#39;][0][&#39;E-mail Address&#39;][&#39;text&#39;])
-AssertionError: &#39;+&#39; != &#39;1al@b.com&#39;
-- +
-+ 1al@b.com</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4828,11 +4770,11 @@ AssertionError: &#39;+&#39; != &#39;1al@b.com&#39;
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>415</td>
-        <td>400</td>
-        <td>8</td>
+        <td>423</td>
+        <td>414</td>
         <td>1</td>
-        <td>6</td>
+        <td>1</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5280,7 +5222,7 @@ AssertionError: &#39;+&#39; != &#39;1al@b.com&#39;
 </div>
 
 <script>
-    drawCircle(400, 8, 1, 6);
+    drawCircle(414, 1, 1, 7);
     showCase(5);
 </script>
 
