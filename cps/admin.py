@@ -136,28 +136,38 @@ def admin_forbidden():
 @admin_required
 def shutdown():
     task = request.get_json().get('parameter', -1)
-    showtext = {}
+    show_text = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
         calibre_db.dispose()
         ub.dispose()
 
         if task == 0:
-            showtext['text'] = _(u'Server restarted, please reload page')
+            show_text['text'] = _(u'Server restarted, please reload page')
         else:
-            showtext['text'] = _(u'Performing shutdown of server, please close window')
+            show_text['text'] = _(u'Performing shutdown of server, please close window')
         # stop gevent/tornado server
         web_server.stop(task == 0)
-        return json.dumps(showtext)
+        return json.dumps(show_text)
 
     if task == 2:
         log.warning("reconnecting to calibre database")
         calibre_db.reconnect_db(config, ub.app_DB_path)
-        showtext['text'] = _(u'Reconnect successful')
-        return json.dumps(showtext)
+        show_text['text'] = _(u'Reconnect successful')
+        return json.dumps(show_text)
 
-    showtext['text'] = _(u'Unknown command')
-    return json.dumps(showtext), 400
+    show_text['text'] = _(u'Unknown command')
+    return json.dumps(show_text), 400
+
+@admi.route("/metadata_backup", methods=["POST"])
+@login_required
+@admin_required
+def queue_metadata_backup():
+    show_text = {}
+    log.warning("Queuing all books for metadata backup")
+    helper.set_all_metadata_dirty()
+    show_text['text'] = _(u'Books successfully queued fo Metadata Backup')
+    return json.dumps(show_text)
 
 
 # method is available without login and not protected by CSRF to make it easy reachable, is per default switched off
@@ -1310,7 +1320,7 @@ def edit_scheduledtasks():
         time_field.append((n, format_time(datetime_time(hour=n), format="short",)))
     for n in range(5, 65, 5):
         t = timedelta(hours=n // 60, minutes=n % 60)
-        duration_field.append((n, format_timedelta(t, threshold=.9)))
+        duration_field.append((n, format_timedelta(t, threshold=.97)))
 
     return render_title_template("schedule_edit.html",
                                  config=content,
@@ -1960,8 +1970,11 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         if to_save.get("locale"):
             content.locale = to_save["locale"]
         try:
-            if to_save.get("email", content.email) != content.email:
-                content.email = check_email(to_save["email"])
+            new_email = valid_email(to_save.get("email", content.email))
+            if not new_email:
+                raise Exception(_(u"E-Mail Address can't be empty and has to be a valid E-Mail"))
+            if new_email != content.email:
+                content.email = check_email(new_email)
             # Query username, if not existing, change
             if to_save.get("name", content.name) != content.name:
                 if to_save.get("name") == "Guest":

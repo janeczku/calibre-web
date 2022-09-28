@@ -263,7 +263,7 @@ class OAuthProvider(Base):
     active = Column(Boolean)
 
 
-# Class for anonymous user is derived from User base and completly overrides methods and properties for the
+# Class for anonymous user is derived from User base and completely overrides methods and properties for the
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
     def __init__(self):
@@ -769,7 +769,7 @@ def update_download(book_id, user_id):
             session.rollback()
 
 
-# Delete non exisiting downloaded books in calibre-web's own database
+# Delete non existing downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     try:
@@ -796,6 +796,7 @@ def create_anonymous_user(_session):
 def create_admin_user(_session):
     user = User()
     user.name = "admin"
+    user.email = "admin@example.org"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 

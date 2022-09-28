@@ -29,11 +29,11 @@ SQLAlchemy-Utils>=0.33.5,<0.39.0
 
 # metadata extraction
 rarfile>=3.2
-scholarly>=1.2.0,<1.7
+scholarly>=1.2.0,<1.8
 markdown2>=2.0.0,<2.5.0
 html2text>=2020.1.16,<2022.1.1
 python-dateutil>=2.1,<2.9.0
-beautifulsoup4>=4.0.1,<4.11.0
+beautifulsoup4>=4.0.1,<4.12.0
 cchardet>=2.0.0,<2.2.0
 
 # Comics
@@ -41,4 +41,4 @@ natsort>=2.2.0,<8.2.0
 comicapi>=2.2.0,<2.3.0
 
 # Kobo integration
-jsonschema>=3.2.0,<4.6.0
+jsonschema>=3.2.0,<4.9.0

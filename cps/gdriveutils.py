@@ -33,6 +33,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import text
 
 try:
@@ -318,7 +319,7 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except (OperationalError, IntegrityError) as ex:
+    except (OperationalError, IntegrityError, StaleDataError) as ex:
         log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
@@ -577,6 +578,7 @@ def deleteDatabaseEntry(ID):
 
 
 # Gets cover file from gdrive
+# ToDo: Check is this right everyone get read permissions on cover files?
 def get_cover_via_gdrive(cover_path):
     df = getFileFromEbooksFolder(cover_path, 'cover.jpg')
     if df:
@@ -586,6 +588,29 @@ def get_cover_via_gdrive(cover_path):
                             'type': 'anyone',
                             'value': 'anyone',
                             'role': 'reader',
+                            'withLink': True})
+            permissionAdded = PermissionAdded()
+            permissionAdded.gdrive_id = df['id']
+            session.add(permissionAdded)
+            try:
+                session.commit()
+            except OperationalError as ex:
+                log.error_or_exception('Database error: {}'.format(ex))
+                session.rollback()
+        return df.metadata.get('webContentLink')
+    else:
+        return None
+
+# Gets cover file from gdrive
+def get_metadata_backup_via_gdrive(metadata_path):
+    df = getFileFromEbooksFolder(metadata_path, 'metadata.opf')
+    if df:
+        if not session.query(PermissionAdded).filter(PermissionAdded.gdrive_id == df['id']).first():
+            df.GetPermissions()
+            df.InsertPermission({
+                            'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'writer',       # ToDo needs write access
                             'withLink': True})
             permissionAdded = PermissionAdded()
             permissionAdded.gdrive_id = df['id']

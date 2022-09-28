@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-06-05 22:14:00</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2022-09-24 21:26:53</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-06-06 04:06:43</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-09-25 03:49:07</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>4h 57 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 27 min</p>
         </div>
       </div>
       </div>
@@ -465,12 +465,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibre</td>
         <td class="text-center">15</td>
-        <td class="text-center">11</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
+        <td class="text-center">15</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c6', 15)">Detail</a>
@@ -497,64 +497,20 @@
     
     
     
-        <tr id="ft6.3" class="none bg-danger">
+        <tr id='pt6.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft6.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft6.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 223, in test_convert_email
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et6.4" class="none bg-info">
+        <tr id='pt6.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_failed_and_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et6.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et6.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 254, in test_convert_failed_and_email
-    select.select_by_visible_text(&#39;AZW3&#39;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/select.py&#34;, line 140, in select_by_visible_text
-    raise NoSuchElementException(&#34;Could not locate element with visible text: %s&#34; % text)
-selenium.common.exceptions.NoSuchElementException: Message: Could not locate element with visible text: AZW3</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -568,33 +524,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
     
     
-        <tr id="ft6.6" class="none bg-danger">
+        <tr id='pt6.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_options</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft6.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft6.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 622, in test_convert_options
-    self.assertEqual(from_book, set([&#39;-- select an option --&#39;, &#34;TXT&#34;]))
-AssertionError: Items in the first set but not the second:
-&#39;EPUB&#39;
-&#39;AZW3&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -635,33 +569,11 @@ AssertionError: Items in the first set but not the second:
     
     
     
-        <tr id="ft6.11" class="none bg-danger">
+        <tr id='pt6.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_email_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.11')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft6.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft6.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 460, in test_email_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -703,12 +615,12 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c7', 6)">Detail</a>
@@ -717,64 +629,20 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
 
     
     
-        <tr id="ft7.1" class="none bg-danger">
+        <tr id='pt7.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft7.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft7.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 226, in test_convert_email
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et7.2" class="none bg-info">
+        <tr id='pt7.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_failed_and_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et7.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et7.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et7.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 244, in test_convert_failed_and_email
-    select.select_by_visible_text(&#39;AZW3&#39;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/select.py&#34;, line 140, in select_by_visible_text
-    raise NoSuchElementException(&#34;Could not locate element with visible text: %s&#34; % text)
-selenium.common.exceptions.NoSuchElementException: Message: Could not locate element with visible text: AZW3</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -806,33 +674,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
     
     
-        <tr id="ft7.6" class="none bg-danger">
+        <tr id='pt7.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft7.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft7.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 460, in test_email_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1761,11 +1607,11 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1775,22 +1621,42 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id="ft15.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft15.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft15.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 167, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c16', 18)">Detail</a>
@@ -1934,31 +1800,11 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
     
     
     
-        <tr id="et16.16" class="none bg-info">
+        <tr id='pt16.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et16.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et16.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 185, in test_edit_title
-    self.assertEqual(&#39;The camicdemo&#39;, books[1][8][&#39;title&#39;])
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2006,11 +1852,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestSTARTTLS</td>
         <td class="text-center">3</td>
-        <td class="text-center">1</td>
-        <td class="text-center">2</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2020,33 +1866,11 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id="ft18.1" class="none bg-danger">
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py&#34;, line 81, in test_STARTTLS
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2060,148 +1884,31 @@ AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
     
     
     
-        <tr id="ft18.3" class="none bg-danger">
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py&#34;, line 113, in test_STARTTLS_resend_password
-    self.assertTrue(wait_Email_received(self.email_server.handler.check_email_received))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">2</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">2</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c19', 2)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="et19.1" class="none bg-info">
-            <td>
-                <div class='testcase'>tearDownClass (test_email_STARTTLS)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et19.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et19.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py&#34;, line 54, in tearDownClass
-    cls.stop_calibre_web()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 475, in stop_calibre_web
-    cls.driver.find_element(By.ID, &#39;admin_stop&#39;).click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;admin_stop&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="et19.2" class="none bg-info">
-            <td>
-                <div class='testcase'>tearDownClass (test_email_ssl)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et19.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et19.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 52, in tearDownClass
-    cls.stop_calibre_web()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 475, in stop_calibre_web
-    cls.driver.find_element(By.ID, &#39;admin_stop&#39;).click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;admin_stop&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestSSL</td>
         <td class="text-center">7</td>
-        <td class="text-center">2</td>
-        <td class="text-center">2</td>
-        <td class="text-center">3</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 7)">Detail</a>
+            <a onclick="showClassDetail('c19', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -2210,7 +1917,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -2219,171 +1926,47 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id="ft20.3" class="none bg-danger">
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft20.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft20.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 130, in test_SSL_logging_email
-    self.assertTrue(len(re.findall(&#39;Subject: Calibre-Web test e-mail&#39;, data)), &#34;Email logging not working&#34;)
-AssertionError: 0 is not true : Email logging not working</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft20.4" class="none bg-danger">
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft20.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft20.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 196, in test_SSL_non_admin_user
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Failed&#39; != &#39;Finished&#39;
-- Failed
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et20.5" class="none bg-info">
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et20.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et20.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 64, in test_SSL_only
-    self.setup_server(False, {&#39;mail_use_ssl&#39;: &#39;SSL/TLS&#39;})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 722, in setup_server
-    select = Select(cls.driver.find_element(By.ID, key))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;mail_use_ssl&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et20.6" class="none bg-info">
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et20.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et20.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 135, in test_email_limit
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 387, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 297, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/support/wait.py&#34;, line 89, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et20.7" class="none bg-info">
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et20.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et20.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 217, in test_filepicker_two_file
-    accordions[0].click()
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2397,13 +1980,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 1)">Detail</a>
+            <a onclick="showClassDetail('c20', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBookDatabase - test_invalid_book_path</div>
             </td>
@@ -2421,13 +2004,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 2)">Detail</a>
+            <a onclick="showClassDetail('c21', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
             </td>
@@ -2436,7 +2019,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_read_column</div>
             </td>
@@ -2454,13 +2037,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 3)">Detail</a>
+            <a onclick="showClassDetail('c22', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
@@ -2469,19 +2052,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st23.2" class="none bg-warning">
+        <tr id="st22.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st23.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st22.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st23.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st22.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st23.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st22.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2495,7 +2078,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
@@ -2513,13 +2096,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 1)">Detail</a>
+            <a onclick="showClassDetail('c23', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -2529,30 +2112,50 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestGoodreads</td>
         <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 3)">Detail</a>
+            <a onclick="showClassDetail('c24', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id="ft24.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft24.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft24.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft24.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_goodreads.py&#34;, line 108, in test_author_page
+    self.assertFalse(self.check_element_on_page((By.CLASS_NAME, &#34;author-photo&#34;)))
+AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;2520e615-2568-4cc5-b588-44e563fa14a2&#34;, element=&#34;138199ad-2df2-4990-8382-172c41178915&#34;)&gt; is not false</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -2561,7 +2164,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -2579,13 +2182,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 11)">Detail</a>
+            <a onclick="showClassDetail('c25', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -2594,7 +2197,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.2' class='hiddenRow bg-success'>
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -2603,7 +2206,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.3' class='hiddenRow bg-success'>
+        <tr id='pt25.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
@@ -2612,7 +2215,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.4' class='hiddenRow bg-success'>
+        <tr id='pt25.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_upload_book</div>
             </td>
@@ -2621,7 +2224,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.5' class='hiddenRow bg-success'>
+        <tr id='pt25.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -2630,7 +2233,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.6' class='hiddenRow bg-success'>
+        <tr id='pt25.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -2639,7 +2242,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.7' class='hiddenRow bg-success'>
+        <tr id='pt25.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -2648,7 +2251,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.8' class='hiddenRow bg-success'>
+        <tr id='pt25.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -2657,7 +2260,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.9' class='hiddenRow bg-success'>
+        <tr id='pt25.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -2666,7 +2269,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.10' class='hiddenRow bg-success'>
+        <tr id='pt25.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -2675,7 +2278,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.11' class='hiddenRow bg-success'>
+        <tr id='pt25.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -2693,13 +2296,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 6)">Detail</a>
+            <a onclick="showClassDetail('c26', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
@@ -2708,7 +2311,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
@@ -2717,7 +2320,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id='pt26.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
@@ -2726,7 +2329,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.4' class='hiddenRow bg-success'>
+        <tr id='pt26.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
@@ -2735,7 +2338,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.5' class='hiddenRow bg-success'>
+        <tr id='pt26.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
@@ -2744,7 +2347,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.6' class='hiddenRow bg-success'>
+        <tr id='pt26.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -2762,13 +2365,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 13)">Detail</a>
+            <a onclick="showClassDetail('c27', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -2777,7 +2380,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt27.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -2786,7 +2389,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -2795,7 +2398,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.4' class='hiddenRow bg-success'>
+        <tr id='pt27.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -2804,7 +2407,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.5' class='hiddenRow bg-success'>
+        <tr id='pt27.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -2813,7 +2416,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.6' class='hiddenRow bg-success'>
+        <tr id='pt27.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -2822,7 +2425,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.7' class='hiddenRow bg-success'>
+        <tr id='pt27.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -2831,7 +2434,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.8' class='hiddenRow bg-success'>
+        <tr id='pt27.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -2840,7 +2443,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.9' class='hiddenRow bg-success'>
+        <tr id='pt27.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -2849,7 +2452,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.10' class='hiddenRow bg-success'>
+        <tr id='pt27.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -2858,7 +2461,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.11' class='hiddenRow bg-success'>
+        <tr id='pt27.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -2867,7 +2470,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.12' class='hiddenRow bg-success'>
+        <tr id='pt27.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -2876,7 +2479,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.13' class='hiddenRow bg-success'>
+        <tr id='pt27.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -2894,13 +2497,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 10)">Detail</a>
+            <a onclick="showClassDetail('c28', 10)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_author_sort</div>
             </td>
@@ -2909,7 +2512,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt28.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_download_sort</div>
             </td>
@@ -2918,7 +2521,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt28.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_format_sort</div>
             </td>
@@ -2927,7 +2530,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt28.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_lang_sort</div>
             </td>
@@ -2936,7 +2539,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt28.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
@@ -2945,7 +2548,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt28.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
@@ -2954,7 +2557,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt28.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_sort</div>
             </td>
@@ -2963,7 +2566,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt28.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_sort</div>
             </td>
@@ -2972,7 +2575,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt28.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_sort</div>
             </td>
@@ -2981,7 +2584,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id='pt28.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_sort</div>
             </td>
@@ -2999,13 +2602,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 9)">Detail</a>
+            <a onclick="showClassDetail('c29', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -3014,7 +2617,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -3023,7 +2626,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
@@ -3032,7 +2635,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt29.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -3041,19 +2644,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st30.5" class="none bg-warning">
+        <tr id="st29.5" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st30.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st29.5')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st30.5" class="popup_window test_output" style="display:none;">
+                <div id="div_st29.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st30.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st29.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3067,7 +2670,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt29.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logbook_download</div>
             </td>
@@ -3076,7 +2679,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.7' class='hiddenRow bg-success'>
+        <tr id='pt29.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -3085,7 +2688,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.8' class='hiddenRow bg-success'>
+        <tr id='pt29.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -3094,7 +2697,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.9' class='hiddenRow bg-success'>
+        <tr id='pt29.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -3112,13 +2715,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 15)">Detail</a>
+            <a onclick="showClassDetail('c30', 15)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -3127,7 +2730,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -3136,7 +2739,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
@@ -3145,7 +2748,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -3154,7 +2757,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -3163,7 +2766,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -3172,7 +2775,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -3181,7 +2784,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -3190,7 +2793,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -3199,7 +2802,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -3208,7 +2811,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -3217,7 +2820,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -3226,7 +2829,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.13' class='hiddenRow bg-success'>
+        <tr id='pt30.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -3235,7 +2838,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.14' class='hiddenRow bg-success'>
+        <tr id='pt30.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
@@ -3244,7 +2847,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.15' class='hiddenRow bg-success'>
+        <tr id='pt30.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -3262,13 +2865,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 2)">Detail</a>
+            <a onclick="showClassDetail('c31', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
@@ -3277,7 +2880,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -3295,13 +2898,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 2)">Detail</a>
+            <a onclick="showClassDetail('c32', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -3310,7 +2913,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -3328,13 +2931,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 23)">Detail</a>
+            <a onclick="showClassDetail('c33', 23)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt33.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -3343,7 +2946,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -3352,7 +2955,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt33.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -3361,7 +2964,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -3370,7 +2973,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.5' class='hiddenRow bg-success'>
+        <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -3379,7 +2982,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.6' class='hiddenRow bg-success'>
+        <tr id='pt33.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -3388,7 +2991,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id='pt33.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -3397,7 +3000,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id='pt33.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -3406,7 +3009,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id='pt33.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -3415,7 +3018,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.10' class='hiddenRow bg-success'>
+        <tr id='pt33.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -3424,7 +3027,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.11' class='hiddenRow bg-success'>
+        <tr id='pt33.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -3433,7 +3036,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.12' class='hiddenRow bg-success'>
+        <tr id='pt33.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -3442,7 +3045,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.13' class='hiddenRow bg-success'>
+        <tr id='pt33.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -3451,7 +3054,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.14' class='hiddenRow bg-success'>
+        <tr id='pt33.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -3460,7 +3063,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.15' class='hiddenRow bg-success'>
+        <tr id='pt33.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -3469,7 +3072,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.16' class='hiddenRow bg-success'>
+        <tr id='pt33.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -3478,7 +3081,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.17' class='hiddenRow bg-success'>
+        <tr id='pt33.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -3487,7 +3090,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.18' class='hiddenRow bg-success'>
+        <tr id='pt33.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -3496,7 +3099,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.19' class='hiddenRow bg-success'>
+        <tr id='pt33.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -3505,7 +3108,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.20' class='hiddenRow bg-success'>
+        <tr id='pt33.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -3514,7 +3117,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.21' class='hiddenRow bg-success'>
+        <tr id='pt33.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -3523,7 +3126,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.22' class='hiddenRow bg-success'>
+        <tr id='pt33.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -3532,7 +3135,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.23' class='hiddenRow bg-success'>
+        <tr id='pt33.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -3550,13 +3153,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 1)">Detail</a>
+            <a onclick="showClassDetail('c34', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt34.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
@@ -3574,13 +3177,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 3)">Detail</a>
+            <a onclick="showClassDetail('c35', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt36.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
@@ -3589,7 +3192,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.2' class='hiddenRow bg-success'>
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
@@ -3598,7 +3201,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.3' class='hiddenRow bg-success'>
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_module_start</div>
             </td>
@@ -3616,13 +3219,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 5)">Detail</a>
+            <a onclick="showClassDetail('c36', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -3631,7 +3234,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -3640,7 +3243,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt37.3' class='hiddenRow bg-success'>
+        <tr id='pt36.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -3649,7 +3252,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt37.4' class='hiddenRow bg-success'>
+        <tr id='pt36.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -3658,7 +3261,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt37.5' class='hiddenRow bg-success'>
+        <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -3676,13 +3279,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 1)">Detail</a>
+            <a onclick="showClassDetail('c37', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
@@ -3692,50 +3295,30 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestRegister</td>
         <td class="text-center">8</td>
-        <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">3</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 8)">Detail</a>
+            <a onclick="showClassDetail('c38', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="ft39.1" class="none bg-danger">
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft39.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft39.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 211, in test_forgot_password
-    self.assertTrue(self.check_user_logged_in(&#39;forget&#39;, noCompare=True))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt39.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -3744,7 +3327,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.3' class='hiddenRow bg-success'>
+        <tr id='pt38.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -3753,7 +3336,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.4' class='hiddenRow bg-success'>
+        <tr id='pt38.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -3762,154 +3345,38 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft39.5" class="none bg-danger">
+        <tr id='pt38.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft39.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft39.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 222, in test_registering_only_email
-    self.assertTrue(wait_Email_received(self.email_server.handler.check_email_received))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et39.6" class="none bg-info">
+        <tr id='pt38.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et39.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et39.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et39.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 132, in test_registering_user
-    self.assertEqual(u&#39;flash_success&#39;,self.register(u&#39;u1&#39;, &#39;huj@de.de&#39;))
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 124, in register
-    username = cls.driver.find_element(By.NAME, &#34;name&#34;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [name=&#34;name&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et39.7" class="none bg-info">
+        <tr id='pt38.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et39.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et39.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et39.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 151, in test_registering_user_fail
-    self.assertEqual(u&#39;flash_success&#39;,self.register(u&#39;udouble&#39;, &#39;huj@de.com&#39;))
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 124, in register
-    username = cls.driver.find_element(By.NAME, &#34;name&#34;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [name=&#34;name&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et39.8" class="none bg-info">
+        <tr id='pt38.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et39.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et39.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et39.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 173, in test_user_change_password
-    self.assertEqual(u&#39;flash_success&#39;,self.register(u&#39;upasswd&#39;, &#39;passwd@de.com&#39;))
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 124, in register
-    username = cls.driver.find_element(By.NAME, &#34;name&#34;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 1248, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 425, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.8/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 247, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [name=&#34;name&#34;]
-Stacktrace:
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.jsm:183:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.jsm:395:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3923,13 +3390,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 3)">Detail</a>
+            <a onclick="showClassDetail('c39', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt40.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_logout</div>
             </td>
@@ -3938,7 +3405,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt40.2' class='hiddenRow bg-success'>
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_move_page</div>
             </td>
@@ -3947,7 +3414,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt40.3' class='hiddenRow bg-success'>
+        <tr id='pt39.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -3965,13 +3432,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 16)">Detail</a>
+            <a onclick="showClassDetail('c40', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt41.1' class='hiddenRow bg-success'>
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_access_shelf</div>
             </td>
@@ -3980,7 +3447,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.2' class='hiddenRow bg-success'>
+        <tr id='pt40.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -3989,7 +3456,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.3' class='hiddenRow bg-success'>
+        <tr id='pt40.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -3998,7 +3465,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.4' class='hiddenRow bg-success'>
+        <tr id='pt40.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -4007,7 +3474,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.5' class='hiddenRow bg-success'>
+        <tr id='pt40.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
@@ -4016,7 +3483,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.6' class='hiddenRow bg-success'>
+        <tr id='pt40.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
@@ -4025,7 +3492,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.7' class='hiddenRow bg-success'>
+        <tr id='pt40.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -4034,7 +3501,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.8' class='hiddenRow bg-success'>
+        <tr id='pt40.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -4043,7 +3510,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.9' class='hiddenRow bg-success'>
+        <tr id='pt40.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -4052,7 +3519,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.10' class='hiddenRow bg-success'>
+        <tr id='pt40.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -4061,7 +3528,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.11' class='hiddenRow bg-success'>
+        <tr id='pt40.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -4070,7 +3537,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.12' class='hiddenRow bg-success'>
+        <tr id='pt40.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -4079,7 +3546,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.13' class='hiddenRow bg-success'>
+        <tr id='pt40.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -4088,19 +3555,19 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id="st41.14" class="none bg-warning">
+        <tr id="st40.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st41.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st40.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st41.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st40.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st41.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st40.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4114,7 +3581,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.15' class='hiddenRow bg-success'>
+        <tr id='pt40.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -4123,7 +3590,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt41.16' class='hiddenRow bg-success'>
+        <tr id='pt40.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4141,13 +3608,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt42.1' class='hiddenRow bg-success'>
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
@@ -4157,21 +3624,21 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 8)">Detail</a>
+            <a onclick="showClassDetail('c42', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt43.1' class='hiddenRow bg-success'>
+        <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -4180,155 +3647,26 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt43.2' class='hiddenRow bg-success'>
+        <tr id="ft42.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt43.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt43.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='st43.5' class='none bg-warning'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_cover_for_series</div>
-            </td>
-            <td colspan='6' align='center'>SKIP</td>
-        </tr>
-    
-    
-    
-        <tr id='pt43.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt43.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt43.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="skipClass">
-        <td>TestUpdater</td>
-        <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c44', 9)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt44.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id="st44.7" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
-            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st44.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.2')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st44.7" class="popup_window test_output" style="display:none;">
+                <div id="div_ft42.2" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st44.7').style.display='none'"><span
+                                onclick="document.getElementById('div_ft42.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Takes too long</pre>
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 193, in test_cache_of_deleted_book
+    self.assertEqual(len(res), 1)
+AssertionError: 2 != 1</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4338,20 +3676,185 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt44.8' class='hiddenRow bg-success'>
+        <tr id="ft42.3" class="none bg-danger">
             <td>
-                <div class='testcase'>TestUpdater - test_reconnect_database</div>
+                <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 80, in test_cover_cache_on_database_change
+    self.assertLessEqual(len(res), 1, res)
+AssertionError: 2 not less than or equal to 1 : [{&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Metadata backup: Backing up Metadata&#39;, &#39;result&#39;: &#39;Failed&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 0s&#39;, &#39;start&#39;: &#39;9/25/22, 2:16 AM&#39;}, {&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Cover Thumbnails: Generated 222 cover thumbnails&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 5s&#39;, &#39;start&#39;: &#39;9/25/22, 2:16 AM&#39;}]</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft42.4" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 123, in test_cover_change_on_upload_new_cover
+    self.assertLessEqual(len(res), 1)
+AssertionError: 2 not less than or equal to 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='st42.5' class='none bg-warning'>
+            <td>
+                <div class='testcase'>TestThumbnails - test_cover_for_series</div>
+            </td>
+            <td colspan='6' align='center'>SKIP</td>
+        </tr>
+    
+    
+    
+        <tr id="ft42.6" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 230, in test_cover_on_upload_book
+    self.assertLessEqual(len(res), 1)
+AssertionError: 2 not less than or equal to 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt42.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt44.9' class='hiddenRow bg-success'>
+        <tr id="ft42.8" class="none bg-danger">
             <td>
-                <div class='testcase'>TestUpdater - test_update_write_protect</div>
+                <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 320, in test_sideloaded_book
+    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
+AssertionError: 0.0 not greater than or equal to 0.04</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c43', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et43.1" class="none bg-info">
+            <td>
+                <div class='testcase'>_FailedTest - test_updater</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et43.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et43.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et43.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_updater
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 20
+    p = None
+IndentationError: unexpected indent</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4365,13 +3868,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 4)">Detail</a>
+            <a onclick="showClassDetail('c44', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4380,7 +3883,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt44.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -4389,7 +3892,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt44.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4398,7 +3901,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id='pt44.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4408,21 +3911,21 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 18)">Detail</a>
+            <a onclick="showClassDetail('c45', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt45.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4431,7 +3934,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4440,7 +3943,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4449,7 +3952,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -4458,7 +3961,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt45.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -4467,7 +3970,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt45.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -4476,7 +3979,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.7' class='hiddenRow bg-success'>
+        <tr id='pt45.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -4485,7 +3988,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt45.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -4494,7 +3997,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt45.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -4503,7 +4006,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.10' class='hiddenRow bg-success'>
+        <tr id='pt45.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -4512,7 +4015,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.11' class='hiddenRow bg-success'>
+        <tr id='pt45.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -4521,7 +4024,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.12' class='hiddenRow bg-success'>
+        <tr id='pt45.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -4530,7 +4033,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.13' class='hiddenRow bg-success'>
+        <tr id='pt45.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -4539,7 +4042,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.14' class='hiddenRow bg-success'>
+        <tr id='pt45.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -4548,7 +4051,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.15' class='hiddenRow bg-success'>
+        <tr id='pt45.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -4557,7 +4060,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.16' class='hiddenRow bg-success'>
+        <tr id='pt45.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -4566,7 +4069,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.17' class='hiddenRow bg-success'>
+        <tr id='pt45.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -4575,11 +4078,33 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt46.18' class='hiddenRow bg-success'>
+        <tr id="ft45.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft45.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft45.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_user_list.py&#34;, line 556, in test_user_list_sort
+    self.assertEqual(&#34;+&#34;, ul[&#39;table&#39;][0][&#39;E-mail Address&#39;][&#39;text&#39;])
+AssertionError: &#39;+&#39; != &#39;1al@b.com&#39;
+- +
++ 1al@b.com</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4593,13 +4118,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 1)">Detail</a>
+            <a onclick="showClassDetail('c46', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -4617,13 +4142,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 21)">Detail</a>
+            <a onclick="showClassDetail('c47', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -4632,7 +4157,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.2' class='hiddenRow bg-success'>
+        <tr id='pt47.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -4641,7 +4166,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.3' class='hiddenRow bg-success'>
+        <tr id='pt47.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -4650,7 +4175,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id='pt47.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -4659,7 +4184,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.5' class='hiddenRow bg-success'>
+        <tr id='pt47.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -4668,7 +4193,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.6' class='hiddenRow bg-success'>
+        <tr id='pt47.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -4677,7 +4202,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.7' class='hiddenRow bg-success'>
+        <tr id='pt47.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -4686,7 +4211,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.8' class='hiddenRow bg-success'>
+        <tr id='pt47.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -4695,7 +4220,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.9' class='hiddenRow bg-success'>
+        <tr id='pt47.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -4704,7 +4229,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.10' class='hiddenRow bg-success'>
+        <tr id='pt47.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -4713,7 +4238,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.11' class='hiddenRow bg-success'>
+        <tr id='pt47.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -4722,7 +4247,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.12' class='hiddenRow bg-success'>
+        <tr id='pt47.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -4731,7 +4256,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.13' class='hiddenRow bg-success'>
+        <tr id='pt47.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -4740,7 +4265,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.14' class='hiddenRow bg-success'>
+        <tr id='pt47.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -4749,7 +4274,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.15' class='hiddenRow bg-success'>
+        <tr id='pt47.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -4758,7 +4283,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.16' class='hiddenRow bg-success'>
+        <tr id='pt47.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -4767,7 +4292,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.17' class='hiddenRow bg-success'>
+        <tr id='pt47.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -4776,7 +4301,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.18' class='hiddenRow bg-success'>
+        <tr id='pt47.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -4785,7 +4310,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.19' class='hiddenRow bg-success'>
+        <tr id='pt47.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -4794,7 +4319,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.20' class='hiddenRow bg-success'>
+        <tr id='pt47.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -4803,7 +4328,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt48.21' class='hiddenRow bg-success'>
+        <tr id='pt47.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -4821,13 +4346,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 35)">Detail</a>
+            <a onclick="showClassDetail('c48', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -4836,7 +4361,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.2' class='hiddenRow bg-success'>
+        <tr id='pt48.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -4845,7 +4370,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.3' class='hiddenRow bg-success'>
+        <tr id='pt48.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -4854,7 +4379,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.4' class='hiddenRow bg-success'>
+        <tr id='pt48.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -4863,7 +4388,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.5' class='hiddenRow bg-success'>
+        <tr id='pt48.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -4872,7 +4397,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.6' class='hiddenRow bg-success'>
+        <tr id='pt48.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -4881,7 +4406,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.7' class='hiddenRow bg-success'>
+        <tr id='pt48.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -4890,7 +4415,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.8' class='hiddenRow bg-success'>
+        <tr id='pt48.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -4899,7 +4424,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.9' class='hiddenRow bg-success'>
+        <tr id='pt48.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -4908,7 +4433,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.10' class='hiddenRow bg-success'>
+        <tr id='pt48.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -4917,7 +4442,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.11' class='hiddenRow bg-success'>
+        <tr id='pt48.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -4926,7 +4451,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.12' class='hiddenRow bg-success'>
+        <tr id='pt48.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -4935,7 +4460,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.13' class='hiddenRow bg-success'>
+        <tr id='pt48.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -4944,7 +4469,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.14' class='hiddenRow bg-success'>
+        <tr id='pt48.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -4953,7 +4478,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.15' class='hiddenRow bg-success'>
+        <tr id='pt48.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -4962,7 +4487,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.16' class='hiddenRow bg-success'>
+        <tr id='pt48.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -4971,7 +4496,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.17' class='hiddenRow bg-success'>
+        <tr id='pt48.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -4980,7 +4505,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.18' class='hiddenRow bg-success'>
+        <tr id='pt48.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -4989,7 +4514,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.19' class='hiddenRow bg-success'>
+        <tr id='pt48.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -4998,7 +4523,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.20' class='hiddenRow bg-success'>
+        <tr id='pt48.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5007,7 +4532,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.21' class='hiddenRow bg-success'>
+        <tr id='pt48.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5016,7 +4541,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.22' class='hiddenRow bg-success'>
+        <tr id='pt48.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5025,7 +4550,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.23' class='hiddenRow bg-success'>
+        <tr id='pt48.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5034,7 +4559,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.24' class='hiddenRow bg-success'>
+        <tr id='pt48.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5043,7 +4568,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.25' class='hiddenRow bg-success'>
+        <tr id='pt48.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5052,7 +4577,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.26' class='hiddenRow bg-success'>
+        <tr id='pt48.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5061,7 +4586,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.27' class='hiddenRow bg-success'>
+        <tr id='pt48.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5070,7 +4595,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.28' class='hiddenRow bg-success'>
+        <tr id='pt48.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5079,7 +4604,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.29' class='hiddenRow bg-success'>
+        <tr id='pt48.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5088,7 +4613,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.30' class='hiddenRow bg-success'>
+        <tr id='pt48.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5097,7 +4622,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.31' class='hiddenRow bg-success'>
+        <tr id='pt48.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5106,7 +4631,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.32' class='hiddenRow bg-success'>
+        <tr id='pt48.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -5115,7 +4640,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.33' class='hiddenRow bg-success'>
+        <tr id='pt48.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5124,7 +4649,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.34' class='hiddenRow bg-success'>
+        <tr id='pt48.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5133,7 +4658,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt49.35' class='hiddenRow bg-success'>
+        <tr id='pt48.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5151,13 +4676,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 16)">Detail</a>
+            <a onclick="showClassDetail('c49', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt50.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5166,7 +4691,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.2' class='hiddenRow bg-success'>
+        <tr id='pt49.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5175,7 +4700,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.3' class='hiddenRow bg-success'>
+        <tr id='pt49.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5184,7 +4709,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.4' class='hiddenRow bg-success'>
+        <tr id='pt49.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5193,7 +4718,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.5' class='hiddenRow bg-success'>
+        <tr id='pt49.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5202,7 +4727,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.6' class='hiddenRow bg-success'>
+        <tr id='pt49.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5211,7 +4736,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.7' class='hiddenRow bg-success'>
+        <tr id='pt49.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5220,7 +4745,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id='pt49.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5229,7 +4754,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.9' class='hiddenRow bg-success'>
+        <tr id='pt49.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5238,7 +4763,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.10' class='hiddenRow bg-success'>
+        <tr id='pt49.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5247,7 +4772,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.11' class='hiddenRow bg-success'>
+        <tr id='pt49.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5256,7 +4781,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.12' class='hiddenRow bg-success'>
+        <tr id='pt49.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5265,7 +4790,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.13' class='hiddenRow bg-success'>
+        <tr id='pt49.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5274,7 +4799,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.14' class='hiddenRow bg-success'>
+        <tr id='pt49.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5283,7 +4808,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.15' class='hiddenRow bg-success'>
+        <tr id='pt49.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5292,7 +4817,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
     
     
     
-        <tr id='pt50.16' class='hiddenRow bg-success'>
+        <tr id='pt49.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5303,11 +4828,11 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>425</td>
-        <td>396</td>
-        <td>11</td>
-        <td>11</td>
-        <td>7</td>
+        <td>415</td>
+        <td>400</td>
+        <td>8</td>
+        <td>1</td>
+        <td>6</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5335,13 +4860,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.15.0-33-generic #34~20.04.1-Ubuntu SMP Thu May 19 15:51:16 UTC 2022 x86_64 x86_64</td>
+              <td>Linux 5.15.0-48-generic #54-Ubuntu SMP Fri Aug 26 13:26:29 UTC 2022 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Python</th>
-              <td>3.8.10</td>
+              <td>3.10.6</td>
               <td>Basic</td>
             </tr>
           
@@ -5359,7 +4884,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>Babel</th>
-              <td>2.10.1</td>
+              <td>2.10.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5407,7 +4932,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>greenlet</th>
-              <td>1.1.2</td>
+              <td>1.1.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5436,14 +4961,14 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
             </tr>
           
             <tr>
-              <th>PyPDF3</th>
-              <td>1.0.6</td>
+              <th>PyPDF2</th>
+              <td>2.10.9</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pytz</th>
-              <td>2022.1</td>
+              <td>2022.2.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5455,7 +4980,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.37</td>
+              <td>1.4.41</td>
               <td>Basic</td>
             </tr>
           
@@ -5473,7 +4998,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>Wand</th>
-              <td>0.6.7</td>
+              <td>0.6.10</td>
               <td>Basic</td>
             </tr>
           
@@ -5485,7 +5010,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5503,7 +5028,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5515,7 +5040,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5533,7 +5058,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5545,7 +5070,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5563,7 +5088,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5587,7 +5112,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5605,7 +5130,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5623,7 +5148,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5641,7 +5166,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5659,13 +5184,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>scholarly</th>
-              <td>1.7.0</td>
+              <td>1.7.2</td>
               <td>TestLoadMetadataScholar</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.49.0</td>
+              <td>2.62.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5683,7 +5208,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.10.1</td>
+              <td>1.14.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5707,13 +5232,13 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>jsonschema</th>
-              <td>4.6.0</td>
+              <td>4.16.0</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.6.0</td>
+              <td>4.16.0</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5725,25 +5250,25 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
           
             <tr>
               <th>jsonschema</th>
-              <td>4.6.0</td>
+              <td>4.16.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
             <tr>
               <th>python-ldap</th>
-              <td>3.4.0</td>
+              <td>3.4.3</td>
               <td>TestLdapLogin</td>
             </tr>
           
             <tr>
               <th>Flask-Dance</th>
-              <td>6.0.0</td>
+              <td>6.1.1</td>
               <td>TestOAuthLogin</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.38.2</td>
+              <td>0.38.3</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -5755,7 +5280,7 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.js:300:16</pre
 </div>
 
 <script>
-    drawCircle(396, 11, 11, 7);
+    drawCircle(400, 8, 1, 6);
     showCase(5);
 </script>
 

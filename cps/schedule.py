@@ -23,7 +23,7 @@ from .services.background_scheduler import BackgroundScheduler, use_APScheduler
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
-
+from .tasks.metadata_backup import TaskBackupMetadata
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
@@ -31,6 +31,10 @@ def get_scheduled_tasks(reconnect=True):
     # Reconnect Calibre database (metadata.db)
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
+
+    # ToDo make configurable. Generate metadata.opf file for each changed book
+    if False:
+        tasks.append([lambda: TaskBackupMetadata("en"), 'backup metadata', False])
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:
@@ -90,6 +94,7 @@ def should_task_be_running(start, duration):
     start_time = datetime.datetime.now().replace(hour=start, minute=0, second=0, microsecond=0)
     end_time = start_time + datetime.timedelta(hours=duration // 60, minutes=duration % 60)
     return start_time < now < end_time
+
 
 def calclulate_end_time(start, duration):
     start_time = datetime.datetime.now().replace(hour=start, minute=0)

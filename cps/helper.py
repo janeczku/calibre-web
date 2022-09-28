@@ -19,7 +19,6 @@
 
 import os
 import io
-import sys
 import mimetypes
 import re
 import shutil
@@ -32,6 +31,7 @@ import unidecode
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
+from flask_babel import get_locale
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -58,6 +58,7 @@ from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
+from .tasks.metadata_backup import TaskBackupMetadata
 
 log = logger.create()
 
@@ -75,11 +76,11 @@ except (ImportError, RuntimeError) as e:
 def convert_book_format(book_id, calibre_path, old_book_format, new_book_format, user_id, ereader_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
-    file_path = os.path.join(calibre_path, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
         return error_message
+    file_path = os.path.join(calibre_path, book.path, data.name)
     if config.config_use_google_drive:
         if not gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower()):
             error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
@@ -121,7 +122,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     txt = "Hello %s!\r\n" % user_name
     if not resend:
         txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    txt += "Please log in to your account using the following informations:\r\n"
+    txt += "Please log in to your account using the following information:\r\n"
     txt += "User name: %s\r\n" % user_name
     txt += "Password: %s\r\n" % default_password
     txt += "Don't forget to change your password after first login.\r\n"
@@ -322,12 +323,12 @@ def edit_book_read_status(book_id, read_status=None):
         try:
             calibre_db.update_title_sort(config)
             book = calibre_db.get_filtered_book(book_id)
-            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
-            if len(read_status):
+            book_read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
+            if len(book_read_status):
                 if read_status is None:
-                    read_status[0].value = not read_status[0].value
+                    book_read_status[0].value = not book_read_status[0].value
                 else:
-                    read_status[0].value = read_status is True
+                    book_read_status[0].value = read_status is True
                 calibre_db.session.commit()
             else:
                 cc_class = db.cc_classes[config.config_read_column]
@@ -654,11 +655,13 @@ def check_username(username):
 
 def valid_email(email):
     email = email.strip()
-    # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-    if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-                     email):
-        log.error(u"Invalid e-mail address format")
-        raise Exception(_(u"Invalid e-mail address format"))
+    # if email is not deleted
+    if email:
+        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                         email):
+            log.error(u"Invalid e-mail address format")
+            raise Exception(_(u"Invalid e-mail address format"))
     return email
 
 # ################################# External interface #################################
@@ -683,7 +686,8 @@ def update_dir_structure(book_id,
 
 def delete_book(book, calibrepath, book_format):
     if not book_format:
-        clear_cover_thumbnail_cache(book.id)        ## here it breaks
+        clear_cover_thumbnail_cache(book.id) ## here it breaks
+        calibre_db.delete_dirty_metadata(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
@@ -940,7 +944,7 @@ def check_unrar(unrar_location):
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
-        return _('Error excecuting UnRar')
+        return _('Error executing UnRar')
 
 
 def json_serial(obj):
@@ -1029,3 +1033,11 @@ def add_book_to_thumbnail_cache(book_id):
 def update_thumbnail_cache():
     if config.schedule_generate_book_covers:
         WorkerThread.add(None, TaskGenerateCoverThumbnails())
+
+
+def set_all_metadata_dirty():
+    WorkerThread.add(None, TaskBackupMetadata(export_language=get_locale(),
+                                              translated_title=_("Cover"),
+                                              set_dirty=True,
+                                              task_message=N_("Queue all books for metadata backup")),
+                     hidden=False)

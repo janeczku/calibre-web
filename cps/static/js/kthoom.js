@@ -163,6 +163,14 @@ kthoom.ImageFile = function(file) {
             this.mimeType = undefined;
             break;
     }
+
+    // Reset mime type for special files originating from Apple devices
+    // This folder may contain files having image extensions (for example .jpg) but those files are not actual images
+    // Trying to view these files cause corrupted/empty pages in the comic reader and files should be ignored
+    if (this.filename.indexOf("__MACOSX") !== -1) {
+        this.mimeType = undefined;
+    }
+
     if ( this.mimeType !== undefined) {
         this.dataURI = createURLFromArray(file.fileData, this.mimeType);
     }
