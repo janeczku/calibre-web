@@ -166,7 +166,7 @@ def queue_metadata_backup():
     show_text = {}
     log.warning("Queuing all books for metadata backup")
     helper.set_all_metadata_dirty()
-    show_text['text'] = _(u'Books successfully queued fo Metadata Backup')
+    show_text['text'] = _(u'Books successfully queued for Metadata Backup')
     return json.dumps(show_text)
 
 
