@@ -96,7 +96,7 @@ msgstr "游客无法拥有此角色"
 
 #: cps/admin.py:490 cps/admin.py:1936
 msgid "No admin user remaining, can't remove admin role"
-msgstr "理员账户不存在，无法删除管理员角色"
+msgstr "没有其余管理员账户，无法删除管理员角色"
 
 #: cps/admin.py:494 cps/admin.py:508
 msgid "Value has to be true or false"
@@ -2129,7 +2129,7 @@ msgstr "功能配置"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr "保存到磁盘事转换标题和作者中的非英文字符"
+msgstr "保存到磁盘时转换标题和作者中的非英文字符"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
@@ -3294,7 +3294,7 @@ msgstr "本地化"
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
-msgstr "可见数据语言"
+msgstr "可见书籍语言"
 
 #: cps/templates/user_table.html:139
 msgid "Edit Allowed Tags"
