@@ -155,24 +155,24 @@ msgstr "Vuoi veramente eliminare questo scaffale?"
 
 #: cps/admin.py:603
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni locali dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le impostazioni locali del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:605
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle lingue visualizzabili dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le impostazioni delle lingue visualizzabili del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:607
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare il ruolo evidenziato dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare il ruolo evidenziato del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:609
 #, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:611
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione dell'/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:614
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
@@ -184,11 +184,11 @@ msgstr "Sei sicuro di voler modificare la posizione della libreria di Calibre?"
 
 #: cps/admin.py:618
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
-msgstr ""
+msgstr "Calibre-Web cercherà le copertine aggiornate e aggiornerà le miniature delle copertine, questo richiederà un po' di tempo."
 
 #: cps/admin.py:621
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare il database sincoronizzato di Calibre-Web e forzare una sincronizzazione completa con il tuo lettore Kobo?"
 
 #: cps/admin.py:864 cps/admin.py:870 cps/admin.py:880 cps/admin.py:890
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
@@ -204,7 +204,7 @@ msgstr "Permetti"
 
 #: cps/admin.py:907
 msgid "{} sync entries deleted"
-msgstr ""
+msgstr "{} eliminate voci di sincronizzazione"
 
 #: cps/admin.py:955
 msgid "Tag not found"
@@ -310,19 +310,19 @@ msgstr "Configurazione del server e-mail aggiornata"
 
 #: cps/admin.py:1319 cps/templates/admin.html:191
 msgid "Edit Scheduled Tasks Settings"
-msgstr ""
+msgstr "Modifica le impostazioni delle attività pianificate"
 
 #: cps/admin.py:1331
 msgid "Invalid start time for task specified"
-msgstr ""
+msgstr "Ora di inizio non valida per l'attività specificata"
 
 #: cps/admin.py:1336
 msgid "Invalid duration for task specified"
-msgstr ""
+msgstr "Durata non valida per l'attività specificata"
 
 #: cps/admin.py:1345
 msgid "Scheduled tasks settings updated"
-msgstr ""
+msgstr "Impostazioni delle attività pianificate aggiornate"
 
 #: cps/admin.py:1355 cps/admin.py:1404 cps/admin.py:1992 cps/web.py:1257
 #: cps/web.py:1318
@@ -331,7 +331,7 @@ msgstr "Si è verificato un errore sconosciuto: per favore riprova."
 
 #: cps/admin.py:1359
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "Il DB delle impostazioni non è scrivibile"
 
 #: cps/admin.py:1389 cps/admin.py:1984
 #, python-format
@@ -519,7 +519,7 @@ msgstr "Errore durante l'apertura del libro selezionato. Il file non esiste o il
 
 #: cps/editbooks.py:154 cps/editbooks.py:1217
 msgid "User has no rights to upload cover"
-msgstr ""
+msgstr "L'utente non ha i permessi per caricare le copertine"
 
 #: cps/editbooks.py:174 cps/editbooks.py:712
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
@@ -531,7 +531,7 @@ msgstr "I metadati sono stati aggiornati con successo"
 
 #: cps/editbooks.py:233
 msgid "Error editing book: {}"
-msgstr ""
+msgstr "Errore durante la modifica del libro: {}"
 
 #: cps/editbooks.py:288
 #, python-format
@@ -554,10 +554,9 @@ msgstr "Si è verificato un errore durante la conversione del libro: %(res)s"
 
 #: cps/editbooks.py:631
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Probabilmente il libro caricato esiste già nella libreria; considera di cambiare prima di sottoporlo nuovamente: "
+msgstr "Probabilmente il libro caricato esiste già nella libreria; considera di cambiarlo prima di sottoporlo nuovamente: "
 
 #: cps/editbooks.py:686 cps/editbooks.py:1011
-#, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s non è una lingua valida"
 
@@ -590,7 +589,7 @@ msgstr "Il libro é stato eliminato con successo"
 
 #: cps/editbooks.py:876
 msgid "You are missing permissions to delete books"
-msgstr ""
+msgstr "Non disponi delle autorizzazioni per eliminare libri."
 
 #: cps/editbooks.py:926
 msgid "edit metadata"
@@ -603,7 +602,7 @@ msgstr "%(seriesindex)s non è un numero valido, proseguo"
 
 #: cps/editbooks.py:1153
 msgid "User has no rights to upload additional file formats"
-msgstr ""
+msgstr "L'utente non ha i permessi per caricare formati di file aggiuntivi"
 
 #: cps/editbooks.py:1174
 #, python-format
@@ -645,9 +644,8 @@ msgstr "%(format)s non trovato: %(fn)s"
 
 #: cps/helper.py:96 cps/helper.py:225 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-#, fuzzy
 msgid "Send to E-Reader"
-msgstr "Invia a Kindle"
+msgstr "Invia al lettore elettronico"
 
 #: cps/helper.py:97 cps/helper.py:115 cps/helper.py:227
 msgid "This e-mail has been sent via Calibre-Web."
@@ -671,19 +669,19 @@ msgid "Registration e-mail for user: %(name)s"
 msgstr "E-mail di registrazione dell'utente: %(name)s"
 
 #: cps/helper.py:147 cps/helper.py:153
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to E-Reader"
-msgstr "Converti %(orig)s in %(format)s e spedisci a Kindle"
+msgstr "Converti %(orig)s in %(format)s e al lettore elettronico"
 
 #: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180 cps/helper.py:184
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr "Invia %(format)s a Kindle"
+msgstr "Invia %(format)s al lettore elettronico"
 
 #: cps/helper.py:224 cps/tasks/convert.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "%(book)s inviato a Kindle"
+msgstr "%(book)s inviato al lettore elettronico"
 
 #: cps/helper.py:229
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -691,7 +689,7 @@ msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 
 #: cps/helper.py:344
 msgid "Read status could not set: {}"
-msgstr ""
+msgstr "Impossibile impostare lo stato di lettura: {}"
 
 #: cps/helper.py:367
 #, python-format
@@ -725,7 +723,7 @@ msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'erro
 
 #: cps/helper.py:584
 msgid "Error in rename file in path: {}"
-msgstr ""
+msgstr "Errore nel rinominare il file nel percorso: {}"
 
 #: cps/helper.py:602
 #, python-format
@@ -746,7 +744,7 @@ msgstr "L'e-mail non è scritto in un formato valido"
 
 #: cps/helper.py:811
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr ""
+msgstr "Il modulo Python 'advocate' non è installato, ma è necessario per caricare le copertine"
 
 #: cps/helper.py:821
 msgid "Error Downloading Cover"
@@ -758,7 +756,7 @@ msgstr "Errore di formato della copertina"
 
 #: cps/helper.py:827
 msgid "You are not allowed to access localhost or the local network for cover uploads"
-msgstr ""
+msgstr "Non sei autorizzato ad accedere a localhost o alla rete locale per caricare le copertine"
 
 #: cps/helper.py:837
 msgid "Failed to create path for cover"
@@ -774,7 +772,7 @@ msgstr "Solamente i file nei formati jpg/jpeg/png/webp/bmp sono supportati per l
 
 #: cps/helper.py:876
 msgid "Invalid cover file content"
-msgstr ""
+msgstr "Contenuto del file di copertina non valido"
 
 #: cps/helper.py:880
 msgid "Only jpg/jpeg files are supported as coverfile"
@@ -785,14 +783,12 @@ msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
 #: cps/helper.py:943
-#, fuzzy
 msgid "Error executing UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
 #: cps/kobo_auth.py:89
-#, fuzzy
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Per favore accedi a calibe-web non da localhost per ottenere un api-endpoint valido per il lettore kobo"
+msgstr "Per favore accedi a Calibe-Web non da localhost per ottenere un api-endpoint valido per il lettore kobo"
 
 #: cps/kobo_auth.py:115
 msgid "Kobo Setup"
@@ -1067,9 +1063,8 @@ msgid "Invalid shelf specified"
 msgstr "Lo scaffale specificato non è valido"
 
 #: cps/shelf.py:55
-#, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Mi spiace, ma non sei autorizzato ad aggiungere libri allo scaffale: %(shelfname)s"
+msgstr "Mi spiace, ma non sei autorizzato ad aggiungere libri a questo scaffale"
 
 #: cps/shelf.py:64
 #, python-format
@@ -1083,7 +1078,7 @@ msgstr "Il libro è stato aggiunto allo scaffale: %(sname)s"
 
 #: cps/shelf.py:108
 msgid "You are not allowed to add a book to the shelf"
-msgstr ""
+msgstr "Non sei autorizzato ad aggiungere libri allo scaffale"
 
 #: cps/shelf.py:126
 #, python-format
@@ -1107,7 +1102,7 @@ msgstr "Il libro è stato rimosso dallo scaffale: %(sname)s"
 
 #: cps/shelf.py:200
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr ""
+msgstr "Spiacente, ma non sei autorizzato a togliere libri da questo scaffale"
 
 #: cps/shelf.py:210 cps/templates/layout.html:141
 msgid "Create a Shelf"
@@ -1115,7 +1110,7 @@ msgstr "Crea uno scaffale"
 
 #: cps/shelf.py:218
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Spiacente, non sei autorizzato a modificare questo scaffale"
+msgstr "Spiacente, ma non sei autorizzato a modificare questo scaffale"
 
 #: cps/shelf.py:220
 msgid "Edit a shelf"
@@ -1123,12 +1118,11 @@ msgstr "Modifica uno scaffale"
 
 #: cps/shelf.py:229
 msgid "Error deleting Shelf"
-msgstr ""
+msgstr "Errore nell'eliminare lo scaffale"
 
 #: cps/shelf.py:231
-#, fuzzy
 msgid "Shelf successfully deleted"
-msgstr "Il libro é stato eliminato con successo"
+msgstr "Lo scaffale è stato eliminato con successo"
 
 #: cps/shelf.py:281
 #, python-format
@@ -1137,7 +1131,7 @@ msgstr "Modifica l'ordine dello scaffale: '%(name)s'"
 
 #: cps/shelf.py:313
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
+msgstr "Spiacente, ma non sei autorizzato a creare scaffali pubblici"
 
 #: cps/shelf.py:330
 #, python-format
@@ -1191,15 +1185,15 @@ msgstr "Avviato"
 
 #: cps/tasks_status.py:70
 msgid "Finished"
-msgstr "Terminato"
+msgstr "Finito"
 
 #: cps/tasks_status.py:72
 msgid "Ended"
-msgstr ""
+msgstr "Terminato"
 
 #: cps/tasks_status.py:74
 msgid "Cancelled"
-msgstr ""
+msgstr "Cancellato"
 
 #: cps/tasks_status.py:76
 msgid "Unknown Status"
@@ -1264,7 +1258,7 @@ msgstr "Serie: %(serie)s"
 
 #: cps/web.py:611
 msgid "Rating: None"
-msgstr ""
+msgstr "Valutazione: nessuna"
 
 #: cps/web.py:620
 #, python-format
@@ -1410,33 +1404,33 @@ msgstr "Si è verificato un errore con Calibre: %(error)s"
 
 #: cps/tasks/convert.py:275
 msgid "Convert"
-msgstr ""
+msgstr "Convertire"
 
 #: cps/tasks/database.py:28
 msgid "Reconnecting Calibre database"
-msgstr ""
+msgstr "Riconessione al database di Calibre"
 
 #: cps/tasks/mail.py:265
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
-msgstr ""
+msgstr "Generate %(count)s miniature di copertine"
 
 #: cps/tasks/thumbnail.py:222 cps/tasks/thumbnail.py:435
 #: cps/tasks/thumbnail.py:503
 msgid "Cover Thumbnails"
-msgstr ""
+msgstr "Miniature delle copertine"
 
 #: cps/tasks/thumbnail.py:281
 msgid "Generated {0} series thumbnails"
-msgstr ""
+msgstr "Generate {0} miniature di serie"
 
 #: cps/tasks/thumbnail.py:446
 msgid "Clearing cover thumbnail cache"
-msgstr ""
+msgstr "Pulire la cache delle miniature di copertine"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
 #: cps/templates/layout.html:67 cps/templates/user_table.html:145
@@ -1459,9 +1453,8 @@ msgid "E-mail Address"
 msgstr "Indirizzo e-mail"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-#, fuzzy
 msgid "Send to E-Reader E-mail Address"
-msgstr "Invia all'indirizzo e-mail di Kindle"
+msgstr "Invia all'indirizzo e-mail del lettore elettronico"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
 #: cps/templates/user_table.html:143
@@ -1602,31 +1595,31 @@ msgstr "Modifica la configurazione dell'interfaccia utente"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
-msgstr ""
+msgstr "Attività pianificate"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 msgid "Time at which tasks start to run"
-msgstr ""
+msgstr "Ora in cui le attività sono avviate"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum tasks duration"
-msgstr ""
+msgstr "Massima durata delle attività"
 
 #: cps/templates/admin.html:178
 msgid "Generate book cover thumbnails"
-msgstr ""
+msgstr "Generazione delle miniature delle copertine"
 
 #: cps/templates/admin.html:182
 msgid "Generate series cover thumbnails"
-msgstr ""
+msgstr "Generazione delle miniature delle serie"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
 msgid "Reconnect to Calibre Library"
-msgstr ""
+msgstr "Ricollegare alla libreria di Calibre"
 
 #: cps/templates/admin.html:193
 msgid "Refresh Thumbnail Cover Cache"
-msgstr ""
+msgstr "Aggiornare la cache delle miniature delle copertine"
 
 #: cps/templates/admin.html:199
 msgid "Administration"
@@ -1654,7 +1647,7 @@ msgstr "Arresta Calibre-Web"
 
 #: cps/templates/admin.html:213
 msgid "Version Information"
-msgstr ""
+msgstr "Informazioni sulla versione"
 
 #: cps/templates/admin.html:217
 msgid "Version"
@@ -1994,17 +1987,16 @@ msgid "Enter Publishers"
 msgstr "Indica gli editori"
 
 #: cps/templates/book_table.html:73
-#, fuzzy
 msgid "Enter comments"
-msgstr "Digita il nome di dominio"
+msgstr "Digita un commento"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "Commento"
 
 #: cps/templates/book_table.html:75
 msgid "Archiv Status"
-msgstr ""
+msgstr "Stato dell'archivio"
 
 #: cps/templates/book_table.html:77 cps/templates/search_form.html:42
 msgid "Read Status"
@@ -2092,7 +2084,7 @@ msgstr "Nightly"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
+msgstr "Hosts fidati (separati da virgola)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
@@ -2124,7 +2116,7 @@ msgstr "Abilita il caricamento"
 
 #: cps/templates/config_edit.html:108
 msgid "(Please ensure users having also upload rights)"
-msgstr ""
+msgstr "(Per favore assicurati che gli utenti abbiano anche i diritti di upload)"
 
 #: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
@@ -2564,13 +2556,12 @@ msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):
 msgstr "Apri il file .kobo/Kobo eReader.conf in un editore di testi e aggiungi (o edita):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
-#, fuzzy
 msgid "Kobo Token:"
-msgstr "Token Kobo Sync"
+msgstr "Token di Kobo:"
 
 #: cps/templates/grid.html:21
 msgid "List"
-msgstr ""
+msgstr "Elenco"
 
 #: cps/templates/http_error.html:31
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
@@ -2590,11 +2581,11 @@ msgstr "Disconnetti l'utente"
 
 #: cps/templates/index.html:71
 msgid "Sort ascending according to download count"
-msgstr ""
+msgstr "Ordina in ordine ascendente in base al numero di download"
 
 #: cps/templates/index.html:72
 msgid "Sort descending according to download count"
-msgstr ""
+msgstr "Ordina in ordine discendente in base al numero di download"
 
 #: cps/templates/index.html:78 cps/templates/search.html:35
 #: cps/templates/shelf.html:24
@@ -2742,7 +2733,7 @@ msgstr "Dettagli del libro"
 
 #: cps/templates/list.html:22
 msgid "Grid"
-msgstr ""
+msgstr "Griglia"
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
@@ -2766,7 +2757,7 @@ msgstr "Calibre-Web log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr "Flusso attivo, non può essere visualizzato"
+msgstr "Flusso in uscita, non può essere visualizzato"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
@@ -2870,12 +2861,11 @@ msgstr "Scuro"
 
 #: cps/templates/read.html:79
 msgid "Sepia"
-msgstr ""
+msgstr "Seppia"
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Black"
-msgstr "Indietro"
+msgstr "Nero"
 
 #: cps/templates/read.html:84
 msgid "Reflow text when sidebars are open."
@@ -2975,7 +2965,7 @@ msgstr "Da destra a sinistra"
 
 #: cps/templates/readcbr.html:165
 msgid "Reset to Top"
-msgstr "Ripristina all'inizio"
+msgstr "Ripristina in alto"
 
 #: cps/templates/readcbr.html:166
 msgid "Remember Position"
@@ -3035,11 +3025,11 @@ msgstr "Il link scadrà tra 10 minuti."
 
 #: cps/templates/schedule_edit.html:29
 msgid "Generate Book Cover Thumbnails"
-msgstr ""
+msgstr "Genera miniature delle copertine dei libri"
 
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
-msgstr ""
+msgstr "Genera miniature delle copertine delle serie"
 
 #: cps/templates/search.html:6
 msgid "No Results Found"
@@ -3163,7 +3153,7 @@ msgstr "Statistiche del sistema"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "Programma"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3195,15 +3185,15 @@ msgstr "Ora d'inizio"
 
 #: cps/templates/tasks.html:20
 msgid "Actions"
-msgstr ""
+msgstr "Azioni"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr ""
+msgstr "Questa attività verrà annullata. Tutti i progressi compiuti da questa attività verranno salvati."
 
 #: cps/templates/tasks.html:41
 msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr ""
+msgstr "Se si tratta di un'attività pianificata, verrà eseguita nuovamente durante il prossimo orario pianificato."
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
@@ -3235,7 +3225,7 @@ msgstr "Crea/Visualizza"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr ""
+msgstr "Forza la sincronizzazione kobo completa"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
@@ -3270,14 +3260,12 @@ msgid "Enter E-mail Address"
 msgstr "Digita l'indirizzo e-mail"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter E-Reader E-mail Address"
-msgstr "Digita l'email di Kindle"
+msgstr "Digita l'email del lettore elettronico"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "E-Reader E-mail"
-msgstr "E-mail di test"
+msgstr "E-mail del lettore elettronico"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
