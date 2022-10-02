@@ -1,19 +1,15 @@
-# Dutch translations for Calibre-Web
-# Copyright (C) 2017 Calibre-Web
-# This file is distributed under the same license as the Calibre-Web
-# project.
-# translation by Ed Driesen
-# FIRST AUTHOR <ed.driesen@telenet.be>, 2017.
+# This file is distributed under the same license as the Calibre-web project
+# Ha Link<halink0803@gmail.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: Calibre-Web (GPLV3)\n"
-"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"Project-Id-Version:  Calibre-web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
 "POT-Creation-Date: 2022-10-02 11:42+0200\n"
-"PO-Revision-Date: 2020-12-12 08:20+0100\n"
-"Last-Translator: Marcel Maas <marcel.maas@outlook.com>\n"
-"Language: nl\n"
-"Language-Team: ed.driesen@telenet.be\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: 2022-09-20 21:36+0700\n"
+"Last-Translator: Ha Link <halink0803@gmail.com>\n"
+"Language: vi\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,177 +17,171 @@ msgstr ""
 
 #: cps/about.py:84
 msgid "Statistics"
-msgstr "Statistieken"
+msgstr "Thống kê"
 
 #: cps/admin.py:146
 msgid "Server restarted, please reload page"
-msgstr "De server is herstart, vernieuw de pagina"
+msgstr "Máy chủ đã khởi động lại,hãy tải lại trang"
 
 #: cps/admin.py:148
 msgid "Performing shutdown of server, please close window"
-msgstr "Bezig met het afsluiten van de server, sluit het venster"
+msgstr "Máy chủ đang được tắt, hãy đóng cửa sổ này"
 
 #: cps/admin.py:156
 msgid "Reconnect successful"
-msgstr "Opnieuw verbinden gelukt"
+msgstr "Kết nối lại thành công"
 
 #: cps/admin.py:159
 msgid "Unknown command"
-msgstr "Onbekende opdracht"
+msgstr "Lệnh không tồn tại"
 
 #: cps/admin.py:169
-#, fuzzy
 msgid "Books successfully queued for Metadata Backup"
-msgstr "Het boek is in de wachtrij geplaatst om te worden verstuurd aan %(kindlemail)s"
+msgstr ""
 
 #: cps/admin.py:202 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
 #: cps/updater.py:613 cps/uploader.py:86 cps/uploader.py:96
 msgid "Unknown"
-msgstr "Onbekend"
+msgstr "Không rõ"
 
 #: cps/admin.py:227
 msgid "Admin page"
-msgstr "Systeembeheer"
+msgstr "Trang admin"
 
 #: cps/admin.py:247
 msgid "Basic Configuration"
-msgstr "Basisconfiguratie"
+msgstr "Thiết lập cơ bản"
 
 #: cps/admin.py:285
 msgid "UI Configuration"
-msgstr "Uiterlijk aanpassen"
+msgstr "Thiết lập UI"
 
 #: cps/admin.py:319 cps/templates/admin.html:51
-#, fuzzy
 msgid "Edit Users"
-msgstr "Systeembeheerder"
+msgstr "Chỉnh sửa người dùng"
 
 #: cps/admin.py:363 cps/opds.py:532 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
-msgstr "Alles"
+msgstr "Tất cả"
 
 #: cps/admin.py:390 cps/admin.py:1380
 msgid "User not found"
-msgstr "Gebruiker niet gevonden"
+msgstr "Không tìm thấy user"
 
 #: cps/admin.py:404
 msgid "{} users deleted successfully"
-msgstr "{} gebruikers succesvol verwijderd"
+msgstr "{} người dung đã đươc xoá thành công"
 
 #: cps/admin.py:427 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
-msgstr "Alle talen"
+msgstr "Hiển thị tất cả"
 
 #: cps/admin.py:448 cps/admin.py:454
 msgid "Malformed request"
-msgstr "Misvormd verzoek"
+msgstr "Yêu cầu không đúng định dạng"
 
 #: cps/admin.py:466 cps/admin.py:1981
 msgid "Guest Name can't be changed"
-msgstr "Gast naam kan niet worden veranderd"
+msgstr "Tên người dung khách không thể thay đổi"
 
 #: cps/admin.py:478
 msgid "Guest can't have this role"
-msgstr "Gast kan deze rol niet hebben"
+msgstr "Khách không thể mang vai trò này"
 
 #: cps/admin.py:490 cps/admin.py:1936
 msgid "No admin user remaining, can't remove admin role"
-msgstr "Kan systeembeheerder rol niet verwijderen van de laatste systeembeheerder"
+msgstr "Không còn người dùng quản trị, không thể xoá vai trò admin"
 
 #: cps/admin.py:494 cps/admin.py:508
 msgid "Value has to be true or false"
-msgstr "Waarde moet Waar of Onwaar zijn"
+msgstr "Giá trị phải là true hoặc false"
 
 #: cps/admin.py:496
 msgid "Invalid role"
-msgstr "Ongeldige rol"
+msgstr "Vai trò không hợp lệ"
 
 #: cps/admin.py:500
 msgid "Guest can't have this view"
-msgstr "Gast kan dit niet bekijken"
+msgstr "Tài khoản khách không có màn hình này"
 
 #: cps/admin.py:510
 msgid "Invalid view"
-msgstr "Ongeldige waarde"
+msgstr "View không hợp lệ"
 
 #: cps/admin.py:513
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr "Gasts locale is automatisch bepaald en kan niet handmatig worden ingesteld"
+msgstr "Ngôn ngữ của khách được xác định tự động và không thể đặt được"
 
 #: cps/admin.py:517
 msgid "No Valid Locale Given"
-msgstr "Geen geldige locale is opgegeven"
+msgstr "Địa chỉ cung cấp không hợp lệ"
 
 #: cps/admin.py:528
 msgid "No Valid Book Language Given"
-msgstr "Geen geldige boek taal is opgegeven"
+msgstr "Ngôn ngữ sách không hợp lệ"
 
 #: cps/admin.py:530 cps/editbooks.py:442
 msgid "Parameter not found"
-msgstr "Parameter is niet gevonden"
+msgstr "Tham số không tồn tại"
 
 #: cps/admin.py:567
 msgid "Invalid Read Column"
-msgstr "Ongeldige gelezen kolom"
+msgstr "Cột đọc không hợp lệ"
 
 #: cps/admin.py:573
 msgid "Invalid Restricted Column"
-msgstr "Ongeldige beperkte kolom"
+msgstr "Cột bị hạn chế không hợp lệ"
 
 #: cps/admin.py:593 cps/admin.py:1807
 msgid "Calibre-Web configuration updated"
-msgstr "Calibre-Web-configuratie bijgewerkt"
+msgstr "Thiết lập Calibre-Web đã cập nhật"
 
 #: cps/admin.py:605
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "Wil je je Kobo Token echt verwijderen?"
+msgstr "Bạn có thực sự muốn xóa Kobo Token không?"
 
 #: cps/admin.py:607
 msgid "Do you really want to delete this domain?"
-msgstr "Wil je dit domein echt verwijderen?"
+msgstr "Bạn có thực sự muốn xóa miền này không?"
 
 #: cps/admin.py:609
 msgid "Do you really want to delete this user?"
-msgstr "Wil je deze gebruiker echt verwijderen?"
+msgstr "Bạn có thực sự muốn xóa người dùng này không?"
 
 #: cps/admin.py:611
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
+msgstr "Bạn có chắc chắn muốn xóa giá này không?"
 
 #: cps/admin.py:613
-#, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Weet je zeker dat je de locales van de geselecteerde gebruiker(s) wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi ngôn ngữ của những người dùng đã chọn?"
 
 #: cps/admin.py:615
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Weet je zeker dat je de zichtbare talen voor de geselecteerde gebruiker(s) wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi ngôn ngữ sách hiển thị cho (những) người dùng đã chọn không?"
 
 #: cps/admin.py:617
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde rol van de geselecteerde gebruiker(s) wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi vai trò đã chọn cho (những) người dùng đã chọn không?"
 
 #: cps/admin.py:619
-#, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde beperkingen voor de geselecteerde gebruikers(s) wil verwijderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi những giới hạn đã chọn cho người dung?"
 
 #: cps/admin.py:621
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Weet je zeker dat je de geselecteerde zichtbaarheidsbeperkingen voor de geselecteerde gebruiker(s) wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi các giới hạn hiển thị đã chọn cho (những) người dùng đã chọn không?"
 
 #: cps/admin.py:624
-#, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Weet je zeker dat je de synchronisatiegedrag van boekenplanken voor de geselecteerde gebruiker(s) wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi hành vi đồng bộ hóa giá cho (những) người dùng đã chọn không?"
 
 #: cps/admin.py:626
-#, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "Weet je zeker dat je de locatie van de Calibre-bibliotheek wil veranderen?"
+msgstr "Bạn có chắc chắn muốn thay đổi vị trí thư viện Calibre không?"
 
 #: cps/admin.py:628
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
@@ -199,98 +189,98 @@ msgstr ""
 
 #: cps/admin.py:631
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
-msgstr ""
+msgstr "Bạn có chắc chắn muốn xóa cơ sở dữ liệu đồng bộ của Calibre-Web để bắt buộc đồng bộ hóa hoàn toàn với Kobo Reader của mình không?"
 
 #: cps/admin.py:874 cps/admin.py:880 cps/admin.py:890 cps/admin.py:900
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
-msgstr "Weigeren"
+msgstr "Từ chối"
 
 #: cps/admin.py:876 cps/admin.py:882 cps/admin.py:892 cps/admin.py:902
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
-msgstr "Toestaan"
+msgstr "Cho phép"
 
 #: cps/admin.py:917
 msgid "{} sync entries deleted"
-msgstr ""
+msgstr "{} mục nhập đồng bộ hóa đã bị xóa"
 
 #: cps/admin.py:965
 msgid "Tag not found"
-msgstr "Tag niet gevonden"
+msgstr "Tag không tồn tại"
 
 #: cps/admin.py:977
 msgid "Invalid Action"
-msgstr "Ongeldige actie"
+msgstr "Hành động không hợp lệ"
 
 #: cps/admin.py:1092
 msgid "client_secrets.json Is Not Configured For Web Application"
-msgstr "client_secrets.json is niet geconfigureerd voor webapplicatie"
+msgstr ""
 
 #: cps/admin.py:1137
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "De locatie van het logbestand is onjuist, voer een geldige locatie in"
+msgstr "Vị trí tệp nhật ký không hợp lệ, vui lòng nhập đường dẫn chính xác"
 
 #: cps/admin.py:1143
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "De locatie vam het toegangslog is onjuist, voer een geldige locatie in"
+msgstr ""
 
 #: cps/admin.py:1173
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "Voer alsjeblieft een LDAP Provider, Port, DN en User Object Identifier in"
+msgstr ""
 
 #: cps/admin.py:1179
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "Voer een geldig LDAP Service Account en wachtwoord in"
+msgstr ""
 
 #: cps/admin.py:1182
 msgid "Please Enter a LDAP Service Account"
-msgstr "Voer een LDAP Service Account in"
+msgstr ""
 
 #: cps/admin.py:1187
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP Groep Object Filter Moet Een \"%s\" Formaat Identificiatie hebben"
+msgstr ""
 
 #: cps/admin.py:1189
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP Groep Object Filter heeft een niet-gebalanceerd haakje"
+msgstr ""
 
 #: cps/admin.py:1193
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP Gebruiker Object Filter moet \"%s\" Formaat Identificatie hebben"
+msgstr ""
 
 #: cps/admin.py:1195
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP Gebruiker Filter heeft een niet-gebalanceerd haakje"
+msgstr ""
 
 #: cps/admin.py:1202
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP Lid Gebruiker Filter moet een \"%s\" Formaat Identificatie hebben"
+msgstr ""
 
 #: cps/admin.py:1204
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr "LDAP Lid Gebruiker Filter heeft een niet-gebalanceerd haakje"
+msgstr ""
 
 #: cps/admin.py:1211
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr "LDAP CACertficaat, Certificaat of Sleutel Locatie is ongeldig. Voer alsjeblieft een geldig pad in."
+msgstr ""
 
 #: cps/admin.py:1242 cps/admin.py:1868
 msgid "Add new user"
-msgstr "Gebruiker toevoegen"
+msgstr "Thêm người dùng mới"
 
 #: cps/admin.py:1251 cps/templates/admin.html:100
 msgid "Edit E-mail Server Settings"
-msgstr "SMTP-instellingen bewerken"
+msgstr ""
 
 #: cps/admin.py:1270
 msgid "Gmail Account Verification Successful"
-msgstr "Gmail Account succesvol geverifieerd"
+msgstr ""
 
 #: cps/admin.py:1289 cps/admin.py:1292 cps/admin.py:1673 cps/admin.py:1791
 #: cps/admin.py:1889 cps/admin.py:2009 cps/editbooks.py:229
@@ -299,25 +289,25 @@ msgstr "Gmail Account succesvol geverifieerd"
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1419
 #, python-format
 msgid "Database error: %(error)s."
-msgstr "Database fout: %(error)s."
+msgstr "Lỗi cơ sở dữ liệu: %(error)s."
 
 #: cps/admin.py:1299
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "Test E-Mail wordt verzonden naar %(email)s, controleer de taken voor het resultaat"
+msgstr ""
 
 #: cps/admin.py:1302
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
-msgstr "Fout opgetreden bij het versturen van de test-e-mail: %(res)s"
+msgstr ""
 
 #: cps/admin.py:1304
 msgid "Please configure your e-mail address first..."
-msgstr "Gelieve eerst je e-mail adres configureren..."
+msgstr ""
 
 #: cps/admin.py:1306
 msgid "E-mail server settings updated"
-msgstr "E-mailserver-instellingen bijgewerkt"
+msgstr ""
 
 #: cps/admin.py:1329 cps/templates/admin.html:191
 msgid "Edit Scheduled Tasks Settings"
@@ -332,13 +322,14 @@ msgid "Invalid duration for task specified"
 msgstr ""
 
 #: cps/admin.py:1355
+#, fuzzy
 msgid "Scheduled tasks settings updated"
-msgstr ""
+msgstr "Thiết lập cơ sở dữ lieu đã được cập nhật"
 
 #: cps/admin.py:1365 cps/admin.py:1414 cps/admin.py:2005 cps/web.py:1257
 #: cps/web.py:1318
 msgid "An unknown error occurred. Please try again later."
-msgstr "Onbekende fout opgetreden. Probeer het later nog eens."
+msgstr "Lỗi không xác định xảy ra. Xin hãy thử lại sau."
 
 #: cps/admin.py:1369
 msgid "Settings DB is not Writeable"
@@ -347,161 +338,156 @@ msgstr ""
 #: cps/admin.py:1399 cps/admin.py:1997
 #, python-format
 msgid "Edit User %(nick)s"
-msgstr "Gebruiker '%(nick)s' bewerken"
+msgstr "Chỉnh sửa người dùng %(nick)s"
 
 #: cps/admin.py:1411
 #, python-format
 msgid "Password for user %(user)s reset"
-msgstr "Wachtwoord voor gebruiker %(user)s is hersteld"
+msgstr ""
 
 #: cps/admin.py:1417 cps/web.py:1197
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Stel eerst SMTP-mail in..."
+msgstr ""
 
 #: cps/admin.py:1428
 msgid "Logfile viewer"
-msgstr "Logbestand lezer"
+msgstr ""
 
 #: cps/admin.py:1494
 msgid "Requesting update package"
-msgstr "Update opvragen"
+msgstr ""
 
 #: cps/admin.py:1495
 msgid "Downloading update package"
-msgstr "Update downloaden"
+msgstr ""
 
 #: cps/admin.py:1496
 msgid "Unzipping update package"
-msgstr "Update uitpakken"
+msgstr "Đang giải nén tệp cập nhật"
 
 #: cps/admin.py:1497
 msgid "Replacing files"
-msgstr "Update toepassen"
+msgstr "They thế tập tin"
 
 #: cps/admin.py:1498
 msgid "Database connections are closed"
-msgstr "Databaseverbindingen zijn gesloten"
+msgstr "Liên kết cơ sở dữ liệu đã được đóng"
 
 #: cps/admin.py:1499
 msgid "Stopping server"
-msgstr "Bezig met stoppen van Calibre-Web"
+msgstr "Đang dừng server"
 
 #: cps/admin.py:1500
 msgid "Update finished, please press okay and reload page"
-msgstr "Update voltooid, klik op 'Oké' en vernieuw de pagina"
+msgstr "Cập nhật hoàn tất, ấn okay và tải lại trang"
 
 #: cps/admin.py:1501 cps/admin.py:1502 cps/admin.py:1503 cps/admin.py:1504
 #: cps/admin.py:1505 cps/admin.py:1506
 msgid "Update failed:"
-msgstr "Update mislukt:"
+msgstr "Cập nhật thất bại:"
 
 #: cps/admin.py:1501 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
-msgstr "HTTP-fout"
+msgstr "Lỗi HTTP"
 
 #: cps/admin.py:1502 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
-msgstr "Verbindingsfout"
+msgstr "Lỗi kết nối"
 
 #: cps/admin.py:1503 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
-msgstr "Time-out tijdens maken van verbinding"
+msgstr ""
 
 #: cps/admin.py:1504 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
-msgstr "Algemene fout"
+msgstr "Lỗi chung"
 
 #: cps/admin.py:1505
-#, fuzzy
 msgid "Update file could not be saved in temp dir"
-msgstr "Geüpload bestand kon niet opgeslagen worden in de tijdelijke map"
+msgstr "File cập nhật không thể được lưu trong thư mục tạm thời"
 
 #: cps/admin.py:1506
 msgid "Files could not be replaced during update"
 msgstr ""
 
 #: cps/admin.py:1530
-#, fuzzy
 msgid "Failed to extract at least One LDAP User"
-msgstr "Mislukt om minstens een LDAP gebruiker aan te maken"
+msgstr ""
 
 #: cps/admin.py:1575
 msgid "Failed to Create at Least One LDAP User"
-msgstr "Het is niet gelukt tenminste een LDAP gebruiker aan te maken"
+msgstr ""
 
 #: cps/admin.py:1588
 #, python-format
 msgid "Error: %(ldaperror)s"
-msgstr "Fout: %(ldaperror)s"
+msgstr ""
 
 #: cps/admin.py:1592
 msgid "Error: No user returned in response of LDAP server"
-msgstr "Fout: No user returned in response of LDAP server"
+msgstr ""
 
 #: cps/admin.py:1625
 msgid "At Least One LDAP User Not Found in Database"
-msgstr "Minstens een LDAP Gebruiker is niet gevonden in de Database"
+msgstr ""
 
 #: cps/admin.py:1627
 msgid "{} User Successfully Imported"
-msgstr "{} Gebruiker succesvol geïmporteerd"
+msgstr ""
 
 #: cps/admin.py:1685
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr "Database niet gevonden, voer de juiste locatie in"
+msgstr ""
 
 #: cps/admin.py:1705
 msgid "DB is not Writeable"
-msgstr "Kan niet schrijven naar database"
+msgstr ""
 
 #: cps/admin.py:1718
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr "SSL-sleutellocatie is niet geldig, voer een geldig pad in"
+msgstr ""
 
 #: cps/admin.py:1722
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "SSL-certificaatlocatie is niet geldig, voer een geldig pad in"
+msgstr ""
 
 #: cps/admin.py:1830
-#, fuzzy
 msgid "Database Settings updated"
-msgstr "E-mailserver-instellingen bijgewerkt"
+msgstr "Thiết lập cơ sở dữ lieu đã được cập nhật"
 
 #: cps/admin.py:1838
-#, fuzzy
 msgid "Database Configuration"
-msgstr "Databaseconfiguratie"
+msgstr "Thiết lập cơ sở dữ lieu :)))"
 
 #: cps/admin.py:1854 cps/web.py:1232
 msgid "Please fill out all fields!"
-msgstr "Vul alle velden in!"
+msgstr "Hãy điền hết các trường!"
 
 #: cps/admin.py:1862
 msgid "E-mail is not from valid domain"
-msgstr "Het e-mailadres bevat geen geldige domeinnaam"
+msgstr "Địa chỉ email không hợp lệ"
 
 #: cps/admin.py:1879
 #, python-format
 msgid "User '%(user)s' created"
-msgstr "Gebruiker '%(user)s' aangemaakt"
+msgstr "Người dùng '%(user)s' đã được tạo"
 
 #: cps/admin.py:1885
-#, fuzzy
 msgid "Found an existing account for this e-mail address or name."
-msgstr "Bestaand account met dit e-mailadres of deze gebruikersnaam aangetroffen."
+msgstr "Người dùng với địa chỉ email hoặc tên đã tồn tại."
 
 #: cps/admin.py:1915
 #, python-format
 msgid "User '%(nick)s' deleted"
-msgstr "Gebruiker '%(nick)s' verwijderd"
+msgstr "Người dùng '%(nick)s' đã bị xoá"
 
 #: cps/admin.py:1917 cps/admin.py:1918
 msgid "Can't delete Guest User"
-msgstr "Kan Gast gebruiker niet verwijderen"
+msgstr "Không thể xoá người dùng khách"
 
 #: cps/admin.py:1921
 msgid "No admin user remaining, can't delete user"
-msgstr "Kan laatste systeembeheerder niet verwijderen"
+msgstr ""
 
 #: cps/admin.py:1975 cps/web.py:1369
 msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
@@ -510,32 +496,32 @@ msgstr ""
 #: cps/admin.py:2001
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "Gebruiker '%(nick)s' bijgewerkt"
+msgstr "Người dùng '%(nick)s' đã được cập nhật"
 
 #: cps/converter.py:31
 msgid "not installed"
-msgstr "niet geïnstalleerd"
+msgstr "chưa cài đặt"
 
 #: cps/converter.py:32
 msgid "Execution permissions missing"
-msgstr "Kan programma niet uitvoeren"
+msgstr ""
 
 #: cps/db.py:724 cps/search.py:137 cps/web.py:722
-#, fuzzy, python-format
+#, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
-msgstr "Aangepaste kolom Nr.%(column)d bestaat niet in de Calibre Database"
+msgstr ""
 
 #: cps/db.py:967 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:549 cps/web.py:583 cps/web.py:658 cps/web.py:683 cps/web.py:964
 #: cps/web.py:994 cps/web.py:1030 cps/web.py:1058 cps/web.py:1097
 msgid "None"
-msgstr "Geen"
+msgstr "None"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:516 cps/web.py:1460
 #: cps/web.py:1502 cps/web.py:1547
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Oeps! Geselecteerd boek is niet beschikbaar. Bestand bestaat niet of is niet toegankelijk"
+msgstr ""
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
 msgid "User has no rights to upload cover"
@@ -543,11 +529,11 @@ msgstr ""
 
 #: cps/editbooks.py:174 cps/editbooks.py:716
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr "Identificatoren zijn niet hoofdlettergevoelig, overschrijf huidige identificatoren"
+msgstr ""
 
 #: cps/editbooks.py:216
 msgid "Metadata successfully updated"
-msgstr "De metagegevens zijn bijgewerkt"
+msgstr "Metadata đã được cập nhật thành công"
 
 #: cps/editbooks.py:234
 msgid "Error editing book: {}"
@@ -556,57 +542,57 @@ msgstr ""
 #: cps/editbooks.py:291
 #, python-format
 msgid "File %(file)s uploaded"
-msgstr "Bestand %(file)s geüpload"
+msgstr "File %(file)s đã được tải lên"
 
 #: cps/editbooks.py:318
 msgid "Source or destination format for conversion missing"
-msgstr "Bron- of doelformaat ontbreekt voor conversie"
+msgstr "Thiếu định dạng nguồn hoặc đích để convert"
 
 #: cps/editbooks.py:326
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "Het boek is in de wachtrij geplaatst voor conversie naar %(book_format)s"
+msgstr ""
 
 #: cps/editbooks.py:330
 #, python-format
 msgid "There was an error converting this book: %(res)s"
-msgstr "Er is een fout opgetreden bij het converteren van dit boek: %(res)s"
+msgstr "Có lỗi xảy ra khi chuyển đổi định dạng cho sach: %(res)s"
 
 #: cps/editbooks.py:635
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Geüpload boek staat mogelijk al in de bibliotheek, controleer alvorens door te gaan: "
+msgstr ""
 
 #: cps/editbooks.py:690 cps/editbooks.py:1015
-#, fuzzy, python-format
+#, python-format
 msgid "'%(langname)s' is not a valid language"
-msgstr "%(langname)s is geen geldige taal"
+msgstr "%(langname)s không phải là ngôn ngữ hợp lệ"
 
 #: cps/editbooks.py:728 cps/editbooks.py:1162
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "De bestandsextensie '%(ext)s' is niet toegestaan op deze server"
+msgstr ""
 
 #: cps/editbooks.py:732 cps/editbooks.py:1166
 msgid "File to be uploaded must have an extension"
-msgstr "Het te uploaden bestand moet voorzien zijn van een extensie"
+msgstr ""
 
 #: cps/editbooks.py:740
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr "Bestand %(filename)s kon niet opgeslagen worden in de tijdelijke map"
+msgstr ""
 
 #: cps/editbooks.py:760
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr "Omslag %(file)s niet verplaatst: %(error)s"
+msgstr ""
 
 #: cps/editbooks.py:817 cps/editbooks.py:819
 msgid "Book Format Successfully Deleted"
-msgstr "Het boekformaat is verwijderd"
+msgstr ""
 
 #: cps/editbooks.py:826 cps/editbooks.py:828
 msgid "Book Successfully Deleted"
-msgstr "Het boek is verwijderd"
+msgstr ""
 
 #: cps/editbooks.py:880
 msgid "You are missing permissions to delete books"
@@ -614,12 +600,12 @@ msgstr ""
 
 #: cps/editbooks.py:930
 msgid "edit metadata"
-msgstr "metagegevens bewerken"
+msgstr ""
 
 #: cps/editbooks.py:979
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr "%(seriesindex)s is geen geldig nummer, sla het over"
+msgstr ""
 
 #: cps/editbooks.py:1157
 msgid "User has no rights to upload additional file formats"
@@ -628,86 +614,86 @@ msgstr ""
 #: cps/editbooks.py:1178
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "Kan de locatie '%(path)s' niet aanmaken (niet gemachtigd)."
+msgstr ""
 
 #: cps/editbooks.py:1183
 #, python-format
 msgid "Failed to store file %(file)s."
-msgstr "Kan %(file)s niet opslaan."
+msgstr "Lưu file thất bại %(file)s."
 
 #: cps/editbooks.py:1206
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
-msgstr "Bestandsformaat %(ext)s toegevoegd aan %(book)s"
+msgstr ""
 
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Het instellen van Google Drive is niet afgerond, heractiveer Google Drive"
+msgstr ""
 
 #: cps/gdrive.py:95
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Het callback-domein is niet geverifieerd. Volg de stappen in de Google-ontwikkelaarsconsole om het domein te verifiëren"
+msgstr ""
 
 #: cps/helper.py:80
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "%(format)s formaat niet gevonden voor boek met id: %(book)d"
+msgstr ""
 
 #: cps/helper.py:87 cps/tasks/convert.py:75
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
-msgstr "%(format)s niet aangetroffen op Google Drive: %(fn)s"
+msgstr ""
 
 #: cps/helper.py:92
 #, python-format
 msgid "%(format)s not found: %(fn)s"
-msgstr "%(format)s niet gevonden %(fn)s"
+msgstr "%(format)s không tìm thấy: %(fn)s"
 
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
 #, fuzzy
 msgid "Send to E-Reader"
-msgstr "Versturen naar Kindle"
+msgstr "Gửi tới Kindle"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
 msgid "This e-mail has been sent via Calibre-Web."
-msgstr "Deze e-mail is verstuurd via Calibre-Web."
+msgstr "E-mail này được gửi từ Calibre-Web."
 
 #: cps/helper.py:114
 msgid "Calibre-Web test e-mail"
-msgstr "Calibre-Web - test-e-mail"
+msgstr "Calibre-Web test e-mail"
 
 #: cps/helper.py:115
 msgid "Test e-mail"
-msgstr "Test-e-mail"
+msgstr "Test e-mail"
 
 #: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
-msgstr "Aan de slag met Calibre-Web"
+msgstr "Bắt đầu với Calibre-Web"
 
 #: cps/helper.py:137
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
-msgstr "Registratie-e-mailadres van gebruiker: %(name)s"
+msgstr "Email đăng ký cho người dùng: %(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to E-Reader"
-msgstr "%(orig)s converteren naar %(format)s en versturen naar Kindle"
+msgstr "Chuyển đổi %(orig)s thành %(format)s và chuyển tới Kindle"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
 #, fuzzy, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr "%(format)s versturen naar Kindle"
+msgstr "Gửi %(format)s tới Kindle"
 
 #: cps/helper.py:225 cps/tasks/convert.py:92
 #, fuzzy, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "%(book)s verzonden naar Kindle"
+msgstr "%(book)s gửi tới Kindle"
 
 #: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "Het opgevraagde bestand kan niet worden gelezen. Ben je hiertoe gemachtigd?"
+msgstr "File được yêu cầu không thể đọc. Có thể do phân quyền bị sai?"
 
 #: cps/helper.py:345
 msgid "Read status could not set: {}"
@@ -716,32 +702,32 @@ msgstr ""
 #: cps/helper.py:368
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "Het verwijderen van de boekenmap voor boek %(id)s is mislukt, het pad heeft submappen: %(path)s"
+msgstr "Xoá thư mục cho sách %(id)s thất bại, đường dẫn có subfolders: %(path)s"
 
 #: cps/helper.py:374
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr "Verwijderen van boek %(id)s mislukt: %(message)s"
+msgstr "Xoá sách %(id)s thất bại: %(message)s"
 
 #: cps/helper.py:385
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "Verwijder boek %(id)s alleen uit database, boek pad is ongeldig: %(path)s"
+msgstr ""
 
 #: cps/helper.py:450
-#, fuzzy, python-format
+#, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
+msgstr ""
 
 #: cps/helper.py:522 cps/helper.py:531
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Bestand '%(file)s' niet aangetroffen op Google Drive"
+msgstr "File %(file)s không tìm thấy trẻn Google Drive"
 
 #: cps/helper.py:565
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
+msgstr ""
 
 #: cps/helper.py:585
 msgid "Error in rename file in path: {}"
@@ -750,20 +736,19 @@ msgstr ""
 #: cps/helper.py:603
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Boeken locatie '%(path)s' niet aangetroffen op Google Drive"
+msgstr "Không tìm thấy được dẫn sách %(path)s trên Google Drive"
 
 #: cps/helper.py:644 cps/web.py:1414
-#, fuzzy
 msgid "Found an existing account for this e-mail address"
-msgstr "Bestaand account met dit e-mailadres aangetroffen."
+msgstr "Tìm thấy một tài khoản đã toàn tại cho địa chỉ email này"
 
 #: cps/helper.py:652
 msgid "This username is already taken"
-msgstr "Deze gebruikersnaam is al in gebruik"
+msgstr "Username này đã bị sử dụng"
 
 #: cps/helper.py:664
 msgid "Invalid e-mail address format"
-msgstr "Ongeldig E-Mail adres"
+msgstr "Định dạng email address không hợp lệ"
 
 #: cps/helper.py:815
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
@@ -771,11 +756,11 @@ msgstr ""
 
 #: cps/helper.py:825
 msgid "Error Downloading Cover"
-msgstr "Fout bij downloaden omslag"
+msgstr "Lỗi tải xuống ảnh bìa"
 
 #: cps/helper.py:828
 msgid "Cover Format Error"
-msgstr "Onjuist omslagformaat"
+msgstr "Định dạng ảnh bìa lỗi"
 
 #: cps/helper.py:831
 msgid "You are not allowed to access localhost or the local network for cover uploads"
@@ -783,15 +768,15 @@ msgstr ""
 
 #: cps/helper.py:841
 msgid "Failed to create path for cover"
-msgstr "Locatie aanmaken voor omslag mislukt"
+msgstr "Tạo đường dẫn cho ảnh bìa thất bại"
 
 #: cps/helper.py:857
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "Omslag-bestand is geen afbeelding of kon niet opgeslagen worden"
+msgstr ""
 
 #: cps/helper.py:868
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "Alleen jpg/jpeg/png/webp/bmp bestanden worden ondersteund als omslag"
+msgstr ""
 
 #: cps/helper.py:880
 msgid "Invalid cover file content"
@@ -799,317 +784,314 @@ msgstr ""
 
 #: cps/helper.py:884
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr "Alleen jpg/jpeg bestanden zijn toegestaan als omslag"
+msgstr ""
 
 #: cps/helper.py:936
 msgid "Unrar binary file not found"
-msgstr "Unrar executable niet gevonden"
+msgstr ""
 
 #: cps/helper.py:947
-#, fuzzy
 msgid "Error executing UnRar"
-msgstr "Fout bij het uitvoeren van Unrar"
+msgstr ""
 
 #: cps/helper.py:1040
 #, fuzzy
 msgid "Cover"
-msgstr "Willekeurige boeken"
+msgstr "Khám phá"
 
 #: cps/helper.py:1042 cps/templates/admin.html:211
 msgid "Queue all books for metadata backup"
 msgstr ""
 
 #: cps/kobo_auth.py:89
-#, fuzzy
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Je kunt Calibre-Web niet vanaf de lokale computer openen om een geldige api_endpoint te krijgen voor je kobo toestel"
+msgstr ""
 
 #: cps/kobo_auth.py:115
 msgid "Kobo Setup"
-msgstr "Kobo Instellen"
+msgstr "Thiết lập Kobo"
 
 #: cps/oauth_bb.py:77
 #, python-format
 msgid "Register with %(provider)s"
-msgstr "Aanmelden bij %(provider)s"
+msgstr ""
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1289
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "je bent ingelogd als: '%(nickname)s'"
+msgstr ""
 
 #: cps/oauth_bb.py:148
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr "Koppeling gemaakt met %(oauth)s"
+msgstr ""
 
 #: cps/oauth_bb.py:155
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "Inloggen mislukt, geen gebruiker gekoppeld aan OAuth account"
+msgstr ""
 
 #: cps/oauth_bb.py:197
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr "Koppeling met %(oauth)s verbroken"
+msgstr ""
 
 #: cps/oauth_bb.py:202
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr "Ontkoppelen van %(oauth)s mislukt"
+msgstr ""
 
 #: cps/oauth_bb.py:205
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr "Niet gelinkt aan %(oauth)s"
+msgstr ""
 
 #: cps/oauth_bb.py:261
 msgid "Failed to log in with GitHub."
-msgstr "Inloggen bij GitHub mislukt."
+msgstr "Đăng nhập với Github thất bại."
 
 #: cps/oauth_bb.py:267
 msgid "Failed to fetch user info from GitHub."
-msgstr "Opvragen gebruikersinfo bij GitHub mislukt."
+msgstr "Lấy thông tin user từ Github thất bại."
 
 #: cps/oauth_bb.py:279
 msgid "Failed to log in with Google."
-msgstr "Inloggen bij Google mislukt."
+msgstr "Đăng nhập với Google thất bại."
 
 #: cps/oauth_bb.py:285
 msgid "Failed to fetch user info from Google."
-msgstr "Opvragen gebruikersinfo bij Google mislukt."
+msgstr "Lấy thông tin người dùng từ Google thất bại."
 
 #: cps/oauth_bb.py:332
 msgid "GitHub Oauth error, please retry later."
-msgstr "GitHub OAuth fout, probeer het later nog eens."
+msgstr "Oauth Github lỗi, xin thử lại sau."
 
 #: cps/oauth_bb.py:335
 msgid "GitHub Oauth error: {}"
-msgstr "Github OAuth foutmelding: {}"
+msgstr "Github Oauth lỗi: {}"
 
 #: cps/oauth_bb.py:356
 msgid "Google Oauth error, please retry later."
-msgstr "Google OAuth fout, probeer het later nog eens."
+msgstr "Google Oauth lỗi, làm ơn thử lại sau."
 
 #: cps/oauth_bb.py:359
 msgid "Google Oauth error: {}"
-msgstr "Google OAuth foutmelding: {}"
+msgstr "Google Oauth lỗi: {}"
 
 #: cps/opds.py:287
 msgid "{} Stars"
-msgstr "{} sterren"
+msgstr "{} sao"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:85
 #: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1338
 msgid "Login"
-msgstr "Inloggen"
+msgstr "Đăng nhập"
 
 #: cps/remotelogin.py:74 cps/remotelogin.py:108
 msgid "Token not found"
-msgstr "Toegangssleutel niet gevonden"
+msgstr "Không tìm thấy token"
 
 #: cps/remotelogin.py:83 cps/remotelogin.py:116
 msgid "Token has expired"
-msgstr "Toegangssleutel is verlopen"
+msgstr "Token đã hết hạn"
 
 #: cps/remotelogin.py:92
 msgid "Success! Please return to your device"
-msgstr "Gelukt! Ga terug naar je apparaat"
+msgstr "Thành công! Hãy quay lại thiết bị của bạn"
 
 #: cps/render_template.py:40 cps/web.py:405
 msgid "Books"
-msgstr "Boeken"
+msgstr "Sách"
 
 #: cps/render_template.py:42
 msgid "Show recent books"
-msgstr "Recent toegevoegde boeken tonen"
+msgstr "Hiển thị sách gần đây"
 
 #: cps/render_template.py:43 cps/templates/index.xml:25
 msgid "Hot Books"
-msgstr "Populaire boeken"
+msgstr "Sách hot"
 
 #: cps/render_template.py:45
 msgid "Show Hot Books"
-msgstr "Populaire boeken tonen"
+msgstr "Hiển thị sách hot"
 
 #: cps/render_template.py:47 cps/render_template.py:52
 msgid "Downloaded Books"
-msgstr "Gedownloade boeken"
+msgstr "Sách đã tải"
 
 #: cps/render_template.py:49 cps/render_template.py:54
 #: cps/templates/user_table.html:167
 msgid "Show Downloaded Books"
-msgstr "Gedownloade boeken tonen"
+msgstr "Hiển thị sách đã tải"
 
 #: cps/render_template.py:57 cps/templates/index.xml:32 cps/web.py:420
 msgid "Top Rated Books"
-msgstr "Best beoordeelde boeken"
+msgstr "Top sách được đánh giá cao"
 
 #: cps/render_template.py:59 cps/templates/user_table.html:161
 msgid "Show Top Rated Books"
-msgstr "Best beoordeelde boeken tonen"
+msgstr "Hiện thị top những sách được đánh giá cao"
 
 #: cps/render_template.py:60 cps/templates/index.xml:54
 #: cps/templates/index.xml:58 cps/web.py:741
 msgid "Read Books"
-msgstr "Gelezen boeken"
+msgstr "Sách đã đọc"
 
 #: cps/render_template.py:62
 msgid "Show read and unread"
-msgstr "Gelezen/Ongelezen boeken tonen"
+msgstr "Hiển thị đã đọc và chưa đọc"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
 #: cps/templates/index.xml:65 cps/web.py:744
 msgid "Unread Books"
-msgstr "Ongelezen boeken"
+msgstr "Sách chưa đọc"
 
 #: cps/render_template.py:66
 msgid "Show unread"
-msgstr "Ongelezen boeken tonen"
+msgstr "Hiện thị sách chưa đọc"
 
 #: cps/render_template.py:67
 msgid "Discover"
-msgstr "Willekeurige boeken"
+msgstr "Khám phá"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
 #: cps/templates/user_table.html:162
 msgid "Show Random Books"
-msgstr "Willekeurige boeken tonen"
+msgstr "Hiển thị sách ngẫu nhiên"
 
 #: cps/render_template.py:70 cps/templates/book_table.html:67
 #: cps/templates/index.xml:83 cps/web.py:1101
 msgid "Categories"
-msgstr "Categorieën"
+msgstr "Chủ đề"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
 msgid "Show category selection"
-msgstr "Categoriekeuze tonen"
+msgstr "Hiển thị chọn chủ đề"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
 #: cps/templates/search_form.html:69 cps/web.py:997 cps/web.py:1004
 msgid "Series"
-msgstr "Boekenreeksen"
+msgstr "Series"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
 msgid "Show series selection"
-msgstr "Boekenreeksenkeuze tonen"
+msgstr "Hiển thị chọn series"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
 msgid "Authors"
-msgstr "Auteurs"
+msgstr "Tác giả"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
 msgid "Show author selection"
-msgstr "Auteurkeuze tonen"
+msgstr "Hiển thị chọn tác giả"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:968
 msgid "Publishers"
-msgstr "Uitgevers"
+msgstr "Nhà phát hành"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
 msgid "Show publisher selection"
-msgstr "Uitgeverskeuze tonen"
+msgstr "Hiển thị chọn nhà phát hành"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
 #: cps/web.py:1073
 msgid "Languages"
-msgstr "Talen"
+msgstr "Ngôn ngữ"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
 msgid "Show language selection"
-msgstr "Taalkeuze tonen"
+msgstr "Hiển thị chọn ngôn ngữ"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
 msgid "Ratings"
-msgstr "Beoordelingen"
+msgstr "Đánh giá"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
 msgid "Show ratings selection"
-msgstr "Beoordelingen tonen"
+msgstr "Hiển thị chọn đánh giá"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
-msgstr "Bestandsformaten"
+msgstr "Định dạng file"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
 msgid "Show file formats selection"
-msgstr "Bestandsformaten tonen"
+msgstr "Hiển thị lựa chọn định dạng file"
 
 #: cps/render_template.py:94 cps/web.py:767
 msgid "Archived Books"
-msgstr "Gearchiveerde boeken"
+msgstr "Sách đã lưu trữ"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
 msgid "Show archived books"
-msgstr "Gearchiveerde boeken tonen"
+msgstr "Hiện thị sách trong kho"
 
 #: cps/render_template.py:99 cps/web.py:798
 msgid "Books List"
-msgstr "Boekenlijst"
+msgstr "Danh sách sách"
 
 #: cps/render_template.py:101 cps/templates/user_table.html:168
 msgid "Show Books List"
-msgstr "Boekenlijst tonen"
+msgstr "Hiển thị danh sách sách"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
-msgstr "Zoeken"
+msgstr "Tìm kiếm"
 
 #: cps/search.py:188
 msgid "Published after "
-msgstr "Gepubliceerd na "
+msgstr "Phát hành sau "
 
 #: cps/search.py:195
 msgid "Published before "
-msgstr "Gepubliceerd vóór "
+msgstr "Phát hành trước "
 
 #: cps/search.py:217
 #, python-format
 msgid "Rating <= %(rating)s"
-msgstr "Beoordeling <= %(rating)s"
+msgstr "Đánh giá <= %(rating)s"
 
 #: cps/search.py:219
 #, python-format
 msgid "Rating >= %(rating)s"
-msgstr "Beoordeling >= %(rating)s"
+msgstr "Đánh giá >= %(rating)s"
 
 #: cps/search.py:221
 #, python-format
 msgid "Read Status = %(status)s"
-msgstr "Lees Status = %(status)s"
+msgstr "Trạng thái đọc = %(status)s"
 
 #: cps/search.py:323
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "Fout tijdens het zoeken van aangepaste kolommen, start Calibre-Web opnieuw op"
+msgstr ""
 
 #: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
-msgstr "Geavanceerd zoeken"
+msgstr "Tìm kiếm nâng cao"
 
 #: cps/shelf.py:49 cps/shelf.py:103
 msgid "Invalid shelf specified"
-msgstr "Ongeldige boekenplank opgegeven"
+msgstr ""
 
 #: cps/shelf.py:55
-#, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Sorry, je mag geen boeken toevoegen aan boekenplank: %(shelfname)s"
+msgstr "Xin lỗi bạn không có quyền thêm sách vào giá đó"
 
 #: cps/shelf.py:64
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "Dit boek maakt al deel uit van boekenplank: %(shelfname)s"
+msgstr ""
 
 #: cps/shelf.py:89
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Het boek is toegevoegd aan boekenplank: %(sname)s"
+msgstr "Sách đã được thêm vào giá: %(sname)s"
 
 #: cps/shelf.py:108
 msgid "You are not allowed to add a book to the shelf"
@@ -1118,343 +1100,345 @@ msgstr ""
 #: cps/shelf.py:126
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
-msgstr "Deze boeken maken al deel uit van boekenplank: %(name)s"
+msgstr ""
 
 #: cps/shelf.py:138
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "De boeken zijn toegevoegd aan boekenplank: %(sname)s"
+msgstr ""
 
 #: cps/shelf.py:145
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
-msgstr "Kan boeken niet toevoegen aan boekenplank: %(sname)s"
+msgstr ""
 
 #: cps/shelf.py:191
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr "Het boek is verwijderd van boekenplank: %(sname)s"
+msgstr "Sách đã được xoá khỏi giá: %(sname)s"
 
 #: cps/shelf.py:200
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr ""
+msgstr "Xin lỗi bạn không có quyền xoá sách khỏi giá này"
 
 #: cps/shelf.py:210 cps/templates/layout.html:141
 msgid "Create a Shelf"
-msgstr "Boekenplank maken"
+msgstr "Tạo một giá sách"
 
 #: cps/shelf.py:218
-#, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Je bent niet gemachtigd deze boekenplank aan te passen"
+msgstr "Xin lỗi bạn không có quyền chỉnh sửa giá sách này"
 
 #: cps/shelf.py:220
 msgid "Edit a shelf"
-msgstr "Pas een boekenplank aan"
+msgstr "Chỉnh sửa giá sách"
 
 #: cps/shelf.py:229
 msgid "Error deleting Shelf"
 msgstr ""
 
 #: cps/shelf.py:231
-#, fuzzy
 msgid "Shelf successfully deleted"
-msgstr "Het boek is verwijderd"
+msgstr ""
 
 #: cps/shelf.py:281
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Volgorde van boekenplank veranderen: '%(name)s'"
+msgstr ""
 
 #: cps/shelf.py:313
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
+msgstr "Xin lỗi bạn không có quyền tạo một giá sách công khai"
 
 #: cps/shelf.py:330
 #, python-format
 msgid "Shelf %(title)s created"
-msgstr "Boekenplank '%(title)s' aangemaakt"
+msgstr "Giá sách %(title)s đã được tạo"
 
 #: cps/shelf.py:333
 #, python-format
 msgid "Shelf %(title)s changed"
-msgstr "Boekenplank '%(title)s' is aangepast"
+msgstr "Giá sách %(title)s đã được thay đổi"
 
 #: cps/shelf.py:347
 msgid "There was an error"
-msgstr "Er is een fout opgetreden"
+msgstr "Có lỗi xảy ra"
 
 #: cps/shelf.py:369
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Een openbare boekenplank met de naam '%(title)s' bestaat al."
+msgstr ""
 
 #: cps/shelf.py:380
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Een persoonlijke boekenplank met de naam '%(title)s' bestaat al."
+msgstr ""
 
 #: cps/shelf.py:462
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr "Boekenplank: '%(name)s'"
+msgstr ""
 
 #: cps/shelf.py:466
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "Kan boekenplank niet openen: de boekenplank bestaat niet of is ontoegankelijk"
+msgstr ""
 
 #: cps/tasks_status.py:48 cps/templates/layout.html:74
 #: cps/templates/tasks.html:7
 msgid "Tasks"
-msgstr "Taken"
+msgstr "Nhiệm vụ"
 
 #: cps/tasks_status.py:64
 msgid "Waiting"
-msgstr "Wachten"
+msgstr "Đang chờ"
 
 #: cps/tasks_status.py:66
 msgid "Failed"
-msgstr "Mislukt"
+msgstr "Thất bại"
 
 #: cps/tasks_status.py:68
 msgid "Started"
-msgstr "Gestart"
+msgstr "Đã bắt đầu"
 
 #: cps/tasks_status.py:70
 msgid "Finished"
-msgstr "Voltooid"
+msgstr "Đã hoàn thành"
 
 #: cps/tasks_status.py:72
 msgid "Ended"
 msgstr ""
 
 #: cps/tasks_status.py:74
+#, fuzzy
 msgid "Cancelled"
-msgstr ""
+msgstr "Huỷ bỏ"
 
 #: cps/tasks_status.py:76
 msgid "Unknown Status"
-msgstr "Onbekende status"
+msgstr "Trạng thái không xác định"
 
 #: cps/updater.py:431 cps/updater.py:442 cps/updater.py:543 cps/updater.py:558
 msgid "Unexpected data while reading update information"
-msgstr "Onverwachte gegevens tijdens het uitlezen van de update-informatie"
+msgstr ""
 
 #: cps/updater.py:438 cps/updater.py:550
 msgid "No update available. You already have the latest version installed"
-msgstr "Er is geen update beschikbaar."
+msgstr ""
 
 #: cps/updater.py:456
 msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Er is een update beschikbaar. Klik op de knop hieronder om te updaten naar de nieuwste versie."
+msgstr ""
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
-msgstr "De update-informatie kan niet worden opgehaald"
+msgstr ""
 
 #: cps/updater.py:484
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Klik op de onderstaande knop om de laatste stabiele versie te installeren."
+msgstr ""
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "Er is een update beschikbaar. Klik op de knop hieronder om te updaten naar versie: %(version)s"
+msgstr ""
 
 #: cps/updater.py:536
 msgid "No release information available"
-msgstr "Geen update-informatie beschikbaar"
+msgstr ""
 
 #: cps/templates/index.html:6 cps/web.py:432
 msgid "Discover (Random Books)"
-msgstr "Verkennen (willekeurige boeken)"
+msgstr ""
 
 #: cps/web.py:468
 msgid "Hot Books (Most Downloaded)"
-msgstr "Populaire boeken (meest gedownload)"
+msgstr ""
 
 #: cps/web.py:499
 #, python-format
 msgid "Downloaded books by %(user)s"
-msgstr "Gedownloade boeken door %(user)s"
+msgstr ""
 
 #: cps/web.py:532
 #, python-format
 msgid "Author: %(name)s"
-msgstr "Auteur: %(name)s"
+msgstr ""
 
 #: cps/web.py:568
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr "Uitgever: %(name)s"
+msgstr ""
 
 #: cps/web.py:596
 #, python-format
 msgid "Series: %(serie)s"
-msgstr "Reeks: %(serie)s"
+msgstr ""
 
 #: cps/web.py:611
+#, fuzzy
 msgid "Rating: None"
-msgstr ""
+msgstr "Đánh giá cao hơn"
 
 #: cps/web.py:620
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr "Beoordeling: %(rating)s sterren"
+msgstr ""
 
 #: cps/web.py:638
 #, python-format
 msgid "File format: %(format)s"
-msgstr "Bestandsformaat: %(format)s"
+msgstr ""
 
 #: cps/web.py:675
 #, python-format
 msgid "Category: %(name)s"
-msgstr "Categorie: %(name)s"
+msgstr ""
 
 #: cps/web.py:702
 #, python-format
 msgid "Language: %(name)s"
-msgstr "Taal: %(name)s"
+msgstr ""
 
 #: cps/templates/admin.html:16 cps/web.py:940
 msgid "Downloads"
-msgstr "Downloads"
+msgstr "Tải xuống"
 
 #: cps/web.py:1033
 msgid "Ratings list"
-msgstr "Beoordelingen"
+msgstr "Danh sách đánh giá"
 
 #: cps/web.py:1060
 msgid "File formats list"
-msgstr "Alle bestandsformaten"
+msgstr "Danh sách định dạng file"
 
 #: cps/web.py:1202
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
-msgstr "Het boek is in de wachtrij geplaatst om te worden verstuurd aan %(kindlemail)s"
+msgstr ""
 
 #: cps/web.py:1206
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
-msgstr "Fout opgetreden bij het versturen van dit boek: %(res)s"
+msgstr ""
 
 #: cps/web.py:1208
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "Stel je kindle-e-mailadres in..."
+msgstr ""
 
 #: cps/web.py:1225
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr "E-mailserver is niet geconfigureerd, neem contact op met de beheerder!"
+msgstr ""
 
 #: cps/templates/layout.html:86 cps/templates/register.html:17 cps/web.py:1226
 #: cps/web.py:1233 cps/web.py:1239 cps/web.py:1258 cps/web.py:1263
 #: cps/web.py:1269
 msgid "Register"
-msgstr "Registreren"
+msgstr "Đăng ký"
 
 #: cps/web.py:1260
 msgid "Your e-mail is not allowed to register"
-msgstr "Dit e-mailadres mag niet worden gebruikt voor registratie"
+msgstr "Email của bạn không được cho phép để đăng ký"
 
 #: cps/web.py:1264
 msgid "Confirmation e-mail was send to your e-mail account."
-msgstr "Er is een bevestigings-e-mail verstuurd naar je e-mailadres."
+msgstr ""
 
 #: cps/web.py:1278
 msgid "Cannot activate LDAP authentication"
-msgstr "Kan de LDAP authenticatie niet activeren"
+msgstr ""
 
 #: cps/web.py:1297
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Terugvallen op login: '%(nickname)s', LDAP Server is onbereikbaar, of de gebruiker is onbekend"
+msgstr ""
 
 #: cps/web.py:1303
 #, python-format
 msgid "Could not login: %(message)s"
-msgstr "Inloggen mislukt: %(message)s"
+msgstr "Không thể đăng nhập: %(message)s"
 
 #: cps/web.py:1307 cps/web.py:1332
 msgid "Wrong Username or Password"
-msgstr "Verkeerde gebruikersnaam of wachtwoord"
+msgstr "Tên đăng nhập hoặc mật khẩu không đúng"
 
 #: cps/web.py:1314
 msgid "New Password was send to your email address"
-msgstr "Een nieuw wachtwoord is verzonden naar je e-mailadres"
+msgstr "Mật khẩu mới đã được gửi đến email của bạn"
 
 #: cps/web.py:1320
 msgid "Please enter valid username to reset password"
-msgstr "Geef een geldige gebruikersnaam op om je wachtwoord te herstellen"
+msgstr ""
 
 #: cps/web.py:1327
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "Je bent ingelogd als: '%(nickname)s'"
+msgstr ""
 
 #: cps/web.py:1394 cps/web.py:1443
 #, python-format
 msgid "%(name)s's profile"
-msgstr "%(name)ss profiel"
+msgstr ""
 
 #: cps/web.py:1410
 msgid "Profile updated"
-msgstr "Profiel bijgewerkt"
+msgstr ""
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr "Geen geldig gmail.json bestand gevonden met OAuth informatie"
+msgstr ""
 
 #: cps/tasks/convert.py:153
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr "Calibre ebook-convert %(tool)s niet gevonden"
+msgstr ""
 
 #: cps/tasks/convert.py:186
 #, python-format
 msgid "%(format)s format not found on disk"
-msgstr "%(format)s formaat is niet gevonden op de schijf"
+msgstr ""
 
 #: cps/tasks/convert.py:190
 msgid "Ebook converter failed with unknown error"
-msgstr "E-Book converter mislukt met een onbekende foutmelding"
+msgstr ""
 
 #: cps/tasks/convert.py:202
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr "Kepubify-converteerder mislukt: %(error)s"
+msgstr ""
 
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Omgezette bestand is niet gevonden of meer dan een bestand in map %(folder)s"
+msgstr ""
 
 #: cps/tasks/convert.py:247
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
-msgstr "E-boek-conversie mislukt: %(error)s"
+msgstr ""
 
 #: cps/tasks/convert.py:270
 #, python-format
 msgid "Calibre failed with error: %(error)s"
-msgstr "Calibre mislukt met foutmelding: %(error)s"
+msgstr ""
 
 #: cps/tasks/convert.py:275
+#, fuzzy
 msgid "Convert"
-msgstr ""
+msgstr "Khám phá"
 
 #: cps/tasks/database.py:28
+#, fuzzy
 msgid "Reconnecting Calibre database"
-msgstr ""
+msgstr "Kết nối lại với cơ sở dữ liệu Calibre"
 
 #: cps/tasks/mail.py:265
+#, fuzzy
 msgid "E-mail"
-msgstr ""
+msgstr "Test e-mail"
 
 #: cps/tasks/metadata_backup.py:47
-#, fuzzy
 msgid "Backing up Metadata"
-msgstr "metagegevens bewerken"
+msgstr ""
 
 #: cps/tasks/thumbnail.py:95
 #, python-format
@@ -1477,165 +1461,164 @@ msgstr ""
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
 #: cps/templates/layout.html:67 cps/templates/user_table.html:145
 msgid "Upload"
-msgstr "Uploaden"
+msgstr "Tải lên"
 
 #: cps/templates/admin.html:9
 msgid "Users"
-msgstr "Gebruikers"
+msgstr "Người dùng"
 
 #: cps/templates/admin.html:13 cps/templates/login.html:9
 #: cps/templates/login.html:10 cps/templates/register.html:9
 #: cps/templates/user_edit.html:10 cps/templates/user_table.html:134
 msgid "Username"
-msgstr "Gebruikersnaam"
+msgstr "Tên người dùng"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
 msgid "E-mail Address"
-msgstr "E-mailadres"
+msgstr "Địa chỉ email"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
 #, fuzzy
 msgid "Send to E-Reader E-mail Address"
-msgstr "Kindle-e-mailadres"
+msgstr "Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:77
 #: cps/templates/user_table.html:143
 msgid "Admin"
-msgstr "Beheer"
+msgstr "Admin"
 
 #: cps/templates/admin.html:18 cps/templates/login.html:13
 #: cps/templates/login.html:14 cps/templates/user_edit.html:23
 msgid "Password"
-msgstr "Wachtwoord"
+msgstr "Mật khẩu"
 
 #: cps/templates/admin.html:22 cps/templates/detail.html:19
 #: cps/templates/detail.html:28 cps/templates/shelf.html:8
 #: cps/templates/user_table.html:146
 msgid "Download"
-msgstr "Downloaden"
+msgstr "Tải xuống"
 
 #: cps/templates/admin.html:23
 msgid "View Books"
-msgstr "Boeken lezen"
+msgstr "Xem sách"
 
 #: cps/templates/admin.html:24 cps/templates/user_table.html:131
 #: cps/templates/user_table.html:148
 msgid "Edit"
-msgstr "Bewerken"
+msgstr "Chỉnh sửa"
 
 #: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:100 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
 #: cps/templates/user_table.html:149
 msgid "Delete"
-msgstr "Verwijderen"
+msgstr "Xoá"
 
 #: cps/templates/admin.html:26
 msgid "Public Shelf"
-msgstr "Openbare boekenplank"
+msgstr "Giá công khai"
 
 #: cps/templates/admin.html:53
 msgid "Add New User"
-msgstr "Gebruiker toevoegen"
+msgstr "Thêm người dùng mới"
 
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
-msgstr "LDAP gebruikers importeren"
+msgstr ""
 
 #: cps/templates/admin.html:62
 msgid "E-mail Server Settings"
-msgstr "SMTP-serverinstellingen"
+msgstr "Thiết lập máy chủ email"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
 msgid "SMTP Hostname"
-msgstr "SMTP-hostnaam (gebruik mail.example.org om wachtwoordherstel uit te schakelen)"
+msgstr "SMTP Hostname"
 
 #: cps/templates/admin.html:71 cps/templates/email_edit.html:35
 msgid "SMTP Port"
-msgstr "SMTP-poort"
+msgstr "Cổng SMTP"
 
 #: cps/templates/admin.html:75 cps/templates/email_edit.html:39
 msgid "Encryption"
-msgstr "Encryptie"
+msgstr "SSL"
 
 #: cps/templates/admin.html:79 cps/templates/email_edit.html:47
 msgid "SMTP Login"
-msgstr "SMTP-gebruikersnaam"
+msgstr "Đăng nhập SMTP"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
 msgid "From E-mail"
-msgstr "Van e-mail"
+msgstr "Từ E-mail"
 
 #: cps/templates/admin.html:90
 msgid "E-Mail Service"
-msgstr "E-Mail Service"
+msgstr "Dịch vụ E-Mail"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
-msgstr "Gmail via OAuth2"
+msgstr "Gmail via Oauth2"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
-msgstr "Instellingen"
+msgstr "Thiết lập"
 
 #: cps/templates/admin.html:109
 msgid "Calibre Database Directory"
-msgstr "Calibre-database locatie"
+msgstr "Thư mục cơ sở dữ liệu Calibre"
 
 #: cps/templates/admin.html:113 cps/templates/config_edit.html:68
 msgid "Log Level"
-msgstr "Logniveau"
+msgstr "Log Level"
 
 #: cps/templates/admin.html:117
 msgid "Port"
-msgstr "Poort"
+msgstr "Cổng"
 
 #: cps/templates/admin.html:122
 msgid "External Port"
-msgstr "Externe poort"
+msgstr ""
 
 #: cps/templates/admin.html:129 cps/templates/config_view_edit.html:28
 msgid "Books per Page"
-msgstr "Aantal boeken per pagina"
+msgstr "Sách mỗi trang"
 
 #: cps/templates/admin.html:133
 msgid "Uploads"
-msgstr "Uploaden toestaan"
+msgstr "Tải lên"
 
 #: cps/templates/admin.html:137
 msgid "Anonymous Browsing"
-msgstr "Anoniem verkennen"
+msgstr "Ẩn danh"
 
 #: cps/templates/admin.html:141
 msgid "Public Registration"
-msgstr "Openbare registratie"
+msgstr "Đăng ký công khai"
 
 #: cps/templates/admin.html:145
 msgid "Magic Link Remote Login"
-msgstr "Inloggen op afstand"
+msgstr "Đăng nhập bằng Magic Link"
 
 #: cps/templates/admin.html:149
 msgid "Reverse Proxy Login"
-msgstr "Reverse Proxy Login"
+msgstr ""
 
 #: cps/templates/admin.html:154 cps/templates/config_edit.html:173
 msgid "Reverse Proxy Header Name"
-msgstr "Reverse proxy header naam"
+msgstr ""
 
 #: cps/templates/admin.html:159
-#, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Bewerk Calibre databaseconfiguratie"
+msgstr "Chỉnh sửa thiết lập cơ sở dữ liệu Calibre"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
-msgstr "Bewerk basisconfiguratie"
+msgstr "Chỉnh sửa thiết lập cơ bản"
 
 #: cps/templates/admin.html:161
 msgid "Edit UI Configuration"
-msgstr "Bewerk gebruikersinterface configuratie"
+msgstr "Chỉnh sửa thiết lập UI"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
@@ -1658,8 +1641,9 @@ msgid "Generate series cover thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#, fuzzy
 msgid "Reconnect to Calibre Library"
-msgstr ""
+msgstr "Kết nối lại với cơ sở dữ liệu Calibre"
 
 #: cps/templates/admin.html:193
 msgid "Refresh Thumbnail Cover Cache"
@@ -1667,60 +1651,61 @@ msgstr ""
 
 #: cps/templates/admin.html:199
 msgid "Administration"
-msgstr "Systeembeheer"
+msgstr "Quản trị"
 
 #: cps/templates/admin.html:200
 msgid "Download Debug Package"
-msgstr "Download foutopsporingspakket"
+msgstr "Tải xuống package debug"
 
 #: cps/templates/admin.html:201
 msgid "View Logs"
-msgstr "Logboeken bekijken"
+msgstr "Xem logs"
 
 #: cps/templates/admin.html:204
 msgid "Reconnect Calibre Database"
-msgstr "Opnieuw verbinden met Calibre database"
+msgstr "Kết nối lại với cơ sở dữ liệu Calibre"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
-msgstr "Calibre-Web herstarten"
+msgstr "Khởi động lại"
 
 #: cps/templates/admin.html:208
 msgid "Shutdown"
-msgstr "Calibre-Web stoppen"
+msgstr "Tắt"
 
 #: cps/templates/admin.html:216
+#, fuzzy
 msgid "Version Information"
-msgstr ""
+msgstr "Thiết lập máy chủ"
 
 #: cps/templates/admin.html:220
 msgid "Version"
-msgstr "Versie"
+msgstr "Phiên bản"
 
 #: cps/templates/admin.html:221
 msgid "Details"
-msgstr "Details"
+msgstr "Chi tiết"
 
 #: cps/templates/admin.html:227
 msgid "Current version"
-msgstr "Huidige versie"
+msgstr "Phiên bản hiện tại"
 
 #: cps/templates/admin.html:234
 msgid "Check for Update"
-msgstr "Controleren op updates"
+msgstr "Kiểm tra cập nhật"
 
 #: cps/templates/admin.html:235
 msgid "Perform Update"
-msgstr "Update uitvoeren"
+msgstr "Bắt đầu cập nhật"
 
 #: cps/templates/admin.html:248
 msgid "Are you sure you want to restart?"
-msgstr "Weet je zeker dat je Calibre-Web wilt herstarten?"
+msgstr "Bạn có chắc chắn muốn khởi động lại?"
 
 #: cps/templates/admin.html:253 cps/templates/admin.html:267
 #: cps/templates/admin.html:287 cps/templates/config_db.html:70
 msgid "OK"
-msgstr "Oké"
+msgstr "Ok"
 
 #: cps/templates/admin.html:254 cps/templates/admin.html:268
 #: cps/templates/book_edit.html:214 cps/templates/book_table.html:127
@@ -1731,15 +1716,15 @@ msgstr "Oké"
 #: cps/templates/shelf_edit.html:27 cps/templates/tasks.html:46
 #: cps/templates/user_edit.html:144
 msgid "Cancel"
-msgstr "Annuleren"
+msgstr "Huỷ bỏ"
 
 #: cps/templates/admin.html:266
 msgid "Are you sure you want to shutdown?"
-msgstr "Weet je zeker dat je Calibre-Web wilt stoppen?"
+msgstr "Bạn có chắc muốn tắt?"
 
 #: cps/templates/admin.html:278
 msgid "Updating, please do not reload this page"
-msgstr "Bezig met bijwerken, vernieuw de pagina niet"
+msgstr "Đang update, làm ơn đừng load lại trang này"
 
 #: cps/templates/author.html:15
 msgid "via"
@@ -1747,167 +1732,167 @@ msgstr "via"
 
 #: cps/templates/author.html:23
 msgid "In Library"
-msgstr "In bibliotheek"
+msgstr "Trong thư viện"
 
 #: cps/templates/author.html:26 cps/templates/index.html:74
 #: cps/templates/search.html:31 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
-msgstr "Sorteren op datum, nieuwste boeken eerst"
+msgstr ""
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
 #: cps/templates/search.html:32 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
-msgstr "Sorteren op datum, oudste boeken eerst"
+msgstr ""
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
 #: cps/templates/search.html:33 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
-msgstr "Sorteren op alfabetische volgorde"
+msgstr ""
 
 #: cps/templates/author.html:29 cps/templates/index.html:77
 #: cps/templates/search.html:34 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
-msgstr "Sorteren op omgekeerde alfabetische volgorde"
+msgstr ""
 
 #: cps/templates/author.html:30 cps/templates/index.html:80
 #: cps/templates/search.html:37 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
-msgstr "Sorteren op publicatiedatum, nieuwste boeken eerst"
+msgstr ""
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
 #: cps/templates/search.html:38 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
-msgstr "Sorteren op publicatiedatum, oudste boeken eerst"
+msgstr ""
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
 #: cps/templates/search.html:67 cps/templates/shelf.html:55
 msgid "reduce"
-msgstr "beperken"
+msgstr ""
 
 #: cps/templates/author.html:99
 msgid "More by"
-msgstr "Meer van"
+msgstr "Cùng tác giả"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
-msgstr "Boek verwijderen"
+msgstr "Xoá sách"
 
 #: cps/templates/book_edit.html:14
 msgid "Delete formats:"
-msgstr "Formaten verwijderen:"
+msgstr "Xoá định dạng:"
 
 #: cps/templates/book_edit.html:25
 msgid "Convert book format:"
-msgstr "Boekformaat converteren:"
+msgstr "Chuyển đổi định dạng sách:"
 
 #: cps/templates/book_edit.html:30
 msgid "Convert from:"
-msgstr "Converteren van:"
+msgstr "Chuyển đổi từ:"
 
 #: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
 msgid "select an option"
-msgstr "kies een optie"
+msgstr "chọn một lựa chọn"
 
 #: cps/templates/book_edit.html:37
 msgid "Convert to:"
-msgstr "Converteren naar:"
+msgstr "Chuyển đổi tới:"
 
 #: cps/templates/book_edit.html:46
 msgid "Convert book"
-msgstr "Boek converteren"
+msgstr "Chuyển đổi sách"
 
 #: cps/templates/book_edit.html:56 cps/templates/search_form.html:8
 msgid "Book Title"
-msgstr "Boektitel"
+msgstr "Tên sách"
 
 #: cps/templates/book_edit.html:63 cps/templates/book_edit.html:271
 #: cps/templates/book_edit.html:289 cps/templates/search_form.html:12
 msgid "Author"
-msgstr "Auteur"
+msgstr "Tác giả"
 
 #: cps/templates/book_edit.html:68 cps/templates/book_edit.html:276
 #: cps/templates/book_edit.html:291 cps/templates/search_form.html:153
 msgid "Description"
-msgstr "Omschrijving"
+msgstr "Mô tả"
 
 #: cps/templates/book_edit.html:73
 msgid "Identifiers"
-msgstr "Identificatoren"
+msgstr "Nhận diện"
 
 #: cps/templates/book_edit.html:77 cps/templates/book_edit.html:300
 msgid "Identifier Type"
-msgstr "Identificatie type"
+msgstr "Kiểu nhận diện"
 
 #: cps/templates/book_edit.html:78 cps/templates/book_edit.html:301
 msgid "Identifier Value"
-msgstr "Identificatie waarde"
+msgstr "Giá trị nhận diện"
 
 #: cps/templates/book_edit.html:79 cps/templates/book_edit.html:302
 #: cps/templates/user_table.html:24
 msgid "Remove"
-msgstr "Verwijderen"
+msgstr "Xoá"
 
 #: cps/templates/book_edit.html:83
 msgid "Add Identifier"
-msgstr "Identificator toevoegen"
+msgstr "Thêm nhận diện"
 
 #: cps/templates/book_edit.html:87 cps/templates/search_form.html:51
 msgid "Tags"
-msgstr "Labels"
+msgstr "Đánh dấu"
 
 #: cps/templates/book_edit.html:95
 msgid "Series ID"
-msgstr "Boekenreeks volgnummer"
+msgstr "Series ID"
 
 #: cps/templates/book_edit.html:99
 msgid "Rating"
-msgstr "Beoordeling"
+msgstr "Đánh giá"
 
 #: cps/templates/book_edit.html:104
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Omslag-url (jpg) (de omslag wordt gedownload en opgeslagen in de database)"
+msgstr "Lấy ảnh bìa từ URL (ảnh JPEG sẽ được tải xuống và lưu trong cơ sở dữ liệu)"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
-msgstr "Omslag uploaden vanaf de harde schijf"
+msgstr "Tải ảnh bìa từ ổ cứng"
 
 #: cps/templates/book_edit.html:113
 msgid "Published Date"
-msgstr "Publicatiedatum"
+msgstr "Ngày xuất bản"
 
 #: cps/templates/book_edit.html:122 cps/templates/book_edit.html:273
 #: cps/templates/book_edit.html:290 cps/templates/detail.html:165
 #: cps/templates/search_form.html:16
 msgid "Publisher"
-msgstr "Uitgever"
+msgstr "Nhà xuất bản"
 
 #: cps/templates/book_edit.html:126 cps/templates/detail.html:132
 #: cps/templates/user_edit.html:33
 msgid "Language"
-msgstr "Taal"
+msgstr "Ngôn ngữ"
 
 #: cps/templates/book_edit.html:136 cps/templates/search_form.html:45
 #: cps/templates/search_form.html:164
 msgid "Yes"
-msgstr "Ja"
+msgstr "Có"
 
 #: cps/templates/book_edit.html:137 cps/templates/search_form.html:46
 #: cps/templates/search_form.html:165
 msgid "No"
-msgstr "Nee"
+msgstr "Không"
 
 #: cps/templates/book_edit.html:201
 msgid "Upload Format"
-msgstr "Uploadformaat"
+msgstr "Định dạng tải lên"
 
 #: cps/templates/book_edit.html:209
 msgid "View Book on Save"
-msgstr "Boek inkijken na bewerking"
+msgstr "Xem sách sau khi lưu"
 
 #: cps/templates/book_edit.html:212 cps/templates/book_edit.html:230
 msgid "Fetch Metadata"
-msgstr "Metagegevens ophalen"
+msgstr "Fetch Metadata"
 
 #: cps/templates/book_edit.html:213 cps/templates/config_db.html:53
 #: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:174
@@ -1915,130 +1900,128 @@ msgstr "Metagegevens ophalen"
 #: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
 #: cps/templates/user_edit.html:142
 msgid "Save"
-msgstr "Opslaan"
+msgstr "Lưu"
 
 #: cps/templates/book_edit.html:233
 msgid "Keyword"
-msgstr "Trefwoord"
+msgstr "Từ khoá"
 
 #: cps/templates/book_edit.html:234
-#, fuzzy
 msgid "Search keyword"
-msgstr " Trefwoord zoeken "
+msgstr "Tìm kiếm từ khoá"
 
 #: cps/templates/book_edit.html:240
 msgid "Click the cover to load metadata to the form"
-msgstr "Klik op de omslag om de metagegevens in het formulier te laden"
+msgstr "Ấn vào ảnh cover để tải metadata vào form"
 
 #: cps/templates/book_edit.html:247 cps/templates/book_edit.html:286
 msgid "Loading..."
-msgstr "Bezig met laden..."
+msgstr "Đang tải..."
 
 #: cps/templates/book_edit.html:251 cps/templates/layout.html:64
 #: cps/templates/layout.html:187 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
-msgstr "Sluiten"
+msgstr "Đóng"
 
 #: cps/templates/book_edit.html:278 cps/templates/book_edit.html:292
 msgid "Source"
-msgstr "Bron"
+msgstr "Nguồn"
 
 #: cps/templates/book_edit.html:287
 msgid "Search error!"
-msgstr "Zoekfout!"
+msgstr "Tìm kiếm lỗi!"
 
 #: cps/templates/book_edit.html:288
 msgid "No Result(s) found! Please try another keyword."
-msgstr "Geen resultaten gevonden! Gebruik een ander trefwoord."
+msgstr "Không tìm thấy kết quả! Hãy thử lại với từ khoá khác."
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:69
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
 #: cps/templates/user_table.html:100
 msgid "This Field is Required"
-msgstr "Dit veld is verplicht"
+msgstr "Đây là trường bắt buộc"
 
 #: cps/templates/book_table.html:37
 msgid "Merge selected books"
-msgstr "Geselecteerde boeken samenvoegen"
+msgstr "Gộp những sách đã chọn"
 
 #: cps/templates/book_table.html:38 cps/templates/user_table.html:124
 msgid "Remove Selections"
-msgstr "Geselecteerde boeken verwijderen"
+msgstr "Bỏ chọn"
 
 #: cps/templates/book_table.html:41
 msgid "Exchange author and title"
-msgstr "Auteur en titel omwisselen"
+msgstr "Đổi tác giả và tên sách"
 
 #: cps/templates/book_table.html:47
 msgid "Update Title Sort automatically"
-msgstr "Automatisch sorteren op titel"
+msgstr "Cập nhật sắp xếp theo tên tự động"
 
 #: cps/templates/book_table.html:51
 msgid "Update Author Sort automatically"
-msgstr "Automatisch sorteren op auteur"
+msgstr "Cập nhật sắp xếp theo tác giả tự động"
 
 #: cps/templates/book_table.html:63 cps/templates/book_table.html:69
 msgid "Enter Title"
-msgstr "Geef titel"
+msgstr "Nhập tên sách"
 
 #: cps/templates/book_table.html:63 cps/templates/config_view_edit.html:24
 #: cps/templates/shelf_edit.html:8
 msgid "Title"
-msgstr "Titel"
+msgstr "Tên"
 
 #: cps/templates/book_table.html:64
 msgid "Enter Title Sort"
-msgstr "Voer Titel sorteervolgorde in"
+msgstr "Nhập tên sách để sắp xếp"
 
 #: cps/templates/book_table.html:64
 msgid "Title Sort"
-msgstr "Titel sorteren"
+msgstr "Tên sắp xếp"
 
 #: cps/templates/book_table.html:65
 msgid "Enter Author Sort"
-msgstr "Voer Auteur sorteervolgorde in"
+msgstr "Nhập tác giả sắp xếp"
 
 #: cps/templates/book_table.html:65
 msgid "Author Sort"
-msgstr "Auteur sorteren"
+msgstr "Tên tác giả sắp xếp"
 
 #: cps/templates/book_table.html:66
 msgid "Enter Authors"
-msgstr "Voer Auteurs in"
+msgstr "Nhập tên tác giả"
 
 #: cps/templates/book_table.html:67
 msgid "Enter Categories"
-msgstr "Voer categorieën in"
+msgstr "Nhập thể loại"
 
 #: cps/templates/book_table.html:68
 msgid "Enter Series"
-msgstr "Voer serie in"
+msgstr "Nhập tên series"
 
 #: cps/templates/book_table.html:69
 msgid "Series Index"
-msgstr "Serie index"
+msgstr "Chỉ số series"
 
 #: cps/templates/book_table.html:70
 msgid "Enter Languages"
-msgstr "Voer talen in"
+msgstr "Nhập ngôn ngữ"
 
 #: cps/templates/book_table.html:71
 msgid "Publishing Date"
-msgstr "Voer publicatiedatum in"
+msgstr "Ngày phát hành"
 
 #: cps/templates/book_table.html:72
 msgid "Enter Publishers"
-msgstr "Voer uitgevers in"
+msgstr "Nhập tên nhà phát hành"
 
 #: cps/templates/book_table.html:73
-#, fuzzy
 msgid "Enter comments"
-msgstr "Voer domeinnaam in"
+msgstr "Nhập nhận xét"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "Nhận xét"
 
 #: cps/templates/book_table.html:75
 msgid "Archive Status"
@@ -2046,89 +2029,87 @@ msgstr ""
 
 #: cps/templates/book_table.html:77 cps/templates/search_form.html:42
 msgid "Read Status"
-msgstr "Lees Status"
+msgstr "Read status"
 
 #: cps/templates/book_table.html:80 cps/templates/book_table.html:82
 #: cps/templates/book_table.html:84 cps/templates/book_table.html:86
 #: cps/templates/book_table.html:90 cps/templates/book_table.html:92
 #: cps/templates/book_table.html:96
-#, fuzzy
 msgid "Enter "
-msgstr "Identificatoren"
+msgstr "Nhập "
 
 #: cps/templates/book_table.html:113 cps/templates/modal_dialogs.html:46
 #: cps/templates/tasks.html:36
 msgid "Are you really sure?"
-msgstr "Weet je het zeker?"
+msgstr "Bạn có thực sự chắc chắn?"
 
 #: cps/templates/book_table.html:117
 msgid "Books with Title will be merged from:"
-msgstr "Boeken met de titel zullen worden samengevoegd van:"
+msgstr ""
 
 #: cps/templates/book_table.html:121
 msgid "Into Book with Title:"
-msgstr "In boek met titel:"
+msgstr ""
 
 #: cps/templates/book_table.html:126
 msgid "Merge"
-msgstr "Samenvoegen"
+msgstr "Trộn"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
-msgstr "Locatie van de Calibre-database"
+msgstr "Vị trí cơ sở dữ liệu của Calibre"
 
 #: cps/templates/config_db.html:22
 msgid "Use Google Drive?"
-msgstr "Google Drive gebruiken?"
+msgstr "Dùng Google Drive?"
 
 #: cps/templates/config_db.html:27
 msgid "Authenticate Google Drive"
-msgstr "Google Drive goedkeuren"
+msgstr "Xác thực Google Drive"
 
 #: cps/templates/config_db.html:32
 msgid "Google Drive Calibre folder"
-msgstr "Google Drive Calibre-map"
+msgstr "Thư mục Calibre trên Google Drive"
 
 #: cps/templates/config_db.html:40
 msgid "Metadata Watch Channel ID"
-msgstr "Metagegevens Watch Channel ID"
+msgstr ""
 
 #: cps/templates/config_db.html:43
 msgid "Revoke"
-msgstr "Intrekken"
+msgstr "Thu hồi"
 
 #: cps/templates/config_db.html:68
-#, fuzzy
 msgid "New db location is invalid, please enter valid path"
-msgstr "Database niet gevonden, voer een geldig pad in"
+msgstr "Đường dẫn DB mới không hợp lệ, xin hãy nhập đường dẫn hợp lệ"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
-msgstr "Serverinstellingen"
+msgstr "Thiết lập máy chủ"
 
 #: cps/templates/config_edit.html:25
 msgid "Server Port"
-msgstr "Serverpoort"
+msgstr "Cổng máy chủ"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL-certificaatlocatie ('certfile' - laat leeg voor niet-SSL-servers)"
+msgstr ""
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL-sleutellocatie ('keyfile' - laat leeg voor niet-SSL-servers)"
+msgstr ""
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
-msgstr "Updatekanaal"
+msgstr ""
 
 #: cps/templates/config_edit.html:45
 msgid "Stable"
-msgstr "Stabiel"
+msgstr ""
 
 #: cps/templates/config_edit.html:46
 msgid "Nightly"
-msgstr "Bèta"
+msgstr ""
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
@@ -2136,23 +2117,23 @@ msgstr ""
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
-msgstr "Logbestanden"
+msgstr ""
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "Locatie en naam van logbestand (calibre-web.log indien niet opgegeven)"
+msgstr ""
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
-msgstr "Toegangslog aanzetten"
+msgstr ""
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "Locatie en naam van het toegangslog (access.log indien niet opgegeven)"
+msgstr ""
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
-msgstr "Geavanceerde opties"
+msgstr ""
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
@@ -2160,7 +2141,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
-msgstr "Uploaden inschakelen"
+msgstr ""
 
 #: cps/templates/config_edit.html:108
 msgid "(Please ensure users having also upload rights)"
@@ -2168,388 +2149,386 @@ msgstr ""
 
 #: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
-msgstr "Toegelaten upload bestandsformaten"
+msgstr ""
 
 #: cps/templates/config_edit.html:118
 msgid "Enable Anonymous Browsing"
-msgstr "Anoniem verkennen inschakelen"
+msgstr ""
 
 #: cps/templates/config_edit.html:122
 msgid "Enable Public Registration"
-msgstr "Openbare registratie inschakelen"
+msgstr ""
 
 #: cps/templates/config_edit.html:127
 msgid "Use E-Mail as Username"
-msgstr "Gebruik e-mail als inlognaam"
+msgstr ""
 
 #: cps/templates/config_edit.html:132
 msgid "Enable Magic Link Remote Login"
-msgstr "Inloggen op afstand inschakelen ('magic link')"
+msgstr ""
 
 #: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
-msgstr "Zet Kobo sync aan"
+msgstr ""
 
 #: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
-msgstr "Proxy onbekende verzoeken naar Kobo winkel"
+msgstr ""
 
 #: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
-msgstr "Server Externe Port (voor port doorgestuurde API oproepen)"
+msgstr ""
 
 #: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
-msgstr "Gebruik Goodreads"
+msgstr "Sử dụng Goodreads"
 
 #: cps/templates/config_edit.html:154
 msgid "Create an API Key"
-msgstr "Maak API-sleutel aan"
+msgstr "Tạo API Key"
 
 #: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
-msgstr "Goodreads API-sleutel"
+msgstr "Goodreads API Key"
 
 #: cps/templates/config_edit.html:162
 msgid "Goodreads API Secret"
-msgstr "Goodreads API-geheim"
+msgstr "Goodreads API Secret"
 
 #: cps/templates/config_edit.html:169
 msgid "Allow Reverse Proxy Authentication"
-msgstr "Reverse Proxy authenticatie toestaan"
+msgstr ""
 
 #: cps/templates/config_edit.html:180
 msgid "Login type"
-msgstr "Login type"
+msgstr "Kiểu đăng nhập"
 
 #: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
-msgstr "Gebruik standaard authenticatie"
+msgstr ""
 
 #: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
-msgstr "Gebruik LDAP authenticatie"
+msgstr ""
 
 #: cps/templates/config_edit.html:187
 msgid "Use OAuth"
-msgstr "Gebruik OAuth"
+msgstr ""
 
 #: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
-msgstr "LDAP Server hostnaam of IP-adres"
+msgstr ""
 
 #: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
-msgstr "LDAP Server Poort"
+msgstr ""
 
 #: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
-msgstr "LDAP encryptie"
+msgstr ""
 
 #: cps/templates/config_edit.html:205
 msgid "TLS"
-msgstr "TLS"
+msgstr ""
 
 #: cps/templates/config_edit.html:206
 msgid "SSL"
-msgstr "SSL"
+msgstr ""
 
 #: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP CACertificataat Path (Alleen nodig voor Client Certificaat Autorisatie)"
+msgstr ""
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP Certificaat Pad (Alleen nodig voor Client Certificaat Autorisatie)"
+msgstr ""
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP SleutelBestand Pad (alleen nodig voor Client Certificaat Autorisatie)"
+msgstr ""
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
-msgstr "LDAP Authenticatie"
+msgstr ""
 
 #: cps/templates/config_edit.html:235
 msgid "Anonymous"
-msgstr "Anoniem"
+msgstr ""
 
 #: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
-msgstr "Niet geverifieerd"
+msgstr ""
 
 #: cps/templates/config_edit.html:237
 msgid "Simple"
-msgstr "Eenvoudig"
+msgstr ""
 
 #: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
-msgstr "LDAP Administrator naam"
+msgstr ""
 
 #: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
-msgstr "LDAP Administrator wachtwoord"
+msgstr ""
 
 #: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
-msgstr "LDAP Distinguished Name (DN)"
+msgstr ""
 
 #: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
-msgstr "LDAP User Object Filter"
+msgstr ""
 
 #: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
-msgstr "LDAP Server is OpenLDAP?"
+msgstr ""
 
 #: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
-msgstr "De volgende instellingen zijn nodig voor het importeren van gebruikers:"
+msgstr ""
 
 #: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
-msgstr "LDAP Groep Object Filter"
+msgstr ""
 
 #: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
-msgstr "LDAP groepnaam"
+msgstr ""
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
-msgstr "LDAP groepleden veld"
+msgstr ""
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
-msgstr "LDAP Lid Gebruiker Filter Detectie"
+msgstr ""
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
-msgstr "Automatisch detecteren"
+msgstr ""
 
 #: cps/templates/config_edit.html:281
 msgid "Custom Filter"
-msgstr "Aangepast Filter"
+msgstr ""
 
 #: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
-msgstr "LDAP Lid Gebruiker Filter"
+msgstr ""
 
 #: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr "Verkrijg %(provider)s OAuth Verificatiegegevens"
+msgstr ""
 
 #: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth Client Id"
+msgstr ""
 
 #: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr "%(provider)s OAuth Client geheim"
+msgstr ""
 
 #: cps/templates/config_edit.html:320
 msgid "External binaries"
-msgstr "Externe programma's"
+msgstr ""
 
 #: cps/templates/config_edit.html:326
 msgid "Path to Calibre E-Book Converter"
-msgstr "Pad naar Calibre E-Book Converteerder"
+msgstr ""
 
 #: cps/templates/config_edit.html:334
 msgid "Calibre E-Book Converter Settings"
-msgstr "Calibre E-Book omzet instellingen"
+msgstr ""
 
 #: cps/templates/config_edit.html:337
 msgid "Path to Kepubify E-Book Converter"
-msgstr "Pad naar Kepubify E-book Converteerder"
+msgstr ""
 
 #: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
-msgstr "Locatie van Unrar-programma"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
-msgstr "Instellingen bekijken"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:32
 msgid "No. of Random Books to Display"
-msgstr "Aantal te tonen willekeurige boeken"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:36
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr "Aantal te tonen auteurs alvorens te verbergen (0=nooit verbergen)"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:113
 msgid "Theme"
-msgstr "Thema"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:42
 msgid "Standard Theme"
-msgstr "Standaard thema"
+msgstr "Chủ đề mặc định"
 
 #: cps/templates/config_view_edit.html:43
 msgid "caliBlur! Dark Theme"
-msgstr "caliBlur! donker thema"
+msgstr "calibur! Theme tối"
 
 #: cps/templates/config_view_edit.html:47
 msgid "Regular Expression for Ignoring Columns"
-msgstr "Reguliere expressie om kolommen te negeren"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:51
 msgid "Link Read/Unread Status to Calibre Column"
-msgstr "Gelezen/ongelezen-status koppelen aan Calibre-kolom"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:60
 msgid "View Restrictions based on Calibre column"
-msgstr "Bekijk restricties gebaseerd op Calibre kolommen"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:69
 msgid "Regular Expression for Title Sorting"
-msgstr "Reguliere expressie voor het sorteren op titel"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
-msgstr "Standaardinstellingen voor nieuwe gebruikers"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:96
 msgid "Admin User"
-msgstr "Systeembeheerder"
+msgstr "Người dùng quản trị"
 
 #: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:101
 msgid "Allow Downloads"
-msgstr "Downloads toestaan"
+msgstr "Cho phép tải xuống"
 
 #: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:105
 msgid "Allow eBook Viewer"
-msgstr "Boeken lezen toestaan"
+msgstr "Cho phép xem eBook"
 
 #: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:110
 msgid "Allow Uploads"
-msgstr "Uploads toestaan"
+msgstr "Cho phép tải lên"
 
 #: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:115
 msgid "Allow Edit"
-msgstr "Bewerken toestaan"
+msgstr "Cho phép chỉnh sửa"
 
 #: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:120
 msgid "Allow Delete Books"
-msgstr "Verwijderen van boeken toestaan"
+msgstr "Cho phép xoá sách"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:126
 msgid "Allow Changing Password"
-msgstr "Wachtwoord wijzigen toestaan"
+msgstr "Cho phép thay đổi mật khẩu"
 
 #: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:130
 msgid "Allow Editing Public Shelves"
-msgstr "Bewerken van openbare boekenplanken toestaan"
+msgstr "Cho phép chỉnh sửa giá sách công khai"
 
 #: cps/templates/config_view_edit.html:123
-#, fuzzy
 msgid "Default Language"
-msgstr "Talen uitsluiten"
+msgstr "Ngôn ngữ mặc định"
 
 #: cps/templates/config_view_edit.html:131
-#, fuzzy
 msgid "Default Visible Language of Books"
-msgstr "Taal van boeken"
+msgstr "Ngôn ngữ hiển thị mặc định của sách"
 
 #: cps/templates/config_view_edit.html:147
 msgid "Default Visibilities for New Users"
-msgstr "Standaard zichtbaar voor nieuwe gebruikers"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
 #: cps/templates/user_table.html:154
 msgid "Show Random Books in Detail View"
-msgstr "Willekeurige boeken tonen in gedetailleerde weergave"
+msgstr "Hiển thị sách ngẫu nhiên trong màn hình chi tiết"
 
 #: cps/templates/config_view_edit.html:166 cps/templates/user_edit.html:87
 msgid "Add Allowed/Denied Tags"
-msgstr "Voeg toegestane/geweigerde tags toe"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:167
 msgid "Add Allowed/Denied custom column values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolomwaarden toe"
+msgstr "Thêm cho phép/từ chối giá trị cột tuỳ biến"
 
 #: cps/templates/detail.html:61 cps/templates/detail.html:70
 msgid "Read in Browser"
-msgstr "Lezen in webbrowser"
+msgstr "Đọc trên trình duyệt"
 
 #: cps/templates/detail.html:78 cps/templates/detail.html:95
 msgid "Listen in Browser"
-msgstr "Luisteren in webbrowser"
+msgstr "Nghe trên trình duyệt"
 
 #: cps/templates/detail.html:125
-#, fuzzy, python-format
+#, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr "Boek %(index)s van %(range)s"
+msgstr "Sách %(index)s của %(range)s"
 
 #: cps/templates/detail.html:174
 msgid "Published"
-msgstr "Gepubliceerd"
+msgstr "Đã phát hành"
 
 #: cps/templates/detail.html:222
 msgid "Mark As Unread"
-msgstr "Markeren als ongelezen"
+msgstr "Đánh dấu chưa đọc"
 
 #: cps/templates/detail.html:222
 msgid "Mark As Read"
-msgstr "Markeren als gelezen"
+msgstr "Đánh dấu đã đọc"
 
 #: cps/templates/detail.html:223
 msgid "Read"
-msgstr "Gelezen"
+msgstr "Đọc"
 
 #: cps/templates/detail.html:232
 msgid "Restore from archive"
-msgstr "Terughalen uit archief"
+msgstr "Khôi phục từ lưu trữ"
 
 #: cps/templates/detail.html:232
 msgid "Add to archive"
-msgstr "Toevoegen aan archief"
+msgstr "Thêm vào lưu trữ"
 
 #: cps/templates/detail.html:233
 msgid "Archived"
-msgstr "Gearchiveerd"
+msgstr "Lưu trữ"
 
 #: cps/templates/detail.html:244
 msgid "Description:"
-msgstr "Beschrijving:"
+msgstr "Mô tả:"
 
 #: cps/templates/detail.html:257 cps/templates/search.html:16
 msgid "Add to shelf"
-msgstr "Toevoegen aan boekenplank"
+msgstr "Thêm vào giá sách"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
 #: cps/templates/feed.xml:79 cps/templates/layout.html:138
 #: cps/templates/search.html:22
 msgid "(Public)"
-msgstr "(Openbaar)"
+msgstr "(Công khai)"
 
 #: cps/templates/detail.html:299
 msgid "Edit Metadata"
-msgstr "Metagegevens bewerken"
+msgstr "Chỉnh sửa Metadata"
 
 #: cps/templates/email_edit.html:13
 msgid "Choose Server Type"
-msgstr "Kies Server Type"
+msgstr "Chọn kiểu server"
 
 #: cps/templates/email_edit.html:15
 msgid "Use Standard E-Mail Account"
-msgstr "Gebruik Standaard E-Mail Account"
+msgstr "Dùng tài khoản email tiêu chuẩn"
 
 #: cps/templates/email_edit.html:16
 msgid "Gmail Account with OAuth2 Verification"
-msgstr "Gmail Account met OAuth2 Verificatie"
+msgstr "Tài khoản Gmail với xác nhận OAuth2"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr "Gmail Account opzetten als E-Mail Server"
+msgstr "Cài đặt tài khoản Gmail làm email Server"
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
-msgstr "Gmail toegang intrekken"
+msgstr "Thu hồi quyền truy cập Gmail"
 
 #: cps/templates/email_edit.html:42
 msgid "STARTTLS"
@@ -2561,75 +2540,74 @@ msgstr "SSL/TLS"
 
 #: cps/templates/email_edit.html:51
 msgid "SMTP Password"
-msgstr "SMTP-wachtwoord"
+msgstr "Mật khẩu SMTP"
 
 #: cps/templates/email_edit.html:58
 msgid "Attachment Size Limit"
-msgstr "Bijlage bestandsgrootte limiet"
+msgstr "Giới hạn kích thước file đính kèm"
 
 #: cps/templates/email_edit.html:66
 msgid "Save and Send Test E-mail"
-msgstr "Opslaan en test-e-mail versturen"
+msgstr "Lưu và gửi test E-mail"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:30
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
-msgstr "Annuleren"
+msgstr "Quay lại"
 
 #: cps/templates/email_edit.html:74
 msgid "Allowed Domains (Whitelist)"
-msgstr "Toegelaten domeinen voor registratie"
+msgstr "Domains được chấp nhận (Whitelist)"
 
 #: cps/templates/email_edit.html:78 cps/templates/email_edit.html:105
 msgid "Add Domain"
-msgstr "Domein toevoegen"
+msgstr "Thêm domain"
 
 #: cps/templates/email_edit.html:81 cps/templates/email_edit.html:108
 #: cps/templates/user_table.html:27
 msgid "Add"
-msgstr "Toevoegen"
+msgstr "Thêm"
 
 #: cps/templates/email_edit.html:86 cps/templates/email_edit.html:96
 msgid "Enter domainname"
-msgstr "Voer domeinnaam in"
+msgstr "Nhập tên domain"
 
 #: cps/templates/email_edit.html:92
 msgid "Denied Domains (Blacklist)"
-msgstr "Geweigerde domeinen voor registratie"
+msgstr "Domain bị từ chối (Blacklist)"
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:171
 msgid "Next"
-msgstr "Volgende"
+msgstr "Tiếp tục"
 
 #: cps/templates/generate_kobo_auth_url.html:6
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Open het .kobo/Kobo eReader.conf bestand in een teksteditor en voeg toe (of bewerk):"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
 msgid "Kobo Token:"
-msgstr "Kobo Sync Token"
+msgstr "Token đồng bộ Kobo"
 
 #: cps/templates/grid.html:21
 msgid "List"
 msgstr ""
 
 #: cps/templates/http_error.html:31
-#, fuzzy
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "E-mailserver is niet geconfigureerd, neem contact op met de beheerder!"
+msgstr ""
 
 #: cps/templates/http_error.html:41
 msgid "Create Issue"
-msgstr "Probleem melden"
+msgstr ""
 
 #: cps/templates/http_error.html:48
 msgid "Return to Home"
-msgstr "Terug naar startpagina"
+msgstr "Quay về trang chủ"
 
 #: cps/templates/http_error.html:50
 msgid "Logout User"
-msgstr "Gebruiker uitloggen"
+msgstr ""
 
 #: cps/templates/index.html:71
 msgid "Sort ascending according to download count"
@@ -2642,146 +2620,146 @@ msgstr ""
 #: cps/templates/index.html:78 cps/templates/search.html:35
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
-msgstr "Auteurs sorteren op alfabetische volgorde"
+msgstr ""
 
 #: cps/templates/index.html:79 cps/templates/search.html:36
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
-msgstr "Auteurs sorteren op omgekeerde alfabetische volgorde"
+msgstr ""
 
 #: cps/templates/index.html:83
 msgid "Sort ascending according to series index"
-msgstr "Sorteer oplopend volgens de serie index"
+msgstr ""
 
 #: cps/templates/index.html:84
 msgid "Sort descending according to series index"
-msgstr "Sorteer aflopend volgens de serie index"
+msgstr ""
 
 #: cps/templates/index.xml:6
 msgid "Start"
-msgstr "Starten"
+msgstr "Bắt đầu"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr "Alfabetische Boeken"
+msgstr ""
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr "Boeken Alfabetisch gesorteerd"
+msgstr ""
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
-msgstr "Populaire publicaties uit deze catalogus, gebaseerd op Downloads."
+msgstr ""
 
 #: cps/templates/index.xml:36
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Populaire publicaties uit deze catalogus, gebaseerd op Beoordeling."
+msgstr ""
 
 #: cps/templates/index.xml:39
 msgid "Recently added Books"
-msgstr "Recent toegevoegde boeken"
+msgstr "Sách mới được thêm gần đây"
 
 #: cps/templates/index.xml:43
 msgid "The latest Books"
-msgstr "Nieuwe boeken"
+msgstr "Sách mới nhất"
 
 #: cps/templates/index.xml:46
 msgid "Random Books"
-msgstr "Willekeurige boeken"
+msgstr "Sách ngẫu nhiên"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by Author"
-msgstr "Boeken gesorteerd op auteur"
+msgstr "Sách sắp xếp theo tác giả"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by publisher"
-msgstr "Boeken gesorteerd op uitgever"
+msgstr "Sách sắp xếp theo nhà phát hành"
 
 #: cps/templates/index.xml:87
 msgid "Books ordered by category"
-msgstr "Boeken gesorteerd op categorie"
+msgstr "Sách sắp xếp theo thể loại"
 
 #: cps/templates/index.xml:94
 msgid "Books ordered by series"
-msgstr "Boeken gesorteerd op reeks"
+msgstr "Sách sắp xếp theo series"
 
 #: cps/templates/index.xml:101
 msgid "Books ordered by Languages"
-msgstr "Boeken gesorteerd op taal"
+msgstr "Sách sắp xếp theo ngôn ngữ"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by Rating"
-msgstr "Boeken gesorteerd op beoordeling"
+msgstr "Sách sắp xếp theo xếp hạng"
 
 #: cps/templates/index.xml:116
 msgid "Books ordered by file formats"
-msgstr "Boeken gesorteerd op bestandsformaat"
+msgstr "Sách sắp xếp theo định dạng"
 
 #: cps/templates/index.xml:119 cps/templates/layout.html:136
 #: cps/templates/search_form.html:87
 msgid "Shelves"
-msgstr "Boekenplanken"
+msgstr "Giá sách"
 
 #: cps/templates/index.xml:123
 msgid "Books organized in shelves"
-msgstr "Boeken georganiseerd op boekenplanken"
+msgstr "Sách tổ chức theo giá sách"
 
 #: cps/templates/layout.html:30
 msgid "Home"
-msgstr "Startpagina"
+msgstr "Trang chủ"
 
 #: cps/templates/layout.html:36
 msgid "Toggle Navigation"
-msgstr "Navigatie aanpassen"
+msgstr ""
 
 #: cps/templates/layout.html:47
 msgid "Search Library"
-msgstr "Zoek in bibliotheek"
+msgstr "Tìm kiếm thư viện"
 
 #: cps/templates/layout.html:64 cps/templates/layout.html:118
 msgid "Uploading..."
-msgstr "Bezig met uploaden..."
+msgstr "Đang tải lên..."
 
 #: cps/templates/layout.html:64
 msgid "Error"
-msgstr "Fout"
+msgstr "Lỗi"
 
 #: cps/templates/layout.html:64
 msgid "Upload done, processing, please wait..."
-msgstr "Uploaden voltooid, bezig met verwerken..."
+msgstr "Tải lên xong, đang xử lý, đợi chút ..."
 
 #: cps/templates/layout.html:77 cps/templates/read.html:72
 #: cps/templates/readcbr.html:84 cps/templates/readcbr.html:108
 msgid "Settings"
-msgstr "Instellingen"
+msgstr "Thiết lập"
 
 #: cps/templates/layout.html:79
 msgid "Account"
-msgstr "Account"
+msgstr "Tài khoản"
 
 #: cps/templates/layout.html:81
 msgid "Logout"
-msgstr "Afmelden"
+msgstr "Đăng suất"
 
 #: cps/templates/layout.html:119
 msgid "Please do not refresh the page"
-msgstr "Deze pagina niet vernieuwen"
+msgstr "Làm ơn đừng load lại trang"
 
 #: cps/templates/layout.html:129
 msgid "Browse"
-msgstr "Verkennen"
+msgstr "Tìm kiếm"
 
 #: cps/templates/layout.html:142 cps/templates/stats.html:3
 msgid "About"
-msgstr "Informatie"
+msgstr "About"
 
 #: cps/templates/layout.html:156
 msgid "Previous"
-msgstr "Vorige"
+msgstr "Trước"
 
 #: cps/templates/layout.html:183
 msgid "Book Details"
-msgstr "Boekgegevens"
+msgstr "Chi tiết sách"
 
 #: cps/templates/list.html:22
 msgid "Grid"
@@ -2789,129 +2767,127 @@ msgstr ""
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
-msgstr "Gegevens opslaan"
+msgstr "Ghi nhớ tôi"
 
 #: cps/templates/login.html:23
 msgid "Forgot Password?"
-msgstr "Wachtwoord Vergeten?"
+msgstr "Quên mật khẩu?"
 
 #: cps/templates/login.html:26
 msgid "Log in with Magic Link"
-msgstr "Inloggen met magische koppeling"
+msgstr "Đăng nhập với Magic Link"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr "Toon Calibre-Web logbestand: "
+msgstr "Hiển thị Calibre-Web Log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
-msgstr "Calibre-Web Logbestand: "
+msgstr "Calibre-Web Log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr "Stream uitvoer, kan niet worden weergegeven"
+msgstr ""
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr "Toon toegangslog: "
+msgstr "Hiển thị log truy cập: "
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr "Download Calibre-Web log"
+msgstr "Tải xuống Calibre-Web Log"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
-msgstr "Download toegangslog"
+msgstr "Tải xuống log truy cập"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "Selecteer toegestane/geweigerde tags"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:7
 msgid "Select Allowed/Denied Custom Column Values"
-msgstr "Selecteer toegestane/geweigerde aangepaste kolom waarden"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "Selecteer toegestane/geweigerde tags van gebruikers"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Selecteer toegestane/geweigerde aangepaste kolom waarden van gebruikers"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
-msgstr "Voer Tag in"
+msgstr "Nhập Tag"
 
 #: cps/templates/modal_dialogs.html:24
 msgid "Add View Restriction"
-msgstr "Voeg inkijk restrictie toe"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:50
 msgid "This book format will be permanently erased from database"
-msgstr "Het boekformaat wordt permanent gewist uit de database"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
-msgstr "Het boek wordt verwijderd uit de Calibre-database"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:52
 msgid "and hard disk"
-msgstr "en van de harde schijf"
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Belangrijke Kobo Opmerking: Verwijderde boeken zullen op alle gekoppelde Kobo Apparaten blijven."
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Boeken moeten eerst worden gearchiveerd en het apparaat moet worden gesynchroniseerd, voordat een boek veilig kan worden verwijderd."
+msgstr ""
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr "Kies bestandslocatie"
+msgstr "Chọn file location"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
-msgstr "type"
+msgstr "kiểu"
 
 #: cps/templates/modal_dialogs.html:83
 msgid "name"
-msgstr "naam"
+msgstr "tên"
 
 #: cps/templates/modal_dialogs.html:84
 msgid "size"
-msgstr "grootte"
+msgstr "kích thước"
 
 #: cps/templates/modal_dialogs.html:90
 msgid "Parent Directory"
-msgstr "Bovenliggende map"
+msgstr "Thư mục cha"
 
 #: cps/templates/modal_dialogs.html:98
 msgid "Select"
-msgstr "Selecteer"
+msgstr "Chọn"
 
 #: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:45
-#, fuzzy
 msgid "Ok"
-msgstr "Oké"
+msgstr "Ok"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
-msgstr "Calibre-Web - e-boekcatalogus"
+msgstr ""
 
 #: cps/templates/read.html:6
-#, fuzzy
 msgid "epub Reader"
-msgstr "PDF lezer"
+msgstr "trình đọc epub"
 
 #: cps/templates/read.html:77 cps/templates/readcbr.html:116
 msgid "Light"
-msgstr "Licht"
+msgstr "Sáng"
 
 #: cps/templates/read.html:78 cps/templates/readcbr.html:117
 msgid "Dark"
-msgstr "Donker"
+msgstr "Tối"
 
 #: cps/templates/read.html:79
 msgid "Sepia"
@@ -2920,167 +2896,163 @@ msgstr ""
 #: cps/templates/read.html:80
 #, fuzzy
 msgid "Black"
-msgstr "Annuleren"
+msgstr "Quay lại"
 
 #: cps/templates/read.html:84
 msgid "Reflow text when sidebars are open."
-msgstr "Tekstindeling automatisch aanpassen als het zijpaneel geopend is."
+msgstr ""
 
 #: cps/templates/readcbr.html:7
-#, fuzzy
 msgid "Comic Reader"
-msgstr "Comic Reader"
+msgstr "Trình đọc truyện tranh"
 
 #: cps/templates/readcbr.html:89
 msgid "Keyboard Shortcuts"
-msgstr "Sneltoetsen"
+msgstr "Phím tắt"
 
 #: cps/templates/readcbr.html:92
 msgid "Previous Page"
-msgstr "Vorige pagina"
+msgstr "Trang trước"
 
 #: cps/templates/readcbr.html:93 cps/templates/readcbr.html:162
 msgid "Next Page"
-msgstr "Volgende pagina"
+msgstr "Trang tiếp theo"
 
 #: cps/templates/readcbr.html:94
 msgid "Scale to Best"
-msgstr "Optimaal inpassen"
+msgstr ""
 
 #: cps/templates/readcbr.html:95
 msgid "Scale to Width"
-msgstr "Aanpassen aan breedte"
+msgstr ""
 
 #: cps/templates/readcbr.html:96
 msgid "Scale to Height"
-msgstr "Aanpassen aan hoogte"
+msgstr ""
 
 #: cps/templates/readcbr.html:97
 msgid "Scale to Native"
-msgstr "Ware grootte"
+msgstr ""
 
 #: cps/templates/readcbr.html:98
 msgid "Rotate Right"
-msgstr "Rechtsom draaien"
+msgstr "Xoay phải"
 
 #: cps/templates/readcbr.html:99
 msgid "Rotate Left"
-msgstr "Linksom draaien"
+msgstr "Xoay trái"
 
 #: cps/templates/readcbr.html:100
 msgid "Flip Image"
-msgstr "Afbeelding omdraaien"
+msgstr "Lật ảnh"
 
 #: cps/templates/readcbr.html:122
 msgid "Scale"
-msgstr "Schaal"
+msgstr ""
 
 #: cps/templates/readcbr.html:125
 msgid "Best"
-msgstr "Beste"
+msgstr "Tốt nhất"
 
 #: cps/templates/readcbr.html:126
 msgid "Width"
-msgstr "Breedte"
+msgstr "Rộng"
 
 #: cps/templates/readcbr.html:127
 msgid "Height"
-msgstr "Hoogte"
+msgstr "Cao"
 
 #: cps/templates/readcbr.html:128
 msgid "Native"
-msgstr "Ware grootte"
+msgstr ""
 
 #: cps/templates/readcbr.html:133
 msgid "Rotate"
-msgstr "Draaien"
+msgstr "Xoay"
 
 #: cps/templates/readcbr.html:144
 msgid "Flip"
-msgstr "Omdraaien"
+msgstr "Lật"
 
 #: cps/templates/readcbr.html:147
 msgid "Horizontal"
-msgstr "Horizontaal"
+msgstr "Ngang"
 
 #: cps/templates/readcbr.html:148
 msgid "Vertical"
-msgstr "Verticaal"
+msgstr "Dọc"
 
 #: cps/templates/readcbr.html:153
 msgid "Direction"
-msgstr "Richting"
+msgstr "Hướng"
 
 #: cps/templates/readcbr.html:156
 msgid "Left to Right"
-msgstr "Links-naar-rechts"
+msgstr "Trái sang phải"
 
 #: cps/templates/readcbr.html:157
 msgid "Right to Left"
-msgstr "Rechts-naar-links"
+msgstr "Phải sang trái"
 
 #: cps/templates/readcbr.html:165
 msgid "Reset to Top"
-msgstr "Terugzetten naar bovenkant"
+msgstr "Quay lên trên"
 
 #: cps/templates/readcbr.html:166
 msgid "Remember Position"
-msgstr "Positie onthouden"
+msgstr "Ghi nhớ vị trí"
 
 #: cps/templates/readcbr.html:171
 msgid "Scrollbar"
-msgstr "Schuifbalk"
+msgstr "Thanh cuộn"
 
 #: cps/templates/readcbr.html:174
 msgid "Show"
-msgstr "Toon"
+msgstr "Hiện"
 
 #: cps/templates/readcbr.html:175
 msgid "Hide"
-msgstr "Verberg"
+msgstr "Ẩn"
 
 #: cps/templates/readdjvu.html:5
-#, fuzzy
 msgid "DJVU Reader"
-msgstr "PDF lezer"
+msgstr "Trình đọc DJVU"
 
 #: cps/templates/readpdf.html:29
-#, fuzzy
 msgid "PDF Reader"
-msgstr "PDF lezer"
+msgstr "Trình đọc PDF"
 
 #: cps/templates/readtxt.html:6
-#, fuzzy
 msgid "txt Reader"
-msgstr "PDF lezer"
+msgstr "trình đọc txt"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
-msgstr "Nieuw account registreren"
+msgstr "Đăng ký tải khoản mới"
 
 #: cps/templates/register.html:10
 msgid "Choose a username"
-msgstr "Kies een gebruikersnaam"
+msgstr "Chọn tên người dùng"
 
 #: cps/templates/register.html:15
 msgid "Your email address"
-msgstr "Je e-mailadres"
+msgstr "Địa chỉ email của bạn"
 
 #: cps/templates/remote_login.html:5
 msgid "Magic Link - Authorise New Device"
-msgstr "Magische link - autoriseer een nieuw apparaat"
+msgstr "Magic Link - Xác thực thiết bị mới"
 
 #: cps/templates/remote_login.html:7
 msgid "On another device, login and visit:"
-msgstr "Meld je aan op een ander apparaat en ga naar:"
+msgstr "Trên thiết bị khác, đăng nhập và thăm quan:"
 
 #: cps/templates/remote_login.html:11
 msgid "Once verified, you will automatically be logged in on this device."
-msgstr "Na controle wordt je automatisch op dit apparaat ingelogd."
+msgstr "Một khi xác nhận, bạn sẽ tự động đăng nhập trên thiết bị này."
 
 #: cps/templates/remote_login.html:14
 msgid "This verification link will expire in 10 minutes."
-msgstr "De link vervalt na 10 minuten."
+msgstr "Link xác nhận này sẽ hết hạn trong 10 phút."
 
 #: cps/templates/schedule_edit.html:29
 msgid "Generate Book Cover Thumbnails"
@@ -3092,124 +3064,123 @@ msgstr ""
 
 #: cps/templates/search.html:6
 msgid "No Results Found"
-msgstr "Geen resultaten gevonden"
+msgstr "Không tìm thấy kết quả"
 
 #: cps/templates/search.html:7
 msgid "Search Term:"
-msgstr "Zoekterm:"
+msgstr "Từ khoá tìm kiếm:"
 
 #: cps/templates/search.html:9
 msgid "Results for:"
-msgstr "Resultaten voor:"
+msgstr "Kết quả cho:"
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"
-msgstr "Publicatiedatum van"
+msgstr "Ngày phát hành từ"
 
 #: cps/templates/search_form.html:31
 msgid "Published Date To"
-msgstr "Publicatiedatum tot"
+msgstr "Ngày phát hành tới"
 
 #: cps/templates/search_form.html:59
 msgid "Exclude Tags"
-msgstr "Labels uitsluiten"
+msgstr ""
 
 #: cps/templates/search_form.html:77
 msgid "Exclude Series"
-msgstr "Boekenreeksen uitsluiten"
+msgstr ""
 
 #: cps/templates/search_form.html:95
-#, fuzzy
 msgid "Exclude Shelves"
-msgstr "Boekenreeksen uitsluiten"
+msgstr ""
 
 #: cps/templates/search_form.html:115
 msgid "Exclude Languages"
-msgstr "Talen uitsluiten"
+msgstr ""
 
 #: cps/templates/search_form.html:126
 msgid "Extensions"
-msgstr "Extenties"
+msgstr ""
 
 #: cps/templates/search_form.html:134
 msgid "Exclude Extensions"
-msgstr "Extenties uitsluiten"
+msgstr ""
 
 #: cps/templates/search_form.html:144
 msgid "Rating Above"
-msgstr "Met beoordeling hoger dan"
+msgstr "Đánh giá cao hơn"
 
 #: cps/templates/search_form.html:148
 msgid "Rating Below"
-msgstr "Met beoordeling lager dan"
+msgstr "Đánh giá thấp hơn"
 
 #: cps/templates/search_form.html:180
 msgid "From:"
-msgstr "Van:"
+msgstr "Từ:"
 
 #: cps/templates/search_form.html:190
 msgid "To:"
-msgstr "Tot:"
+msgstr "Tới:"
 
 #: cps/templates/shelf.html:13
 msgid "Delete this Shelf"
-msgstr "Deze boekenplank verwijderen"
+msgstr "Xoá giá sách này"
 
 #: cps/templates/shelf.html:14
 msgid "Edit Shelf Properties"
-msgstr "Bewerk boekenplank eigenschappen"
+msgstr "Chỉnh sửa thông tin giá sách"
 
 #: cps/templates/shelf.html:17
 msgid "Arrange books manually"
-msgstr "Boeken handmatig rangschikken"
+msgstr "Sắp xếp sách bằng tay"
 
 #: cps/templates/shelf.html:18
 msgid "Disable Change order"
-msgstr "Schakel verandering van de volgorde uit"
+msgstr "Khoá thay đổi thứ tự"
 
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
-msgstr "Schakel verandering van de volgorde in"
+msgstr "Mở thay đổi thứ tự"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"
-msgstr "Delen met iedereen"
+msgstr "Chia sửa với tất cả"
 
 #: cps/templates/shelf_edit.html:21
 msgid "Sync this shelf with Kobo device"
-msgstr "Synchroniseer deze boekenplank met een Kobo-apparaat"
+msgstr "Đồng bộ giá sách này với thiết bị Kobo"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
-msgstr "Pas de volgorde aan middels slepen-en-neerzetten"
+msgstr "Kéo để thay đổi lại thứ tự"
 
 #: cps/templates/shelf_order.html:33
 msgid "Hidden Book"
-msgstr "Verborgen boek"
+msgstr "Sách ẩn"
 
 #: cps/templates/stats.html:7
 msgid "Library Statistics"
-msgstr "Calibre bibliotheekstatistieken"
+msgstr "Thống kê thư viện"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
-msgstr "Boeken in deze bibliotheek"
+msgstr "Sách trong thư viện"
 
 #: cps/templates/stats.html:16
 msgid "Authors in this Library"
-msgstr "Auteurs in deze bibliotheek"
+msgstr "Các tác giả trong thư viện"
 
 #: cps/templates/stats.html:20
 msgid "Categories in this Library"
-msgstr "Categorieën in deze bibliotheek"
+msgstr "Các thể loại trong thư viện"
 
 #: cps/templates/stats.html:24
 msgid "Series in this Library"
-msgstr "Boekenreeksen in deze bibliotheek"
+msgstr "Các series trong thư viện"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr "Systeeminformatie"
+msgstr "Thống kê hệ thống"
 
 #: cps/templates/stats.html:33
 msgid "Program"
@@ -3217,35 +3188,36 @@ msgstr ""
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
-msgstr "Geïnstalleerde Versie"
+msgstr "Phiên bản đã cài đặt"
 
 #: cps/templates/tasks.html:12
 msgid "User"
-msgstr "Gebruiker"
+msgstr "Người dùng"
 
 #: cps/templates/tasks.html:14
 msgid "Task"
-msgstr "Taak"
+msgstr "Nhiệm vụ"
 
 #: cps/templates/tasks.html:15
 msgid "Status"
-msgstr "Status"
+msgstr "Trạng thái"
 
 #: cps/templates/tasks.html:16
 msgid "Progress"
-msgstr "Voortgang"
+msgstr "Tiến độ"
 
 #: cps/templates/tasks.html:17
 msgid "Run Time"
-msgstr "Looptijd"
+msgstr "Thời gian chạy"
 
 #: cps/templates/tasks.html:18
 msgid "Start Time"
-msgstr "Begintijd"
+msgstr "Thời gian bắt đầu"
 
 #: cps/templates/tasks.html:20
+#, fuzzy
 msgid "Actions"
-msgstr ""
+msgstr "Đánh giá"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
@@ -3257,142 +3229,139 @@ msgstr ""
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
-msgstr "Gebruikerswachtwoord herstellen"
+msgstr "Reset mật khẩu người dùng"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
-msgstr "Taal van boeken"
+msgstr "Ngôn ngữ của sách"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr "OAuth Instellingen"
+msgstr "Thiết lập OAuth"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
-msgstr "Koppelen"
+msgstr "Link"
 
 #: cps/templates/user_edit.html:58
 msgid "Unlink"
-msgstr "Ontkoppelen"
+msgstr "Unlink"
 
 #: cps/templates/user_edit.html:64
 msgid "Kobo Sync Token"
-msgstr "Kobo Sync Token"
+msgstr "Token đồng bộ Kobo"
 
 #: cps/templates/user_edit.html:66
 msgid "Create/View"
-msgstr "Aanmaken/Bekijken"
+msgstr "Tạo/xem"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr ""
+msgstr "Ép đồng bộ tất cả với Kobo"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
-msgstr "Voeg toegestane/geweigerde aangepaste kolomwaarden toe"
+msgstr ""
 
 #: cps/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr "Synchroniseer alleen boeken op geselecteerde boekenplanken met Kobo"
+msgstr "Đồng bộ sách trên những giá được chọn với Kobo"
 
 #: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
 msgid "Delete User"
-msgstr "Gebruiker verwijderen"
+msgstr "Xoá người dùng"
 
 #: cps/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
-msgstr "Genereer Kobo Auth URL"
+msgstr ""
 
 #: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
-msgstr "Selecteer..."
+msgstr "Chọn..."
 
 #: cps/templates/user_table.html:131
 msgid "Edit User"
-msgstr "Gebruiker Bewerken"
+msgstr "Chỉnh sửa người dùng"
 
 #: cps/templates/user_table.html:134
 msgid "Enter Username"
-msgstr "Voer gebruikersnaam in"
+msgstr "Nhập tên người dùng"
 
 #: cps/templates/user_table.html:135
 msgid "Enter E-mail Address"
-msgstr "Voer e-mailadres in"
+msgstr "Nhập địa chỉ E-mail"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
 msgid "Enter E-Reader E-mail Address"
-msgstr "Voer Kindle-e-mailadres in"
+msgstr "Nhập địa chỉ E-mail Kindle"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
 msgid "E-Reader E-mail"
-msgstr "Test-e-mail"
+msgstr "Test e-mail"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
-msgstr "Locale"
+msgstr "Ngôn ngữ"
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
-msgstr "Zichtbare Boek Talen"
+msgstr "Những ngôn ngữ hiển thị cho sách"
 
 #: cps/templates/user_table.html:139
 msgid "Edit Allowed Tags"
-msgstr "Toegestaande labels bewerken"
+msgstr "Chỉnh sửa những tags đươc cho phép"
 
 #: cps/templates/user_table.html:139
 msgid "Allowed Tags"
-msgstr "Toegestaande Labels"
+msgstr "Tags được cho phép"
 
 #: cps/templates/user_table.html:140
 msgid "Edit Denied Tags"
-msgstr "Verboden labels bewerken"
+msgstr "Chỉnh sửa những tags bị từ chối"
 
 #: cps/templates/user_table.html:140
 msgid "Denied Tags"
-msgstr "Verboden Labels"
+msgstr "Tags bị từ chối"
 
 #: cps/templates/user_table.html:141
 msgid "Edit Allowed Column Values"
-msgstr "Toegestane kolomwaarden bewerken"
+msgstr "Chỉnh sửa những giá trị cột được cho phép"
 
 #: cps/templates/user_table.html:141
 msgid "Allowed Column Values"
-msgstr "Toegestane kolomwaarden"
+msgstr "Giá trị cột được cho phép"
 
 #: cps/templates/user_table.html:142
-#, fuzzy
 msgid "Edit Denied Column Values"
-msgstr "Geweigerde kolomwaarden bewerken"
+msgstr "Chỉnh sửa những cột giá trị bị từ chối"
 
 #: cps/templates/user_table.html:142
-#, fuzzy
 msgid "Denied Column Values"
-msgstr "Geweigerde kolomwaarden"
+msgstr "Những cột giá trị bị từ chối"
 
 #: cps/templates/user_table.html:144
-#, fuzzy
 msgid "Change Password"
-msgstr "Wachtwoord wijzigen"
+msgstr "Đổi mật khẩu"
 
 #: cps/templates/user_table.html:147
 msgid "View"
-msgstr "Toon"
+msgstr "Xem"
 
 #: cps/templates/user_table.html:150
 msgid "Edit Public Shelves"
-msgstr "Openbare boekenplank bewerken"
+msgstr "Chỉnh sửa giá sách công khai"
 
 #: cps/templates/user_table.html:152
 msgid "Sync selected Shelves with Kobo"
-msgstr "Synchroniseer geselecteerde boekenplanken met Kobo"
+msgstr "Đồng bộ những giá sách đã chọn với Kobo"
 
 #: cps/templates/user_table.html:156
 msgid "Show read/unread selection"
-msgstr "Toon gelezen/niet gelezen selectie"
+msgstr "Hiển thị đã đọc và chưa đọc"
 
 #: cps/templates/user_table.html:159
 msgid "Show random books"
-msgstr "Willekeurige boeken tonen"
+msgstr "Hiển thị sách ngẫu nhiên"
 
