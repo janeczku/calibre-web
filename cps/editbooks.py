@@ -38,7 +38,7 @@ from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import current_user, login_required
-from sqlalchemy.exc import OperationalError, IntegrityError
+from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
@@ -223,7 +223,7 @@ def edit_book(book_id):
         calibre_db.session.rollback()
         flash(str(e), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
-    except (OperationalError, IntegrityError, StaleDataError) as e:
+    except (OperationalError, IntegrityError, StaleDataError, InterfaceError) as e:
         log.error_or_exception("Database error: {}".format(e))
         calibre_db.session.rollback()
         flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
