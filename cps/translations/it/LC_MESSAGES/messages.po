@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-10-02 11:42+0200\n"
+"POT-Creation-Date: 2022-10-02 21:12+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -38,9 +38,8 @@ msgid "Unknown command"
 msgstr "Comando sconosciuto"
 
 #: cps/admin.py:169
-#, fuzzy
 msgid "Books successfully queued for Metadata Backup"
-msgstr "Libro accodato con successo per essere spedito a %(kindlemail)s"
+msgstr "Libro accodato con successo per il backup dei metadati"
 
 #: cps/admin.py:202 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -171,13 +170,12 @@ msgid "Are you sure you want to change the selected role for the selected user(s
 msgstr "Sei sicuro di voler modificare il ruolo evidenziato del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:619
-#, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione del/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le restrizioni selezionate del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:621
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle restrizioni di visualizzazione del/degli utente/i selezionato/i?"
+msgstr "Sei sicuro di voler modificare le restrizioni di visualizzazione del/degli utente/i selezionato/i?"
 
 #: cps/admin.py:624
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
@@ -494,7 +492,7 @@ msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare l'utent
 
 #: cps/admin.py:1975 cps/web.py:1369
 msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
-msgstr ""
+msgstr "L'indirizzo e-mail non può essere vuoto e deve essere un recapito valido"
 
 #: cps/admin.py:2001
 #, python-format
@@ -512,7 +510,7 @@ msgstr "Mancano i permessi di esecuzione"
 #: cps/db.py:724 cps/search.py:137 cps/web.py:722
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
-msgstr "La colonna personale no.%(column)d non esiste nel database di Calibre"
+msgstr "La colonna personalizzata no.%(column)d non esiste nel database di Calibre"
 
 #: cps/db.py:967 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
@@ -599,7 +597,7 @@ msgstr "Il libro é stato eliminato con successo"
 
 #: cps/editbooks.py:880
 msgid "You are missing permissions to delete books"
-msgstr "Non disponi delle autorizzazioni per eliminare libri."
+msgstr "Non disponi delle autorizzazioni per eliminare libri"
 
 #: cps/editbooks.py:930
 msgid "edit metadata"
@@ -608,7 +606,7 @@ msgstr "modifica i metadati"
 #: cps/editbooks.py:979
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr "%(seriesindex)s non è un numero valido, proseguo"
+msgstr "%(seriesindex)s non è un numero valido, vado oltre"
 
 #: cps/editbooks.py:1157
 msgid "User has no rights to upload additional file formats"
@@ -797,13 +795,12 @@ msgid "Error executing UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
 #: cps/helper.py:1040
-#, fuzzy
 msgid "Cover"
-msgstr "Per scoprire"
+msgstr "Copertina"
 
 #: cps/helper.py:1042 cps/templates/admin.html:211
 msgid "Queue all books for metadata backup"
-msgstr ""
+msgstr "Metti in coda tutti i libri per il backup dei metadati"
 
 #: cps/kobo_auth.py:89
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
@@ -1434,9 +1431,8 @@ msgid "E-mail"
 msgstr "E-mail"
 
 #: cps/tasks/metadata_backup.py:47
-#, fuzzy
 msgid "Backing up Metadata"
-msgstr "modifica i metadati"
+msgstr "Backup dei metadati"
 
 #: cps/tasks/thumbnail.py:95
 #, python-format
@@ -1947,7 +1943,7 @@ msgstr "Rimuovi le selezioni"
 
 #: cps/templates/book_table.html:41
 msgid "Exchange author and title"
-msgstr "Scambia autore e titolo"
+msgstr "Inverti autore e titolo"
 
 #: cps/templates/book_table.html:47
 msgid "Update Title Sort automatically"
@@ -2300,7 +2296,7 @@ msgstr "LDAP Member User Filter Detection"
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
-msgstr "Autodetect - identifica automaticamente"
+msgstr "Autodetect"
 
 #: cps/templates/config_edit.html:281
 msgid "Custom Filter"
@@ -3285,7 +3281,7 @@ msgstr "Digita l'indirizzo e-mail"
 
 #: cps/templates/user_table.html:136
 msgid "Enter E-Reader E-mail Address"
-msgstr "Digita l'email del lettore elettronico"
+msgstr "Digita l'e-mail del lettore elettronico"
 
 #: cps/templates/user_table.html:136
 msgid "E-Reader E-mail"
