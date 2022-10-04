@@ -164,7 +164,6 @@ class TaskEmail(CalibreTask):
                 self.send_standard_email(msg)
             else:
                 self.send_gmail_email(msg)
-                self._handleSuccess()
         except MemoryError as e:
             log.error_or_exception(e, stacklevel=3)
             self._handleError(u'MemoryError sending e-mail: {}'.format(str(e)))
@@ -217,7 +216,8 @@ class TaskEmail(CalibreTask):
         log.debug("E-mail send successfully")
 
     def send_gmail_email(self, message):
-        return gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
+        gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
+        self._handleSuccess()
 
     @property
     def progress(self):
