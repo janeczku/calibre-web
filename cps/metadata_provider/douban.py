@@ -162,13 +162,17 @@ class Douban(Metadata):
                     match.authors.append(next.text)
                     next = next.getnext()
             elif self.PUBLISHER_PATTERN.search(text):
-                match.publisher = element.tail.strip()
+                next = element.getnext()
+                if next is not None and next.tag != "br":
+                    match.publisher = next.text.strip()
             elif self.SUBTITLE_PATTERN.search(text):
                 match.title = f'{match.title}:' + element.tail.strip()
             elif self.PUBLISHED_DATE_PATTERN.search(text):
                 match.publishedDate = self._clean_date(element.tail.strip())
-            elif self.SUBTITLE_PATTERN.search(text):
-                match.series = element.getnext().text
+            elif self.SERIES_PATTERN.search(text):
+                next = element.getnext()
+                if next is not None and next.tag != "br":
+                    match.series = next.text.strip()
             elif i_type := self.IDENTIFIERS_PATTERN.search(text):
                 match.identifiers[i_type.group()] = element.tail.strip()
 
