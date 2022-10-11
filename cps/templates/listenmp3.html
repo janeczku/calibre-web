@@ -114,6 +114,8 @@
 
 </div>
 
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
 <script>
 soundManager.setup({
   useHTML5Audio: true,
@@ -137,6 +139,7 @@ window.calibre = {
         bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
         bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
         useBookmarks: "{{ g.user.is_authenticated | tojson }}"
+
             };
 </script>
 </body>
