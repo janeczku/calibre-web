@@ -1497,7 +1497,7 @@ def read_book(book_id, book_format):
                         title = title + " #" + '{0:.2f}'.format(book.series_index).rstrip('0').rstrip('.')
                 log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=title,
-                                             extension=fileExt)
+                                             extension=fileExt, bookmark=bookmark)
         log.debug(u"Oops! Selected book title is unavailable. File does not exist or is not accessible")
         flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
               category="error")
