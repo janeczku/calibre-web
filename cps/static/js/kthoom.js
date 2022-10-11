@@ -70,8 +70,8 @@ var settings = {
     fitMode: kthoom.Key.B,
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
-	nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
-	scrollbar: 1 // 0 = Hide Scrollbar, 1 = Show Scrollbar
+    nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
+    scrollbar: 1 // 0 = Hide Scrollbar, 1 = Show Scrollbar
 };
 
 kthoom.saveSettings = function() {
@@ -130,7 +130,7 @@ var createURLFromArray = function(array, mimeType) {
     }
 
     if ((typeof URL !== "function" && typeof URL !== "object") ||
-      typeof URL.createObjectURL !== "function") {
+        typeof URL.createObjectURL !== "function") {
         throw "Browser support for Object URLs is missing";
     }
 
@@ -186,8 +186,7 @@ function initProgressClick() {
     });
 }
 
-function loadFromArrayBuffer(ab) {
-    var lastCompletion = 0;
+function loadFromArrayBuffer(ab, lastCompletion = 0) {
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
@@ -244,7 +243,7 @@ function updatePage() {
 
     // Mark the current page in the TOC
     $("#tocView a[data-page]")
-    // Remove the currently active thumbnail
+        // Remove the currently active thumbnail
         .removeClass("active")
         // Find the new one
         .filter("[data-page=" + (currentImage + 1) + "]")
@@ -261,7 +260,7 @@ function updatePage() {
     }
 
     $("body").toggleClass("dark-theme", settings.theme === "dark");
-	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+    $("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -335,7 +334,7 @@ function setImage(url) {
                 x.font = "50px sans-serif";
                 x.strokeStyle = "black";
                 x.fillText("Page #" + (currentImage + 1) + " (" +
-                  imageFiles[currentImage].filename + ")", innerWidth / 2, 100);
+                    imageFiles[currentImage].filename + ")", innerWidth / 2, 100);
                 x.fillStyle = "black";
                 x.fillText("Is corrupt or not an image", innerWidth / 2, 200);
 
@@ -418,9 +417,9 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     }
 }
 
@@ -431,9 +430,9 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     }
 }
 
@@ -551,7 +550,7 @@ function init(filename) {
     request.responseType = "arraybuffer";
     request.addEventListener("load", function() {
         if (request.status >= 200 && request.status < 300) {
-            loadFromArrayBuffer(request.response);
+            loadFromArrayBuffer(request.response, currentImage);
         } else {
             console.warn(request.statusText, request.responseText);
         }
@@ -609,9 +608,9 @@ function init(filename) {
     $("#thumbnails").on("click", "a", function() {
         currentImage = $(this).data("page") - 1;
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     });
 
     // Fullscreen mode
