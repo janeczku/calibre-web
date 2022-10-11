@@ -205,7 +205,10 @@
       useBookmarks: "{{ g.user.is_authenticated | tojson }}"
     };
     if (calibre.useBookmarks) {
-      currentImage = eval(calibre.bookmark)
+      currentImage = eval(calibre.bookmark);
+      if (typeof currentImage !== 'number'){
+        currentImage = 0;
+      }
     }
     
     document.onreadystatechange = function () {
