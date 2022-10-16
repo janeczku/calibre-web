@@ -13,6 +13,38 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+
+        <style>
+            .fontSizeWrapper {
+                position: relative;
+            }
+            .slider {
+                position: absolute;
+                top: 50%;
+                transform: translate(0,-50%);
+                width: 90%;
+                height: 60px;
+                background: transparent;
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                box-shadow: 0px 15px 40px #7E6D5766;
+            }
+            .slider label {
+                font-size: 20px;
+                font-weight: 400;
+                font-family: Open Sans;
+                padding-right: 10px;
+                color: white;
+            }
+            .slider input[type="range"] {
+                width: 80%;
+                height: 5px;
+                background: black;
+                border: none;
+                outline: none;
+            }
+        </style>
     </head>
     <body>
       <div id="sidebar">
@@ -84,6 +116,12 @@
                     <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
                   </p>
               </div>
+              <div class="fontSizeWrapper">
+                <div class="slider">
+                    <label for="fader">{{ _('Font Sizes') }}</label>
+                    <input type="range" min="75" max="200" value="100" id="fontSizeFader" step="25">
+                </div>
+              </div>
               <div class="closer icon-cancel-circled"></div>
           </div>
       </div>
@@ -128,7 +166,14 @@
             else if (id == "blackTheme") {
               document.getElementById("main").style.backgroundColor = "black";
             }
-          }
+
+        }
+
+        // font size settings logic
+        let fontSizeFader = document.getElementById('fontSizeFader');
+        fontSizeFader.addEventListener ("change", function () {
+            reader.rendition.themes.fontSize(`${this.value}%`)
+        });
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
