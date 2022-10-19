@@ -2572,7 +2572,7 @@ msgid "Next"
 msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:11
