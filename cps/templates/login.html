@@ -22,6 +22,14 @@
     {% if config.config_login_type == 0 and mail%}
     <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot Password?')}}</button>
     {% endif %}
+    {% if g.current_theme == 1 %}
+      {% if g.allow_registration %}
+      <a class="btn btn-default" id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a>
+      {% endif %}
+      {% if g.allow_anonymous %}
+      <a class="btn btn-default" href="{{url_for('web.index')}}">{{ _('Home') }}</a>
+      {% endif %}
+    {%endif%}
     {% if config.config_remote_login %}
     <a href="{{url_for('remotelogin.remote_login')}}" id="remote_login" class="pull-right">{{_('Log in with Magic Link')}}</a>
     {% endif %}

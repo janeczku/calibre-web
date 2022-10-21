@@ -4423,38 +4423,6 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
         left: 49px;
         margin-top: 5px
     }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after, body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        color: hsla(0, 0%, 100%, .7);
-        cursor: pointer;
-        display: block;
-        font-family: plex-icons-new, serif;
-        font-size: 20px;
-        font-stretch: 100%;
-        font-style: normal;
-        font-variant-caps: normal;
-        font-variant-east-asian: normal;
-        font-variant-numeric: normal;
-        font-weight: 400;
-        height: 60px;
-        letter-spacing: normal;
-        line-height: 60px;
-        position: absolute
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        content: "\EA30";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 20px
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after {
-        content: "\EA2F";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 60px
-    }
 }
 
 body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
