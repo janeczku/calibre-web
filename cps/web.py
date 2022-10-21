@@ -1194,22 +1194,19 @@ def download_link(book_id, book_format, anyname):
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
-        flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+        make_response(_(u"Please configure the SMTP mail settings first..."), 600)
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
                            current_user.name)
         if result is None:
-            flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
-                  category="success")
             ub.update_download(book_id, int(current_user.id))
+            return make_response(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail), 200)
         else:
-            flash(_(u"Oops! There was an error sending this book: %(res)s", res=result), category="error")
+            return make_response(_(u"Oops! There was an error sending this book: %(res)s", res=result), 600)    #600 -> error
     else:
-        flash(_(u"Please update your profile with a valid Send to Kindle E-mail Address."), category="error")
-    if "HTTP_REFERER" in request.environ:
-        return redirect(request.environ["HTTP_REFERER"])
-    else:
-        return redirect(url_for('web.index'))
+        return make_response(_(u"Please update your profile with a valid Send to Kindle E-mail Address."), 600)
+
+
 
 
 # ################################### Login Logout ##################################################################

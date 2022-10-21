@@ -39,8 +39,16 @@
           {% endif %}
             {% if g.user.kindle_mail and entry.email_share_list %}
               {% if entry.email_share_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to E-Reader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
+                  <div class="btn-group" role="group">
+                  <form method="post" id="sendbtn-form">
+                      <button id="sendbtn" class="btn btn-primary" type="submit">
+                    <span class="glyphicon glyphicon-send"></span>
+                  </button>
+                  </form>
+            </div>
+
               {% else %}
+                  <!--TODO-->
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-send"></span>{{_('Send to E-Reader')}}
@@ -322,4 +330,26 @@
 </script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
 <script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
+<script type="text/javascript">
+    $(document).on('submit','#sendbtn-form',function(e){
+      e.preventDefault();
+      $.ajax({
+        type:'POST',
+        url:'{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}',
+        data:{},
+        complete: function(xhr) {
+            let containter=document.createElement('div');
+            containter.classList.add("row-fluid","text-center")
+            let div=document.createElement('div')
+            div.innerHTML=xhr.responseText
+            div.classList.add("alert", xhr.status==200?"alert-success":"alert-danger")
+            div.setAttribute("id",xhr.status==200?"flash_success":"flash_danger")
+            containter.appendChild(div)
+            let insert=document.getElementById("loader")
+            insert.parentNode.insertBefore(containter,insert)
+        }
+      })
+    });
+  </script>
 {% endblock %}
+
