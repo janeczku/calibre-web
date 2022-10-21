@@ -3290,8 +3290,10 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
-    left: 0 !important;
     overflow-y: auto;
+}
+.dropdown-menu:not(.datepicker-dropdown):not(.profileDropli) {
+    left: 0 !important;
 }
 #add-to-shelves {
   max-height: calc(100% - 120px);
