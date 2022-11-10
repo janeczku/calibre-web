@@ -8,6 +8,9 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  {% if g.google_site_verification|length > 0 %}
+    <meta name="google-site-verification" content='{{g.google_site_verification}}' />
+  {% endif %}  
 
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
