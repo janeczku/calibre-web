@@ -23,6 +23,7 @@ import json
 from datetime import datetime
 from urllib.parse import quote
 import unidecode
+from pydantic import BaseModel
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
@@ -47,6 +48,7 @@ from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
+from .meilie_search import BookSearch
 
 from weakref import WeakSet
 
@@ -360,8 +362,9 @@ class Books(Base):
     publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
     identifiers = relationship(Identifiers, backref='books')
 
-    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
-                 authors, tags, languages=None):
+    def __init__(self, id, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
+                languages=None, **kwargs):
+        self.id = id
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -381,6 +384,10 @@ class Books(Base):
     def atom_timestamp(self):
         return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
 
+class PayloadBook(BaseModel):
+    Books: Books
+    class Config:
+        arbitrary_types_allowed = True
 
 class CustomColumns(Base):
     __tablename__ = 'custom_columns'
@@ -479,6 +486,7 @@ class CalibreDB:
         self.session = None
         if init:
             self.init_db(expire_on_commit)
+        self.book_search = BookSearch()
 
 
     def init_db(self, expire_on_commit=True):
@@ -928,20 +936,21 @@ class CalibreDB:
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()
+        result = self.book_search.search(term=term, config=config)
+        result = [PayloadBook(Books = Books(**i)) for i in result]
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
-            limit_all = offset + int(limit)
+            # limit_all = offset + int(limit)
             pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
         else:
             offset = 0
-            limit_all = result_count
+            # limit_all = result_count
 
-        ub.store_combo_ids(result)
-        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
+        # ub.store_combo_ids(result)
+        # entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
 
-        return entries, result_count, pagination
+        return result, result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
