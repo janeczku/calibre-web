@@ -44,10 +44,14 @@ def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
 
 def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     ns = {
-        'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
-        'pkg': 'http://www.idpf.org/2007/opf',
-        'dc': 'http://purl.org/dc/elements/1.1/'
-    }
+   "calibre":"http://calibre.kovidgoyal.net/2009/metadata",
+   "dc":"http://purl.org/dc/elements/1.1/",
+   "dcterms":"http://purl.org/dc/terms/",
+   "opf":"http://www.idpf.org/2007/opf",
+   "u":"urn:oasis:names:tc:opendocument:xmlns:container",
+   "xsi":"http://www.w3.org/2001/XMLSchema-instance",
+   "xhtml":"http://www.w3.org/1999/xhtml"
+}
 
     epub_zip = zipfile.ZipFile(tmp_file_path)
 
@@ -99,6 +103,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
     cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+    print("cover_file", cover_file)
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
@@ -164,7 +169,8 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
                     cover_file = _extract_cover(epub_zip, filename, "", tmp_file_path)
             else:
                 cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
-            if cover_file: break
+            if cover_file:
+                break
     return cover_file
 
 

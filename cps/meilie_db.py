@@ -1,6 +1,6 @@
 from . import logger
 from datetime import datetime
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Dict
 import meilisearch
 
 log = logger.create()
@@ -37,3 +37,9 @@ class BookSearch:
         for item in hits:
             item["last_modified"] = convert_sql_datetime_to_datetime(item["last_modified"])
         return hits
+
+    def insert_book(self, db_book: Dict):
+        self.index.add_documents([db_book])
+
+    def delete_book(self, book_id: str):
+        self.index.delete_document(book_id)

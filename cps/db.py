@@ -48,7 +48,7 @@ from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
-from .meilie_search import BookSearch
+from .meilie_db import BookSearch
 
 from weakref import WeakSet
 
@@ -362,9 +362,10 @@ class Books(Base):
     publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
     identifiers = relationship(Identifiers, backref='books')
 
-    def __init__(self, id, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
-                languages=None, **kwargs):
-        self.id = id
+    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
+                 authors=None, tags=None, languages=None, id=None, **kwargs):
+        if id:
+            self.id = id
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -1050,6 +1051,12 @@ def lcase(s):
         _log.error_or_exception(ex)
         return s.lower()
 
+def row2dict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+
+    return d
 
 class Category:
     name = None

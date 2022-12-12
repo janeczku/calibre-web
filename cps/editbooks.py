@@ -48,6 +48,7 @@ from .tasks.upload import TaskUpload
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
+from .meilie_db import BookSearch
 
 
 editbook = Blueprint('edit-book', __name__)
@@ -207,6 +208,8 @@ def edit_book(book_id):
 
         calibre_db.session.merge(book)
         calibre_db.session.commit()
+        book_meili = BookSearch()
+        book_meili.insert_book(db.row2dict(book))
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
         if meta is not False \
@@ -242,6 +245,7 @@ def upload():
     if not config.config_uploading:
         abort(404)
     if request.method == 'POST' and 'btn-upload' in request.files:
+        book_meili = BookSearch()
         for requested_file in request.files.getlist("btn-upload"):
             try:
                 modify_date = False
@@ -252,6 +256,7 @@ def upload():
                 meta, error = file_handling_on_upload(requested_file)
                 if error:
                     return error
+                print(meta)
 
                 db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modify_date, meta)
 
@@ -260,6 +265,9 @@ def upload():
 
                 book_id = db_book.id
                 title = db_book.title
+
+                book_dict = db.row2dict(db_book)
+                book_meili.insert_book(db_book=book_dict)
                 if config.config_use_google_drive:
                     helper.upload_new_file_gdrive(book_id,
                                                   input_authors[0],
@@ -806,6 +814,8 @@ def delete_whole_book(book_id, book):
             modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
                                    calibre_db.session, 'custom')
     calibre_db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+    book_meili = BookSearch()
+    book_meili.delete_book(book_id=book_id)
 
 
 def render_delete_book_result(book_format, json_response, warning, book_id):
