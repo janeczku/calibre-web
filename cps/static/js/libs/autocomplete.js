@@ -6,7 +6,7 @@ const client = new MeiliSearch({
 const index = client.index('books')
 
 async function search_product() {
-    
+
     let keySearch = document.getElementById("query").value;
     const search = await index.search(keySearch, {
         attributesToHighlight: ['title', 'author_sort'],
@@ -31,7 +31,11 @@ async function search_product() {
 
     });
     $("#query").autocomplete({
-        source: result
+        source: result,
+        appendTo: '#menu-container',
+        open: function () {
+            $("ul.ui-menu").width($(this).innerWidth());
+        }
     });
     // document.getElementById('query').value=result.join(" & ");
 };

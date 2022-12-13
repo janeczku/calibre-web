@@ -33,7 +33,7 @@
   </head>
   <body class="{{ page }} {{ bodyClass }}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
     <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top" role="navigation" style="z-index: 1">
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -46,12 +46,9 @@
         </div>
         {% if g.user.is_authenticated or g.allow_anonymous %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
-            <div class="form-group input-group input-group-sm">
+            <div class="form-group input-group input-group-sm" id="menu-container" style="width: 115%">
               <label for="query" class="sr-only">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}" oninput="search_product()">
-              <span class="input-group-btn">
-                <button type="submit" id="query_submit" class="btn btn-default">{{_('Search')}}</button>
-              </span>
             </div>
           </form>
         {% endif %}
