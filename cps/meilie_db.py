@@ -26,7 +26,7 @@ def convert_sql_datetime_to_datetime(text: str) -> Optional[datetime]:
 
 class BookSearch:
     def __init__(self) -> None:
-        self._client = meilisearch.Client("http://localhost:7700")
+        self._client = meilisearch.Client("http://localhost:7700", api_key="masterKey")
 
         self.index = self._client.index("books")
 

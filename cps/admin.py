@@ -106,6 +106,9 @@ def before_request():
         confirm_login()
     if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
         logout_user()
+    g.meili_host = os.environ["MEILI_HOST"]
+    g.api_key = os.environ["MEILI_KEY"]
+
     g.constants = constants
     g.user = current_user
     g.allow_registration = config.config_public_reg

@@ -154,7 +154,6 @@ def parse_xmp(pdf_file):
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
     xmp_info = None
-
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
             pdf_file = PdfFileReader(f)
@@ -162,7 +161,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
             try:
                 doc_info = pdf_file.getDocumentInfo()
             except Exception as exc:
-                log.debug('Can not read PDF DocumentInfo {}'.format(exc))
+                log.info('Can not read PDF DocumentInfo {}'.format(exc))
             xmp_info = parse_xmp(pdf_file)
 
     if xmp_info:
@@ -232,6 +231,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
         log.warning('Cannot extract cover image, using default: %s', ex)
         log.warning('On Windows this error could be caused by missing ghostscript')
         return None
+    
 
 
 def get_magick_version():

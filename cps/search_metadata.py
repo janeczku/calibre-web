@@ -57,9 +57,9 @@ for f in modules:
             importlib.import_module("cps.metadata_provider." + a)
             new_list.append(a)
         except (IndentationError, SyntaxError) as e:
-            log.error("Syntax error for metadata source: {} - {}".format(a, e))
+            log.error("Syntax error for metadata source: %s - %s", a, e)
         except ImportError as e:
-            log.debug("Import error for metadata source: {} - {}".format(a, e))
+            log.debug("Import error for metadata source: %s - %s", a, e)
 
 
 def list_classes(provider_list):

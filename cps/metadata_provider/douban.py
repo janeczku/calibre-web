@@ -71,9 +71,10 @@ class Douban(Metadata):
     ) -> Optional[List[MetaRecord]]:
         if self.active:
             log.debug(f"starting search {query} on douban")
-            if title_tokens := list(
+            title_tokens = list(
                 self.get_title_tokens(query, strip_joiners=False)
-            ):
+            )
+            if title_tokens:
                 query = "+".join(title_tokens)
 
             try:
@@ -156,6 +157,7 @@ class Douban(Metadata):
 
         for element in info:
             text = element.text
+            i_type = self.IDENTIFIERS_PATTERN.search(text)
             if self.AUTHORS_PATTERN.search(text):
                 next = element.getnext()
                 while next is not None and next.tag != "br":
@@ -169,7 +171,7 @@ class Douban(Metadata):
                 match.publishedDate = self._clean_date(element.tail.strip())
             elif self.SUBTITLE_PATTERN.search(text):
                 match.series = element.getnext().text
-            elif i_type := self.IDENTIFIERS_PATTERN.search(text):
+            elif i_type:
                 match.identifiers[i_type.group()] = element.tail.strip()
 
         return match

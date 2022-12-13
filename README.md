@@ -49,7 +49,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 In the Wiki there are also examples for: a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [installation on Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [installation on a Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
 
 ## Quick start
-
+Install `freetype imagemagick` in your os
 Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog \
 Login with default admin login \
 Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button \
