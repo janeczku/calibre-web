@@ -417,26 +417,6 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
   overflow-y: auto;
 }
 
-.ui-tooltip {
-  background: red;
-  color: #96f226;
-  border: 2px solid #454545;
-  border-radius: 0px;
-  box-shadow: 0 0 
-}
-.ui-autocomplete {
-  background: red;
-  border-radius: 0px;
-}
-.ui-autocomplete.source:hover {
-  background: #454545;
-}
-.ui-menu .ui-menu-item a{
-  background:red;
-  height:10px;
-  font-size:8px;
-}
-
 div.log {
   font-family: Courier New, serif;
   font-size: 12px;

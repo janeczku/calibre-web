@@ -256,7 +256,6 @@ def upload():
                 meta, error = file_handling_on_upload(requested_file)
                 if error:
                     return error
-                print(meta)
 
                 db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modify_date, meta)
 

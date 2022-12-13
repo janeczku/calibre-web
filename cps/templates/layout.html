@@ -48,7 +48,7 @@
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
-              <input type="text" class="form-control" style="position:relative" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}" oninput="search_product()">
+              <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}" oninput="search_product()">
               <span class="input-group-btn">
                 <button type="submit" id="query_submit" class="btn btn-default">{{_('Search')}}</button>
               </span>
