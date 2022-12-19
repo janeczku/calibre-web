@@ -41,6 +41,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import constants, logger, isoLanguages, services
 from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
+from .admin import ldap_import_create_user
 from .search import render_search_results, render_adv_search_results
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
@@ -1280,15 +1281,24 @@ def login():
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form['username'].strip().lower()) \
             .first()
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and (user or config.config_ldap_autocreate_user) and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
-                login_user(user, remember=bool(form.get('remember_me')))
-                ub.store_user_session()
-                log.debug(u"You are now logged in as: '{}'".format(user.name))
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
-                      category="success")
-                return redirect_back(url_for("web.index"))
+                if config.config_ldap_autocreate_user and not user:
+                    user_data = services.ldap.get_object_details(user=form['username'], query_filter=config.config_ldap_user_object)
+                    user_count, message = ldap_import_create_user(user, user_data)
+                    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form['username'].strip().lower()).first()
+
+                if user:
+                    login_user(user, remember=bool(form.get('remember_me')))
+                    ub.store_user_session()
+                    log.debug(u"You are now logged in as: '{}'".format(user.name))
+                    flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
+                    return redirect_back(url_for("web.index"))
+                else:
+                    log.info("Login failed for user '{}'".format(user.name))
+                    log.debug("LDAP login succeeded but auto-create user has been disabled")
+                    flash(_(u"Wrong Username or Password"), category="error")
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                     and user.name != "Guest":
                 login_user(user, remember=bool(form.get('remember_me')))

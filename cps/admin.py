@@ -1177,6 +1177,7 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
+    _config_checkbox(to_save, "config_ldap_autocreate_user")
     if to_save.get("config_ldap_serv_password", "") != "":
         reboot_required |= 1
         config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
