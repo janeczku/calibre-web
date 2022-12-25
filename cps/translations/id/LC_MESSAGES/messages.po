@@ -1,17 +1,18 @@
-# Traduzione in italiano per Calibre-Web.
-# Copyright (C) 2016 Smart Cities Community
+# Indonesian translations for Calibre-Web.
+# Copyright (C) 2017 Calibre-Web
 # This file is distributed under the same license as the Calibre-Web
-# Juan F. Villa <juan.villa@paisdelconocimiento.org>, 2016.
+# project.
+# FIRST AUTHOR Arief Hidayat<arihid95@gmail.com>, 2021-2022.
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2022-12-25 13:21+0100\n"
-"PO-Revision-Date: 2020-06-09 21:11+0100\n"
-"Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
-"Language: cs_CZ\n"
-"Language-Team: \n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+"PO-Revision-Date: 2022-11-21 18:25+0700\n"
+"Last-Translator: Arief Hidayat<arihid95@gmail.com>\n"
+"Language: id\n"
+"Language-Team: Arief Hidayat <arihid95@gmail.com>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,277 +20,271 @@ msgstr ""
 
 #: cps/about.py:84
 msgid "Statistics"
-msgstr "Statistika"
+msgstr "Statistik"
 
 #: cps/admin.py:148
 msgid "Server restarted, please reload page"
-msgstr "Server restartován, znovu načtěte stránku"
+msgstr "Server dimulai ulang, harap muat ulang halaman"
 
 #: cps/admin.py:150
 msgid "Performing shutdown of server, please close window"
-msgstr "Vypínám server, zavřete okno"
+msgstr "Mematikan server, silakan tutup jendela"
 
 #: cps/admin.py:158
 msgid "Reconnect successful"
-msgstr "Úspěšně obnovené připojení"
+msgstr "Berhasil menghubungkan ulang"
 
 #: cps/admin.py:161
 msgid "Unknown command"
-msgstr "Neznámý příkaz"
+msgstr "Perintah tidak diketahui"
 
 #: cps/admin.py:172
 #, fuzzy
 msgid "Books successfully queued for Metadata Backup"
-msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemail)s"
+msgstr "Buku berhasil diantrekan untuk Pencadangan Metadata"
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
 #: cps/updater.py:613 cps/uploader.py:86 cps/uploader.py:96
 msgid "Unknown"
-msgstr "Neznámý"
+msgstr "Tidak diketahui"
 
 #: cps/admin.py:230
 msgid "Admin page"
-msgstr "Stránka správce"
+msgstr "Halaman Admin"
 
 #: cps/admin.py:250
 msgid "Basic Configuration"
-msgstr "Základní konfigurace"
+msgstr "Konfigurasi Dasar"
 
 #: cps/admin.py:288
 msgid "UI Configuration"
-msgstr "Konfigurace uživatelského rozhraní"
+msgstr "Pengaturan UI"
 
 #: cps/admin.py:322 cps/templates/admin.html:51
-#, fuzzy
 msgid "Edit Users"
-msgstr "Uživatel admin"
+msgstr "Edit pengguna"
 
 #: cps/admin.py:366 cps/opds.py:532 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
-msgstr "Vše"
+msgstr "semua"
 
 #: cps/admin.py:393 cps/admin.py:1397
 msgid "User not found"
-msgstr "Uživatel nenalezen"
+msgstr "Pengguna tidak ditemukan"
 
 #: cps/admin.py:407
 msgid "{} users deleted successfully"
-msgstr ""
+msgstr "{} pengguna berhasil dihapus"
 
 #: cps/admin.py:430 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
-msgstr "Zobrazit vše"
+msgstr "Tampilkan semua"
 
 #: cps/admin.py:451 cps/admin.py:457
 msgid "Malformed request"
-msgstr ""
+msgstr "Permintaan salah"
 
 #: cps/admin.py:469 cps/admin.py:1998
 msgid "Guest Name can't be changed"
-msgstr ""
+msgstr "Nama Tamu tidak dapat diganti"
 
 #: cps/admin.py:481
 msgid "Guest can't have this role"
-msgstr ""
+msgstr "Tamu tidak dapat memiliki peran ini"
 
 #: cps/admin.py:493 cps/admin.py:1953
 msgid "No admin user remaining, can't remove admin role"
-msgstr "Nezbývá žádný správce, nelze odebrat roli správce"
+msgstr "Tidak ada pengguna admin yang tersisa, tidak dapat menghapus peran admin"
 
 #: cps/admin.py:497 cps/admin.py:511
 msgid "Value has to be true or false"
-msgstr ""
+msgstr "Nilai harus benar atau salah"
 
 #: cps/admin.py:499
 msgid "Invalid role"
-msgstr ""
+msgstr "Peran tidak valid"
 
 #: cps/admin.py:503
 msgid "Guest can't have this view"
-msgstr ""
+msgstr " Tamu tidak dapat mengakses tampilan ini"
 
 #: cps/admin.py:513
 msgid "Invalid view"
-msgstr ""
+msgstr " Tampilan tidak valid"
 
 #: cps/admin.py:516
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr ""
+msgstr "Lokal Tamu ditentukan secara otomatis dan tidak dapat disetel"
 
 #: cps/admin.py:520
 msgid "No Valid Locale Given"
-msgstr ""
+msgstr "Tidak Ada Lokal yang Valid Diberikan"
 
 #: cps/admin.py:531
 msgid "No Valid Book Language Given"
-msgstr ""
+msgstr "Tidak Ada Bahasa Buku yang Valid Diberikan"
 
 #: cps/admin.py:533 cps/editbooks.py:442
 msgid "Parameter not found"
-msgstr ""
+msgstr "Parameter tidak ditemukan"
 
 #: cps/admin.py:570
 msgid "Invalid Read Column"
-msgstr ""
+msgstr "Kolom Baca Tidak Valid"
 
 #: cps/admin.py:576
 msgid "Invalid Restricted Column"
-msgstr ""
+msgstr "Kolom Dibatasi Tidak Valid"
 
 #: cps/admin.py:596 cps/admin.py:1824
 msgid "Calibre-Web configuration updated"
-msgstr "Konfigurace Calibre-Web aktualizována"
+msgstr "Konfigurasi Calibre-Web telah diperbarui"
 
 #: cps/admin.py:608
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "Opravdu chcete odstranit Kobo token?"
+msgstr "Apakah Anda yakin ingin menghapus Token Kobo?"
 
 #: cps/admin.py:610
 msgid "Do you really want to delete this domain?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin menghapus domain ini?"
 
 #: cps/admin.py:612
 msgid "Do you really want to delete this user?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin menghapus pengguna ini?"
 
 #: cps/admin.py:614
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Jste si jisti, že chcete odstranit tuto polici?"
+msgstr "Apakah Anda yakin ingin menghapus rak ini?"
 
 #: cps/admin.py:616
-#, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Jste si jisti, že chcete odstranit tuto polici?"
+msgstr "Apakah Anda yakin ingin merubah lokalisasi untuk pengguna yang dipilih?"
 
 #: cps/admin.py:618
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin merubah bahasa buku yang terlihat untuk pengguna yang dipilih?"
 
 #: cps/admin.py:620
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin merubah peran untuk pengguna yang dipilih?"
 
 #: cps/admin.py:622
-#, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Jste si jisti, že chcete odstranit tuto polici?"
+msgstr "Apakah Anda yakin ingin mengubah batasan yang dipilih untuk pengguna yang dipilih?"
 
 #: cps/admin.py:624
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin merubah batasan visibilitas untuk pengguna yang dipilih?"
 
 #: cps/admin.py:627
-#, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Jste si jisti, že chcete odstranit tuto polici?"
+msgstr "Apakah Anda yakin ingin mengubah perilaku sinkronisasi rak untuk pengguna yang dipilih?"
 
 #: cps/admin.py:629
-#, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "Opravdu chcete vypnout?"
+msgstr "Apakah Anda yakin ingin mengubah lokasi perpustakaan Calibre?"
 
 #: cps/admin.py:631
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
-msgstr ""
+msgstr "Calibre-Web akan mencari Sampul yang diperbarui dan memperbarui Thumbnail Sampul, ini mungkin memakan waktu cukup lama?"
 
 #: cps/admin.py:634
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
-msgstr ""
+msgstr "Apakah Anda yakin ingin menghapus database sinkronisasi Calibre-Web untuk memaksakan sinkronisasi penuh dengan Kobo Reader Anda?"
 
 #: cps/admin.py:877 cps/admin.py:883 cps/admin.py:893 cps/admin.py:903
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
-msgstr "Zakázat"
+msgstr "Tolak"
 
 #: cps/admin.py:879 cps/admin.py:885 cps/admin.py:895 cps/admin.py:905
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
-msgstr "Povolit"
+msgstr "Izinkan"
 
 #: cps/admin.py:920
 msgid "{} sync entries deleted"
-msgstr ""
+msgstr "{} entri sinkronisasi dihapus"
 
 #: cps/admin.py:968
 msgid "Tag not found"
-msgstr ""
+msgstr "Tag tidak ditemukan"
 
 #: cps/admin.py:980
 msgid "Invalid Action"
-msgstr ""
+msgstr "Tindakan Tidak Valid"
 
 #: cps/admin.py:1109
 msgid "client_secrets.json Is Not Configured For Web Application"
-msgstr "client_secrets.json není nakonfigurováno pro webové aplikace"
+msgstr "client_secrets.json Tidak Dikonfigurasikan Untuk Aplikasi Web"
 
 #: cps/admin.py:1154
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění zápisového souboru není platné. Určete prosím platnou polohu"
+msgstr "Lokasi Logfile tidak Valid, Harap Masukkan Jalur yang Benar"
 
 #: cps/admin.py:1160
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění zápisového souboru pro přístup není platné. Určete prosím platnou polohu"
+msgstr "Akses Logfile Catatan tidak Valid, Harap Masukkan Jalur yang Benar"
 
 #: cps/admin.py:1190
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "Prosím zadejte LDAP poskytovatele, port, DN a Identifikátor objektu uživatele"
+msgstr "Harap Masukkan Provider LDAP, Port, DN dan User Obect Identifier"
 
 #: cps/admin.py:1196
-#, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "Zadejte platné uživatelské jméno pro obnovení hesla"
+msgstr "Masukkan Akun Layanan LDAP dan Kata Sandi"
 
 #: cps/admin.py:1199
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
+msgstr "Masukkan Akun Layanan LDAP"
 
 #: cps/admin.py:1204
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr "Filtr objektů skupiny LDAP musí mít jeden “%s” formátový identifikátor"
+msgstr "Filter Objek Grup LDAP Harus Memiliki Satu Pengidentifikasi Format \"%s\""
 
 #: cps/admin.py:1206
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "Filtr objektů skupiny LDAP má nesrovnatelnou závorku"
+msgstr "Filter Objek Grup LDAP Memiliki Tanda kurung yang Tak Berpasangan"
 
 #: cps/admin.py:1210
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "Filtr uživatelských objektů LDAP musí mít jeden “%s” formátový identifikátor"
+msgstr "Filter Objek Pengguna LDAP harus Memiliki Satu Pengidentifikasi Format \"%s\""
 
 #: cps/admin.py:1212
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr "Filtr uživatelských objektů LDAP má nesrovnatelnou závorku"
+msgstr "Filter Objek Pengguna LDAP Memiliki Tanda kurung yang Tak Berpasangan"
 
 #: cps/admin.py:1219
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "Filter Pengguna Anggota LDAP harus Memiliki Satu Pengenal Format \"%s\""
 
 #: cps/admin.py:1221
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "Filter Pengguna Anggota LDAP Memiliki Tanda Kurung yang Tak Berpasangan"
 
 #: cps/admin.py:1228
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokasi LDAP Sertifikat CA, Sertifikat, atau Kunci tidak Valid, Harap Masukkan Jalur yang Benar "
 
 #: cps/admin.py:1259 cps/admin.py:1885
 msgid "Add new user"
-msgstr "Přidat nového uživatele"
+msgstr "Tambahkan pengguna baru"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
 msgid "Edit E-mail Server Settings"
-msgstr "Změnit SMTP nastavení"
+msgstr "Edit Pengaturan Server Email"
 
 #: cps/admin.py:1287
 msgid "Gmail Account Verification Successful"
-msgstr ""
+msgstr "Verifikasi Akun Gmail Berhasil"
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
@@ -298,1296 +293,1284 @@ msgstr ""
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
 msgid "Database error: %(error)s."
-msgstr "Chyba databáze: %(error)s."
+msgstr "Kesalahan basis data: %(error)s"
 
 #: cps/admin.py:1316
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr ""
+msgstr "Uji email diantrean untuk dikirim ke %(email), harap periksa Tasks untuk hasilnya"
 
 #: cps/admin.py:1319
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
-msgstr "Při odesílání zkušebního e-mailu došlo k chybě: %(res)s"
+msgstr "Terjadi kesalahan saat mengirim email tes: %(res)s"
 
 #: cps/admin.py:1321
 msgid "Please configure your e-mail address first..."
-msgstr "Prvně nastavte svou e-mailovou adresu..."
+msgstr "Harap konfigurasikan alamat email Anda terlebih dahulu.."
 
 #: cps/admin.py:1323
 msgid "E-mail server settings updated"
-msgstr "Nastavení e-mailového serveru aktualizováno"
+msgstr "Setelan server email diperbarui"
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
 msgid "Edit Scheduled Tasks Settings"
-msgstr ""
+msgstr "Edit Pengaturan Tugas Terjadwal"
 
 #: cps/admin.py:1358
 msgid "Invalid start time for task specified"
-msgstr ""
+msgstr "Waktu mulai tidak valid untuk tugas yang ditentukan"
 
 #: cps/admin.py:1363
 msgid "Invalid duration for task specified"
-msgstr ""
+msgstr "Durasi tidak valid untuk tugas yang ditentukan"
 
 #: cps/admin.py:1372
 msgid "Scheduled tasks settings updated"
-msgstr ""
+msgstr "Pengaturan tugas terjadwal diperbarui"
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
 msgid "An unknown error occurred. Please try again later."
-msgstr "Neznámá chyba. Opakujte prosím později."
+msgstr "Terjadi kesalahan yang tidak diketahui. Coba lagi nanti."
 
 #: cps/admin.py:1386
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "Pengaturan DB tidak dapat ditulisi"
 
 #: cps/admin.py:1416 cps/admin.py:2014
 #, python-format
 msgid "Edit User %(nick)s"
-msgstr "Upravit uživatele %(nick)s"
+msgstr "Edit pengguna %(nick)s"
 
 #: cps/admin.py:1428
 #, python-format
 msgid "Password for user %(user)s reset"
-msgstr "Heslo pro uživatele %(user)s resetováno"
+msgstr "Kata sandi untuk pengaturan ulang pengguna %(user) "
 
 #: cps/admin.py:1434 cps/web.py:1198
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Nejprve nakonfigurujte nastavení pošty SMTP..."
+msgstr "Harap konfigurasikan pengaturan email SMTP terlebih dahulu..."
 
 #: cps/admin.py:1445
 msgid "Logfile viewer"
-msgstr "Prohlížeč log souborů"
+msgstr "Penampil berkas log"
 
 #: cps/admin.py:1511
 msgid "Requesting update package"
-msgstr "Požadování balíčku aktualizace"
+msgstr "Meminta paket pembaruan"
 
 #: cps/admin.py:1512
 msgid "Downloading update package"
-msgstr "Stahování balíčku aktualizace"
+msgstr "Mengunduh paket pembaruan"
 
 #: cps/admin.py:1513
 msgid "Unzipping update package"
-msgstr "Rozbalování balíčku aktualizace"
+msgstr "Meng-unzip paket pembaruan"
 
 #: cps/admin.py:1514
 msgid "Replacing files"
-msgstr "Nahrazování souborů"
+msgstr "Mengganti berkas"
 
 #: cps/admin.py:1515
 msgid "Database connections are closed"
-msgstr "Databázová připojení jsou uzavřena"
+msgstr "Koneksi basis data ditutup"
 
 #: cps/admin.py:1516
 msgid "Stopping server"
-msgstr "Zastavuji server"
+msgstr "Menghentikan server"
 
 #: cps/admin.py:1517
 msgid "Update finished, please press okay and reload page"
-msgstr "Aktualizace dokončena, klepněte na tlačítko OK a znovu načtěte stránku"
+msgstr "Pembaruan selesai, silakan tekan OK dan muat ulang halaman"
 
 #: cps/admin.py:1518 cps/admin.py:1519 cps/admin.py:1520 cps/admin.py:1521
 #: cps/admin.py:1522 cps/admin.py:1523
 msgid "Update failed:"
-msgstr "Aktualizace selhala:"
+msgstr "Pembaruan gagal:"
 
 #: cps/admin.py:1518 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
-msgstr "HTTP chyba"
+msgstr "Kesalahan HTTP"
 
 #: cps/admin.py:1519 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
-msgstr "Chyba připojení"
+msgstr "Kesalahan koneksi"
 
 #: cps/admin.py:1520 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
-msgstr "Vypršel časový limit při navazování spojení"
+msgstr "Batas waktu saat membuat koneksi"
 
 #: cps/admin.py:1521 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
-msgstr "Všeobecná chyba"
+msgstr "Kesalahan umum"
 
 #: cps/admin.py:1522
-#, fuzzy
 msgid "Update file could not be saved in temp dir"
-msgstr "Aktualizační soubor nemohl být uložen do Temp Dir"
+msgstr "Berkas pembaruan tidak dapat disimpan di direktori temp"
 
 #: cps/admin.py:1523
 msgid "Files could not be replaced during update"
-msgstr ""
+msgstr "Berkas tidak dapat diganti selama pembaruan"
 
 #: cps/admin.py:1547
-#, fuzzy
 msgid "Failed to extract at least One LDAP User"
-msgstr "Nepodařilo se vytvořit nejméně jednoho uživatele LDAP"
+msgstr "Gagal mengekstrak setidaknya Satu Pengguna LDAP"
 
 #: cps/admin.py:1592
 msgid "Failed to Create at Least One LDAP User"
-msgstr "Nepodařilo se vytvořit nejméně jednoho uživatele LDAP"
+msgstr "Gagal Membuat Sedikitnya Satu Pengguna LDAP"
 
 #: cps/admin.py:1605
 #, python-format
 msgid "Error: %(ldaperror)s"
-msgstr "Chyba: %(ldaperror)s"
+msgstr "Kesalahan: %(ldaperror)s"
 
 #: cps/admin.py:1609
 msgid "Error: No user returned in response of LDAP server"
-msgstr "Chyba: Žádná reakce od uživatele LDAP serveru"
+msgstr "Error: Tidak ada pengguna yang dikembalikan sebagai respons dari server LDAP"
 
 #: cps/admin.py:1642
 msgid "At Least One LDAP User Not Found in Database"
-msgstr "Nejméně jeden uživatel LDAP nenalezen v databázi"
+msgstr "Setidaknya Satu Pengguna LDAP Tidak Ditemukan di Basis Data"
 
 #: cps/admin.py:1644
 msgid "{} User Successfully Imported"
-msgstr ""
+msgstr "{} Pengguna Berhasil Diimpor"
 
 #: cps/admin.py:1702
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění databáze není platné, opravte prosím cestu"
+msgstr "Lokasi Basis Data tidak Valid, Harap Masukkan Jalur yang Benar"
 
 #: cps/admin.py:1722
 msgid "DB is not Writeable"
-msgstr "Databáze není zapisovatelná"
+msgstr "Basis Data tidak dapat ditulisi"
 
 #: cps/admin.py:1735
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění souboru klíčů není platné, zadejte prosím správnou cestu"
+msgstr "Lokasi keyfile tidak Valid, Harap Masukkan Jalur yang Benar "
 
 #: cps/admin.py:1739
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění certifikátu není platné, zadejte prosím správnou cestu"
+msgstr "Lokasi Sertifikat tidak Valid, Harap Masukkan Jalur yang Benar "
 
 #: cps/admin.py:1847
-#, fuzzy
 msgid "Database Settings updated"
-msgstr "Nastavení e-mailového serveru aktualizováno"
+msgstr "Pengaturan Basis Data diperbarui"
 
 #: cps/admin.py:1855
-#, fuzzy
 msgid "Database Configuration"
-msgstr "Konfigurace funkcí"
+msgstr "Konfigurasi Basis Data"
 
 #: cps/admin.py:1871 cps/web.py:1233
 msgid "Please fill out all fields!"
-msgstr "Vyplňte všechna pole!"
+msgstr "Harap masukkan seluruh isian!"
 
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
-msgstr "E-mail není z platné domény"
+msgstr "Email bukan dari domain yang valid"
 
 #: cps/admin.py:1896
 #, python-format
 msgid "User '%(user)s' created"
-msgstr "Uživatel '%(user)s' vytvořen"
+msgstr "Pengguna '%(user)s' telah dibuat"
 
 #: cps/admin.py:1902
-#, fuzzy
 msgid "Found an existing account for this e-mail address or name."
-msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu nebo přezdívku."
+msgstr "Ditemukan akun yang ada untuk alamat email atau nama ini."
 
 #: cps/admin.py:1932
 #, python-format
 msgid "User '%(nick)s' deleted"
-msgstr "Uživatel '%(nick)s' smazán"
+msgstr "Pengguna '%(nick)s' telah dihapus"
 
 #: cps/admin.py:1934 cps/admin.py:1935
 msgid "Can't delete Guest User"
-msgstr ""
+msgstr "Tidak dapat menghapus Pengguna Tamu"
 
 #: cps/admin.py:1938
 msgid "No admin user remaining, can't delete user"
-msgstr "Nezbývá žádný správce, nemůžete jej odstranit"
+msgstr "Tidak ada pengguna admin tersisa, tidak dapat menghapus pengguna"
 
 #: cps/admin.py:1992 cps/web.py:1371
 msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
-msgstr ""
+msgstr "Alamat email tidak boleh kosong dan harus berupa email yang valid"
 
 #: cps/admin.py:2018
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "Uživatel '%(nick)s' aktualizován"
+msgstr "Pengguna '%(nick)s' diperbarui"
 
 #: cps/converter.py:31
 msgid "not installed"
-msgstr "není nainstalováno"
+msgstr "belum dipasang"
 
 #: cps/converter.py:32
 msgid "Execution permissions missing"
-msgstr "Chybí povolení k exekuci"
+msgstr "Izin eksekusi hilang"
 
 #: cps/db.py:728 cps/search.py:137 cps/web.py:723
-#, fuzzy, python-format
+#, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
-msgstr "Vlastní sloupec %(column)d neexistuje v databázi"
+msgstr "Kolom Kustom No.%(column)d tidak ada di basis data kaliber"
 
 #: cps/db.py:971 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:550 cps/web.py:584 cps/web.py:659 cps/web.py:684 cps/web.py:965
 #: cps/web.py:995 cps/web.py:1031 cps/web.py:1059 cps/web.py:1098
 msgid "None"
-msgstr "Žádné"
+msgstr "Tidak ada"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Jejda! Vybraná kniha není k dispozici. Soubor neexistuje nebo není přístupný"
+msgstr "Ups! Judul buku yang dipilih tidak tersedia. File tidak ada atau tidak dapat diakses"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
 msgid "User has no rights to upload cover"
-msgstr ""
+msgstr "Pengguna tidak berhak mengganti sampul"
 
 #: cps/editbooks.py:174 cps/editbooks.py:716
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr ""
+msgstr "IDは大文字小文字を区別しません。元のIDを上書きします"
 
 #: cps/editbooks.py:216
 msgid "Metadata successfully updated"
-msgstr "Metadata úspěšně aktualizována"
+msgstr "Metadata berhasil diperbarui"
 
 #: cps/editbooks.py:234
 msgid "Error editing book: {}"
-msgstr ""
+msgstr "Kesalahan pengeditan buku: {}"
 
 #: cps/editbooks.py:291
 #, python-format
 msgid "File %(file)s uploaded"
-msgstr "Soubor %(file)s nahrán"
+msgstr "Berkas %(file)s telah diunggah"
 
 #: cps/editbooks.py:318
 msgid "Source or destination format for conversion missing"
-msgstr "Chybí zdrojový nebo cílový formát pro převod"
+msgstr "Format sumber atau tujuan untuk konversi tidak ada"
 
 #: cps/editbooks.py:326
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "Kniha byla úspěšně zařazena do fronty pro převod do %(book_format)s"
+msgstr "Buku berhasil diantrekan untuk dikonversi ke %(book_format)s"
 
 #: cps/editbooks.py:330
 #, python-format
 msgid "There was an error converting this book: %(res)s"
-msgstr "Při převodu této knihy došlo k chybě: %(res)s"
+msgstr "Terjadi kesalahan saat mengonversi buku ini: %(res)s"
 
 #: cps/editbooks.py:635
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
+msgstr "Buku yang diunggah mungkin ada di perpustakaan, pertimbangkan untuk mengubahnya sebelum mengunggah yang baru: "
 
 #: cps/editbooks.py:690 cps/editbooks.py:1015
-#, fuzzy, python-format
+#, python-format
 msgid "'%(langname)s' is not a valid language"
-msgstr "%(langname)s není platným jazykem"
+msgstr "'%(langname)s' bukan bahasa yang valid"
 
 #: cps/editbooks.py:728 cps/editbooks.py:1162
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "Soubor s příponou '%(ext)s' nelze odeslat na tento server"
+msgstr "Ekstensi file '%(ext)s' tidak diizinkan untuk diunggah ke server ini"
 
 #: cps/editbooks.py:732 cps/editbooks.py:1166
 msgid "File to be uploaded must have an extension"
-msgstr "Soubor, který má být odeslán musí mít příponu"
+msgstr "File yang akan diunggah harus memiliki ekstensi"
 
 #: cps/editbooks.py:740
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr "Soubor %(filename)s nemohl být uložen do dočasného adresáře"
+msgstr "Berkas %(filename)s tidak dapat disimpan ke direktori temp"
 
 #: cps/editbooks.py:760
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr "Nepodařilo se přesunout soubor obalu %(file)s: %(error)s"
+msgstr "Gagal Memindahkan Berkas Sampul %(file)s: %(error)s"
 
 #: cps/editbooks.py:817 cps/editbooks.py:819
 msgid "Book Format Successfully Deleted"
-msgstr "Formát knihy úspěšně smazán"
+msgstr "Format Buku Berhasil Dihapus"
 
 #: cps/editbooks.py:826 cps/editbooks.py:828
 msgid "Book Successfully Deleted"
-msgstr "Kniha úspěšně smazána"
+msgstr "Buku Berhasil Dihapus"
 
 #: cps/editbooks.py:880
 msgid "You are missing permissions to delete books"
-msgstr ""
+msgstr "Anda tidak memiliki izin untuk menghapus buku"
 
 #: cps/editbooks.py:930
 msgid "edit metadata"
-msgstr "upravit metadata"
+msgstr "edit metadata"
 
 #: cps/editbooks.py:979
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr ""
+msgstr "%(seriesindex)s dilewati karena bukan angka yang valid"
 
 #: cps/editbooks.py:1157
 msgid "User has no rights to upload additional file formats"
-msgstr ""
+msgstr "Pengguna tidak memiliki izin untuk mengunggah format file tambahan"
 
 #: cps/editbooks.py:1178
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "Nepodařilo se vytvořit cestu %(path)s (oprávnění odepřeno)."
+msgstr "Gagal membuat jalur %(path)s (Izin ditolak)."
 
 #: cps/editbooks.py:1183
 #, python-format
 msgid "Failed to store file %(file)s."
-msgstr "Uložení souboru %(file)s se nezdařilo."
+msgstr "Gagal menyimpan file %(file)s."
 
 #: cps/editbooks.py:1206
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
-msgstr "Formát souboru %(ext)s přidán do %(book)s"
+msgstr "Format file %(ext)s ditambahkan ke %(book)s"
 
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a aktivovat Google Drive"
+msgstr "Pengaturan Google Drive belum selesai, coba nonaktifkan dan aktifkan kembali Google Drive"
 
 #: cps/gdrive.py:95
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Doména zpětného volání není ověřena, postupujte podle pokynů k ověření domény v konzole pro vývojáře google"
+msgstr "Domain panggilan balik tidak diverifikasi, ikuti langkah-langkah untuk memverifikasi domain di konsol pengembang google"
 
 #: cps/helper.py:80
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "%(format)s formát pro knihu: %(book)d nenalezen"
+msgstr "%(format)s format tidak ditemukan untuk id buku: %(book)d"
 
 #: cps/helper.py:87 cps/tasks/convert.py:75
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
-msgstr "%(format)s nenalezen na Google Drive: %(fn)s"
+msgstr "%(format)s tidak ditemukan di Google Drive: %(fn)s"
 
 #: cps/helper.py:92
 #, python-format
 msgid "%(format)s not found: %(fn)s"
-msgstr "%(format)s nenalezen: %(fn)s"
+msgstr "%(format)s tidak ditemukan: %(fn)s"
 
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-#, fuzzy
 msgid "Send to E-Reader"
-msgstr "Poslat do Kindle"
+msgstr "Kirim ke E-Reader"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
 msgid "This e-mail has been sent via Calibre-Web."
-msgstr "Tento e-mail byl odeslán přes Calibre-Web."
+msgstr "Email ini telah dikirim melalui Calibre-Web."
 
 #: cps/helper.py:114
 msgid "Calibre-Web test e-mail"
-msgstr "Calibre-Web zkušební e-mail"
+msgstr "Email tes Calibre-Web"
 
 #: cps/helper.py:115
 msgid "Test e-mail"
-msgstr "Zkušební e-mail"
+msgstr "Email tes"
 
 #: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
-msgstr "Začínáme s Calibre-Web"
+msgstr "Memulai dengan Calibre-Web"
 
 #: cps/helper.py:137
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
-msgstr "Registrační e-mail pro uživatele: %(name)s"
+msgstr "Email pendaftaran untuk pengguna: %(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to E-Reader"
-msgstr "Převést %(orig)s do %(format)s a poslat do Kindle"
+msgstr "Ubah %(orig)s menjadi %(format)s dan kirim ke E-Reader"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to E-Reader"
-msgstr "Poslat %(format)s do Kindle"
+msgstr "Kirim %(format)s ke E-Reader"
 
 #: cps/helper.py:225 cps/tasks/convert.py:92
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "Poslat do Kindle"
+msgstr "%%(buku)s telah dikirim ke E-Reader"
 
 #: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "Požadovaný soubor nelze přečíst. Možná nesprávná oprávnění?"
+msgstr "File yang diminta tidak dapat dibaca. Mungkin izinnya salah?"
 
 #: cps/helper.py:345
 msgid "Read status could not set: {}"
-msgstr ""
+msgstr "Status baca tidak bisa disetel: {}"
 
 #: cps/helper.py:368
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "Menghapus folder buku untuk buku %(id)s gagal, jalur memiliki subfolder: %(path)s"
 
 #: cps/helper.py:374
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr "Mazání knihy selhalo %(id)s failed: %(message)s"
+msgstr "Gagal menghapus buku %(id)s: %(message)s"
 
 #: cps/helper.py:385
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "Mazání knihy %(id)s, cesta ke knize není platná %(path)s"
+msgstr "Menghapus buku %(id)s hanya dari basis data, jalur buku di basis data tidak valid: %(path)s"
 
 #: cps/helper.py:450
-#, fuzzy, python-format
+#, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Přejmenování názvu z: '%(src)s' na '%(dest)s'  selhalo chybou: %(error)s"
+msgstr "Ganti nama pengarang dari: '%(src)s' menjadi '%(dest)s' gagal dengan kesalahan: %(error)s"
 
 #: cps/helper.py:522 cps/helper.py:531
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Soubor %(file)s nenalezen na Google Drive"
+msgstr "Berkas %(file)s tidak ditemukan di Google Drive"
 
 #: cps/helper.py:565
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Přejmenování názvu z: '%(src)s' na '%(dest)s'  selhalo chybou: %(error)s"
+msgstr "Ganti nama judul dari: '%(src)s' menjadi '%(dest)s' gagal dengan kesalahan: %(error)s"
 
 #: cps/helper.py:585
 msgid "Error in rename file in path: {}"
-msgstr ""
+msgstr "Kesalahan dalam mengganti nama berkas di jalur: {}"
 
 #: cps/helper.py:603
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Cesta ke knize %(path)s nebyla nalezena na Google Drive"
+msgstr "Jalur buku %(path)s tidak ditemukan di Google Drive"
 
 #: cps/helper.py:644 cps/web.py:1416
-#, fuzzy
 msgid "Found an existing account for this e-mail address"
-msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu."
+msgstr "Ditemukan akun yang ada untuk alamat email ini"
 
 #: cps/helper.py:652
 msgid "This username is already taken"
-msgstr "Zadané uživatelské jméno je již použito"
+msgstr "Nama pengguna ini sudah digunakan"
 
 #: cps/helper.py:664
 msgid "Invalid e-mail address format"
-msgstr ""
+msgstr "Format alamat email tidak valid"
 
 #: cps/helper.py:815
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr ""
+msgstr "Modul 'advocate' Python tidak diinstal tetapi diperlukan untuk unggahan sampul"
 
 #: cps/helper.py:825
 msgid "Error Downloading Cover"
-msgstr "Chyba stahování obalu"
+msgstr "Kesalahan Mengunduh Sampul"
 
 #: cps/helper.py:828
 msgid "Cover Format Error"
-msgstr "Chyba formátu obalu"
+msgstr "Kesalahan Format Sampul"
 
 #: cps/helper.py:831
 msgid "You are not allowed to access localhost or the local network for cover uploads"
-msgstr ""
+msgstr "Anda tidak diizinkan mengakses localhost atau jaringan lokal untuk unggahan sampul"
 
 #: cps/helper.py:841
 msgid "Failed to create path for cover"
-msgstr "Vytvoření cesty obalu selhalo"
+msgstr "Gagal membuat jalur untuk sampul"
 
 #: cps/helper.py:857
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "Soubor obalu není platný, nebo nelze uložit"
+msgstr "File sampul bukan file gambar yang valid, atau tidak dapat disimpan"
 
 #: cps/helper.py:868
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr ""
+msgstr "Hanya file jpg/jpeg/png/webp/bmp yang didukung sebagai file sampul"
 
 #: cps/helper.py:880
 msgid "Invalid cover file content"
-msgstr ""
+msgstr "Konten file sampul tidak valid"
 
 #: cps/helper.py:884
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr "Pouze jpg/jpeg jsou podporované soubory pro obal"
+msgstr "Hanya file jpg/jpeg yang didukung sebagai file sampul"
 
 #: cps/helper.py:936
 msgid "Unrar binary file not found"
-msgstr "Unrar binární soubor nenalezen"
+msgstr "File biner unrar tidak ditemukan"
 
 #: cps/helper.py:947
 #, fuzzy
 msgid "Error executing UnRar"
-msgstr "Chyba provádění UnRar"
+msgstr "Kesalahan saat menjalankan UnRar"
 
 #: cps/helper.py:1040
 #, fuzzy
 msgid "Cover"
-msgstr "Objevte"
+msgstr "Sampul"
 
 #: cps/helper.py:1042 cps/templates/admin.html:211
 msgid "Queue all books for metadata backup"
-msgstr ""
+msgstr "Antrian semua buku untuk cadangan metadata"
 
 #: cps/kobo_auth.py:89
-#, fuzzy
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Pro získání platného api_endpoint pro zařízení Kobo, přístupte na calibre-web bez localhost"
+msgstr "Mohon akses calibre-web dari non localhost untuk mendapatkan api_endpoint yang valid untuk perangkat kobo"
 
 #: cps/kobo_auth.py:115
 msgid "Kobo Setup"
-msgstr "Kobo nastavení"
+msgstr "Pengaturan Kobo"
 
 #: cps/oauth_bb.py:77
 #, python-format
 msgid "Register with %(provider)s"
-msgstr "Registrovat s %(provider)s"
+msgstr "Daftar dengan %(provider)s"
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "nyní jste přihlášen jako: '%(nickname)s'"
+msgstr "Anda sekarang login sebagai: %(nickname)s"
 
 #: cps/oauth_bb.py:148
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr "Připojení k %(oauth)s úspěšné"
+msgstr "Tautan ke %(oauth)s Berhasil"
 
 #: cps/oauth_bb.py:155
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "Přihlášení selhalo, žádný uživatel s OAuth účtem"
+msgstr "Login gagal, Tidak Ada Pengguna yang Tertaut Dengan Akun OAuth"
 
 #: cps/oauth_bb.py:197
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr "Odpojení od %(oauth)s úspěšné"
+msgstr "Membatalkan tautan ke %(oauth)s Berhasil"
 
 #: cps/oauth_bb.py:202
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr "Odpojení od %(oauth)s selhalo"
+msgstr "Membatalkan tautan ke %(oauth)s Gagal"
 
 #: cps/oauth_bb.py:205
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr ""
+msgstr "Tidak Tertaut ke %(oauth)s"
 
 #: cps/oauth_bb.py:261
 msgid "Failed to log in with GitHub."
-msgstr "Přihlášení pomocí GitHub selhalo."
+msgstr "Gagal masuk dengan GitHub."
 
 #: cps/oauth_bb.py:267
 msgid "Failed to fetch user info from GitHub."
-msgstr "Nepodařilo se načíst informace o uživateli z GitHub."
+msgstr "Gagal mengambil info pengguna dari GitHub."
 
 #: cps/oauth_bb.py:279
 msgid "Failed to log in with Google."
-msgstr "Přihlášení pomocí Google selhalo."
+msgstr "Gagal masuk dengan Google."
 
 #: cps/oauth_bb.py:285
 msgid "Failed to fetch user info from Google."
-msgstr "Nepodařilo se načíst informace o uživateli z Google."
+msgstr "Gagal mengambil info pengguna dari Google."
 
 #: cps/oauth_bb.py:332
 msgid "GitHub Oauth error, please retry later."
-msgstr "GitHub Oauth chyba, prosím opakujte později."
+msgstr "Kesalahan GitHub Oauth, silakan coba lagi nanti."
 
 #: cps/oauth_bb.py:335
 msgid "GitHub Oauth error: {}"
-msgstr ""
+msgstr "Kesalahan GitHub OAuth: {}"
 
 #: cps/oauth_bb.py:356
 msgid "Google Oauth error, please retry later."
-msgstr "Google Oauth chyba, prosím opakujte později."
+msgstr "Kesalahan Google Oauth, harap coba lagi nanti."
 
 #: cps/oauth_bb.py:359
 msgid "Google Oauth error: {}"
-msgstr ""
+msgstr "Kesalahan Google OAuth: {}"
 
 #: cps/opds.py:287
 msgid "{} Stars"
-msgstr ""
+msgstr "{}★"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:74
 #: cps/templates/layout.html:108 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
-msgstr "Přihlásit"
+msgstr "Masuk"
 
 #: cps/remotelogin.py:74 cps/remotelogin.py:108
 msgid "Token not found"
-msgstr "Token nenalezen"
+msgstr "Token tidak ditemukan"
 
 #: cps/remotelogin.py:83 cps/remotelogin.py:116
 msgid "Token has expired"
-msgstr "Token vypršel"
+msgstr "Token telah kedaluwarsa"
 
 #: cps/remotelogin.py:92
 msgid "Success! Please return to your device"
-msgstr "Úspěch! Vraťte se prosím do zařízení"
+msgstr "Berhasil! Silakan kembali ke perangkat Anda"
 
 #: cps/render_template.py:40 cps/web.py:406
 msgid "Books"
-msgstr "Knihy"
+msgstr "Buku"
 
 #: cps/render_template.py:42
 msgid "Show recent books"
-msgstr "Zobrazit nedávné knihy"
+msgstr "Tampilkan buku terbaru"
 
 #: cps/render_template.py:43 cps/templates/index.xml:25
 msgid "Hot Books"
-msgstr "Žhavé knihy"
+msgstr "Buku Populer"
 
 #: cps/render_template.py:45
 msgid "Show Hot Books"
-msgstr "Zobrazit žhavé knihy"
+msgstr "Tampilkan Buku Populer"
 
 #: cps/render_template.py:47 cps/render_template.py:52
 msgid "Downloaded Books"
-msgstr ""
+msgstr "Buku yang Diunduh"
 
 #: cps/render_template.py:49 cps/render_template.py:54
 #: cps/templates/user_table.html:167
 msgid "Show Downloaded Books"
-msgstr ""
+msgstr "Tampilkan Buku yang Diunduh"
 
 #: cps/render_template.py:57 cps/templates/index.xml:32 cps/web.py:421
 msgid "Top Rated Books"
-msgstr "Nejlépe hodnocené knihy"
+msgstr "Buku Berperingkat Teratas"
 
 #: cps/render_template.py:59 cps/templates/user_table.html:161
 msgid "Show Top Rated Books"
-msgstr "Zobrazit nejlépe hodnocené knihy"
+msgstr "Tampilkan Buku Berperingkat Teratas"
 
 #: cps/render_template.py:60 cps/templates/index.xml:54
 #: cps/templates/index.xml:58 cps/web.py:742
 msgid "Read Books"
-msgstr "Přečtené knihy"
+msgstr "Buku Telah Dibaca"
 
 #: cps/render_template.py:62
 msgid "Show read and unread"
-msgstr "Zobrazit prečtené a nepřečtené"
+msgstr "Tampilkan sudah dibaca dan belum dibaca"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
 #: cps/templates/index.xml:65 cps/web.py:745
 msgid "Unread Books"
-msgstr "Nepřečtené knihy"
+msgstr "Buku yang Belum Dibaca"
 
 #: cps/render_template.py:66
 msgid "Show unread"
-msgstr "Zobrazit nepřečtené"
+msgstr "Tampilkan belum dibaca"
 
 #: cps/render_template.py:67
 msgid "Discover"
-msgstr "Objevte"
+msgstr "Temukan"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
 #: cps/templates/user_table.html:162
 msgid "Show Random Books"
-msgstr "Zobrazit náhodné knihy"
+msgstr "Tampilkan Buku Acak"
 
 #: cps/render_template.py:70 cps/templates/book_table.html:67
 #: cps/templates/index.xml:83 cps/web.py:1102
 msgid "Categories"
-msgstr "Kategorie"
+msgstr "Kategori"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
 msgid "Show category selection"
-msgstr "Zobrazit výběr kategorie"
+msgstr "Tampilkan pilihan kategori"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
 #: cps/templates/search_form.html:69 cps/web.py:998 cps/web.py:1005
 msgid "Series"
-msgstr "Série"
+msgstr "Seri"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
 msgid "Show series selection"
-msgstr "Zobrazit výběr sérií"
+msgstr "Tampilkan pilihan seri"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
 msgid "Authors"
-msgstr "Autoři"
+msgstr "Penulis"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
 msgid "Show author selection"
-msgstr "Zobrazit výběr autora"
+msgstr "Tampilkan pilihan penulis"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:969
 msgid "Publishers"
-msgstr "Vydavatelé"
+msgstr "Penerbit"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
 msgid "Show publisher selection"
-msgstr "Zobrazit výběr vydavatele"
+msgstr "Tampilkan pilihan penerbit"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
 #: cps/web.py:1074
 msgid "Languages"
-msgstr "Jazyky"
+msgstr "Bahasa"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
 msgid "Show language selection"
-msgstr "Zobrazit výběr jazyka"
+msgstr "Tampilkan pilihan bahasa"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
 msgid "Ratings"
-msgstr "Hodnocení"
+msgstr "Peringkat"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
 msgid "Show ratings selection"
-msgstr "Zobrazit výběr hodnocení"
+msgstr "Tampilkan pilihan peringkat"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
-msgstr "Formáty souborů"
+msgstr "Format file"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
 msgid "Show file formats selection"
-msgstr "Zobrazit výběr formátů"
+msgstr "Tampilkan pilihan format file"
 
 #: cps/render_template.py:94 cps/web.py:768
 msgid "Archived Books"
-msgstr "Archivované knihy"
+msgstr "Buku yang Diarsipkan"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
 msgid "Show archived books"
-msgstr "Zobrazit archivované knihy"
+msgstr "Tampilkan buku yang diarsipkan"
 
 #: cps/render_template.py:99 cps/web.py:799
 msgid "Books List"
-msgstr ""
+msgstr "Daftar Buku"
 
 #: cps/render_template.py:101 cps/templates/user_table.html:168
 msgid "Show Books List"
-msgstr ""
+msgstr "Tampilkan Daftar Buku"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:53 cps/templates/layout.html:56
 #: cps/templates/search_form.html:226
 msgid "Search"
-msgstr "Hledat"
+msgstr "Telusuri"
 
 #: cps/search.py:188
 msgid "Published after "
-msgstr "Vydáno po "
+msgstr "Terbit setelah "
 
 #: cps/search.py:195
 msgid "Published before "
-msgstr "Vydáno před "
+msgstr "Terbit sebelum "
 
 #: cps/search.py:217
 #, python-format
 msgid "Rating <= %(rating)s"
-msgstr "Hodnocení <= %(rating)s"
+msgstr "Peringkat ≤ %(rating)s"
 
 #: cps/search.py:219
 #, python-format
 msgid "Rating >= %(rating)s"
-msgstr "Hodnocení >= %(rating)s"
+msgstr "Peringkat ≥ %(rating)s"
 
 #: cps/search.py:221
 #, python-format
 msgid "Read Status = %(status)s"
-msgstr ""
+msgstr "Status Baca = %(status)s"
 
 #: cps/search.py:323
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr ""
+msgstr "Terjadi kesalahan saat mencari kolom khusus, harap mulai ulang Calibre-Web"
 
 #: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
 msgid "Advanced Search"
-msgstr "Rozšířené hledání"
+msgstr "Penelusuran Lanjutan"
 
 #: cps/shelf.py:49 cps/shelf.py:103
 msgid "Invalid shelf specified"
-msgstr "Zadána neplatná police"
+msgstr "Rak yang ditentukan tidak valid"
 
 #: cps/shelf.py:55
-#, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Lituji, nejste oprávněni přidat knihu do police: %(shelfname)s"
+msgstr "Maaf Anda tidak diperbolehkan menambahkan buku ke rak: %(shelfname)s"
 
 #: cps/shelf.py:64
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "Kniha je již součástí police: %(shelfname)s"
+msgstr "Buku sudah menjadi bagian dari rak: %(shelfname)s"
 
 #: cps/shelf.py:89
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Kniha byla přidána do police: %(sname)s"
+msgstr "Buku telah ditambahkan ke rak: %(sname)s"
 
 #: cps/shelf.py:108
 msgid "You are not allowed to add a book to the shelf"
-msgstr ""
+msgstr "Anda tidak diperbolehkan menambahkan buku ke rak: %(name)s"
 
 #: cps/shelf.py:126
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
-msgstr "Knihy jsou již součástí police: %(name)s"
+msgstr "Buku sudah menjadi bagian dari rak: %(name)s"
 
 #: cps/shelf.py:138
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "Knihy byly přidány do police: %(sname)s"
+msgstr "Buku telah ditambahkan ke rak: %(sname)s"
 
 #: cps/shelf.py:145
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
-msgstr "Nelze přidat knihy do police: %(sname)s"
+msgstr "Tidak dapat menambahkan buku ke rak: %(sname)s"
 
 #: cps/shelf.py:191
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr "Kniha byla odebrána z police: %(sname)s"
+msgstr "Buku telah dihapus dari rak: %(sname)s"
 
 #: cps/shelf.py:200
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr ""
+msgstr "Maaf Anda tidak diizinkan untuk menghapus buku dari rak ini: %(sname)s"
 
 #: cps/shelf.py:210 cps/templates/layout.html:164
 msgid "Create a Shelf"
-msgstr "Vytvořit polici"
+msgstr "Buat Rak"
 
 #: cps/shelf.py:218
-#, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Lituji, nejste oprávněni odebrat knihu z této police: %(sname)s"
+msgstr "Maaf, Anda tidak diizinkan mengedit rak ini"
 
 #: cps/shelf.py:220
 msgid "Edit a shelf"
-msgstr "Upravit polici"
+msgstr "Edit Rak"
 
 #: cps/shelf.py:229
 msgid "Error deleting Shelf"
-msgstr ""
+msgstr "Kesalahan menghapus Rak"
 
 #: cps/shelf.py:231
-#, fuzzy
 msgid "Shelf successfully deleted"
-msgstr "Kniha úspěšně smazána"
+msgstr "Rak berhasil dihapus"
 
 #: cps/shelf.py:281
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Změnit  pořadí Police: '%(name)s'"
+msgstr "Ubah urutan Rak: '%(name)s'"
 
 #: cps/shelf.py:313
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr ""
+msgstr "Maaf, Anda tidak diizinkan membuat rak publik"
 
 #: cps/shelf.py:330
 #, python-format
 msgid "Shelf %(title)s created"
-msgstr "Police %(title)s vytvořena"
+msgstr "Rak %(title)s dibuat"
 
 #: cps/shelf.py:333
 #, python-format
 msgid "Shelf %(title)s changed"
-msgstr "Police %(title)s změněna"
+msgstr "Rak %(title)s diubah"
 
 #: cps/shelf.py:347
 msgid "There was an error"
-msgstr "Došlo k chybě"
+msgstr "Ada kesalahan"
 
 #: cps/shelf.py:369
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Veřejná police s názvem '%(title)s' již existuje."
+msgstr "Rak publik dengan nama '%(title)s' sudah ada."
 
 #: cps/shelf.py:380
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Osobní police s názvem ‘%(title)s’ již existuje."
+msgstr "Rak pribadi dengan nama '%(title)s' sudah ada."
 
 #: cps/shelf.py:462
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr "Police: '%(name)s'"
+msgstr "Rak: '%(name)s'"
 
 #: cps/shelf.py:466
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
+msgstr "Terjadi kesalahan saat membuka rak. Rak tidak ada atau tidak dapat diakses"
 
 #: cps/tasks_status.py:48 cps/templates/layout.html:95
 #: cps/templates/tasks.html:7
 msgid "Tasks"
-msgstr "Úlohy"
+msgstr "Tugas"
 
 #: cps/tasks_status.py:64
 msgid "Waiting"
-msgstr "Čekám"
+msgstr "Menunggu"
 
 #: cps/tasks_status.py:66
 msgid "Failed"
-msgstr "Selhalo"
+msgstr "Gagal"
 
 #: cps/tasks_status.py:68
 msgid "Started"
-msgstr "Spuštěno"
+msgstr "Dimulai"
 
 #: cps/tasks_status.py:70
 msgid "Finished"
-msgstr "Dokončeno"
+msgstr "Selesai"
 
 #: cps/tasks_status.py:72
 msgid "Ended"
-msgstr ""
+msgstr "Berakhir"
 
 #: cps/tasks_status.py:74
 msgid "Cancelled"
-msgstr ""
+msgstr "Dibatalkan"
 
 #: cps/tasks_status.py:76
 msgid "Unknown Status"
-msgstr "Neznámý stav"
+msgstr "Status Tidak Diketahui"
 
 #: cps/updater.py:431 cps/updater.py:442 cps/updater.py:543 cps/updater.py:558
 msgid "Unexpected data while reading update information"
-msgstr "Neočekávaná data při čtení informací o aktualizaci"
+msgstr "Data tak terduga saat membaca informasi pembaruan"
 
 #: cps/updater.py:438 cps/updater.py:550
 msgid "No update available. You already have the latest version installed"
-msgstr "Aktualizace není k dispozici. Máte nainstalovanou nejnovější verzi"
+msgstr "Tidak ada pembaruan yang tersedia. Anda telah memasang versi terbaru"
 
 #: cps/updater.py:456
 msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na nejnovější verzi."
+msgstr "Pembaruan tersedia. Klik tombol di bawah untuk memperbarui ke versi terbaru."
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
-msgstr "Nelze získat informace o aktualizaci"
+msgstr "Tidak dapat mengambil informasi pembaruan"
 
 #: cps/updater.py:484
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Klepnutím na tlačítko níže aktualizujte na nejnovější stabilní verzi."
+msgstr "Klik tombol di bawah untuk memperbarui ke versi stabil terbaru."
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na verzi: %(version)s"
+msgstr "Pembaruan tersedia. Klik tombol di bawah untuk memperbarui ke versi: %(version)s"
 
 #: cps/updater.py:536
 msgid "No release information available"
-msgstr "Nejsou k dispozici žádné informace o verzi"
+msgstr "Tidak ada informasi rilis yang tersedia"
 
 #: cps/templates/index.html:6 cps/web.py:433
 msgid "Discover (Random Books)"
-msgstr "Objevte (Náhodné knihy)"
+msgstr "Temukan (Buku Acak)"
 
 #: cps/web.py:469
 msgid "Hot Books (Most Downloaded)"
-msgstr "Žhavé knihy (Nejstahovanější)"
+msgstr "Buku Populer (Paling Banyak Diunduh)"
 
 #: cps/web.py:500
 #, python-format
 msgid "Downloaded books by %(user)s"
-msgstr ""
+msgstr "Buku telah diunduh oleh %(user)s"
 
 #: cps/web.py:533
 #, python-format
 msgid "Author: %(name)s"
-msgstr "Autoři: %(name)s"
+msgstr "Penulis: %(name)s"
 
 #: cps/web.py:569
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr "Vydavatel: %(name)s"
+msgstr "Penerbit: %(name)s"
 
 #: cps/web.py:597
 #, python-format
 msgid "Series: %(serie)s"
-msgstr "Série: %(serie)s"
+msgstr "Seri: %(serie)s"
 
 #: cps/web.py:612
 msgid "Rating: None"
-msgstr ""
+msgstr "Peringkat: Tidak ada"
 
 #: cps/web.py:621
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr "Hodnocení: %(rating)s stars"
+msgstr "Peringkat: %(rating)s★"
 
 #: cps/web.py:639
 #, python-format
 msgid "File format: %(format)s"
-msgstr "Soubor formátů: %(format)s"
+msgstr "Format berkas: %(format)s"
 
 #: cps/web.py:676
 #, python-format
 msgid "Category: %(name)s"
-msgstr "Kategorie: %(name)s"
+msgstr "Kategori: %(name)s"
 
 #: cps/web.py:703
 #, python-format
 msgid "Language: %(name)s"
-msgstr "Jazyky: %(name)s"
+msgstr "Bahasa: %(name)s"
 
 #: cps/templates/admin.html:16 cps/web.py:941
 msgid "Downloads"
-msgstr "Stáhnutí"
+msgstr "Unduhan"
 
 #: cps/web.py:1034
 msgid "Ratings list"
-msgstr "Seznam hodnocení"
+msgstr "Daftar peringkat"
 
 #: cps/web.py:1061
 msgid "File formats list"
-msgstr "Seznam formátů"
+msgstr "Daftar format berkas"
 
 #: cps/web.py:1203
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
-msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemail)s"
+msgstr "Buku telah diantrikan untuk dikirim ke %(kindlemail)s"
 
 #: cps/web.py:1207
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
-msgstr "Při odesílání této knihy došlo k chybě: %(res)s"
+msgstr "Oops! Terjadi kesalahan saat mengirim buku: %(res)s"
 
 #: cps/web.py:1209
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "Nejprve nakonfigurujte vaši kindle e-mailovou adresu.."
+msgstr "Harap perbarui profil Anda dengan Kirim ke Alamat Email Kindle yang valid."
 
 #: cps/web.py:1226
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr "E-mailový server není nakonfigurován, kontaktujte svého správce!"
+msgstr "Server email belum dikonfigurasi, silakan hubungi administrator!"
 
 #: cps/templates/layout.html:75 cps/templates/layout.html:109
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
 msgid "Register"
-msgstr "Registrovat"
+msgstr "Daftar"
 
 #: cps/web.py:1262
 msgid "Your e-mail is not allowed to register"
-msgstr "Váš e-mail nemá povolení k registraci"
+msgstr "Alamat email Anda tidak diizinkan untuk mendaftar"
 
 #: cps/web.py:1266
 msgid "Confirmation e-mail was send to your e-mail account."
-msgstr "Potvrzovací e-mail byl odeslán na váš účet."
+msgstr "E-mail konfirmasi telah dikirimkan ke alamat email Anda."
 
 #: cps/web.py:1280
 msgid "Cannot activate LDAP authentication"
-msgstr "Nelze aktivovat ověření LDAP"
+msgstr "Tidak dapat mengaktifkan autentikasi LDAP."
 
 #: cps/web.py:1299
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Záložní přihlášení jako: ‘%(nickname)s’, server LDAP není dosažitelný nebo neznámý uživatel"
+msgstr "Login Pengganti sebagai: '%(nickname)s', Server LDAP tidak dapat dijangkau, atau pengguna tidak diketahui."
 
 #: cps/web.py:1305
 #, python-format
 msgid "Could not login: %(message)s"
-msgstr "Nelze se přihlásit: %(message)s"
+msgstr "Tidak dapat login: %(message)s"
 
 #: cps/web.py:1309 cps/web.py:1334
 msgid "Wrong Username or Password"
-msgstr "Špatné uživatelské jméno nebo heslo"
+msgstr "Pengguna atau Kata Sandi salah"
 
 #: cps/web.py:1316
 msgid "New Password was send to your email address"
-msgstr "Nové heslo bylo zasláno na vaši emailovou adresu"
+msgstr "Kata Sandi baru telah dikirimkan ke alamat email Anda"
 
 #: cps/web.py:1322
 msgid "Please enter valid username to reset password"
-msgstr "Zadejte platné uživatelské jméno pro obnovení hesla"
+msgstr "Harap masukkan pengguna valid untuk mengatur ulang kata sandi"
 
 #: cps/web.py:1329
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "Nyní jste přihlášeni jako: '%(nickname)s'"
+msgstr "Anda telah masuk sebagai: '%(nickname)s'"
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's profile"
-msgstr "%(name)s profil"
+msgstr "Profil %(name)s"
 
 #: cps/web.py:1412
 msgid "Profile updated"
-msgstr "Profil aktualizován"
+msgstr "Profil diperbarui"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr ""
+msgstr "Tidak ditemukan file gmail.json yang valid dengan informasi OAuth"
 
 #: cps/tasks/convert.py:153
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr "Calibre převaděč %(tool)s nenalezen"
+msgstr "Calibre ebook-convert %(tool)s tidak ditemukan"
 
 #: cps/tasks/convert.py:186
 #, python-format
 msgid "%(format)s format not found on disk"
-msgstr ""
+msgstr "%(format)s format tidak ditemukan dalam disk"
 
 #: cps/tasks/convert.py:190
 msgid "Ebook converter failed with unknown error"
-msgstr ""
+msgstr "Konverter ebook gagal dengan kesalahan yang tidak diketahui."
 
 #: cps/tasks/convert.py:202
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr "Kepubify-převaděč selhal: %(error)s"
+msgstr "Kebupify-converter gagal: %(error)s"
 
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Převedený soubor nebyl nalezen nebo více než jeden soubor ve složce %(folder)s"
+msgstr "Berkas yang telah dikonversi tidak ditemukan atau terdapat duplikat dalam folder %(folder)s"
 
 #: cps/tasks/convert.py:247
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
-msgstr "Převaděč eknih selhal: %(error)s"
+msgstr "Ebook-converter gagal: %(error)s"
 
 #: cps/tasks/convert.py:270
 #, python-format
 msgid "Calibre failed with error: %(error)s"
-msgstr ""
+msgstr "Calibre gagal dengan kesalahan: %(error)s"
 
 #: cps/tasks/convert.py:275
 msgid "Convert"
-msgstr ""
+msgstr "Konversi"
 
 #: cps/tasks/database.py:28
 msgid "Reconnecting Calibre database"
-msgstr ""
+msgstr "Menghubungkan kembali basis data Calibre"
 
 #: cps/tasks/mail.py:266
 msgid "E-mail"
-msgstr ""
+msgstr "Email"
 
 #: cps/tasks/metadata_backup.py:47
 #, fuzzy
 msgid "Backing up Metadata"
-msgstr "upravit metadata"
+msgstr "Mencadangkan Metadata"
 
 #: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
-msgstr ""
+msgstr "%(count)s thumbnail sampul dibuat"
 
 #: cps/tasks/thumbnail.py:222 cps/tasks/thumbnail.py:435
 #: cps/tasks/thumbnail.py:503
 msgid "Cover Thumbnails"
-msgstr ""
+msgstr "Thumbnail Sampul"
 
 #: cps/tasks/thumbnail.py:281
 msgid "Generated {0} series thumbnails"
-msgstr ""
+msgstr "{0} thumbnail seri dihasilkan"
 
 #: cps/tasks/thumbnail.py:446
 msgid "Clearing cover thumbnail cache"
-msgstr ""
+msgstr "Menghapus cache thumbnail sampul"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
 #: cps/templates/layout.html:88 cps/templates/user_table.html:145
 msgid "Upload"
-msgstr "Nahrávat"
+msgstr "Unggah"
 
 #: cps/templates/admin.html:9
 msgid "Users"
-msgstr "Uživatelé"
+msgstr "Pengguna"
 
 #: cps/templates/admin.html:13 cps/templates/login.html:9
 #: cps/templates/login.html:10 cps/templates/register.html:9
 #: cps/templates/user_edit.html:10 cps/templates/user_table.html:134
 msgid "Username"
-msgstr "Přezdívka"
+msgstr "Nama Pengguna"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
 msgid "E-mail Address"
-msgstr "E-mail"
+msgstr "Alamat Email"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-#, fuzzy
 msgid "Send to E-Reader E-mail Address"
-msgstr "Poslat do Kindle e-mailová adresa"
+msgstr "Kirim ke Alamat Email Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:98
 #: cps/templates/user_table.html:143
 msgid "Admin"
-msgstr "Správce"
+msgstr "Admin"
 
 #: cps/templates/admin.html:18 cps/templates/login.html:13
 #: cps/templates/login.html:14 cps/templates/user_edit.html:23
 msgid "Password"
-msgstr "Heslo"
+msgstr "Kata Sandi"
 
 #: cps/templates/admin.html:22 cps/templates/detail.html:19
 #: cps/templates/detail.html:28 cps/templates/shelf.html:8
 #: cps/templates/user_table.html:146
 msgid "Download"
-msgstr "Stahovat"
+msgstr "Unduh"
 
 #: cps/templates/admin.html:23
 msgid "View Books"
-msgstr "Prohlížení knih"
+msgstr "Lihat Buku"
 
 #: cps/templates/admin.html:24 cps/templates/user_table.html:131
 #: cps/templates/user_table.html:148
 msgid "Edit"
-msgstr "Upravovat"
+msgstr "Edit"
 
 #: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:100 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
 #: cps/templates/user_table.html:149
 msgid "Delete"
-msgstr "Smazat"
+msgstr "Hapus"
 
 #: cps/templates/admin.html:26
 msgid "Public Shelf"
-msgstr "Veřejná police"
+msgstr "Rak Publik"
 
 #: cps/templates/admin.html:53
 msgid "Add New User"
-msgstr "Přidat nového uživatele"
+msgstr "Tambah Pengguna Baru"
 
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
-msgstr "Importovat LDAP uživatele"
+msgstr "Impor Pengguna LDAP"
 
 #: cps/templates/admin.html:62
 msgid "E-mail Server Settings"
-msgstr "Nastavení e-mailového serveru SMTP"
+msgstr "Pengaturan Server Email"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
 msgid "SMTP Hostname"
-msgstr "SMTP hostitel"
+msgstr "Hostname SMTP"
 
 #: cps/templates/admin.html:71 cps/templates/email_edit.html:35
 msgid "SMTP Port"
-msgstr "SMTP port"
+msgstr "Port SMTP"
 
 #: cps/templates/admin.html:75 cps/templates/email_edit.html:39
 msgid "Encryption"
-msgstr "Šifrování"
+msgstr "Enkripsi"
 
 #: cps/templates/admin.html:79 cps/templates/email_edit.html:47
 msgid "SMTP Login"
-msgstr "SMTP přihlášení"
+msgstr "Login SMTP"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
 msgid "From E-mail"
-msgstr "Z e-mailu"
+msgstr "Dari Email"
 
 #: cps/templates/admin.html:90
 msgid "E-Mail Service"
-msgstr ""
+msgstr "Layanan Email"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
-msgstr ""
+msgstr "Gmail via Oauth2"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
-msgstr "Konfigurace"
+msgstr "Konfigurasi"
 
 #: cps/templates/admin.html:109
 msgid "Calibre Database Directory"
-msgstr "Calibre DB adresář"
+msgstr "Jalur Database Calibre"
 
 #: cps/templates/admin.html:113 cps/templates/config_edit.html:68
 msgid "Log Level"
-msgstr "Úroveň logu"
+msgstr "Log Level"
 
 #: cps/templates/admin.html:117
 msgid "Port"
@@ -1595,128 +1578,127 @@ msgstr "Port"
 
 #: cps/templates/admin.html:122
 msgid "External Port"
-msgstr ""
+msgstr "Port Eksternal"
 
 #: cps/templates/admin.html:129 cps/templates/config_view_edit.html:28
 msgid "Books per Page"
-msgstr "Knihy na stránku"
+msgstr "Buku per halaman"
 
 #: cps/templates/admin.html:133
 msgid "Uploads"
-msgstr "Nahrávání"
+msgstr "Unggah"
 
 #: cps/templates/admin.html:137
 msgid "Anonymous Browsing"
-msgstr "Anonymní prohlížení"
+msgstr "Penjelajahan Anonim"
 
 #: cps/templates/admin.html:141
 msgid "Public Registration"
-msgstr "Veřejná registrace"
+msgstr "Registrasi Publik"
 
 #: cps/templates/admin.html:145
 msgid "Magic Link Remote Login"
-msgstr "Magic Link vzdálené přihlášení"
+msgstr "Login Jarak Jauh dengan Magic Link"
 
 #: cps/templates/admin.html:149
 msgid "Reverse Proxy Login"
-msgstr "Reverzní proxy přihlášení"
+msgstr "Login Reverse Proxy"
 
 #: cps/templates/admin.html:154 cps/templates/config_edit.html:173
 msgid "Reverse Proxy Header Name"
-msgstr "Název záhlaví reverzního proxy"
+msgstr "Nama Header Reverse Proxy"
 
 #: cps/templates/admin.html:159
-#, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Upravit základní konfiguraci"
+msgstr "Edit Konfigurasi Basis Data Caliber"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
-msgstr "Upravit základní konfiguraci"
+msgstr "Edit Konfigurasi Dasar"
 
 #: cps/templates/admin.html:161
 msgid "Edit UI Configuration"
-msgstr "Upravit konfiguraci uživatelského rozhraní"
+msgstr "Edit Konfigurasi UI"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
-msgstr ""
+msgstr "Tugas Terjadwal"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 msgid "Time at which tasks start to run"
-msgstr ""
+msgstr "Waktu saat tugas mulai dijalankan"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum tasks duration"
-msgstr ""
+msgstr "Durasi tugas maksimum"
 
 #: cps/templates/admin.html:178
 msgid "Generate book cover thumbnails"
-msgstr ""
+msgstr "Buat thumbnail sampul buku"
 
 #: cps/templates/admin.html:182
 msgid "Generate series cover thumbnails"
-msgstr ""
+msgstr "Buat thumbnail sampul seri"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
 msgid "Reconnect to Calibre Library"
-msgstr ""
+msgstr "Sambungkan kembali ke Perpustakaan Caliber"
 
 #: cps/templates/admin.html:193
 msgid "Refresh Thumbnail Cover Cache"
-msgstr ""
+msgstr "Segarkan Cache Thumbnail Sampul"
 
 #: cps/templates/admin.html:199
 msgid "Administration"
-msgstr "Správa"
+msgstr "Administrasi"
 
 #: cps/templates/admin.html:200
 msgid "Download Debug Package"
-msgstr ""
+msgstr "Unduh Paket Debug"
 
 #: cps/templates/admin.html:201
 msgid "View Logs"
-msgstr "Zobrazit log"
+msgstr "Tampilkan Log"
 
 #: cps/templates/admin.html:204
 msgid "Reconnect Calibre Database"
-msgstr "Znovupřipojení ke Calibre databázi"
+msgstr "Hubungkan Ulang Database Calibre"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
-msgstr "Restartovat"
+msgstr "Mulai Ulang"
 
 #: cps/templates/admin.html:208
 msgid "Shutdown"
-msgstr "Vypnout"
+msgstr "Matikan"
 
 #: cps/templates/admin.html:216
 msgid "Version Information"
-msgstr ""
+msgstr "Perbarui"
 
 #: cps/templates/admin.html:220
 msgid "Version"
-msgstr "Verze"
+msgstr "Versi"
 
 #: cps/templates/admin.html:221
 msgid "Details"
-msgstr "Detaily"
+msgstr "Detail"
 
 #: cps/templates/admin.html:227
 msgid "Current version"
-msgstr "Současná verze"
+msgstr "Versi saat ini"
 
 #: cps/templates/admin.html:234
 msgid "Check for Update"
-msgstr "Zkontrolovat aktualizace"
+msgstr "Periksa Pembaruan"
 
 #: cps/templates/admin.html:235
 msgid "Perform Update"
-msgstr "Provést aktualizaci"
+msgstr "Lakukan Pembaruan"
 
 #: cps/templates/admin.html:248
 msgid "Are you sure you want to restart?"
-msgstr "Opravdu chcete restartovat?"
+msgstr "Apa Anda yakin untuk memulai ulang?"
 
 #: cps/templates/admin.html:253 cps/templates/admin.html:267
 #: cps/templates/admin.html:287 cps/templates/config_db.html:70
@@ -1732,183 +1714,183 @@ msgstr "OK"
 #: cps/templates/shelf_edit.html:27 cps/templates/tasks.html:46
 #: cps/templates/user_edit.html:144
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Batal"
 
 #: cps/templates/admin.html:266
 msgid "Are you sure you want to shutdown?"
-msgstr "Opravdu chcete vypnout?"
+msgstr "Apa Anda yakin untuk mematikan?"
 
 #: cps/templates/admin.html:278
 msgid "Updating, please do not reload this page"
-msgstr "Probíhá aktualizace, prosím nenačítejte stránku znovu"
+msgstr "Memperbarui, jangan memuat ulang halaman ini"
 
 #: cps/templates/author.html:15
 msgid "via"
-msgstr "přes"
+msgstr "melalui"
 
 #: cps/templates/author.html:23
 msgid "In Library"
-msgstr "V knihovně"
+msgstr "Dalam Pustaka"
 
 #: cps/templates/author.html:26 cps/templates/index.html:74
 #: cps/templates/search.html:31 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
-msgstr ""
+msgstr "Urutkan menurut tanggal buku, terbaru dulu"
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
 #: cps/templates/search.html:32 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
-msgstr ""
+msgstr "Urutkan menurut tanggal buku, terlama dulu"
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
 #: cps/templates/search.html:33 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
-msgstr ""
+msgstr "Urutkan judul dalam urutan abjad"
 
 #: cps/templates/author.html:29 cps/templates/index.html:77
 #: cps/templates/search.html:34 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
-msgstr ""
+msgstr "Urutkan judul dalam urutan abjad terbalik"
 
 #: cps/templates/author.html:30 cps/templates/index.html:80
 #: cps/templates/search.html:37 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
-msgstr ""
+msgstr "Urutkan menurut tanggal penerbitan, yang terbaru dulu"
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
 #: cps/templates/search.html:38 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
-msgstr ""
+msgstr "Urutkan menurut tanggal penerbitan, yang terlama dulu"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
 #: cps/templates/search.html:67 cps/templates/shelf.html:55
 msgid "reduce"
-msgstr "redukovat"
+msgstr "kurangi"
 
 #: cps/templates/author.html:99
 msgid "More by"
-msgstr "Více od"
+msgstr "Lainnya oleh"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
-msgstr "Smazat knihu"
+msgstr "Hapus"
 
 #: cps/templates/book_edit.html:14
 msgid "Delete formats:"
-msgstr "Smazat formáty:"
+msgstr "Hapus format:"
 
 #: cps/templates/book_edit.html:25
 msgid "Convert book format:"
-msgstr "Převést formát knihy:"
+msgstr "KOnversi format buku:"
 
 #: cps/templates/book_edit.html:30
 msgid "Convert from:"
-msgstr "Převést z:"
+msgstr "Konversi dari:"
 
 #: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
 msgid "select an option"
-msgstr "vyberte možnost"
+msgstr "pilih opsi"
 
 #: cps/templates/book_edit.html:37
 msgid "Convert to:"
-msgstr "Převést do:"
+msgstr "Konversi ke:"
 
 #: cps/templates/book_edit.html:46
 msgid "Convert book"
-msgstr "Převést knihu"
+msgstr "Konversi buku"
 
 #: cps/templates/book_edit.html:56 cps/templates/search_form.html:8
 msgid "Book Title"
-msgstr "Název knihy"
+msgstr "Judul Buku"
 
 #: cps/templates/book_edit.html:63 cps/templates/book_edit.html:271
 #: cps/templates/book_edit.html:289 cps/templates/search_form.html:12
 msgid "Author"
-msgstr "Autor"
+msgstr "Penulis"
 
 #: cps/templates/book_edit.html:68 cps/templates/book_edit.html:276
 #: cps/templates/book_edit.html:291 cps/templates/search_form.html:153
 msgid "Description"
-msgstr "Popis"
+msgstr "Deskripsi"
 
 #: cps/templates/book_edit.html:73
 msgid "Identifiers"
-msgstr "Identifikátory"
+msgstr "Pengidentifikasi"
 
 #: cps/templates/book_edit.html:77 cps/templates/book_edit.html:300
 msgid "Identifier Type"
-msgstr "Typy identifikátorů"
+msgstr "Tipe Pengidentifikasi"
 
 #: cps/templates/book_edit.html:78 cps/templates/book_edit.html:301
 msgid "Identifier Value"
-msgstr "Hodnota identifikátorů"
+msgstr "Nilai Pengidentifikasi"
 
 #: cps/templates/book_edit.html:79 cps/templates/book_edit.html:302
 #: cps/templates/user_table.html:24
 msgid "Remove"
-msgstr "Odstranit"
+msgstr "Hapus"
 
 #: cps/templates/book_edit.html:83
 msgid "Add Identifier"
-msgstr "Přidat identifikátor"
+msgstr "Tambah Pengidentifikasi"
 
 #: cps/templates/book_edit.html:87 cps/templates/search_form.html:51
 msgid "Tags"
-msgstr "Štítky"
+msgstr "Tag"
 
 #: cps/templates/book_edit.html:95
 msgid "Series ID"
-msgstr "ID série"
+msgstr "ID Seri"
 
 #: cps/templates/book_edit.html:99
 msgid "Rating"
-msgstr "Hodnocení"
+msgstr "Rating"
 
 #: cps/templates/book_edit.html:104
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Adresa URL obalu (jpg, obal je stažen a uložen v databázi, pole je potom opět prázdné)"
+msgstr "Ambil Sampul dari URL (JPEG - Gambar akan diunduh dan disimpan dalam basis data)"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
-msgstr "Nahrát obal z místní jednotky"
+msgstr "Unggah Sampul dari disk lokal"
 
 #: cps/templates/book_edit.html:113
 msgid "Published Date"
-msgstr "Datum vydání"
+msgstr "Tanggal Terbit"
 
 #: cps/templates/book_edit.html:122 cps/templates/book_edit.html:273
 #: cps/templates/book_edit.html:290 cps/templates/detail.html:165
 #: cps/templates/listenmp3.html:102 cps/templates/search_form.html:16
 msgid "Publisher"
-msgstr "Vydavatel"
+msgstr "Penerbit"
 
 #: cps/templates/book_edit.html:126 cps/templates/detail.html:132
 #: cps/templates/listenmp3.html:69 cps/templates/user_edit.html:33
 msgid "Language"
-msgstr "Jazyk"
+msgstr "Bahasa"
 
 #: cps/templates/book_edit.html:136 cps/templates/search_form.html:45
 #: cps/templates/search_form.html:164
 msgid "Yes"
-msgstr "Ano"
+msgstr "Ya"
 
 #: cps/templates/book_edit.html:137 cps/templates/search_form.html:46
 #: cps/templates/search_form.html:165
 msgid "No"
-msgstr "Ne"
+msgstr "Tidak"
 
 #: cps/templates/book_edit.html:201
 msgid "Upload Format"
-msgstr "Nahrát formát"
+msgstr "Format Unggahan"
 
 #: cps/templates/book_edit.html:209
 msgid "View Book on Save"
-msgstr "Zobrazit knihu po uložení"
+msgstr "Tampilkan Buku setelah Disimpan"
 
 #: cps/templates/book_edit.html:212 cps/templates/book_edit.html:230
 msgid "Fetch Metadata"
-msgstr "Získat metadata"
+msgstr "Ambil Metadata"
 
 #: cps/templates/book_edit.html:213 cps/templates/config_db.html:53
 #: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:174
@@ -1916,336 +1898,332 @@ msgstr "Získat metadata"
 #: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
 #: cps/templates/user_edit.html:142
 msgid "Save"
-msgstr "Uložit"
+msgstr "Simpan"
 
 #: cps/templates/book_edit.html:233
 msgid "Keyword"
-msgstr "Klíčové slovo"
+msgstr "Kata Kunci"
 
 #: cps/templates/book_edit.html:234
-#, fuzzy
 msgid "Search keyword"
-msgstr "Hledat klíčové slovo"
+msgstr "Cari Kata kunci"
 
 #: cps/templates/book_edit.html:240
 msgid "Click the cover to load metadata to the form"
-msgstr "Kliknutím na obal načtěte metadata do formuláře"
+msgstr "Klik sampul untuk memuat metadata ke formulir"
 
 #: cps/templates/book_edit.html:247 cps/templates/book_edit.html:286
 msgid "Loading..."
-msgstr "Načítání..."
+msgstr "Memuat..."
 
 #: cps/templates/book_edit.html:251 cps/templates/layout.html:85
 #: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
-msgstr "Zavřít"
+msgstr "Tutup"
 
 #: cps/templates/book_edit.html:278 cps/templates/book_edit.html:292
 msgid "Source"
-msgstr "Zdroj"
+msgstr "Sumber"
 
 #: cps/templates/book_edit.html:287
 msgid "Search error!"
-msgstr "Chyba vyhledávání!"
+msgstr "Kesalahan pencarian!"
 
 #: cps/templates/book_edit.html:288
 msgid "No Result(s) found! Please try another keyword."
-msgstr "Nebyly nalezeny žádné výsledky! Zadejte jiné klíčové slovo."
+msgstr "Tidak ada hasil yang ditemukan! Silakan coba kata kunci lain."
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:69
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
 #: cps/templates/user_table.html:100
 msgid "This Field is Required"
-msgstr ""
+msgstr "Isian Ini Diperlukan"
 
 #: cps/templates/book_table.html:37
 msgid "Merge selected books"
-msgstr ""
+msgstr "Gabungkan buku terpiih"
 
 #: cps/templates/book_table.html:38 cps/templates/user_table.html:124
 msgid "Remove Selections"
-msgstr ""
+msgstr "Hapus Pilihan"
 
 #: cps/templates/book_table.html:41
 msgid "Exchange author and title"
-msgstr ""
+msgstr "Tukar penulis dan judul"
 
 #: cps/templates/book_table.html:47
 msgid "Update Title Sort automatically"
-msgstr ""
+msgstr "Perbarui Pengurutan Judul secara otomatis"
 
 #: cps/templates/book_table.html:51
 msgid "Update Author Sort automatically"
-msgstr ""
+msgstr "Perbarui Pengurutan Penulis secara otomatis"
 
 #: cps/templates/book_table.html:63 cps/templates/book_table.html:69
 msgid "Enter Title"
-msgstr ""
+msgstr "Masukkan Judul"
 
 #: cps/templates/book_table.html:63 cps/templates/config_view_edit.html:24
 #: cps/templates/shelf_edit.html:8
 msgid "Title"
-msgstr "Název"
+msgstr "Judul"
 
 #: cps/templates/book_table.html:64
 msgid "Enter Title Sort"
-msgstr ""
+msgstr "Masukkan Urutan Judul"
 
 #: cps/templates/book_table.html:64
 msgid "Title Sort"
-msgstr ""
+msgstr "Urutan Judul"
 
 #: cps/templates/book_table.html:65
 msgid "Enter Author Sort"
-msgstr ""
+msgstr "Masukkan Urutan Penulis"
 
 #: cps/templates/book_table.html:65
 msgid "Author Sort"
-msgstr ""
+msgstr "Urutan Penulis"
 
 #: cps/templates/book_table.html:66
 msgid "Enter Authors"
-msgstr ""
+msgstr "Masukkan Penulis"
 
 #: cps/templates/book_table.html:67
 msgid "Enter Categories"
-msgstr ""
+msgstr "Masukkan Kategori"
 
 #: cps/templates/book_table.html:68
 msgid "Enter Series"
-msgstr ""
+msgstr "Masukkan Seri"
 
 #: cps/templates/book_table.html:69
 msgid "Series Index"
-msgstr ""
+msgstr "Indeks Pencarian"
 
 #: cps/templates/book_table.html:70
 msgid "Enter Languages"
-msgstr ""
+msgstr "Masukkan Bahasa"
 
 #: cps/templates/book_table.html:71
 msgid "Publishing Date"
-msgstr ""
+msgstr "Tanggal Terbit"
 
 #: cps/templates/book_table.html:72
 msgid "Enter Publishers"
-msgstr ""
+msgstr "Masukkan Penerbit"
 
 #: cps/templates/book_table.html:73
-#, fuzzy
 msgid "Enter comments"
-msgstr "Zadejte jméno domény"
+msgstr "Masukkan komentar"
 
 #: cps/templates/book_table.html:73
 msgid "Comments"
-msgstr ""
+msgstr "Komentar"
 
 #: cps/templates/book_table.html:75
 msgid "Archive Status"
-msgstr ""
+msgstr "Status Arsip"
 
 #: cps/templates/book_table.html:77 cps/templates/search_form.html:42
 msgid "Read Status"
-msgstr ""
+msgstr "Status Baca"
 
 #: cps/templates/book_table.html:80 cps/templates/book_table.html:82
 #: cps/templates/book_table.html:84 cps/templates/book_table.html:86
 #: cps/templates/book_table.html:90 cps/templates/book_table.html:92
 #: cps/templates/book_table.html:96
-#, fuzzy
 msgid "Enter "
-msgstr "Identifikátory"
+msgstr "入力: "
 
 #: cps/templates/book_table.html:113 cps/templates/modal_dialogs.html:46
 #: cps/templates/tasks.html:36
 msgid "Are you really sure?"
-msgstr "Jste si opravdu jisti?"
+msgstr "Apakah Anda yakin?"
 
 #: cps/templates/book_table.html:117
 msgid "Books with Title will be merged from:"
-msgstr ""
+msgstr "Buku dengan Judul akan digabungkan dari:"
 
 #: cps/templates/book_table.html:121
 msgid "Into Book with Title:"
-msgstr ""
+msgstr "Ke dalam Buku dengan Judul:"
 
 #: cps/templates/book_table.html:126
 msgid "Merge"
-msgstr ""
+msgstr "Gabungkan"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
-msgstr "Umístění Calibre databáze"
+msgstr "Lokasi Database Calibre"
 
 #: cps/templates/config_db.html:22
 msgid "Use Google Drive?"
-msgstr "Použít Google Drive?"
+msgstr "Gunakan Google Drive?"
 
 #: cps/templates/config_db.html:27
 msgid "Authenticate Google Drive"
-msgstr "Ověřit Google Drive"
+msgstr "Autentikasi Google Drive"
 
 #: cps/templates/config_db.html:32
 msgid "Google Drive Calibre folder"
-msgstr "Google Drive Calibre složka"
+msgstr "Silakan tekan simpan untuk melanjutkan penyiapan"
 
 #: cps/templates/config_db.html:40
 msgid "Metadata Watch Channel ID"
-msgstr "ID kanálu sledování metadat"
+msgstr "ID Saluran Metadata Watch"
 
 #: cps/templates/config_db.html:43
 msgid "Revoke"
-msgstr "Odvolat"
+msgstr "Tarik Kembali"
 
 #: cps/templates/config_db.html:68
-#, fuzzy
 msgid "New db location is invalid, please enter valid path"
-msgstr "Umístění databáze není platné, opravte prosím cestu"
+msgstr "Lokasi basis data baru tidak valid, harap masukkan jalur yang valid"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
-msgstr "Nastavení serveru"
+msgstr "Konfigurasi Server"
 
 #: cps/templates/config_edit.html:25
 msgid "Server Port"
-msgstr "Server port"
+msgstr "Port Server"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Umístění certifikátu SSL (ponechte prázdné pro servery jiné než SSL)"
+msgstr "Lokasi file sertifikat SSL (biarkan kosong untuk Server non-SSL)"
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "Umístění souboru s klíčem SSL (ponechte prázdné pro servery jiné než SSL)"
+msgstr "Lokasi SSL Keyfile (biarkan kosong untuk Server non-SSL)"
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
-msgstr "Aktualizační kanál"
+msgstr "Saluran Pembaruan"
 
 #: cps/templates/config_edit.html:45
 msgid "Stable"
-msgstr "Stabilní"
+msgstr "Stabil"
 
 #: cps/templates/config_edit.html:46
 msgid "Nightly"
-msgstr "Noční"
+msgstr "Nightly"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
+msgstr "Host Tepercaya (Pisahkan dengan Koma)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
-msgstr "Konfigurace log souboru"
+msgstr "Konfigurasi Logfile"
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "Umístění a jméno log souboru (calibre-web.log pro žádnou položku)"
+msgstr "Lokasi dan nama file log (caliber-web.log jika tanpa entri)"
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
-msgstr "Povolit log přístupů"
+msgstr "Aktifkan Log Akses"
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "Umístění a jméno logu přístupů (access.log pro žádnou položku)"
+msgstr "Lokasi dan nama file log akses (access.log jika tanpa entri)"
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
-msgstr "Konfigurace funkcí"
+msgstr "Konfigurasi Fitur"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr ""
+msgstr "Konversikan karakter non-Inggris dalam judul dan penulis saat menyimpan ke disk"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
-msgstr "Povolit nahrávání"
+msgstr "Izinkan Unggahan"
 
 #: cps/templates/config_edit.html:108
 msgid "(Please ensure users having also upload rights)"
-msgstr ""
+msgstr "(Harap pastikan pengguna juga memiliki hak mengunggah)"
 
 #: cps/templates/config_edit.html:112
 msgid "Allowed Upload Fileformats"
-msgstr "Povolené nahrávání formátů souborů"
+msgstr "Format Berkas Unggahan yang Diizinkan"
 
 #: cps/templates/config_edit.html:118
 msgid "Enable Anonymous Browsing"
-msgstr "Povolit anonymní prohlížení"
+msgstr "Izinkan Penjelajahan Anonim"
 
 #: cps/templates/config_edit.html:122
 msgid "Enable Public Registration"
-msgstr "Povolit veřejnou registraci"
+msgstr "Izinkan Registrasi Publik"
 
 #: cps/templates/config_edit.html:127
 msgid "Use E-Mail as Username"
-msgstr "Použít e-mail jako přezdívku"
+msgstr "Gunakan Email sebagai Nama Pengguna"
 
 #: cps/templates/config_edit.html:132
 msgid "Enable Magic Link Remote Login"
-msgstr "Povolit Magic Link vzdálené přihlášení"
+msgstr "Izinkan Login Jarak Jauh dengan Magic Link"
 
 #: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
-msgstr "Povolit Kobo synchronizaci"
+msgstr "Aktifkan sinkronisasi Kobo"
 
 #: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
-msgstr "Proxy neznámé požadavky na obchod Kobo"
+msgstr "Proxy permintaan tidak dikenal ke Kobo Store"
 
 #: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
+msgstr "Port Eksternal Server (untuk panggilan API melalui port forward)"
 
 #: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
-msgstr "Použít Goodreads"
+msgstr "Gunakan Goodreads"
 
 #: cps/templates/config_edit.html:154
 msgid "Create an API Key"
-msgstr "Získat API klíč"
+msgstr "Buat Kunci API"
 
 #: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
-msgstr "Goodreads API Klíč"
+msgstr "Kunci API Goodreads"
 
 #: cps/templates/config_edit.html:162
 msgid "Goodreads API Secret"
-msgstr "Goodreads API tajemství"
+msgstr "Goodreads API Secret"
 
 #: cps/templates/config_edit.html:169
 msgid "Allow Reverse Proxy Authentication"
-msgstr "Povolit reverzní ověření proxy"
+msgstr "Izinkan Reverse Proxy Authentication"
 
 #: cps/templates/config_edit.html:180
 msgid "Login type"
-msgstr "Typ přihlášení"
+msgstr "Tipe Login"
 
 #: cps/templates/config_edit.html:182
 msgid "Use Standard Authentication"
-msgstr "Použít standartní ověření"
+msgstr "Gunakan Otentikasi Standar"
 
 #: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
-msgstr "Použít ověření LDAP"
+msgstr "Gunakan Otentikasi LDAP"
 
 #: cps/templates/config_edit.html:187
 msgid "Use OAuth"
-msgstr "Použít OAuth"
+msgstr "Gunakan Oauth"
 
 #: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
-msgstr "Název hostitele serveru LDAP nebo IP adresa"
+msgstr "Nama Host Server atau Alamat IP LDAP"
 
 #: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
-msgstr "LDAP Server Port"
+msgstr "Port Server LDAP"
 
 #: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
-msgstr "LDAP Šifrování"
+msgstr "Enkripsi LDAP"
 
 #: cps/templates/config_edit.html:205
 msgid "TLS"
@@ -2257,302 +2235,300 @@ msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Jalur CACertificate LDAP (Hanya diperlukan untuk Autentikasi Sertifikat Klien)"
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Jalur Sertifikat LDAP (Hanya diperlukan untuk Otentikasi Sertifikat Klien)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
+msgstr "Jalur File Kunci LDAP (Hanya diperlukan untuk Otentikasi Sertifikat Klien)"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
-msgstr "LDAP Ověření"
+msgstr "Otentikasi LDAP"
 
 #: cps/templates/config_edit.html:235
 msgid "Anonymous"
-msgstr "Anonymní"
+msgstr "Anonim"
 
 #: cps/templates/config_edit.html:236
 msgid "Unauthenticated"
-msgstr "Neověřeno"
+msgstr "Tidak diautentikasi"
 
 #: cps/templates/config_edit.html:237
 msgid "Simple"
-msgstr "Jednoduché"
+msgstr "Sederhana"
 
 #: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
-msgstr "Uživatelské jméno správce LDAP"
+msgstr "Nama Pengguna Administrator LDAP"
 
 #: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
-msgstr "Heslo správce LDAP"
+msgstr "Kata Sandi Administrator LDAP"
 
 #: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
-msgstr "Rozlišující název LDAP (DN)"
+msgstr "Distinguished Name (DN) LDAP"
 
 #: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
-msgstr "Filtr objektu uživatele LDAP"
+msgstr "Filter Objek Pengguna LDAP"
 
 #: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
-msgstr "Server LDAP je OpenLDAP?"
+msgstr "Server LDAP adalah OpenLDAP?"
 
 #: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
-msgstr "Následující nastavení jsou potřeba pro import uživatele"
+msgstr "Pengaturan Berikut Diperlukan Untuk Impor Pengguna"
 
 #: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
-msgstr "Filtr objektů skupiny LDAP"
+msgstr "Filter Objek Grup LDAP"
 
 #: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
-msgstr "Jméno skupiny LDAP"
+msgstr "Nama Grup LDAP"
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
-msgstr "Pole členů skupiny LDAP"
+msgstr "Bidang Group Members LDAP"
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
-msgstr ""
+msgstr "Deteksi Filter Pengguna Anggota LDAP"
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
-msgstr ""
+msgstr "Deteksi otomatis"
 
 #: cps/templates/config_edit.html:281
 msgid "Custom Filter"
-msgstr ""
+msgstr "Filter Kustom"
 
 #: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
-msgstr ""
+msgstr "Filter Pengguna Anggota LDAP"
 
 #: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr "Získat %(provider)s OAuth pověření"
+msgstr "Dapatkan %(provider)s Kredensial OAuth"
 
 #: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth Klient Id"
+msgstr "ID Klien %(provider)s OAuth"
 
 #: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr "%(provider)s OAuth Klient Tajemství"
+msgstr "Client Secret %(provider)s OAuth"
 
 #: cps/templates/config_edit.html:320
 msgid "External binaries"
-msgstr "Externí binární soubory"
+msgstr "Binari Eksternal"
 
 #: cps/templates/config_edit.html:326
 msgid "Path to Calibre E-Book Converter"
-msgstr "Cesta k převaděči e-knih Calibre"
+msgstr "Jalur ke Konverter E-Book Calibre"
 
 #: cps/templates/config_edit.html:334
 msgid "Calibre E-Book Converter Settings"
-msgstr "Nastavení převaděče e-knih Calibre"
+msgstr "Pengaturan Konverter E-Book Caliber"
 
 #: cps/templates/config_edit.html:337
 msgid "Path to Kepubify E-Book Converter"
-msgstr "Cesta k převaděči e-knih Kepubify"
+msgstr "Jalur ke Konverter E-Book Kepubify"
 
 #: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
-msgstr "Umístění Unrar binarních souborů"
+msgstr "Lokasi binari Unrar"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
-msgstr "Prohlížet konfiguraci"
+msgstr "Tampilkan Konfigurasi"
 
 #: cps/templates/config_view_edit.html:32
 msgid "No. of Random Books to Display"
-msgstr "Počet náhodných knih k zobrazení"
+msgstr "Jumlah Buku Acak untuk Ditampilkan"
 
 #: cps/templates/config_view_edit.html:36
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr "Počet autorů k zobrazení před skrytím (0 = Zakázat skrytí)"
+msgstr "Jumlah Penulis untuk Ditampilkan Sebelum Disembunyikan (0=Nonaktifkan Penyembunyian)"
 
 #: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:116
 msgid "Theme"
-msgstr "Motiv"
+msgstr "Tema"
 
 #: cps/templates/config_view_edit.html:42
 msgid "Standard Theme"
-msgstr "Standartní motiv"
+msgstr "Tema Standar"
 
 #: cps/templates/config_view_edit.html:43
 msgid "caliBlur! Dark Theme"
-msgstr "caliBlur! Tmavý motiv"
+msgstr "Tema Gelap caliBlur!"
 
 #: cps/templates/config_view_edit.html:47
 msgid "Regular Expression for Ignoring Columns"
-msgstr "Regulární výraz pro ignorování sloupců"
+msgstr "Ekspresi Reguler untuk Mengabaikan Kolom"
 
 #: cps/templates/config_view_edit.html:51
 msgid "Link Read/Unread Status to Calibre Column"
-msgstr "Propojit stav čtení/nepřečtení do sloupce Calibre"
+msgstr "Tautkan Status Baca/Belum Dibaca ke Kolom Kaliber"
 
 #: cps/templates/config_view_edit.html:60
 msgid "View Restrictions based on Calibre column"
-msgstr "Zobrazit omezení podle Calibre sloupce"
+msgstr "Lihat Batasan berdasarkan kolom Caliber"
 
 #: cps/templates/config_view_edit.html:69
 msgid "Regular Expression for Title Sorting"
-msgstr "Regulární výraz pro řazení názvů"
+msgstr "Ekspresi Reguler untuk Penyortiran Judul"
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
-msgstr "Výchozí nastavení pro nového uživatele"
+msgstr "Pengaturan Default untuk Pengguna Baru"
 
 #: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:96
 msgid "Admin User"
-msgstr "Uživatel admin"
+msgstr "Pengguna Admin"
 
 #: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:101
 msgid "Allow Downloads"
-msgstr "Povolit stahování"
+msgstr "Izinkan Unduhan"
 
 #: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:105
 msgid "Allow eBook Viewer"
-msgstr "Povolit prohlížeč knih"
+msgstr "Izinkan Penampil eBook"
 
 #: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:110
 msgid "Allow Uploads"
-msgstr "Povolit nahrávání"
+msgstr "Izinkan Unggahan"
 
 #: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:115
 msgid "Allow Edit"
-msgstr "Povolit úpravy"
+msgstr "Izinkan Edit"
 
 #: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:120
 msgid "Allow Delete Books"
-msgstr "Povolit mazání knih"
+msgstr "Izinkan Menghapus Buku"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:126
 msgid "Allow Changing Password"
-msgstr "Povolit změnu hesla"
+msgstr "Izinkan Mengganti Kata Sandi"
 
 #: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:130
 msgid "Allow Editing Public Shelves"
-msgstr "Povolit úpravy veřejných polic"
+msgstr "Izinkan Mengedit Rak Publik"
 
 #: cps/templates/config_view_edit.html:123
-#, fuzzy
 msgid "Default Language"
-msgstr "Vynechat jazyky"
+msgstr "Bahasa Bawaan"
 
 #: cps/templates/config_view_edit.html:131
-#, fuzzy
 msgid "Default Visible Language of Books"
-msgstr "Zobrazit knihy s jazykem"
+msgstr "Bahasa Buku Bawaan yang Terlihat"
 
 #: cps/templates/config_view_edit.html:147
 msgid "Default Visibilities for New Users"
-msgstr "Výchozí zobrazení pro nové uživatele"
+msgstr "Visibilitas Default untuk Pengguna Baru"
 
 #: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
 #: cps/templates/user_table.html:154
 msgid "Show Random Books in Detail View"
-msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
+msgstr "Tampilkan Buku Acak dalam Tampilan Detail"
 
 #: cps/templates/config_view_edit.html:166 cps/templates/user_edit.html:87
 msgid "Add Allowed/Denied Tags"
-msgstr "Přidat povolené/zakázané štítky"
+msgstr "Tambahkan Tag yang Diizinkan/Ditolak"
 
 #: cps/templates/config_view_edit.html:167
 msgid "Add Allowed/Denied custom column values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Tambahkan nilai kolom khusus yang Diizinkan/Ditolak"
 
 #: cps/templates/detail.html:61 cps/templates/detail.html:70
 msgid "Read in Browser"
-msgstr "Číst v prohližeči"
+msgstr "Baca di Peramban"
 
 #: cps/templates/detail.html:78 cps/templates/detail.html:95
 msgid "Listen in Browser"
-msgstr "Poslechnout v prohlížeči"
+msgstr "Dengarkan di Browser"
 
 #: cps/templates/detail.html:125 cps/templates/listenmp3.html:62
-#, fuzzy, python-format
+#, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr ""
+msgstr "Buku"
 
 #: cps/templates/detail.html:174 cps/templates/listenmp3.html:111
 msgid "Published"
-msgstr "Publikováno"
+msgstr "Diterbitkan"
 
 #: cps/templates/detail.html:222 cps/templates/listenmp3.html:158
 msgid "Mark As Unread"
-msgstr "Označit jako nepřečtené"
+msgstr "Tandai sebagai Belum dibaca"
 
 #: cps/templates/detail.html:222 cps/templates/listenmp3.html:158
 msgid "Mark As Read"
-msgstr "Označit jako přečtené"
+msgstr "Tandai sebagai dibaca"
 
 #: cps/templates/detail.html:223 cps/templates/listenmp3.html:159
 msgid "Read"
-msgstr "Přečteno"
+msgstr "Baca"
 
 #: cps/templates/detail.html:232 cps/templates/listenmp3.html:166
 msgid "Restore from archive"
-msgstr "Obnovit z archivu"
+msgstr "Pulihkan dari arsip"
 
 #: cps/templates/detail.html:232 cps/templates/listenmp3.html:166
 msgid "Add to archive"
-msgstr "Archívovat"
+msgstr "Tambahkan ke Arsip"
 
 #: cps/templates/detail.html:233 cps/templates/listenmp3.html:167
 msgid "Archived"
-msgstr "Archivováno"
+msgstr "Diarsipkan"
 
 #: cps/templates/detail.html:244 cps/templates/listenmp3.html:177
 msgid "Description:"
-msgstr "Popis:"
+msgstr "Deskripsi:"
 
 #: cps/templates/detail.html:257 cps/templates/listenmp3.html:190
 #: cps/templates/search.html:16
 msgid "Add to shelf"
-msgstr "Přidat do police"
+msgstr "Tambah ke rak"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
 #: cps/templates/feed.xml:79 cps/templates/layout.html:161
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
-msgstr "(Veřejné)"
+msgstr "(Publik)"
 
 #: cps/templates/detail.html:299
 msgid "Edit Metadata"
-msgstr "Upravit metadata"
+msgstr "Edit Metadata"
 
 #: cps/templates/email_edit.html:13
 msgid "Choose Server Type"
-msgstr ""
+msgstr "Pilih Jenis Server"
 
 #: cps/templates/email_edit.html:15
 msgid "Use Standard E-Mail Account"
-msgstr ""
+msgstr "Gunakan Akun Email Standar"
 
 #: cps/templates/email_edit.html:16
 msgid "Gmail Account with OAuth2 Verification"
-msgstr ""
+msgstr "Akun Gmail dengan Verifikasi OAuth2"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr ""
+msgstr "Siapkan Akun Gmail sebagai Server Email"
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
-msgstr ""
+msgstr "Cabut Akses G-Mail"
 
 #: cps/templates/email_edit.html:42
 msgid "STARTTLS"
@@ -2564,853 +2540,828 @@ msgstr "SSL/TLS"
 
 #: cps/templates/email_edit.html:51
 msgid "SMTP Password"
-msgstr "SMTP heslo"
+msgstr "Kata Sandi SMTP"
 
 #: cps/templates/email_edit.html:58
 msgid "Attachment Size Limit"
-msgstr "Limit velikosti souboru"
+msgstr "Batas Ukuran Lampiran"
 
 #: cps/templates/email_edit.html:66
 msgid "Save and Send Test E-mail"
-msgstr "Uložit nastavení a odeslat zkušební e-mail"
+msgstr "Simpan dan Kirim Email Percobaan"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:33
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
-msgstr "Zpět"
+msgstr "Kembali"
 
 #: cps/templates/email_edit.html:74
 msgid "Allowed Domains (Whitelist)"
-msgstr "Povolené domény pro registraci"
+msgstr "Domain yang Diizinkan (Daftar Putih)"
 
 #: cps/templates/email_edit.html:78 cps/templates/email_edit.html:105
 msgid "Add Domain"
-msgstr "Přidat doménu"
+msgstr "Tambahkan Domain"
 
 #: cps/templates/email_edit.html:81 cps/templates/email_edit.html:108
 #: cps/templates/user_table.html:27
 msgid "Add"
-msgstr "Přidat"
+msgstr "Tambah"
 
 #: cps/templates/email_edit.html:86 cps/templates/email_edit.html:96
 msgid "Enter domainname"
-msgstr "Zadejte jméno domény"
+msgstr "Masukkan Nama Domain"
 
 #: cps/templates/email_edit.html:92
 msgid "Denied Domains (Blacklist)"
-msgstr "Zakázané domény pro registraci"
+msgstr "Domain yang Ditolak (Daftar Hitam)"
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:194
 msgid "Next"
-msgstr "Další"
+msgstr "Selanjutnya"
 
 #: cps/templates/generate_kobo_auth_url.html:6
 #, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Otevřte soubor .kobo/Kobo eReader.conf v textovém editoru a vložte (nebo upravte):"
+msgstr "Buka file .kobo/Kobo eReader.conf di editor teks dan tambahkan (atau edit):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
-#, fuzzy
 msgid "Kobo Token:"
-msgstr "Kobo Sync token"
+msgstr "Token Kobo:"
 
 #: cps/templates/grid.html:21
 msgid "List"
-msgstr ""
+msgstr "Daftar"
 
 #: cps/templates/http_error.html:34
-#, fuzzy
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "E-mailový server není nakonfigurován, kontaktujte svého správce!"
+msgstr "Instans Calibre-Web belum dikonfigurasi, harap hubungi administrator Anda"
 
 #: cps/templates/http_error.html:44
 msgid "Create Issue"
-msgstr "Vytvořit problém"
+msgstr "Buat Isu"
 
 #: cps/templates/http_error.html:51
 msgid "Return to Home"
-msgstr "Zpět domů"
+msgstr "Kembali ke Beranda"
 
 #: cps/templates/http_error.html:53
 msgid "Logout User"
-msgstr ""
+msgstr "Keluar Pengguna"
 
 #: cps/templates/index.html:71
 msgid "Sort ascending according to download count"
-msgstr ""
+msgstr "Urutkan naik menurut jumlah unduhan"
 
 #: cps/templates/index.html:72
 msgid "Sort descending according to download count"
-msgstr ""
+msgstr "Urutkan turun menurut jumlah unduhan"
 
 #: cps/templates/index.html:78 cps/templates/search.html:35
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
-msgstr ""
+msgstr "Urutkan penulis dalam urutan abjad"
 
 #: cps/templates/index.html:79 cps/templates/search.html:36
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
-msgstr ""
+msgstr "Urutkan penulis dalam urutan abjad terbalik"
 
 #: cps/templates/index.html:83
 msgid "Sort ascending according to series index"
-msgstr ""
+msgstr "Urutkan naik menurut indeks seri"
 
 #: cps/templates/index.html:84
 msgid "Sort descending according to series index"
-msgstr ""
+msgstr "Urutkan menurun menurut indeks seri"
 
 #: cps/templates/index.xml:6
 msgid "Start"
-msgstr "Start"
+msgstr "Mulai"
 
 #: cps/templates/index.xml:18
 msgid "Alphabetical Books"
-msgstr ""
+msgstr "Buku Abjad"
 
 #: cps/templates/index.xml:22
 msgid "Books sorted alphabetically"
-msgstr ""
+msgstr "Buku diurutkan menurut abjad"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Downloads."
-msgstr "Oblíbené publikace z tohoto katalogu založené na počtu stažení."
+msgstr "Publikasi populer dari katalog ini berdasarkan Unduhan."
 
 #: cps/templates/index.xml:36
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Oblíbené publikace z tohoto katalogu založené na hodnocení."
+msgstr "Publikasi populer dari katalog ini berdasarkan Rating."
 
 #: cps/templates/index.xml:39
 msgid "Recently added Books"
-msgstr "Nedávno přidané knihy"
+msgstr "Buku yang baru ditambahkan"
 
 #: cps/templates/index.xml:43
 msgid "The latest Books"
-msgstr "Nejnovější knihy"
+msgstr "Buku-buku terbaru"
 
 #: cps/templates/index.xml:46
 msgid "Random Books"
-msgstr "Náhodné knihy"
+msgstr "Buku Acak"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by Author"
-msgstr "Knihy seřazené podle autora"
+msgstr "Buku yang diurutkan menurut Penulis"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by publisher"
-msgstr "Knihy seřazené podle vydavatele"
+msgstr "Buku yang diurutkan menurut Penerbit"
 
 #: cps/templates/index.xml:87
 msgid "Books ordered by category"
-msgstr "Knihy seřazené podle kategorie"
+msgstr "Buku yang diurutkan menurut Kategori"
 
 #: cps/templates/index.xml:94
 msgid "Books ordered by series"
-msgstr "Knihy seřazené podle série"
+msgstr "Buku yang diurutkan menurut Seri"
 
 #: cps/templates/index.xml:101
 msgid "Books ordered by Languages"
-msgstr "Knihy seřazené podle jazyků"
+msgstr "Buku yang diurutkan menurut Bahasa"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by Rating"
-msgstr "Knihy řazené podle hodnocení"
+msgstr "Buku yang diurutkan menurut Peringkat"
 
 #: cps/templates/index.xml:116
 msgid "Books ordered by file formats"
-msgstr "Knihy seřazené podle souboru formátů"
+msgstr "Buku yang diurutkan menurut format berkas"
 
 #: cps/templates/index.xml:119 cps/templates/layout.html:159
 #: cps/templates/search_form.html:87
 msgid "Shelves"
-msgstr "Police"
+msgstr "Rak"
 
 #: cps/templates/index.xml:123
 msgid "Books organized in shelves"
-msgstr "Knihy organizované v policích"
+msgstr "本棚に整理された本"
 
 #: cps/templates/layout.html:33 cps/templates/login.html:30
 msgid "Home"
-msgstr "Domů"
+msgstr "Beranda"
 
 #: cps/templates/layout.html:39
 msgid "Toggle Navigation"
-msgstr "Přepnout navigaci"
+msgstr "Alihkan Navigasi"
 
 #: cps/templates/layout.html:54
 msgid "Search Library"
-msgstr "Hledat v knihovně"
+msgstr "Cari di Pustaka"
 
 #: cps/templates/layout.html:72 cps/templates/layout.html:101
 msgid "Account"
-msgstr "Účet"
+msgstr "Akun"
 
 #: cps/templates/layout.html:78 cps/templates/layout.html:103
 msgid "Logout"
-msgstr "Odhlásit se"
+msgstr "Keluar"
 
 #: cps/templates/layout.html:85 cps/templates/layout.html:141
 msgid "Uploading..."
-msgstr "Nahrávání..."
+msgstr "Mengunggah..."
 
 #: cps/templates/layout.html:85
 msgid "Error"
-msgstr "Chyba"
+msgstr "Terjadi Kesalahan"
 
 #: cps/templates/layout.html:85
 msgid "Upload done, processing, please wait..."
-msgstr "Nahrávání hotovo, zpracovávám, čekejte prosím..."
+msgstr "Unggahan selesai, harap tunggu, data sedang diproses..."
 
 #: cps/templates/layout.html:98 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "Pengaturan"
 
 #: cps/templates/layout.html:142
 msgid "Please do not refresh the page"
-msgstr "Prosím neobnovujte stránku"
+msgstr "Harap jangan segarkan halaman"
 
 #: cps/templates/layout.html:152
 msgid "Browse"
-msgstr "Procházet"
+msgstr "Jelajahi"
 
 #: cps/templates/layout.html:165 cps/templates/stats.html:3
 msgid "About"
-msgstr "O knihovně"
+msgstr "Tentang"
 
 #: cps/templates/layout.html:179
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "Sebelumnya"
 
 #: cps/templates/layout.html:206
 msgid "Book Details"
-msgstr "Podrobnosti o knize"
+msgstr "Detail Buku"
 
 #: cps/templates/list.html:22
 msgid "Grid"
-msgstr ""
+msgstr "Terjadi Kesalahan"
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
-msgstr "Zapamatovat si"
+msgstr "Ingat saya"
 
 #: cps/templates/login.html:23
 msgid "Forgot Password?"
-msgstr "Zapomenuté heslo?"
+msgstr "Lupa Kata Sandi?"
 
 #: cps/templates/login.html:34
 msgid "Log in with Magic Link"
-msgstr "Přihlásit se pomocí Magic Link"
+msgstr "Masuk dengan Magic Link"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr "Zobrazit Calibre-Web log: "
+msgstr "Tampilkan Log Caliber-Web:"
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
-msgstr "Calibre-Web log: "
+msgstr "Log Calibre-Web: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr "Streamový výstup, nelze zobrazit"
+msgstr "Output aliran, tidak dapat ditampilkan"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr "Zobrazit log přístupu: "
+msgstr "Tampilkan Log Akses:"
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr ""
+msgstr "Unduh Calibre-Web Log"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
-msgstr ""
+msgstr "Unduh Log Akses"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "Vybrat povolené/zakázané štítky"
+msgstr "Pilih Tag yang Diizinkan/Ditolak"
 
 #: cps/templates/modal_dialogs.html:7
 msgid "Select Allowed/Denied Custom Column Values"
-msgstr "Vybrat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Pilih Nilai Kolom Kustom yang Diizinkan/Ditolak"
 
 #: cps/templates/modal_dialogs.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "Vybrat povolené/zakázané uživatelské štítky"
+msgstr "Pilih Tag Pengguna yang Diizinkan/Ditolak"
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Vybrat povolené/zakázané hodnoty vlastních sloupců uživatele"
+msgstr "Pilih Nilai Kolom Pengguna yang Diizinkan/Ditolak"
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
-msgstr "Vložte štítek"
+msgstr "Masukkan Tag"
 
 #: cps/templates/modal_dialogs.html:24
 msgid "Add View Restriction"
-msgstr "Přidat omezení náhledu"
+msgstr "Tambahkan Batasan Tampilan"
 
 #: cps/templates/modal_dialogs.html:50
 msgid "This book format will be permanently erased from database"
-msgstr ""
+msgstr "Format buku ini akan dihapus secara permanen dari database"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
-msgstr "Tato kniha bude trvale odstraněna z databáze"
+msgstr "Buku ini akan dihapus secara permanen dari basis data"
 
 #: cps/templates/modal_dialogs.html:52
 msgid "and hard disk"
-msgstr "a z hard disku"
+msgstr "dan harddisk"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Důležitá Kobo poznámka: smazané knihy zůstanou na jakémkoli spárovaném zařízení Kobo."
+msgstr "Catatan Penting Kobo: buku yang dihapus akan tetap ada di perangkat Kobo yang telah dipasangkan."
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Knihy musí být nejprve archivovány a zařízení musí být synchronizováno, než bude kniha bezpečně smazána."
+msgstr "Buku harus diarsipkan terlebih dahulu dan perangkat disinkronkan sebelum buku dapat dihapus dengan aman."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
-msgstr ""
+msgstr "Pilih Lokasi Berkas"
 
 #: cps/templates/modal_dialogs.html:82
 msgid "type"
-msgstr ""
+msgstr "tipe"
 
 #: cps/templates/modal_dialogs.html:83
 msgid "name"
-msgstr ""
+msgstr "nama"
 
 #: cps/templates/modal_dialogs.html:84
 msgid "size"
-msgstr ""
+msgstr "ukuran"
 
 #: cps/templates/modal_dialogs.html:90
 msgid "Parent Directory"
-msgstr ""
+msgstr "Direktori Induk"
 
 #: cps/templates/modal_dialogs.html:98
 msgid "Select"
-msgstr ""
+msgstr "Pilih"
 
 #: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:45
-#, fuzzy
 msgid "Ok"
-msgstr "Kniha"
+msgstr "Ok"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
-msgstr "Calibre-Web katalog eknih"
+msgstr "Katalog eBook Calibre-Web"
 
 #: cps/templates/read.html:6
-#, fuzzy
 msgid "epub Reader"
-msgstr "Čtečka PDF"
+msgstr "Pembaca EPUB"
 
 #: cps/templates/read.html:81 cps/templates/readcbr.html:119
 msgid "Light"
-msgstr "Světlý"
+msgstr "Terang"
 
 #: cps/templates/read.html:82 cps/templates/readcbr.html:120
 msgid "Dark"
-msgstr "Tmavý"
+msgstr "Gelap"
 
 #: cps/templates/read.html:83
 msgid "Sepia"
-msgstr ""
+msgstr "Sepia"
 
 #: cps/templates/read.html:84
-#, fuzzy
 msgid "Black"
-msgstr "Zpět"
+msgstr "Hitam"
 
 #: cps/templates/read.html:88
 msgid "Reflow text when sidebars are open."
-msgstr "Po otevření postranních panelů přeformátujte text."
+msgstr "Reflow teks saat sidebar terbuka."
 
 #: cps/templates/read.html:93
 msgid "Font Sizes"
 msgstr ""
 
 #: cps/templates/readcbr.html:7
-#, fuzzy
 msgid "Comic Reader"
-msgstr "Čtečka PDF"
+msgstr "Pembaca Komik"
 
 #: cps/templates/readcbr.html:92
 msgid "Keyboard Shortcuts"
-msgstr "Klávesové zkratky"
+msgstr "Pintasan Keyboard"
 
 #: cps/templates/readcbr.html:95
 msgid "Previous Page"
-msgstr "Předchozí strana"
+msgstr "Halaman Sebelumnya"
 
 #: cps/templates/readcbr.html:96 cps/templates/readcbr.html:165
 msgid "Next Page"
-msgstr "Následujicí strana"
+msgstr "Halaman Selanjutnya"
 
 #: cps/templates/readcbr.html:97
 msgid "Scale to Best"
-msgstr "Změnit měřítko na nejlepší"
+msgstr "Skala ke Terbaik"
 
 #: cps/templates/readcbr.html:98
 msgid "Scale to Width"
-msgstr "Změnit měřítko na šířku"
+msgstr "Skala ke Lebar"
 
 #: cps/templates/readcbr.html:99
 msgid "Scale to Height"
-msgstr "Změnit měřítko na výšku"
+msgstr "Skala ke Tinggi"
 
 #: cps/templates/readcbr.html:100
 msgid "Scale to Native"
-msgstr "Změnit měřítko na nativní"
+msgstr "Skalakan ke Asli"
 
 #: cps/templates/readcbr.html:101
 msgid "Rotate Right"
-msgstr "Otočit doprava"
+msgstr "Putar ke Kanan"
 
 #: cps/templates/readcbr.html:102
 msgid "Rotate Left"
-msgstr "Otočit doleva"
+msgstr "Putar ke Kiri"
 
 #: cps/templates/readcbr.html:103
 msgid "Flip Image"
-msgstr "Převrátit obrázek"
+msgstr "Balikkan Gambar"
 
 #: cps/templates/readcbr.html:125
 msgid "Scale"
-msgstr "Měřítko"
+msgstr "Skala"
 
 #: cps/templates/readcbr.html:128
 msgid "Best"
-msgstr "Nejlepší"
+msgstr "Terbaik"
 
 #: cps/templates/readcbr.html:129
 msgid "Width"
-msgstr "Šířka"
+msgstr "Lebar"
 
 #: cps/templates/readcbr.html:130
 msgid "Height"
-msgstr "Výška"
+msgstr "Tinggi"
 
 #: cps/templates/readcbr.html:131
 msgid "Native"
-msgstr "Nativní"
+msgstr "Asli"
 
 #: cps/templates/readcbr.html:136
 msgid "Rotate"
-msgstr "Otočit"
+msgstr "Putar"
 
 #: cps/templates/readcbr.html:147
 msgid "Flip"
-msgstr "Převrátit"
+msgstr "Balik"
 
 #: cps/templates/readcbr.html:150
 msgid "Horizontal"
-msgstr "Vodorovně"
+msgstr "Horizontal"
 
 #: cps/templates/readcbr.html:151
 msgid "Vertical"
-msgstr "Svisle"
+msgstr "Vertical"
 
 #: cps/templates/readcbr.html:156
 msgid "Direction"
-msgstr "Směr"
+msgstr "Arah Baca"
 
 #: cps/templates/readcbr.html:159
 msgid "Left to Right"
-msgstr "Zleva doprava"
+msgstr "Kiri ke Kanan"
 
 #: cps/templates/readcbr.html:160
 msgid "Right to Left"
-msgstr "Zprava doleva"
+msgstr "Kanan ke Kiri"
 
 #: cps/templates/readcbr.html:168
 msgid "Reset to Top"
-msgstr ""
+msgstr "Atur Ulang ke Atas"
 
 #: cps/templates/readcbr.html:169
 msgid "Remember Position"
-msgstr ""
+msgstr "Ingat Posisi"
 
 #: cps/templates/readcbr.html:174
 msgid "Scrollbar"
-msgstr ""
+msgstr "Scrollbar"
 
 #: cps/templates/readcbr.html:177
 msgid "Show"
-msgstr ""
+msgstr "Tampilkan"
 
 #: cps/templates/readcbr.html:178
 msgid "Hide"
-msgstr ""
+msgstr "Sembunyikan"
 
 #: cps/templates/readdjvu.html:5
-#, fuzzy
 msgid "DJVU Reader"
-msgstr "Čtečka PDF"
+msgstr "Pembaca DJVU"
 
 #: cps/templates/readpdf.html:32
-#, fuzzy
 msgid "PDF Reader"
-msgstr "Čtečka PDF"
+msgstr "Pembaca PDF"
 
 #: cps/templates/readtxt.html:6
-#, fuzzy
 msgid "txt Reader"
-msgstr "Čtečka PDF"
+msgstr "Pembaca txt"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
-msgstr "Založit nový účet"
+msgstr "Daftar Akun Baru"
 
 #: cps/templates/register.html:10
 msgid "Choose a username"
-msgstr "Zvolte uživatelské jméno"
+msgstr "Pilih nama pengguna"
 
 #: cps/templates/register.html:15
 msgid "Your email address"
-msgstr "Vaše e-mailová adresa"
+msgstr "Alamat email Anda"
 
 #: cps/templates/remote_login.html:5
 msgid "Magic Link - Authorise New Device"
-msgstr "Magic Link - Schválit nové zařízení"
+msgstr "Magic Link - Otorisasi Perangkat Baru"
 
 #: cps/templates/remote_login.html:7
 msgid "On another device, login and visit:"
-msgstr "Použijte své druhé zařízení, přihlaste se a navštivte:"
+msgstr "Di perangkat lain, masuk dan kunjungi:"
 
 #: cps/templates/remote_login.html:11
 msgid "Once verified, you will automatically be logged in on this device."
-msgstr "Jakmile tak učiníte, budete automaticky přihlášeni na tomto zařízení."
+msgstr "Setelah diverifikasi, Anda akan secara otomatis masuk ke perangkat ini."
 
 #: cps/templates/remote_login.html:14
 msgid "This verification link will expire in 10 minutes."
-msgstr "Tento ověřovací odkaz vyprší za 10 minut."
+msgstr "Tautan verifikasi ini akan kedaluwarsa dalam 10 menit."
 
 #: cps/templates/schedule_edit.html:29
 msgid "Generate Book Cover Thumbnails"
-msgstr ""
+msgstr "Hasilkan Thumbnail Sampul Buku"
 
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
-msgstr ""
+msgstr "Hasilkan Thumbnail Sampul Seri"
 
 #: cps/templates/search.html:6
 msgid "No Results Found"
-msgstr "Nenalezeny žádné výsledky"
+msgstr "Tidak ada hasil yang ditemukan"
 
 #: cps/templates/search.html:7
 msgid "Search Term:"
-msgstr "Termín vyhledávání:"
+msgstr "Istilah Penelusuran:"
 
 #: cps/templates/search.html:9
 msgid "Results for:"
-msgstr "Výsledky pro:"
+msgstr "Hasil untuk:"
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"
-msgstr "Datum vydání od"
+msgstr "Tanggal Diterbitkan Dari"
 
 #: cps/templates/search_form.html:31
 msgid "Published Date To"
-msgstr "Datum vydání do"
+msgstr "Tanggal Diterbitkan Hingga"
 
 #: cps/templates/search_form.html:59
 msgid "Exclude Tags"
-msgstr "Vynechat štítky"
+msgstr "Kecualikan Tag"
 
 #: cps/templates/search_form.html:77
 msgid "Exclude Series"
-msgstr "Vynechat série"
+msgstr "Kecualikan Seri"
 
 #: cps/templates/search_form.html:95
-#, fuzzy
 msgid "Exclude Shelves"
-msgstr "Vynechat série"
+msgstr "Kecualikan Rak"
 
 #: cps/templates/search_form.html:115
 msgid "Exclude Languages"
-msgstr "Vynechat jazyky"
+msgstr "Kecualikan Bahasa"
 
 #: cps/templates/search_form.html:126
 msgid "Extensions"
-msgstr "Přípony"
+msgstr "Ekstensi"
 
 #: cps/templates/search_form.html:134
 msgid "Exclude Extensions"
-msgstr "Vynechat přípony"
+msgstr "Kecualikan Ekstensi"
 
 #: cps/templates/search_form.html:144
 msgid "Rating Above"
-msgstr "Hodnoceni více než"
+msgstr "Peringkat Diatas"
 
 #: cps/templates/search_form.html:148
 msgid "Rating Below"
-msgstr "Hodnocení méně než"
+msgstr "Peringkat Dibawah"
 
 #: cps/templates/search_form.html:180
 msgid "From:"
-msgstr ""
+msgstr "Dari:"
 
 #: cps/templates/search_form.html:190
 msgid "To:"
-msgstr ""
+msgstr "Hingga:"
 
 #: cps/templates/shelf.html:13
 msgid "Delete this Shelf"
-msgstr "Smazat tuto polici"
+msgstr "Hapus rak ini"
 
 #: cps/templates/shelf.html:14
 msgid "Edit Shelf Properties"
-msgstr ""
+msgstr "Edit Properti Rak"
 
 #: cps/templates/shelf.html:17
 msgid "Arrange books manually"
-msgstr ""
+msgstr "Atur buku secara manual"
 
 #: cps/templates/shelf.html:18
 msgid "Disable Change order"
-msgstr ""
+msgstr "Nonaktifkan Ubah urutan"
 
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
-msgstr ""
+msgstr "Aktifkan Ubah urutan"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"
-msgstr "Sdílet se všemi"
+msgstr "Bagikan dengan Semua Orang"
 
 #: cps/templates/shelf_edit.html:21
 msgid "Sync this shelf with Kobo device"
-msgstr ""
+msgstr "Sinkronkan rak ini dengan perangkat Kobo"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
-msgstr "Přetažením uspořádáte pořadí"
+msgstr "Seret untuk Mengatur Ulang Urutan"
 
 #: cps/templates/shelf_order.html:33
 msgid "Hidden Book"
-msgstr "Skrytá kniha"
+msgstr "Buku Tersembunyi"
 
 #: cps/templates/stats.html:7
 msgid "Library Statistics"
-msgstr "Statistika knihovny"
+msgstr "Statistik Pustaka"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
-msgstr "Knih v této knihovně"
+msgstr "Buku dalam Pustaka Ini"
 
 #: cps/templates/stats.html:16
 msgid "Authors in this Library"
-msgstr "Autorů v této knihovně"
+msgstr "Penulis dalam Pustaka Ini"
 
 #: cps/templates/stats.html:20
 msgid "Categories in this Library"
-msgstr "Kategorií v této knihovně"
+msgstr "Kategori dalam Pustaka Ini"
 
 #: cps/templates/stats.html:24
 msgid "Series in this Library"
-msgstr "Sérií v této knihovně"
+msgstr "Seri dalam Pustaka Ini"
 
 #: cps/templates/stats.html:29
 msgid "System Statistics"
-msgstr ""
+msgstr "Statistik Sistem"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "Pustaka Program"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
-msgstr "Nainstalovaná verze"
+msgstr "Versi Terpasang"
 
 #: cps/templates/tasks.html:12
 msgid "User"
-msgstr "Uživatel"
+msgstr "Pengguna"
 
 #: cps/templates/tasks.html:14
 msgid "Task"
-msgstr "Úkol"
+msgstr "Tugas"
 
 #: cps/templates/tasks.html:15
 msgid "Status"
-msgstr "Stav"
+msgstr "Status"
 
 #: cps/templates/tasks.html:16
 msgid "Progress"
-msgstr "Průběh"
+msgstr "Kemajuan"
 
 #: cps/templates/tasks.html:17
 msgid "Run Time"
-msgstr "Doba spuštění"
+msgstr "Waktu Jalan"
 
 #: cps/templates/tasks.html:18
 msgid "Start Time"
-msgstr "Čas spuštění"
+msgstr "Waktu Mulai"
 
 #: cps/templates/tasks.html:20
 msgid "Actions"
-msgstr ""
+msgstr "Tindakan"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr ""
+msgstr "Tugas ini akan dibatalkan. Setiap kemajuan yang dibuat oleh tugas ini akan disimpan."
 
 #: cps/templates/tasks.html:41
 msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr ""
+msgstr "Jika ini adalah tugas terjadwal, ini akan dijalankan ulang selama waktu terjadwal berikutnya."
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
-msgstr "Resetovat uživatelské heslo"
+msgstr "Atur ulang kata sandi pengguna"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
-msgstr "Zobrazit knihy s jazykem"
+msgstr "Bahasa Buku"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr "Nastavení OAuth"
+msgstr "Pengaturan OAuth"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
-msgstr "Připojit"
+msgstr "Tautan"
 
 #: cps/templates/user_edit.html:58
 msgid "Unlink"
-msgstr "Odpojit"
+msgstr "Batalkan tautan"
 
 #: cps/templates/user_edit.html:64
 msgid "Kobo Sync Token"
-msgstr "Kobo Sync token"
+msgstr "Token Kono Sync"
 
 #: cps/templates/user_edit.html:66
 msgid "Create/View"
-msgstr "Vytvořit/Prohlížet"
+msgstr "Buat/Lihat"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr ""
+msgstr "Paksa sinkronisasi kobo penuh"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Tambahkan Nilai Kolom Kustom yang Diizinkan/Ditolak"
 
 #: cps/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr ""
+msgstr "Sinkronkan hanya buku di rak yang dipilih dengan Kobo"
 
 #: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
 msgid "Delete User"
-msgstr "Odstranit tohoto uživatele"
+msgstr "Hapus Pengguna"
 
 #: cps/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
-msgstr "Vygenerovat URL pro Kobo Auth"
+msgstr "Hasilkan URL Autentikasi Kobo"
 
 #: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
-msgstr ""
+msgstr "Pilih..."
 
 #: cps/templates/user_table.html:131
-#, fuzzy
 msgid "Edit User"
-msgstr "Uživatel admin"
+msgstr "Edit Pengguna"
 
 #: cps/templates/user_table.html:134
-#, fuzzy
 msgid "Enter Username"
-msgstr "Zvolte uživatelské jméno"
+msgstr "Masukkan Nama Pengguna"
 
 #: cps/templates/user_table.html:135
-#, fuzzy
 msgid "Enter E-mail Address"
-msgstr "Vaše e-mailová adresa"
+msgstr "Masukkan Alamar Email"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter E-Reader E-mail Address"
-msgstr "Poslat do Kindle e-mailová adresa"
+msgstr "Masukkan Alamat Email Kindle"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "E-Reader E-mail"
-msgstr "Zkušební e-mail"
+msgstr "Email Kindle"
 
 #: cps/templates/user_table.html:137
-#, fuzzy
 msgid "Locale"
-msgstr "Měřítko"
+msgstr "Lokal"
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
-msgstr ""
+msgstr "Bahasa Buku Terlihat"
 
 #: cps/templates/user_table.html:139
-#, fuzzy
 msgid "Edit Allowed Tags"
-msgstr "Vybrat povolené/zakázané štítky"
+msgstr "Edit Tag yang Diizinkan"
 
 #: cps/templates/user_table.html:139
 msgid "Allowed Tags"
-msgstr ""
+msgstr "Tag yang Diizinkan"
 
 #: cps/templates/user_table.html:140
-#, fuzzy
 msgid "Edit Denied Tags"
-msgstr "Vybrat povolené/zakázané štítky"
+msgstr "Edit Tag yang Ditolak"
 
 #: cps/templates/user_table.html:140
 msgid "Denied Tags"
-msgstr ""
+msgstr "Tag yang Ditolak"
 
 #: cps/templates/user_table.html:141
-#, fuzzy
 msgid "Edit Allowed Column Values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Edit Nilai Kolom yang Diizinkan"
 
 #: cps/templates/user_table.html:141
-#, fuzzy
 msgid "Allowed Column Values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Nilai Kolom yang Diizinkan"
 
 #: cps/templates/user_table.html:142
-#, fuzzy
 msgid "Edit Denied Column Values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Edit Nilai Kolom yang Ditolak"
 
 #: cps/templates/user_table.html:142
-#, fuzzy
 msgid "Denied Column Values"
-msgstr "Přidat povolené/zakázané hodnoty vlastních sloupců"
+msgstr "Nilai Kolom yang Ditolak"
 
 #: cps/templates/user_table.html:144
-#, fuzzy
 msgid "Change Password"
-msgstr "Povolit změnu hesla"
+msgstr "Ubah Kata Sandi"
 
 #: cps/templates/user_table.html:147
 msgid "View"
-msgstr ""
+msgstr "Tampilan"
 
 #: cps/templates/user_table.html:150
-#, fuzzy
 msgid "Edit Public Shelves"
-msgstr "Veřejná police"
+msgstr "Edit Rak Publik"
 
 #: cps/templates/user_table.html:152
 msgid "Sync selected Shelves with Kobo"
-msgstr ""
+msgstr "Sinkronkan Rak yang dipilih dengan Kob"
 
 #: cps/templates/user_table.html:156
-#, fuzzy
 msgid "Show read/unread selection"
-msgstr "Zobrazit výběr sérií"
+msgstr "Tampilkan pilihan baca/belum dibaca"
 
 #: cps/templates/user_table.html:159
 msgid "Show random books"
-msgstr "Zobrazit náhodné knihy"
+msgstr "Tampilkan buku acak"
 

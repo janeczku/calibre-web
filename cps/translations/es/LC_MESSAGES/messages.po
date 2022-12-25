@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-12-25 10:22+0100\n"
+"POT-Creation-Date: 2022-12-25 13:21+0100\n"
 "PO-Revision-Date: 2020-05-25 17:22+0200\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -523,12 +523,12 @@ msgstr "no instalado"
 msgid "Execution permissions missing"
 msgstr "Faltan permisos de ejecución"
 
-#: cps/db.py:724 cps/search.py:137 cps/web.py:723
+#: cps/db.py:728 cps/search.py:137 cps/web.py:723
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Columna personalizada No.%(column)d no existe en la base de datos calibre"
 
-#: cps/db.py:967 cps/templates/config_edit.html:204
+#: cps/db.py:971 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:550 cps/web.py:584 cps/web.py:659 cps/web.py:684 cps/web.py:965
 #: cps/web.py:995 cps/web.py:1031 cps/web.py:1059 cps/web.py:1098
@@ -2766,7 +2766,7 @@ msgstr "Error"
 msgid "Upload done, processing, please wait..."
 msgstr "Carga hecha, procesando, por favor espere ..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:75
+#: cps/templates/layout.html:98 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "Ajustes"
@@ -2913,26 +2913,30 @@ msgstr "Catálogo de ebooks de Calibre-Web"
 msgid "epub Reader"
 msgstr "Lector PDF"
 
-#: cps/templates/read.html:80 cps/templates/readcbr.html:119
+#: cps/templates/read.html:81 cps/templates/readcbr.html:119
 msgid "Light"
 msgstr "Claro"
 
-#: cps/templates/read.html:81 cps/templates/readcbr.html:120
+#: cps/templates/read.html:82 cps/templates/readcbr.html:120
 msgid "Dark"
 msgstr "Oscuro"
 
-#: cps/templates/read.html:82
+#: cps/templates/read.html:83
 msgid "Sepia"
 msgstr ""
 
-#: cps/templates/read.html:83
+#: cps/templates/read.html:84
 #, fuzzy
 msgid "Black"
 msgstr "Regresar"
 
-#: cps/templates/read.html:87
+#: cps/templates/read.html:88
 msgid "Reflow text when sidebars are open."
 msgstr "Redimensionar el texto cuando las barras laterales están abiertas."
+
+#: cps/templates/read.html:93
+msgid "Font Sizes"
+msgstr ""
 
 #: cps/templates/readcbr.html:7
 #, fuzzy

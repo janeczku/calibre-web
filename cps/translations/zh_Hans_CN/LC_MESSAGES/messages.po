@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-25 10:22+0100\n"
+"POT-Creation-Date: 2022-12-25 13:21+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -40,7 +40,7 @@ msgstr "未知命令"
 
 #: cps/admin.py:172
 msgid "Books successfully queued for Metadata Backup"
-msgstr "书籍已为元数据备份排队"
+msgstr "书籍成功加入元数据备份队列"
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -100,7 +100,7 @@ msgstr "没有其余管理员账户，无法删除管理员角色"
 
 #: cps/admin.py:497 cps/admin.py:511
 msgid "Value has to be true or false"
-msgstr "值必须是 true 或 false"
+msgstr "值必须为 true 或 false"
 
 #: cps/admin.py:499
 msgid "Invalid role"
@@ -108,15 +108,15 @@ msgstr "无效角色"
 
 #: cps/admin.py:503
 msgid "Guest can't have this view"
-msgstr "游客无法拥有此视图"
+msgstr "游客无法查看此页面"
 
 #: cps/admin.py:513
 msgid "Invalid view"
-msgstr "无效视图"
+msgstr "无效页面"
 
 #: cps/admin.py:516
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr "游客的本地化是自动侦测而无法设置的"
+msgstr "无法设置游客的本地化，该项设置的值将自动检测"
 
 #: cps/admin.py:520
 msgid "No Valid Locale Given"
@@ -132,19 +132,19 @@ msgstr "参数未找到"
 
 #: cps/admin.py:570
 msgid "Invalid Read Column"
-msgstr "无效的阅读列"
+msgstr "无效的阅读栏目"
 
 #: cps/admin.py:576
 msgid "Invalid Restricted Column"
-msgstr "无效的限制列"
+msgstr "无效的限制栏目"
 
 #: cps/admin.py:596 cps/admin.py:1824
 msgid "Calibre-Web configuration updated"
-msgstr "Calibre-Web配置已更新"
+msgstr "Calibre-Web 配置已更新"
 
 #: cps/admin.py:608
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "您确定删除Kobo Token吗？"
+msgstr "您确定删除 Kobo 令牌吗？"
 
 #: cps/admin.py:610
 msgid "Do you really want to delete this domain?"
@@ -232,42 +232,42 @@ msgstr "访问日志路径无效，请输入正确的路径"
 
 #: cps/admin.py:1190
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "请输入LDAP主机、端口、DN和用户对象标识符"
+msgstr "请输入 LDAP 主机、端口、DN 和用户对象标识符"
 
 #: cps/admin.py:1196
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "请输入一个LDAP服务账号和密码 "
+msgstr "请输入一个 LDAP 服务账号和密码 "
 
 #: cps/admin.py:1199
 msgid "Please Enter a LDAP Service Account"
-msgstr "请输入一个LDAP服务账号"
+msgstr "请输入一个 LDAP 服务账号"
 
 #: cps/admin.py:1204
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP组对象过滤器需要一个具有“%s”格式标识符"
+msgstr "LDAP 组对象过滤器需要一个具有“%s”格式标识符"
 
 #: cps/admin.py:1206
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP组对象过滤器的括号不匹配"
+msgstr "LDAP 组对象过滤器的括号不匹配"
 
 #: cps/admin.py:1210
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP用户对象过滤器需要一个具有“%s”格式标识符"
+msgstr "LDAP 用户对象过滤器需要一个具有“%s”格式标识符"
 
 #: cps/admin.py:1212
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP用户对象过滤器的括号不匹配"
+msgstr "LDAP 用户对象过滤器的括号不匹配"
 
 #: cps/admin.py:1219
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP成员用户过滤器需要有一个“%s”格式标识符"
+msgstr "LDAP 成员用户过滤器需要有一个“%s”格式标识符"
 
 #: cps/admin.py:1221
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr "LDAP成员用户过滤器中有不匹配的括号"
+msgstr "LDAP 成员用户过滤器中有不匹配的括号"
 
 #: cps/admin.py:1228
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
@@ -283,7 +283,7 @@ msgstr "编辑邮件服务器设置"
 
 #: cps/admin.py:1287
 msgid "Gmail Account Verification Successful"
-msgstr "G-Mail账号校验成功"
+msgstr "G-Mail 账号校验成功"
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
@@ -297,7 +297,7 @@ msgstr "数据库错误：%(error)s。"
 #: cps/admin.py:1316
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "发送给%(email)s的测试邮件已进入队列。请检查任务结果"
+msgstr "发送给 %(email)s 的测试邮件已加入队列。请检查任务结果"
 
 #: cps/admin.py:1319
 #, python-format
@@ -349,7 +349,7 @@ msgstr "用户 %(user)s 的密码已重置"
 
 #: cps/admin.py:1434 cps/web.py:1198
 msgid "Please configure the SMTP mail settings first..."
-msgstr "请先配置SMTP邮箱设置..."
+msgstr "请先配置 SMTP 邮箱设置..."
 
 #: cps/admin.py:1445
 msgid "Logfile viewer"
@@ -390,7 +390,7 @@ msgstr "更新失败："
 
 #: cps/admin.py:1518 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
-msgstr "HTTP错误"
+msgstr "HTTP 错误"
 
 #: cps/admin.py:1519 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
@@ -414,11 +414,11 @@ msgstr "更新期间无法替换文件"
 
 #: cps/admin.py:1547
 msgid "Failed to extract at least One LDAP User"
-msgstr "未能提取至少一个LDAP用户"
+msgstr "未能获得任何 LDAP 用户"
 
 #: cps/admin.py:1592
 msgid "Failed to Create at Least One LDAP User"
-msgstr "未能创建至少一个LDAP用户"
+msgstr "未能创建任何 LDAP 用户"
 
 #: cps/admin.py:1605
 #, python-format
@@ -427,11 +427,11 @@ msgstr "错误：%(ldaperror)s"
 
 #: cps/admin.py:1609
 msgid "Error: No user returned in response of LDAP server"
-msgstr "错误：在LDAP服务器的响应中没有返回用户"
+msgstr "错误：在 LDAP 服务器的响应中没有返回用户"
 
 #: cps/admin.py:1642
 msgid "At Least One LDAP User Not Found in Database"
-msgstr "数据库中没有找到至少一个LDAP用户"
+msgstr "数据库中没有找到任何 LDAP 用户"
 
 #: cps/admin.py:1644
 msgid "{} User Successfully Imported"
@@ -508,12 +508,12 @@ msgstr "未安装"
 msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
-#: cps/db.py:724 cps/search.py:137 cps/web.py:723
+#: cps/db.py:728 cps/search.py:137 cps/web.py:723
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
-msgstr "自定义列号：%(column)d在Calibre数据库中不存在"
+msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 
-#: cps/db.py:967 cps/templates/config_edit.html:204
+#: cps/db.py:971 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:550 cps/web.py:584 cps/web.py:659 cps/web.py:684 cps/web.py:965
 #: cps/web.py:995 cps/web.py:1031 cps/web.py:1059 cps/web.py:1098
@@ -548,12 +548,12 @@ msgstr "文件 %(file)s 已上传"
 
 #: cps/editbooks.py:318
 msgid "Source or destination format for conversion missing"
-msgstr "转换的源或目的格式缺失"
+msgstr "转换的源格式或目的格式缺失"
 
 #: cps/editbooks.py:326
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "书籍已经被成功加入到 %(book_format)s 格式转换队列"
+msgstr "书籍已经被成功加入 %(book_format)s 格式转换队列"
 
 #: cps/editbooks.py:330
 #, python-format
@@ -590,7 +590,7 @@ msgstr "移动封面文件失败 %(file)s：%(error)s"
 
 #: cps/editbooks.py:817 cps/editbooks.py:819
 msgid "Book Format Successfully Deleted"
-msgstr "书籍格式已成功删除"
+msgstr "书籍的此格式副本已成功删除"
 
 #: cps/editbooks.py:826 cps/editbooks.py:828
 msgid "Book Successfully Deleted"
@@ -616,7 +616,7 @@ msgstr "用户没有权限上传其他文件格式"
 #: cps/editbooks.py:1178
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "创建路径 %(path)s 失败(权限拒绝)。"
+msgstr "创建路径 %(path)s 失败 (权限不足)。"
 
 #: cps/editbooks.py:1183
 #, python-format
@@ -630,16 +630,16 @@ msgstr "已添加 %(ext)s 格式到 %(book)s"
 
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Google Drive 设置未完成，请尝试停用并再次激活Google云端硬盘"
+msgstr "Google Drive 设置未完成，请尝试停用并再次激活 Google 云端硬盘"
 
 #: cps/gdrive.py:95
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "回调域名尚未被校验，请在google开发者控制台按步骤校验域名"
+msgstr "回调域名尚未被校验，请在 Google 开发者控制台按步骤校验域名"
 
 #: cps/helper.py:80
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "找不到id为 %(book)d 的书籍的 %(format)s 格式"
+msgstr "找不到 ID 为 %(book)d 的书籍的 %(format)s 格式"
 
 #: cps/helper.py:87 cps/tasks/convert.py:75
 #, python-format
@@ -658,11 +658,11 @@ msgstr "发送到电子阅读器"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
 msgid "This e-mail has been sent via Calibre-Web."
-msgstr "此邮件已经通过Calibre-Web发送。"
+msgstr "此邮件已经通过 Calibre-Web 发送。"
 
 #: cps/helper.py:114
 msgid "Calibre-Web test e-mail"
-msgstr "Calibre-Web测试邮件"
+msgstr "Calibre-Web 测试邮件"
 
 #: cps/helper.py:115
 msgid "Test e-mail"
@@ -670,7 +670,7 @@ msgstr "测试邮件"
 
 #: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
-msgstr "开启Calibre-Web之旅"
+msgstr "开启 Calibre-Web 之旅"
 
 #: cps/helper.py:137
 #, python-format
@@ -690,7 +690,7 @@ msgstr "发送 %(format)s 到电子阅读器"
 #: cps/helper.py:225 cps/tasks/convert.py:92
 #, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "%(book)s发送到电子阅读器"
+msgstr "%(book)s 发送到电子阅读器"
 
 #: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -703,12 +703,12 @@ msgstr "阅读状态无法设置: {}"
 #: cps/helper.py:368
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "删除书的文件夹%(id)s失败，路径有子文件夹：%(path)s"
+msgstr "删除书的文件夹 %(id)s 失败，路径有子文件夹：%(path)s"
 
 #: cps/helper.py:374
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr "删除书籍 %(id)s失败：%(message)s"
+msgstr "删除书籍 %(id)s 失败：%(message)s"
 
 #: cps/helper.py:385
 #, python-format
@@ -723,7 +723,7 @@ msgstr "将作者从“%(src)s”改为“%(dest)s”时失败，出错信息：
 #: cps/helper.py:522 cps/helper.py:531
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Google Drive上找不到文件 %(file)s"
+msgstr "Google Drive 上找不到文件 %(file)s"
 
 #: cps/helper.py:565
 #, python-format
@@ -737,7 +737,7 @@ msgstr "重命名此路径: {}文件时出错"
 #: cps/helper.py:603
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Google Drive上找不到书籍路径 %(path)s"
+msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
 #: cps/helper.py:644 cps/web.py:1416
 msgid "Found an existing account for this e-mail address"
@@ -753,7 +753,7 @@ msgstr "无效的邮件地址格式"
 
 #: cps/helper.py:815
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr "上传封面需要的Python模块'advocate'未安装"
+msgstr "上传封面所需的 Python 模块 'advocate' 未安装"
 
 #: cps/helper.py:825
 msgid "Error Downloading Cover"
@@ -773,11 +773,11 @@ msgstr "创建封面路径失败"
 
 #: cps/helper.py:857
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "封面文件不是有效的图片文件，或者无法存储"
+msgstr "封面文件不是有效的图片文件，或者无法存储它"
 
 #: cps/helper.py:868
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "封面文件只支持jpg/jpeg/png/webp/bmp文件"
+msgstr "封面文件只支持 jpg、jpeg、png、webp、bmp 文件"
 
 #: cps/helper.py:880
 msgid "Invalid cover file content"
@@ -785,15 +785,15 @@ msgstr "封面文件内容无效"
 
 #: cps/helper.py:884
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr "仅将jpg、jpeg文件作为封面文件"
+msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
 #: cps/helper.py:936
 msgid "Unrar binary file not found"
-msgstr "找不到Unrar执行文件"
+msgstr "找不到 Unrar 执行文件"
 
 #: cps/helper.py:947
 msgid "Error executing UnRar"
-msgstr "执行UnRar时出错"
+msgstr "执行 UnRar 时出错"
 
 #: cps/helper.py:1040
 msgid "Cover"
@@ -801,11 +801,11 @@ msgstr "封面"
 
 #: cps/helper.py:1042 cps/templates/admin.html:211
 msgid "Queue all books for metadata backup"
-msgstr "将所有书籍排队以进行元数据备份"
+msgstr "将所有书籍加入元数据备份队列"
 
 #: cps/kobo_auth.py:89
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "请不要使用localhost访问Calibre-Web，以便Kobo设备能获取有效的api_endpoint"
+msgstr "请不要从 localhost 访问 Calibre-Web，以便 Kobo 设备能获取有效的 api_endpoint"
 
 #: cps/kobo_auth.py:115
 msgid "Kobo Setup"
@@ -824,42 +824,42 @@ msgstr "您现在已以“%(nickname)s”身份登录"
 #: cps/oauth_bb.py:148
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr "链接到%(oauth)s成功"
+msgstr "链接到 %(oauth)s 成功"
 
 #: cps/oauth_bb.py:155
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "登录失败，没有用户与OAuth帐户关联"
+msgstr "登录失败，没有用户与 OAuth 帐户关联"
 
 #: cps/oauth_bb.py:197
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr "取消链接到%(oauth)s成功"
+msgstr "取消链接到 %(oauth)s 成功"
 
 #: cps/oauth_bb.py:202
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr "取消链接到%(oauth)s失败"
+msgstr "取消链接到 %(oauth)s 失败"
 
 #: cps/oauth_bb.py:205
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr "为连接到%(oauth)s"
+msgstr "未连接到 %(oauth)s"
 
 #: cps/oauth_bb.py:261
 msgid "Failed to log in with GitHub."
-msgstr "使用Github登录失败。"
+msgstr "使用 Github 登录失败。"
 
 #: cps/oauth_bb.py:267
 msgid "Failed to fetch user info from GitHub."
-msgstr "从Github获取用户信息失败。"
+msgstr "从 Github 获取用户信息失败。"
 
 #: cps/oauth_bb.py:279
 msgid "Failed to log in with Google."
-msgstr "使用Google登录失败。"
+msgstr "使用 Google 登录失败。"
 
 #: cps/oauth_bb.py:285
 msgid "Failed to fetch user info from Google."
-msgstr "从Google获取用户信息失败。"
+msgstr "从 Google 获取用户信息失败。"
 
 #: cps/oauth_bb.py:332
 msgid "GitHub Oauth error, please retry later."
@@ -889,11 +889,11 @@ msgstr "登录"
 
 #: cps/remotelogin.py:74 cps/remotelogin.py:108
 msgid "Token not found"
-msgstr "找不到Token"
+msgstr "找不到令牌"
 
 #: cps/remotelogin.py:83 cps/remotelogin.py:116
 msgid "Token has expired"
-msgstr "Token已过期"
+msgstr "令牌已过期"
 
 #: cps/remotelogin.py:92
 msgid "Success! Please return to your device"
@@ -905,7 +905,7 @@ msgstr "书籍"
 
 #: cps/render_template.py:42
 msgid "Show recent books"
-msgstr "显示最近书籍"
+msgstr "显示最近查看的书籍"
 
 #: cps/render_template.py:43 cps/templates/index.xml:25
 msgid "Hot Books"
@@ -917,7 +917,7 @@ msgstr "显示热门书籍"
 
 #: cps/render_template.py:47 cps/render_template.py:52
 msgid "Downloaded Books"
-msgstr "下载历史"
+msgstr "已下载书籍"
 
 #: cps/render_template.py:49 cps/render_template.py:54
 #: cps/templates/user_table.html:167
@@ -966,7 +966,7 @@ msgstr "分类"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
 msgid "Show category selection"
-msgstr "显示分类选择"
+msgstr "显示分类栏目"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
@@ -976,7 +976,7 @@ msgstr "丛书"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
 msgid "Show series selection"
-msgstr "显示丛书选择"
+msgstr "显示丛书栏目"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
@@ -985,7 +985,7 @@ msgstr "作者"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
 msgid "Show author selection"
-msgstr "显示作者选择"
+msgstr "显示作者栏目"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:969
@@ -994,7 +994,7 @@ msgstr "出版社"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
 msgid "Show publisher selection"
-msgstr "显示出版社选择"
+msgstr "显示出版社栏目"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
@@ -1004,7 +1004,7 @@ msgstr "语言"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
 msgid "Show language selection"
-msgstr "显示语言选择"
+msgstr "显示语言栏目"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
 msgid "Ratings"
@@ -1012,7 +1012,7 @@ msgstr "评分"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
 msgid "Show ratings selection"
-msgstr "显示评分选择"
+msgstr "显示评分栏目"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
@@ -1020,7 +1020,7 @@ msgstr "文件格式"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
 msgid "Show file formats selection"
-msgstr "显示文件格式选择"
+msgstr "显示文件格式栏目"
 
 #: cps/render_template.py:94 cps/web.py:768
 msgid "Archived Books"
@@ -1070,7 +1070,7 @@ msgstr "阅读状态 = %(status)s"
 
 #: cps/search.py:323
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "搜索自定义列时出错，请重启 Calibre-Web"
+msgstr "搜索自定义栏目时出错，请重启 Calibre-Web"
 
 #: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
 msgid "Advanced Search"
@@ -1168,12 +1168,12 @@ msgstr "发生错误"
 #: cps/shelf.py:369
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "公共书架：%(title)s已经存在已经存在。"
+msgstr "公共书架：%(title)s 已经存在已经存在。"
 
 #: cps/shelf.py:380
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "私有书架：%(title)s已经存在已经存在。"
+msgstr "私有书架：%(title)s 已经存在已经存在。"
 
 #: cps/shelf.py:462
 #, python-format
@@ -1219,7 +1219,7 @@ msgstr "未知状态"
 
 #: cps/updater.py:431 cps/updater.py:442 cps/updater.py:543 cps/updater.py:558
 msgid "Unexpected data while reading update information"
-msgstr "读取更新信息时出现意外数据"
+msgstr "读取更新信息时出现异常数据"
 
 #: cps/updater.py:438 cps/updater.py:550
 msgid "No update available. You already have the latest version installed"
@@ -1248,7 +1248,7 @@ msgstr "无可用发布信息"
 
 #: cps/templates/index.html:6 cps/web.py:433
 msgid "Discover (Random Books)"
-msgstr "发现(随机书籍)"
+msgstr "发现 (随机书籍)"
 
 #: cps/web.py:469
 msgid "Hot Books (Most Downloaded)"
@@ -1322,7 +1322,7 @@ msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
 #: cps/web.py:1209
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "请先配置您的kindle邮箱。"
+msgstr "请先配置您的 Kindle 邮箱。"
 
 #: cps/web.py:1226
 msgid "E-Mail server is not configured, please contact your administrator!"
@@ -1345,12 +1345,12 @@ msgstr "确认邮件已经发送到您的邮箱。"
 
 #: cps/web.py:1280
 msgid "Cannot activate LDAP authentication"
-msgstr "无法激活LDAP认证"
+msgstr "无法激活 LDAP 认证"
 
 #: cps/web.py:1299
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "后备登录“%(nickname)s”：无法访问LDAP服务器，或用户未知"
+msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
 #: cps/web.py:1305
 #, python-format
@@ -1390,7 +1390,7 @@ msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
 #: cps/tasks/convert.py:153
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr "Calibre 电子书转换器%(tool)s没有发现"
+msgstr "Calibre 电子书转换器 %(tool)s 没有发现"
 
 #: cps/tasks/convert.py:186
 #, python-format
@@ -1409,7 +1409,7 @@ msgstr "Kepubify 转换失败：%(error)s"
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "找不到转换后的文件或文件夹%(folder)s中有多个文件"
+msgstr "找不到转换后的文件或文件夹 %(folder)s 中有多个文件"
 
 #: cps/tasks/convert.py:247
 #, python-format
@@ -1427,7 +1427,7 @@ msgstr "转换"
 
 #: cps/tasks/database.py:28
 msgid "Reconnecting Calibre database"
-msgstr "正在重新连接到Calibre数据库"
+msgstr "正在重新连接到 Calibre 数据库"
 
 #: cps/tasks/mail.py:266
 msgid "E-mail"
@@ -1521,19 +1521,19 @@ msgstr "添加新用户"
 
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
-msgstr "导入LDAP用户"
+msgstr "导入 LDAP 用户"
 
 #: cps/templates/admin.html:62
 msgid "E-mail Server Settings"
-msgstr "SMTP邮件服务器设置"
+msgstr "SMTP 邮件服务器设置"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
 msgid "SMTP Hostname"
-msgstr "SMTP主机名"
+msgstr "SMTP 主机名"
 
 #: cps/templates/admin.html:71 cps/templates/email_edit.html:35
 msgid "SMTP Port"
-msgstr "SMTP端口"
+msgstr "SMTP 端口"
 
 #: cps/templates/admin.html:75 cps/templates/email_edit.html:39
 msgid "Encryption"
@@ -1541,7 +1541,7 @@ msgstr "加密"
 
 #: cps/templates/admin.html:79 cps/templates/email_edit.html:47
 msgid "SMTP Login"
-msgstr "SMTP用户名"
+msgstr "SMTP 用户名"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
@@ -1554,7 +1554,7 @@ msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
-msgstr "通过Oauth2的Gmail"
+msgstr "使用 Oauth2 的 Gmail"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
@@ -1606,7 +1606,7 @@ msgstr "反向代理头部名称"
 
 #: cps/templates/admin.html:159
 msgid "Edit Calibre Database Configuration"
-msgstr "编辑Calibre数据库配置"
+msgstr "编辑 Calibre 数据库配置"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
@@ -1638,7 +1638,7 @@ msgstr "生成丛书封面缩略图"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
 msgid "Reconnect to Calibre Library"
-msgstr "重新连接到Calibre库"
+msgstr "重新连接到 Calibre 库"
 
 #: cps/templates/admin.html:193
 msgid "Refresh Thumbnail Cover Cache"
@@ -1650,7 +1650,7 @@ msgstr "管理"
 
 #: cps/templates/admin.html:200
 msgid "Download Debug Package"
-msgstr "下载Debug包"
+msgstr "下载 Debug 包"
 
 #: cps/templates/admin.html:201
 msgid "View Logs"
@@ -1658,7 +1658,7 @@ msgstr "查看日志文件"
 
 #: cps/templates/admin.html:204
 msgid "Reconnect Calibre Database"
-msgstr "重新连接到Calibre数据库"
+msgstr "重新连接到 Calibre 数据库"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -1778,7 +1778,7 @@ msgstr "删除格式:"
 
 #: cps/templates/book_edit.html:25
 msgid "Convert book format:"
-msgstr "转换书籍格式:"
+msgstr "书籍格式转换:"
 
 #: cps/templates/book_edit.html:30
 msgid "Convert from:"
@@ -1845,7 +1845,7 @@ msgstr "评分"
 
 #: cps/templates/book_edit.html:104
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "从URL获取封面（JPEG - 图片将下载并存储在数据库中）"
+msgstr "从 URL 获取封面（JPEG - 图片将下载并存储在数据库中）"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
@@ -2055,7 +2055,7 @@ msgstr "Calibre 数据库路径"
 
 #: cps/templates/config_db.html:22
 msgid "Use Google Drive?"
-msgstr "是否使用Google Drive?"
+msgstr "是否使用 Google Drive?"
 
 #: cps/templates/config_db.html:27
 msgid "Authenticate Google Drive"
@@ -2067,7 +2067,7 @@ msgstr "Google Drive Calibre 路径"
 
 #: cps/templates/config_db.html:40
 msgid "Metadata Watch Channel ID"
-msgstr "元数据监视通道ID"
+msgstr "元数据监视通道 ID"
 
 #: cps/templates/config_db.html:43
 msgid "Revoke"
@@ -2087,11 +2087,11 @@ msgstr "服务器端口"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL 证书文件路径(非SSL服务器请留空)"
+msgstr "SSL 证书文件路径 (非 SSL 服务器请留空)"
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL 密钥文件路径(非SSL服务器请留空)"
+msgstr "SSL 密钥文件路径 (非 SSL 服务器请留空)"
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
@@ -2115,7 +2115,7 @@ msgstr "日志文件配置"
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "日志文件路径和名称(默认为calibre-web.log)"
+msgstr "日志文件路径和名称 (默认为 calibre-web.log)"
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
@@ -2123,7 +2123,7 @@ msgstr "启用访问日志"
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "访问日志路径和名称(默认为access.log)"
+msgstr "访问日志路径和名称 (默认为 access.log)"
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
@@ -2163,23 +2163,23 @@ msgstr "启用魔法链接远程登录"
 
 #: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
-msgstr "启用Kobo同步"
+msgstr "启用 Kobo 同步"
 
 #: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
-msgstr "代理未知请求到Kobo商店"
+msgstr "代理未知请求到 Kobo 商店"
 
 #: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
-msgstr "服务器扩展端口(用于转发的API调用的端口)"
+msgstr "服务器扩展端口 (用于转发的 API 调用的端口)"
 
 #: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
-msgstr "使用Goodreads"
+msgstr "使用 Goodreads"
 
 #: cps/templates/config_edit.html:154
 msgid "Create an API Key"
-msgstr "创建API Key"
+msgstr "创建 API Key"
 
 #: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
@@ -2203,19 +2203,19 @@ msgstr "使用标准认证"
 
 #: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
-msgstr "使用LDAP认证"
+msgstr "使用 LDAP 认证"
 
 #: cps/templates/config_edit.html:187
 msgid "Use OAuth"
-msgstr "使用OAuth认证"
+msgstr "使用 OAuth 认证"
 
 #: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
-msgstr "LDAP服务器主机名或IP地址"
+msgstr "LDAP 服务器主机名或 IP 地址"
 
 #: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
-msgstr "LDAP服务器端口"
+msgstr "LDAP 服务器端口"
 
 #: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
@@ -2223,23 +2223,23 @@ msgstr "LDAP 加密"
 
 #: cps/templates/config_edit.html:205
 msgid "TLS"
-msgstr "TLS协议"
+msgstr "TLS 协议"
 
 #: cps/templates/config_edit.html:206
 msgid "SSL"
-msgstr "SSL协议"
+msgstr "SSL 协议"
 
 #: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP CA证书路径(仅用于客户端证书认证)"
+msgstr "LDAP CA证书路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP 证书路径(仅用于客户端证书认证)"
+msgstr "LDAP 证书路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP密钥文件路径(仅用于客户端证书认证)"
+msgstr "LDAP 密钥文件路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
@@ -2259,23 +2259,23 @@ msgstr "简单"
 
 #: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
-msgstr "LDAP管理员用户名"
+msgstr "LDAP 管理员用户名"
 
 #: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
-msgstr "LDAP管理员密码"
+msgstr "LDAP 管理员密码"
 
 #: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
-msgstr "LDAP专有名称（DN）"
+msgstr "LDAP 专有名称（DN）"
 
 #: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
-msgstr "LDAP用户对象过滤器"
+msgstr "LDAP 用户对象过滤器"
 
 #: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
-msgstr "LDAP服务器是 OpenLDAP？"
+msgstr "LDAP 服务器为 OpenLDAP？"
 
 #: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
@@ -2283,19 +2283,19 @@ msgstr "用户导入需要以下设置"
 
 #: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
-msgstr "LDAP组对象过滤器"
+msgstr "LDAP 组对象过滤器"
 
 #: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
-msgstr "LDAP组名"
+msgstr "LDAP 组名"
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
-msgstr "LDAP组成员字段"
+msgstr "LDAP 组成员字段"
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
-msgstr "LDAP成员用户过滤器探测"
+msgstr "LDAP 成员用户过滤器探测"
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
@@ -2307,12 +2307,12 @@ msgstr "自定义过滤器"
 
 #: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
-msgstr "LDAP成员用户过滤器"
+msgstr "LDAP 成员用户过滤器"
 
 #: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr "获取 %(provider)s OAuth凭证"
+msgstr "获取 %(provider)s OAuth 凭证"
 
 #: cps/templates/config_edit.html:300
 #, python-format
@@ -2342,7 +2342,7 @@ msgstr "KEpubify 电子书转换器路径"
 
 #: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
-msgstr "Unrar程序路径"
+msgstr "Unrar 程序路径"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
@@ -2456,7 +2456,7 @@ msgstr "在线听书"
 #: cps/templates/detail.html:125 cps/templates/listenmp3.html:62
 #, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr "%(range)s 第%(index)s册"
+msgstr "%(range)s 第 %(index)s 册"
 
 #: cps/templates/detail.html:174 cps/templates/listenmp3.html:111
 msgid "Published"
@@ -2516,11 +2516,11 @@ msgstr "使用标准电子邮件账号"
 
 #: cps/templates/email_edit.html:16
 msgid "Gmail Account with OAuth2 Verification"
-msgstr "使用Gmail账号"
+msgstr "使用 Gmail 账号"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account as E-Mail Server"
-msgstr "设置Gmail账号作为电子邮件服务"
+msgstr "设置 Gmail 账号作为电子邮件服务"
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2528,15 +2528,15 @@ msgstr "撤消 Gmail 访问权限"
 
 #: cps/templates/email_edit.html:42
 msgid "STARTTLS"
-msgstr "STARTTLS协议"
+msgstr "STARTTLS 协议"
 
 #: cps/templates/email_edit.html:43
 msgid "SSL/TLS"
-msgstr "SSL/TLS协议"
+msgstr "SSL/TLS 协议"
 
 #: cps/templates/email_edit.html:51
 msgid "SMTP Password"
-msgstr "SMTP密码"
+msgstr "SMTP 密码"
 
 #: cps/templates/email_edit.html:58
 msgid "Attachment Size Limit"
@@ -2579,7 +2579,7 @@ msgstr "下一个"
 #: cps/templates/generate_kobo_auth_url.html:6
 #, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "在文本编辑器中打开.kobo/Kobo eReader.conf，添加（或编辑）:"
+msgstr "在文本编辑器中打开 .kobo/Kobo eReader.conf，添加（或编辑）:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
@@ -2732,7 +2732,7 @@ msgstr "错误"
 msgid "Upload done, processing, please wait..."
 msgstr "上传完成，正在处理，请稍候..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:75
+#: cps/templates/layout.html:98 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "设置"
@@ -2775,7 +2775,7 @@ msgstr "通过魔法链接登录"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr "显示Calibre-Web日志： "
+msgstr "显示 Calibre-Web 日志： "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
@@ -2791,7 +2791,7 @@ msgstr "显示访问日志： "
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr "下载Calibre-Web日志"
+msgstr "下载 Calibre-Web 日志"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
@@ -2799,19 +2799,19 @@ msgstr "下载访问日志"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "选择显示的与隐藏的标签"
 
 #: cps/templates/modal_dialogs.html:7
 msgid "Select Allowed/Denied Custom Column Values"
-msgstr "选择自定义栏目值显示或隐藏本用户书籍"
+msgstr "选择显示的自定义栏目值与隐藏的自定义栏目值"
 
 #: cps/templates/modal_dialogs.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "选择此用户显示的标签与隐藏的标签"
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "选择自定义栏目值显示或隐藏本用户书籍"
+msgstr "选择此用户显示的自定义栏目值与隐藏的自定义栏目值"
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
@@ -2823,7 +2823,7 @@ msgstr "添加显示或隐藏书籍的值"
 
 #: cps/templates/modal_dialogs.html:50
 msgid "This book format will be permanently erased from database"
-msgstr "此书籍格式将从数据库中永久删除"
+msgstr "书籍的此格式副本将从数据库中永久删除"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
@@ -2835,11 +2835,11 @@ msgstr "，包括从硬盘中"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Kobo 重要说明：被删除的书籍将保留在任何配对的 Kobo 设备上。"
+msgstr "Kobo 重要提示：被删除的书籍将保留在任何配对的 Kobo 设备上。"
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "必须先将书籍存档并同步设备，然后才能安全地删除书籍。"
+msgstr "在安全删除图书之前，必须先将图书归档并与设备同步。"
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -2871,35 +2871,39 @@ msgstr "完成"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
-msgstr "Caliebre-Web电子书路径"
+msgstr "Caliebre-Web 电子书路径"
 
 #: cps/templates/read.html:6
 msgid "epub Reader"
-msgstr "epub阅读器"
+msgstr "epub 阅读器"
 
-#: cps/templates/read.html:80 cps/templates/readcbr.html:119
+#: cps/templates/read.html:81 cps/templates/readcbr.html:119
 msgid "Light"
 msgstr "浅色"
 
-#: cps/templates/read.html:81 cps/templates/readcbr.html:120
+#: cps/templates/read.html:82 cps/templates/readcbr.html:120
 msgid "Dark"
 msgstr "深色"
 
-#: cps/templates/read.html:82
+#: cps/templates/read.html:83
 msgid "Sepia"
 msgstr "棕色"
 
-#: cps/templates/read.html:83
+#: cps/templates/read.html:84
 msgid "Black"
 msgstr "黑色"
 
-#: cps/templates/read.html:87
+#: cps/templates/read.html:88
 msgid "Reflow text when sidebars are open."
 msgstr "打开侧栏时重排文本。"
 
+#: cps/templates/read.html:93
+msgid "Font Sizes"
+msgstr ""
+
 #: cps/templates/readcbr.html:7
 msgid "Comic Reader"
-msgstr "Comic阅读器"
+msgstr "Comic 阅读器"
 
 #: cps/templates/readcbr.html:92
 msgid "Keyboard Shortcuts"
@@ -3011,15 +3015,15 @@ msgstr "隐藏"
 
 #: cps/templates/readdjvu.html:5
 msgid "DJVU Reader"
-msgstr "DJVU阅读器"
+msgstr "DJVU 阅读器"
 
 #: cps/templates/readpdf.html:32
 msgid "PDF Reader"
-msgstr "PDF阅读器"
+msgstr "PDF 阅读器"
 
 #: cps/templates/readtxt.html:6
 msgid "txt Reader"
-msgstr "txt阅读器"
+msgstr "txt 阅读器"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -3215,7 +3219,7 @@ msgstr "活动"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr "这个任务将被取消。此任务取得的所有进展都将被保存"
+msgstr "这个任务将被取消。此任务所有的更改都将被保存"
 
 #: cps/templates/tasks.html:41
 msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
@@ -3231,7 +3235,7 @@ msgstr "按语言显示书籍"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr "OAuth设置"
+msgstr "OAuth 设置"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
@@ -3251,7 +3255,7 @@ msgstr "新建或查看"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr "强制与kobo完全同步"
+msgstr "强制与 Kobo 完全同步"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
@@ -3267,7 +3271,7 @@ msgstr "删除此用户"
 
 #: cps/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
-msgstr "生成Kobo Auth 地址"
+msgstr "生成 Kobo Auth 地址"
 
 #: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
@@ -3311,11 +3315,11 @@ msgstr "允许标签"
 
 #: cps/templates/user_table.html:140
 msgid "Edit Denied Tags"
-msgstr "编辑拒绝标签"
+msgstr "编辑被拒绝标签"
 
 #: cps/templates/user_table.html:140
 msgid "Denied Tags"
-msgstr "拒绝标签"
+msgstr "被拒绝标签"
 
 #: cps/templates/user_table.html:141
 msgid "Edit Allowed Column Values"
@@ -3351,9 +3355,9 @@ msgstr "同步所选书架到 Kobo"
 
 #: cps/templates/user_table.html:156
 msgid "Show read/unread selection"
-msgstr "显示已读/未读选择"
+msgstr "显示已读、未读栏目"
 
 #: cps/templates/user_table.html:159
 msgid "Show random books"
-msgstr "显示随机书籍"
+msgstr "随机展示书籍"
 
