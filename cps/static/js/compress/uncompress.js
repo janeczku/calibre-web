@@ -125,7 +125,7 @@ function loadArchiveFormats(formats, cb) {
 				_loaded_archive_formats.push(archive_format);
 				break;
 			case 'zip':
-				loadScript(path + 'jszip.js', checkForLoadDone);
+				loadScript(path + 'jszip.min.js', checkForLoadDone);
 				_loaded_archive_formats.push(archive_format);
 				break;
 			case 'tar':
