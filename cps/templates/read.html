@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reader.css') }}">
     </head>
     <body>
       <div id="sidebar">
@@ -87,6 +88,12 @@
                     <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
                   </p>
               </div>
+              <div class="fontSizeWrapper">
+                <div class="slider">
+                    <label for="fader">{{ _('Font Sizes') }}</label>
+                    <input type="range" min="75" max="200" value="100" id="fontSizeFader" step="25">
+                </div>
+              </div>
               <div class="closer icon-cancel-circled"></div>
           </div>
       </div>
@@ -131,7 +138,14 @@
             else if (id == "blackTheme") {
               document.getElementById("main").style.backgroundColor = "black";
             }
-          }
+
+        }
+
+        // font size settings logic
+        let fontSizeFader = document.getElementById('fontSizeFader');
+        fontSizeFader.addEventListener ("change", function () {
+            reader.rendition.themes.fontSize(`${this.value}%`)
+        });
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
