@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-12-25 10:22+0100\n"
+"POT-Creation-Date: 2022-12-25 13:21+0100\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -517,12 +517,12 @@ msgstr "ei asennettu"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:724 cps/search.py:137 cps/web.py:723
+#: cps/db.py:728 cps/search.py:137 cps/web.py:723
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
-#: cps/db.py:967 cps/templates/config_edit.html:204
+#: cps/db.py:971 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:550 cps/web.py:584 cps/web.py:659 cps/web.py:684 cps/web.py:965
 #: cps/web.py:995 cps/web.py:1031 cps/web.py:1059 cps/web.py:1098
@@ -2754,7 +2754,7 @@ msgstr "Virhe"
 msgid "Upload done, processing, please wait..."
 msgstr "Lataus tehty, prosessoidaan, ole hyvä ja odota..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:75
+#: cps/templates/layout.html:98 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "Asetukset"
@@ -2901,26 +2901,30 @@ msgstr "Calibre-Web e-kirjaluettelo"
 msgid "epub Reader"
 msgstr "PDF lukija"
 
-#: cps/templates/read.html:80 cps/templates/readcbr.html:119
+#: cps/templates/read.html:81 cps/templates/readcbr.html:119
 msgid "Light"
 msgstr "Vaalea"
 
-#: cps/templates/read.html:81 cps/templates/readcbr.html:120
+#: cps/templates/read.html:82 cps/templates/readcbr.html:120
 msgid "Dark"
 msgstr "Tumma"
 
-#: cps/templates/read.html:82
+#: cps/templates/read.html:83
 msgid "Sepia"
 msgstr ""
 
-#: cps/templates/read.html:83
+#: cps/templates/read.html:84
 #, fuzzy
 msgid "Black"
 msgstr "Palaa"
 
-#: cps/templates/read.html:87
+#: cps/templates/read.html:88
 msgid "Reflow text when sidebars are open."
 msgstr "Uudelleenjärjestä teksti kun sivut on auki."
+
+#: cps/templates/read.html:93
+msgid "Font Sizes"
+msgstr ""
 
 #: cps/templates/readcbr.html:7
 #, fuzzy
