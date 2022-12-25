@@ -22,3 +22,7 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   padding: 0 0;
   line-height: 15px;
 }
+
+input.datepicker {color: transparent}
+input.datepicker:focus {color: transparent}
+input.datepicker:focus + input {color: #555}
