@@ -1246,6 +1246,7 @@ def register():
             password = generate_random_password()
             content.password = generate_password_hash(password)
             content.role = config.config_default_role
+            content.locale = config.config_default_locale
             content.sidebar_view = config.config_default_show
             try:
                 ub.session.add(content)
