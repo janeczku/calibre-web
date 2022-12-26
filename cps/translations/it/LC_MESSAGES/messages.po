@@ -2578,7 +2578,7 @@ msgstr "Prossimo"
 #: cps/templates/generate_kobo_auth_url.html:6
 #, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Apri il file .kobo/Kobo eReader.conf in un editore di testi e aggiungi (o edita):"
+msgstr "Apri il file .kobo/Kobo/Kobo eReader.conf in un editore di testi e aggiungi (o edita):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
