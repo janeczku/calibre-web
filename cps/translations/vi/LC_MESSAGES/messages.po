@@ -3373,6 +3373,6 @@ msgstr "Hiển thị đã đọc và chưa đọc"
 msgid "Show random books"
 msgstr "Hiển thị sách ngẫu nhiên"
 
-#~ msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+#~ msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 #~ msgstr ""
 
