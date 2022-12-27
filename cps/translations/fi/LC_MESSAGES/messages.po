@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-12-25 13:21+0100\n"
+"POT-Creation-Date: 2022-12-27 09:10+0100\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -893,8 +893,8 @@ msgstr ""
 msgid "{} Stars"
 msgstr ""
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:74
-#: cps/templates/layout.html:108 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
 msgstr "Kirjaudu sisään"
@@ -1052,7 +1052,7 @@ msgstr ""
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:53 cps/templates/layout.html:56
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "Hae"
@@ -1084,7 +1084,7 @@ msgstr ""
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Edistynyt haku"
 
@@ -1135,7 +1135,7 @@ msgstr "Kirja on poistettu hyllystä: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr ""
 
-#: cps/shelf.py:210 cps/templates/layout.html:164
+#: cps/shelf.py:210 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "luo hylly"
 
@@ -1199,7 +1199,7 @@ msgstr "Hylly: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Virhe hyllyn avauksessa. Hyllyä ei ole tai se ei ole saatavilla"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:95
+#: cps/tasks_status.py:48 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "Tehtävät"
@@ -1343,7 +1343,7 @@ msgstr "Ole hyvä ja aseta Kindle sähköpostiosoite ensin..."
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/templates/layout.html:75 cps/templates/layout.html:109
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
@@ -1472,7 +1472,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr ""
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:88 cps/templates/user_table.html:145
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "Lähetä"
 
@@ -1496,7 +1496,7 @@ msgstr "Sähköposti"
 msgid "Send to E-Reader E-mail Address"
 msgstr "Kindle"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:98
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "Ylläpito"
@@ -1931,8 +1931,8 @@ msgstr "Klikkaa kantta ladataksesi metadata lomakkeelle"
 msgid "Loading..."
 msgstr "Ladataan..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:85
-#: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Sulje"
@@ -2519,7 +2519,7 @@ msgid "Add to shelf"
 msgstr "Lisää hyllyyn"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
-#: cps/templates/feed.xml:79 cps/templates/layout.html:161
+#: cps/templates/feed.xml:79 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2569,7 +2569,7 @@ msgstr ""
 msgid "Save and Send Test E-mail"
 msgstr "Tallenna asetukset ja testaa sähköpostia"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:33
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "Palaa"
@@ -2595,7 +2595,7 @@ msgstr "Syötä domainnimi"
 msgid "Denied Domains (Blacklist)"
 msgstr ""
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:194
+#: cps/templates/feed.xml:21 cps/templates/layout.html:187
 msgid "Next"
 msgstr "Seuraava"
 
@@ -2713,7 +2713,7 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:159
+#: cps/templates/index.xml:119 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr ""
@@ -2722,60 +2722,60 @@ msgstr ""
 msgid "Books organized in shelves"
 msgstr ""
 
-#: cps/templates/layout.html:33 cps/templates/login.html:30
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "Koti"
 
-#: cps/templates/layout.html:39
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "Vaihda navigointi"
 
-#: cps/templates/layout.html:54
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr ""
 
-#: cps/templates/layout.html:72 cps/templates/layout.html:101
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "Tili"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:103
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "Kirjaudu ulos"
 
-#: cps/templates/layout.html:85 cps/templates/layout.html:141
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
 msgstr "Ladataan..."
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Error"
 msgstr "Virhe"
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Upload done, processing, please wait..."
 msgstr "Lataus tehty, prosessoidaan, ole hyvä ja odota..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:76
+#: cps/templates/layout.html:91 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "Asetukset"
 
-#: cps/templates/layout.html:142
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr ""
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "Selaa"
 
-#: cps/templates/layout.html:165 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "Tietoja"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "Edellinen"
 
-#: cps/templates/layout.html:206
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "Kirjan tiedot"
 

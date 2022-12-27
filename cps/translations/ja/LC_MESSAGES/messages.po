@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-12-25 13:21+0100\n"
+"POT-Creation-Date: 2022-12-27 09:10+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -884,8 +884,8 @@ msgstr "Google OAuth エラー: {}"
 msgid "{} Stars"
 msgstr "星{}"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:74
-#: cps/templates/layout.html:108 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
 msgstr "ログイン"
@@ -1043,7 +1043,7 @@ msgstr "本の一覧を表示"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:53 cps/templates/layout.html:56
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "検索"
@@ -1075,7 +1075,7 @@ msgstr "既読/未読状況 = %(status)s"
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "カスタムカラムの検索でエラーが発生しました。Calibre-Webを再起動してください"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "詳細検索"
 
@@ -1125,7 +1125,7 @@ msgstr "本が %(sname)s から削除されました"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "申し訳ありませんが、あなたはこの本棚から本を削除することが許可されていません"
 
-#: cps/shelf.py:210 cps/templates/layout.html:164
+#: cps/shelf.py:210 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "本棚を作成する"
 
@@ -1187,7 +1187,7 @@ msgstr "本棚: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "本棚を開けません。この本棚は存在しないかアクセスできません"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:95
+#: cps/tasks_status.py:48 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "タスク"
@@ -1331,7 +1331,7 @@ msgstr "初めにKindleのメールアドレスを設定してください"
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "メールサーバーが設定されていません。管理者に連絡してください"
 
-#: cps/templates/layout.html:75 cps/templates/layout.html:109
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
@@ -1460,7 +1460,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr "表紙サムネイルのキャッシュを消去中"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:88 cps/templates/user_table.html:145
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "アップロード"
 
@@ -1483,7 +1483,7 @@ msgstr "メールアドレス"
 msgid "Send to E-Reader E-mail Address"
 msgstr "E-Readerメールアドレス"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:98
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "管理者"
@@ -1916,8 +1916,8 @@ msgstr "カバー画像をクリックしてメタデータをフォームに読
 msgid "Loading..."
 msgstr "読み込み中..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:85
-#: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "閉じる"
@@ -2500,7 +2500,7 @@ msgid "Add to shelf"
 msgstr "本棚に追加"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
-#: cps/templates/feed.xml:79 cps/templates/layout.html:161
+#: cps/templates/feed.xml:79 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2550,7 +2550,7 @@ msgstr "添付ファイルのサイズ制限"
 msgid "Save and Send Test E-mail"
 msgstr "保存してテストメールを送信"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:33
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "戻る"
@@ -2576,14 +2576,13 @@ msgstr "ドメイン名を入力"
 msgid "Denied Domains (Blacklist)"
 msgstr "拒否するドメイン名 (ブラックリスト)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:194
+#: cps/templates/feed.xml:21 cps/templates/layout.html:187
 msgid "Next"
 msgstr "次"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-#, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ".kobo/Kobo eReader.confファイルをテキストエディタで開いて追加(編集)してください:"
+msgstr ".kobo/Kobo/Kobo eReader.confファイルをテキストエディタで開いて追加(編集)してください:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
@@ -2695,7 +2694,7 @@ msgstr "評価順"
 msgid "Books ordered by file formats"
 msgstr "ファイル形式順"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:159
+#: cps/templates/index.xml:119 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "本棚"
@@ -2704,60 +2703,60 @@ msgstr "本棚"
 msgid "Books organized in shelves"
 msgstr "本棚に整理された本"
 
-#: cps/templates/layout.html:33 cps/templates/login.html:30
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "ホーム"
 
-#: cps/templates/layout.html:39
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "ナビゲーションを実行"
 
-#: cps/templates/layout.html:54
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "ライブラリ内を検索"
 
-#: cps/templates/layout.html:72 cps/templates/layout.html:101
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "アカウント"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:103
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "ログアウト"
 
-#: cps/templates/layout.html:85 cps/templates/layout.html:141
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
 msgstr "アップロード中..."
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Error"
 msgstr "エラー"
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Upload done, processing, please wait..."
 msgstr "アップロード完了。現在処理中ですのでお待ち下さい..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:76
+#: cps/templates/layout.html:91 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "設定"
 
-#: cps/templates/layout.html:142
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr "ページを更新しないでください"
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "閲覧"
 
-#: cps/templates/layout.html:165 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "このサイトについて"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "前"
 
-#: cps/templates/layout.html:206
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "本の詳細"
 

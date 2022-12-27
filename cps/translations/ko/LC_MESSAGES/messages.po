@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2022-12-25 13:21+0100\n"
+"POT-Creation-Date: 2022-12-27 09:10+0100\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -885,8 +885,8 @@ msgstr "Google 인증 오류: {}"
 msgid "{} Stars"
 msgstr "{} Stars"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:74
-#: cps/templates/layout.html:108 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
 msgstr "로그인"
@@ -1044,7 +1044,7 @@ msgstr "책 목록 보기"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:53 cps/templates/layout.html:56
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "검색"
@@ -1076,7 +1076,7 @@ msgstr "읽은 상태 = %(status)s"
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "사용자 정의 열을 검색하는 동안 오류가 발생했습니다. Calibre-Web을 다시 시작하십시오"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "상세 검색"
 
@@ -1126,7 +1126,7 @@ msgstr "책이 책장에서 삭제됨: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "죄송합니다. 이 서가에서 책을 삭제할 권한이 없습니다"
 
-#: cps/shelf.py:210 cps/templates/layout.html:164
+#: cps/shelf.py:210 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "책장 추가"
 
@@ -1189,7 +1189,7 @@ msgstr "책장: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "책장을 여는 동안 오류가 발생했습니다. 책장이 존재하지 않거나 접근할 수 없습니다"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:95
+#: cps/tasks_status.py:48 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "작업"
@@ -1333,7 +1333,7 @@ msgstr "Kindle로 보내는 유효한 이메일 주소로 프로필을 업데이
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "이메일 서버가 구성되지 않았습니다. 관리자에게 문의하십시오!"
 
-#: cps/templates/layout.html:75 cps/templates/layout.html:109
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
@@ -1462,7 +1462,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr ""
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:88 cps/templates/user_table.html:145
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "업로드"
 
@@ -1486,7 +1486,7 @@ msgstr "이메일 주소"
 msgid "Send to E-Reader E-mail Address"
 msgstr "킨들로 보내기 이메일 주소"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:98
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "관리자"
@@ -1919,8 +1919,8 @@ msgstr "표지를 클릭하여 양식에 메타데이터 로드"
 msgid "Loading..."
 msgstr "불러오는 중..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:85
-#: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "닫기"
@@ -2503,7 +2503,7 @@ msgid "Add to shelf"
 msgstr "서재에 추가"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
-#: cps/templates/feed.xml:79 cps/templates/layout.html:161
+#: cps/templates/feed.xml:79 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2553,7 +2553,7 @@ msgstr "첨부 파일 크기 제한"
 msgid "Save and Send Test E-mail"
 msgstr "저장 후 테스트 이메일 보내기"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:33
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "뒤로"
@@ -2579,14 +2579,13 @@ msgstr "도메인 입력"
 msgid "Denied Domains (Blacklist)"
 msgstr "거부 도메인(블랙리스트)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:194
+#: cps/templates/feed.xml:21 cps/templates/layout.html:187
 msgid "Next"
 msgstr "다음"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-#, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "텍스트 편집기에서 .kobo/Kobo eReader.conf 파일을 열고 다음을 추가(또는 편집):"
+msgstr "텍스트 편집기에서 .kobo/Kobo/Kobo eReader.conf 파일을 열고 다음을 추가(또는 편집):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
@@ -2699,7 +2698,7 @@ msgstr "평점별 정렬"
 msgid "Books ordered by file formats"
 msgstr "파일 종류별 정렬"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:159
+#: cps/templates/index.xml:119 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "서재"
@@ -2708,60 +2707,60 @@ msgstr "서재"
 msgid "Books organized in shelves"
 msgstr "서재별 정렬"
 
-#: cps/templates/layout.html:33 cps/templates/login.html:30
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "홈"
 
-#: cps/templates/layout.html:39
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "탐색 활성화"
 
-#: cps/templates/layout.html:54
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "검색"
 
-#: cps/templates/layout.html:72 cps/templates/layout.html:101
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "계정"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:103
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "로그아웃"
 
-#: cps/templates/layout.html:85 cps/templates/layout.html:141
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
 msgstr "업로드 중..."
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Error"
 msgstr "오류"
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Upload done, processing, please wait..."
 msgstr "업로드 완료, 처리 중입니다. 잠시만 기다려 주십시오..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:76
+#: cps/templates/layout.html:91 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "설정"
 
-#: cps/templates/layout.html:142
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr "페이지를 새로고침 하지 마세요"
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "탐색"
 
-#: cps/templates/layout.html:165 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "서재 정보"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "이전"
 
-#: cps/templates/layout.html:206
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "책 상세정보"
 

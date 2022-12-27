@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2022-12-25 13:21+0100\n"
+"POT-Creation-Date: 2022-12-27 09:10+0100\n"
 "PO-Revision-Date: 2020-05-25 17:22+0200\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -901,8 +901,8 @@ msgstr "Error Google Oauth {}"
 msgid "{} Stars"
 msgstr "{} Estrellas"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:74
-#: cps/templates/layout.html:108 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
 msgstr "Inicio de sesión"
@@ -1060,7 +1060,7 @@ msgstr "Mostrar Lista de Libros"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:53 cps/templates/layout.html:56
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "Buscar"
@@ -1092,7 +1092,7 @@ msgstr "Estado de lectura = $(status)s"
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "Error en la búsqueda de columnas personalizadas, por favor reinicia Calibre-Web"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Búsqueda avanzada"
 
@@ -1143,7 +1143,7 @@ msgstr "El libro fue eliminado del estante: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr ""
 
-#: cps/shelf.py:210 cps/templates/layout.html:164
+#: cps/shelf.py:210 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "Crear un estante"
 
@@ -1207,7 +1207,7 @@ msgstr "Estante: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Error al abrir un estante. El estante no existe o no es accesible"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:95
+#: cps/tasks_status.py:48 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "Tareas"
@@ -1351,7 +1351,7 @@ msgstr "Por favor actualiza tu perfil con la dirección de correo de su kindle..
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "El servidor de correo no está configurado, por favor, ¡avisa a tu administrador!"
 
-#: cps/templates/layout.html:75 cps/templates/layout.html:109
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
@@ -1480,7 +1480,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr ""
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:88 cps/templates/user_table.html:145
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "Subir archivo"
 
@@ -1504,7 +1504,7 @@ msgstr "Correo electrónico"
 msgid "Send to E-Reader E-mail Address"
 msgstr "Enviar al correo de Kindle"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:98
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "Admin"
@@ -1939,8 +1939,8 @@ msgstr "Haz clic en la portada para cargar los metadatos en el formulario"
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:85
-#: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Cerrar"
@@ -2528,7 +2528,7 @@ msgid "Add to shelf"
 msgstr "Agregar al estante"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
-#: cps/templates/feed.xml:79 cps/templates/layout.html:161
+#: cps/templates/feed.xml:79 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2578,7 +2578,7 @@ msgstr "Tamaño límite del archivo adjunto"
 msgid "Save and Send Test E-mail"
 msgstr "Guardar y enviar un correo electrónico de prueba"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:33
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "Regresar"
@@ -2604,14 +2604,13 @@ msgstr "Introducir nombre de dominio"
 msgid "Denied Domains (Blacklist)"
 msgstr "Dominios prohibidos (Blaclist)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:194
+#: cps/templates/feed.xml:21 cps/templates/layout.html:187
 msgid "Next"
 msgstr "Siguiente"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-#, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Abre el archivo .kobo/Kobo eReader.conf en un editor de texto y añade (o edita):"
+msgstr "Abre el archivo .kobo/Kobo/Kobo eReader.conf en un editor de texto y añade (o edita):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
@@ -2725,7 +2724,7 @@ msgstr "Libros ordenados por puntuación"
 msgid "Books ordered by file formats"
 msgstr "Libros ordenados por formato de archivo"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:159
+#: cps/templates/index.xml:119 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "Estanterías"
@@ -2734,60 +2733,60 @@ msgstr "Estanterías"
 msgid "Books organized in shelves"
 msgstr "Libros organizados en estanterías"
 
-#: cps/templates/layout.html:33 cps/templates/login.html:30
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "Inicio"
 
-#: cps/templates/layout.html:39
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "Alternar navegación"
 
-#: cps/templates/layout.html:54
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "Buscar en la librería"
 
-#: cps/templates/layout.html:72 cps/templates/layout.html:101
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "Cuenta"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:103
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: cps/templates/layout.html:85 cps/templates/layout.html:141
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
 msgstr "Cargando..."
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Error"
 msgstr "Error"
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Upload done, processing, please wait..."
 msgstr "Carga hecha, procesando, por favor espere ..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:76
+#: cps/templates/layout.html:91 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "Ajustes"
 
-#: cps/templates/layout.html:142
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr "Por favor, no actualice la página"
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "Navegar"
 
-#: cps/templates/layout.html:165 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "Acerca de"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "Previo"
 
-#: cps/templates/layout.html:206
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "Detalles del libro"
 
