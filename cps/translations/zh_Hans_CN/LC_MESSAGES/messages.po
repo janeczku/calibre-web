@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-12-25 13:21+0100\n"
+"POT-Creation-Date: 2022-12-27 09:10+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -881,8 +881,8 @@ msgstr "Google Oauth 错误: {}"
 msgid "{} Stars"
 msgstr "{} 星"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:74
-#: cps/templates/layout.html:108 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1340
 msgid "Login"
 msgstr "登录"
@@ -1040,7 +1040,7 @@ msgstr "显示书籍列表"
 
 #: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:53 cps/templates/layout.html:56
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "搜索"
@@ -1072,7 +1072,7 @@ msgstr "阅读状态 = %(status)s"
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "搜索自定义栏目时出错，请重启 Calibre-Web"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:64
+#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "高级搜索"
 
@@ -1122,7 +1122,7 @@ msgstr "此书已从书架 %(sname)s 中删除"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "抱歉，您没有从这个书架删除书籍的权限"
 
-#: cps/shelf.py:210 cps/templates/layout.html:164
+#: cps/shelf.py:210 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "创建书架"
 
@@ -1184,7 +1184,7 @@ msgstr "书架：%(name)s"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:95
+#: cps/tasks_status.py:48 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "任务列表"
@@ -1328,7 +1328,7 @@ msgstr "请先配置您的 Kindle 邮箱。"
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "邮件服务未配置，请联系网站管理员！"
 
-#: cps/templates/layout.html:75 cps/templates/layout.html:109
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
 #: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
 #: cps/web.py:1271
@@ -1456,7 +1456,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr "正在清理封面缩略图缓存"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:88 cps/templates/user_table.html:145
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "上传书籍"
 
@@ -1479,7 +1479,7 @@ msgstr "邮箱地址"
 msgid "Send to E-Reader E-mail Address"
 msgstr "接收书籍的电子阅读器邮箱地址"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:98
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "管理权限"
@@ -1912,8 +1912,8 @@ msgstr "单击封面将元数据加载到表单"
 msgid "Loading..."
 msgstr "加载中..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:85
-#: cps/templates/layout.html:210 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "关闭"
@@ -2496,7 +2496,7 @@ msgid "Add to shelf"
 msgstr "添加到书架"
 
 #: cps/templates/detail.html:268 cps/templates/detail.html:285
-#: cps/templates/feed.xml:79 cps/templates/layout.html:161
+#: cps/templates/feed.xml:79 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2546,7 +2546,7 @@ msgstr "附件大小限制"
 msgid "Save and Send Test E-mail"
 msgstr "保存设置并发送测试邮件"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:33
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "后退"
@@ -2572,14 +2572,13 @@ msgstr "输入域名"
 msgid "Denied Domains (Blacklist)"
 msgstr "禁止注册的域名（黑名单）"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:194
+#: cps/templates/feed.xml:21 cps/templates/layout.html:187
 msgid "Next"
 msgstr "下一个"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-#, fuzzy
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "在文本编辑器中打开 .kobo/Kobo eReader.conf，添加（或编辑）:"
+msgstr "在文本编辑器中打开 .kobo/Kobo/Kobo eReader.conf，添加（或编辑）:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
@@ -2691,7 +2690,7 @@ msgstr "书籍按评分排序"
 msgid "Books ordered by file formats"
 msgstr "书籍按文件格式排序"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:159
+#: cps/templates/index.xml:119 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "书架列表"
@@ -2700,60 +2699,60 @@ msgstr "书架列表"
 msgid "Books organized in shelves"
 msgstr "书架上的书"
 
-#: cps/templates/layout.html:33 cps/templates/login.html:30
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "首页"
 
-#: cps/templates/layout.html:39
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "切换导航"
 
-#: cps/templates/layout.html:54
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "搜索书库"
 
-#: cps/templates/layout.html:72 cps/templates/layout.html:101
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "账号"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:103
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "注销"
 
-#: cps/templates/layout.html:85 cps/templates/layout.html:141
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
 msgstr "正在上传..."
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Error"
 msgstr "错误"
 
-#: cps/templates/layout.html:85
+#: cps/templates/layout.html:78
 msgid "Upload done, processing, please wait..."
 msgstr "上传完成，正在处理，请稍候..."
 
-#: cps/templates/layout.html:98 cps/templates/read.html:76
+#: cps/templates/layout.html:91 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "设置"
 
-#: cps/templates/layout.html:142
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr "请不要刷新页面"
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "按条件浏览"
 
-#: cps/templates/layout.html:165 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "上一个"
 
-#: cps/templates/layout.html:206
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "书籍详情"
 
