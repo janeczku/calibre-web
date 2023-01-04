@@ -11,8 +11,8 @@
       <table class="table table-striped" id="table_user">
         <tr>
             <th>{{_('Username')}}</th>
-            <th>{{_('E-mail Address')}}</th>
-            <th>{{_('Send to E-Reader E-mail Address')}}</th>
+            <th>{{_('Email')}}</th>
+            <th>{{_('Send to eReader Email')}}</th>
             <th>{{_('Downloads')}}</th>
             <th class="hidden-xs ">{{_('Admin')}}</th>
             <th class="hidden-xs hidden-sm">{{_('Password')}}</th>
@@ -59,7 +59,7 @@
 
   <div class="row">
     <div class="col">
-      <h2>{{_('E-mail Server Settings')}}</h2>
+      <h2>{{_('Email Server Settings')}}</h2>
       {% if config.get_mail_server_configured() %}
         {% if email.mail_server_type == 0 %}
         <div class="col-xs-12 col-sm-12">
@@ -80,24 +80,24 @@
             <div class="col-xs-6 col-sm-3">{{email.mail_login}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('From E-mail')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('From Email')}}</div>
             <div class="col-xs-6 col-sm-3">{{email.mail_from}}</div>
           </div>
         </div>
       {% else %}
         <div class="col-xs-12 col-sm-12">
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('E-Mail Service')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('Email Service')}}</div>
             <div class="col-xs-6 col-sm-3">{{_('Gmail via Oauth2')}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('From E-mail')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('From Email')}}</div>
             <div class="col-xs-6 col-sm-3">{{email.mail_gmail_token['email']}}</div>
           </div>
         </div>
       {% endif %}
     {% endif %}
-      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit E-mail Server Settings')}}</a>
+      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit Email Server Settings')}}</a>
     </div>
   </div>
 
@@ -167,15 +167,15 @@
       <h2>{{_('Scheduled Tasks')}}</h2>
         <div class="col-xs-12 col-sm-12 scheduled_tasks_details">
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Time at which tasks start to run')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('Start Time')}}</div>
             <div class="col-xs-6 col-sm-3">{{schedule_time}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Maximum tasks duration')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('Maximum Duration')}}</div>
             <div class="col-xs-6 col-sm-3">{{schedule_duration}}</div>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Generate book cover thumbnails')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('Generate Thumbnails')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_book_covers) }}</div>
           </div>
           <!--div class="row">
@@ -183,14 +183,14 @@
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_generate_series_covers) }}</div>
           </div-->
           <div class="row">
-            <div class="col-xs-6 col-sm-3">{{_('Reconnect to Calibre Library')}}</div>
+            <div class="col-xs-6 col-sm-3">{{_('Reconnect Calibre Database')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
           </div>
 
         </div>
       <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
       {% if config.schedule_generate_book_covers %}
-        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cover Cache')}}</a>
+        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cache')}}</a>
       {%  endif %}
     </div>
   </div>
@@ -224,7 +224,7 @@
         <tbody>
           <tr id="current_version">
             <td>{{commit}} </td>
-            <td><i>{{_('Current version')}}</i></td>
+            <td><i>{{_('Current Version')}}</i></td>
           </tr>
         </tbody>
       </table>
