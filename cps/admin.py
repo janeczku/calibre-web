@@ -145,9 +145,9 @@ def shutdown():
         ub.dispose()
 
         if task == 0:
-            show_text['text'] = _(u'Server restarted, please reload page')
+            show_text['text'] = _(u'Server restarted, please reload page.')
         else:
-            show_text['text'] = _(u'Performing shutdown of server, please close window')
+            show_text['text'] = _(u'Performing Server shutdown, please close window.')
         # stop gevent/tornado server
         web_server.stop(task == 0)
         return json.dumps(show_text)
@@ -155,7 +155,7 @@ def shutdown():
     if task == 2:
         log.warning("reconnecting to calibre database")
         calibre_db.reconnect_db(config, ub.app_DB_path)
-        show_text['text'] = _(u'Reconnect successful')
+        show_text['text'] = _(u'Success! Database Reconnected')
         return json.dumps(show_text)
 
     show_text['text'] = _(u'Unknown command')
@@ -169,7 +169,7 @@ def queue_metadata_backup():
     show_text = {}
     log.warning("Queuing all books for metadata backup")
     helper.set_all_metadata_dirty()
-    show_text['text'] = _(u'Books successfully queued for Metadata Backup')
+    show_text['text'] = _(u'Success! Books queued for Metadata Backup')
     return json.dumps(show_text)
 
 
@@ -1256,7 +1256,7 @@ def new_user():
         content.default_language = config.config_default_language
     return render_title_template("user_edit.html", new_user=1, content=content,
                                  config=config, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser",
+                                 languages=languages, title=_(u"Add New User"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
@@ -1265,7 +1265,7 @@ def new_user():
 @admin_required
 def edit_mailsettings():
     content = config.get_mail_settings()
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
+    return render_title_template("email_edit.html", content=content, title=_(u"Edit Email Server Settings"),
                                  page="mailset", feature_support=feature_support)
 
 
@@ -1284,7 +1284,7 @@ def update_mailsettings():
     elif to_save.get("gmail"):
         try:
             config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"Gmail Account Verification Successful"), category="success")
+            flash(_(u"Success! Gmail Account Verified."), category="success")
         except Exception as ex:
             flash(str(ex), category="error")
             log.error(ex)
@@ -1425,13 +1425,13 @@ def reset_user_password(user_id):
         ret, message = reset_password(user_id)
         if ret == 1:
             log.debug(u"Password for user %s reset", message)
-            flash(_(u"Password for user %(user)s reset", user=message), category="success")
+            flash(_(u"Success! Password for user %(user)s reset", user=message), category="success")
         elif ret == 0:
             log.error(u"An unknown error occurred. Please try again later.")
-            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+            flash(_(u"Oops! An unknown error occurred. Please try again later."), category="error")
         else:
-            log.error(u"Please configure the SMTP mail settings first...")
-            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+            log.error(u"Please configure the SMTP mail settings.")
+            flash(_(u"Oops! Please configure the SMTP mail settings."), category="error")
     return redirect(url_for('admin.admin'))
 
 

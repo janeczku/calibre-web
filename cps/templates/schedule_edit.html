@@ -9,7 +9,7 @@
   <form role="form" class="col-md-10 col-lg-6" method="POST" autocomplete="off">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
-      <label for="schedule_start_time">{{_('Time at which tasks start to run')}}</label>
+      <label for="schedule_start_time">{{_('Start Time')}}</label>
       <select name="schedule_start_time" id="schedule_start_time" class="form-control">
         {% for n in starttime %}
           <option value="{{n[0]}}" {% if config.schedule_start_time == n[0] %}selected{% endif %}>{{n[1]}}</option>
@@ -17,7 +17,7 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="schedule_duration">{{_('Maximum tasks duration')}}</label>
+      <label for="schedule_duration">{{_('Maximum Duration')}}</label>
       <select name="schedule_duration" id="schedule_duration" class="form-control">
         {% for n in duration %}
           <option value="{{n[0]}}" {% if config.schedule_duration == n[0] %}selected{% endif %}>{{n[1]}}</option>
@@ -26,7 +26,7 @@
     </div>
     <div class="form-group">
       <input type="checkbox" id="schedule_generate_book_covers" name="schedule_generate_book_covers" {% if config.schedule_generate_book_covers %}checked{% endif %}>
-      <label for="schedule_generate_book_covers">{{_('Generate Book Cover Thumbnails')}}</label>
+      <label for="schedule_generate_book_covers">{{_('Generate Thumbnails')}}</label>
     </div>
     <!--div class="form-group">
       <input type="checkbox" id="schedule_generate_series_covers" name="schedule_generate_series_covers" {% if config.schedule_generate_series_covers %}checked{% endif %}>
@@ -34,7 +34,7 @@
     </div-->
     <div class="form-group">
       <input type="checkbox" id="schedule_reconnect" name="schedule_reconnect" {% if config.schedule_reconnect %}checked{% endif %}>
-      <label for="schedule_reconnect">{{_('Reconnect to Calibre Library')}}</label>
+      <label for="schedule_reconnect">{{_('Reconnect Calibre Database')}}</label>
     </div>
 
     <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
