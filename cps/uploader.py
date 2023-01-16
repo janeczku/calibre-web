@@ -37,12 +37,12 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF2 import PdfFileReader
+    from PyPDF2 import PdfReader
     use_pdf_meta = True
 except ImportError as ex:
     log.debug('PyPDF2 is recommended for best performance in metadata extracting from pdf files: %s', ex)
     try:
-        from PyPDF3 import PdfFileReader
+        from PyPDF3 import PdfReader
         use_pdf_meta = True
     except ImportError as e:
         log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
@@ -157,7 +157,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            pdf_file = PdfFileReader(f)
+            pdf_file = PdfReader(f)
             doc_info = pdf_file.getDocumentInfo()
             try:
                 doc_info = pdf_file.getDocumentInfo()
