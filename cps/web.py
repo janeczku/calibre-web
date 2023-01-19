@@ -82,16 +82,16 @@ except ImportError:
 def add_security_headers(resp):
     csp = "default-src 'self'"
     csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
-    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self' blob:"
+    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
         csp += " images.gr-assets.com i.gr-assets.com s.gr-assets.com"
-    csp += " data:;"
-    csp += " object-src 'none'"
+    csp += " blob: data:;"
+    csp += " object-src 'none';"
     resp.headers['Content-Security-Policy'] = csp
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         resp.headers['Content-Security-Policy'] += " *"
     elif request.endpoint == "web.read_book":
-        resp.headers['Content-Security-Policy'] += " blob:; style-src-elem 'self' blob: 'unsafe-inline';"
+        resp.headers['Content-Security-Policy'] += " style-src-elem 'self' blob: 'unsafe-inline';"
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
