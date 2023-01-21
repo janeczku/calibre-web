@@ -556,7 +556,7 @@ def updateGdriveCalibreFromLocal():
 
 # update gdrive.db on edit of books title
 def updateDatabaseOnEdit(ID,newPath):
-    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + u'/'
+    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
         storedPathName.path = sqlCheckPath

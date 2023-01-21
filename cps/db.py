@@ -192,7 +192,7 @@ class Comments(Base):
         return self.text
 
     def __repr__(self):
-        return u"<Comments({0})>".format(self.text)
+        return "<Comments({0})>".format(self.text)
 
 
 class Tags(Base):
@@ -208,7 +208,7 @@ class Tags(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Tags('{0})>".format(self.name)
+        return "<Tags('{0})>".format(self.name)
 
 
 class Authors(Base):
@@ -228,7 +228,7 @@ class Authors(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
+        return "<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
 
 class Series(Base):
@@ -246,7 +246,7 @@ class Series(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Series('{0},{1}')>".format(self.name, self.sort)
+        return "<Series('{0},{1}')>".format(self.name, self.sort)
 
 
 class Ratings(Base):
@@ -262,7 +262,7 @@ class Ratings(Base):
         return self.rating
 
     def __repr__(self):
-        return u"<Ratings('{0}')>".format(self.rating)
+        return "<Ratings('{0}')>".format(self.rating)
 
 
 class Languages(Base):
@@ -281,7 +281,7 @@ class Languages(Base):
             return self.lang_code
 
     def __repr__(self):
-        return u"<Languages('{0}')>".format(self.lang_code)
+        return "<Languages('{0}')>".format(self.lang_code)
 
 
 class Publishers(Base):
@@ -299,7 +299,7 @@ class Publishers(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
+        return "<Publishers('{0},{1}')>".format(self.name, self.sort)
 
 
 class Data(Base):
@@ -323,7 +323,7 @@ class Data(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+        return "<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
 
 class Metadata_Dirtied(Base):
@@ -377,7 +377,7 @@ class Books(Base):
         self.has_cover = (has_cover != None)
 
     def __repr__(self):
-        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 

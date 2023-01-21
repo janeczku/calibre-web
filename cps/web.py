@@ -739,10 +739,10 @@ def render_read_books(page, are_read, as_xml=False, order=None):
         return entries, pagination
     else:
         if are_read:
-            name = _(u'Read Books') + ' (' + str(pagination.total_count) + ')'
+            name = _('Read Books') + ' (' + str(pagination.total_count) + ')'
             page_name = "read"
         else:
-            name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
+            name = _('Unread Books') + ' (' + str(pagination.total_count) + ')'
             page_name = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=name, page=page_name, order=order[1])
@@ -765,7 +765,7 @@ def render_archived_books(page, sort_param):
                                                                                 True,
                                                                                 True, config.config_read_column)
 
-    name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
+    name = _('Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])
@@ -917,7 +917,7 @@ def author_list():
         for entry in author_copy:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=author_copy, folder='web.books_list', charlist=char_list,
-                                     title=u"Authors", page="authorlist", data='author', order=order_no)
+                                     title="Authors", page="authorlist", data='author', order=order_no)
     else:
         abort(404)
 
@@ -1066,7 +1066,7 @@ def formats_list():
 @web.route("/language")
 @login_required_if_no_ano
 def language_overview():
-    if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == u"all":
+    if current_user.check_visibility(constants.SIDEBAR_LANGUAGE) and current_user.filter_language() == "all":
         order_no = 0 if current_user.get_view_property('language', 'dir') == 'desc' else 1
         languages = calibre_db.speaking_language(reverse_order=not order_no, with_count=True)
         char_list = generate_char_list(languages)

@@ -189,14 +189,14 @@ def extend_search_term(searchterm,
                                format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
                                            format='medium')])
         except ValueError:
-            pub_start = u""
+            pub_start = ""
     if pub_end:
         try:
             searchterm.extend([_("Published before ") +
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                            format='medium')])
         except ValueError:
-            pub_end = u""
+            pub_end = ""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
@@ -267,13 +267,13 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_start = term.get('custom_column_' + str(c.id) + '_start')
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
-                search_term.extend([u"{} >= {}".format(c.name,
+                search_term.extend(["{} >= {}".format(c.name,
                                                        format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
                 cc_present = True
             if column_end:
-                search_term.extend([u"{} <= {}".format(c.name,
+                search_term.extend(["{} <= {}".format(c.name,
                                                        format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
@@ -366,7 +366,7 @@ def render_prepare_search_form(cc):
         .filter(calibre_db.common_filters()) \
         .group_by(db.Data.format)\
         .order_by(db.Data.format).all()
-    if current_user.filter_language() == u"all":
+    if current_user.filter_language() == "all":
         languages = calibre_db.speaking_language()
     else:
         languages = None

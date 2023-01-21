@@ -95,11 +95,11 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
     if ereader_mail:
         settings = config.get_mail_settings()
         settings['subject'] = _('Send to eReader')  # pretranslate Subject for Email
-        settings['body'] = _(u'This Email has been sent via Calibre-Web.')
+        settings['body'] = _('This Email has been sent via Calibre-Web.')
     else:
         settings = dict()
     link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
-    txt = u"{} -> {}: {}".format(
+    txt = "{} -> {}: {}".format(
            old_book_format.upper(),
            new_book_format.upper(),
            link)
@@ -111,9 +111,9 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
-    WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web Test Email'), None, None,
+    WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
                      config.get_mail_settings(), ereader_mail, N_("Test Email"),
-                                          _(u'This Email has been sent via Calibre-Web.')))
+                                          _('This Email has been sent via Calibre-Web.')))
     return
 
 
@@ -129,7 +129,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     txt += "Regards,\r\n\r\n"
     txt += "Calibre-Web"
     WorkerThread.add(None, TaskEmail(
-        subject=_(u'Get Started with Calibre-Web'),
+        subject=_('Get Started with Calibre-Web'),
         filepath=None,
         attachment=None,
         settings=config.get_mail_settings(),
@@ -187,7 +187,7 @@ def check_send_to_ereader(entry):
             book_formats.extend(check_send_to_ereader_with_converter(formats))
         return book_formats
     else:
-        log.error(u'Cannot find book entry %d', entry.id)
+        log.error('Cannot find book entry %d', entry.id)
         return None
 
 
@@ -213,10 +213,10 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
 
     if convert == 1:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, ereader_mail)
+        return convert_book_format(book_id, calibrepath, 'epub', book_format.lower(), user_id, ereader_mail)
     if convert == 2:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, ereader_mail)
+        return convert_book_format(book_id, calibrepath, 'azw3', book_format.lower(), user_id, ereader_mail)
 
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
@@ -225,7 +225,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             email_text = N_("%(book)s send to eReader", book=link)
             WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                              config.get_mail_settings(), ereader_mail,
-                             email_text, _(u'This Email has been sent via Calibre-Web.')))
+                             email_text, _('This Email has been sent via Calibre-Web.')))
             return
     return _("The requested file could not be read. Maybe wrong permissions?")
 
@@ -235,16 +235,16 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-    if value[-1:] == u'.':
-        value = value[:-1]+u'_'
+    if value[-1:] == '.':
+        value = value[:-1]+'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if config.config_unicode_filename:
         value = (unidecode.unidecode(value))
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
-        value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
+        value = re.sub(r'[*+:\\\"/<>?]+', '_', value, flags=re.U)
         # pipe has to be replaced with comma
-        value = re.sub(r'[|]+', u',', value, flags=re.U)
+        value = re.sub(r'[|]+', ',', value, flags=re.U)
 
     value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
 
@@ -416,8 +416,8 @@ def clean_author_database(renamed_author, calibre_path="", local_book=None, gdri
                         g_file = gd.getFileFromEbooksFolder(all_new_path,
                                                             file_format.name + '.' + file_format.format.lower())
                         if g_file:
-                            gd.moveGdriveFileRemote(g_file, all_new_name + u'.' + file_format.format.lower())
-                            gd.updateDatabaseOnEdit(g_file['id'], all_new_name + u'.' + file_format.format.lower())
+                            gd.moveGdriveFileRemote(g_file, all_new_name + '.' + file_format.format.lower())
+                            gd.updateDatabaseOnEdit(g_file['id'], all_new_name + '.' + file_format.format.lower())
                         else:
                             log.error("File {} not found on gdrive"
                                       .format(all_new_path, file_format.name + '.' + file_format.format.lower()))
@@ -510,25 +510,25 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
     authordir = book.path.split('/')[0]
     titledir = book.path.split('/')[1]
     new_authordir = rename_all_authors(first_author, renamed_author, gdrive=True)
-    new_titledir = get_valid_filename(book.title, chars=96) + u" (" + str(book_id) + u")"
+    new_titledir = get_valid_filename(book.title, chars=96) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
         g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if g_file:
             gd.moveGdriveFileRemote(g_file, new_titledir)
-            book.path = book.path.split('/')[0] + u'/' + new_titledir
+            book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(g_file['id'], book.path)     # only child folder affected
         else:
-            return _(u'File %(file)s not found on Google Drive', file=book.path)  # file not found
+            return _('File %(file)s not found on Google Drive', file=book.path)  # file not found
 
     if authordir != new_authordir and authordir not in renamed_author:
         g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), new_titledir)
         if g_file:
             gd.moveGdriveFolderRemote(g_file, new_authordir)
-            book.path = new_authordir + u'/' + book.path.split('/')[1]
+            book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
-            return _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found
 
     # change location in database to new author/title path
     book.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
@@ -600,7 +600,7 @@ def delete_book_gdrive(book, book_format):
         gd.deleteDatabaseEntry(g_file['id'])
         g_file.Trash()
     else:
-        error = _(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
+        error = _('Book path %(path)s not found on Google Drive', path=book.path)  # file not found
 
     return error is None, error
 

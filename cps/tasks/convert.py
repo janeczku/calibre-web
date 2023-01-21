@@ -64,7 +64,7 @@ class TaskConvert(CalibreTask):
             if df:
                 datafile = os.path.join(config.config_calibre_dir,
                                         cur_book.path,
-                                        data.name + u"." + self.settings['old_book_format'].lower())
+                                        data.name + "." + self.settings['old_book_format'].lower())
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
@@ -78,7 +78,7 @@ class TaskConvert(CalibreTask):
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
-            os.remove(self.file_path + u'.' + self.settings['old_book_format'].lower())
+            os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
 
         if filename:
             if config.config_use_google_drive:
@@ -107,8 +107,8 @@ class TaskConvert(CalibreTask):
         local_db = db.CalibreDB(expire_on_commit=False, init=True)
         file_path = self.file_path
         book_id = self.book_id
-        format_old_ext = u'.' + self.settings['old_book_format'].lower()
-        format_new_ext = u'.' + self.settings['new_book_format'].lower()
+        format_old_ext = '.' + self.settings['old_book_format'].lower()
+        format_new_ext = '.' + self.settings['new_book_format'].lower()
 
         # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success

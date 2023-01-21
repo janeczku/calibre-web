@@ -83,7 +83,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
 
     if meta and meta.title.strip() and meta.author.strip():
         if meta.author.lower() == 'unknown':
-            meta = meta._replace(author=_(u'Unknown'))
+            meta = meta._replace(author=_('Unknown'))
         return meta
     return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
@@ -93,7 +93,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
-        author=_(u'Unknown'),
+        author=_('Unknown'),
         cover=None,
         description="",
         tags="",
@@ -173,7 +173,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         languages = xmp_info['languages']
         publisher = xmp_info['publisher']
     else:
-        author = u'Unknown'
+        author = 'Unknown'
         title = ''
         languages = [""]
         publisher = ""
@@ -182,7 +182,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if doc_info:
         if author == '':
-            author = ' & '.join(split_authors([doc_info.author])) if doc_info.author else u'Unknown'
+            author = ' & '.join(split_authors([doc_info.author])) if doc_info.author else 'Unknown'
         if title == '':
             title = doc_info.title if doc_info.title else original_file_name
         if subject == '':
@@ -239,7 +239,7 @@ def get_magick_version():
     if not use_generic_pdf_cover:
         ret['Image Magick'] = ImageVersion.MAGICK_VERSION
     else:
-        ret['Image Magick'] = u'not installed'
+        ret['Image Magick'] = 'not installed'
     return ret
 
 
