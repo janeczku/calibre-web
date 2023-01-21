@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2022-09-25 22:15:18</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-01-02 20:50:39</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2022-09-26 04:46:12</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-01-03 05:05:42</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 35 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>7h 22 min</p>
         </div>
       </div>
       </div>
@@ -936,11 +936,11 @@
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooks</td>
         <td class="text-center">36</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
+        <td class="text-center">34</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -1264,11 +1264,31 @@
     
     
     
-        <tr id='pt11.34' class='hiddenRow bg-success'>
+        <tr id="ft11.34" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.34')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft11.34" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft11.34').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 852, in test_upload_book_pdf
+    self.assertLess(&#39;23300&#39;, resp.headers[&#39;Content-Length&#39;])
+AssertionError: &#39;23300&#39; not less than &#39;19501&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1430,11 +1450,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksList</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">16</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1462,11 +1482,33 @@
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id="ft14.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft14.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft14.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 474, in test_bookslist_edit_comment
+    self.assertEqual(&#34;[...]&#34;, bl[&#39;table&#39;][4][&#34;Comments&#34;][&#39;text&#39;])
+AssertionError: &#39;[...]&#39; != &#39;+&#39;
+- [...]
++ +</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1480,11 +1522,33 @@
     
     
     
-        <tr id='pt14.5' class='hiddenRow bg-success'>
+        <tr id="ft14.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft14.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft14.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 459, in test_bookslist_edit_cust_comment
+    self.assertEqual(&#34;[...]&#34;, bl[&#39;table&#39;][4][&#34;Custom Comment 人物&#34;][&#39;text&#39;])
+AssertionError: &#39;[...]&#39; != &#39;+&#39;
+- [...]
++ +</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3145,11 +3209,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadPDF</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3159,11 +3223,35 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id="ft34.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft34.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft34.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft34.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pdf_metadata.py&#34;, line 137, in test_upload_invalid_pdf
+    self.check_uploaded_pdf({&#39;title&#39;: &#34;Tü执el&#34;,
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pdf_metadata.py&#34;, line 58, in check_uploaded_pdf
+    self.assertEqual(check_properties[&#39;title&#39;], details[&#39;title&#39;])
+AssertionError: &#39;Tü执el&#39; != &#39;book1&#39;
+- Tü执el
++ book1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3624,11 +3712,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3701,11 +3789,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt42.8' class='hiddenRow bg-success'>
+        <tr id="ft42.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 310, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.007557298474945533 != 0.0 within 0.0001 delta (0.007557298474945533 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3824,25 +3932,45 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadEPubs</td>
+        <td class="text-center">5</td>
         <td class="text-center">4</td>
-        <td class="text-center">4</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 4)">Detail</a>
+            <a onclick="showClassDetail('c44', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id="ft44.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft44.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft44.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 146, in test_upload_epub_cover
+    self.assertAlmostEqual(diff(BytesIO(original), BytesIO(cover_image), delete_diff_file=True), 0.0, delta=0.0001)
+AssertionError: 0.04601354277405644 != 0.0 within 0.0001 delta (0.04601354277405644 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3866,6 +3994,15 @@ IndexError: list index out of range</pre>
     
     
         <tr id='pt44.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4770,9 +4907,9 @@ IndexError: list index out of range</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>423</td>
-        <td>414</td>
-        <td>1</td>
+        <td>424</td>
+        <td>409</td>
+        <td>7</td>
         <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
@@ -4802,7 +4939,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.15.0-48-generic #54-Ubuntu SMP Fri Aug 26 13:26:29 UTC 2022 x86_64 x86_64</td>
+              <td>Linux 5.15.0-56-generic #62-Ubuntu SMP Tue Nov 22 19:54:14 UTC 2022 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -4820,13 +4957,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>APScheduler</th>
-              <td>3.9.1</td>
+              <td>3.9.1.post1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Babel</th>
-              <td>2.10.3</td>
+              <td>2.11.0</td>
               <td>Basic</td>
             </tr>
           
@@ -4844,7 +4981,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Flask</th>
-              <td>2.0.3</td>
+              <td>2.1.3</td>
               <td>Basic</td>
             </tr>
           
@@ -4856,7 +4993,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Flask-Login</th>
-              <td>0.6.1</td>
+              <td>0.6.2</td>
               <td>Basic</td>
             </tr>
           
@@ -4874,7 +5011,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>greenlet</th>
-              <td>1.1.3</td>
+              <td>2.0.1</td>
               <td>Basic</td>
             </tr>
           
@@ -4892,7 +5029,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>lxml</th>
-              <td>4.8.0</td>
+              <td>4.9.2</td>
               <td>Basic</td>
             </tr>
           
@@ -4904,13 +5041,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyPDF2</th>
-              <td>2.10.9</td>
+              <td>3.0.1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pytz</th>
-              <td>2022.2.1</td>
+              <td>2022.7</td>
               <td>Basic</td>
             </tr>
           
@@ -4922,7 +5059,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.41</td>
+              <td>1.4.45</td>
               <td>Basic</td>
             </tr>
           
@@ -4934,7 +5071,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Unidecode</th>
-              <td>1.3.4</td>
+              <td>1.3.6</td>
               <td>Basic</td>
             </tr>
           
@@ -4952,13 +5089,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4970,7 +5107,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -4982,13 +5119,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5000,7 +5137,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5012,13 +5149,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5030,7 +5167,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5054,13 +5191,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5072,7 +5209,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5090,13 +5227,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5108,7 +5245,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5126,19 +5263,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>scholarly</th>
-              <td>1.7.2</td>
+              <td>1.7.9</td>
               <td>TestLoadMetadataScholar</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.62.0</td>
+              <td>2.70.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.20.4</td>
+              <td>0.21.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5150,7 +5287,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.14.0</td>
+              <td>1.15.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5168,19 +5305,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.12.2</td>
+              <td>0.20.9</td>
               <td>TestGoodreads</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.16.0</td>
+              <td>4.17.3</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.16.0</td>
+              <td>4.17.3</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5192,7 +5329,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.16.0</td>
+              <td>4.17.3</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -5204,13 +5341,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Flask-Dance</th>
-              <td>6.1.1</td>
+              <td>6.2.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.38.3</td>
+              <td>0.39.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -5222,7 +5359,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(414, 1, 1, 7);
+    drawCircle(409, 7, 1, 7);
     showCase(5);
 </script>
 
