@@ -112,7 +112,7 @@ def generate_auth_token(user_id):
 
     return render_title_template(
         "generate_kobo_auth_url.html",
-        title=_(u"Kobo Setup"),
+        title=_("Kobo Setup"),
         auth_token=auth_token.auth_token,
         warning = warning
     )

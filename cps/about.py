@@ -81,4 +81,4 @@ def stats():
     categories = calibre_db.session.query(db.Tags).count()
     series = calibre_db.session.query(db.Series).count()
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=collect_stats(),
-                                 categorycounter=categories, seriecounter=series, title=_(u"Statistics"), page="stat")
+                                 categorycounter=categories, seriecounter=series, title=_("Statistics"), page="stat")

@@ -279,7 +279,7 @@ msgid "Add new user"
 msgstr "Tambahkan pengguna baru"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+msgid "Edit Email Server Settings"
 msgstr "Edit Pengaturan Server Email"
 
 #: cps/admin.py:1287
@@ -292,7 +292,7 @@ msgstr "Verifikasi Akun Gmail Berhasil"
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
-msgid "Database error: %(error)s."
+msgid "Oops! Database Error: %(error)s."
 msgstr "Kesalahan basis data: %(error)s"
 
 #: cps/admin.py:1316
@@ -310,7 +310,7 @@ msgid "Please configure your e-mail address first..."
 msgstr "Harap atur alamat email Anda terlebih dahulu.."
 
 #: cps/admin.py:1323
-msgid "E-mail server settings updated"
+msgid "Email Server Settings updated"
 msgstr "Setelan server email diperbarui"
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
@@ -331,7 +331,7 @@ msgstr "Pengaturan tugas terjadwal diperbarui"
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
-msgid "An unknown error occurred. Please try again later."
+msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Terjadi kesalahan yang tidak diketahui. Coba lagi nanti."
 
 #: cps/admin.py:1386
@@ -349,7 +349,7 @@ msgid "Password for user %(user)s reset"
 msgstr "Kata sandi untuk pengaturan ulang pengguna %(user) "
 
 #: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first..."
+msgid "Please configure the SMTP mail settings first."
 msgstr "Harap atur pengaturan email SMTP terlebih dahulu..."
 
 #: cps/admin.py:1445
@@ -463,7 +463,7 @@ msgid "Database Configuration"
 msgstr "Pengaturan Basis Data"
 
 #: cps/admin.py:1871 cps/web.py:1233
-msgid "Please fill out all fields!"
+msgid "Oops! Please complete all fields."
 msgstr "Harap masukkan seluruh isian!"
 
 #: cps/admin.py:1879
@@ -476,7 +476,7 @@ msgid "User '%(user)s' created"
 msgstr "Pengguna '%(user)s' telah dibuat"
 
 #: cps/admin.py:1902
-msgid "Found an existing account for this e-mail address or name."
+msgid "Oops! An account already exists for this Email. or name."
 msgstr "Ditemukan akun yang ada untuk alamat email atau nama ini."
 
 #: cps/admin.py:1932
@@ -493,7 +493,7 @@ msgid "No admin user remaining, can't delete user"
 msgstr "Tidak ada pengguna admin tersisa, tidak dapat menghapus pengguna"
 
 #: cps/admin.py:1992 cps/web.py:1371
-msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
+msgid "Email can't be empty and has to be a valid Email"
 msgstr "Alamat email tidak boleh kosong dan harus berupa email yang valid"
 
 #: cps/admin.py:2018
@@ -523,7 +523,7 @@ msgstr "Tidak ada"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Ups! Judul buku yang dipilih tidak tersedia. Berkas tidak ada atau tidak dapat diakses"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
@@ -654,7 +654,7 @@ msgstr "%(format)s tidak ditemukan: %(fn)s"
 
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-msgid "Send to E-Reader"
+msgid "Send to eReader"
 msgstr "Kirim ke E-Reader"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
@@ -741,7 +741,7 @@ msgid "Book path %(path)s not found on Google Drive"
 msgstr "Jalur buku %(path)s tidak ditemukan di Google Drive"
 
 #: cps/helper.py:644 cps/web.py:1416
-msgid "Found an existing account for this e-mail address"
+msgid "Oops! An account already exists for this Email."
 msgstr "Ditemukan akun yang ada untuk alamat email ini"
 
 #: cps/helper.py:652
@@ -821,7 +821,7 @@ msgstr "Daftar dengan %(provider)s"
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Anda sekarang login sebagai: %(nickname)s"
 
 #: cps/oauth_bb.py:148
@@ -1315,20 +1315,20 @@ msgstr "Daftar format berkas"
 
 #: cps/web.py:1203
 #, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
+msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Buku telah diantrikan untuk dikirim ke %(kindlemail)s"
 
 #: cps/web.py:1207
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Oops! Terjadi kesalahan saat mengirim buku: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgid "Please update your profile with a valid Send to Kindle Email Address."
 msgstr "Harap perbarui profil Anda dengan alamat e-mail Kirim ke Kindle yang valid."
 
 #: cps/web.py:1226
-msgid "E-Mail server is not configured, please contact your administrator!"
+msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Server email belum diatur, silakan hubungi administrator!"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
@@ -1339,51 +1339,51 @@ msgid "Register"
 msgstr "Daftar"
 
 #: cps/web.py:1262
-msgid "Your e-mail is not allowed to register"
+msgid "Oops! Your Email is not allowed."
 msgstr "Alamat email Anda tidak diizinkan untuk mendaftar"
 
 #: cps/web.py:1266
-msgid "Confirmation e-mail was send to your e-mail account."
+msgid "Success! Confirmation Email has been sent."
 msgstr "E-mail konfirmasi telah dikirimkan ke alamat email Anda."
 
 #: cps/web.py:1280
-msgid "Cannot activate LDAP authentication"
+msgid "Oops! Cannot activate LDAP authentication"
 msgstr "Tidak dapat mengaktifkan autentikasi LDAP."
 
 #: cps/web.py:1299
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr "Login Pengganti sebagai: '%(nickname)s', Server LDAP tidak dapat dijangkau, atau pengguna tidak diketahui."
 
 #: cps/web.py:1305
 #, python-format
-msgid "Could not login: %(message)s"
+msgid "Oops! Login Failed: %(message)s"
 msgstr "Tidak dapat login: %(message)s"
 
 #: cps/web.py:1309 cps/web.py:1334
-msgid "Wrong Username or Password"
+msgid "Oops! Invalid Username or Password."
 msgstr "Pengguna atau Kata Sandi salah"
 
 #: cps/web.py:1316
-msgid "New Password was send to your email address"
+msgid "Success! New Password was sent to your Email."
 msgstr "Kata Sandi baru telah dikirimkan ke alamat email Anda"
 
 #: cps/web.py:1322
-msgid "Please enter valid username to reset password"
+msgid "Oops! Please enter a valid username to reset password"
 msgstr "Harap masukkan pengguna valid untuk mengatur ulang kata sandi"
 
 #: cps/web.py:1329
 #, python-format
-msgid "You are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Anda telah masuk sebagai: '%(nickname)s'"
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "Profil %(name)s"
 
 #: cps/web.py:1412
-msgid "Profile updated"
+msgid Success! Profile updated"
 msgstr "Profil diperbarui"
 
 #: cps/services/gmail.py:58
@@ -1476,11 +1476,11 @@ msgstr "Nama Pengguna"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr "Alamat Email"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-msgid "Send to E-Reader E-mail Address"
+msgid "Send to eReader Email"
 msgstr "Alamat E-mail untuk Kirim ke E-Reader"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
@@ -1528,7 +1528,7 @@ msgid "Import LDAP Users"
 msgstr "Impor Pengguna LDAP"
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
+msgid "Email Server Settings"
 msgstr "Pengaturan Server Email"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
@@ -1549,11 +1549,11 @@ msgstr "Login SMTP"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
+msgid "From Email"
 msgstr "Dari Email"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
+msgid "EMail Service"
 msgstr "Layanan Email"
 
 #: cps/templates/admin.html:91
@@ -1625,15 +1625,15 @@ msgid "Scheduled Tasks"
 msgstr "Tugas Terjadwal"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
-msgid "Time at which tasks start to run"
+msgid "Start Time"
 msgstr "Waktu saat tugas mulai dijalankan"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
-msgid "Maximum tasks duration"
+msgid "Maximum Duration"
 msgstr "Durasi tugas maksimum"
 
 #: cps/templates/admin.html:178
-msgid "Generate book cover thumbnails"
+msgid "Generate Thumbnails"
 msgstr "Buat thumbnail sampul buku"
 
 #: cps/templates/admin.html:182
@@ -1641,11 +1641,11 @@ msgid "Generate series cover thumbnails"
 msgstr "Buat thumbnail sampul seri"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
-msgid "Reconnect to Calibre Library"
+msgid "Reconnect Calibre Database"
 msgstr "Sambungkan kembali ke Perpustakaan Caliber"
 
 #: cps/templates/admin.html:193
-msgid "Refresh Thumbnail Cover Cache"
+msgid "Refresh Thumbnail Cache"
 msgstr "Segarkan Cache Thumbnail Sampul"
 
 #: cps/templates/admin.html:199
@@ -1685,7 +1685,7 @@ msgid "Details"
 msgstr "Detail"
 
 #: cps/templates/admin.html:227
-msgid "Current version"
+msgid "Current Version"
 msgstr "Versi saat ini"
 
 #: cps/templates/admin.html:234
@@ -2158,7 +2158,7 @@ msgid "Enable Public Registration"
 msgstr "Izinkan Registrasi Publik"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr "Gunakan Email sebagai Nama Pengguna"
 
 #: cps/templates/config_edit.html:132
@@ -2511,7 +2511,7 @@ msgid "Edit Metadata"
 msgstr "Edit Metadata"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr "Pilih Jenis Server"
 
 #: cps/templates/email_edit.html:15
@@ -3037,7 +3037,7 @@ msgid "Choose a username"
 msgstr "Pilih nama pengguna"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "Alamat email Anda"
 
 #: cps/templates/remote_login.html:5
@@ -3057,7 +3057,7 @@ msgid "This verification link will expire in 10 minutes."
 msgstr "Tautan verifikasi ini akan kedaluwarsa dalam 10 menit."
 
 #: cps/templates/schedule_edit.html:29
-msgid "Generate Book Cover Thumbnails"
+msgid "Generate Thumbnails"
 msgstr "Hasilkan Thumbnail Sampul Buku"
 
 #: cps/templates/schedule_edit.html:33
@@ -3289,11 +3289,11 @@ msgid "Enter Username"
 msgstr "Masukkan Nama Pengguna"
 
 #: cps/templates/user_table.html:135
-msgid "Enter E-mail Address"
+msgid "Enter Email Address"
 msgstr "Masukkan Alamat Email"
 
 #: cps/templates/user_table.html:136
-msgid "Enter E-Reader E-mail Address"
+msgid "Enter E-Reader Email Address"
 msgstr "Masukkan Alamat Email E-Reader"
 
 #: cps/templates/user_table.html:136

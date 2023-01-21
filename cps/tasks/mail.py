@@ -152,7 +152,7 @@ class TaskEmail(CalibreTask):
                 main_type, sub_type = content_type.split('/', 1)
                 message.add_attachment(data, maintype=main_type, subtype=sub_type, filename=self.attachment)
             else:
-                self._handleError(u"Attachment not found")
+                self._handleError("Attachment not found")
                 return
         return message
 

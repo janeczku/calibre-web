@@ -278,7 +278,7 @@ msgid "Add new user"
 msgstr "添加新用户"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+msgid "Edit Email Server Settings"
 msgstr "编辑邮件服务器设置"
 
 #: cps/admin.py:1287
@@ -291,7 +291,7 @@ msgstr "G-Mail 账号校验成功"
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
-msgid "Database error: %(error)s."
+msgid "Oops! Database Error: %(error)s."
 msgstr "数据库错误：%(error)s。"
 
 #: cps/admin.py:1316
@@ -309,7 +309,7 @@ msgid "Please configure your e-mail address first..."
 msgstr "请先配置您的邮箱地址..."
 
 #: cps/admin.py:1323
-msgid "E-mail server settings updated"
+msgid "Email Server Settings updated"
 msgstr "邮件服务器设置已更新"
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
@@ -330,7 +330,7 @@ msgstr "已更新计划任务设置"
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
-msgid "An unknown error occurred. Please try again later."
+msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
 #: cps/admin.py:1386
@@ -348,7 +348,7 @@ msgid "Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
 #: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first..."
+msgid "Please configure the SMTP mail settings first."
 msgstr "请先配置 SMTP 邮箱设置..."
 
 #: cps/admin.py:1445
@@ -462,7 +462,7 @@ msgid "Database Configuration"
 msgstr "数据库配置"
 
 #: cps/admin.py:1871 cps/web.py:1233
-msgid "Please fill out all fields!"
+msgid "Oops! Please complete all fields."
 msgstr "请填写所有字段！"
 
 #: cps/admin.py:1879
@@ -475,7 +475,7 @@ msgid "User '%(user)s' created"
 msgstr "用户“%(user)s”已创建"
 
 #: cps/admin.py:1902
-msgid "Found an existing account for this e-mail address or name."
+msgid "Oops! An account already exists for this Email. or name."
 msgstr "使用此邮箱或用户名的账号已经存在。"
 
 #: cps/admin.py:1932
@@ -492,7 +492,7 @@ msgid "No admin user remaining, can't delete user"
 msgstr "管理员账户不存在，无法删除用户"
 
 #: cps/admin.py:1992 cps/web.py:1371
-msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
+msgid "Email can't be empty and has to be a valid Email"
 msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
 
 #: cps/admin.py:2018
@@ -522,7 +522,7 @@ msgstr "无"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
@@ -653,7 +653,7 @@ msgstr "找不到 %(format)s：%(fn)s"
 
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
-msgid "Send to E-Reader"
+msgid "Send to eReader"
 msgstr "发送到电子阅读器"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
@@ -740,7 +740,7 @@ msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
 #: cps/helper.py:644 cps/web.py:1416
-msgid "Found an existing account for this e-mail address"
+msgid "Oops! An account already exists for this Email."
 msgstr "使用此邮箱的账号已经存在。"
 
 #: cps/helper.py:652
@@ -818,7 +818,7 @@ msgstr "使用 %(provider)s 注册"
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
 #: cps/oauth_bb.py:148
@@ -1312,20 +1312,20 @@ msgstr "文件格式列表"
 
 #: cps/web.py:1203
 #, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
+msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "书籍已经成功加入 %(kindlemail)s 的发送队列"
 
 #: cps/web.py:1207
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgid "Please update your profile with a valid Send to Kindle Email Address."
 msgstr "请先配置您的 Kindle 邮箱。"
 
 #: cps/web.py:1226
-msgid "E-Mail server is not configured, please contact your administrator!"
+msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "邮件服务未配置，请联系网站管理员！"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
@@ -1336,51 +1336,51 @@ msgid "Register"
 msgstr "注册"
 
 #: cps/web.py:1262
-msgid "Your e-mail is not allowed to register"
+msgid "Oops! Your Email is not allowed."
 msgstr "您的电子邮件不允许注册"
 
 #: cps/web.py:1266
-msgid "Confirmation e-mail was send to your e-mail account."
+msgid "Success! Confirmation Email has been sent."
 msgstr "确认邮件已经发送到您的邮箱。"
 
 #: cps/web.py:1280
-msgid "Cannot activate LDAP authentication"
+msgid "Oops! Cannot activate LDAP authentication"
 msgstr "无法激活 LDAP 认证"
 
 #: cps/web.py:1299
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
 #: cps/web.py:1305
 #, python-format
-msgid "Could not login: %(message)s"
+msgid "Oops! Login Failed: %(message)s"
 msgstr "无法登录：%(message)s"
 
 #: cps/web.py:1309 cps/web.py:1334
-msgid "Wrong Username or Password"
+msgid "Oops! Invalid Username or Password."
 msgstr "用户名或密码错误"
 
 #: cps/web.py:1316
-msgid "New Password was send to your email address"
+msgid "Success! New Password was sent to your Email."
 msgstr "新密码已发送到您的邮箱"
 
 #: cps/web.py:1322
-msgid "Please enter valid username to reset password"
+msgid "Oops! Please enter a valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
 #: cps/web.py:1329
 #, python-format
-msgid "You are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "您现在已以“%(nickname)s”登录"
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
 #: cps/web.py:1412
-msgid "Profile updated"
+msgid Success! Profile updated"
 msgstr "资料已更新"
 
 #: cps/services/gmail.py:58
@@ -1472,11 +1472,11 @@ msgstr "用户名"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr "邮箱地址"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-msgid "Send to E-Reader E-mail Address"
+msgid "Send to eReader Email"
 msgstr "接收书籍的电子阅读器邮箱地址"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
@@ -1524,7 +1524,7 @@ msgid "Import LDAP Users"
 msgstr "导入 LDAP 用户"
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
+msgid "Email Server Settings"
 msgstr "SMTP 邮件服务器设置"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
@@ -1545,11 +1545,11 @@ msgstr "SMTP 用户名"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
+msgid "From Email"
 msgstr "发件人邮箱"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
+msgid "EMail Service"
 msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:91
@@ -1621,15 +1621,15 @@ msgid "Scheduled Tasks"
 msgstr "计划任务"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
-msgid "Time at which tasks start to run"
+msgid "Start Time"
 msgstr "任务开始运行的时间"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
-msgid "Maximum tasks duration"
+msgid "Maximum Duration"
 msgstr "最长任务持续时间"
 
 #: cps/templates/admin.html:178
-msgid "Generate book cover thumbnails"
+msgid "Generate Thumbnails"
 msgstr "生成书籍封面缩略图"
 
 #: cps/templates/admin.html:182
@@ -1637,11 +1637,11 @@ msgid "Generate series cover thumbnails"
 msgstr "生成丛书封面缩略图"
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
-msgid "Reconnect to Calibre Library"
+msgid "Reconnect Calibre Database"
 msgstr "重新连接到 Calibre 库"
 
 #: cps/templates/admin.html:193
-msgid "Refresh Thumbnail Cover Cache"
+msgid "Refresh Thumbnail Cache"
 msgstr "刷新封面缩略图缓存"
 
 #: cps/templates/admin.html:199
@@ -1681,7 +1681,7 @@ msgid "Details"
 msgstr "详情"
 
 #: cps/templates/admin.html:227
-msgid "Current version"
+msgid "Current Version"
 msgstr "当前版本"
 
 #: cps/templates/admin.html:234
@@ -2154,7 +2154,7 @@ msgid "Enable Public Registration"
 msgstr "启用注册"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr "使用邮箱或用户名"
 
 #: cps/templates/config_edit.html:132
@@ -2507,7 +2507,7 @@ msgid "Edit Metadata"
 msgstr "编辑元数据"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:15
@@ -3033,7 +3033,7 @@ msgid "Choose a username"
 msgstr "选择一个用户名"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "您的邮箱地址"
 
 #: cps/templates/remote_login.html:5
@@ -3053,7 +3053,7 @@ msgid "This verification link will expire in 10 minutes."
 msgstr "此验证链接将在10分钟后失效。"
 
 #: cps/templates/schedule_edit.html:29
-msgid "Generate Book Cover Thumbnails"
+msgid "Generate Thumbnails"
 msgstr "生成书籍封面缩略图"
 
 #: cps/templates/schedule_edit.html:33
@@ -3285,11 +3285,11 @@ msgid "Enter Username"
 msgstr "输入用户名"
 
 #: cps/templates/user_table.html:135
-msgid "Enter E-mail Address"
+msgid "Enter Email Address"
 msgstr "输入邮箱地址"
 
 #: cps/templates/user_table.html:136
-msgid "Enter E-Reader E-mail Address"
+msgid "Enter E-Reader Email Address"
 msgstr "输入电子阅读器邮箱地址"
 
 #: cps/templates/user_table.html:136

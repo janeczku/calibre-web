@@ -278,7 +278,7 @@ msgid "Add new user"
 msgstr "새 사용자 추가"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+msgid "Edit Email Server Settings"
 msgstr "이메일 서버 설정 편집"
 
 #: cps/admin.py:1287
@@ -291,7 +291,7 @@ msgstr "Gmail 계정 인증 성공"
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
-msgid "Database error: %(error)s."
+msgid "Oops! Database Error: %(error)s."
 msgstr "데이터베이스 오류: %(error)s."
 
 #: cps/admin.py:1316
@@ -309,7 +309,7 @@ msgid "Please configure your e-mail address first..."
 msgstr "먼저 이메일 주소를 구성하십시오..."
 
 #: cps/admin.py:1323
-msgid "E-mail server settings updated"
+msgid "Email Server Settings updated"
 msgstr "이메일 서버 설정 업데이트됨"
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
@@ -330,7 +330,7 @@ msgstr ""
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
-msgid "An unknown error occurred. Please try again later."
+msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "알 수없는 오류가 발생했습니다. 나중에 다시 시도 해주십시오."
 
 #: cps/admin.py:1386
@@ -348,7 +348,7 @@ msgid "Password for user %(user)s reset"
 msgstr "사용자 %(user)s의 비밀번호 재설정"
 
 #: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first..."
+msgid "Please configure the SMTP mail settings first."
 msgstr "먼저 SMTP 메일 설정을 구성하십시오..."
 
 #: cps/admin.py:1445
@@ -462,7 +462,7 @@ msgid "Database Configuration"
 msgstr "데이터베이스 구성"
 
 #: cps/admin.py:1871 cps/web.py:1233
-msgid "Please fill out all fields!"
+msgid "Oops! Please complete all fields."
 msgstr "모든 필드를 채워주십시오!"
 
 #: cps/admin.py:1879
@@ -475,7 +475,7 @@ msgid "User '%(user)s' created"
 msgstr "사용자 '%(user)s'이(가) 생성됨"
 
 #: cps/admin.py:1902
-msgid "Found an existing account for this e-mail address or name."
+msgid "Oops! An account already exists for this Email. or name."
 msgstr "동일한 이메일 주소 또는 이름이 이미 등록되어 있습니다."
 
 #: cps/admin.py:1932
@@ -492,7 +492,7 @@ msgid "No admin user remaining, can't delete user"
 msgstr "관리자 계정이 하나 뿐일 때는 관리자 권한을 삭제할 수 없음"
 
 #: cps/admin.py:1992 cps/web.py:1371
-msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
+msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
 #: cps/admin.py:2018
@@ -522,7 +522,7 @@ msgstr "None"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "선택한 책 제목을 사용할 수 없습니다. 파일이 존재하지 않거나 액세스할 수 없습니다"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
@@ -654,7 +654,7 @@ msgstr "%(format)s을(를) 찾을 수 없음: %(fn)s"
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
 #, fuzzy
-msgid "Send to E-Reader"
+msgid "Send to eReader"
 msgstr "킨들로 보내기"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
@@ -741,7 +741,7 @@ msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google 드라이브에서 책 경로 %(path)s을(를) 찾을 수 없습니다"
 
 #: cps/helper.py:644 cps/web.py:1416
-msgid "Found an existing account for this e-mail address"
+msgid "Oops! An account already exists for this Email."
 msgstr "등록되어 있는 이메일 주소입니다"
 
 #: cps/helper.py:652
@@ -822,7 +822,7 @@ msgstr "%(provider)s에 등록"
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "다음 사용자로 로그인했습니다: '%(nickname)s'"
 
 #: cps/oauth_bb.py:148
@@ -1317,20 +1317,20 @@ msgstr "파일 유형 목록"
 
 #: cps/web.py:1203
 #, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
+msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "성공적으로 %(kindlemail)s에 보내기 예약이 되었습니다"
 
 #: cps/web.py:1207
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "책을 보내는 중에 오류 발생: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgid "Please update your profile with a valid Send to Kindle Email Address."
 msgstr "Kindle로 보내는 유효한 이메일 주소로 프로필을 업데이트하십시오."
 
 #: cps/web.py:1226
-msgid "E-Mail server is not configured, please contact your administrator!"
+msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "이메일 서버가 구성되지 않았습니다. 관리자에게 문의하십시오!"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
@@ -1341,51 +1341,51 @@ msgid "Register"
 msgstr "등록"
 
 #: cps/web.py:1262
-msgid "Your e-mail is not allowed to register"
+msgid "Oops! Your Email is not allowed."
 msgstr "이메일을 등록할 수 없습니다"
 
 #: cps/web.py:1266
-msgid "Confirmation e-mail was send to your e-mail account."
+msgid "Success! Confirmation Email has been sent."
 msgstr "확인을 위한 이메일이 발송되었습니다."
 
 #: cps/web.py:1280
-msgid "Cannot activate LDAP authentication"
+msgid "Oops! Cannot activate LDAP authentication"
 msgstr "LDAP 인증을 활성화할 수 없습니다"
 
 #: cps/web.py:1299
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr "대체 로그인: '%(nickname)s', LDAP 서버에 연결할 수 없음 또는 사용자를 알 수 없음"
 
 #: cps/web.py:1305
 #, python-format
-msgid "Could not login: %(message)s"
+msgid "Oops! Login Failed: %(message)s"
 msgstr "로그인 실패: %(message)s"
 
 #: cps/web.py:1309 cps/web.py:1334
-msgid "Wrong Username or Password"
+msgid "Oops! Invalid Username or Password."
 msgstr "잘못된 사용자명 또는 비밀번호"
 
 #: cps/web.py:1316
-msgid "New Password was send to your email address"
+msgid "Success! New Password was sent to your Email."
 msgstr "새 비밀번호가 이메일로 전송되었습니다"
 
 #: cps/web.py:1322
-msgid "Please enter valid username to reset password"
+msgid "Oops! Please enter a valid username to reset password"
 msgstr "비밀번호를 재설정하려면 유효한 사용자 이름을 입력하십시오"
 
 #: cps/web.py:1329
 #, python-format
-msgid "You are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "다음 사용자로 로그인: '%(nickname)s"
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "%(name)s 프로필"
 
 #: cps/web.py:1412
-msgid "Profile updated"
+msgid Success! Profile updated"
 msgstr "프로필이 업데이트 됨"
 
 #: cps/services/gmail.py:58
@@ -1478,12 +1478,12 @@ msgstr "사용자명"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr "이메일 주소"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
 #, fuzzy
-msgid "Send to E-Reader E-mail Address"
+msgid "Send to eReader Email"
 msgstr "킨들로 보내기 이메일 주소"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
@@ -1531,7 +1531,7 @@ msgid "Import LDAP Users"
 msgstr "LDAP 사용자 가져오기"
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
+msgid "Email Server Settings"
 msgstr "이메일 서버 설정"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
@@ -1552,12 +1552,12 @@ msgstr "SMTP Login"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
-msgstr "From E-mail"
+msgid "From Email"
+msgstr "From Email"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
-msgstr "E-Mail Service"
+msgid "EMail Service"
+msgstr "EMail Service"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
@@ -1628,15 +1628,15 @@ msgid "Scheduled Tasks"
 msgstr ""
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
-msgid "Time at which tasks start to run"
+msgid "Start Time"
 msgstr ""
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
-msgid "Maximum tasks duration"
+msgid "Maximum Duration"
 msgstr ""
 
 #: cps/templates/admin.html:178
-msgid "Generate book cover thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:182
@@ -1644,11 +1644,11 @@ msgid "Generate series cover thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
-msgid "Reconnect to Calibre Library"
+msgid "Reconnect Calibre Database"
 msgstr ""
 
 #: cps/templates/admin.html:193
-msgid "Refresh Thumbnail Cover Cache"
+msgid "Refresh Thumbnail Cache"
 msgstr ""
 
 #: cps/templates/admin.html:199
@@ -1688,7 +1688,7 @@ msgid "Details"
 msgstr "세부 정보"
 
 #: cps/templates/admin.html:227
-msgid "Current version"
+msgid "Current Version"
 msgstr "현재 버전"
 
 #: cps/templates/admin.html:234
@@ -2161,7 +2161,7 @@ msgid "Enable Public Registration"
 msgstr "공개 등록 활성화"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr "이메일을 사용자 이름으로 사용"
 
 #: cps/templates/config_edit.html:132
@@ -2514,7 +2514,7 @@ msgid "Edit Metadata"
 msgstr "메타저오 편집"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr "서버 유형 선택"
 
 #: cps/templates/email_edit.html:15
@@ -3042,7 +3042,7 @@ msgid "Choose a username"
 msgstr "사용자 이름 선택"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "이메일 주소"
 
 #: cps/templates/remote_login.html:5
@@ -3062,7 +3062,7 @@ msgid "This verification link will expire in 10 minutes."
 msgstr "이 확인 링크는 10분 후에 만료됩니다."
 
 #: cps/templates/schedule_edit.html:29
-msgid "Generate Book Cover Thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/schedule_edit.html:33
@@ -3294,12 +3294,12 @@ msgid "Enter Username"
 msgstr "사용자 이름"
 
 #: cps/templates/user_table.html:135
-msgid "Enter E-mail Address"
+msgid "Enter Email Address"
 msgstr "이메일 주소 입력"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "Enter E-Reader E-mail Address"
+msgid "Enter E-Reader Email Address"
 msgstr "킨들 이메일 주소 입력"
 
 #: cps/templates/user_table.html:136

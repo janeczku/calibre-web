@@ -107,7 +107,7 @@ def edit_book(book_id):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     # Book not found
     if not book:
-        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
 
@@ -151,7 +151,7 @@ def edit_book(book_id):
         if to_save.get("cover_url", None):
             if not current_user.role_upload():
                 edit_error = True
-                flash(_(u"User has no rights to upload cover"), category="error")
+                flash(_("User has no rights to upload cover"), category="error")
             if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
                 book.has_cover = 0
             else:
@@ -226,7 +226,7 @@ def edit_book(book_id):
     except (OperationalError, IntegrityError, StaleDataError, InterfaceError) as e:
         log.error_or_exception("Database error: {}".format(e))
         calibre_db.session.rollback()
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
     except Exception as ex:
         log.error_or_exception(ex)
@@ -288,7 +288,7 @@ def upload():
                 if error:
                     flash(error, category="error")
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
-                upload_text = N_(u"File %(file)s uploaded", file=link)
+                upload_text = N_("File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
                 helper.add_book_to_thumbnail_cache(book_id)
 
@@ -302,7 +302,7 @@ def upload():
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
-                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+                flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
@@ -315,7 +315,7 @@ def convert_bookformat(book_id):
     book_format_to = request.form.get('book_format_to', None)
 
     if (book_format_from is None) or (book_format_to is None):
-        flash(_(u"Source or destination format for conversion missing"), category="error")
+        flash(_("Source or destination format for conversion missing"), category="error")
         return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
@@ -323,11 +323,11 @@ def convert_bookformat(book_id):
                                      book_format_to.upper(), current_user.name)
 
     if rtn is None:
-        flash(_(u"Book successfully queued for converting to %(book_format)s",
+        flash(_("Book successfully queued for converting to %(book_format)s",
                 book_format=book_format_to),
               category="success")
     else:
-        flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
+        flash(_("There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
 
@@ -632,7 +632,7 @@ def prepare_authors_on_upload(title, authr):
         entry = calibre_db.check_exists_book(authr, title)
         if entry:
             log.info("Uploaded book probably exists in library")
-            flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
+            flash(_("Uploaded book probably exists in the library, consider to change before upload new: ")
                   + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
     input_authors, renamed = prepare_authors(authr)
@@ -687,7 +687,7 @@ def create_book_on_upload(modify_date, meta):
     modify_date |= edit_book_languages(meta.languages, db_book, upload_mode=True, invalid=invalid)
     if invalid:
         for lang in invalid:
-            flash(_(u"'%(langname)s' is not a valid language", langname=lang), category="warning")
+            flash(_("'%(langname)s' is not a valid language", langname=lang), category="warning")
 
     # handle tags
     modify_date |= edit_book_tags(meta.tags, db_book)
@@ -737,7 +737,7 @@ def file_handling_on_upload(requested_file):
         meta = uploader.upload(requested_file, config.config_rarfile_location)
     except (IOError, OSError):
         log.error("File %s could not saved to temp dir", requested_file.filename)
-        flash(_(u"File %(filename)s could not saved to temp dir",
+        flash(_("File %(filename)s could not saved to temp dir",
                 filename=requested_file.filename), category="error")
         return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
     return meta, None
@@ -757,7 +757,7 @@ def move_coverfile(meta, db_book):
             os.unlink(meta.cover)
     except OSError as e:
         log.error("Failed to move cover file %s: %s", new_cover_path, e)
-        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,
+        flash(_("Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,
                 error=e),
               category="error")
 
@@ -892,7 +892,7 @@ def render_edit_book(book_id):
     cc = calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.datatype.notin_(db.cc_exceptions)).all()
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
     if not book:
-        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
 
@@ -927,7 +927,7 @@ def render_edit_book(book_id):
     if kepub_possible:
         allowed_conversion_formats.append('kepub')
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                 title=_(u"edit metadata"), page="editbook",
+                                 title=_("edit metadata"), page="editbook",
                                  conversion_formats=allowed_conversion_formats,
                                  config=config,
                                  source_formats=valid_source_formats)
@@ -1012,7 +1012,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
         if isinstance(invalid, list):
             invalid.append(lang)
         else:
-            raise ValueError(_(u"'%(langname)s' is not a valid language", langname=lang))
+            raise ValueError(_("'%(langname)s' is not a valid language", langname=lang))
     # ToDo: Not working correct
     if upload_mode and len(input_l) == 1:
         # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
@@ -1154,7 +1154,7 @@ def upload_single_file(file_request, book, book_id):
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
-                flash(_(u"User has no rights to upload additional file formats"), category="error")
+                flash(_("User has no rights to upload additional file formats"), category="error")
                 return False
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
@@ -1175,12 +1175,12 @@ def upload_single_file(file_request, book, book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
+                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
                     return False
             try:
                 requested_file.save(saved_filename)
             except OSError:
-                flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
+                flash(_("Failed to store file %(file)s.", file=saved_filename), category="error")
                 return False
 
             file_size = os.path.getsize(saved_filename)
@@ -1198,12 +1198,12 @@ def upload_single_file(file_request, book, book_id):
                 except (OperationalError, IntegrityError, StaleDataError) as e:
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
-                    flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+                    flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
                     return False  # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
-            upload_text = N_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
+            upload_text = N_("File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
             WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(book.title)))
 
             return uploader.process(
@@ -1218,7 +1218,7 @@ def upload_cover(cover_request, book):
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
-                flash(_(u"User has no rights to upload cover"), category="error")
+                flash(_("User has no rights to upload cover"), category="error")
                 return False
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:

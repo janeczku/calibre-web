@@ -10,16 +10,16 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     {% if feature_support['gmail'] %}
     <div class="form-group">
-      <label for="config_email_type">{{_('Choose Server Type')}}</label>
+      <label for="config_email_type">{{_('Email Account Type')}}</label>
       <select name="mail_server_type" id="config_email_type" class="form-control" data-control="email-settings">
-       <option value="0" {% if content.mail_server_type == 0 %}selected{% endif %}>{{_('Use Standard E-Mail Account')}}</option>
-       <option value="1" {% if content.mail_server_type == 1 %}selected{% endif %}>{{_('Gmail Account with OAuth2 Verification')}}</option>
+       <option value="0" {% if content.mail_server_type == 0 %}selected{% endif %}>{{_('Standard Email Account')}}</option>
+       <option value="1" {% if content.mail_server_type == 1 %}selected{% endif %}>{{_('Gmail Account')}}</option>
       </select>
     </div>
     <div data-related="email-settings-1">
       <div class="form-group">
         {% if content.mail_gmail_token == {} %}
-        <button type="submit" id="gmail_server" name="gmail" value="submit" class="btn btn-default">{{_('Setup Gmail Account as E-Mail Server')}}</button>
+        <button type="submit" id="gmail_server" name="gmail" value="submit" class="btn btn-default">{{_('Setup Gmail Account')}}</button>
         {% else %}
         <button type="submit" id="invalidate_server" name="invalidate" value="submit" class="btn btn-danger">{{_('Revoke Gmail Access')}}</button>
         {% endif %}
@@ -52,7 +52,7 @@
         <input type="password" class="form-control" name="mail_password" id="mail_password" value="{{content.mail_password}}">
       </div>
       <div class="form-group">
-        <label for="mail_from">{{_('From E-mail')}}</label>
+        <label for="mail_from">{{_('From Email')}}</label>
         <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}" required>
       </div>
       <label for="mail_size">{{_('Attachment Size Limit')}}</label>
@@ -63,7 +63,7 @@
         </span>
       </div>
       <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
-      <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save and Send Test E-mail')}}</button>
+      <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save and Send Test Email')}}</button>
    {% if feature_support['gmail'] %}
     </div>
    {% endif %}
