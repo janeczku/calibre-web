@@ -46,13 +46,13 @@ def add_to_shelf(shelf_id, book_id):
     if shelf is None:
         log.error("Invalid shelf specified: %s", shelf_id)
         if not xhr:
-            flash(_(u"Invalid shelf specified"), category="error")
+            flash(_("Invalid shelf specified"), category="error")
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
     if not check_shelf_edit_permissions(shelf):
         if not xhr:
-            flash(_(u"Sorry you are not allowed to add a book to that shelf"), category="error")
+            flash(_("Sorry you are not allowed to add a book to that shelf"), category="error")
             return redirect(url_for('web.index'))
         return "Sorry you are not allowed to add a book to the that shelf", 403
 
@@ -61,7 +61,7 @@ def add_to_shelf(shelf_id, book_id):
     if book_in_shelf:
         log.error("Book %s is already part of %s", book_id, shelf)
         if not xhr:
-            flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
+            flash(_("Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
             return redirect(url_for('web.index'))
         return "Book is already part of the shelf: %s" % shelf.name, 400
 
@@ -79,14 +79,14 @@ def add_to_shelf(shelf_id, book_id):
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
             return redirect(url_for('web.index'))
     if not xhr:
         log.debug("Book has been added to shelf: {}".format(shelf.name))
-        flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        flash(_("Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
@@ -100,12 +100,12 @@ def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
         log.error("Invalid shelf specified: {}".format(shelf_id))
-        flash(_(u"Invalid shelf specified"), category="error")
+        flash(_("Invalid shelf specified"), category="error")
         return redirect(url_for('web.index'))
 
     if not check_shelf_edit_permissions(shelf):
         log.warning("You are not allowed to add a book to the shelf".format(shelf.name))
-        flash(_(u"You are not allowed to add a book to the shelf"), category="error")
+        flash(_("You are not allowed to add a book to the shelf"), category="error")
         return redirect(url_for('web.index'))
 
     if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
@@ -123,7 +123,7 @@ def search_to_shelf(shelf_id):
 
         if not books_for_shelf:
             log.error("Books are already part of {}".format(shelf.name))
-            flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
+            flash(_("Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('web.index'))
 
         maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()[0] or 0
@@ -135,14 +135,14 @@ def search_to_shelf(shelf_id):
         try:
             ub.session.merge(shelf)
             ub.session.commit()
-            flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
+            flash(_("Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
         except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
             log.error_or_exception("Settings Database error: {}".format(e))
-            flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+            flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
     else:
         log.error("Could not add books to shelf: {}".format(shelf.name))
-        flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
+        flash(_("Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -182,13 +182,13 @@ def remove_from_shelf(shelf_id, book_id):
         except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
             log.error_or_exception("Settings Database error: {}".format(e))
-            flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+            flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
             if "HTTP_REFERER" in request.environ:
                 return redirect(request.environ["HTTP_REFERER"])
             else:
                 return redirect(url_for('web.index'))
         if not xhr:
-            flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+            flash(_("Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
             if "HTTP_REFERER" in request.environ:
                 return redirect(request.environ["HTTP_REFERER"])
             else:
@@ -197,7 +197,7 @@ def remove_from_shelf(shelf_id, book_id):
     else:
         if not xhr:
             log.warning("You are not allowed to remove a book from shelf: {}".format(shelf.name))
-            flash(_(u"Sorry you are not allowed to remove a book from this shelf"),
+            flash(_("Sorry you are not allowed to remove a book from this shelf"),
                   category="error")
             return redirect(url_for('web.index'))
         return "Sorry you are not allowed to remove a book from this shelf", 403
@@ -207,7 +207,7 @@ def remove_from_shelf(shelf_id, book_id):
 @login_required
 def create_shelf():
     shelf = ub.Shelf()
-    return create_edit_shelf(shelf, page_title=_(u"Create a Shelf"), page="shelfcreate")
+    return create_edit_shelf(shelf, page_title=_("Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
@@ -215,9 +215,9 @@ def create_shelf():
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not check_shelf_edit_permissions(shelf):
-        flash(_(u"Sorry you are not allowed to edit this shelf"), category="error")
+        flash(_("Sorry you are not allowed to edit this shelf"), category="error")
         return redirect(url_for('web.index'))
-    return create_edit_shelf(shelf, page_title=_(u"Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
+    return create_edit_shelf(shelf, page_title=_("Edit a shelf"), page="shelfedit", shelf_id=shelf_id)
 
 
 @shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
@@ -232,7 +232,7 @@ def delete_shelf(shelf_id):
     except InvalidRequestError as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -269,7 +269,7 @@ def order_shelf(shelf_id):
             except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
                 log.error_or_exception("Settings Database error: {}".format(e))
-                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+                flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
 
         result = list()
         if shelf:
@@ -278,7 +278,7 @@ def order_shelf(shelf_id):
                 .add_columns(calibre_db.common_filters().label("visible")) \
                 .filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
         return render_title_template('shelf_order.html', entries=result,
-                                     title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
+                                     title=_("Change order of Shelf: '%(name)s'", name=shelf.name),
                                      shelf=shelf, page="shelforder")
     else:
         abort(404)
@@ -310,7 +310,7 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if not current_user.role_edit_shelfs() and to_save.get("is_public") == "on":
-            flash(_(u"Sorry you are not allowed to create a public shelf"), category="error")
+            flash(_("Sorry you are not allowed to create a public shelf"), category="error")
             return redirect(url_for('web.index'))
         is_public = 1 if to_save.get("is_public") == "on" else 0
         if config.config_kobo_sync:
@@ -327,24 +327,24 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
                 shelf_action = "created"
-                flash_text = _(u"Shelf %(title)s created", title=shelf_title)
+                flash_text = _("Shelf %(title)s created", title=shelf_title)
             else:
                 shelf_action = "changed"
-                flash_text = _(u"Shelf %(title)s changed", title=shelf_title)
+                flash_text = _("Shelf %(title)s changed", title=shelf_title)
             try:
                 ub.session.commit()
-                log.info(u"Shelf {} {}".format(shelf_title, shelf_action))
+                log.info("Shelf {} {}".format(shelf_title, shelf_action))
                 flash(flash_text, category="success")
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
             except (OperationalError, InvalidRequestError) as ex:
                 ub.session.rollback()
                 log.error_or_exception(ex)
                 log.error_or_exception("Settings Database error: {}".format(ex))
-                flash(_(u"Database error: %(error)s.", error=ex.orig), category="error")
+                flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
             except Exception as ex:
                 ub.session.rollback()
                 log.error_or_exception(ex)
-                flash(_(u"There was an error"), category="error")
+                flash(_("There was an error"), category="error")
     return render_title_template('shelf_edit.html',
                                  shelf=shelf,
                                  title=page_title,
@@ -366,7 +366,7 @@ def check_shelf_is_unique(title, is_public, shelf_id=False):
 
         if not is_shelf_name_unique:
             log.error("A public shelf with the name '{}' already exists.".format(title))
-            flash(_(u"A public shelf with the name '%(title)s' already exists.", title=title),
+            flash(_("A public shelf with the name '%(title)s' already exists.", title=title),
                   category="error")
     else:
         is_shelf_name_unique = ub.session.query(ub.Shelf) \
@@ -377,7 +377,7 @@ def check_shelf_is_unique(title, is_public, shelf_id=False):
 
         if not is_shelf_name_unique:
             log.error("A private shelf with the name '{}' already exists.".format(title))
-            flash(_(u"A private shelf with the name '%(title)s' already exists.", title=title),
+            flash(_("A private shelf with the name '%(title)s' already exists.", title=title),
                   category="error")
     return is_shelf_name_unique
 
@@ -454,14 +454,14 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
             except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
                 log.error_or_exception("Settings Database error: {}".format(e))
-                flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+                flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
 
         return render_title_template(page,
                                      entries=result,
                                      pagination=pagination,
-                                     title=_(u"Shelf: '%(name)s'", name=shelf.name),
+                                     title=_("Shelf: '%(name)s'", name=shelf.name),
                                      shelf=shelf,
                                      page="shelf")
     else:
-        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
+        flash(_("Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))

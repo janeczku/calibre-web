@@ -145,9 +145,9 @@ def shutdown():
         ub.dispose()
 
         if task == 0:
-            show_text['text'] = _(u'Server restarted, please reload page')
+            show_text['text'] = _(u'Server restarted, please reload page.')
         else:
-            show_text['text'] = _(u'Performing shutdown of server, please close window')
+            show_text['text'] = _(u'Performing Server shutdown, please close window.')
         # stop gevent/tornado server
         web_server.stop(task == 0)
         return json.dumps(show_text)
@@ -155,7 +155,7 @@ def shutdown():
     if task == 2:
         log.warning("reconnecting to calibre database")
         calibre_db.reconnect_db(config, ub.app_DB_path)
-        show_text['text'] = _(u'Reconnect successful')
+        show_text['text'] = _(u'Success! Database Reconnected')
         return json.dumps(show_text)
 
     show_text['text'] = _(u'Unknown command')
@@ -169,7 +169,7 @@ def queue_metadata_backup():
     show_text = {}
     log.warning("Queuing all books for metadata backup")
     helper.set_all_metadata_dirty()
-    show_text['text'] = _(u'Books successfully queued for Metadata Backup')
+    show_text['text'] = _(u'Success! Books queued for Metadata Backup')
     return json.dumps(show_text)
 
 
@@ -227,7 +227,7 @@ def admin():
     return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
                                  schedule_duration=schedule_duration,
-                                 title=_(u"Admin page"), page="admin")
+                                 title=_("Admin page"), page="admin")
 
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
@@ -247,7 +247,7 @@ def configuration():
                                  config=config,
                                  provider=oauthblueprints,
                                  feature_support=feature_support,
-                                 title=_(u"Basic Configuration"), page="config")
+                                 title=_("Basic Configuration"), page="config")
 
 
 @admi.route("/admin/ajaxconfig", methods=["POST"])
@@ -285,7 +285,7 @@ def view_configuration():
                                  restrictColumns=restrict_columns,
                                  languages=languages,
                                  translations=translations,
-                                 title=_(u"UI Configuration"), page="uiconfig")
+                                 title=_("UI Configuration"), page="uiconfig")
 
 
 @admi.route("/admin/usertable")
@@ -319,7 +319,7 @@ def edit_user_table():
                                  all_roles=constants.ALL_ROLES,
                                  kobo_support=kobo_support,
                                  sidebar_settings=constants.sidebar_settings,
-                                 title=_(u"Edit Users"),
+                                 title=_("Edit Users"),
                                  page="usertable")
 
 
@@ -490,7 +490,7 @@ def edit_list_user(param):
                                            ub.User.id != user.id).count():
                                     return Response(
                                         json.dumps([{'type': "danger",
-                                                     'message': _(u"No admin user remaining, can't remove admin role",
+                                                     'message': _("No admin user remaining, can't remove admin role",
                                                                   nick=user.name)}]), mimetype='application/json')
                             user.role &= ~value
                         else:
@@ -567,13 +567,13 @@ def update_view_configuration():
         calibre_db.update_title_sort(config)
 
     if not check_valid_read_column(to_save.get("config_read_column", "0")):
-        flash(_(u"Invalid Read Column"), category="error")
+        flash(_("Invalid Read Column"), category="error")
         log.debug("Invalid Read column")
         return view_configuration()
     _config_int(to_save, "config_read_column")
 
     if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
-        flash(_(u"Invalid Restricted Column"), category="error")
+        flash(_("Invalid Restricted Column"), category="error")
         log.debug("Invalid Restricted Column")
         return view_configuration()
     _config_int(to_save, "config_restricted_column")
@@ -593,7 +593,7 @@ def update_view_configuration():
         config.config_default_show |= constants.DETAIL_RANDOM
 
     config.save()
-    flash(_(u"Calibre-Web configuration updated"), category="success")
+    flash(_("Calibre-Web configuration updated"), category="success")
     log.debug("Calibre-Web configuration updated")
     before_request()
 
@@ -1256,7 +1256,7 @@ def new_user():
         content.default_language = config.config_default_language
     return render_title_template("user_edit.html", new_user=1, content=content,
                                  config=config, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser",
+                                 languages=languages, title=_("Add New User"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
@@ -1265,7 +1265,7 @@ def new_user():
 @admin_required
 def edit_mailsettings():
     content = config.get_mail_settings()
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
+    return render_title_template("email_edit.html", content=content, title=_("Edit Email Server Settings"),
                                  page="mailset", feature_support=feature_support)
 
 
@@ -1284,7 +1284,7 @@ def update_mailsettings():
     elif to_save.get("gmail"):
         try:
             config.mail_gmail_token = services.gmail.setup_gmail(config.mail_gmail_token)
-            flash(_(u"Gmail Account Verification Successful"), category="success")
+            flash(_("Success! Gmail Account Verified."), category="success")
         except Exception as ex:
             flash(str(ex), category="error")
             log.error(ex)
@@ -1303,24 +1303,24 @@ def update_mailsettings():
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
         return edit_mailsettings()
     except Exception as e:
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
         return edit_mailsettings()
 
     if to_save.get("test"):
         if current_user.email:
             result = send_test_mail(current_user.email, current_user.name)
             if result is None:
-                flash(_(u"Test e-mail queued for sending to %(email)s, please check Tasks for result",
+                flash(_("Test e-mail queued for sending to %(email)s, please check Tasks for result",
                         email=current_user.email), category="info")
             else:
-                flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
+                flash(_("There was an error sending the Test e-mail: %(res)s", res=result), category="error")
         else:
-            flash(_(u"Please configure your e-mail address first..."), category="error")
+            flash(_("Please configure your e-mail address first..."), category="error")
     else:
-        flash(_(u"E-mail server settings updated"), category="success")
+        flash(_("Email Server Settings updated"), category="success")
 
     return edit_mailsettings()
 
@@ -1343,7 +1343,7 @@ def edit_scheduledtasks():
                                  config=content,
                                  starttime=time_field,
                                  duration=duration_field,
-                                 title=_(u"Edit Scheduled Tasks Settings"))
+                                 title=_("Edit Scheduled Tasks Settings"))
 
 
 @admi.route("/admin/scheduledtasks", methods=["POST"])
@@ -1355,12 +1355,12 @@ def update_scheduledtasks():
     if 0 <= int(to_save.get("schedule_start_time")) <= 23:
         _config_int(to_save, "schedule_start_time")
     else:
-        flash(_(u"Invalid start time for task specified"), category="error")
+        flash(_("Invalid start time for task specified"), category="error")
         error = True
     if 0 < int(to_save.get("schedule_duration")) <= 60:
         _config_int(to_save, "schedule_duration")
     else:
-        flash(_(u"Invalid duration for task specified"), category="error")
+        flash(_("Invalid duration for task specified"), category="error")
         error = True
     _config_checkbox(to_save, "schedule_generate_book_covers")
     _config_checkbox(to_save, "schedule_generate_series_covers")
@@ -1369,7 +1369,7 @@ def update_scheduledtasks():
     if not error:
         try:
             config.save()
-            flash(_(u"Scheduled tasks settings updated"), category="success")
+            flash(_("Scheduled tasks settings updated"), category="success")
 
             # Cancel any running tasks
             schedule.end_scheduled_tasks()
@@ -1379,7 +1379,7 @@ def update_scheduledtasks():
         except IntegrityError:
             ub.session.rollback()
             log.error("An unknown error occurred while saving scheduled tasks settings")
-            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+            flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
         except OperationalError:
             ub.session.rollback()
             log.error("Settings DB is not Writeable")
@@ -1394,7 +1394,7 @@ def update_scheduledtasks():
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
     if not content or (not config.config_anonbrowse and content.name == "Guest"):
-        flash(_(u"User not found"), category="error")
+        flash(_("User not found"), category="error")
         return redirect(url_for('admin.admin'))
     languages = calibre_db.speaking_language(return_all_languages=True)
     translations = get_available_locale()
@@ -1413,7 +1413,7 @@ def edit_user(user_id):
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
                                  kobo_support=kobo_support,
-                                 title=_(u"Edit User %(nick)s", nick=content.name),
+                                 title=_("Edit User %(nick)s", nick=content.name),
                                  page="edituser")
 
 
@@ -1424,14 +1424,14 @@ def reset_user_password(user_id):
     if current_user is not None and current_user.is_authenticated:
         ret, message = reset_password(user_id)
         if ret == 1:
-            log.debug(u"Password for user %s reset", message)
-            flash(_(u"Password for user %(user)s reset", user=message), category="success")
+            log.debug("Password for user %s reset", message)
+            flash(_("Success! Password for user %(user)s reset", user=message), category="success")
         elif ret == 0:
-            log.error(u"An unknown error occurred. Please try again later.")
-            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+            log.error("An unknown error occurred. Please try again later.")
+            flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
         else:
-            log.error(u"Please configure the SMTP mail settings first...")
-            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+            log.error("Please configure the SMTP mail settings.")
+            flash(_("Oops! Please configure the SMTP mail settings."), category="error")
     return redirect(url_for('admin.admin'))
 
 
@@ -1442,7 +1442,7 @@ def view_logfile():
     logfiles = {0: logger.get_logfile(config.config_logfile),
                 1: logger.get_accesslogfile(config.config_access_logfile)}
     return render_title_template("logviewer.html",
-                                 title=_(u"Logfile viewer"),
+                                 title=_("Logfile viewer"),
                                  accesslog_enable=config.config_access_log,
                                  log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
                                  logfiles=logfiles,
@@ -1492,7 +1492,7 @@ def download_debug():
 @admin_required
 def get_update_status():
     if feature_support['updater']:
-        log.info(u"Update status requested")
+        log.info("Update status requested")
         return updater_thread.get_available_updates(request.method)
     else:
         return ''
@@ -1687,7 +1687,7 @@ def _db_configuration_update_helper():
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        _db_configuration_result(_(u"Database error: %(error)s.", error=e.orig), gdrive_error)
+        _db_configuration_result(_("Oops! Database Error: %(error)s.", error=e.orig), gdrive_error)
     try:
         metadata_db = os.path.join(to_save['config_calibre_dir'], "metadata.db")
         if config.config_use_google_drive and is_gdrive_ready() and not os.path.exists(metadata_db):
@@ -1719,7 +1719,7 @@ def _db_configuration_update_helper():
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
-            flash(_(u"DB is not Writeable"), category="warning")
+            flash(_("DB is not Writeable"), category="warning")
     config.save()
     return _db_configuration_result(None, gdrive_error)
 
@@ -1805,7 +1805,7 @@ def _configuration_update_helper():
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        _configuration_result(_(u"Database error: %(error)s.", error=e.orig))
+        _configuration_result(_("Oops! Database Error: %(error)s.", error=e.orig))
 
     config.save()
     if reboot_required:
@@ -1821,7 +1821,7 @@ def _configuration_result(error_flash=None, reboot=False):
         config.load()
         resp['result'] = [{'type': "danger", 'message': error_flash}]
     else:
-        resp['result'] = [{'type': "success", 'message': _(u"Calibre-Web configuration updated")}]
+        resp['result'] = [{'type': "success", 'message': _("Calibre-Web configuration updated")}]
     resp['reboot'] = reboot
     resp['config_upload'] = config.config_upload_formats
     return Response(json.dumps(resp), mimetype='application/json')
@@ -1852,7 +1852,7 @@ def _db_configuration_result(error_flash=None, gdrive_error=None):
                                  gdriveError=gdrive_error,
                                  gdrivefolders=gdrivefolders,
                                  feature_support=feature_support,
-                                 title=_(u"Database Configuration"), page="dbconfig")
+                                 title=_("Database Configuration"), page="dbconfig")
 
 
 def _handle_new_user(to_save, content, languages, translations, kobo_support):
@@ -1868,7 +1868,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
     try:
         if not to_save["name"] or not to_save["email"] or not to_save["password"]:
             log.info("Missing entries on new user")
-            raise Exception(_(u"Please fill out all fields!"))
+            raise Exception(_("Oops! Please complete all fields."))
         content.email = check_email(to_save["email"])
         # Query username, if not existing, change
         content.name = check_username(to_save["name"])
@@ -1876,13 +1876,13 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
             content.kindle_mail = valid_email(to_save["kindle_mail"])
         if config.config_public_reg and not check_valid_domain(content.email):
             log.info("E-mail: {} for new user is not from valid domain".format(content.email))
-            raise Exception(_(u"E-mail is not from valid domain"))
+            raise Exception(_("E-mail is not from valid domain"))
     except Exception as ex:
         flash(str(ex), category="error")
         return render_title_template("user_edit.html", new_user=1, content=content,
                                      config=config,
                                      translations=translations,
-                                     languages=languages, title=_(u"Add new user"), page="newuser",
+                                     languages=languages, title=_("Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
     try:
         content.allowed_tags = config.config_allowed_tags
@@ -1893,17 +1893,17 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.kobo_only_shelves_sync = to_save.get("kobo_only_shelves_sync", 0) == "on"
         ub.session.add(content)
         ub.session.commit()
-        flash(_(u"User '%(user)s' created", user=content.name), category="success")
+        flash(_("User '%(user)s' created", user=content.name), category="success")
         log.debug("User {} created".format(content.name))
         return redirect(url_for('admin.admin'))
     except IntegrityError:
         ub.session.rollback()
         log.error("Found an existing account for {} or {}".format(content.name, content.email))
-        flash(_("Found an existing account for this e-mail address or name."), category="error")
+        flash(_("Oops! An account already exists for this Email. or name."), category="error")
     except OperationalError as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
 
 
 def _delete_user(content):
@@ -1989,7 +1989,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         try:
             new_email = valid_email(to_save.get("email", content.email))
             if not new_email:
-                raise Exception(_(u"E-Mail Address can't be empty and has to be a valid E-Mail"))
+                raise Exception(_("Email can't be empty and has to be a valid Email"))
             if new_email != content.email:
                 content.email = check_email(new_email)
             # Query username, if not existing, change
@@ -2011,19 +2011,19 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                                          content=content,
                                          config=config,
                                          registered_oauth=oauth_check,
-                                         title=_(u"Edit User %(nick)s", nick=content.name),
+                                         title=_("Edit User %(nick)s", nick=content.name),
                                          page="edituser")
     try:
         ub.session_commit()
-        flash(_(u"User '%(nick)s' updated", nick=content.name), category="success")
+        flash(_("User '%(nick)s' updated", nick=content.name), category="success")
     except IntegrityError as ex:
         ub.session.rollback()
         log.error("An unknown error occurred while changing user: {}".format(str(ex)))
-        flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
     except OperationalError as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
-        flash(_(u"Database error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
     return ""
 
 

@@ -288,7 +288,7 @@ msgid "Add new user"
 msgstr "Añadir un nuevo usuario"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+msgid "Edit Email Server Settings"
 msgstr "Cambiar parámetros de correo"
 
 #: cps/admin.py:1287
@@ -301,7 +301,7 @@ msgstr "Verificación de cuenta de Gmail exitosa"
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
-msgid "Database error: %(error)s."
+msgid "Oops! Database Error: %(error)s."
 msgstr "Error en la base de datos: %(error)s."
 
 #: cps/admin.py:1316
@@ -319,7 +319,7 @@ msgid "Please configure your e-mail address first..."
 msgstr "Por favor, configure su correo electrónico primero..."
 
 #: cps/admin.py:1323
-msgid "E-mail server settings updated"
+msgid "Email Server Settings updated"
 msgstr "Actualizados los ajustes del servidor de correo electrónico"
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
@@ -340,7 +340,7 @@ msgstr ""
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
-msgid "An unknown error occurred. Please try again later."
+msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ha ocurrido un error desconocido. Por favor vuelva a intentarlo más tarde."
 
 #: cps/admin.py:1386
@@ -358,7 +358,7 @@ msgid "Password for user %(user)s reset"
 msgstr "Contraseña para el usuario %(user)s reinicializada"
 
 #: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first..."
+msgid "Please configure the SMTP mail settings first."
 msgstr "Configura primero los parámetros del servidor SMTP..."
 
 #: cps/admin.py:1445
@@ -476,7 +476,7 @@ msgid "Database Configuration"
 msgstr "Configuración de la base de datos"
 
 #: cps/admin.py:1871 cps/web.py:1233
-msgid "Please fill out all fields!"
+msgid "Oops! Please complete all fields."
 msgstr "¡Por favor, rellena todos los campos!"
 
 #: cps/admin.py:1879
@@ -490,7 +490,7 @@ msgstr "Usuario '%(user)s' creado"
 
 #: cps/admin.py:1902
 #, fuzzy
-msgid "Found an existing account for this e-mail address or name."
+msgid "Oops! An account already exists for this Email. or name."
 msgstr "Encontrada una cuenta existente para este correo electrónico o nombre de usuario."
 
 #: cps/admin.py:1932
@@ -507,7 +507,7 @@ msgid "No admin user remaining, can't delete user"
 msgstr "No queda ningún usuario administrador, no se puede borrar al usuario"
 
 #: cps/admin.py:1992 cps/web.py:1371
-msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
+msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
 #: cps/admin.py:2018
@@ -537,7 +537,7 @@ msgstr "Ninguno"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "oh, oh, el libro seleccionado no está disponible. El archivo no existe o no es accesible"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
@@ -669,7 +669,7 @@ msgstr "%(format)s no encontrado: %(fn)s"
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
 #, fuzzy
-msgid "Send to E-Reader"
+msgid "Send to eReader"
 msgstr "Enviar al Kindle"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
@@ -757,7 +757,7 @@ msgstr "La ruta %(path)s del libro no fue encontrada en Google Drive"
 
 #: cps/helper.py:644 cps/web.py:1416
 #, fuzzy
-msgid "Found an existing account for this e-mail address"
+msgid "Oops! An account already exists for this Email."
 msgstr "Encontrada una cuenta existente para esa dirección de correo electrónico"
 
 #: cps/helper.py:652
@@ -838,7 +838,7 @@ msgstr "Registrado con %(provider)s"
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "has iniciado sesión como : '%(nickname)s'"
 
 #: cps/oauth_bb.py:148
@@ -1335,20 +1335,20 @@ msgstr "Lista de formatos"
 
 #: cps/web.py:1203
 #, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
+msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Libro puesto en la cola de envío a %(kindlemail)s"
 
 #: cps/web.py:1207
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Ha sucedido un error en el envío del libro: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgid "Please update your profile with a valid Send to Kindle Email Address."
 msgstr "Por favor actualiza tu perfil con la dirección de correo de su kindle..."
 
 #: cps/web.py:1226
-msgid "E-Mail server is not configured, please contact your administrator!"
+msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "El servidor de correo no está configurado, por favor, ¡avisa a tu administrador!"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
@@ -1359,51 +1359,51 @@ msgid "Register"
 msgstr "Registro"
 
 #: cps/web.py:1262
-msgid "Your e-mail is not allowed to register"
+msgid "Oops! Your Email is not allowed."
 msgstr "Su correo electrónico no está permitido para registrarse"
 
 #: cps/web.py:1266
-msgid "Confirmation e-mail was send to your e-mail account."
+msgid "Success! Confirmation Email has been sent."
 msgstr "Se ha enviado un correo electrónico de verificación a su cuenta de correo."
 
 #: cps/web.py:1280
-msgid "Cannot activate LDAP authentication"
+msgid "Oops! Cannot activate LDAP authentication"
 msgstr "No se puede activar la autenticación LDAP"
 
 #: cps/web.py:1299
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr "Fallback login como: '%(nickname)s', no se puede acceder al servidor LDAP o usuario desconocido"
 
 #: cps/web.py:1305
 #, python-format
-msgid "Could not login: %(message)s"
+msgid "Oops! Login Failed: %(message)s"
 msgstr "No se pudo entrar: %(message)s"
 
 #: cps/web.py:1309 cps/web.py:1334
-msgid "Wrong Username or Password"
+msgid "Oops! Invalid Username or Password."
 msgstr "Usuario o contraseña inválido"
 
 #: cps/web.py:1316
-msgid "New Password was send to your email address"
+msgid "Success! New Password was sent to your Email."
 msgstr "Una nueva contraseña se ha enviado a su cuenta de correo electrónico"
 
 #: cps/web.py:1322
-msgid "Please enter valid username to reset password"
+msgid "Oops! Please enter a valid username to reset password"
 msgstr "Por favor, introduce un usuario válido para restablecer la contraseña"
 
 #: cps/web.py:1329
 #, python-format
-msgid "You are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Ahora estás conectado como: '%(nickname)s'"
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "Perfil de %(name)s"
 
 #: cps/web.py:1412
-msgid "Profile updated"
+msgid Success! Profile updated"
 msgstr "Perfil actualizado"
 
 #: cps/services/gmail.py:58
@@ -1496,12 +1496,12 @@ msgstr "Nombre de usuario"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr "Correo electrónico"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
 #, fuzzy
-msgid "Send to E-Reader E-mail Address"
+msgid "Send to eReader Email"
 msgstr "Enviar al correo de Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
@@ -1549,7 +1549,7 @@ msgid "Import LDAP Users"
 msgstr "Importar usuarios LDAP"
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
+msgid "Email Server Settings"
 msgstr "Ajustes del servidor de correo electrónico"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
@@ -1570,11 +1570,11 @@ msgstr "Login SMTP"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
+msgid "From Email"
 msgstr "Desde el correo"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
+msgid "EMail Service"
 msgstr "Servicio de Correo"
 
 #: cps/templates/admin.html:91
@@ -1647,15 +1647,15 @@ msgid "Scheduled Tasks"
 msgstr ""
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
-msgid "Time at which tasks start to run"
+msgid "Start Time"
 msgstr ""
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
-msgid "Maximum tasks duration"
+msgid "Maximum Duration"
 msgstr ""
 
 #: cps/templates/admin.html:178
-msgid "Generate book cover thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:182
@@ -1663,11 +1663,11 @@ msgid "Generate series cover thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
-msgid "Reconnect to Calibre Library"
+msgid "Reconnect Calibre Database"
 msgstr ""
 
 #: cps/templates/admin.html:193
-msgid "Refresh Thumbnail Cover Cache"
+msgid "Refresh Thumbnail Cache"
 msgstr ""
 
 #: cps/templates/admin.html:199
@@ -1707,7 +1707,7 @@ msgid "Details"
 msgstr "Detalles"
 
 #: cps/templates/admin.html:227
-msgid "Current version"
+msgid "Current Version"
 msgstr "Versión actual"
 
 #: cps/templates/admin.html:234
@@ -2184,7 +2184,7 @@ msgid "Enable Public Registration"
 msgstr "Permitir registro público"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr "Utilizar eMail como nombre de usuario"
 
 #: cps/templates/config_edit.html:132
@@ -2539,7 +2539,7 @@ msgid "Edit Metadata"
 msgstr "Editar metadatos"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr "Elige tipo de servidor"
 
 #: cps/templates/email_edit.html:15
@@ -3074,7 +3074,7 @@ msgid "Choose a username"
 msgstr "Escoger un nombre de usuario"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "Tu dirección de correo"
 
 #: cps/templates/remote_login.html:5
@@ -3094,7 +3094,7 @@ msgid "This verification link will expire in 10 minutes."
 msgstr "El enlace expirará después de 10 minutos."
 
 #: cps/templates/schedule_edit.html:29
-msgid "Generate Book Cover Thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/schedule_edit.html:33
@@ -3330,12 +3330,12 @@ msgstr "Introduce el nombre de usuario"
 
 #: cps/templates/user_table.html:135
 #, fuzzy
-msgid "Enter E-mail Address"
+msgid "Enter Email Address"
 msgstr "Introduce la dirección de correo electrónico"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "Enter E-Reader E-mail Address"
+msgid "Enter E-Reader Email Address"
 msgstr "Introduce la dirección de correo electrónico Kindle"
 
 #: cps/templates/user_table.html:136

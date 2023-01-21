@@ -655,7 +655,7 @@ $("#sendbtn").attr({
 
 $("#sendbtn2").attr({
     "data-toggle-two": "tooltip",
-    "title": $("#sendbtn2").text(),                 // "Send to E-Reader",
+    "title": $("#sendbtn2").text(),                 // "Send to eReader",
     "data-placement": "bottom",
     "data-viewport": ".btn-toolbar"
 })

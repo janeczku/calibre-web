@@ -282,7 +282,7 @@ msgid "Add new user"
 msgstr "Додати користувача"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+msgid "Edit Email Server Settings"
 msgstr "Змінити налаштування SMTP"
 
 #: cps/admin.py:1287
@@ -295,7 +295,7 @@ msgstr ""
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
 #: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
 #, python-format
-msgid "Database error: %(error)s."
+msgid "Oops! Database Error: %(error)s."
 msgstr ""
 
 #: cps/admin.py:1316
@@ -313,7 +313,7 @@ msgid "Please configure your e-mail address first..."
 msgstr ""
 
 #: cps/admin.py:1323
-msgid "E-mail server settings updated"
+msgid "Email Server Settings updated"
 msgstr ""
 
 #: cps/admin.py:1346 cps/templates/admin.html:191
@@ -334,7 +334,7 @@ msgstr ""
 
 #: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
 #: cps/web.py:1320
-msgid "An unknown error occurred. Please try again later."
+msgid "Oops! An unknown error occurred. Please try again later."
 msgstr ""
 
 #: cps/admin.py:1386
@@ -352,7 +352,7 @@ msgid "Password for user %(user)s reset"
 msgstr ""
 
 #: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first..."
+msgid "Please configure the SMTP mail settings first."
 msgstr "Будь-ласка, спочатку сконфігуруйте параметри SMTP"
 
 #: cps/admin.py:1445
@@ -468,7 +468,7 @@ msgid "Database Configuration"
 msgstr "Особливі налаштування"
 
 #: cps/admin.py:1871 cps/web.py:1233
-msgid "Please fill out all fields!"
+msgid "Oops! Please complete all fields."
 msgstr "Будь-ласка, заповніть всі поля!"
 
 #: cps/admin.py:1879
@@ -481,7 +481,7 @@ msgid "User '%(user)s' created"
 msgstr "Користувач '%(user)s' додан"
 
 #: cps/admin.py:1902
-msgid "Found an existing account for this e-mail address or name."
+msgid "Oops! An account already exists for this Email. or name."
 msgstr ""
 
 #: cps/admin.py:1932
@@ -498,7 +498,7 @@ msgid "No admin user remaining, can't delete user"
 msgstr ""
 
 #: cps/admin.py:1992 cps/web.py:1371
-msgid "E-Mail Address can't be empty and has to be a valid E-Mail"
+msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
 #: cps/admin.py:2018
@@ -528,7 +528,7 @@ msgstr "Ні"
 
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Неможливо відкрити книгу. Файл не існує або немає доступу."
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
@@ -660,7 +660,7 @@ msgstr ""
 #: cps/helper.py:97 cps/helper.py:226 cps/templates/detail.html:42
 #: cps/templates/detail.html:46
 #, fuzzy
-msgid "Send to E-Reader"
+msgid "Send to eReader"
 msgstr "Відправити на Kindle"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
@@ -747,7 +747,7 @@ msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
 #: cps/helper.py:644 cps/web.py:1416
-msgid "Found an existing account for this e-mail address"
+msgid "Oops! An account already exists for this Email."
 msgstr ""
 
 #: cps/helper.py:652
@@ -826,7 +826,7 @@ msgstr ""
 
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Ви увійшли як користувач: '%(nickname)s'"
 
 #: cps/oauth_bb.py:148
@@ -1322,20 +1322,20 @@ msgstr "Список форматів файлу"
 
 #: cps/web.py:1203
 #, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
+msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr ""
 
 #: cps/web.py:1207
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Помилка при відправці книги: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
+msgid "Please update your profile with a valid Send to Kindle Email Address."
 msgstr ""
 
 #: cps/web.py:1226
-msgid "E-Mail server is not configured, please contact your administrator!"
+msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr ""
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
@@ -1346,51 +1346,51 @@ msgid "Register"
 msgstr "Зареєструватись"
 
 #: cps/web.py:1262
-msgid "Your e-mail is not allowed to register"
+msgid "Oops! Your Email is not allowed."
 msgstr ""
 
 #: cps/web.py:1266
-msgid "Confirmation e-mail was send to your e-mail account."
+msgid "Success! Confirmation Email has been sent."
 msgstr ""
 
 #: cps/web.py:1280
-msgid "Cannot activate LDAP authentication"
+msgid "Oops! Cannot activate LDAP authentication"
 msgstr ""
 
 #: cps/web.py:1299
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr ""
 
 #: cps/web.py:1305
 #, python-format
-msgid "Could not login: %(message)s"
+msgid "Oops! Login Failed: %(message)s"
 msgstr ""
 
 #: cps/web.py:1309 cps/web.py:1334
-msgid "Wrong Username or Password"
+msgid "Oops! Invalid Username or Password."
 msgstr "Помилка в імені користувача або паролі"
 
 #: cps/web.py:1316
-msgid "New Password was send to your email address"
+msgid "Success! New Password was sent to your Email."
 msgstr ""
 
 #: cps/web.py:1322
-msgid "Please enter valid username to reset password"
+msgid "Oops! Please enter a valid username to reset password"
 msgstr ""
 
 #: cps/web.py:1329
 #, python-format
-msgid "You are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr ""
 
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "Профіль %(name)s"
 
 #: cps/web.py:1412
-msgid "Profile updated"
+msgid Success! Profile updated"
 msgstr "Профіль оновлено"
 
 #: cps/services/gmail.py:58
@@ -1483,12 +1483,12 @@ msgstr "Ім'я користувача"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr ""
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
 #, fuzzy
-msgid "Send to E-Reader E-mail Address"
+msgid "Send to eReader Email"
 msgstr "Kindle"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
@@ -1536,7 +1536,7 @@ msgid "Import LDAP Users"
 msgstr ""
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
+msgid "Email Server Settings"
 msgstr ""
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
@@ -1557,11 +1557,11 @@ msgstr "SMTP логін"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
+msgid "From Email"
 msgstr "Відправник"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
+msgid "EMail Service"
 msgstr ""
 
 #: cps/templates/admin.html:91
@@ -1634,15 +1634,15 @@ msgid "Scheduled Tasks"
 msgstr "Заплановані завдання"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
-msgid "Time at which tasks start to run"
+msgid "Start Time"
 msgstr ""
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
-msgid "Maximum tasks duration"
+msgid "Maximum Duration"
 msgstr "Максимальний час завдання"
 
 #: cps/templates/admin.html:178
-msgid "Generate book cover thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:182
@@ -1650,11 +1650,11 @@ msgid "Generate series cover thumbnails"
 msgstr ""
 
 #: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
-msgid "Reconnect to Calibre Library"
+msgid "Reconnect Calibre Database"
 msgstr ""
 
 #: cps/templates/admin.html:193
-msgid "Refresh Thumbnail Cover Cache"
+msgid "Refresh Thumbnail Cache"
 msgstr ""
 
 #: cps/templates/admin.html:199
@@ -1694,7 +1694,7 @@ msgid "Details"
 msgstr "Деталі"
 
 #: cps/templates/admin.html:227
-msgid "Current version"
+msgid "Current Version"
 msgstr "Поточна версія"
 
 #: cps/templates/admin.html:234
@@ -2169,7 +2169,7 @@ msgid "Enable Public Registration"
 msgstr "Дозволити публічну реєстрацію"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr ""
 
 #: cps/templates/config_edit.html:132
@@ -2524,7 +2524,7 @@ msgid "Edit Metadata"
 msgstr "Редагувати метадані"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr ""
 
 #: cps/templates/email_edit.html:15
@@ -3053,7 +3053,7 @@ msgid "Choose a username"
 msgstr "Виберіть ім'я користувача"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "Ваш email-адрес"
 
 #: cps/templates/remote_login.html:5
@@ -3073,7 +3073,7 @@ msgid "This verification link will expire in 10 minutes."
 msgstr ""
 
 #: cps/templates/schedule_edit.html:29
-msgid "Generate Book Cover Thumbnails"
+msgid "Generate Thumbnails"
 msgstr ""
 
 #: cps/templates/schedule_edit.html:33
@@ -3309,12 +3309,12 @@ msgstr "Виберіть ім'я користувача"
 
 #: cps/templates/user_table.html:135
 #, fuzzy
-msgid "Enter E-mail Address"
+msgid "Enter Email Address"
 msgstr "Ваш email-адрес"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "Enter E-Reader E-mail Address"
+msgid "Enter E-Reader Email Address"
 msgstr "Ваш email-адрес"
 
 #: cps/templates/user_table.html:136
