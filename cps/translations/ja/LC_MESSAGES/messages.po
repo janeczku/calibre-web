@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -23,16 +23,18 @@ msgid "Statistics"
 msgstr "統計"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "サーバーを再起動しました。ページを再読み込みしてください"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "サーバーをシャットダウンしています。ページを閉じてください"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
-msgstr "再接続成功"
+msgid "Success! Database Reconnected"
+msgstr ""
 
 #: cps/admin.py:161
 msgid "Unknown command"
@@ -40,8 +42,8 @@ msgstr "不明なコマンド"
 
 #: cps/admin.py:172
 #, fuzzy
-msgid "Books successfully queued for Metadata Backup"
-msgstr "本の %(kindlemail)s への送信がキューに追加されました"
+msgid "Success! Books queued for Metadata Backup"
+msgstr "本の %(eReadermail)s への送信がキューに追加されました"
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -274,17 +276,17 @@ msgstr "LDAPのメンバーフィルタ内の括弧が一致しません"
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAPのCA証明書、証明書、キーの場所が無効です。正しいパスを入力してください"
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
-msgstr "新規ユーザー追加"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
+msgstr "新規ユーザーを追加"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "メールサーバー設定を編集"
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
-msgstr "Gmailアカウントを認証しました"
+msgid "Success! Gmail Account Verified."
+msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
@@ -344,12 +346,13 @@ msgid "Edit User %(nick)s"
 msgstr "ユーザー %(nick)s を編集"
 
 #: cps/admin.py:1428
-#, python-format
-msgid "Password for user %(user)s reset"
+#, fuzzy, python-format
+msgid "Success! Password for user %(user)s reset"
 msgstr "ユーザー %(user)s のパスワードをリセット"
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+#, fuzzy
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr "初めにSMTPメールの設定をしてください"
 
 #: cps/admin.py:1445
@@ -469,6 +472,10 @@ msgstr "全ての項目を入力してください"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr "このメールは有効なドメインからのものではありません"
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "新規ユーザー追加"
 
 #: cps/admin.py:1896
 #, python-format
@@ -658,15 +665,18 @@ msgid "Send to eReader"
 msgstr "E-Readerに送信"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+#, fuzzy
+msgid "This Email has been sent via Calibre-Web."
 msgstr "このメールはCalibre-Web経由で送信されました。"
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+#, fuzzy
+msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web テストメール"
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+#, fuzzy
+msgid "Test Email"
 msgstr "テストメール"
 
 #: cps/helper.py:132
@@ -674,23 +684,23 @@ msgid "Get Started with Calibre-Web"
 msgstr "Calibre-Webを始める"
 
 #: cps/helper.py:137
-#, python-format
-msgid "Registration e-mail for user: %(name)s"
+#, fuzzy, python-format
+msgid "Registration Email for user: %(name)s"
 msgstr "ユーザー: %(name)s 用の登録メール"
 
 #: cps/helper.py:148 cps/helper.py:154
-#, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "%(orig)s を %(format)s に変換してからE-Readerに送信"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, python-format
-msgid "Send %(format)s to E-Reader"
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader"
 msgstr "E-Readerに %(format)s を送信"
 
-#: cps/helper.py:225 cps/tasks/convert.py:92
-#, python-format
-msgid "%(book)s send to E-Reader"
+#: cps/helper.py:225
+#, fuzzy, python-format
+msgid "%(book)s send to eReader"
 msgstr "%(book)s をE-Readerに送信"
 
 #: cps/helper.py:230
@@ -740,16 +750,17 @@ msgstr "ファイル名の変更でエラーが発生しました: {}"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "本のパス %(path)s はGoogleドライブ上にありません"
 
-#: cps/helper.py:644 cps/web.py:1416
-msgid "Oops! An account already exists for this Email."
-msgstr "このメールアドレスで登録されたアカウントがすでに存在します"
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
+msgstr ""
 
 #: cps/helper.py:652
 msgid "This username is already taken"
 msgstr "このユーザー名はすでに使われています"
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+#, fuzzy
+msgid "Invalid Email address format"
 msgstr "メールアドレスの形式が無効"
 
 #: cps/helper.py:815
@@ -819,7 +830,7 @@ msgstr "Kobo設定"
 msgid "Register with %(provider)s"
 msgstr "%(provider)s で登録"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "%(nickname)s としてログイン中"
@@ -941,7 +952,8 @@ msgid "Read Books"
 msgstr "既読の本"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "既読の本と未読の本を表示"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -958,7 +970,7 @@ msgid "Discover"
 msgstr "見つける"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "ランダムに本を表示"
 
@@ -968,7 +980,8 @@ msgid "Categories"
 msgstr "カテゴリ"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "カテゴリ選択を表示"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -978,7 +991,8 @@ msgid "Series"
 msgstr "シリーズ"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "シリーズ選択を表示"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -987,7 +1001,8 @@ msgid "Authors"
 msgstr "著者"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "著者選択を表示"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -996,7 +1011,8 @@ msgid "Publishers"
 msgstr "出版社"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
+#, fuzzy
+msgid "Show Publisher Section"
 msgstr "出版社選択を表示"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
@@ -1006,7 +1022,8 @@ msgid "Languages"
 msgstr "言語"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "言語選択を表示"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1014,7 +1031,8 @@ msgid "Ratings"
 msgstr "評価"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
+#, fuzzy
+msgid "Show Ratings Section"
 msgstr "評価選択を表示"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
@@ -1022,7 +1040,8 @@ msgid "File formats"
 msgstr "ファイル形式"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
+#, fuzzy
+msgid "Show File Formats Section"
 msgstr "ファイル形式選択を表示"
 
 #: cps/render_template.py:94 cps/web.py:768
@@ -1030,7 +1049,8 @@ msgid "Archived Books"
 msgstr "アーカイブされた本"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
+#, fuzzy
+msgid "Show Archived Books"
 msgstr "アーカイブされた本を表示"
 
 #: cps/render_template.py:99 cps/web.py:799
@@ -1313,10 +1333,14 @@ msgstr "評価一覧"
 msgid "File formats list"
 msgstr "ファイル形式一覧"
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr "初めにSMTPメールの設定をしてください"
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "本の %(kindlemail)s への送信がキューに追加されました"
+msgstr "本の %(eReadermail)s への送信がキューに追加されました"
 
 #: cps/web.py:1207
 #, python-format
@@ -1324,7 +1348,8 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "%(res)s を送信中にエラーが発生しました"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+#, fuzzy
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr "初めにKindleのメールアドレスを設定してください"
 
 #: cps/web.py:1226
@@ -1372,23 +1397,28 @@ msgstr "新しいパスワードがあなたのメールアドレスに送信さ
 msgid "Oops! Please enter a valid username to reset password"
 msgstr "パスワードをリセットするには、有効なユーザー名を入力してください"
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "'%(nickname)s' としてログインしました"
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s のプロフィール"
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
+#, fuzzy
+msgid "Success! Profile Updated"
 msgstr "プロフィールを更新しました"
+
+#: cps/web.py:1416
+msgid "Oops! An account already exists for this Email."
+msgstr "このメールアドレスで登録されたアカウントがすでに存在します"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "OAuth情報を含んだ有効なgmail.jsonファイルが見つかりません"
+
+#: cps/tasks/convert.py:92
+#, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s をE-Readerに送信"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1519,10 +1549,6 @@ msgstr "削除"
 msgid "Public Shelf"
 msgstr "みんなの本棚"
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr "新規ユーザーを追加"
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr "LDAPユーザーをインポート"
@@ -1553,7 +1579,8 @@ msgid "From Email"
 msgstr "Fromメールアドレス"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+#, fuzzy
+msgid "Email Service"
 msgstr "メールサービス"
 
 #: cps/templates/admin.html:91
@@ -1625,6 +1652,7 @@ msgid "Scheduled Tasks"
 msgstr "スケジュールタスク"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr "タスクを開始する時間"
 
@@ -1632,7 +1660,7 @@ msgstr "タスクを開始する時間"
 msgid "Maximum Duration"
 msgstr "最大タスク継続時間"
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr "本の表紙サムネイルを生成"
 
@@ -1640,7 +1668,8 @@ msgstr "本の表紙サムネイルを生成"
 msgid "Generate series cover thumbnails"
 msgstr "シリーズの表紙サムネイルを生成"
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
 msgstr "Calibreライブラリに再接続"
 
@@ -1659,10 +1688,6 @@ msgstr "デバッグパッケージをダウンロード"
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr "ログを表示"
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "Calibre DBに再接続"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2515,16 +2540,18 @@ msgid "Email Account Type"
 msgstr "サーバーの種類を選択"
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+#, fuzzy
+msgid "Standard Email Account"
 msgstr "標準のメールアカウントを使用"
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr "OAuth2認証を用いたGmailアカウント"
+#, fuzzy
+msgid "Gmail Account"
+msgstr "サーバーの種類を選択"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
-msgstr "Gmailアカウントをメールサーバーとして設定"
+msgid "Setup Gmail Account"
+msgstr ""
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2547,7 +2574,8 @@ msgid "Attachment Size Limit"
 msgstr "添付ファイルのサイズ制限"
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "保存してテストメールを送信"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3056,10 +3084,6 @@ msgstr "一度承認されると、自動的にこの端末でログインされ
 msgid "This verification link will expire in 10 minutes."
 msgstr "この確認リンクの有効期限は10分です。"
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr "本の表紙サムネイルを生成"
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr "シリーズの表紙サムネイルを生成"
@@ -3212,10 +3236,6 @@ msgstr "進捗"
 msgid "Run Time"
 msgstr "稼働時間"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "開始時刻"
-
 #: cps/templates/tasks.html:20
 msgid "Actions"
 msgstr "アクション"
@@ -3289,15 +3309,18 @@ msgid "Enter Username"
 msgstr "ユーザー名を入力してください"
 
 #: cps/templates/user_table.html:135
-msgid "Enter Email Address"
-msgstr "メールアドレスを入力してください"
+#, fuzzy
+msgid "Enter Email"
+msgstr "テストメール"
 
 #: cps/templates/user_table.html:136
-msgid "Enter E-Reader Email Address"
-msgstr "E-Readerメールアドレスを入力してください"
+#, fuzzy
+msgid "Enter eReader Email"
+msgstr "E-Readerメールアドレス"
 
 #: cps/templates/user_table.html:136
-msgid "E-Reader E-mail"
+#, fuzzy
+msgid "eReader Email"
 msgstr "E-Readerメール"
 
 #: cps/templates/user_table.html:137
@@ -3357,10 +3380,7 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "選択した本棚をKoboと同期"
 
 #: cps/templates/user_table.html:156
-msgid "Show read/unread selection"
+#, fuzzy
+msgid "Show Read/Unread Section"
 msgstr "既読/未読の選択を表示"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "ランダムに本を表示"
 

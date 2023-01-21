@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2022-08-27 10:00+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -23,16 +23,18 @@ msgid "Statistics"
 msgstr "Statistiken"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "Server neu gestartet, Seite bitte neu laden"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "Server wird heruntergefahren, Fenster bitte schließen"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
-msgstr "Erfolgreich neu verbunden"
+msgid "Success! Database Reconnected"
+msgstr ""
 
 #: cps/admin.py:161
 msgid "Unknown command"
@@ -40,8 +42,8 @@ msgstr "Unbekannter Befehl"
 
 #: cps/admin.py:172
 #, fuzzy
-msgid "Books successfully queued for Metadata Backup"
-msgstr "Buch erfolgreich zum Senden an %(kindlemail)s eingereiht"
+msgid "Success! Books queued for Metadata Backup"
+msgstr ""
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -274,8 +276,8 @@ msgstr "LDAP Member User Filter hat eine ungleiche Anzahl von geöffneten und ge
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP CA-Zertifikat, Zertifikat oder Key Datei ist kein gültiger Pfad"
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
 msgstr "Neuen Benutzer hinzufügen"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
@@ -283,8 +285,8 @@ msgid "Edit Email Server Settings"
 msgstr "SMTP-Einstellungen ändern"
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
-msgstr "Gmail Account Verifikation erfolgreich"
+msgid "Success! Gmail Account Verified."
+msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
@@ -344,12 +346,13 @@ msgid "Edit User %(nick)s"
 msgstr "Benutzer %(nick)s bearbeiten"
 
 #: cps/admin.py:1428
-#, python-format
-msgid "Password for user %(user)s reset"
+#, fuzzy, python-format
+msgid "Success! Password for user %(user)s reset"
 msgstr "Passwort für Benutzer %(user)s wurde zurückgesetzt"
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+#, fuzzy
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr "Bitte zuerst die SMTP-Einstellung konfigurieren ..."
 
 #: cps/admin.py:1445
@@ -469,6 +472,10 @@ msgstr "Bitte alle Felder ausfüllen!"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr "E-Mail bezieht sich nicht auf eine gültige Domain"
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "Neuen Benutzer hinzufügen"
 
 #: cps/admin.py:1896
 #, python-format
@@ -658,15 +665,18 @@ msgid "Send to eReader"
 msgstr "An E-Reader senden"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+#, fuzzy
+msgid "This Email has been sent via Calibre-Web."
 msgstr "Diese E-Mail wurde durch Calibre-Web versendet."
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+#, fuzzy
+msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web Test-E-Mail"
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+#, fuzzy
+msgid "Test Email"
 msgstr "Test-E-Mail"
 
 #: cps/helper.py:132
@@ -674,23 +684,23 @@ msgid "Get Started with Calibre-Web"
 msgstr "Loslegen mit Calibre-Web"
 
 #: cps/helper.py:137
-#, python-format
-msgid "Registration e-mail for user: %(name)s"
+#, fuzzy, python-format
+msgid "Registration Email for user: %(name)s"
 msgstr "Registrierungs-E-Mail für Benutzer %(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
-#, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Konvertiere %(orig)s nach %(format)s und sende an E-Reader"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, python-format
-msgid "Send %(format)s to E-Reader"
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader"
 msgstr "Sende %(format)s an E-Reader"
 
-#: cps/helper.py:225 cps/tasks/convert.py:92
-#, python-format
-msgid "%(book)s send to E-Reader"
+#: cps/helper.py:225
+#, fuzzy, python-format
+msgid "%(book)s send to eReader"
 msgstr "%(book)s an E-Reader gesendet"
 
 #: cps/helper.py:230
@@ -740,16 +750,17 @@ msgstr "Fehler beim umbenennen der Datei im Pfad: {}"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Buchpfad %(path)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:644 cps/web.py:1416
-msgid "Oops! An account already exists for this Email."
-msgstr "Es existiert bereits ein Benutzer für diese E-Mailadresse"
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
+msgstr ""
 
 #: cps/helper.py:652
 msgid "This username is already taken"
 msgstr "Benutzername ist schon vorhanden"
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+#, fuzzy
+msgid "Invalid Email address format"
 msgstr "Ungültiges E-Mail Adressformat"
 
 #: cps/helper.py:815
@@ -818,7 +829,7 @@ msgstr "Kobo Setup"
 msgid "Register with %(provider)s"
 msgstr "Anmelden mit %(provider)s"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Du bist nun eingeloggt als '%(nickname)s'"
@@ -940,7 +951,8 @@ msgid "Read Books"
 msgstr "Gelesene Bücher"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "Zeige gelesene/ungelesene Bücher"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -957,7 +969,7 @@ msgid "Discover"
 msgstr "Entdecke"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "Zeige zufällige Bücher"
 
@@ -967,7 +979,8 @@ msgid "Categories"
 msgstr "Kategorien"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "Zeige Kategorienauswahl"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -977,7 +990,8 @@ msgid "Series"
 msgstr "Serien"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "Zeige Serienauswahl"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -986,7 +1000,8 @@ msgid "Authors"
 msgstr "Autoren"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "Zeige Autorenauswahl"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -995,7 +1010,8 @@ msgid "Publishers"
 msgstr "Verleger"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
+#, fuzzy
+msgid "Show Publisher Section"
 msgstr "Zeige Verlegerauswahl"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
@@ -1005,7 +1021,8 @@ msgid "Languages"
 msgstr "Sprachen"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "Zeige Sprachauswahl"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1013,7 +1030,8 @@ msgid "Ratings"
 msgstr "Bewertungen"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
+#, fuzzy
+msgid "Show Ratings Section"
 msgstr "Zeige Bewertungsauswahl"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
@@ -1021,7 +1039,8 @@ msgid "File formats"
 msgstr "Dateiformate"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
+#, fuzzy
+msgid "Show File Formats Section"
 msgstr "Zeige Dateiformatauswahl"
 
 #: cps/render_template.py:94 cps/web.py:768
@@ -1029,7 +1048,8 @@ msgid "Archived Books"
 msgstr "Archivierte Bücher"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
+#, fuzzy
+msgid "Show Archived Books"
 msgstr "Zeige archivierte Bücher"
 
 #: cps/render_template.py:99 cps/web.py:799
@@ -1312,10 +1332,14 @@ msgstr "Bewertungsliste"
 msgid "File formats list"
 msgstr "Liste der Dateiformate"
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr "Bitte zuerst die SMTP-Einstellung konfigurieren ..."
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "Buch erfolgreich zum Senden an %(kindlemail)s eingereiht"
+msgstr "Buch erfolgreich zum Senden an %(eReadermail)s eingereiht"
 
 #: cps/web.py:1207
 #, python-format
@@ -1323,7 +1347,8 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Beim Senden des Buchs trat ein Fehler auf: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+#, fuzzy
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr "Bitte zuerst die Kindle E-Mailadresse konfigurieren..."
 
 #: cps/web.py:1226
@@ -1371,23 +1396,28 @@ msgstr "Das neue Passwort wurde an die E-Mail Adresse verschickt"
 msgid "Oops! Please enter a valid username to reset password"
 msgstr "Bitte einen gültigen Benutzernamen zum Zurücksetzen des Passworts angeben"
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "Eingeloggt als: '%(nickname)s'"
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s's Profil"
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
+#, fuzzy
+msgid "Success! Profile Updated"
 msgstr "Profil aktualisiert"
+
+#: cps/web.py:1416
+msgid "Oops! An account already exists for this Email."
+msgstr "Es existiert bereits ein Benutzer für diese E-Mailadresse"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "Keine gültige gmail.json Datei mit Oauth informationen gefunden"
+
+#: cps/tasks/convert.py:92
+#, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s an E-Reader gesendet"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1518,10 +1548,6 @@ msgstr "Löschen"
 msgid "Public Shelf"
 msgstr "Öffentliches Bücherregal"
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr "Neuen Benutzer hinzufügen"
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr "LDAP Benutzer importieren"
@@ -1552,7 +1578,8 @@ msgid "From Email"
 msgstr "Absenderadresse"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+#, fuzzy
+msgid "Email Service"
 msgstr "EMail Service"
 
 #: cps/templates/admin.html:91
@@ -1624,6 +1651,7 @@ msgid "Scheduled Tasks"
 msgstr "Geplante Aufgabe"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr "Zeitpunkt an dem die Aufgabe startet"
 
@@ -1631,7 +1659,7 @@ msgstr "Zeitpunkt an dem die Aufgabe startet"
 msgid "Maximum Duration"
 msgstr "Maximale Aufgabendauer"
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr "Buchcover Miniaturansichten erzeugen"
 
@@ -1639,7 +1667,8 @@ msgstr "Buchcover Miniaturansichten erzeugen"
 msgid "Generate series cover thumbnails"
 msgstr "Seriencover Miniaturansichten erzeugen"
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
 msgstr "Mit Calibre Bibliothek neuverbinden"
 
@@ -1658,10 +1687,6 @@ msgstr "Debug Daten herunterladen"
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr "Logdateien ansehen"
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "Calibre-DB neu verbinden"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2514,16 +2539,18 @@ msgid "Email Account Type"
 msgstr "Wähle Server Typ"
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+#, fuzzy
+msgid "Standard Email Account"
 msgstr "Benutze Standard E-Mail Account"
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr "Gmail Account mit Oauth2 Verification"
+#, fuzzy
+msgid "Gmail Account"
+msgstr "Wähle Server Typ"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
-msgstr "Gmail Account als E-Mail Server verwenden"
+msgid "Setup Gmail Account"
+msgstr ""
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2546,7 +2573,8 @@ msgid "Attachment Size Limit"
 msgstr "Anhangsgröße"
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "Einstellungen speichern und Test-E-Mail versenden"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3055,10 +3083,6 @@ msgstr "Danach wirst du automatisch auf diesem Gerät eingeloggt sein."
 msgid "This verification link will expire in 10 minutes."
 msgstr "Dieser Link wird in 10 Minuten ablaufen."
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr "Thumbnails für Bücher Cover erzeugen"
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr "Thumbnails für Serien Cover erzeugen"
@@ -3211,10 +3235,6 @@ msgstr "Fortschritt"
 msgid "Run Time"
 msgstr "Laufzeit"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "Startzeitpunkt"
-
 #: cps/templates/tasks.html:20
 msgid "Actions"
 msgstr "Aktionen"
@@ -3288,15 +3308,18 @@ msgid "Enter Username"
 msgstr "Benutzernamen eingeben"
 
 #: cps/templates/user_table.html:135
-msgid "Enter Email Address"
-msgstr "E-Mail-Adresse eingeben"
+#, fuzzy
+msgid "Enter Email"
+msgstr "Test-E-Mail"
 
 #: cps/templates/user_table.html:136
-msgid "Enter E-Reader Email Address"
-msgstr "E-Reader E-Mail Adresse eingeben"
+#, fuzzy
+msgid "Enter eReader Email"
+msgstr "An E-Reader E-Mail Adresse senden"
 
 #: cps/templates/user_table.html:136
-msgid "E-Reader E-mail"
+#, fuzzy
+msgid "eReader Email"
 msgstr "E-Reader E-Mail"
 
 #: cps/templates/user_table.html:137
@@ -3356,10 +3379,7 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "Ausgesuchte Bücherregale mit Kobo synchronisieren"
 
 #: cps/templates/user_table.html:156
-msgid "Show read/unread selection"
+#, fuzzy
+msgid "Show Read/Unread Section"
 msgstr "Zeige Gelesen/Ungelesen Auswahl"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "Zeige zufällige Bücher"
 

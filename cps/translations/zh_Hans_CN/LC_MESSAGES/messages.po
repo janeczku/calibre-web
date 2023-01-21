@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -23,23 +23,26 @@ msgid "Statistics"
 msgstr "统计"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "服务器已重启，请刷新页面"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "正在关闭服务器，请关闭窗口"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
-msgstr "重新连接成功"
+msgid "Success! Database Reconnected"
+msgstr ""
 
 #: cps/admin.py:161
 msgid "Unknown command"
 msgstr "未知命令"
 
 #: cps/admin.py:172
-msgid "Books successfully queued for Metadata Backup"
+#, fuzzy
+msgid "Success! Books queued for Metadata Backup"
 msgstr "书籍成功加入元数据备份队列"
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
@@ -273,8 +276,8 @@ msgstr "LDAP 成员用户过滤器中有不匹配的括号"
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP CA证书、证书或密钥位置无效，请输入正确的路径"
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
 msgstr "添加新用户"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
@@ -282,8 +285,8 @@ msgid "Edit Email Server Settings"
 msgstr "编辑邮件服务器设置"
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
-msgstr "G-Mail 账号校验成功"
+msgid "Success! Gmail Account Verified."
+msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
@@ -343,12 +346,13 @@ msgid "Edit User %(nick)s"
 msgstr "编辑用户 %(nick)s"
 
 #: cps/admin.py:1428
-#, python-format
-msgid "Password for user %(user)s reset"
+#, fuzzy, python-format
+msgid "Success! Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+#, fuzzy
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr "请先配置 SMTP 邮箱设置..."
 
 #: cps/admin.py:1445
@@ -468,6 +472,10 @@ msgstr "请填写所有字段！"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr "邮箱不在有效域中"
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "添加新用户"
 
 #: cps/admin.py:1896
 #, python-format
@@ -657,15 +665,18 @@ msgid "Send to eReader"
 msgstr "发送到电子阅读器"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+#, fuzzy
+msgid "This Email has been sent via Calibre-Web."
 msgstr "此邮件已经通过 Calibre-Web 发送。"
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+#, fuzzy
+msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web 测试邮件"
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+#, fuzzy
+msgid "Test Email"
 msgstr "测试邮件"
 
 #: cps/helper.py:132
@@ -673,23 +684,23 @@ msgid "Get Started with Calibre-Web"
 msgstr "开启 Calibre-Web 之旅"
 
 #: cps/helper.py:137
-#, python-format
-msgid "Registration e-mail for user: %(name)s"
+#, fuzzy, python-format
+msgid "Registration Email for user: %(name)s"
 msgstr "用户注册电子邮件：%(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
-#, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "转换 %(orig)s 到 %(format)s 并发送到电子阅读器"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, python-format
-msgid "Send %(format)s to E-Reader"
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader"
 msgstr "发送 %(format)s 到电子阅读器"
 
-#: cps/helper.py:225 cps/tasks/convert.py:92
-#, python-format
-msgid "%(book)s send to E-Reader"
+#: cps/helper.py:225
+#, fuzzy, python-format
+msgid "%(book)s send to eReader"
 msgstr "%(book)s 发送到电子阅读器"
 
 #: cps/helper.py:230
@@ -739,16 +750,17 @@ msgstr "重命名此路径: {}文件时出错"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:644 cps/web.py:1416
-msgid "Oops! An account already exists for this Email."
-msgstr "使用此邮箱的账号已经存在。"
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
+msgstr ""
 
 #: cps/helper.py:652
 msgid "This username is already taken"
 msgstr "此用户名已被使用"
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+#, fuzzy
+msgid "Invalid Email address format"
 msgstr "无效的邮件地址格式"
 
 #: cps/helper.py:815
@@ -816,7 +828,7 @@ msgstr "Kobo 设置"
 msgid "Register with %(provider)s"
 msgstr "使用 %(provider)s 注册"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "您现在已以“%(nickname)s”身份登录"
@@ -938,7 +950,8 @@ msgid "Read Books"
 msgstr "已读书籍"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "显示阅读状态"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -955,7 +968,7 @@ msgid "Discover"
 msgstr "发现"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "显示随机书籍"
 
@@ -965,7 +978,8 @@ msgid "Categories"
 msgstr "分类"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "显示分类栏目"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -975,7 +989,8 @@ msgid "Series"
 msgstr "丛书"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "显示丛书栏目"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -984,7 +999,8 @@ msgid "Authors"
 msgstr "作者"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "显示作者栏目"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -993,7 +1009,8 @@ msgid "Publishers"
 msgstr "出版社"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
+#, fuzzy
+msgid "Show Publisher Section"
 msgstr "显示出版社栏目"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
@@ -1003,7 +1020,8 @@ msgid "Languages"
 msgstr "语言"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "显示语言栏目"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1011,7 +1029,8 @@ msgid "Ratings"
 msgstr "评分"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
+#, fuzzy
+msgid "Show Ratings Section"
 msgstr "显示评分栏目"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
@@ -1019,7 +1038,8 @@ msgid "File formats"
 msgstr "文件格式"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
+#, fuzzy
+msgid "Show File Formats Section"
 msgstr "显示文件格式栏目"
 
 #: cps/render_template.py:94 cps/web.py:768
@@ -1027,7 +1047,8 @@ msgid "Archived Books"
 msgstr "归档书籍"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
+#, fuzzy
+msgid "Show Archived Books"
 msgstr "显示归档书籍"
 
 #: cps/render_template.py:99 cps/web.py:799
@@ -1310,10 +1331,14 @@ msgstr "评分列表"
 msgid "File formats list"
 msgstr "文件格式列表"
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr "请先配置 SMTP 邮箱设置..."
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "书籍已经成功加入 %(kindlemail)s 的发送队列"
+msgstr "书籍已经成功加入 %(eReadermail)s 的发送队列"
 
 #: cps/web.py:1207
 #, python-format
@@ -1321,7 +1346,8 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+#, fuzzy
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr "请先配置您的 Kindle 邮箱。"
 
 #: cps/web.py:1226
@@ -1369,23 +1395,28 @@ msgstr "新密码已发送到您的邮箱"
 msgid "Oops! Please enter a valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "您现在已以“%(nickname)s”登录"
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
+#, fuzzy
+msgid "Success! Profile Updated"
 msgstr "资料已更新"
+
+#: cps/web.py:1416
+msgid "Oops! An account already exists for this Email."
+msgstr "使用此邮箱的账号已经存在。"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
+
+#: cps/tasks/convert.py:92
+#, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s 发送到电子阅读器"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1515,10 +1546,6 @@ msgstr "删除数据"
 msgid "Public Shelf"
 msgstr "公共书架"
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr "添加新用户"
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr "导入 LDAP 用户"
@@ -1549,7 +1576,8 @@ msgid "From Email"
 msgstr "发件人邮箱"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+#, fuzzy
+msgid "Email Service"
 msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:91
@@ -1621,6 +1649,7 @@ msgid "Scheduled Tasks"
 msgstr "计划任务"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr "任务开始运行的时间"
 
@@ -1628,7 +1657,7 @@ msgstr "任务开始运行的时间"
 msgid "Maximum Duration"
 msgstr "最长任务持续时间"
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr "生成书籍封面缩略图"
 
@@ -1636,7 +1665,8 @@ msgstr "生成书籍封面缩略图"
 msgid "Generate series cover thumbnails"
 msgstr "生成丛书封面缩略图"
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
 msgstr "重新连接到 Calibre 库"
 
@@ -1655,10 +1685,6 @@ msgstr "下载 Debug 包"
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr "查看日志文件"
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "重新连接到 Calibre 数据库"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2511,16 +2537,18 @@ msgid "Email Account Type"
 msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+#, fuzzy
+msgid "Standard Email Account"
 msgstr "使用标准电子邮件账号"
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr "使用 Gmail 账号"
+#, fuzzy
+msgid "Gmail Account"
+msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
-msgstr "设置 Gmail 账号作为电子邮件服务"
+msgid "Setup Gmail Account"
+msgstr ""
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2543,7 +2571,8 @@ msgid "Attachment Size Limit"
 msgstr "附件大小限制"
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "保存设置并发送测试邮件"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3052,10 +3081,6 @@ msgstr "验证后，您将自动在新设备上登录。"
 msgid "This verification link will expire in 10 minutes."
 msgstr "此验证链接将在10分钟后失效。"
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr "生成书籍封面缩略图"
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr "生成丛书封面缩略图"
@@ -3208,10 +3233,6 @@ msgstr "任务进度"
 msgid "Run Time"
 msgstr "运行时间"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "开始时间"
-
 #: cps/templates/tasks.html:20
 msgid "Actions"
 msgstr "活动"
@@ -3285,15 +3306,18 @@ msgid "Enter Username"
 msgstr "输入用户名"
 
 #: cps/templates/user_table.html:135
-msgid "Enter Email Address"
-msgstr "输入邮箱地址"
+#, fuzzy
+msgid "Enter Email"
+msgstr "测试邮件"
 
 #: cps/templates/user_table.html:136
-msgid "Enter E-Reader Email Address"
-msgstr "输入电子阅读器邮箱地址"
+#, fuzzy
+msgid "Enter eReader Email"
+msgstr "接收书籍的电子阅读器邮箱地址"
 
 #: cps/templates/user_table.html:136
-msgid "E-Reader E-mail"
+#, fuzzy
+msgid "eReader Email"
 msgstr "电子阅读器邮箱"
 
 #: cps/templates/user_table.html:137
@@ -3353,10 +3377,7 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "同步所选书架到 Kobo"
 
 #: cps/templates/user_table.html:156
-msgid "Show read/unread selection"
+#, fuzzy
+msgid "Show Read/Unread Section"
 msgstr "显示已读、未读栏目"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "随机展示书籍"
 
