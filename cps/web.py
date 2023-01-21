@@ -85,13 +85,15 @@ def add_security_headers(resp):
     csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
         csp += " images.gr-assets.com i.gr-assets.com s.gr-assets.com"
-    csp += " blob: data:;"
-    csp += " object-src 'none';"
-    resp.headers['Content-Security-Policy'] = csp
+    csp += " data:"
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
-        resp.headers['Content-Security-Policy'] += " *"
+        csp += " *;"
     elif request.endpoint == "web.read_book":
-        resp.headers['Content-Security-Policy'] += " style-src-elem 'self' blob: 'unsafe-inline';"
+        csp += " style-src-elem 'self' blob: 'unsafe-inline';"
+    else:
+        csp += ";"
+    csp += "object-src: 'none';"
+    resp.headers['Content-Security-Policy'] = csp
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
