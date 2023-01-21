@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -24,15 +24,17 @@ msgid "Statistics"
 msgstr "ស្ថិតិ"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "ម៉ាស៊ីន server បានដំណើរការម្តងទៀត សូមបើកទំព័រជាថ្មី"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "កំពុងបិទម៉ាស៊ីន server សូមបិទផ្ទាំងនេះ"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
+msgid "Success! Database Reconnected"
 msgstr ""
 
 #: cps/admin.py:161
@@ -41,8 +43,8 @@ msgstr ""
 
 #: cps/admin.py:172
 #, fuzzy
-msgid "Books successfully queued for Metadata Backup"
-msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(kindlemail)s ដោយជោគជ័យ"
+msgid "Success! Books queued for Metadata Backup"
+msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(eReadermail)s ដោយជោគជ័យ"
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -280,16 +282,16 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
-msgstr "បន្ថែមអ្នកប្រើប្រាស់ថ្មី"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
+msgstr ""
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "ប្តូរការកំណត់ SMTP"
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
+msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
@@ -351,11 +353,12 @@ msgstr "កែប្រែអ្នកប្រើប្រាស់ %(nick)s"
 
 #: cps/admin.py:1428
 #, python-format
-msgid "Password for user %(user)s reset"
+msgid "Success! Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+#, fuzzy
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr "សូមកំណត់អ៊ីមែល SMTP ជាមុនសិន"
 
 #: cps/admin.py:1445
@@ -477,6 +480,10 @@ msgstr "សូមបំពេញចន្លោះទាំងអស់!"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr ""
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "បន្ថែមអ្នកប្រើប្រាស់ថ្មី"
 
 #: cps/admin.py:1896
 #, python-format
@@ -667,15 +674,15 @@ msgid "Send to eReader"
 msgstr "ផ្ញើទៅ Kindle"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+msgid "This Email has been sent via Calibre-Web."
 msgstr ""
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+msgid "Calibre-Web Test Email"
 msgstr ""
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+msgid "Test Email"
 msgstr ""
 
 #: cps/helper.py:132
@@ -684,22 +691,22 @@ msgstr ""
 
 #: cps/helper.py:137
 #, python-format
-msgid "Registration e-mail for user: %(name)s"
+msgid "Registration Email for user: %(name)s"
 msgstr ""
 
 #: cps/helper.py:148 cps/helper.py:154
 #, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr ""
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, python-format
-msgid "Send %(format)s to E-Reader"
-msgstr ""
-
-#: cps/helper.py:225 cps/tasks/convert.py:92
 #, fuzzy, python-format
-msgid "%(book)s send to E-Reader"
+msgid "Send %(format)s to eReader"
+msgstr "ផ្ញើទៅ Kindle"
+
+#: cps/helper.py:225
+#, fuzzy, python-format
+msgid "%(book)s send to eReader"
 msgstr "ផ្ញើទៅ Kindle"
 
 #: cps/helper.py:230
@@ -749,8 +756,8 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "ទីតាំងសៀវភៅ %(path)s រកមិនឃើញក្នុង Google Drive"
 
-#: cps/helper.py:644 cps/web.py:1416
-msgid "Oops! An account already exists for this Email."
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
 msgstr ""
 
 #: cps/helper.py:652
@@ -758,7 +765,7 @@ msgid "This username is already taken"
 msgstr ""
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+msgid "Invalid Email address format"
 msgstr ""
 
 #: cps/helper.py:815
@@ -827,7 +834,7 @@ msgstr ""
 msgid "Register with %(provider)s"
 msgstr ""
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "ឥឡូវអ្នកបានចូលដោយមានឈ្មោះថា៖ ‘%(nickname)s’"
@@ -949,7 +956,8 @@ msgid "Read Books"
 msgstr "សៀវភៅដែលបានអានរួច"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "បង្ហាញអានរួច និងមិនទាន់អាន"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -966,7 +974,7 @@ msgid "Discover"
 msgstr "ស្រាវជ្រាវ"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "បង្ហាញសៀវភៅចៃដន្យ"
 
@@ -976,7 +984,8 @@ msgid "Categories"
 msgstr "ប្រភេទនានា"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "បង្ហាញជម្រើសប្រភេទ"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -986,7 +995,8 @@ msgid "Series"
 msgstr "ស៊េរី"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "បង្ហាញជម្រើសស៊េរី"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -995,7 +1005,8 @@ msgid "Authors"
 msgstr "អ្នកនិពន្ធ"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "បង្ហាញជម្រើសអ្នកនិពន្ធ"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -1004,8 +1015,9 @@ msgid "Publishers"
 msgstr ""
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
-msgstr ""
+#, fuzzy
+msgid "Show Publisher Section"
+msgstr "បង្ហាញជម្រើសស៊េរី"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
@@ -1014,7 +1026,8 @@ msgid "Languages"
 msgstr "ភាសានានា"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "បង្ហាញផ្នែកភាសា"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1022,24 +1035,27 @@ msgid "Ratings"
 msgstr ""
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
-msgstr ""
+#, fuzzy
+msgid "Show Ratings Section"
+msgstr "បង្ហាញជម្រើសស៊េរី"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
 msgstr ""
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
-msgstr ""
+#, fuzzy
+msgid "Show File Formats Section"
+msgstr "បង្ហាញជម្រើសស៊េរី"
 
 #: cps/render_template.py:94 cps/web.py:768
 msgid "Archived Books"
 msgstr ""
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
-msgstr ""
+#, fuzzy
+msgid "Show Archived Books"
+msgstr "បង្ហាញសៀវភៅមកថ្មី"
 
 #: cps/render_template.py:99 cps/web.py:799
 msgid "Books List"
@@ -1323,10 +1339,14 @@ msgstr ""
 msgid "File formats list"
 msgstr ""
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr "សូមកំណត់អ៊ីមែល SMTP ជាមុនសិន"
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(kindlemail)s ដោយជោគជ័យ"
+msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(eReadermail)s ដោយជោគជ័យ"
 
 #: cps/web.py:1207
 #, python-format
@@ -1334,7 +1354,7 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "មានបញ្ហានៅពេលផ្ញើសៀវភៅនេះ៖ %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr ""
 
 #: cps/web.py:1226
@@ -1382,23 +1402,28 @@ msgstr ""
 msgid "Oops! Please enter a valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr ""
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "ព័ត៌មានសង្ខេបរបស់ %(name)s"
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
+#, fuzzy
+msgid "Success! Profile Updated"
 msgstr "ព័ត៌មានសង្ខេបបានកែប្រែ"
+
+#: cps/web.py:1416
+msgid "Oops! An account already exists for this Email."
+msgstr ""
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr ""
+
+#: cps/tasks/convert.py:92
+#, fuzzy, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "ផ្ញើទៅ Kindle"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1530,10 +1555,6 @@ msgstr "លុប"
 msgid "Public Shelf"
 msgstr ""
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr ""
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr ""
@@ -1564,7 +1585,7 @@ msgid "From Email"
 msgstr "ពីអ៊ីមែល"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+msgid "Email Service"
 msgstr ""
 
 #: cps/templates/admin.html:91
@@ -1637,6 +1658,7 @@ msgid "Scheduled Tasks"
 msgstr ""
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr ""
 
@@ -1644,7 +1666,7 @@ msgstr ""
 msgid "Maximum Duration"
 msgstr ""
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr ""
 
@@ -1652,7 +1674,8 @@ msgstr ""
 msgid "Generate series cover thumbnails"
 msgstr ""
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
 msgstr ""
 
@@ -1671,10 +1694,6 @@ msgstr ""
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr ""
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "ភ្ជាប់ទៅ database Calibre ម្តងទៀត"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2531,15 +2550,15 @@ msgid "Email Account Type"
 msgstr ""
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+msgid "Standard Email Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
+msgid "Gmail Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
+msgid "Setup Gmail Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:24
@@ -2563,7 +2582,8 @@ msgid "Attachment Size Limit"
 msgstr ""
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "រក្សាទុកការកំណត់រួចផ្ញើអ៊ីមែលសាកល្បង"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3075,10 +3095,6 @@ msgstr "ក្រោយពីនេះ អ្នកនឹងត្រូវប�
 msgid "This verification link will expire in 10 minutes."
 msgstr ""
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr ""
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr ""
@@ -3232,10 +3248,6 @@ msgstr "ដំណើរការ"
 msgid "Run Time"
 msgstr "រយៈពេលដែលបានចាប់ផ្តើម"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "ពេលចាប់ផ្តើម"
-
 #: cps/templates/tasks.html:20
 msgid "Actions"
 msgstr ""
@@ -3312,17 +3324,18 @@ msgstr "ជ្រើសរើសឈ្មោះអ្នកប្រើប្រ
 
 #: cps/templates/user_table.html:135
 #, fuzzy
-msgid "Enter Email Address"
-msgstr "អាសយដ្ឋានអ៊ីមែលរបស់អ្នក"
-
-#: cps/templates/user_table.html:136
-#, fuzzy
-msgid "Enter E-Reader Email Address"
+msgid "Enter Email"
 msgstr "ឧបករណ៍ Kindle"
 
 #: cps/templates/user_table.html:136
-msgid "E-Reader E-mail"
-msgstr ""
+#, fuzzy
+msgid "Enter eReader Email"
+msgstr "ឧបករណ៍ Kindle"
+
+#: cps/templates/user_table.html:136
+#, fuzzy
+msgid "eReader Email"
+msgstr "ឧបករណ៍ Kindle"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
@@ -3384,10 +3397,6 @@ msgstr ""
 
 #: cps/templates/user_table.html:156
 #, fuzzy
-msgid "Show read/unread selection"
+msgid "Show Read/Unread Section"
 msgstr "បង្ហាញជម្រើសស៊េរី"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "បង្ហាញសៀវភៅចៃដន្យ"
 

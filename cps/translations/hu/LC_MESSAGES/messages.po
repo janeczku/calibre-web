@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -23,15 +23,17 @@ msgid "Statistics"
 msgstr "Statisztika"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "A kiszolgáló újraindult, tölts be újra az oldalt!"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "A kiszolgáló leállítása folyamatban, zárd be ezt az ablakot"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
+msgid "Success! Database Reconnected"
 msgstr ""
 
 #: cps/admin.py:161
@@ -40,8 +42,8 @@ msgstr ""
 
 #: cps/admin.py:172
 #, fuzzy
-msgid "Books successfully queued for Metadata Backup"
-msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
+msgid "Success! Books queued for Metadata Backup"
+msgstr ""
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
@@ -279,16 +281,16 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
-msgstr "Új felhasználó hozzáadása"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
+msgstr ""
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "SMTP beállítások változtatása"
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
+msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
@@ -349,12 +351,13 @@ msgid "Edit User %(nick)s"
 msgstr " A felhasználó szerkesztése: %(nick)s"
 
 #: cps/admin.py:1428
-#, python-format
-msgid "Password for user %(user)s reset"
+#, fuzzy, python-format
+msgid "Success! Password for user %(user)s reset"
 msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+#, fuzzy
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
 #: cps/admin.py:1445
@@ -476,6 +479,10 @@ msgstr "Az összes mezőt ki kell tölteni!"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr "Az e-mail tartománya nem érvényes."
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "Új felhasználó hozzáadása"
 
 #: cps/admin.py:1896
 #, python-format
@@ -667,15 +674,18 @@ msgid "Send to eReader"
 msgstr "Küldés Kindle-re"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+#, fuzzy
+msgid "This Email has been sent via Calibre-Web."
 msgstr "Ez az e-mail a Calibre-Web-en keresztül lett küldve."
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+#, fuzzy
+msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web teszt e-mail"
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+#, fuzzy
+msgid "Test Email"
 msgstr "Teszt e-mail"
 
 #: cps/helper.py:132
@@ -683,23 +693,23 @@ msgid "Get Started with Calibre-Web"
 msgstr "Kezdő lépések a Calibre-Web-bel"
 
 #: cps/helper.py:137
-#, python-format
-msgid "Registration e-mail for user: %(name)s"
+#, fuzzy, python-format
+msgid "Registration Email for user: %(name)s"
 msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
 #, fuzzy, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
 #, fuzzy, python-format
-msgid "Send %(format)s to E-Reader"
+msgid "Send %(format)s to eReader"
 msgstr "%(format)s küldése Kindle-re"
 
-#: cps/helper.py:225 cps/tasks/convert.py:92
+#: cps/helper.py:225
 #, fuzzy, python-format
-msgid "%(book)s send to E-Reader"
+msgid "%(book)s send to eReader"
 msgstr "Küldés Kindle-re"
 
 #: cps/helper.py:230
@@ -749,17 +759,16 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "A könyv elérési útja (\"%(path)s\") nem található a Google Drive-on"
 
-#: cps/helper.py:644 cps/web.py:1416
-#, fuzzy
-msgid "Oops! An account already exists for this Email."
-msgstr "Már létezik felhasználó ehhez az e-mail címhez."
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
+msgstr ""
 
 #: cps/helper.py:652
 msgid "This username is already taken"
 msgstr ""
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+msgid "Invalid Email address format"
 msgstr ""
 
 #: cps/helper.py:815
@@ -828,7 +837,7 @@ msgstr ""
 msgid "Register with %(provider)s"
 msgstr ""
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
@@ -950,7 +959,8 @@ msgid "Read Books"
 msgstr "Olvasott könyvek"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "Mutassa az olvasva/olvasatlan állapotot"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -967,7 +977,7 @@ msgid "Discover"
 msgstr "Felfedezés"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "Mutass könyveket találomra"
 
@@ -977,7 +987,8 @@ msgid "Categories"
 msgstr "Címkék"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "Címke választó mutatása"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -987,7 +998,8 @@ msgid "Series"
 msgstr "Sorozatok"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "Sorozat választó mutatása"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -996,7 +1008,8 @@ msgid "Authors"
 msgstr "Szerzők"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "Szerző választó mutatása"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -1005,7 +1018,8 @@ msgid "Publishers"
 msgstr "Kiadók"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
+#, fuzzy
+msgid "Show Publisher Section"
 msgstr "Kiadó választó mutatása"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
@@ -1015,7 +1029,8 @@ msgid "Languages"
 msgstr "Nyelvek"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "Nyelv választó mutatása"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1023,24 +1038,27 @@ msgid "Ratings"
 msgstr ""
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
-msgstr ""
+#, fuzzy
+msgid "Show Ratings Section"
+msgstr "Sorozat választó mutatása"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
 msgstr ""
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
-msgstr ""
+#, fuzzy
+msgid "Show File Formats Section"
+msgstr "Sorozat választó mutatása"
 
 #: cps/render_template.py:94 cps/web.py:768
 msgid "Archived Books"
 msgstr ""
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
-msgstr ""
+#, fuzzy
+msgid "Show Archived Books"
+msgstr "Legutóbbi könyvek mutatása"
 
 #: cps/render_template.py:99 cps/web.py:799
 msgid "Books List"
@@ -1325,10 +1343,14 @@ msgstr ""
 msgid "File formats list"
 msgstr ""
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr "Először be kell állítani az SMTP levelező beállításokat..."
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
+msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(eReadermail)s"
 
 #: cps/web.py:1207
 #, python-format
@@ -1336,7 +1358,8 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+#, fuzzy
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
 #: cps/web.py:1226
@@ -1384,23 +1407,29 @@ msgstr ""
 msgid "Oops! Please enter a valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr ""
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s profilja"
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
+#, fuzzy
+msgid "Success! Profile Updated"
 msgstr "A profil frissítve."
+
+#: cps/web.py:1416
+#, fuzzy
+msgid "Oops! An account already exists for this Email."
+msgstr "Már létezik felhasználó ehhez az e-mail címhez."
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr ""
+
+#: cps/tasks/convert.py:92
+#, fuzzy, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "Küldés Kindle-re"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1532,10 +1561,6 @@ msgstr "Törlés"
 msgid "Public Shelf"
 msgstr ""
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr ""
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr ""
@@ -1566,7 +1591,7 @@ msgid "From Email"
 msgstr "Küldő e-mail cím"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+msgid "Email Service"
 msgstr ""
 
 #: cps/templates/admin.html:91
@@ -1639,6 +1664,7 @@ msgid "Scheduled Tasks"
 msgstr ""
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr ""
 
@@ -1646,7 +1672,7 @@ msgstr ""
 msgid "Maximum Duration"
 msgstr ""
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr ""
 
@@ -1654,7 +1680,8 @@ msgstr ""
 msgid "Generate series cover thumbnails"
 msgstr ""
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
 msgstr ""
 
@@ -1673,10 +1700,6 @@ msgstr ""
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr ""
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "Újracsatlakozás a Calibre adatbázishoz"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2534,15 +2557,16 @@ msgid "Email Account Type"
 msgstr ""
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+msgid "Standard Email Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr ""
+#, fuzzy
+msgid "Gmail Account"
+msgstr "Felhasználói fiók"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
+msgid "Setup Gmail Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:24
@@ -2566,7 +2590,8 @@ msgid "Attachment Size Limit"
 msgstr ""
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "Beállítások mentése és teszt e-mail küldése"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3078,10 +3103,6 @@ msgstr "Az első belépés után automatikusan be leszel léptetve ezen az eszk�
 msgid "This verification link will expire in 10 minutes."
 msgstr ""
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr ""
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr ""
@@ -3235,10 +3256,6 @@ msgstr "Állapot"
 msgid "Run Time"
 msgstr "Futásidő"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "Indítás ideje"
-
 #: cps/templates/tasks.html:20
 msgid "Actions"
 msgstr ""
@@ -3315,17 +3332,17 @@ msgstr "Válassz egy felhasználónevet"
 
 #: cps/templates/user_table.html:135
 #, fuzzy
-msgid "Enter Email Address"
-msgstr "Az e-mail címed"
+msgid "Enter Email"
+msgstr "Teszt e-mail"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "Enter E-Reader Email Address"
+msgid "Enter eReader Email"
 msgstr "Kindle"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "E-Reader E-mail"
+msgid "eReader Email"
 msgstr "Teszt e-mail"
 
 #: cps/templates/user_table.html:137
@@ -3389,10 +3406,6 @@ msgstr ""
 
 #: cps/templates/user_table.html:156
 #, fuzzy
-msgid "Show read/unread selection"
+msgid "Show Read/Unread Section"
 msgstr "Sorozat választó mutatása"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "Könyvek találomra mutatása"
 

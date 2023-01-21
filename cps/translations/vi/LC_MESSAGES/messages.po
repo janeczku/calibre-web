@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2023-01-21 14:18+0100\n"
+"POT-Creation-Date: 2023-01-21 15:24+0100\n"
 "PO-Revision-Date: 2022-09-20 21:36+0700\n"
 "Last-Translator: Ha Link <halink0803@gmail.com>\n"
 "Language: vi\n"
@@ -20,23 +20,25 @@ msgid "Statistics"
 msgstr "Thống kê"
 
 #: cps/admin.py:148
-msgid "Server restarted, please reload page"
+#, fuzzy
+msgid "Server restarted, please reload page."
 msgstr "Máy chủ đã khởi động lại,hãy tải lại trang"
 
 #: cps/admin.py:150
-msgid "Performing shutdown of server, please close window"
+#, fuzzy
+msgid "Performing Server shutdown, please close window."
 msgstr "Máy chủ đang được tắt, hãy đóng cửa sổ này"
 
 #: cps/admin.py:158
-msgid "Reconnect successful"
-msgstr "Kết nối lại thành công"
+msgid "Success! Database Reconnected"
+msgstr ""
 
 #: cps/admin.py:161
 msgid "Unknown command"
 msgstr "Lệnh không tồn tại"
 
 #: cps/admin.py:172
-msgid "Books successfully queued for Metadata Backup"
+msgid "Success! Books queued for Metadata Backup"
 msgstr ""
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
@@ -270,8 +272,8 @@ msgstr ""
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1259 cps/admin.py:1885
-msgid "Add new user"
+#: cps/admin.py:1259 cps/templates/admin.html:53
+msgid "Add New User"
 msgstr "Thêm người dùng mới"
 
 #: cps/admin.py:1268 cps/templates/admin.html:100
@@ -279,7 +281,7 @@ msgid "Edit Email Server Settings"
 msgstr ""
 
 #: cps/admin.py:1287
-msgid "Gmail Account Verification Successful"
+msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1306 cps/admin.py:1309 cps/admin.py:1690 cps/admin.py:1808
@@ -342,11 +344,11 @@ msgstr "Chỉnh sửa người dùng %(nick)s"
 
 #: cps/admin.py:1428
 #, python-format
-msgid "Password for user %(user)s reset"
+msgid "Success! Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:1434 cps/web.py:1198
-msgid "Please configure the SMTP mail settings first."
+#: cps/admin.py:1434
+msgid "Oops! Please configure the SMTP mail settings."
 msgstr ""
 
 #: cps/admin.py:1445
@@ -466,6 +468,10 @@ msgstr "Hãy điền hết các trường!"
 #: cps/admin.py:1879
 msgid "E-mail is not from valid domain"
 msgstr "Địa chỉ email không hợp lệ"
+
+#: cps/admin.py:1885
+msgid "Add new user"
+msgstr "Thêm người dùng mới"
 
 #: cps/admin.py:1896
 #, python-format
@@ -656,15 +662,18 @@ msgid "Send to eReader"
 msgstr "Gửi tới Kindle"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-msgid "This e-mail has been sent via Calibre-Web."
+#, fuzzy
+msgid "This Email has been sent via Calibre-Web."
 msgstr "E-mail này được gửi từ Calibre-Web."
 
 #: cps/helper.py:114
-msgid "Calibre-Web test e-mail"
+#, fuzzy
+msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web test e-mail"
 
 #: cps/helper.py:115
-msgid "Test e-mail"
+#, fuzzy
+msgid "Test Email"
 msgstr "Test e-mail"
 
 #: cps/helper.py:132
@@ -672,23 +681,23 @@ msgid "Get Started with Calibre-Web"
 msgstr "Bắt đầu với Calibre-Web"
 
 #: cps/helper.py:137
-#, python-format
-msgid "Registration e-mail for user: %(name)s"
+#, fuzzy, python-format
+msgid "Registration Email for user: %(name)s"
 msgstr "Email đăng ký cho người dùng: %(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
 #, fuzzy, python-format
-msgid "Convert %(orig)s to %(format)s and send to E-Reader"
+msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Chuyển đổi %(orig)s thành %(format)s và chuyển tới Kindle"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
 #, fuzzy, python-format
-msgid "Send %(format)s to E-Reader"
+msgid "Send %(format)s to eReader"
 msgstr "Gửi %(format)s tới Kindle"
 
-#: cps/helper.py:225 cps/tasks/convert.py:92
+#: cps/helper.py:225
 #, fuzzy, python-format
-msgid "%(book)s send to E-Reader"
+msgid "%(book)s send to eReader"
 msgstr "%(book)s gửi tới Kindle"
 
 #: cps/helper.py:230
@@ -738,16 +747,17 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Không tìm thấy được dẫn sách %(path)s trên Google Drive"
 
-#: cps/helper.py:644 cps/web.py:1416
-msgid "Oops! An account already exists for this Email."
-msgstr "Tìm thấy một tài khoản đã toàn tại cho địa chỉ email này"
+#: cps/helper.py:644
+msgid "Found an existing account for this Email address"
+msgstr ""
 
 #: cps/helper.py:652
 msgid "This username is already taken"
 msgstr "Username này đã bị sử dụng"
 
 #: cps/helper.py:664
-msgid "Invalid e-mail address format"
+#, fuzzy
+msgid "Invalid Email address format"
 msgstr "Định dạng email address không hợp lệ"
 
 #: cps/helper.py:815
@@ -816,7 +826,7 @@ msgstr "Thiết lập Kobo"
 msgid "Register with %(provider)s"
 msgstr ""
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr ""
@@ -938,7 +948,8 @@ msgid "Read Books"
 msgstr "Sách đã đọc"
 
 #: cps/render_template.py:62
-msgid "Show read and unread"
+#, fuzzy
+msgid "Show Read and Unread"
 msgstr "Hiển thị đã đọc và chưa đọc"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
@@ -955,7 +966,7 @@ msgid "Discover"
 msgstr "Khám phá"
 
 #: cps/render_template.py:69 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "Hiển thị sách ngẫu nhiên"
 
@@ -965,7 +976,8 @@ msgid "Categories"
 msgstr "Chủ đề"
 
 #: cps/render_template.py:72 cps/templates/user_table.html:158
-msgid "Show category selection"
+#, fuzzy
+msgid "Show Category Section"
 msgstr "Hiển thị chọn chủ đề"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
@@ -975,7 +987,8 @@ msgid "Series"
 msgstr "Series"
 
 #: cps/render_template.py:75 cps/templates/user_table.html:157
-msgid "Show series selection"
+#, fuzzy
+msgid "Show Series Section"
 msgstr "Hiển thị chọn series"
 
 #: cps/render_template.py:76 cps/templates/book_table.html:66
@@ -984,7 +997,8 @@ msgid "Authors"
 msgstr "Tác giả"
 
 #: cps/render_template.py:78 cps/templates/user_table.html:160
-msgid "Show author selection"
+#, fuzzy
+msgid "Show Author Section"
 msgstr "Hiển thị chọn tác giả"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
@@ -993,7 +1007,8 @@ msgid "Publishers"
 msgstr "Nhà phát hành"
 
 #: cps/render_template.py:82 cps/templates/user_table.html:163
-msgid "Show publisher selection"
+#, fuzzy
+msgid "Show Publisher Section"
 msgstr "Hiển thị chọn nhà phát hành"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
@@ -1003,7 +1018,8 @@ msgid "Languages"
 msgstr "Ngôn ngữ"
 
 #: cps/render_template.py:86 cps/templates/user_table.html:155
-msgid "Show language selection"
+#, fuzzy
+msgid "Show Language Section"
 msgstr "Hiển thị chọn ngôn ngữ"
 
 #: cps/render_template.py:87 cps/templates/index.xml:104
@@ -1011,7 +1027,8 @@ msgid "Ratings"
 msgstr "Đánh giá"
 
 #: cps/render_template.py:89 cps/templates/user_table.html:164
-msgid "Show ratings selection"
+#, fuzzy
+msgid "Show Ratings Section"
 msgstr "Hiển thị chọn đánh giá"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
@@ -1019,7 +1036,8 @@ msgid "File formats"
 msgstr "Định dạng file"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
-msgid "Show file formats selection"
+#, fuzzy
+msgid "Show File Formats Section"
 msgstr "Hiển thị lựa chọn định dạng file"
 
 #: cps/render_template.py:94 cps/web.py:768
@@ -1027,7 +1045,8 @@ msgid "Archived Books"
 msgstr "Sách đã lưu trữ"
 
 #: cps/render_template.py:96 cps/templates/user_table.html:166
-msgid "Show archived books"
+#, fuzzy
+msgid "Show Archived Books"
 msgstr "Hiện thị sách trong kho"
 
 #: cps/render_template.py:99 cps/web.py:799
@@ -1312,6 +1331,10 @@ msgstr "Danh sách đánh giá"
 msgid "File formats list"
 msgstr "Danh sách định dạng file"
 
+#: cps/web.py:1198
+msgid "Please configure the SMTP mail settings first."
+msgstr ""
+
 #: cps/web.py:1203
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
@@ -1323,7 +1346,7 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr ""
 
 #: cps/web.py:1209
-msgid "Please update your profile with a valid Send to Kindle Email Address."
+msgid "Oops! Please update your profile with a valid  eReader Email."
 msgstr ""
 
 #: cps/web.py:1226
@@ -1371,23 +1394,28 @@ msgstr "Mật khẩu mới đã được gửi đến email của bạn"
 msgid "Oops! Please enter a valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1329
-#, python-format
-msgid "Success! You are now logged in as: %(nickname)s"
-msgstr ""
-
 #: cps/web.py:1396 cps/web.py:1445
 #, python-format
 msgid "%(name)s's Profile"
 msgstr ""
 
 #: cps/web.py:1412
-msgid Success! Profile updated"
-msgstr ""
+#, fuzzy
+msgid "Success! Profile Updated"
+msgstr "Metadata đã được cập nhật thành công"
+
+#: cps/web.py:1416
+msgid "Oops! An account already exists for this Email."
+msgstr "Tìm thấy một tài khoản đã toàn tại cho địa chỉ email này"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr ""
+
+#: cps/tasks/convert.py:92
+#, fuzzy, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s gửi tới Kindle"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1521,10 +1549,6 @@ msgstr "Xoá"
 msgid "Public Shelf"
 msgstr "Giá công khai"
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr "Thêm người dùng mới"
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
 msgstr ""
@@ -1555,7 +1579,8 @@ msgid "From Email"
 msgstr "Từ E-mail"
 
 #: cps/templates/admin.html:90
-msgid "EMail Service"
+#, fuzzy
+msgid "Email Service"
 msgstr "Dịch vụ E-Mail"
 
 #: cps/templates/admin.html:91
@@ -1627,6 +1652,7 @@ msgid "Scheduled Tasks"
 msgstr ""
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
 msgid "Start Time"
 msgstr ""
 
@@ -1634,7 +1660,7 @@ msgstr ""
 msgid "Maximum Duration"
 msgstr ""
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
 msgstr ""
 
@@ -1642,7 +1668,8 @@ msgstr ""
 msgid "Generate series cover thumbnails"
 msgstr ""
 
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:37
+#: cps/templates/admin.html:186 cps/templates/admin.html:204
+#: cps/templates/schedule_edit.html:37
 #, fuzzy
 msgid "Reconnect Calibre Database"
 msgstr "Kết nối lại với cơ sở dữ liệu Calibre"
@@ -1662,10 +1689,6 @@ msgstr "Tải xuống package debug"
 #: cps/templates/admin.html:201
 msgid "View Logs"
 msgstr "Xem logs"
-
-#: cps/templates/admin.html:204
-msgid "Reconnect Calibre Database"
-msgstr "Kết nối lại với cơ sở dữ liệu Calibre"
 
 #: cps/templates/admin.html:207
 msgid "Restart"
@@ -2519,16 +2542,18 @@ msgid "Email Account Type"
 msgstr "Chọn kiểu server"
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
+#, fuzzy
+msgid "Standard Email Account"
 msgstr "Dùng tài khoản email tiêu chuẩn"
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr "Tài khoản Gmail với xác nhận OAuth2"
+#, fuzzy
+msgid "Gmail Account"
+msgstr "Chọn kiểu server"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
-msgstr "Cài đặt tài khoản Gmail làm email Server"
+msgid "Setup Gmail Account"
+msgstr ""
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2551,7 +2576,8 @@ msgid "Attachment Size Limit"
 msgstr "Giới hạn kích thước file đính kèm"
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+#, fuzzy
+msgid "Save and Send Test Email"
 msgstr "Lưu và gửi test E-mail"
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
@@ -3062,10 +3088,6 @@ msgstr "Một khi xác nhận, bạn sẽ tự động đăng nhập trên thi�
 msgid "This verification link will expire in 10 minutes."
 msgstr "Link xác nhận này sẽ hết hạn trong 10 phút."
 
-#: cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr ""
-
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
 msgstr ""
@@ -3218,10 +3240,6 @@ msgstr "Tiến độ"
 msgid "Run Time"
 msgstr "Thời gian chạy"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "Thời gian bắt đầu"
-
 #: cps/templates/tasks.html:20
 #, fuzzy
 msgid "Actions"
@@ -3296,17 +3314,18 @@ msgid "Enter Username"
 msgstr "Nhập tên người dùng"
 
 #: cps/templates/user_table.html:135
-msgid "Enter Email Address"
-msgstr "Nhập địa chỉ E-mail"
+#, fuzzy
+msgid "Enter Email"
+msgstr "Test e-mail"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "Enter E-Reader Email Address"
-msgstr "Nhập địa chỉ E-mail Kindle"
+msgid "Enter eReader Email"
+msgstr "Kindle"
 
 #: cps/templates/user_table.html:136
 #, fuzzy
-msgid "E-Reader E-mail"
+msgid "eReader Email"
 msgstr "Test e-mail"
 
 #: cps/templates/user_table.html:137
@@ -3366,10 +3385,7 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "Đồng bộ những giá sách đã chọn với Kobo"
 
 #: cps/templates/user_table.html:156
-msgid "Show read/unread selection"
+#, fuzzy
+msgid "Show Read/Unread Section"
 msgstr "Hiển thị đã đọc và chưa đọc"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "Hiển thị sách ngẫu nhiên"
 
