@@ -295,8 +295,8 @@ if ub.oauth_support:
     @oauth_error.connect_via(oauthblueprints[0]['blueprint'])
     def github_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
-            u"OAuth error from {name}! "
-            u"error={error} description={description} uri={uri}"
+            "OAuth error from {name}! "
+            "error={error} description={description} uri={uri}"
         ).format(
             name=blueprint.name,
             error=error,
@@ -308,8 +308,8 @@ if ub.oauth_support:
     @oauth_error.connect_via(oauthblueprints[1]['blueprint'])
     def google_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
-            u"OAuth error from {name}! "
-            u"error={error} description={description} uri={uri}"
+            "OAuth error from {name}! "
+            "error={error} description={description} uri={uri}"
         ).format(
             name=blueprint.name,
             error=error,

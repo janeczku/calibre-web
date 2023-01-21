@@ -145,9 +145,9 @@ def shutdown():
         ub.dispose()
 
         if task == 0:
-            show_text['text'] = _(u'Server restarted, please reload page.')
+            show_text['text'] = _('Server restarted, please reload page.')
         else:
-            show_text['text'] = _(u'Performing Server shutdown, please close window.')
+            show_text['text'] = _('Performing Server shutdown, please close window.')
         # stop gevent/tornado server
         web_server.stop(task == 0)
         return json.dumps(show_text)
@@ -155,10 +155,10 @@ def shutdown():
     if task == 2:
         log.warning("reconnecting to calibre database")
         calibre_db.reconnect_db(config, ub.app_DB_path)
-        show_text['text'] = _(u'Success! Database Reconnected')
+        show_text['text'] = _('Success! Database Reconnected')
         return json.dumps(show_text)
 
-    show_text['text'] = _(u'Unknown command')
+    show_text['text'] = _('Unknown command')
     return json.dumps(show_text), 400
 
 
@@ -169,7 +169,7 @@ def queue_metadata_backup():
     show_text = {}
     log.warning("Queuing all books for metadata backup")
     helper.set_all_metadata_dirty()
-    show_text['text'] = _(u'Success! Books queued for Metadata Backup')
+    show_text['text'] = _('Success! Books queued for Metadata Backup')
     return json.dumps(show_text)
 
 
@@ -202,7 +202,7 @@ def update_thumbnails():
 def admin():
     version = updater_thread.get_current_version_info()
     if version is False:
-        commit = _(u'Unknown')
+        commit = _('Unknown')
     else:
         if 'datetime' in version:
             commit = version['datetime']

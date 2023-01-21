@@ -492,7 +492,7 @@ class Registration(Base):
     allow = Column(Integer)
 
     def __repr__(self):
-        return u"<Registration('{0}')>".format(self.domain)
+        return "<Registration('{0}')>".format(self.domain)
 
 
 class RemoteAuthToken(Base):
@@ -810,7 +810,7 @@ def create_admin_user(_session):
 
 def init_db_thread():
     global app_DB_path
-    engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+    engine = create_engine('sqlite:///{0}'.format(app_DB_path), echo=False)
 
     Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
@@ -823,7 +823,7 @@ def init_db(app_db_path, user_credentials=None):
     global app_DB_path
 
     app_DB_path = app_db_path
-    engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
+    engine = create_engine('sqlite:///{0}'.format(app_db_path), echo=False)
 
     Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
@@ -858,7 +858,7 @@ def init_db(app_db_path, user_credentials=None):
 
 
 def get_new_session_instance():
-    new_engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+    new_engine = create_engine('sqlite:///{0}'.format(app_DB_path), echo=False)
     new_session = scoped_session(sessionmaker())
     new_session.configure(bind=new_engine)
 

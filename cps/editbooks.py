@@ -573,9 +573,9 @@ def table_xchange_author_title():
 
 
 def merge_metadata(to_save, meta):
-    if to_save.get('author_name', "") == _(u'Unknown'):
+    if to_save.get('author_name', "") == _('Unknown'):
         to_save['author_name'] = ''
-    if to_save.get('book_title', "") == _(u'Unknown'):
+    if to_save.get('book_title', "") == _('Unknown'):
         to_save['book_title'] = ''
     for s_field, m_field in [
             ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
@@ -611,7 +611,7 @@ def prepare_authors(authr):
 
     # we have all author names now
     if input_authors == ['']:
-        input_authors = [_(u'Unknown')]  # prevent empty Author
+        input_authors = [_('Unknown')]  # prevent empty Author
 
     renamed = list()
     for in_aut in input_authors:
@@ -628,7 +628,7 @@ def prepare_authors(authr):
 
 
 def prepare_authors_on_upload(title, authr):
-    if title != _(u'Unknown') and authr != _(u'Unknown'):
+    if title != _('Unknown') and authr != _('Unknown'):
         entry = calibre_db.check_exists_book(authr, title)
         if entry:
             log.info("Uploaded book probably exists in library")
@@ -771,7 +771,7 @@ def delete_whole_book(book_id, book):
 
     # check if only this book links to:
     # author, language, series, tags, custom columns
-    modify_database_object([u''], book.authors, db.Authors, calibre_db.session, 'author')
+    modify_database_object([''], book.authors, db.Authors, calibre_db.session, 'author')
     modify_database_object([u''], book.tags, db.Tags, calibre_db.session, 'tags')
     modify_database_object([u''], book.series, db.Series, calibre_db.session, 'series')
     modify_database_object([u''], book.languages, db.Languages, calibre_db.session, 'languages')

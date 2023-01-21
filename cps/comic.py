@@ -138,7 +138,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
-        author=u'Unknown',
+        author='Unknown',
         cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
         description="",
         tags="",
