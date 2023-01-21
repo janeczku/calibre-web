@@ -1410,7 +1410,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     try:
         ub.session.commit()
         flash(_("Success! Profile Updated"), category="success")
-        log.debug(Success! Profile updated")
+        log.debug("Profile updated")
     except IntegrityError:
         ub.session.rollback()
         flash(_("Oops! An account already exists for this Email."), category="error")
