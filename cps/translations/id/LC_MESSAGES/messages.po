@@ -2,13 +2,13 @@
 # Copyright (C) 2017 Calibre-Web
 # This file is distributed under the same license as the Calibre-Web
 # project.
-# FIRST AUTHOR Arief Hidayat<arihid95@gmail.com>, 2021-2022.
+# FIRST AUTHOR Arief Hidayat<arihid95@gmail.com>, 2021-2023.
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2022-12-27 09:10+0100\n"
-"PO-Revision-Date: 2022-11-21 18:25+0700\n"
+"PO-Revision-Date: 2023-01-21 10:00+0700\n"
 "Last-Translator: Arief Hidayat<arihid95@gmail.com>\n"
 "Language: id\n"
 "Language-Team: Arief Hidayat <arihid95@gmail.com>\n"
@@ -55,11 +55,11 @@ msgstr "Halaman Admin"
 
 #: cps/admin.py:250
 msgid "Basic Configuration"
-msgstr "Konfigurasi Dasar"
+msgstr "Pengaturan Dasar"
 
 #: cps/admin.py:288
 msgid "UI Configuration"
-msgstr "Pengaturan UI"
+msgstr "Pengaturan Antarmuka"
 
 #: cps/admin.py:322 cps/templates/admin.html:51
 msgid "Edit Users"
@@ -68,7 +68,7 @@ msgstr "Edit pengguna"
 #: cps/admin.py:366 cps/opds.py:532 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
-msgstr "semua"
+msgstr "Semua"
 
 #: cps/admin.py:393 cps/admin.py:1397
 msgid "User not found"
@@ -141,7 +141,7 @@ msgstr "Kolom Dibatasi Tidak Valid"
 
 #: cps/admin.py:596 cps/admin.py:1824
 msgid "Calibre-Web configuration updated"
-msgstr "Konfigurasi Calibre-Web telah diperbarui"
+msgstr "Pengaturan Calibre-Web telah diperbarui"
 
 #: cps/admin.py:608
 msgid "Do you really want to delete the Kobo Token?"
@@ -221,7 +221,7 @@ msgstr "Tindakan Tidak Valid"
 
 #: cps/admin.py:1109
 msgid "client_secrets.json Is Not Configured For Web Application"
-msgstr "client_secrets.json Tidak Dikonfigurasikan Untuk Aplikasi Web"
+msgstr "client_secrets.json Tidak Diatur Untuk Aplikasi Web"
 
 #: cps/admin.py:1154
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
@@ -307,7 +307,7 @@ msgstr "Terjadi kesalahan saat mengirim email tes: %(res)s"
 
 #: cps/admin.py:1321
 msgid "Please configure your e-mail address first..."
-msgstr "Harap konfigurasikan alamat email Anda terlebih dahulu.."
+msgstr "Harap atur alamat email Anda terlebih dahulu.."
 
 #: cps/admin.py:1323
 msgid "E-mail server settings updated"
@@ -350,7 +350,7 @@ msgstr "Kata sandi untuk pengaturan ulang pengguna %(user) "
 
 #: cps/admin.py:1434 cps/web.py:1198
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Harap konfigurasikan pengaturan email SMTP terlebih dahulu..."
+msgstr "Harap atur pengaturan email SMTP terlebih dahulu..."
 
 #: cps/admin.py:1445
 msgid "Logfile viewer"
@@ -366,7 +366,7 @@ msgstr "Mengunduh paket pembaruan"
 
 #: cps/admin.py:1513
 msgid "Unzipping update package"
-msgstr "Meng-unzip paket pembaruan"
+msgstr "Mengekstrak paket pembaruan"
 
 #: cps/admin.py:1514
 msgid "Replacing files"
@@ -460,7 +460,7 @@ msgstr "Pengaturan Basis Data diperbarui"
 
 #: cps/admin.py:1855
 msgid "Database Configuration"
-msgstr "Konfigurasi Basis Data"
+msgstr "Pengaturan Basis Data"
 
 #: cps/admin.py:1871 cps/web.py:1233
 msgid "Please fill out all fields!"
@@ -524,7 +524,7 @@ msgstr "Tidak ada"
 #: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
 #: cps/web.py:1504 cps/web.py:1549
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Ups! Judul buku yang dipilih tidak tersedia. File tidak ada atau tidak dapat diakses"
+msgstr "Ups! Judul buku yang dipilih tidak tersedia. Berkas tidak ada atau tidak dapat diakses"
 
 #: cps/editbooks.py:154 cps/editbooks.py:1221
 msgid "User has no rights to upload cover"
@@ -573,11 +573,11 @@ msgstr "'%(langname)s' bukan bahasa yang valid"
 #: cps/editbooks.py:728 cps/editbooks.py:1162
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "Ekstensi file '%(ext)s' tidak diizinkan untuk diunggah ke server ini"
+msgstr "Ekstensi berkas '%(ext)s' tidak diizinkan untuk diunggah ke server ini"
 
 #: cps/editbooks.py:732 cps/editbooks.py:1166
 msgid "File to be uploaded must have an extension"
-msgstr "File yang akan diunggah harus memiliki ekstensi"
+msgstr "Berkas yang akan diunggah harus memiliki ekstensi"
 
 #: cps/editbooks.py:740
 #, python-format
@@ -612,7 +612,7 @@ msgstr "%(seriesindex)s dilewati karena bukan angka yang valid"
 
 #: cps/editbooks.py:1157
 msgid "User has no rights to upload additional file formats"
-msgstr "Pengguna tidak memiliki izin untuk mengunggah format file tambahan"
+msgstr "Pengguna tidak memiliki izin untuk mengunggah format berkas tambahan"
 
 #: cps/editbooks.py:1178
 #, python-format
@@ -622,12 +622,12 @@ msgstr "Gagal membuat jalur %(path)s (Izin ditolak)."
 #: cps/editbooks.py:1183
 #, python-format
 msgid "Failed to store file %(file)s."
-msgstr "Gagal menyimpan file %(file)s."
+msgstr "Gagal menyimpan berkas %(file)s."
 
 #: cps/editbooks.py:1206
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
-msgstr "Format file %(ext)s ditambahkan ke %(book)s"
+msgstr "Format berkas %(ext)s ditambahkan ke %(book)s"
 
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
@@ -695,7 +695,7 @@ msgstr "%%(buku)s telah dikirim ke E-Reader"
 
 #: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "File yang diminta tidak dapat dibaca. Mungkin izinnya salah?"
+msgstr "Berkas yang diminta tidak dapat dibaca. Mungkin izinnya salah?"
 
 #: cps/helper.py:345
 msgid "Read status could not set: {}"
@@ -774,23 +774,23 @@ msgstr "Gagal membuat jalur untuk sampul"
 
 #: cps/helper.py:857
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "File sampul bukan file gambar yang valid, atau tidak dapat disimpan"
+msgstr "Berkas sampul bukan berkas gambar yang valid, atau tidak dapat disimpan"
 
 #: cps/helper.py:868
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "Hanya file jpg/jpeg/png/webp/bmp yang didukung sebagai file sampul"
+msgstr "Hanya berkas jpg/jpeg/png/webp/bmp yang didukung sebagai berkas sampul"
 
 #: cps/helper.py:880
 msgid "Invalid cover file content"
-msgstr "Konten file sampul tidak valid"
+msgstr "Konten berkas sampul tidak valid"
 
 #: cps/helper.py:884
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr "Hanya file jpg/jpeg yang didukung sebagai file sampul"
+msgstr "Hanya berkas jpg/jpeg yang didukung sebagai berkas sampul"
 
 #: cps/helper.py:936
 msgid "Unrar binary file not found"
-msgstr "File biner unrar tidak ditemukan"
+msgstr "Berkas biner unrar tidak ditemukan"
 
 #: cps/helper.py:947
 #, fuzzy
@@ -1019,11 +1019,11 @@ msgstr "Tampilkan pilihan peringkat"
 
 #: cps/render_template.py:90 cps/templates/index.xml:112
 msgid "File formats"
-msgstr "Format file"
+msgstr "Format berkas"
 
 #: cps/render_template.py:92 cps/templates/user_table.html:165
 msgid "Show file formats selection"
-msgstr "Tampilkan pilihan format file"
+msgstr "Tampilkan pilihan format berkas"
 
 #: cps/render_template.py:94 cps/web.py:768
 msgid "Archived Books"
@@ -1325,11 +1325,11 @@ msgstr "Oops! Terjadi kesalahan saat mengirim buku: %(res)s"
 
 #: cps/web.py:1209
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "Harap perbarui profil Anda dengan Kirim ke Alamat Email Kindle yang valid."
+msgstr "Harap perbarui profil Anda dengan alamat e-mail Kirim ke Kindle yang valid."
 
 #: cps/web.py:1226
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr "Server email belum dikonfigurasi, silakan hubungi administrator!"
+msgstr "Server email belum diatur, silakan hubungi administrator!"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
@@ -1388,7 +1388,7 @@ msgstr "Profil diperbarui"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
-msgstr "Tidak ditemukan file gmail.json yang valid dengan informasi OAuth"
+msgstr "Tidak ditemukan berkas gmail.json yang valid dengan informasi OAuth"
 
 #: cps/tasks/convert.py:153
 #, python-format
@@ -1481,7 +1481,7 @@ msgstr "Alamat Email"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
 msgid "Send to E-Reader E-mail Address"
-msgstr "Kirim ke Alamat Email Kindle"
+msgstr "Alamat E-mail untuk Kirim ke E-Reader"
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
@@ -1562,7 +1562,7 @@ msgstr "Gmail via Oauth2"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
-msgstr "Konfigurasi"
+msgstr "Pengaturan"
 
 #: cps/templates/admin.html:109
 msgid "Calibre Database Directory"
@@ -1610,15 +1610,15 @@ msgstr "Nama Header Reverse Proxy"
 
 #: cps/templates/admin.html:159
 msgid "Edit Calibre Database Configuration"
-msgstr "Edit Konfigurasi Basis Data Caliber"
+msgstr "Edit Pengaturan Basis Data Caliber"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
-msgstr "Edit Konfigurasi Dasar"
+msgstr "Edit Pengaturan Dasar"
 
 #: cps/templates/admin.html:161
 msgid "Edit UI Configuration"
-msgstr "Edit Konfigurasi UI"
+msgstr "Edit Pengaturan Antarmuka"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
@@ -1674,7 +1674,7 @@ msgstr "Matikan"
 
 #: cps/templates/admin.html:216
 msgid "Version Information"
-msgstr "Perbarui"
+msgstr "Informasi Versi"
 
 #: cps/templates/admin.html:220
 msgid "Version"
@@ -1718,7 +1718,7 @@ msgstr "Batal"
 
 #: cps/templates/admin.html:266
 msgid "Are you sure you want to shutdown?"
-msgstr "Apa Anda yakin untuk mematikan?"
+msgstr "Apa Anda yakin untuk mematikan layanan?"
 
 #: cps/templates/admin.html:278
 msgid "Updating, please do not reload this page"
@@ -2083,7 +2083,7 @@ msgstr "Lokasi basis data baru tidak valid, harap masukkan jalur yang valid"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
-msgstr "Konfigurasi Server"
+msgstr "Pengaturan Server"
 
 #: cps/templates/config_edit.html:25
 msgid "Server Port"
@@ -2091,7 +2091,7 @@ msgstr "Port Server"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Lokasi file sertifikat SSL (biarkan kosong untuk Server non-SSL)"
+msgstr "Lokasi berkas sertifikat SSL (biarkan kosong untuk Server non-SSL)"
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
@@ -2115,11 +2115,11 @@ msgstr "Host Tepercaya (Pisahkan dengan Koma)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
-msgstr "Konfigurasi Logfile"
+msgstr "Pengaturan Logfile"
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "Lokasi dan nama file log (caliber-web.log jika tanpa entri)"
+msgstr "Lokasi dan nama logfile (caliber-web.log jika tanpa entri)"
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
@@ -2127,11 +2127,11 @@ msgstr "Aktifkan Log Akses"
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "Lokasi dan nama file log akses (access.log jika tanpa entri)"
+msgstr "Lokasi dan nama access logfile (access.log jika tanpa entri)"
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
-msgstr "Konfigurasi Fitur"
+msgstr "Pengaturan Fitur"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
@@ -2243,7 +2243,7 @@ msgstr "Jalur Sertifikat LDAP (Hanya diperlukan untuk Otentikasi Sertifikat Klie
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "Jalur File Kunci LDAP (Hanya diperlukan untuk Otentikasi Sertifikat Klien)"
+msgstr "Jalur Keyfile LDAP (Hanya diperlukan untuk Otentikasi Sertifikat Klien)"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
@@ -2350,7 +2350,7 @@ msgstr "Lokasi binari Unrar"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
-msgstr "Tampilkan Konfigurasi"
+msgstr "Pengaturan Tampilan"
 
 #: cps/templates/config_view_edit.html:32
 msgid "No. of Random Books to Display"
@@ -2582,7 +2582,7 @@ msgstr "Selanjutnya"
 
 #: cps/templates/generate_kobo_auth_url.html:6
 msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Buka file .kobo/Kobo/Kobo eReader.conf di editor teks dan tambahkan (atau edit):"
+msgstr "Buka berkas .kobo/Kobo/Kobo eReader.conf di editor teks dan tambahkan (atau edit):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
@@ -2594,7 +2594,7 @@ msgstr "Daftar"
 
 #: cps/templates/http_error.html:34
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "Instans Calibre-Web belum dikonfigurasi, harap hubungi administrator Anda"
+msgstr "Instans Calibre-Web belum diatur, harap hubungi administrator Anda"
 
 #: cps/templates/http_error.html:44
 msgid "Create Issue"
@@ -3250,7 +3250,7 @@ msgstr "Batalkan tautan"
 
 #: cps/templates/user_edit.html:64
 msgid "Kobo Sync Token"
-msgstr "Token Kono Sync"
+msgstr "Token Kobo Sync"
 
 #: cps/templates/user_edit.html:66
 msgid "Create/View"
@@ -3290,15 +3290,15 @@ msgstr "Masukkan Nama Pengguna"
 
 #: cps/templates/user_table.html:135
 msgid "Enter E-mail Address"
-msgstr "Masukkan Alamar Email"
+msgstr "Masukkan Alamat Email"
 
 #: cps/templates/user_table.html:136
 msgid "Enter E-Reader E-mail Address"
-msgstr "Masukkan Alamat Email Kindle"
+msgstr "Masukkan Alamat Email E-Reader"
 
 #: cps/templates/user_table.html:136
 msgid "E-Reader E-mail"
-msgstr "Email Kindle"
+msgstr "Email E-Reader"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
