@@ -19,6 +19,7 @@
 # Google Books api document: https://developers.google.com/books/docs/v1/using
 from typing import Dict, List, Optional
 from urllib.parse import quote
+from datetime import datetime
 
 import requests
 
@@ -81,7 +82,11 @@ class Google(Metadata):
         match.description = result["volumeInfo"].get("description", "")
         match.languages = self._parse_languages(result=result, locale=locale)
         match.publisher = result["volumeInfo"].get("publisher", "")
-        match.publishedDate = result["volumeInfo"].get("publishedDate", "")
+        try:
+            datetime.strptime(result["volumeInfo"].get("publishedDate", ""), "%Y-%m-%d")
+            match.publishedDate = result["volumeInfo"].get("publishedDate", "")
+        except ValueError:
+            match.publishedDate = ""
         match.rating = result["volumeInfo"].get("averageRating", 0)
         match.series, match.series_index = "", 1
         match.tags = result["volumeInfo"].get("categories", [])
