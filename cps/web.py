@@ -1208,7 +1208,7 @@ def send_to_ereader(book_id, book_format, convert):
         else:
             flash(_("Oops! There was an error sending book: %(res)s", res=result), category="error")
     else:
-        flash(_("Oops! Please update your profile with a valid  eReader Email."), category="error")
+        flash(_("Oops! Please update your profile with a valid eReader Email."), category="error")
     if "HTTP_REFERER" in request.environ:
         return redirect(request.environ["HTTP_REFERER"])
     else:
