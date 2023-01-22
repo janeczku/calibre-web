@@ -37,16 +37,22 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF2 import PdfReader
+    from PyPDF import PdfReader
     use_pdf_meta = True
 except ImportError as ex:
-    log.debug('PyPDF2 is recommended for best performance in metadata extracting from pdf files: %s', ex)
+    log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
     try:
-        from PyPDF3 import PdfFileReader as PdfReader
+        from PyPDF2 import PdfReader
         use_pdf_meta = True
-    except ImportError as e:
-        log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
-        use_pdf_meta = False
+    except ImportError as ex:
+        log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
+        log.debug('PyPdf2 is also possible for metadata extracting from pdf files, but not recommended anymore')
+        try:
+            from PyPDF3 import PdfFileReader as PdfReader
+            use_pdf_meta = True
+        except ImportError as e:
+            log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
+            use_pdf_meta = False
 
 try:
     from . import epub
