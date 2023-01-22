@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2023-01-21 15:43+0100\n"
+"POT-Creation-Date: 2023-01-22 13:52+0100\n"
 "PO-Revision-Date: 2022-09-20 21:36+0700\n"
 "Last-Translator: Ha Link <halink0803@gmail.com>\n"
 "Language: vi\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: cps/admin.py:205 cps/editbooks.py:576 cps/editbooks.py:578
 #: cps/editbooks.py:614 cps/editbooks.py:631 cps/editbooks.py:1238
-#: cps/updater.py:613 cps/uploader.py:86 cps/uploader.py:96
+#: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Không rõ"
 
@@ -288,7 +288,7 @@ msgstr ""
 #: cps/admin.py:1906 cps/admin.py:2026 cps/editbooks.py:229
 #: cps/editbooks.py:305 cps/editbooks.py:1201 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:343
-#: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1421
+#: cps/shelf.py:457 cps/tasks/convert.py:136 cps/web.py:1423
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Lỗi cơ sở dữ liệu: %(error)s."
@@ -328,8 +328,8 @@ msgstr ""
 msgid "Scheduled tasks settings updated"
 msgstr "Thiết lập cơ sở dữ lieu đã được cập nhật"
 
-#: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1259
-#: cps/web.py:1320
+#: cps/admin.py:1382 cps/admin.py:1431 cps/admin.py:2022 cps/web.py:1261
+#: cps/web.py:1322
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Lỗi không xác định xảy ra. Xin hãy thử lại sau."
 
@@ -461,7 +461,7 @@ msgstr "Thiết lập cơ sở dữ lieu đã được cập nhật"
 msgid "Database Configuration"
 msgstr "Thiết lập cơ sở dữ lieu :)))"
 
-#: cps/admin.py:1871 cps/web.py:1233
+#: cps/admin.py:1871 cps/web.py:1235
 msgid "Oops! Please complete all fields."
 msgstr "Hãy điền hết các trường!"
 
@@ -495,7 +495,7 @@ msgstr "Không thể xoá người dùng khách"
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:1992 cps/web.py:1371
+#: cps/admin.py:1992 cps/web.py:1373
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
@@ -512,20 +512,20 @@ msgstr "chưa cài đặt"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:728 cps/search.py:137 cps/web.py:723
+#: cps/db.py:728 cps/search.py:137 cps/web.py:725
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
 #: cps/db.py:971 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:550 cps/web.py:584 cps/web.py:659 cps/web.py:684 cps/web.py:965
-#: cps/web.py:995 cps/web.py:1031 cps/web.py:1059 cps/web.py:1098
+#: cps/web.py:552 cps/web.py:586 cps/web.py:661 cps/web.py:686 cps/web.py:967
+#: cps/web.py:997 cps/web.py:1033 cps/web.py:1061 cps/web.py:1100
 msgid "None"
 msgstr "None"
 
-#: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:517 cps/web.py:1462
-#: cps/web.py:1504 cps/web.py:1549
+#: cps/editbooks.py:110 cps/editbooks.py:895 cps/web.py:519 cps/web.py:1464
+#: cps/web.py:1506 cps/web.py:1551
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr ""
 
@@ -826,7 +826,7 @@ msgstr "Thiết lập Kobo"
 msgid "Register with %(provider)s"
 msgstr ""
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1291 cps/web.py:1329
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1293 cps/web.py:1331
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
 msgstr ""
@@ -893,7 +893,7 @@ msgstr "{} sao"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:67
 #: cps/templates/layout.html:101 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1340
+#: cps/templates/login.html:21 cps/web.py:1342
 msgid "Login"
 msgstr "Đăng nhập"
 
@@ -909,7 +909,7 @@ msgstr "Token đã hết hạn"
 msgid "Success! Please return to your device"
 msgstr "Thành công! Hãy quay lại thiết bị của bạn"
 
-#: cps/render_template.py:40 cps/web.py:406
+#: cps/render_template.py:40 cps/web.py:408
 msgid "Books"
 msgstr "Sách"
 
@@ -934,7 +934,7 @@ msgstr "Sách đã tải"
 msgid "Show Downloaded Books"
 msgstr "Hiển thị sách đã tải"
 
-#: cps/render_template.py:57 cps/templates/index.xml:32 cps/web.py:421
+#: cps/render_template.py:57 cps/templates/index.xml:32 cps/web.py:423
 msgid "Top Rated Books"
 msgstr "Top sách được đánh giá cao"
 
@@ -943,7 +943,7 @@ msgid "Show Top Rated Books"
 msgstr "Hiện thị top những sách được đánh giá cao"
 
 #: cps/render_template.py:60 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:742
+#: cps/templates/index.xml:58 cps/web.py:744
 msgid "Read Books"
 msgstr "Sách đã đọc"
 
@@ -953,7 +953,7 @@ msgid "Show Read and Unread"
 msgstr "Hiển thị đã đọc và chưa đọc"
 
 #: cps/render_template.py:64 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:745
+#: cps/templates/index.xml:65 cps/web.py:747
 msgid "Unread Books"
 msgstr "Sách chưa đọc"
 
@@ -971,7 +971,7 @@ msgid "Show Random Books"
 msgstr "Hiển thị sách ngẫu nhiên"
 
 #: cps/render_template.py:70 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1102
+#: cps/templates/index.xml:83 cps/web.py:1104
 msgid "Categories"
 msgstr "Chủ đề"
 
@@ -982,7 +982,7 @@ msgstr "Hiển thị chọn chủ đề"
 
 #: cps/render_template.py:73 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:998 cps/web.py:1005
+#: cps/templates/search_form.html:69 cps/web.py:1000 cps/web.py:1007
 msgid "Series"
 msgstr "Series"
 
@@ -1002,7 +1002,7 @@ msgid "Show Author Section"
 msgstr "Hiển thị chọn tác giả"
 
 #: cps/render_template.py:80 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:969
+#: cps/templates/index.xml:76 cps/web.py:971
 msgid "Publishers"
 msgstr "Nhà phát hành"
 
@@ -1013,7 +1013,7 @@ msgstr "Hiển thị chọn nhà phát hành"
 
 #: cps/render_template.py:83 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1074
+#: cps/web.py:1076
 msgid "Languages"
 msgstr "Ngôn ngữ"
 
@@ -1040,7 +1040,7 @@ msgstr "Định dạng file"
 msgid "Show File Formats Section"
 msgstr "Hiển thị lựa chọn định dạng file"
 
-#: cps/render_template.py:94 cps/web.py:768
+#: cps/render_template.py:94 cps/web.py:770
 msgid "Archived Books"
 msgstr "Sách đã lưu trữ"
 
@@ -1049,7 +1049,7 @@ msgstr "Sách đã lưu trữ"
 msgid "Show Archived Books"
 msgstr "Hiện thị sách trong kho"
 
-#: cps/render_template.py:99 cps/web.py:799
+#: cps/render_template.py:99 cps/web.py:801
 msgid "Books List"
 msgstr "Danh sách sách"
 
@@ -1266,145 +1266,145 @@ msgstr ""
 msgid "No release information available"
 msgstr ""
 
-#: cps/templates/index.html:6 cps/web.py:433
+#: cps/templates/index.html:6 cps/web.py:435
 msgid "Discover (Random Books)"
 msgstr ""
 
-#: cps/web.py:469
+#: cps/web.py:471
 msgid "Hot Books (Most Downloaded)"
 msgstr ""
 
-#: cps/web.py:500
+#: cps/web.py:502
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr ""
 
-#: cps/web.py:533
+#: cps/web.py:535
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:569
+#: cps/web.py:571
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr ""
 
-#: cps/web.py:597
+#: cps/web.py:599
 #, python-format
 msgid "Series: %(serie)s"
 msgstr ""
 
-#: cps/web.py:612
+#: cps/web.py:614
 #, fuzzy
 msgid "Rating: None"
 msgstr "Đánh giá cao hơn"
 
-#: cps/web.py:621
+#: cps/web.py:623
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:639
+#: cps/web.py:641
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:676
+#: cps/web.py:678
 #, python-format
 msgid "Category: %(name)s"
 msgstr ""
 
-#: cps/web.py:703
+#: cps/web.py:705
 #, python-format
 msgid "Language: %(name)s"
 msgstr ""
 
-#: cps/templates/admin.html:16 cps/web.py:941
+#: cps/templates/admin.html:16 cps/web.py:943
 msgid "Downloads"
 msgstr "Tải xuống"
 
-#: cps/web.py:1034
+#: cps/web.py:1036
 msgid "Ratings list"
 msgstr "Danh sách đánh giá"
 
-#: cps/web.py:1061
+#: cps/web.py:1063
 msgid "File formats list"
 msgstr "Danh sách định dạng file"
 
-#: cps/web.py:1198
+#: cps/web.py:1200
 msgid "Please configure the SMTP mail settings first."
 msgstr ""
 
-#: cps/web.py:1203
+#: cps/web.py:1205
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr ""
 
-#: cps/web.py:1207
+#: cps/web.py:1209
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr ""
 
-#: cps/web.py:1209
-msgid "Oops! Please update your profile with a valid  eReader Email."
+#: cps/web.py:1211
+msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr ""
 
-#: cps/web.py:1226
+#: cps/web.py:1228
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr ""
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1227
-#: cps/web.py:1234 cps/web.py:1240 cps/web.py:1260 cps/web.py:1265
-#: cps/web.py:1271
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1229
+#: cps/web.py:1236 cps/web.py:1242 cps/web.py:1262 cps/web.py:1267
+#: cps/web.py:1273
 msgid "Register"
 msgstr "Đăng ký"
 
-#: cps/web.py:1262
+#: cps/web.py:1264
 msgid "Oops! Your Email is not allowed."
 msgstr "Email của bạn không được cho phép để đăng ký"
 
-#: cps/web.py:1266
+#: cps/web.py:1268
 msgid "Success! Confirmation Email has been sent."
 msgstr ""
 
-#: cps/web.py:1280
+#: cps/web.py:1282
 msgid "Oops! Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1299
+#: cps/web.py:1301
 #, python-format
 msgid "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1305
+#: cps/web.py:1307
 #, python-format
 msgid "Oops! Login Failed: %(message)s"
 msgstr "Không thể đăng nhập: %(message)s"
 
-#: cps/web.py:1309 cps/web.py:1334
+#: cps/web.py:1311 cps/web.py:1336
 msgid "Oops! Invalid Username or Password."
 msgstr "Tên đăng nhập hoặc mật khẩu không đúng"
 
-#: cps/web.py:1316
+#: cps/web.py:1318
 msgid "Success! New Password was sent to your Email."
 msgstr "Mật khẩu mới đã được gửi đến email của bạn"
 
-#: cps/web.py:1322
+#: cps/web.py:1324
 msgid "Oops! Please enter a valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1396 cps/web.py:1445
+#: cps/web.py:1398 cps/web.py:1447
 #, python-format
 msgid "%(name)s's Profile"
 msgstr ""
 
-#: cps/web.py:1412
+#: cps/web.py:1414
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "Metadata đã được cập nhật thành công"
 
-#: cps/web.py:1416
+#: cps/web.py:1418
 msgid "Oops! An account already exists for this Email."
 msgstr "Tìm thấy một tài khoản đã toàn tại cho địa chỉ email này"
 
