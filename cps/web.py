@@ -1198,11 +1198,11 @@ def download_link(book_id, book_format, anyname):
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
         flash(_("Please configure the SMTP mail settings first."), category="error")
-    elif current_user.eReader_mail:
-        result = send_mail(book_id, book_format, convert, current_user.eReader_mail, config.config_calibre_dir,
+    elif current_user.kindle_mail:
+        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
                            current_user.name)
         if result is None:
-            flash(_("Success! Book queued for sending to %(eReadermail)s", eReadermail=current_user.eReader_mail),
+            flash(_("Success! Book queued for sending to %(eReadermail)s", eReadermail=current_user.kindle_mail),
                   category="success")
             ub.update_download(book_id, int(current_user.id))
         else:
@@ -1366,8 +1366,8 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         if to_save.get("password"):
             current_user.password = generate_password_hash(to_save.get("password"))
     try:
-        if to_save.get("eReader_mail", current_user.eReader_mail) != current_user.eReader_mail:
-            current_user.eReader_mail = valid_email(to_save.get("eReader_mail"))
+        if to_save.get("eReader_mail", current_user.kindle_mail) != current_user.kindle_mail:
+            current_user.kindle_mail = valid_email(to_save.get("eReader_mail"))
         new_email = valid_email(to_save.get("email", current_user.email))
         if not new_email:
             raise Exception(_("Email can't be empty and has to be a valid Email"))
