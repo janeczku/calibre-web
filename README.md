@@ -65,11 +65,14 @@ Afterwards you can configure your Calibre-Web instance ([Basic Configuration](ht
 
 python 3.5+
 
+[Download](https://imagemagick.org/script/download.php) Imagemagick to extract covers from epubs. On Windows the additional installation of [ghostscript](https://ghostscript.com/releases/gsdnld.html) might be necessary to extract covers from pdf files. On Linux Imagemagick and Ghostscript can often be installed using the system package manager.
+
 Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-ereader feature, or during editing of ebooks metadata:
 
 [Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including program name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
 
 [Download](https://github.com/pgaskin/kepubify/releases/latest) Kepubify tool for your platform and place the binary starting with `kepubify` in Linux: `/opt/kepubify` Windows: `C:\Program Files\kepubify`.
+
 
 ## Docker Images
 
