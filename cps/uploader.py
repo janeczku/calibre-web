@@ -64,7 +64,7 @@ except ImportError as e:
 
 
 def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
-    meta = None
+    meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
     extension_upper = original_file_extension.upper()
     try:
         if ".PDF" == extension_upper:
@@ -81,11 +81,11 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
-    if meta and meta.title.strip() and meta.author.strip():
-        if meta.author.lower() == 'unknown':
-            meta = meta._replace(author=_('Unknown'))
-        return meta
-    return default_meta(tmp_file_path, original_file_name, original_file_extension)
+    if not meta.title.strip():
+        meta = original_file_name
+    if not meta.author.strip() or meta.author.lower() == 'unknown':
+        meta = meta._replace(author=_('Unknown'))
+    return meta
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -111,7 +111,7 @@ def parse_xmp(pdf_file):
     Parse XMP Metadata and prepare for BookMeta object
     """
     try:
-        xmp_info = pdf_file.getXmpMetadata()
+        xmp_info = pdf_file.xmp_metadata
     except Exception as ex:
         log.debug('Can not read PDF XMP metadata {}'.format(ex))
         return None
@@ -158,9 +158,8 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
             pdf_file = PdfReader(f)
-            doc_info = pdf_file.getDocumentInfo()
             try:
-                doc_info = pdf_file.getDocumentInfo()
+                doc_info = pdf_file.metadata
             except Exception as exc:
                 log.debug('Can not read PDF DocumentInfo {}'.format(exc))
             xmp_info = parse_xmp(pdf_file)
