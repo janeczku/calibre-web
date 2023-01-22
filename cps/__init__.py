@@ -36,7 +36,7 @@ from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
 from .updater import Updater
-from .babel import babel
+from .babel import babel, get_locale
 from . import config_sql
 from . import cache_buster
 from . import ub, db
@@ -156,8 +156,11 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
-
-    babel.init_app(app)
+    if hasattr(babel, "localeselector"):
+        babel.init_app(app)
+        babel.localeselector(get_locale)
+    else:
+        babel.init_app(app, locale_selector=get_locale)
 
     from . import services
 
