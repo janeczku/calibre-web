@@ -92,7 +92,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
                 if generated > 0:
                     total_generated += generated
-                    self.message = N_(u'Generated %(count)s cover thumbnails', count=total_generated)
+                    self.message = N_('Generated %(count)s cover thumbnails', count=total_generated)
 
                 # Check if job has been cancelled or ended
                 if self.stat == STAT_CANCELLED:

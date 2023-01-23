@@ -111,66 +111,70 @@ class Identifiers(Base):
     def format_type(self):
         format_type = self.type.lower()
         if format_type == 'amazon':
-            return u"Amazon"
+            return "Amazon"
         elif format_type.startswith("amazon_"):
-            return u"Amazon.{0}".format(format_type[7:])
+            return "Amazon.{0}".format(format_type[7:])
         elif format_type == "isbn":
-            return u"ISBN"
+            return "ISBN"
         elif format_type == "doi":
-            return u"DOI"
+            return "DOI"
         elif format_type == "douban":
-            return u"Douban"
+            return "Douban"
         elif format_type == "goodreads":
-            return u"Goodreads"
+            return "Goodreads"
         elif format_type == "babelio":
-            return u"Babelio"
+            return "Babelio"
         elif format_type == "google":
-            return u"Google Books"
+            return "Google Books"
         elif format_type == "kobo":
-            return u"Kobo"
+            return "Kobo"
         elif format_type == "litres":
-            return u"ЛитРес"
+            return "ЛитРес"
         elif format_type == "issn":
-            return u"ISSN"
+            return "ISSN"
         elif format_type == "isfdb":
-            return u"ISFDB"
+            return "ISFDB"
         if format_type == "lubimyczytac":
-            return u"Lubimyczytac"
+            return "Lubimyczytac"
+        if format_type == "databazeknih":
+            return "Databáze knih"
         else:
             return self.type
 
     def __repr__(self):
         format_type = self.type.lower()
         if format_type == "amazon" or format_type == "asin":
-            return u"https://amazon.com/dp/{0}".format(self.val)
+            return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return u"https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
+            return "https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
         elif format_type == "isbn":
-            return u"https://www.worldcat.org/isbn/{0}".format(self.val)
+            return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
-            return u"https://dx.doi.org/{0}".format(self.val)
+            return "https://dx.doi.org/{0}".format(self.val)
         elif format_type == "goodreads":
-            return u"https://www.goodreads.com/book/show/{0}".format(self.val)
+            return "https://www.goodreads.com/book/show/{0}".format(self.val)
         elif format_type == "babelio":
-            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)
+            return "https://www.babelio.com/livres/titre/{0}".format(self.val)
         elif format_type == "douban":
-            return u"https://book.douban.com/subject/{0}".format(self.val)
+            return "https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
-            return u"https://books.google.com/books?id={0}".format(self.val)
+            return "https://books.google.com/books?id={0}".format(self.val)
         elif format_type == "kobo":
-            return u"https://www.kobo.com/ebook/{0}".format(self.val)
+            return "https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
-            return u"https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
+            return "https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
-            return u"https://www.litres.ru/{0}".format(self.val)
+            return "https://www.litres.ru/{0}".format(self.val)
         elif format_type == "issn":
-            return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
+            return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+        elif format_type == "databazeknih":
+            return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         else:
-            return u"{0}".format(self.val)
+            return "{0}".format(self.val)
 
 
 class Comments(Base):
@@ -188,7 +192,7 @@ class Comments(Base):
         return self.text
 
     def __repr__(self):
-        return u"<Comments({0})>".format(self.text)
+        return "<Comments({0})>".format(self.text)
 
 
 class Tags(Base):
@@ -204,7 +208,7 @@ class Tags(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Tags('{0})>".format(self.name)
+        return "<Tags('{0})>".format(self.name)
 
 
 class Authors(Base):
@@ -224,7 +228,7 @@ class Authors(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
+        return "<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
 
 class Series(Base):
@@ -242,7 +246,7 @@ class Series(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Series('{0},{1}')>".format(self.name, self.sort)
+        return "<Series('{0},{1}')>".format(self.name, self.sort)
 
 
 class Ratings(Base):
@@ -258,7 +262,7 @@ class Ratings(Base):
         return self.rating
 
     def __repr__(self):
-        return u"<Ratings('{0}')>".format(self.rating)
+        return "<Ratings('{0}')>".format(self.rating)
 
 
 class Languages(Base):
@@ -277,7 +281,7 @@ class Languages(Base):
             return self.lang_code
 
     def __repr__(self):
-        return u"<Languages('{0}')>".format(self.lang_code)
+        return "<Languages('{0}')>".format(self.lang_code)
 
 
 class Publishers(Base):
@@ -295,7 +299,7 @@ class Publishers(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
+        return "<Publishers('{0},{1}')>".format(self.name, self.sort)
 
 
 class Data(Base):
@@ -319,7 +323,7 @@ class Data(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+        return "<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
 
 class Metadata_Dirtied(Base):
@@ -373,7 +377,7 @@ class Books(Base):
         self.has_cover = (has_cover != None)
 
     def __repr__(self):
-        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 

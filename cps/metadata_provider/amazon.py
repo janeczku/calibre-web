@@ -63,11 +63,11 @@ class Amazon(Metadata):
                     r.raise_for_status()
                 except Exception as ex:
                     log.warning(ex)
-                    return
+                    return None
                 long_soup = BS(r.text, "lxml")  #~4sec :/
                 soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
                 if soup2 is None:
-                    return
+                    return None
                 try:
                     match = MetaRecord(
                         title = "",
@@ -115,7 +115,7 @@ class Amazon(Metadata):
                     return match, index
                 except Exception as e:
                     log.error_or_exception(e)
-                    return
+                    return None
 
         val = list()
         if self.active:
@@ -127,10 +127,10 @@ class Amazon(Metadata):
                 results.raise_for_status()
             except requests.exceptions.HTTPError as e:
                 log.error_or_exception(e)
-                return None
+                return []
             except Exception as e:
                 log.warning(e)
-                return None
+                return []
             soup = BS(results.text, 'html.parser')
             links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
                           soup.findAll("div", attrs={"data-component-type": "s-search-result"})]

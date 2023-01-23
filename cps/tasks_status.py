@@ -45,7 +45,7 @@ def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     tasks = WorkerThread.get_instance().tasks
     answer = render_task_status(tasks)
-    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
+    return render_title_template('tasks.html', entries=answer, title=_("Tasks"), page="tasks")
 
 
 # helper function to apply localize status information in tasklist entries
@@ -61,19 +61,19 @@ def render_task_status(tasklist):
             # localize the task status
             if isinstance(task.stat, int):
                 if task.stat == STAT_WAITING:
-                    ret['status'] = _(u'Waiting')
+                    ret['status'] = _('Waiting')
                 elif task.stat == STAT_FAIL:
-                    ret['status'] = _(u'Failed')
+                    ret['status'] = _('Failed')
                 elif task.stat == STAT_STARTED:
-                    ret['status'] = _(u'Started')
+                    ret['status'] = _('Started')
                 elif task.stat == STAT_FINISH_SUCCESS:
-                    ret['status'] = _(u'Finished')
+                    ret['status'] = _('Finished')
                 elif task.stat == STAT_ENDED:
-                    ret['status'] = _(u'Ended')
+                    ret['status'] = _('Ended')
                 elif task.stat == STAT_CANCELLED:
-                    ret['status'] = _(u'Cancelled')
+                    ret['status'] = _('Cancelled')
                 else:
-                    ret['status'] = _(u'Unknown Status')
+                    ret['status'] = _('Unknown Status')
 
             ret['taskMessage'] = "{}: {}".format(task.name, task.message) if task.message else task.name
             ret['progress'] = "{} %".format(int(task.progress * 100))

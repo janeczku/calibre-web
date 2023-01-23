@@ -140,7 +140,7 @@ def create_app():
         web_server.stop(True)
         sys.exit(7)
     for res in dependency_check() + dependency_check(True):
-        log.info('*** "{}" version does not fit the requirements. '
+        log.info('*** "{}" version does not meet the requirements. '
                  'Should: {}, Found: {}, please consider installing required version ***'
                  .format(res['name'],
                          res['target'],

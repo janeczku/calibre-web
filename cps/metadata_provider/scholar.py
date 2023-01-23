@@ -54,7 +54,7 @@ class scholar(Metadata):
                 scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
             except Exception as e:
                 log.warning(e)
-                return None
+                return list()
             for result in scholar_gen:
                 match = self._parse_search_result(
                     result=result, generic_cover="", locale=locale

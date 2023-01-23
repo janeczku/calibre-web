@@ -16,7 +16,6 @@
  */
 // Move advanced search to side-menu
 $("a[href*='advanced']").parent().insertAfter("#nav_new");
-$("body").addClass("blur");
 $("body.stat").addClass("stats");
 $("body.config").addClass("admin");
 $("body.uiconfig").addClass("admin");
@@ -29,8 +28,8 @@ $("body > div.container-fluid > div > div.col-sm-10 > div.filterheader").attr("s
 // Back button
 curHref = window.location.href.split("/");
 prevHref = document.referrer.split("/");
-$(".navbar-form.navbar-left")
-    .before('<div class="plexBack"><a href="' + encodeURI(document.referrer) + '"></a></div>');
+$(".plexBack a").attr('href', encodeURI(document.referrer));
+
 if (history.length === 1 ||
     curHref[0] +
     curHref[1] +
@@ -44,14 +43,9 @@ if (history.length === 1 ||
 
 //Weird missing a after pressing back from edit.
 setTimeout(function () {
-    if ($(".plexBack a").length < 1) {
-        $(".plexBack").append('<a href="' + encodeURI(document.referrer) + '"></a>');
-    }
+    $(".plexBack a").attr('href', encodeURI(document.referrer));
 }, 10);
 
-// Home button
-$(".plexBack").before('<div class="home-btn"></div>');
-$("a.navbar-brand").clone().appendTo(".home-btn").empty().removeClass("navbar-brand");
 /////////////////////////////////
 // Start of Book Details Work //
 ///////////////////////////////
@@ -326,13 +320,8 @@ url = window.location.pathname
 // Move create shelf
 $("#nav_createshelf").prependTo(".your-shelves");
 
-// Create drop-down for profile and move elements to it
-$("#main-nav")
-    .prepend('<li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a><ul class="dropdown-menu profileDropli"></ul></li>');
-$("#top_user").parent().addClass("dropdown").appendTo(".profileDropli");
-$("#nav_about").addClass("dropdown").appendTo(".profileDropli");
-$("#register").parent().addClass("dropdown").appendTo(".profileDropli");
-$("#logout").parent().addClass("dropdown").appendTo(".profileDropli");
+// Move About link it the profile dropdown
+$(".profileDropli #top_user").parent().after($("#nav_about").addClass("dropdown"))
 
 // Remove the modals except from some areas where they are needed
 bodyClass = $("body").attr("class").split(" ");
@@ -666,7 +655,7 @@ $("#sendbtn").attr({
 
 $("#sendbtn2").attr({
     "data-toggle-two": "tooltip",
-    "title": $("#sendbtn2").text(),                 // "Send to E-Reader",
+    "title": $("#sendbtn2").text(),                 // "Send to eReader",
     "data-placement": "bottom",
     "data-viewport": ".btn-toolbar"
 })

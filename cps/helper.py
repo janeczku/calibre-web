@@ -77,29 +77,29 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
     if not data:
-        error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
+        error_message = _("%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
         return error_message
     file_path = os.path.join(calibre_path, book.path, data.name)
     if config.config_use_google_drive:
         if not gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower()):
-            error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+            error_message = _("%(format)s not found on Google Drive: %(fn)s",
                               format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
     else:
         if not os.path.exists(file_path + "." + old_book_format.lower()):
-            error_message = _(u"%(format)s not found: %(fn)s",
+            error_message = _("%(format)s not found: %(fn)s",
                               format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
     # read settings and append converter task to queue
     if ereader_mail:
         settings = config.get_mail_settings()
-        settings['subject'] = _('Send to E-Reader')  # pretranslate Subject for e-mail
-        settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
+        settings['subject'] = _('Send to eReader')  # pretranslate Subject for Email
+        settings['body'] = _('This Email has been sent via Calibre-Web.')
     else:
         settings = dict()
     link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))  # prevent xss
-    txt = u"{} -> {}: {}".format(
+    txt = "{} -> {}: {}".format(
            old_book_format.upper(),
            new_book_format.upper(),
            link)
@@ -111,30 +111,30 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
-    WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), ereader_mail, N_(u"Test e-mail"),
-                                          _(u'This e-mail has been sent via Calibre-Web.')))
+    WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
+                     config.get_mail_settings(), ereader_mail, N_("Test Email"),
+                                          _('This Email has been sent via Calibre-Web.')))
     return
 
 
 # Send registration email or password reset email, depending on parameter resend (False means welcome email)
 def send_registration_mail(e_mail, user_name, default_password, resend=False):
-    txt = "Hello %s!\r\n" % user_name
+    txt = "Hi %s!\r\n" % user_name
     if not resend:
-        txt += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
-    txt += "Please log in to your account using the following information:\r\n"
-    txt += "User name: %s\r\n" % user_name
+        txt += "Your account at Calibre-Web has been created.\r\n"
+    txt += "Please log in using the following information:\r\n"
+    txt += "Username: %s\r\n" % user_name
     txt += "Password: %s\r\n" % default_password
-    txt += "Don't forget to change your password after first login.\r\n"
-    txt += "Sincerely\r\n\r\n"
-    txt += "Your Calibre-Web team"
+    txt += "Don't forget to change your password after your first login.\r\n"
+    txt += "Regards,\r\n\r\n"
+    txt += "Calibre-Web"
     WorkerThread.add(None, TaskEmail(
-        subject=_(u'Get Started with Calibre-Web'),
+        subject=_('Get Started with Calibre-Web'),
         filepath=None,
         attachment=None,
         settings=config.get_mail_settings(),
         recipient=e_mail,
-        task_message=N_(u"Registration e-mail for user: %(name)s", name=user_name),
+        task_message=N_("Registration Email for user: %(name)s", name=user_name),
         text=txt
     ))
     return
@@ -145,13 +145,13 @@ def check_send_to_ereader_with_converter(formats):
     if 'MOBI' in formats and 'EPUB' not in formats:
         book_formats.append({'format': 'Epub',
                              'convert': 1,
-                             'text': _('Convert %(orig)s to %(format)s and send to E-Reader',
+                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
                                        orig='Mobi',
                                        format='Epub')})
     if 'AZW3' in formats and 'EPUB' not in formats:
         book_formats.append({'format': 'Epub',
                              'convert': 2,
-                             'text': _('Convert %(orig)s to %(format)s and send to E-Reader',
+                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
                                        orig='Azw3',
                                        format='Epub')})
     return book_formats
@@ -159,7 +159,7 @@ def check_send_to_ereader_with_converter(formats):
 
 def check_send_to_ereader(entry):
     """
-        returns all available book formats for sending to E-Reader
+        returns all available book formats for sending to eReader
     """
     formats = list()
     book_formats = list()
@@ -170,24 +170,24 @@ def check_send_to_ereader(entry):
         if 'EPUB' in formats:
             book_formats.append({'format': 'Epub',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to E-Reader', format='Epub')})
+                                 'text': _('Send %(format)s to eReader', format='Epub')})
         if 'MOBI' in formats:
             book_formats.append({'format': 'Mobi',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to E-Reader', format='Mobi')})
+                                 'text': _('Send %(format)s to eReader', format='Mobi')})
         if 'PDF' in formats:
             book_formats.append({'format': 'Pdf',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to E-Reader', format='Pdf')})
+                                 'text': _('Send %(format)s to eReader', format='Pdf')})
         if 'AZW' in formats:
             book_formats.append({'format': 'Azw',
                                  'convert': 0,
-                                 'text': _('Send %(format)s to E-Reader', format='Azw')})
+                                 'text': _('Send %(format)s to eReader', format='Azw')})
         if config.config_converterpath:
             book_formats.extend(check_send_to_ereader_with_converter(formats))
         return book_formats
     else:
-        log.error(u'Cannot find book entry %d', entry.id)
+        log.error('Cannot find book entry %d', entry.id)
         return None
 
 
@@ -204,30 +204,30 @@ def check_read_formats(entry):
 
 
 # Files are processed in the following order/priority:
-# 1: If Mobi file is existing, it's directly send to E-Reader email,
-# 2: If Epub file is existing, it's converted and send to E-Reader email,
-# 3: If Pdf file is existing, it's directly send to E-Reader email
+# 1: If Mobi file is existing, it's directly send to eReader email,
+# 2: If Epub file is existing, it's converted and send to eReader email,
+# 3: If Pdf file is existing, it's directly send to eReader email
 def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id):
     """Send email with attachments"""
     book = calibre_db.get_book(book_id)
 
     if convert == 1:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, ereader_mail)
+        return convert_book_format(book_id, calibrepath, 'epub', book_format.lower(), user_id, ereader_mail)
     if convert == 2:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, ereader_mail)
+        return convert_book_format(book_id, calibrepath, 'azw3', book_format.lower(), user_id, ereader_mail)
 
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
-            email_text = N_(u"%(book)s send to E-Reader", book=link)
-            WorkerThread.add(user_id, TaskEmail(_(u"Send to E-Reader"), book.path, converted_file_name,
+            email_text = N_("%(book)s send to eReader", book=link)
+            WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                              config.get_mail_settings(), ereader_mail,
-                             email_text, _(u'This e-mail has been sent via Calibre-Web.')))
+                             email_text, _('This Email has been sent via Calibre-Web.')))
             return
-    return _(u"The requested file could not be read. Maybe wrong permissions?")
+    return _("The requested file could not be read. Maybe wrong permissions?")
 
 
 def get_valid_filename(value, replace_whitespace=True, chars=128):
@@ -235,16 +235,16 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-    if value[-1:] == u'.':
-        value = value[:-1]+u'_'
+    if value[-1:] == '.':
+        value = value[:-1]+'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if config.config_unicode_filename:
         value = (unidecode.unidecode(value))
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
-        value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
+        value = re.sub(r'[*+:\\\"/<>?]+', '_', value, flags=re.U)
         # pipe has to be replaced with comma
-        value = re.sub(r'[|]+', u',', value, flags=re.U)
+        value = re.sub(r'[|]+', ',', value, flags=re.U)
 
     value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
 
@@ -341,7 +341,7 @@ def edit_book_read_status(book_id, read_status=None):
             return "Custom Column No.{} does not exist in calibre database".format(config.config_read_column)
         except (OperationalError, InvalidRequestError) as ex:
             calibre_db.session.rollback()
-            log.error(u"Read status could not set: {}".format(ex))
+            log.error("Read status could not set: {}".format(ex))
             return _("Read status could not set: {}".format(ex.orig))
     return ""
 
@@ -416,8 +416,8 @@ def clean_author_database(renamed_author, calibre_path="", local_book=None, gdri
                         g_file = gd.getFileFromEbooksFolder(all_new_path,
                                                             file_format.name + '.' + file_format.format.lower())
                         if g_file:
-                            gd.moveGdriveFileRemote(g_file, all_new_name + u'.' + file_format.format.lower())
-                            gd.updateDatabaseOnEdit(g_file['id'], all_new_name + u'.' + file_format.format.lower())
+                            gd.moveGdriveFileRemote(g_file, all_new_name + '.' + file_format.format.lower())
+                            gd.updateDatabaseOnEdit(g_file['id'], all_new_name + '.' + file_format.format.lower())
                         else:
                             log.error("File {} not found on gdrive"
                                       .format(all_new_path, file_format.name + '.' + file_format.format.lower()))
@@ -510,25 +510,25 @@ def update_dir_structure_gdrive(book_id, first_author, renamed_author):
     authordir = book.path.split('/')[0]
     titledir = book.path.split('/')[1]
     new_authordir = rename_all_authors(first_author, renamed_author, gdrive=True)
-    new_titledir = get_valid_filename(book.title, chars=96) + u" (" + str(book_id) + u")"
+    new_titledir = get_valid_filename(book.title, chars=96) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
         g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if g_file:
             gd.moveGdriveFileRemote(g_file, new_titledir)
-            book.path = book.path.split('/')[0] + u'/' + new_titledir
+            book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(g_file['id'], book.path)     # only child folder affected
         else:
-            return _(u'File %(file)s not found on Google Drive', file=book.path)  # file not found
+            return _('File %(file)s not found on Google Drive', file=book.path)  # file not found
 
     if authordir != new_authordir and authordir not in renamed_author:
         g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), new_titledir)
         if g_file:
             gd.moveGdriveFolderRemote(g_file, new_authordir)
-            book.path = new_authordir + u'/' + book.path.split('/')[1]
+            book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
-            return _(u'File %(file)s not found on Google Drive', file=authordir)  # file not found
+            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found
 
     # change location in database to new author/title path
     book.path = os.path.join(new_authordir, new_titledir).replace('\\', '/')
@@ -600,7 +600,7 @@ def delete_book_gdrive(book, book_format):
         gd.deleteDatabaseEntry(g_file['id'])
         g_file.Trash()
     else:
-        error = _(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
+        error = _('Book path %(path)s not found on Google Drive', path=book.path)  # file not found
 
     return error is None, error
 
@@ -640,16 +640,16 @@ def uniq(inpt):
 def check_email(email):
     email = valid_email(email)
     if ub.session.query(ub.User).filter(func.lower(ub.User.email) == email.lower()).first():
-        log.error(u"Found an existing account for this e-mail address")
-        raise Exception(_(u"Found an existing account for this e-mail address"))
+        log.error("Found an existing account for this Email address")
+        raise Exception(_("Found an existing account for this Email address"))
     return email
 
 
 def check_username(username):
     username = username.strip()
     if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
-        log.error(u"This username is already taken")
-        raise Exception(_(u"This username is already taken"))
+        log.error("This username is already taken")
+        raise Exception(_("This username is already taken"))
     return username
 
 
@@ -660,8 +660,8 @@ def valid_email(email):
         # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
         if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
                          email):
-            log.error(u"Invalid e-mail address format")
-            raise Exception(_(u"Invalid e-mail address format"))
+            log.error("Invalid Email address format")
+            raise Exception(_("Invalid Email address format"))
     return email
 
 # ################################# External interface #################################
@@ -837,8 +837,8 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
         try:
             os.makedirs(filepath)
         except OSError:
-            log.error(u"Failed to create path for cover")
-            return False, _(u"Failed to create path for cover")
+            log.error("Failed to create path for cover")
+            return False, _("Failed to create path for cover")
     try:
         # upload of jgp file without wand
         if isinstance(img, requests.Response):
@@ -853,8 +853,8 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 # upload of jpg/png... from hdd
                 img.save(os.path.join(filepath, saved_filename))
     except (IOError, OSError):
-        log.error(u"Cover-file is not a valid image file, or could not be stored")
-        return False, _(u"Cover-file is not a valid image file, or could not be stored")
+        log.error("Cover-file is not a valid image file, or could not be stored")
+        return False, _("Cover-file is not a valid image file, or could not be stored")
     return True, None
 
 

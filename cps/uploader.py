@@ -37,16 +37,22 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF2 import PdfFileReader
+    from PyPDF import PdfReader
     use_pdf_meta = True
 except ImportError as ex:
-    log.debug('PyPDF2 is recommended for best performance in metadata extracting from pdf files: %s', ex)
+    log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
     try:
-        from PyPDF3 import PdfFileReader
+        from PyPDF2 import PdfReader
         use_pdf_meta = True
-    except ImportError as e:
-        log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
-        use_pdf_meta = False
+    except ImportError as ex:
+        log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
+        log.debug('PyPdf2 is also possible for metadata extracting from pdf files, but not recommended anymore')
+        try:
+            from PyPDF3 import PdfFileReader as PdfReader
+            use_pdf_meta = True
+        except ImportError as e:
+            log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
+            use_pdf_meta = False
 
 try:
     from . import epub
@@ -64,7 +70,7 @@ except ImportError as e:
 
 
 def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
-    meta = None
+    meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
     extension_upper = original_file_extension.upper()
     try:
         if ".PDF" == extension_upper:
@@ -81,11 +87,11 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
-    if meta and meta.title.strip() and meta.author.strip():
-        if meta.author.lower() == 'unknown':
-            meta = meta._replace(author=_(u'Unknown'))
-        return meta
-    return default_meta(tmp_file_path, original_file_name, original_file_extension)
+    if not meta.title.strip():
+        meta = original_file_name
+    if not meta.author.strip() or meta.author.lower() == 'unknown':
+        meta = meta._replace(author=_('Unknown'))
+    return meta
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -93,7 +99,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
-        author=_(u'Unknown'),
+        author=_('Unknown'),
         cover=None,
         description="",
         tags="",
@@ -111,7 +117,7 @@ def parse_xmp(pdf_file):
     Parse XMP Metadata and prepare for BookMeta object
     """
     try:
-        xmp_info = pdf_file.getXmpMetadata()
+        xmp_info = pdf_file.xmp_metadata
     except Exception as ex:
         log.debug('Can not read PDF XMP metadata {}'.format(ex))
         return None
@@ -157,10 +163,9 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            pdf_file = PdfFileReader(f)
-            doc_info = pdf_file.getDocumentInfo()
+            pdf_file = PdfReader(f)
             try:
-                doc_info = pdf_file.getDocumentInfo()
+                doc_info = pdf_file.metadata
             except Exception as exc:
                 log.debug('Can not read PDF DocumentInfo {}'.format(exc))
             xmp_info = parse_xmp(pdf_file)
@@ -173,7 +178,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         languages = xmp_info['languages']
         publisher = xmp_info['publisher']
     else:
-        author = u'Unknown'
+        author = 'Unknown'
         title = ''
         languages = [""]
         publisher = ""
@@ -182,7 +187,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if doc_info:
         if author == '':
-            author = ' & '.join(split_authors([doc_info.author])) if doc_info.author else u'Unknown'
+            author = ' & '.join(split_authors([doc_info.author])) if doc_info.author else 'Unknown'
         if title == '':
             title = doc_info.title if doc_info.title else original_file_name
         if subject == '':
@@ -239,7 +244,7 @@ def get_magick_version():
     if not use_generic_pdf_cover:
         ret['Image Magick'] = ImageVersion.MAGICK_VERSION
     else:
-        ret['Image Magick'] = u'not installed'
+        ret['Image Magick'] = 'not installed'
     return ret
 
 
