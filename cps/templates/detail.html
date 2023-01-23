@@ -402,7 +402,8 @@
     </script>
     <script type="text/javascript">
         window.onload = function () {
-            let list = {{ entry.email_share_list | safe }}
+            let list =
+            {{ entry.email_share_list | safe }}
             if (!(list.length <= 1)) {
                 for (let i = 0; i <{{ entry.email_share_list.__len__() }}; i++) {
                     let btn = document.getElementById("sendbtnli-" + i)
