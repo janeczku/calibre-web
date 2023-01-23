@@ -37,7 +37,7 @@ except (ImportError, RuntimeError) as e:
     use_generic_pdf_cover = True
 
 try:
-    from PyPDF import PdfReader
+    from pypdf import PdfReader
     use_pdf_meta = True
 except ImportError as ex:
     log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
