@@ -38,6 +38,7 @@
             {% endif %}
           {% endif %}
             {% if g.user.kindle_mail and entry.email_share_list %}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               {% if entry.email_share_list.__len__() == 1 %}
                 <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to eReader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
               {% else %}
