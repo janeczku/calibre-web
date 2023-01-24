@@ -1193,7 +1193,7 @@ def download_link(book_id, book_format, anyname):
 
 
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>', methods=["POST"])
-@login_required
+@login_required_if_no_ano
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
