@@ -75,29 +75,29 @@ class Updater(threading.Thread):
     def do_work(self):
         try:
             self.status = 1
-            log.debug(u'Download update file')
+            log.debug('Download update file')
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(self._get_request_path(), stream=True, headers=headers, timeout=(10, 600))
             r.raise_for_status()
 
             self.status = 2
-            log.debug(u'Opening zipfile')
+            log.debug('Opening zipfile')
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
-            log.debug(u'Extracting zipfile')
+            log.debug('Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
             folder_name = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(folder_name):
                 self.status = 11
-                log.info(u'Extracted contents of zipfile not found in temp folder')
+                log.info('Extracted contents of zipfile not found in temp folder')
                 self.pause()
                 return False
             self.status = 4
-            log.debug(u'Replacing files')
+            log.debug('Replacing files')
             if self.update_source(folder_name, constants.BASE_DIR):
                 self.status = 6
-                log.debug(u'Preparing restart of server')
+                log.debug('Preparing restart of server')
                 time.sleep(2)
                 self.web_server.stop(True)
                 self.status = 7
@@ -107,20 +107,20 @@ class Updater(threading.Thread):
                 self.status = 13
 
         except requests.exceptions.HTTPError as ex:
-            log.error(u'HTTP Error %s', ex)
+            log.error('HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            log.error(u'Connection error')
+            log.error('Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            log.error(u'Timeout while establishing connection')
+            log.error('Timeout while establishing connection')
             self.status = 10
         except (requests.exceptions.RequestException, zipfile.BadZipFile):
             self.status = 11
-            log.error(u'General error')
+            log.error('General error')
         except (IOError, OSError) as ex:
             self.status = 12
-            log.error(u'Possible Reason for error: update file could not be saved in temp dir')
+            log.error('Possible Reason for error: update file could not be saved in temp dir')
             log.error_or_exception(ex)
         self.pause()
         return False
@@ -327,7 +327,7 @@ class Updater(threading.Thread):
     @classmethod
     def _stable_version_info(cls):
         log.debug("Stable version: {}".format(constants.STABLE_VERSION))
-        return constants.STABLE_VERSION  # Current version
+        return constants.STABLE_VERSION  # Current Version
 
     @classmethod
     def dry_run(cls):
@@ -386,13 +386,13 @@ class Updater(threading.Thread):
             r.raise_for_status()
             update_data = r.json()
         except requests.exceptions.HTTPError as e:
-            status['message'] = _(u'HTTP Error') + ' ' + str(e)
+            status['message'] = _('HTTP Error') + ' ' + str(e)
         except requests.exceptions.ConnectionError:
-            status['message'] = _(u'Connection error')
+            status['message'] = _('Connection error')
         except requests.exceptions.Timeout:
-            status['message'] = _(u'Timeout while establishing connection')
+            status['message'] = _('Timeout while establishing connection')
         except (requests.exceptions.RequestException, ValueError):
-            status['message'] = _(u'General error')
+            status['message'] = _('General error')
         return status, update_data
 
     @staticmethod
@@ -428,18 +428,18 @@ class Updater(threading.Thread):
             if status['message'] != '':
                 return json.dumps(status)
             if 'object' not in commit or 'url' not in commit['object']:
-                status['message'] = _(u'Unexpected data while reading update information')
+                status['message'] = _('Unexpected data while reading update information')
                 return json.dumps(status)
             try:
                 if commit['object']['sha'] == status['current_commit_hash']:
                     status.update({
                         'update': False,
                         'success': True,
-                        'message': _(u'No update available. You already have the latest version installed')
+                        'message': _('No update available. You already have the latest version installed')
                     })
                     return json.dumps(status)
             except (TypeError, KeyError):
-                status['message'] = _(u'Unexpected data while reading update information')
+                status['message'] = _('Unexpected data while reading update information')
                 return json.dumps(status)
 
             # a new update is available
@@ -454,7 +454,7 @@ class Updater(threading.Thread):
                 log.debug("A new update is available.")
                 status['success'] = True
                 status['message'] = _(
-                    u'A new update is available. Click on the button below to update to the latest version.')
+                    'A new update is available. Click on the button below to update to the latest version.')
 
                 new_commit_date = datetime.datetime.strptime(
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
@@ -471,7 +471,7 @@ class Updater(threading.Thread):
                 status['history'] = parents[::-1]
             except (IndexError, KeyError):
                 status['success'] = False
-                status['message'] = _(u'Could not fetch update information')
+                status['message'] = _('Could not fetch update information')
                 log.error("Could not fetch update information")
             return json.dumps(status)
         return ''
@@ -482,7 +482,7 @@ class Updater(threading.Thread):
                 'update': True,
                 'success': True,
                 'message': _(
-                    u'Click on the button below to update to the latest stable version.'),
+                    'Click on the button below to update to the latest stable version.'),
                 'history': parents
             })
             self.updateFile = commit[0]['zipball_url']
@@ -490,8 +490,8 @@ class Updater(threading.Thread):
             status.update({
                 'update': True,
                 'success': True,
-                'message': _(u'A new update is available. Click on the button below to '
-                             u'update to version: %(version)s', version=commit[0]['tag_name']),
+                'message': _('A new update is available. Click on the button below to '
+                             'update to version: %(version)s', version=commit[0]['tag_name']),
                 'history': parents
             })
             self.updateFile = commit[0]['zipball_url']

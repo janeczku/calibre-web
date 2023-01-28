@@ -10,7 +10,7 @@
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group" role="group" aria-label="Download, send to E-Reader, reading">
+        <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
           {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
@@ -38,12 +38,13 @@
             {% endif %}
           {% endif %}
             {% if g.user.kindle_mail and entry.email_share_list %}
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               {% if entry.email_share_list.__len__() == 1 %}
-                <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to E-Reader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
+                <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to eReader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-send"></span>{{_('Send to E-Reader')}}
+                    <span class="glyphicon glyphicon-send"></span>{{_('Send to eReader')}}
                     <span class="caret"></span>
                   </button>
                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">

@@ -29,7 +29,7 @@ from .constants import DEFAULT_SETTINGS_FILE, DEFAULT_GDRIVE_FILE
 
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
-        return "Calibre-Web version: %s - unkown git-clone" % _STABLE_VERSION['version']
+        return "Calibre-Web version: %s - unknown git-clone" % _STABLE_VERSION['version']
     return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'], _NIGHTLY_VERSION[1])
 
 

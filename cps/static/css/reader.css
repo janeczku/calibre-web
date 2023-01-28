@@ -1,0 +1,29 @@
+.fontSizeWrapper {
+    position: relative;
+}
+.slider {
+    position: absolute;
+    top: 50%;
+    transform: translate(0,-50%);
+    width: 90%;
+    height: 60px;
+    background: transparent;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 15px 40px #7E6D5766;
+}
+.slider label {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: Open Sans;
+    padding-right: 10px;
+    color: white;
+}
+.slider input[type="range"] {
+    width: 80%;
+    height: 5px;
+    background: black;
+    border: none;
+    outline: none;
+}

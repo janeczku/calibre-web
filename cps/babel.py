@@ -9,8 +9,6 @@ log = logger.create()
 
 babel = Babel()
 
-
-@babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)

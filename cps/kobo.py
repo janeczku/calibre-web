@@ -45,6 +45,7 @@ import requests
 
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
+from . import isoLanguages
 from .constants import sqlalchemy_version2, COVER_THUMBNAIL_SMALL
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
@@ -155,7 +156,7 @@ def HandleSyncRequest():
     new_archived_last_modified = datetime.datetime.min
     sync_results = []
 
-    # We reload the book database so that the user get's a fresh view of the library
+    # We reload the book database so that the user gets a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
 
@@ -355,7 +356,7 @@ def HandleMetadataRequest(book_uuid):
     log.info("Kobo library metadata request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
-        log.info(u"Book %s not found in database", book_uuid)
+        log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
 
     metadata = get_metadata(book)
@@ -443,6 +444,12 @@ def get_seriesindex(book):
     return book.series_index or 1
 
 
+def get_language(book):
+    if not book.languages:
+        return 'en'
+    return isoLanguages.get(part3=book.languages[0].lang_code).part1
+
+
 def get_metadata(book):
     download_urls = []
     kepub = [data for data in book.data if data.format == 'KEPUB']
@@ -480,7 +487,7 @@ def get_metadata(book):
         "IsInternetArchive": False,
         "IsPreOrder": False,
         "IsSocialEnabled": True,
-        "Language": "en",
+        "Language": get_language(book),
         "PhoneticPronunciations": {},
         "PublicationDate": convert_to_kobo_timestamp_string(book.pubdate),
         "Publisher": {"Imprint": "", "Name": get_publisher(book), },
@@ -508,7 +515,7 @@ def get_metadata(book):
 @requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
-    # catch delete requests, otherwise the are handeld in the book delete handler
+    # catch delete requests, otherwise the are handled in the book delete handler
     if request.method == "DELETE":
         abort(405)
     name, items = None, None
@@ -752,7 +759,7 @@ def create_kobo_tag(shelf):
     for book_shelf in shelf.books:
         book = calibre_db.get_book(book_shelf.book_id)
         if not book:
-            log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
+            log.info("Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
             continue
         tag["Items"].append(
             {
@@ -769,7 +776,7 @@ def create_kobo_tag(shelf):
 def HandleStateRequest(book_uuid):
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
-        log.info(u"Book %s not found in database", book_uuid)
+        log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
 
     kobo_reading_state = get_or_create_reading_state(book.id)
@@ -944,7 +951,7 @@ def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book delete request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book:
-        log.info(u"Book %s not found in database", book_uuid)
+        log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
 
     book_id = book.id
@@ -958,7 +965,7 @@ def HandleBookDeletionRequest(book_uuid):
 @csrf.exempt
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
 def HandleUnimplementedRequest(dummy=None):
-    log.debug("Unimplemented Library Request received: %s", request.base_url)
+    log.debug("Unimplemented Library Request received: %s (request is forwarded to kobo if configured)", request.base_url)
     return redirect_or_proxy_request()
 
 
@@ -970,7 +977,7 @@ def HandleUnimplementedRequest(dummy=None):
 @kobo.route("/v1/user/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/analytics/<dummy>", methods=["GET", "POST"])
 def HandleUserRequest(dummy=None):
-    log.debug("Unimplemented User Request received: %s", request.base_url)
+    log.debug("Unimplemented User Request received: %s (request is forwarded to kobo if configured)", request.base_url)
     return redirect_or_proxy_request()
 
 
@@ -1010,7 +1017,7 @@ def handle_getests():
 @kobo.route("/v1/affiliate", methods=["GET", "POST"])
 @kobo.route("/v1/deals", methods=["GET", "POST"])
 def HandleProductsRequest(dummy=None):
-    log.debug("Unimplemented Products Request received: %s", request.base_url)
+    log.debug("Unimplemented Products Request received: %s (request is forwarded to kobo if configured)", request.base_url)
     return redirect_or_proxy_request()
 
 

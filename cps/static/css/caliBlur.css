@@ -3290,8 +3290,10 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
-    left: 0 !important;
     overflow-y: auto;
+}
+.dropdown-menu:not(.datepicker-dropdown):not(.profileDropli) {
+    left: 0 !important;
 }
 #add-to-shelves {
   max-height: calc(100% - 120px);
@@ -4422,38 +4424,6 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
         position: absolute;
         left: 49px;
         margin-top: 5px
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after, body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        color: hsla(0, 0%, 100%, .7);
-        cursor: pointer;
-        display: block;
-        font-family: plex-icons-new, serif;
-        font-size: 20px;
-        font-stretch: 100%;
-        font-style: normal;
-        font-variant-caps: normal;
-        font-variant-east-asian: normal;
-        font-variant-numeric: normal;
-        font-weight: 400;
-        height: 60px;
-        letter-spacing: normal;
-        line-height: 60px;
-        position: absolute
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        content: "\EA30";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 20px
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after {
-        content: "\EA2F";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 60px
     }
 }
 
