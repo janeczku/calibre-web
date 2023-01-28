@@ -80,13 +80,13 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     if epub_metadata['subject'] == 'Unknown':
         epub_metadata['subject'] = ''
 
-    if epub_metadata['publisher'] == u'Unknown':
+    if epub_metadata['publisher'] == 'Unknown':
         epub_metadata['publisher'] = ''
 
-    if epub_metadata['date'] == u'Unknown':
+    if epub_metadata['date'] == 'Unknown':
         epub_metadata['date'] = ''
 
-    if epub_metadata['description'] == u'Unknown':
+    if epub_metadata['description'] == 'Unknown':
         description = tree.xpath("//*[local-name() = 'description']/text()")
         if len(description) > 0:
             epub_metadata['description'] = description
@@ -102,11 +102,14 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
-        identifier_name=node.attrib.values()[-1];
-        identifier_value=node.text;
-        if identifier_name in ('uuid','calibre'):
-            continue;
-        identifiers.append( [identifier_name, identifier_value] )
+        try:
+            identifier_name = node.attrib.values()[-1]
+        except IndexError:
+            continue
+        identifier_value = node.text
+        if identifier_name in ('uuid', 'calibre') or identifier_value is None:
+            continue
+        identifiers.append([identifier_name, identifier_value])
 
     if not epub_metadata['title']:
         title = original_file_name

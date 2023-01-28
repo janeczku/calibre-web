@@ -38,19 +38,19 @@ def get_fb2_info(tmp_file_path, original_file_extension):
         if len(last_name):
             last_name = last_name[0]
         else:
-            last_name = u''
+            last_name = ''
         middle_name = element.xpath('fb:middle-name/text()', namespaces=ns)
         if len(middle_name):
             middle_name = middle_name[0]
         else:
-            middle_name = u''
+            middle_name = ''
         first_name = element.xpath('fb:first-name/text()', namespaces=ns)
         if len(first_name):
             first_name = first_name[0]
         else:
-            first_name = u''
-        return (first_name + u' '
-                + middle_name + u' '
+            first_name = ''
+        return (first_name + ' '
+                + middle_name + ' '
                 + last_name)
 
     author = str(", ".join(map(get_author, authors)))
@@ -59,12 +59,12 @@ def get_fb2_info(tmp_file_path, original_file_extension):
     if len(title):
         title = str(title[0])
     else:
-        title = u''
+        title = ''
     description = tree.xpath('/fb:FictionBook/fb:description/fb:publish-info/fb:book-name/text()', namespaces=ns)
     if len(description):
         description = str(description[0])
     else:
-        description = u''
+        description = ''
 
     return BookMeta(
         file_path=tmp_file_path,

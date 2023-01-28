@@ -329,7 +329,7 @@ def feed_format(book_id):
 @requires_basic_auth_if_no_ano
 def feed_languagesindex():
     off = request.args.get("offset") or 0
-    if current_user.filter_language() == u"all":
+    if current_user.filter_language() == "all":
         languages = calibre_db.speaking_language()
     else:
         languages = calibre_db.session.query(db.Languages).filter(

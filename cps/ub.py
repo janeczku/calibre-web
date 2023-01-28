@@ -263,7 +263,7 @@ class OAuthProvider(Base):
     active = Column(Boolean)
 
 
-# Class for anonymous user is derived from User base and completly overrides methods and properties for the
+# Class for anonymous user is derived from User base and completely overrides methods and properties for the
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
     def __init__(self):
@@ -492,7 +492,7 @@ class Registration(Base):
     allow = Column(Integer)
 
     def __repr__(self):
-        return u"<Registration('{0}')>".format(self.domain)
+        return "<Registration('{0}')>".format(self.domain)
 
 
 class RemoteAuthToken(Base):
@@ -769,7 +769,7 @@ def update_download(book_id, user_id):
             session.rollback()
 
 
-# Delete non exisiting downloaded books in calibre-web's own database
+# Delete non existing downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     try:
@@ -796,6 +796,7 @@ def create_anonymous_user(_session):
 def create_admin_user(_session):
     user = User()
     user.name = "admin"
+    user.email = "admin@example.org"
     user.role = constants.ADMIN_USER_ROLES
     user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
@@ -809,7 +810,7 @@ def create_admin_user(_session):
 
 def init_db_thread():
     global app_DB_path
-    engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+    engine = create_engine('sqlite:///{0}'.format(app_DB_path), echo=False)
 
     Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
@@ -822,7 +823,7 @@ def init_db(app_db_path, user_credentials=None):
     global app_DB_path
 
     app_DB_path = app_db_path
-    engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
+    engine = create_engine('sqlite:///{0}'.format(app_db_path), echo=False)
 
     Session = scoped_session(sessionmaker())
     Session.configure(bind=engine)
@@ -857,7 +858,7 @@ def init_db(app_db_path, user_credentials=None):
 
 
 def get_new_session_instance():
-    new_engine = create_engine(u'sqlite:///{0}'.format(app_DB_path), echo=False)
+    new_engine = create_engine('sqlite:///{0}'.format(app_DB_path), echo=False)
     new_session = scoped_session(sessionmaker())
     new_session.configure(bind=new_engine)
 
