@@ -1309,7 +1309,7 @@ def login():
 
 @web.route('/login', methods=['POST'])
 @limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
-@limiter.limit("2/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
 def login_post():
     try:
         limiter.check()
