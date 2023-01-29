@@ -22,6 +22,7 @@ import errno
 import signal
 import socket
 import subprocess  # nosec
+from .services.background_scheduler import BackgroundScheduler
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -265,6 +266,12 @@ class WebServer(object):
         subprocess.call(args, close_fds=True)  # nosec
         return True
 
+    @staticmethod
+    def shutdown_scheduler():
+        scheduler = BackgroundScheduler()
+        if scheduler:
+            scheduler.scheduler.shutdown()
+
     def _killServer(self, __, ___):
         self.stop()
 
@@ -273,6 +280,7 @@ class WebServer(object):
         updater_thread.stop()
 
         log.info("webserver stop (restart=%s)", restart)
+        self.shutdown_scheduler()
         self.restart = restart
         if self.wsgiserver:
             if _GEVENT:

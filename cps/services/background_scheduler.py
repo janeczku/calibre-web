@@ -45,8 +45,6 @@ class BackgroundScheduler:
             cls.scheduler = BScheduler()
             cls.scheduler.start()
 
-            atexit.register(lambda: cls.scheduler.shutdown())
-
         return cls._instance
 
     def schedule(self, func, trigger, name=None):
