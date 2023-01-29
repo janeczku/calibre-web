@@ -164,6 +164,7 @@ def requires_kobo_auth(f):
             )
             if user is not None:
                 login_user(user)
+                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
                 return f(*args, **kwargs)
             log.debug("Received Kobo request without a recognizable auth token.")
             return abort(401)

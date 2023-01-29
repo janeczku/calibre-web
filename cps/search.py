@@ -17,12 +17,12 @@
 import json
 from datetime import datetime
 
-from flask import Blueprint, request, redirect, url_for, flash, get_flashed_messages
+from flask import Blueprint, request, redirect, url_for, flash
 from flask import session as flask_session
 from flask_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
-from sqlalchemy.sql.expression import func, not_, and_, or_, text, false
+from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
 from . import logger, db, calibre_db, config, ub
