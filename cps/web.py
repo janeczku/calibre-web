@@ -1285,7 +1285,7 @@ def handle_login_user(user, remember, message, category):
     return redirect_back(url_for("web.index"))
 
 
-def render_login():
+def render_login(username="", password=""):
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
@@ -1293,6 +1293,8 @@ def render_login():
                                  title=_("Login"),
                                  next_url=next_url,
                                  config=config,
+                                 username=username,
+                                 password=password,
                                  oauth_check=oauth_check,
                                  mail=config.get_mail_server_configured(), page="login")
 
@@ -1373,7 +1375,7 @@ def login_post():
             else:
                 log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
                 flash(_(u"Wrong Username or Password"), category="error")
-    return render_login()
+    return render_login(form.get("username", ""), form.get("password", ""))
 
 
 @web.route('/logout')
