@@ -22,16 +22,16 @@
 
 import datetime
 from urllib.parse import unquote_plus
-from functools import wraps
 
-from flask import Blueprint, request, render_template, Response, g, make_response, abort
+
+from flask import Blueprint, request, render_template, g, make_response, abort
 from flask_login import current_user
 from flask_babel import get_locale
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
-from werkzeug.security import check_password_hash
 
-from . import constants, logger, config, db, calibre_db, ub, services, isoLanguages
+from . import logger, config, db, calibre_db, ub, isoLanguages
+from .usermanagement import requires_basic_auth_if_no_ano
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
@@ -41,19 +41,6 @@ from flask_babel import gettext as _
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
-
-
-def requires_basic_auth_if_no_ano(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if config.config_anonbrowse != 1:
-            if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
-                return authenticate()
-        return f(*args, **kwargs)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and config.config_anonbrowse != 1:
-        return services.ldap.basic_auth_required(f)
-    return decorated
 
 
 @opds.route("/opds/")
@@ -477,27 +464,6 @@ def feed_search(term):
     else:
         return render_xml_template('feed.xml', searchterm="")
 
-
-def check_auth(username, password):
-    try:
-        username = username.encode('windows-1252')
-    except UnicodeEncodeError:
-        username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
-                                            username.decode('utf-8').lower()).first()
-    if bool(user and check_password_hash(str(user.password), password)):
-        return True
-    else:
-        ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ip_address)
-        return False
-
-
-def authenticate():
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 
 def render_xml_template(*args, **kwargs):
