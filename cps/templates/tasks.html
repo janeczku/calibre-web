@@ -27,7 +27,7 @@
 </div>
 {% endblock %}
 {% block modal %}
-{{ delete_book() }}
+{{ delete_book(current_user.role_delete_books()) }}
 {% if current_user.role_admin() %}
 <div class="modal fade" id="cancelTaskModal" role="dialog" aria-labelledby="metaCancelTaskLabel">
   <div class="modal-dialog">
