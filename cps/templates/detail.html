@@ -11,7 +11,7 @@
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
-          {% if g.user.role_download() %}
+          {% if current_user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
@@ -37,7 +37,7 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and entry.email_share_list %}
+            {% if current_user.kindle_mail and entry.email_share_list %}
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               {% if entry.email_share_list.__len__() == 1 %}
                 <div id="sendbtn" data-action="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}" data-text="{{_('Send to eReader')}}" class="btn btn-primary postAction" role="button"><span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}</div>
@@ -55,7 +55,7 @@
                 </div>
               {% endif %}
             {% endif %}
-          {% if entry.reader_list and g.user.role_viewer() %}
+          {% if entry.reader_list and current_user.role_viewer() %}
               <div class="btn-group" role="group">
               {% if entry.reader_list|length > 1 %}
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,7 +72,7 @@
                 {% endif %}
               </div>
             {% endif %}
-            {% if entry.audio_entries|length > 0 and g.user.role_viewer() %}
+            {% if entry.audio_entries|length > 0 and current_user.role_viewer() %}
               <div class="btn-group" role="group">
               {% if entry.audio_entries|length > 1 %}
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -213,7 +213,7 @@
         </div>
         {% endfor %}
       {% endif %}
-      {% if not g.user.is_anonymous %}
+      {% if not current_user.is_anonymous %}
 
         <div class="custom_columns">
           <p>
@@ -225,7 +225,7 @@
             </label>
           </form>
           </p>
-          {% if g.user.check_visibility(32768) %}
+          {% if current_user.check_visibility(32768) %}
           <p>
             <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -250,8 +250,8 @@
 
       <div class="more-stuff">
 
-      {% if g.user.is_authenticated %}
-      {% if g.user.shelf.all() or g.shelves_access %}
+      {% if current_user.is_authenticated %}
+      {% if current_user.shelf.all() or g.shelves_access %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
           <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -260,7 +260,7 @@
           </button>
           <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
             {% for shelf in g.shelves_access %}
-              {% if not shelf.id in books_shelfs and ( not shelf.is_public or g.user.role_edit_shelfs() ) %}
+              {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
                 <li>
                   <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
@@ -281,7 +281,7 @@
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
                 >
-                  <span {% if not shelf.is_public or g.user.role_edit_shelfs() %}
+                  <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
                         class="glyphicon glyphicon-remove"
                         {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                 </a>
@@ -294,7 +294,7 @@
       {% endif %}
 
       {% endif %}
-      {% if g.user.role_edit() %}
+      {% if current_user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
           <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}" class="btn btn-sm btn-primary" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>

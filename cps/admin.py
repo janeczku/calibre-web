@@ -109,7 +109,7 @@ def before_request():
     #    log.info("before logout {}".format(request.path))
     #    logout_user()
     g.constants = constants
-    g.user = current_user
+    # g.user = current_user
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
