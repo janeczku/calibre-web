@@ -33,7 +33,7 @@ from datetime import time as datetime_time
 from functools import wraps
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
-from flask_login import login_required, current_user, logout_user, confirm_login
+from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
 from flask import session as flask_session

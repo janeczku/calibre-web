@@ -23,10 +23,10 @@
 import datetime
 from urllib.parse import unquote_plus
 
-
-from flask import Blueprint, request, render_template, g, make_response, abort
+from flask import Blueprint, request, render_template, make_response, abort
 from flask_login import current_user
 from flask_babel import get_locale
+from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 
@@ -35,8 +35,7 @@ from .usermanagement import requires_basic_auth_if_no_ano
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
-from .usermanagement import load_user_from_request
-from flask_babel import gettext as _
+
 
 opds = Blueprint('opds', __name__)
 
@@ -342,7 +341,8 @@ def feed_languages(book_id):
 @requires_basic_auth_if_no_ano
 def feed_shelfindex():
     off = request.args.get("offset") or 0
-    shelf = g.shelves_access
+    shelf = ub.session.query(ub.Shelf).filter(
+        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     number = len(shelf)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
@@ -389,11 +389,7 @@ def feed_shelf(book_id):
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 def opds_download_link(book_id, book_format):
-    # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
-    # workaround, loading the user from the request and checking its download rights here
-    # in case of anonymous browsing user is None
-    user = load_user_from_request(request) or current_user
-    if not user.role_download():
+    if not current_user.role_download():
         return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
