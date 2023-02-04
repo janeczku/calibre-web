@@ -80,7 +80,7 @@
     </div>
     <button id="domain_allow_submit" class="btn btn-default">{{_('Add')}}</button>
     </form>
-  <table class="table table-no-bordered" id="domain-allow-table" data-url="{{url_for('admin.list_domain', allow=1)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline" data-locale="{{ g.user.locale }}">
+  <table class="table table-no-bordered" id="domain-allow-table" data-url="{{url_for('admin.list_domain', allow=1)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline" data-locale="{{ current_user.locale }}">
     <thead>
     <tr>
       <th data-field="domain" id="domain-allow" data-escape="true" data-editable-type="text" data-editable-url="{{ url_for('admin.edit_domain', allow = 1)}}" data-editable="true" data-editable-title="{{_('Enter domainname')}}"></th>
@@ -90,7 +90,7 @@
     </thead>
   </table>
   <h2>{{_('Denied Domains (Blacklist)')}}</h2>
-    <table class="table table-no-bordered" id="domain-deny-table" data-url="{{url_for('admin.list_domain', allow=0)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline" data-locale="{{ g.user.locale }}">
+    <table class="table table-no-bordered" id="domain-deny-table" data-url="{{url_for('admin.list_domain', allow=0)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline" data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
             <th data-field="domain" id="domain-deny" data-escape="true" data-editable-type="text" data-editable-url="{{ url_for('admin.edit_domain', allow = 0)}}" data-editable="true" data-editable-title="{{_('Enter domainname')}}"></th>

@@ -7,8 +7,8 @@
       <p>{{_('Search Term:')}} {{adv_searchterm}}</p>
     {% else %}
       <h2>{{result_count}} {{_('Results for:')}} {{adv_searchterm}}</h2>
-      {% if g.user.is_authenticated %}
-        {% if g.user.shelf.all() or g.shelves_access %}
+      {% if current_user.is_authenticated %}
+        {% if current_user.shelf.all() or g.shelves_access %}
           <div id="shelf-actions" class="btn-toolbar" role="toolbar">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="btn-group" role="group" aria-label="Add to shelves">
@@ -18,7 +18,7 @@
               </button>
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.shelves_access %}
-                  {% if not shelf.is_public or g.user.role_edit_shelfs() %}
+                  {% if not shelf.is_public or current_user.role_edit_shelfs() %}
                     <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                   {% endif %}
                 {%endfor%}
