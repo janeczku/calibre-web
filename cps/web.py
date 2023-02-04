@@ -24,7 +24,7 @@ import mimetypes
 import chardet  # dependency of requests
 import copy
 
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, g
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
@@ -79,7 +79,7 @@ except ImportError:
 
 
 @app.after_request
-def add_security_headers(resp):
+def add_security_headers_and_shelves(resp):
     csp = "default-src 'self'"
     csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
     csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self'"
@@ -98,6 +98,9 @@ def add_security_headers(resp):
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
     resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
+
+    g.shelves_access = ub.session.query(ub.Shelf).filter(
+        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     return resp
 
 
