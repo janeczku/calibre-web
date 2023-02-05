@@ -171,7 +171,7 @@ See https://github.com/adobe-type-tools/cmap-resources
               <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
             </button>
 
-{% if  g.user.role_download() %}
+{% if  current_user.role_download() %}
             <button id="secondaryPrint" class="secondaryToolbarButton visibleMediumView" title="Print" tabindex="53" data-l10n-id="print">
               <span data-l10n-id="print_label">Print</span>
             </button>
@@ -280,7 +280,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
 
-{% if  g.user.role_download() %}
+{% if  current_user.role_download() %}
                 <button id="print" class="toolbarButton hiddenMediumView" title="Print" tabindex="33" data-l10n-id="print">
                   <span data-l10n-id="print_label">Print</span>
                 </button>

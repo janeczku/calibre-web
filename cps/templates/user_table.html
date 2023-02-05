@@ -125,7 +125,7 @@
         </div>
     </div>
     <table id="user-table" class="table table-no-bordered table-striped"
-           data-url="{{url_for('admin.list_users')}}"  data-locale="{{ g.user.locale }}">
+           data-url="{{url_for('admin.list_users')}}"  data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
             <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
@@ -185,8 +185,8 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
-{% if not g.user.locale == 'en' %}
-<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% if not current_user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

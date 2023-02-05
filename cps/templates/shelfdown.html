@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ g.user.locale }}">
+<html lang="{{ current_user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
       </div>
 
 	  <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
-          {% if g.user.role_download() %}
+          {% if current_user.role_download() %}
             {% if entry.Books.data|length %}
             <div class="btn-group" role="group">
                 {% for format in entry.Books.data %}

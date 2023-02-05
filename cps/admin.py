@@ -33,7 +33,7 @@ from datetime import time as datetime_time
 from functools import wraps
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
-from flask_login import login_required, current_user, logout_user, confirm_login
+from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
 from flask import session as flask_session
@@ -101,21 +101,16 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    # make remember me function work
-    if current_user.is_authenticated:
-        confirm_login()
     if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
         logout_user()
     g.constants = constants
-    g.user = current_user
+    # g.user = current_user
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    g.shelves_access = ub.session.query(ub.Shelf).filter(
-        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if '/static/' not in request.path and not config.db_configured and \
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',

@@ -140,6 +140,7 @@ table .bg-dark-danger a { color: #fff; }
 
 .container-fluid .book {
   margin-top: 20px;
+  max-width: 180px;
   display: flex;
   flex-direction: column;
 }

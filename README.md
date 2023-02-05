@@ -52,7 +52,8 @@ In the Wiki there are also examples for: a [manual installation](https://github.
 
 Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog \
 Login with default admin login \
-Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button \
+If you don't have a Calibre database already, this [database](https://github.com/janeczku/calibre-web/blob/master/library/metadata.db) can be used. **IMPORTATNT** Please move the database out of the calibre-web folder structure, as it will be overwritten during update. \
+Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button. \
 Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/G-Drive-Setup#using-google-drive-integration) \
 Afterwards you can configure your Calibre-Web instance ([Basic Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#ui-configuration) on admin page)  
 

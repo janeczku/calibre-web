@@ -5,10 +5,10 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks')}}</h2>
-    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ g.user.locale }}">
+    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
-            {% if g.user.role_admin() %}
+            {% if current_user.role_admin() %}
             <th data-halign="right" data-align="right" data-field="user" data-sortable="true">{{_('User')}}</th>
             {% endif %}
             <th data-halign="right" data-align="right" data-field="taskMessage" data-sortable="true">{{_('Task')}}</th>
@@ -16,7 +16,7 @@
             <th data-halign="right" data-align="right" data-field="progress" data-sortable="true" data-sorter="elementSorter">{{_('Progress')}}</th>
             <th data-halign="right" data-align="right" data-field="runtime" data-sortable="true" data-sort-name="rt">{{_('Run Time')}}</th>
             <th data-halign="right" data-align="right" data-field="starttime" data-sortable="true" data-sort-name="id">{{_('Start Time')}}</th>
-            {% if g.user.role_admin() %}
+            {% if current_user.role_admin() %}
             <th data-halign="right" data-align="right" data-formatter="TaskActions" data-switchable="false">{{_('Actions')}}</th>
             {% endif %}
             <th data-field="id" data-visible="false"></th>
@@ -27,8 +27,8 @@
 </div>
 {% endblock %}
 {% block modal %}
-{{ delete_book() }}
-{% if g.user.role_admin() %}
+{{ delete_book(current_user.role_delete_books()) }}
+{% if current_user.role_admin() %}
 <div class="modal fade" id="cancelTaskModal" role="dialog" aria-labelledby="metaCancelTaskLabel">
   <div class="modal-dialog">
     <div class="modal-content">
