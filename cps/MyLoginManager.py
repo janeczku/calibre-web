@@ -46,6 +46,7 @@ class MyLoginManager(LoginManager):
             if user is not None:
                 app = current_app._get_current_object()
                 user_loaded_from_cookie.send(app, user=user)
+                # if session was restored from remember me cookie make login valid
                 confirm_login()
                 return user
         return None
