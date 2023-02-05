@@ -364,12 +364,6 @@ $(function() {
         layoutMode : "fitRows"
     });
 
-    $(".grid").isotope({
-        // options
-        itemSelector : ".grid-item",
-        layoutMode : "fitColumns"
-    });
-
     if ($(".load-more").length && $(".next").length) {
         var $loadMore = $(".load-more .row").infiniteScroll({
             debug: false,

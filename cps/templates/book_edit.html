@@ -6,7 +6,7 @@
         <!-- Always use full-sized image for the book edit page -->
         <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
     </div>
-{% if g.user.role_delete_books() %}
+{% if current_user.role_delete_books() %}
     <div class="text-center">
       <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
@@ -99,7 +99,7 @@
       <label for="rating">{{_('Rating')}}</label>
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
-    {% if g.user.role_upload() and g.allow_upload %}
+    {% if current_user.role_upload() and g.allow_upload %}
     <div class="form-group">
       <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
@@ -196,7 +196,7 @@
           </div>
         {% endfor %}
       {% endif %}
-      {% if g.user.role_upload() and g.allow_upload %}
+      {% if current_user.role_upload() and g.allow_upload %}
           <div role="group" aria-label="Upload new book format">
             <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
             <div class="upload-format-input-text" id="upload-format"></div>
@@ -219,7 +219,7 @@
 {% endblock %}
 
 {% block modal %}
-{{ delete_book() }}
+{{ delete_book(current_user.role_delete_books()) }}
 {{ delete_confirm_modal() }}
 
 <div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
@@ -291,7 +291,7 @@
     'description': {{_('Description')|safe|tojson}},
     'source': {{_('Source')|safe|tojson}},
   };
-  var language = '{{ g.user.locale }}';
+  var language = '{{ current_user.locale }}';
 
   $("#add-identifier-line").click(function() {
     // create a random identifier type to have a valid name in form. This will not be used when dealing with the form
@@ -313,8 +313,8 @@
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/tinymce/tinymce.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-{% if not g.user.locale == 'en' %}
-<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% if not current_user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>

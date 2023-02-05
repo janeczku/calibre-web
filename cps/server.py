@@ -269,7 +269,7 @@ class WebServer(object):
     @staticmethod
     def shutdown_scheduler():
         scheduler = BackgroundScheduler()
-        if scheduler: # and not scheduler.scheduler.STATE_STOPPED:
+        if scheduler:
             scheduler.scheduler.shutdown()
 
     def _killServer(self, __, ___):

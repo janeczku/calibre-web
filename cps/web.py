@@ -31,6 +31,7 @@ from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_limiter import RateLimitExceeded
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
@@ -56,7 +57,8 @@ from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 from .kobo_sync_status import change_archived_books
 from . import limiter
-from flask_limiter import RateLimitExceeded
+from .services.worker import WorkerThread
+from .tasks_status import render_task_status
 
 
 feature_support = {
@@ -394,7 +396,7 @@ def render_books_list(data, sort_param, book_id, page):
     elif data == "archived":
         return render_archived_books(page, order)
     elif data == "search":
-        term = (request.args.get('query') or '')
+        term = json.loads(flask_session.get('query', ''))
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_search_results(term, offset, order, config.config_books_per_page)
     elif data == "advsearch":

@@ -5,7 +5,7 @@
   <form role="form" method="POST" autocomplete="off">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-md-10 col-lg-8">
-    {% if new_user or ( g.user and content.name != "Guest" and g.user.role_admin() ) %}
+    {% if new_user or ( current_user and content.name != "Guest" and current_user.role_admin() ) %}
     <div class="form-group required">
       <label for="name">{{_('Username')}}</label>
       <input type="text" class="form-control" name="name" id="name" value="{{ content.name if content.name != None }}" autocomplete="off">
@@ -15,8 +15,8 @@
       <label for="email">{{_('Email')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
-    {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-      {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
+    {% if ( current_user and current_user.role_passwd() or current_user.role_admin() ) and not content.role_anonymous() %}
+      {% if current_user and current_user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
         <a class="btn btn-default postAction" id="resend_password" role="button" data-action="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
       {% endif %}
         <div class="form-group">
@@ -83,13 +83,13 @@
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
-      {% if ( g.user and g.user.role_admin() and not new_user ) and not simple %}
+      {% if ( current_user and current_user.role_admin() and not new_user ) and not simple %}
       <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
       <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
       {% endif %}
     </div>
       <div class="col-sm-6">
-    {% if g.user and g.user.role_admin() and not profile %}
+    {% if current_user and current_user.role_admin() and not profile %}
     {% if not content.role_anonymous() %}
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
@@ -143,7 +143,7 @@
       {% if not profile %}
         <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Cancel')}}</div>
       {% endif %}
-      {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
+      {% if current_user and current_user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
         <div class="btn btn-danger" id="btndeluser" data-value="{{ content.id }}" data-remote="false" >{{_('Delete User')}}</div>
       {% endif %}
     </div>
