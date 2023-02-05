@@ -161,106 +161,10 @@ class _Settings(_Base):
     config_password_upper = Column(Boolean, default=True)
     config_password_special = Column(Boolean, default=True)
     config_session = Column(Integer, default=1)
+    config_ratelimiter = Column(Boolean, default=True)
 
     def __repr__(self):
         return self.__class__.__name__
-
-
-class MailConfigSQL(object):
-
-    def __init__(self):
-        self.__dict__["dirty"] = list()
-
-    def init_config(self, session, secret_key):
-        self._session = session
-        self._settings = None
-        self._fernet = Fernet(secret_key)
-        self.load()
-
-    def _read_from_storage(self):
-        if self._settings is None:
-            log.debug("_MailConfigSQL._read_from_storage")
-            self._settings = self._session.query(_Mail_Settings).first()
-        return self._settings
-
-    def to_dict(self):
-        storage = {}
-        for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret") and not k == "cli":
-                storage[k] = v
-        return storage
-
-    def load(self):
-        """Load all configuration values from the underlying storage."""
-        s = self._read_from_storage()  # type: _Settings
-        for k, v in s.__dict__.items():
-            if k[0] != '_':
-                if v is None:
-                    # if the storage column has no value, apply the (possible) default
-                    column = s.__class__.__dict__.get(k)
-                    if column.default is not None:
-                        v = column.default.arg
-                if k.endswith("enc") and v is not None:
-                    try:
-                        setattr(s, k, self._fernet.decrypt(v).decode())
-                    except cryptography.exceptions.InvalidKey:
-                        setattr(s, k, None)
-                else:
-                    setattr(self, k, v)
-        self.__dict__["dirty"] = list()
-
-    def save(self):
-        """Apply all configuration values to the underlying storage."""
-        s = self._read_from_storage()  # type: _Settings
-        for k in self.dirty:
-            if k[0] == '_':
-                continue
-            if hasattr(s, k):
-                if k.endswith("enc"):
-                    setattr(s, k, self._fernet.encrypt(self.__dict__[k].encode()))
-                else:
-                    setattr(s, k, self.__dict__[k])
-
-        log.debug("_MailConfigSQL updating storage")
-        self._session.merge(s)
-        try:
-            self._session.commit()
-        except OperationalError as e:
-            log.error('Database error: %s', e)
-            self._session.rollback()
-        self.load()
-
-
-    def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
-        """Possibly updates a field of this object.
-        The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
-
-        :returns: `True` if the field has changed value
-        """
-        new_value = dictionary.get(field, default)
-        if new_value is None:
-            return False
-
-        if field not in self.__dict__:
-            log.warning("_ConfigSQL trying to set unknown field '%s' = %r", field, new_value)
-            return False
-
-        if convertor is not None:
-            if encode:
-                new_value = convertor(new_value.encode(encode))
-            else:
-                new_value = convertor(new_value)
-
-        current_value = self.__dict__.get(field)
-        if current_value == new_value:
-            return False
-
-        setattr(self, field, new_value)
-        return True
-
-    def __setattr__(self, attr_name, attr_value):
-        super().__setattr__(attr_name, attr_value)
-        self.__dict__["dirty"].append(attr_name)
 
 
 # Class holds all application specific settings in calibre-web

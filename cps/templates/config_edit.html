@@ -365,6 +365,10 @@
     <div id="collapsesix" class="panel-collapse collapse">
       <div class="panel-body">
             <div class="form-group">
+              <input type="checkbox" id="config_ratelimiter" name="config_ratelimiter" {% if config.config_ratelimiter %}checked{% endif %}>
+              <label for="config_ratelimiter">{{_('Limit failed login attempts')}}</label>
+            </div>
+            <div class="form-group">
               <label for="config_session">{{_('Session protection')}}</label>
                 <select name="config_session" id="config_session" class="form-control">
                   <option value="0" {% if config.config_session == 0 %}selected{% endif %}>{{_('Basic')}}</option>

@@ -22,7 +22,6 @@
 
 import os
 import re
-import base64
 import json
 import operator
 import time
@@ -104,7 +103,6 @@ def before_request():
     if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
         logout_user()
     g.constants = constants
-    # g.user = current_user
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
@@ -1802,6 +1800,7 @@ def _configuration_update_helper():
         _config_checkbox(to_save, "config_password_special")
         _config_int(to_save, "config_password_min_length")
         reboot_required |= _config_int(to_save, "config_session")
+        reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
