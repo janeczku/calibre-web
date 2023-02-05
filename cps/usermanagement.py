@@ -40,9 +40,11 @@ def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        print("opds_requires_basic_auth")
-        if (not auth or auth.type != 'basic'):
+        if not auth or auth.type != 'basic':
             if config.config_anonbrowse != 1:
+                user = load_user_from_reverse_proxy_header(request)
+                if user:
+                    return f(*args, **kwargs)
                 return _authenticate()
             else:
                 return f(*args, **kwargs)
@@ -86,14 +88,12 @@ def _fetch_user_by_name(username):
 
 @lm.user_loader
 def load_user(user_id):
-    print("load_user: {}".format(user_id))
     user = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     return user
 
 
 @lm.request_loader
-def load_user_from_request(req):
-    print("load_from_request")
+def load_user_from_reverse_proxy_header(req):
     if config.config_allow_reverse_proxy_header_login:
         rp_header_name = config.config_reverse_proxy_login_header_name
         if rp_header_name:

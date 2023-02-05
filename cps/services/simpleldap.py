@@ -89,7 +89,6 @@ def get_object_details(user=None,query_filter=None):
 
 
 def bind():
-    print("bind")
     return _ldap.bind()
 
 

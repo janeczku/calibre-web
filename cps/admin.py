@@ -101,13 +101,8 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    # make remember me function work
-    #if current_user.is_authenticated:
-    #    print("before request confirm request {}".format(request.path))
-    #    confirm_login()
-    #if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
-    #    log.info("before logout {}".format(request.path))
-    #    logout_user()
+    if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
+        logout_user()
     g.constants = constants
     # g.user = current_user
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
