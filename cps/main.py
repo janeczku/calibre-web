@@ -62,7 +62,7 @@ def main():
     app.register_blueprint(tasks)
     app.register_blueprint(web)
     app.register_blueprint(opds)
-    limiter.limit("10/minute",key_func=request_username)(opds)
+    limiter.limit("3/minute",key_func=request_username)(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
     app.register_blueprint(shelf)
@@ -74,7 +74,7 @@ def main():
     if kobo_available:
         app.register_blueprint(kobo)
         app.register_blueprint(kobo_auth)
-        limiter.limit("10/minute", key_func=get_remote_address)(kobo)
+        limiter.limit("3/minute", key_func=get_remote_address)(kobo)
     if oauth_available:
         app.register_blueprint(oauth)
     success = web_server.start()

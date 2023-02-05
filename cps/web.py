@@ -1315,17 +1315,17 @@ def login():
 @limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
 @limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
 def login_post():
+    form = request.form.to_dict()
     try:
         limiter.check()
     except RateLimitExceeded:
-        flash(_(u"Wait one minute"), category="error")
-        return render_login()
+        flash(_(u"Please wait one minute before next login"), category="error")
+        return render_login(form.get("username", ""), form.get("password", ""))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
         log.error(u"Cannot activate LDAP authentication")
         flash(_(u"Cannot activate LDAP authentication"), category="error")
-    form = request.form.to_dict()
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
         .first()
     remember_me = bool(form.get('remember_me'))

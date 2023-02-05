@@ -23,7 +23,7 @@ from werkzeug.security import check_password_hash
 from flask_login import login_required, login_user
 from flask import request, Response
 
-from . import lm, ub, config, constants, services, logger
+from . import lm, ub, config, constants, services, logger, limiter
 
 log = logger.create()
 
@@ -65,8 +65,9 @@ def requires_basic_auth_if_no_ano(f):
 
 
 def _load_user_from_auth_header(username, password):
+    limiter.check()
     user = _fetch_user_by_name(username)
-    if bool(user and check_password_hash(str(user.password), password)):
+    if bool(user and check_password_hash(str(user.password), password)) and user.name != "Guest":
         login_user(user)
         return user
     else:
