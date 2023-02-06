@@ -49,15 +49,15 @@ def requires_basic_auth_if_no_ano(f):
             else:
                 return f(*args, **kwargs)
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
-            result, error = services.ldap.bind_user(auth.username, auth.password)
-            if result:
+            login_result, error = services.ldap.bind_user(auth.username, auth.password)
+            if login_result:
                 user = _fetch_user_by_name(auth.username)
                 login_user(user)
-            else:
+                return f(*args, **kwargs)
+            elif login_result is not None:
                 log.error(error)
-                user = None
-        else:
-            user = _load_user_from_auth_header(auth.username, auth.password)
+                return _authenticate()
+        user = _load_user_from_auth_header(auth.username, auth.password)
         if not user:
             return _authenticate()
         return f(*args, **kwargs)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-02-05 08:49+0100\n"
+"POT-Creation-Date: 2023-02-06 19:00+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -23,12 +23,10 @@ msgid "Statistics"
 msgstr "统计"
 
 #: cps/admin.py:143
-#, fuzzy
 msgid "Server restarted, please reload page."
 msgstr "服务器已重启，请刷新页面"
 
 #: cps/admin.py:145
-#, fuzzy
 msgid "Performing Server shutdown, please close window."
 msgstr "正在关闭服务器，请关闭窗口"
 
@@ -41,7 +39,6 @@ msgid "Unknown command"
 msgstr "未知命令"
 
 #: cps/admin.py:167
-#, fuzzy
 msgid "Success! Books queued for Metadata Backup"
 msgstr "书籍成功加入元数据备份队列"
 
@@ -346,12 +343,11 @@ msgid "Edit User %(nick)s"
 msgstr "编辑用户 %(nick)s"
 
 #: cps/admin.py:1423
-#, fuzzy, python-format
+#, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
 #: cps/admin.py:1429
-#, fuzzy
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr "请先配置 SMTP 邮箱设置..."
 
@@ -516,7 +512,7 @@ msgstr "未安装"
 msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
-#: cps/db.py:728 cps/search.py:137 cps/web.py:727
+#: cps/db.py:728 cps/search.py:138 cps/web.py:727
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
@@ -665,17 +661,14 @@ msgid "Send to eReader"
 msgstr "发送到电子阅读器"
 
 #: cps/helper.py:98 cps/helper.py:116 cps/helper.py:228
-#, fuzzy
 msgid "This Email has been sent via Calibre-Web."
 msgstr "此邮件已经通过 Calibre-Web 发送"
 
 #: cps/helper.py:114
-#, fuzzy
 msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web 测试邮件"
 
 #: cps/helper.py:115
-#, fuzzy
 msgid "Test Email"
 msgstr "测试邮件"
 
@@ -684,22 +677,22 @@ msgid "Get Started with Calibre-Web"
 msgstr "开启 Calibre-Web 之旅"
 
 #: cps/helper.py:137
-#, fuzzy, python-format
+#, python-format
 msgid "Registration Email for user: %(name)s"
 msgstr "用户注册电子邮件：%(name)s"
 
 #: cps/helper.py:148 cps/helper.py:154
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "转换 %(orig)s 到 %(format)s 并发送到电子阅读器"
 
 #: cps/helper.py:173 cps/helper.py:177 cps/helper.py:181 cps/helper.py:185
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to eReader"
 msgstr "发送 %(format)s 到电子阅读器"
 
 #: cps/helper.py:225
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to eReader"
 msgstr "%(book)s 发送到电子阅读器"
 
@@ -759,7 +752,6 @@ msgid "This username is already taken"
 msgstr "此用户名已被使用"
 
 #: cps/helper.py:664
-#, fuzzy
 msgid "Invalid Email address format"
 msgstr "无效的邮箱格式"
 
@@ -893,8 +885,8 @@ msgstr "Google Oauth 错误: {}"
 msgid "{} Stars"
 msgstr "{} 星"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:67
-#: cps/templates/layout.html:101 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:68
+#: cps/templates/layout.html:102 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1344
 msgid "Login"
 msgstr "登录"
@@ -950,7 +942,6 @@ msgid "Read Books"
 msgstr "已读书籍"
 
 #: cps/render_template.py:64
-#, fuzzy
 msgid "Show Read and Unread"
 msgstr "显示已读或未读状态"
 
@@ -978,7 +969,6 @@ msgid "Categories"
 msgstr "分类"
 
 #: cps/render_template.py:74 cps/templates/user_table.html:158
-#, fuzzy
 msgid "Show Category Section"
 msgstr "显示分类栏目"
 
@@ -989,7 +979,6 @@ msgid "Series"
 msgstr "丛书"
 
 #: cps/render_template.py:77 cps/templates/user_table.html:157
-#, fuzzy
 msgid "Show Series Section"
 msgstr "显示丛书栏目"
 
@@ -999,7 +988,6 @@ msgid "Authors"
 msgstr "作者"
 
 #: cps/render_template.py:80 cps/templates/user_table.html:160
-#, fuzzy
 msgid "Show Author Section"
 msgstr "显示作者栏目"
 
@@ -1009,7 +997,6 @@ msgid "Publishers"
 msgstr "出版社"
 
 #: cps/render_template.py:84 cps/templates/user_table.html:163
-#, fuzzy
 msgid "Show Publisher Section"
 msgstr "显示出版社栏目"
 
@@ -1020,7 +1007,6 @@ msgid "Languages"
 msgstr "语言"
 
 #: cps/render_template.py:88 cps/templates/user_table.html:155
-#, fuzzy
 msgid "Show Language Section"
 msgstr "显示语言栏目"
 
@@ -1029,7 +1015,6 @@ msgid "Ratings"
 msgstr "评分"
 
 #: cps/render_template.py:91 cps/templates/user_table.html:164
-#, fuzzy
 msgid "Show Ratings Section"
 msgstr "显示评分栏目"
 
@@ -1038,7 +1023,6 @@ msgid "File formats"
 msgstr "文件格式"
 
 #: cps/render_template.py:94 cps/templates/user_table.html:165
-#, fuzzy
 msgid "Show File Formats Section"
 msgstr "显示文件格式栏目"
 
@@ -1047,7 +1031,6 @@ msgid "Archived Books"
 msgstr "归档书籍"
 
 #: cps/render_template.py:98 cps/templates/user_table.html:166
-#, fuzzy
 msgid "Show Archived Books"
 msgstr "显示归档书籍"
 
@@ -1059,41 +1042,41 @@ msgstr "书籍列表"
 msgid "Show Books List"
 msgstr "显示书籍列表"
 
-#: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
+#: cps/search.py:49 cps/search.py:393 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:46 cps/templates/layout.html:49
+#: cps/templates/layout.html:47 cps/templates/layout.html:50
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "搜索"
 
-#: cps/search.py:188
+#: cps/search.py:189
 msgid "Published after "
 msgstr "出版时间晚于 "
 
-#: cps/search.py:195
+#: cps/search.py:196
 msgid "Published before "
 msgstr "出版时间早于 "
 
-#: cps/search.py:217
+#: cps/search.py:218
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "评分 <= %(rating)s"
 
-#: cps/search.py:219
+#: cps/search.py:220
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "评分 >= %(rating)s"
 
-#: cps/search.py:221
+#: cps/search.py:222
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr "阅读状态 = %(status)s"
 
-#: cps/search.py:323
+#: cps/search.py:324
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "搜索自定义栏目时出错，请重启 Calibre-Web"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
+#: cps/search.py:343 cps/search.py:375 cps/templates/layout.html:58
 msgid "Advanced Search"
 msgstr "高级搜索"
 
@@ -1143,7 +1126,7 @@ msgstr "此书已从书架 %(sname)s 中删除"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "抱歉，您没有从这个书架删除书籍的权限"
 
-#: cps/shelf.py:210 cps/templates/layout.html:157
+#: cps/shelf.py:210 cps/templates/layout.html:158
 msgid "Create a Shelf"
 msgstr "创建书架"
 
@@ -1205,7 +1188,7 @@ msgstr "书架：%(name)s"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:88
+#: cps/tasks_status.py:48 cps/templates/layout.html:89
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "任务列表"
@@ -1346,7 +1329,6 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
 #: cps/web.py:1213
-#, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "请先配置您的 Kindle 邮箱"
 
@@ -1354,7 +1336,7 @@ msgstr "请先配置您的 Kindle 邮箱"
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "邮件服务未配置，请联系网站管理员！"
 
-#: cps/templates/layout.html:68 cps/templates/layout.html:102
+#: cps/templates/layout.html:69 cps/templates/layout.html:103
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1231
 #: cps/web.py:1238 cps/web.py:1244 cps/web.py:1264 cps/web.py:1269
 #: cps/web.py:1275
@@ -1401,7 +1383,6 @@ msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
 #: cps/web.py:1416
-#, fuzzy
 msgid "Success! Profile Updated"
 msgstr "资料已更新"
 
@@ -1487,7 +1468,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr "正在清理封面缩略图缓存"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:81 cps/templates/user_table.html:145
+#: cps/templates/layout.html:82 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "上传书籍"
 
@@ -1510,7 +1491,7 @@ msgstr "邮箱地址"
 msgid "Send to eReader Email"
 msgstr "接收书籍的电子阅读器邮箱地址"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:91
+#: cps/templates/admin.html:17 cps/templates/layout.html:92
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "管理权限"
@@ -1576,7 +1557,6 @@ msgid "From Email"
 msgstr "发件人邮箱"
 
 #: cps/templates/admin.html:90
-#, fuzzy
 msgid "Email Service"
 msgstr "电子邮件服务"
 
@@ -1938,8 +1918,8 @@ msgstr "单击封面将元数据加载到表单"
 msgid "Loading..."
 msgstr "加载中..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
-#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:79
+#: cps/templates/layout.html:204 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "关闭"
@@ -2522,7 +2502,7 @@ msgid "Add to shelf"
 msgstr "添加到书架"
 
 #: cps/templates/detail.html:269 cps/templates/detail.html:286
-#: cps/templates/feed.xml:79 cps/templates/layout.html:154
+#: cps/templates/feed.xml:79 cps/templates/layout.html:155
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2537,12 +2517,10 @@ msgid "Email Account Type"
 msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:15
-#, fuzzy
 msgid "Standard Email Account"
 msgstr "标准电子邮件"
 
 #: cps/templates/email_edit.html:16
-#, fuzzy
 msgid "Gmail Account"
 msgstr "Gmail 账户"
 
@@ -2571,7 +2549,6 @@ msgid "Attachment Size Limit"
 msgstr "附件大小限制"
 
 #: cps/templates/email_edit.html:66
-#, fuzzy
 msgid "Save and Send Test Email"
 msgstr "保存设置并发送测试邮件"
 
@@ -2601,7 +2578,7 @@ msgstr "输入域名"
 msgid "Denied Domains (Blacklist)"
 msgstr "禁止注册的域名（黑名单）"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:21 cps/templates/layout.html:188
 msgid "Next"
 msgstr "下一个"
 
@@ -2719,7 +2696,7 @@ msgstr "书籍按评分排序"
 msgid "Books ordered by file formats"
 msgstr "书籍按文件格式排序"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:119 cps/templates/layout.html:153
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "书架列表"
@@ -2736,52 +2713,52 @@ msgstr "首页"
 msgid "Toggle Navigation"
 msgstr "切换导航"
 
-#: cps/templates/layout.html:47
+#: cps/templates/layout.html:48
 msgid "Search Library"
 msgstr "搜索书库"
 
-#: cps/templates/layout.html:65 cps/templates/layout.html:94
+#: cps/templates/layout.html:66 cps/templates/layout.html:95
 msgid "Account"
 msgstr "账号"
 
-#: cps/templates/layout.html:71 cps/templates/layout.html:96
+#: cps/templates/layout.html:72 cps/templates/layout.html:97
 msgid "Logout"
 msgstr "注销"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:134
+#: cps/templates/layout.html:79 cps/templates/layout.html:135
 msgid "Uploading..."
 msgstr "正在上传..."
 
-#: cps/templates/layout.html:78
+#: cps/templates/layout.html:79
 msgid "Error"
 msgstr "错误"
 
-#: cps/templates/layout.html:78
+#: cps/templates/layout.html:79
 msgid "Upload done, processing, please wait..."
 msgstr "上传完成，正在处理，请稍候..."
 
-#: cps/templates/layout.html:91 cps/templates/read.html:76
+#: cps/templates/layout.html:92 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "设置"
 
-#: cps/templates/layout.html:135
+#: cps/templates/layout.html:136
 msgid "Please do not refresh the page"
 msgstr "请不要刷新页面"
 
-#: cps/templates/layout.html:145
+#: cps/templates/layout.html:146
 msgid "Browse"
 msgstr "按条件浏览"
 
-#: cps/templates/layout.html:158 cps/templates/stats.html:3
+#: cps/templates/layout.html:159 cps/templates/stats.html:3
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:172
+#: cps/templates/layout.html:173
 msgid "Previous"
 msgstr "上一个"
 
-#: cps/templates/layout.html:199
+#: cps/templates/layout.html:200
 msgid "Book Details"
 msgstr "书籍详情"
 
@@ -3306,17 +3283,14 @@ msgid "Enter Username"
 msgstr "输入用户名"
 
 #: cps/templates/user_table.html:135
-#, fuzzy
 msgid "Enter Email"
 msgstr "输入邮箱"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter eReader Email"
 msgstr "接收书籍的电子阅读器邮箱"
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "eReader Email"
 msgstr "电子阅读器邮箱"
 
@@ -3377,7 +3351,6 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "同步所选书架到 Kobo"
 
 #: cps/templates/user_table.html:156
-#, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "显示已读、未读栏目"
 
