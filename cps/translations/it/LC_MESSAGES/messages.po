@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-02-05 08:49+0100\n"
+"POT-Creation-Date: 2023-02-06 19:00+0100\n"
 "PO-Revision-Date: 2023-02-04 20:25+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
@@ -512,7 +512,7 @@ msgstr "non installato"
 msgid "Execution permissions missing"
 msgstr "Mancano i permessi di esecuzione"
 
-#: cps/db.py:728 cps/search.py:137 cps/web.py:727
+#: cps/db.py:728 cps/search.py:138 cps/web.py:727
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "La colonna personalizzata no.%(column)d non esiste nel database di Calibre"
@@ -885,8 +885,8 @@ msgstr "Google, errore Oauth: {}"
 msgid "{} Stars"
 msgstr "{} Stelle"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:67
-#: cps/templates/layout.html:101 cps/templates/login.html:4
+#: cps/remotelogin.py:62 cps/templates/layout.html:68
+#: cps/templates/layout.html:102 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1344
 msgid "Login"
 msgstr "Accesso"
@@ -1042,41 +1042,41 @@ msgstr "Elenco libri"
 msgid "Show Books List"
 msgstr "Mostra l'elenco dei libri"
 
-#: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
+#: cps/search.py:49 cps/search.py:393 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
-#: cps/templates/layout.html:46 cps/templates/layout.html:49
+#: cps/templates/layout.html:47 cps/templates/layout.html:50
 #: cps/templates/search_form.html:226
 msgid "Search"
 msgstr "Cerca"
 
-#: cps/search.py:188
+#: cps/search.py:189
 msgid "Published after "
 msgstr "Pubblicato dopo il "
 
-#: cps/search.py:195
+#: cps/search.py:196
 msgid "Published before "
 msgstr "Pubblicato prima del "
 
-#: cps/search.py:217
+#: cps/search.py:218
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Valutazione <= %(rating)s"
 
-#: cps/search.py:219
+#: cps/search.py:220
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Valutazione >= %(rating)s"
 
-#: cps/search.py:221
+#: cps/search.py:222
 #, python-format
 msgid "Read Status = %(status)s"
 msgstr "Stato di lettura = %(status)s"
 
-#: cps/search.py:323
+#: cps/search.py:324
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "Errore di ricerca nelle colonne personalizzate. Per favore riavvia Calibre-Web"
 
-#: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
+#: cps/search.py:343 cps/search.py:375 cps/templates/layout.html:58
 msgid "Advanced Search"
 msgstr "Ricerca avanzata"
 
@@ -1126,7 +1126,7 @@ msgstr "Il libro è stato rimosso dallo scaffale: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "Spiacente, ma non sei autorizzato a rimuovere libri da questo scaffale"
 
-#: cps/shelf.py:210 cps/templates/layout.html:157
+#: cps/shelf.py:210 cps/templates/layout.html:158
 msgid "Create a Shelf"
 msgstr "Crea uno scaffale"
 
@@ -1188,7 +1188,7 @@ msgstr "Scaffale: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non è accessibile"
 
-#: cps/tasks_status.py:48 cps/templates/layout.html:88
+#: cps/tasks_status.py:48 cps/templates/layout.html:89
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "Attività"
@@ -1336,7 +1336,7 @@ msgstr "Per favore aggiorna il tuo profilo con un'e-mail eReader valida."
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Il server e-mail non è configurato, per favore contatta l'amministratore"
 
-#: cps/templates/layout.html:68 cps/templates/layout.html:102
+#: cps/templates/layout.html:69 cps/templates/layout.html:103
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1231
 #: cps/web.py:1238 cps/web.py:1244 cps/web.py:1264 cps/web.py:1269
 #: cps/web.py:1275
@@ -1468,7 +1468,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr "Cancellazione della cache delle miniature delle copertine"
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
-#: cps/templates/layout.html:81 cps/templates/user_table.html:145
+#: cps/templates/layout.html:82 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "Caricamento"
 
@@ -1491,7 +1491,7 @@ msgstr "E-mail"
 msgid "Send to eReader Email"
 msgstr "E-mail dell'eReader"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:91
+#: cps/templates/admin.html:17 cps/templates/layout.html:92
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "Amministratore"
@@ -1918,8 +1918,8 @@ msgstr "Fai clic sulla copertina per caricare i metadati nel modulo"
 msgid "Loading..."
 msgstr "Caricamento in corso..."
 
-#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
-#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:79
+#: cps/templates/layout.html:204 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Chiudi"
@@ -2502,7 +2502,7 @@ msgid "Add to shelf"
 msgstr "Aggiungi allo scaffale"
 
 #: cps/templates/detail.html:269 cps/templates/detail.html:286
-#: cps/templates/feed.xml:79 cps/templates/layout.html:154
+#: cps/templates/feed.xml:79 cps/templates/layout.html:155
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2578,7 +2578,7 @@ msgstr "Inserisci il nome del dominio"
 msgid "Denied Domains (Blacklist)"
 msgstr "Domini bloccati (lista nera)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:21 cps/templates/layout.html:188
 msgid "Next"
 msgstr "Prossimo"
 
@@ -2696,7 +2696,7 @@ msgstr "Libri ordinati per valutazione"
 msgid "Books ordered by file formats"
 msgstr "Libri ordinati per formato"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:119 cps/templates/layout.html:153
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "Scaffali"
@@ -2713,52 +2713,52 @@ msgstr "Home"
 msgid "Toggle Navigation"
 msgstr "Attiva/disattiva navigazione"
 
-#: cps/templates/layout.html:47
+#: cps/templates/layout.html:48
 msgid "Search Library"
 msgstr "Ricerca nella libreria"
 
-#: cps/templates/layout.html:65 cps/templates/layout.html:94
+#: cps/templates/layout.html:66 cps/templates/layout.html:95
 msgid "Account"
 msgstr "Account"
 
-#: cps/templates/layout.html:71 cps/templates/layout.html:96
+#: cps/templates/layout.html:72 cps/templates/layout.html:97
 msgid "Logout"
 msgstr "Disconnettersi"
 
-#: cps/templates/layout.html:78 cps/templates/layout.html:134
+#: cps/templates/layout.html:79 cps/templates/layout.html:135
 msgid "Uploading..."
 msgstr "Caricamento in corso..."
 
-#: cps/templates/layout.html:78
+#: cps/templates/layout.html:79
 msgid "Error"
 msgstr "Errore"
 
-#: cps/templates/layout.html:78
+#: cps/templates/layout.html:79
 msgid "Upload done, processing, please wait..."
 msgstr "Caricamento riuscito, elaborazione in corso, attendi per favore..."
 
-#: cps/templates/layout.html:91 cps/templates/read.html:76
+#: cps/templates/layout.html:92 cps/templates/read.html:76
 #: cps/templates/readcbr.html:87 cps/templates/readcbr.html:111
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: cps/templates/layout.html:135
+#: cps/templates/layout.html:136
 msgid "Please do not refresh the page"
 msgstr "Per favore non ricaricare la pagina"
 
-#: cps/templates/layout.html:145
+#: cps/templates/layout.html:146
 msgid "Browse"
 msgstr "Naviga"
 
-#: cps/templates/layout.html:158 cps/templates/stats.html:3
+#: cps/templates/layout.html:159 cps/templates/stats.html:3
 msgid "About"
 msgstr "Informazioni su"
 
-#: cps/templates/layout.html:172
+#: cps/templates/layout.html:173
 msgid "Previous"
 msgstr "Precedente"
 
-#: cps/templates/layout.html:199
+#: cps/templates/layout.html:200
 msgid "Book Details"
 msgstr "Dettagli del libro"
 
