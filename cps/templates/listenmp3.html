@@ -8,6 +8,9 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  {% if g.google_site_verification|length > 0 %}
+    <meta name="google-site-verification" content="{{g.google_site_verification}}">
+  {% endif %}  
 
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
@@ -25,6 +28,208 @@
 </head>
 
 <body>
+
+  <div class="row" style="display: inline-block; width: 100%;">
+    <div class="col-sm-3 col-lg-3 col-xs-5">
+      
+    </div>
+    <div class="col-sm-6 col-lg-6 book-meta" style="margin-bottom: 2%;">
+      <img id="detailcover" title="{{entry.title}}" src="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" style="float: right; margin-top: 20px"/>
+      <h2 id="title">{{entry.title}}</h2>
+      <p class="author">
+          {% for author in entry.ordered_authors %}
+            <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            {% if not loop.last %}
+              &amp;
+            {% endif %}
+          {% endfor %}
+        </p>
+      {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+        <p>
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star-empty"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </p>
+        </div>
+      {% endif %}
+      {% if entry.series|length > 0 %}
+          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index | formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
+
+      {% endif %}
+
+      {% if entry.languages.__len__() > 0 %}
+       <div class="languages">
+       <p>
+      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      </p>
+      </div>
+      {% endif %}
+
+      {% if entry.identifiers|length > 0 %}
+      <div class="identifiers">
+        <p>
+        <span class="glyphicon glyphicon-link"></span>
+        {% for identifier in entry.identifiers %}
+          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
+        {%endfor%}
+      </p>
+      </div>
+      {% endif %}
+
+      {% if entry.tags|length > 0 %}
+
+      <div class="tags">
+      <p>
+        <span class="glyphicon glyphicon-tags"></span>
+
+        {% for tag in entry.tags %}
+          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+        {%endfor%}
+      </p>
+
+      </div>
+      {% endif %}
+
+      {% if entry.publishers|length > 0 %}
+      <div class="publishers">
+        <p>
+          <span>{{_('Publisher')}}:
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='stored', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+          </span>
+        </p>
+      </div>
+      {% endif %}
+
+      {% if (entry.pubdate|string)[:10] != '0101-01-01' %}
+      <div class="publishing-date">
+        <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
+      </div>
+      {% endif %}
+      {% if cc|length > 0 %}
+
+
+        {% for c in cc %}
+        <div class="real_custom_columns">
+          {% if entry['custom_column_' ~ c.id]|length > 0 %}
+            {{ c.name }}:
+            {% for column in entry['custom_column_' ~ c.id] %}
+              {% if c.datatype == 'rating' %}
+                {{ (column.value / 2)|formatfloat }}
+              {% else %}
+                {% if c.datatype == 'bool' %}
+                  {% if column.value == true %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                  {% else %}
+                    <span class="glyphicon glyphicon-remove"></span>
+                  {% endif %}
+                {% else %}
+                {% if c.datatype == 'float' %}
+                  {{ column.value|formatfloat(2) }}
+                {% elif c.datatype == 'datetime' %}
+                  {{ column.value|formatdate }}
+                {% elif c.datatype == 'comments' %}
+                  {{column.value|safe}}
+                {% elif c.datatype == 'series' %}
+                  {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                {% elif c.datatype == 'text' %}
+                    {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                  {{ column.value }}
+                {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% endfor %}
+      {% endif %}
+      {% if not current_user.is_anonymous %}
+
+        <div class="custom_columns">
+          <p>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label class="block-label">
+              <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if entry.read_status %}checked{% endif %} disabled>
+              <span>{{_('Read')}}</span>
+            </label>
+          </p>
+          {% if current_user.check_visibility(32768) %}
+          <p>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <label class="block-label">
+                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if entry.is_archived %}checked{% endif %} disabled>
+                <span>{{_('Archived')}}</span>
+              </label>
+          </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+
+      {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
+        <div class="comments">
+            <h3 id="decription">{{_('Description:')}}</h3>
+            {{entry.comments[0].text|safe}}
+        </div>
+      {% endif %}
+
+
+      <div class="more-stuff">
+
+      {% if current_user.is_authenticated %}
+      {% if current_user.shelf.all() or g.shelves_access %}
+      <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="Add to shelves">
+          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+            <span class="caret"></span>
+          </button>
+          <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+            {% for shelf in g.shelves_access %}
+              {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
+                <li>
+                  <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-shelf-action="add"
+                  >
+                    {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
+                  </a>
+                </li>
+              {% endif %}
+            {%endfor%}
+          </ul>
+        </div>
+        <div id="remove-from-shelves" class="btn-group" role="group" aria-label="Remove from shelves">
+          {% if books_shelfs %}
+            {% for shelf in g.shelves_access %}
+              {% if shelf.id in books_shelfs %}
+                <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                >
+                  <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+                        class="glyphicon glyphicon-remove"
+                        {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
+                </a>
+              {% endif %}
+            {%endfor%}
+          {% endif %}
+        </div>
+        <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+      </div>
+      {% endif %}
+
+      {% endif %}
+      </div>
+
+    </div>
+  </div>
 
 <div class="sm2-bar-ui full-width fixed">
 
@@ -105,7 +310,7 @@
 
   <div class="sm2-playlist-wrapper">
     <ul class="sm2-playlist-bd">
-      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.authors %}{{author.name.replace('|',',')}}
+      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.ordered_authors %}{{author.name.replace('|',',')}}
         {% if not loop.last %} & {% endif %} {% endfor %}</b> - {{entry.title}}</a></li>
     </ul>
   </div>
@@ -113,6 +318,8 @@
  </div>
 
 </div>
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <script>
 soundManager.setup({
@@ -134,9 +341,10 @@ window.calibre = {
         filePath: "{{ url_for('static', filename='js/libs/') }}",
         cssPath: "{{ url_for('static', filename='css/') }}",
         bookUrl: "{{ url_for('static', filename=mp3file) }}/",
-        bookmarkUrl: "{{ url_for('web.bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
+        bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
         bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-        useBookmarks: "{{ g.user.is_authenticated | tojson }}"
+        useBookmarks: "{{ current_user.is_authenticated | tojson }}"
+
             };
 </script>
 </body>

@@ -7,6 +7,9 @@
   <title>{{_('Comic Reader')}} | {{title}}</title>
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  {% if g.google_site_verification|length > 0 %}
+    <meta name="google-site-verification" content="{{g.google_site_verification}}">
+  {% endif %}    
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>

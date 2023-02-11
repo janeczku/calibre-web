@@ -13,6 +13,11 @@ var reader;
         bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });
 
+    reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("darkTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
+    reader.rendition.themes.register("blackTheme", "/static/css/epub_themes.css");
+
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
         reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));
@@ -61,11 +66,14 @@ var reader;
                 this.removeBookmark(bookmark);
             }.bind(this));
         }
+        
+        var csrftoken = $("input[name='csrf_token']").val();
 
         // Save to database
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
-            data: { bookmark: location || "" }
+            data: { bookmark: location || "" },
+            headers: { "X-CSRFToken": csrftoken }
         }).fail(function (xhr, status, error) {
             alert(error);
         });

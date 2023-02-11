@@ -17,13 +17,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
 import re
-import ast
 import json
 from datetime import datetime
+from urllib.parse import quote
+import unidecode
 
+from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
@@ -40,9 +41,8 @@ from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
 from flask_login import current_user
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
+from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
@@ -50,11 +50,6 @@ from .pagination import Pagination
 
 from weakref import WeakSet
 
-try:
-    import unidecode
-    use_unidecode = True
-except ImportError:
-    use_unidecode = False
 
 log = logger.create()
 
@@ -94,6 +89,12 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
+class Library_Id(Base):
+    __tablename__ = 'library_id'
+    id = Column(Integer, primary_key=True)
+    uuid = Column(String, nullable=False)
+
+
 class Identifiers(Base):
     __tablename__ = 'identifiers'
 
@@ -107,85 +108,91 @@ class Identifiers(Base):
         self.type = id_type
         self.book = book
 
-    def formatType(self):
+    def format_type(self):
         format_type = self.type.lower()
         if format_type == 'amazon':
-            return u"Amazon"
+            return "Amazon"
         elif format_type.startswith("amazon_"):
-            return u"Amazon.{0}".format(format_type[7:])
+            return "Amazon.{0}".format(format_type[7:])
         elif format_type == "isbn":
-            return u"ISBN"
+            return "ISBN"
         elif format_type == "doi":
-            return u"DOI"
+            return "DOI"
         elif format_type == "douban":
-            return u"Douban"
+            return "Douban"
         elif format_type == "goodreads":
-            return u"Goodreads"
+            return "Goodreads"
         elif format_type == "babelio":
-            return u"Babelio"
+            return "Babelio"
         elif format_type == "google":
-            return u"Google Books"
+            return "Google Books"
         elif format_type == "kobo":
-            return u"Kobo"
+            return "Kobo"
         elif format_type == "litres":
-            return u"ЛитРес"
+            return "ЛитРес"
         elif format_type == "issn":
-            return u"ISSN"
+            return "ISSN"
         elif format_type == "isfdb":
-            return u"ISFDB"
+            return "ISFDB"
         if format_type == "lubimyczytac":
-            return u"Lubimyczytac"
+            return "Lubimyczytac"
+        if format_type == "databazeknih":
+            return "Databáze knih"
         else:
             return self.type
 
     def __repr__(self):
         format_type = self.type.lower()
         if format_type == "amazon" or format_type == "asin":
-            return u"https://amazon.com/dp/{0}".format(self.val)
+            return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return u"https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
+            return "https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
         elif format_type == "isbn":
-            return u"https://www.worldcat.org/isbn/{0}".format(self.val)
+            return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
-            return u"https://dx.doi.org/{0}".format(self.val)
+            return "https://dx.doi.org/{0}".format(self.val)
         elif format_type == "goodreads":
-            return u"https://www.goodreads.com/book/show/{0}".format(self.val)
+            return "https://www.goodreads.com/book/show/{0}".format(self.val)
         elif format_type == "babelio":
-            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)
+            return "https://www.babelio.com/livres/titre/{0}".format(self.val)
         elif format_type == "douban":
-            return u"https://book.douban.com/subject/{0}".format(self.val)
+            return "https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
-            return u"https://books.google.com/books?id={0}".format(self.val)
+            return "https://books.google.com/books?id={0}".format(self.val)
         elif format_type == "kobo":
-            return u"https://www.kobo.com/ebook/{0}".format(self.val)
+            return "https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
-            return u"https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
+            return "https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
-            return u"https://www.litres.ru/{0}".format(self.val)
+            return "https://www.litres.ru/{0}".format(self.val)
         elif format_type == "issn":
-            return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
+            return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+        elif format_type == "databazeknih":
+            return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
+        elif self.val.lower().startswith("javascript:"):
+            return quote(self.val)
         else:
-            return u"{0}".format(self.val)
+            return "{0}".format(self.val)
 
 
 class Comments(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
     text = Column(String(collation='NOCASE'), nullable=False)
-    book = Column(Integer, ForeignKey('books.id'), nullable=False)
 
-    def __init__(self, text, book):
-        self.text = text
+    def __init__(self, comment, book):
+        self.text = comment
         self.book = book
 
     def get(self):
         return self.text
 
     def __repr__(self):
-        return u"<Comments({0})>".format(self.text)
+        return "<Comments({0})>".format(self.text)
 
 
 class Tags(Base):
@@ -201,7 +208,7 @@ class Tags(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Tags('{0})>".format(self.name)
+        return "<Tags('{0})>".format(self.name)
 
 
 class Authors(Base):
@@ -221,7 +228,7 @@ class Authors(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
+        return "<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
 
 class Series(Base):
@@ -239,7 +246,7 @@ class Series(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Series('{0},{1}')>".format(self.name, self.sort)
+        return "<Series('{0},{1}')>".format(self.name, self.sort)
 
 
 class Ratings(Base):
@@ -255,7 +262,7 @@ class Ratings(Base):
         return self.rating
 
     def __repr__(self):
-        return u"<Ratings('{0}')>".format(self.rating)
+        return "<Ratings('{0}')>".format(self.rating)
 
 
 class Languages(Base):
@@ -274,7 +281,7 @@ class Languages(Base):
             return self.lang_code
 
     def __repr__(self):
-        return u"<Languages('{0}')>".format(self.lang_code)
+        return "<Languages('{0}')>".format(self.lang_code)
 
 
 class Publishers(Base):
@@ -292,7 +299,7 @@ class Publishers(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
+        return "<Publishers('{0},{1}')>".format(self.name, self.sort)
 
 
 class Data(Base):
@@ -316,7 +323,16 @@ class Data(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+        return "<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+
+
+class Metadata_Dirtied(Base):
+    __tablename__ = 'metadata_dirtied'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
+
+    def __init__(self, book):
+        self.book = book
 
 
 class Books(Base):
@@ -338,15 +354,15 @@ class Books(Base):
     isbn = Column(String(collation='NOCASE'), default="")
     flags = Column(Integer, nullable=False, default=1)
 
-    authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books', order_by="Tags.name")
-    comments = relationship('Comments', backref='books')
-    data = relationship('Data', backref='books')
-    series = relationship('Series', secondary=books_series_link, backref='books')
-    ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
-    languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    publishers = relationship('Publishers', secondary=books_publishers_link, backref='books')
-    identifiers = relationship('Identifiers', backref='books')
+    authors = relationship(Authors, secondary=books_authors_link, backref='books')
+    tags = relationship(Tags, secondary=books_tags_link, backref='books', order_by="Tags.name")
+    comments = relationship(Comments, backref='books')
+    data = relationship(Data, backref='books')
+    series = relationship(Series, secondary=books_series_link, backref='books')
+    ratings = relationship(Ratings, secondary=books_ratings_link, backref='books')
+    languages = relationship(Languages, secondary=books_languages_link, backref='books')
+    publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
+    identifiers = relationship(Identifiers, backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
                  authors, tags, languages=None):
@@ -360,18 +376,17 @@ class Books(Base):
         self.path = path
         self.has_cover = (has_cover != None)
 
-
     def __repr__(self):
-        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 
     @property
     def atom_timestamp(self):
-        return (self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or '')
+        return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
 
 
-class Custom_Columns(Base):
+class CustomColumns(Base):
     __tablename__ = 'custom_columns'
 
     id = Column(Integer, primary_key=True)
@@ -385,8 +400,32 @@ class Custom_Columns(Base):
     normalized = Column(Boolean)
 
     def get_display_dict(self):
-        display_dict = ast.literal_eval(self.display)
+        display_dict = json.loads(self.display)
         return display_dict
+
+    def to_json(self, value, extra, sequence):
+        content = dict()
+        content['table'] = "custom_column_" + str(self.id)
+        content['column'] = "value"
+        content['datatype'] = self.datatype
+        content['is_multiple'] = None if not self.is_multiple else self.is_multiple
+        content['kind'] = "field"
+        content['name'] = self.name
+        content['search_terms'] = ['#' + self.label]
+        content['label'] = self.label
+        content['colnum'] = self.id
+        content['display'] = self.get_display_dict()
+        content['is_custom'] = True
+        content['is_category'] = self.datatype in ['text', 'rating', 'enumeration', 'series']
+        content['link_column'] = "value"
+        content['category_sort'] = "value"
+        content['is_csp'] = False
+        content['is_editable'] = self.editable
+        content['rec_index'] = sequence + 22     # toDo why ??
+        content['#value#'] = value
+        content['#extra#'] = extra
+        content['is_multiple2'] = {}
+        return json.dumps(content, ensure_ascii=False)
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -429,7 +468,7 @@ class AlchemyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-class CalibreDB():
+class CalibreDB:
     _init = False
     engine = None
     config = None
@@ -438,22 +477,27 @@ class CalibreDB():
     # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
-    def __init__(self, expire_on_commit=True):
+    def __init__(self, expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
         self.session = None
+        if init:
+            self.init_db(expire_on_commit)
+
+
+    def init_db(self, expire_on_commit=True):
         if self._init:
-            self.initSession(expire_on_commit)
+            self.init_session(expire_on_commit)
 
         self.instances.add(self)
 
-    def initSession(self, expire_on_commit=True):
+    def init_session(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
         self.update_title_sort(self.config)
 
     @classmethod
-    def setup_db_cc_classes(self, cc):
+    def setup_db_cc_classes(cls, cc):
         cc_ids = []
         books_custom_column_links = {}
         for row in cc:
@@ -524,25 +568,31 @@ class CalibreDB():
         return cc_classes
 
     @classmethod
-    def check_valid_db(cls, config_calibre_dir, app_db_path):
+    def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):
         if not config_calibre_dir:
-            return False
+            return False, False
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
-            return False
+            return False, False
         try:
             check_engine = create_engine('sqlite://',
-                          echo=False,
-                          isolation_level="SERIALIZABLE",
-                          connect_args={'check_same_thread': False},
-                          poolclass=StaticPool)
+                                         echo=False,
+                                         isolation_level="SERIALIZABLE",
+                                         connect_args={'check_same_thread': False},
+                                         poolclass=StaticPool)
             with check_engine.begin() as connection:
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+                local_session = scoped_session(sessionmaker())
+                local_session.configure(bind=connection)
+                database_uuid = local_session().query(Library_Id).one_or_none()
+                # local_session.dispose()
+
             check_engine.connect()
+            db_change = config_calibre_uuid != database_uuid.uuid
         except Exception:
-            return False
-        return True
+            return False, False
+        return True, db_change
 
     @classmethod
     def update_config(cls, config):
@@ -550,19 +600,16 @@ class CalibreDB():
 
     @classmethod
     def setup_db(cls, config_calibre_dir, app_db_path):
-        # cls.config = config
         cls.dispose()
-
-        # toDo: if db changed -> delete shelfs, delete download books, delete read boks, kobo sync??
 
         if not config_calibre_dir:
             cls.config.invalidate()
-            return False
+            return None
 
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
             cls.config.invalidate()
-            return False
+            return None
 
         try:
             cls.engine = create_engine('sqlite://',
@@ -578,7 +625,7 @@ class CalibreDB():
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
-            return False
+            return None
 
         cls.config.db_configured = True
 
@@ -587,16 +634,16 @@ class CalibreDB():
                 cc = conn.execute(text("SELECT id, datatype FROM custom_columns"))
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
-                log.debug_or_exception(e)
+                log.error_or_exception(e)
+                return None
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
                                                           bind=cls.engine))
         for inst in cls.instances:
-            inst.initSession()
+            inst.init_session()
 
         cls._init = True
-        return True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -605,30 +652,60 @@ class CalibreDB():
         return self.session.query(Books).filter(Books.id == book_id). \
             filter(self.common_filters(allow_show_archived)).first()
 
+    def get_book_read_archived(self, book_id, read_column, allow_show_archived=False):
+        if not read_column:
+            bd = (self.session.query(Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived).select_from(Books)
+                  .join(ub.ReadBook, and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id),
+                  isouter=True))
+        else:
+            try:
+                read_column = cc_classes[read_column]
+                bd = (self.session.query(Books, read_column.value, ub.ArchivedBook.is_archived).select_from(Books)
+                      .join(read_column, read_column.book == book_id,
+                      isouter=True))
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} does not exist in calibre database".format(read_column))
+                # Skip linking read column and return None instead of read status
+                bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
+        return (bd.filter(Books.id == book_id)
+                .join(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                            int(current_user.id) == ub.ArchivedBook.user_id), isouter=True)
+                .filter(self.common_filters(allow_show_archived)).first())
+
     def get_book_by_uuid(self, book_uuid):
         return self.session.query(Books).filter(Books.uuid == book_uuid).first()
 
     def get_book_format(self, book_id, file_format):
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
 
+    def set_metadata_dirty(self, book_id):
+        if not self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).one_or_none():
+            self.session.add(Metadata_Dirtied(book_id))
+
+    def delete_dirty_metadata(self, book_id):
+        try:
+            self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).delete()
+            self.session.commit()
+        except (OperationalError) as e:
+            self.session.rollback()
+            log.error("Database error: {}".format(e))
+
     # Language and content filters for displaying in the UI
-    def common_filters(self, allow_show_archived=False):
+    def common_filters(self, allow_show_archived=False, return_all_languages=False):
         if not allow_show_archived:
-            archived_books = (
-                ub.session.query(ub.ArchivedBook)
-                    .filter(ub.ArchivedBook.user_id == int(current_user.id))
-                    .filter(ub.ArchivedBook.is_archived == True)
-                    .all()
-            )
+            archived_books = (ub.session.query(ub.ArchivedBook)
+                              .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                              .filter(ub.ArchivedBook.is_archived == True)
+                              .all())
             archived_book_ids = [archived_book.book_id for archived_book in archived_books]
             archived_filter = Books.id.notin_(archived_book_ids)
         else:
             archived_filter = true()
 
-        if current_user.filter_language() != "all":
-            lang_filter = Books.languages.any(Languages.lang_code == current_user.filter_language())
-        else:
+        if current_user.filter_language() == "all" or return_all_languages:
             lang_filter = true()
+        else:
+            lang_filter = Books.languages.any(Languages.lang_code == current_user.filter_language())
         negtags_list = current_user.list_denied_tags()
         postags_list = current_user.list_allowed_tags()
         neg_content_tags_filter = false() if negtags_list == [''] else Books.tags.any(Tags.name.in_(negtags_list))
@@ -638,17 +715,17 @@ class CalibreDB():
                 pos_cc_list = current_user.allowed_column_value.split(',')
                 pos_content_cc_filter = true() if pos_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
                 neg_cc_list = current_user.denied_column_value.split(',')
                 neg_content_cc_filter = false() if neg_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
-            except (KeyError, AttributeError):
+                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+            except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
-                log.error(u"Custom Column No.%d is not existing in calibre database",
-                          self.config.config_restricted_column)
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                log.error("Custom Column No.{} does not exist in calibre database".format(
+                    self.config.config_restricted_column))
+                flash(_("Custom Column No.%(column)d does not exist in calibre database",
                         column=self.config.config_restricted_column),
                       category="error")
 
@@ -658,10 +735,32 @@ class CalibreDB():
         return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
+    def generate_linked_query(self, config_read_column, database):
+        if not config_read_column:
+            query = (self.session.query(database, ub.ArchivedBook.is_archived, ub.ReadBook.read_status)
+                     .select_from(Books)
+                     .outerjoin(ub.ReadBook,
+                                and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == Books.id)))
+        else:
+            try:
+                read_column = cc_classes[config_read_column]
+                query = (self.session.query(database, ub.ArchivedBook.is_archived, read_column.value)
+                         .select_from(Books)
+                         .outerjoin(read_column, read_column.book == Books.id))
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} does not exist in calibre database".format(config_read_column))
+                # Skip linking read column and return None instead of read status
+                query = self.session.query(database, None, ub.ArchivedBook.is_archived)
+        return query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
+                                                     int(current_user.id) == ub.ArchivedBook.user_id))
+
     @staticmethod
-    def get_checkbox_sorted(inputlist, state, offset, limit, order):
+    def get_checkbox_sorted(inputlist, state, offset, limit, order, combo=False):
         outcome = list()
-        elementlist = {ele.id: ele for ele in inputlist}
+        if combo:
+            elementlist = {ele[0].id: ele for ele in inputlist}
+        else:
+            elementlist = {ele.id: ele for ele in inputlist}
         for entry in state:
             try:
                 outcome.append(elementlist[entry])
@@ -675,33 +774,42 @@ class CalibreDB():
         return outcome[offset:offset + limit]
 
     # Fill indexpage with all requested data from database
-    def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
-        return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
+    def fill_indexpage(self, page, pagesize, database, db_filter, order,
+                       join_archive_read=False, config_read_column=0, *join):
+        return self.fill_indexpage_with_archived_books(page, database, pagesize, db_filter, order, False,
+                                                       join_archive_read, config_read_column, *join)
 
-    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived,
-                                           *join):
+    def fill_indexpage_with_archived_books(self, page, database, pagesize, db_filter, order, allow_show_archived,
+                                           join_archive_read, config_read_column, *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
-            randm = self.session.query(Books) \
-                .filter(self.common_filters(allow_show_archived)) \
-                .order_by(func.random()) \
-                .limit(self.config.config_random_books).all()
+            random_query = self.generate_linked_query(config_read_column, database)
+            randm = (random_query.filter(self.common_filters(allow_show_archived))
+                     .order_by(func.random())
+                     .limit(self.config.config_random_books).all())
         else:
             randm = false()
+        if join_archive_read:
+            query = self.generate_linked_query(config_read_column, database)
+        else:
+            query = self.session.query(database)
         off = int(int(pagesize) * (page - 1))
-        query = self.session.query(database)
-        if len(join) == 6:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
-        if len(join) == 5:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4])
-        if len(join) == 4:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3])
-        if len(join) == 3:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
-        elif len(join) == 2:
-            query = query.outerjoin(join[0], join[1])
-        elif len(join) == 1:
-            query = query.outerjoin(join[0])
+
+        indx = len(join)
+        element = 0
+        while indx:
+            if indx >= 3:
+                query = query.outerjoin(join[element], join[element+1]).outerjoin(join[element+2])
+                indx -= 3
+                element += 3
+            elif indx == 2:
+                query = query.outerjoin(join[element], join[element+1])
+                indx -= 2
+                element += 2
+            elif indx == 1:
+                query = query.outerjoin(join[element])
+                indx -= 1
+                element += 1
         query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()
@@ -711,29 +819,48 @@ class CalibreDB():
                                     len(query.all()))
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
-            log.debug_or_exception(ex)
-        #for book in entries:
-        #    book = self.order_authors(book)
+            log.error_or_exception(ex)
+        # display authors in right order
+        entries = self.order_authors(entries, True, join_archive_read)
         return entries, randm, pagination
 
     # Orders all Authors in the list according to authors sort
-    def order_authors(self, entry):
-        sort_authors = entry.author_sort.split('&')
-        authors_ordered = list()
-        error = False
-        ids = [a.id for a in entry.authors]
-        for auth in sort_authors:
-            results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
-            # ToDo: How to handle not found authorname
-            if not len(results):
-                error = True
-                break
-            for r in results:
-                if r.id in ids:
-                    authors_ordered.append(r)
-        if not error:
-            entry.authors = authors_ordered
-        return entry
+    def order_authors(self, entries, list_return=False, combined=False):
+        # entries_copy = copy.deepcopy(entries)
+        # entries_copy =[]
+        for entry in entries:
+            if combined:
+                sort_authors = entry.Books.author_sort.split('&')
+                ids = [a.id for a in entry.Books.authors]
+
+            else:
+                sort_authors = entry.author_sort.split('&')
+                ids = [a.id for a in entry.authors]
+            authors_ordered = list()
+            # error = False
+            for auth in sort_authors:
+                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
+                # ToDo: How to handle not found author name
+                if not len(results):
+                    log.error("Author {} not found to display name in right order".format(auth.strip()))
+                    # error = True
+                    break
+                for r in results:
+                    if r.id in ids:
+                        authors_ordered.append(r)
+                        ids.remove(r.id)
+            for author_id in ids:
+                result = self.session.query(Authors).filter(Authors.id == author_id).first()
+                authors_ordered.append(result)
+
+            if list_return:
+                if combined:
+                    entry.Books.authors = authors_ordered
+                else:
+                    entry.ordered_authors = authors_ordered
+            else:
+                return authors_ordered
+        return entries
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
@@ -747,21 +874,21 @@ class CalibreDB():
     def check_exists_book(self, authr, title):
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split(r'\s*&\s*', authr)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
+        author_terms = re.split(r'\s*&\s*', authr)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
 
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, *join):
+    def search_query(self, term, config, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
-        authorterms = re.split("[, ]+", term)
-        for authorterm in authorterms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        query = self.session.query(Books)
+        author_terms = re.split("[, ]+", term)
+        for author_term in author_terms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
+        query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
         if len(join) == 3:
@@ -770,19 +897,42 @@ class CalibreDB():
             query = query.outerjoin(join[0], join[1])
         elif len(join) == 1:
             query = query.outerjoin(join[0])
-        return query.filter(self.common_filters(True)).filter(
-            or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
-                Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
-                Books.authors.any(and_(*q)),
-                Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
-                func.lower(Books.title).ilike("%" + term + "%")
-                ))
+
+        cc = self.get_cc_columns(config, filter_config_custom_read=True)
+        filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
+                             Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
+                             Books.authors.any(and_(*q)),
+                             Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
+                             func.lower(Books.title).ilike("%" + term + "%")]
+        for c in cc:
+            if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
+                filter_expression.append(
+                    getattr(Books,
+                            'custom_column_' + str(c.id)).any(
+                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
+        return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
+
+    def get_cc_columns(self, config, filter_config_custom_read=False):
+        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
+        cc = []
+        r = None
+        if config.config_columns_to_ignore:
+            r = re.compile(config.config_columns_to_ignore)
+
+        for col in tmp_cc:
+            if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
+                continue
+            if r and r.match(col.name):
+                continue
+            cc.append(col)
+
+        return cc
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, offset=None, order=None, limit=None, *join):
+    def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, *join).order_by(*order).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
@@ -792,22 +942,44 @@ class CalibreDB():
             offset = 0
             limit_all = result_count
 
-        ub.store_ids(result)
-        return result[offset:limit_all], result_count, pagination
+        ub.store_combo_ids(result)
+        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
+
+        return entries, result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
-    def speaking_language(self, languages=None):
-        from . import get_locale
+    def speaking_language(self, languages=None, return_all_languages=False, with_count=False, reverse_order=False):
 
-        if not languages:
-            languages = self.session.query(Languages) \
-                .join(books_languages_link) \
-                .join(Books) \
-                .filter(self.common_filters()) \
-                .group_by(text('books_languages_link.lang_code')).all()
-        for lang in languages:
-            lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
-        return languages
+        if with_count:
+            if not languages:
+                languages = self.session.query(Languages, func.count('books_languages_link.book'))\
+                    .join(books_languages_link).join(Books)\
+                    .filter(self.common_filters(return_all_languages=return_all_languages)) \
+                    .group_by(text('books_languages_link.lang_code')).all()
+            tags = list()
+            for lang in languages:
+                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
+                tags.append([tag, lang[1]])
+            # Append all books without language to list
+            if not return_all_languages:
+                no_lang_count = (self.session.query(Books)
+                                 .outerjoin(books_languages_link).outerjoin(Languages)
+                                 .filter(Languages.lang_code == None)
+                                 .filter(self.common_filters())
+                                 .count())
+                if no_lang_count:
+                    tags.append([Category(_("None"), "none"), no_lang_count])
+            return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
+        else:
+            if not languages:
+                languages = self.session.query(Languages) \
+                    .join(books_languages_link) \
+                    .join(Books) \
+                    .filter(self.common_filters(return_all_languages=return_all_languages)) \
+                    .group_by(text('books_languages_link.lang_code')).all()
+            for lang in languages:
+                lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
+            return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
 
     def update_title_sort(self, config, conn=None):
         # user defined sort function for calibre databases (Series, etc.)
@@ -821,7 +993,10 @@ class CalibreDB():
             return title.strip()
 
         conn = conn or self.session.connection().connection.connection
-        conn.create_function("title_sort", 1, _title_sort)
+        try:
+            conn.create_function("title_sort", 1, _title_sort)
+        except sqliteOperationalError:
+            pass
 
     @classmethod
     def dispose(cls):
@@ -866,6 +1041,25 @@ def lcase(s):
     try:
         return unidecode.unidecode(s.lower())
     except Exception as ex:
-        log = logger.create()
-        log.debug_or_exception(ex)
+        _log = logger.create()
+        _log.error_or_exception(ex)
         return s.lower()
+
+
+class Category:
+    name = None
+    id = None
+    count = None
+    rating = None
+
+    def __init__(self, name, cat_id, rating=None):
+        self.name = name
+        self.id = cat_id
+        self.rating = rating
+        self.count = 1
+
+'''class Count:
+    count = None
+
+    def __init__(self, count):
+        self.count = count'''

@@ -49,7 +49,7 @@ except ImportError:
 
 
 def get_language_names(locale):
-    return _LANGUAGE_NAMES.get(locale)
+    return _LANGUAGE_NAMES.get(str(locale))
 
 
 def get_language_name(locale, lang_code):
@@ -57,6 +57,7 @@ def get_language_name(locale, lang_code):
         return get_language_names(locale)[lang_code]
     except KeyError:
         log.error('Missing translation for language name: {}'.format(lang_code))
+        return "Unknown"
 
 
 def get_language_codes(locale, language_names, remainder=None):

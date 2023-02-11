@@ -5,10 +5,10 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks')}}</h2>
-    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('web.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ g.user.locale }}">
+    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
-            {% if g.user.role_admin() %}
+            {% if current_user.role_admin() %}
             <th data-halign="right" data-align="right" data-field="user" data-sortable="true">{{_('User')}}</th>
             {% endif %}
             <th data-halign="right" data-align="right" data-field="taskMessage" data-sortable="true">{{_('Task')}}</th>
@@ -16,12 +16,39 @@
             <th data-halign="right" data-align="right" data-field="progress" data-sortable="true" data-sorter="elementSorter">{{_('Progress')}}</th>
             <th data-halign="right" data-align="right" data-field="runtime" data-sortable="true" data-sort-name="rt">{{_('Run Time')}}</th>
             <th data-halign="right" data-align="right" data-field="starttime" data-sortable="true" data-sort-name="id">{{_('Start Time')}}</th>
+            {% if current_user.role_admin() %}
+            <th data-halign="right" data-align="right" data-formatter="TaskActions" data-switchable="false">{{_('Actions')}}</th>
+            {% endif %}
             <th data-field="id" data-visible="false"></th>
             <th data-field="rt" data-visible="false"></th>
         </tr>
       </thead>
     </table>
 </div>
+{% endblock %}
+{% block modal %}
+{{ delete_book(current_user.role_delete_books()) }}
+{% if current_user.role_admin() %}
+<div class="modal fade" id="cancelTaskModal" role="dialog" aria-labelledby="metaCancelTaskLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+        <div class="modal-body text-center">
+          <p>
+            <span>{{_('This task will be cancelled. Any progress made by this task will be saved.')}}</span>
+            <span>{{_('If this is a scheduled task, it will be re-ran during the next scheduled time.')}}</span>
+          </p>
+        </div>
+      <div class="modal-footer">
+        <input type="button" class="btn btn-danger" value="{{_('Ok')}}" name="cancel_task_confirm" id="cancel_task_confirm" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
