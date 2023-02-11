@@ -184,11 +184,11 @@ def migrate():
                 sql=sql[0].replace(currUniqueConstraint, 'UNIQUE (gdrive_id, path)')
                 sql=sql.replace(GdriveId.__tablename__, GdriveId.__tablename__ + '2')
                 session.execute(sql)
-                session.execute("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
-                                "gdrive_id, path FROM gdrive_ids;")
+                session.execute(text("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
+                                "gdrive_id, path FROM gdrive_ids;"))
                 session.commit()
-                session.execute('DROP TABLE %s' % 'gdrive_ids')
-                session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
+                session.execute(text('DROP TABLE %s' % 'gdrive_ids'))
+                session.execute(text('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids'))
             break
 
 if not os.path.exists(cli_param.gd_path):
