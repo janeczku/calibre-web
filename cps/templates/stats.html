@@ -25,12 +25,12 @@
     </tr>
   </tbody>
 </table>
-{% if g.user.role_admin() %}
+{% if current_user.role_admin() %}
   <h3>{{_('System Statistics')}}</h3>
 <table id="libs" class="table">
   <thead>
     <tr>
-      <th>{{_('Program Library')}}</th>
+      <th>{{_('Program')}}</th>
       <th>{{_('Installed Version')}}</th>
     </tr>
   </thead>
@@ -39,7 +39,7 @@
   {% if version %}
     <tr>
       <th>{{library}}</th>
-      <td>{{_(version)}}</td>
+      <td>{{version}}</td>
     </tr>
   {% endif %}
   {% endfor %}

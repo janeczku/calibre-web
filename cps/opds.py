@@ -20,54 +20,26 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import datetime
-from functools import wraps
+from urllib.parse import unquote_plus
 
-from flask import Blueprint, request, render_template, Response, g, make_response, abort
+from flask import Blueprint, request, render_template, make_response, abort
 from flask_login import current_user
+from flask_babel import get_locale
+from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, text, or_, and_, true
-from werkzeug.security import check_password_hash
+from sqlalchemy.exc import InvalidRequestError, OperationalError
 
-from . import constants, logger, config, db, calibre_db, ub, services, get_locale, isoLanguages
+from . import logger, config, db, calibre_db, ub, isoLanguages
+from .usermanagement import requires_basic_auth_if_no_ano
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
-from .usermanagement import load_user_from_request
-from flask_babel import gettext as _
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
+
 
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
-
-
-def requires_basic_auth_if_no_ano(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if config.config_anonbrowse != 1:
-            if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
-                return authenticate()
-        return f(*args, **kwargs)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and config.config_anonbrowse != 1:
-        return services.ldap.basic_auth_required(f)
-    return decorated
-
-
-class FeedObject:
-    def __init__(self, rating_id, rating_name):
-        self.rating_id = rating_id
-        self.rating_name = rating_name
-
-    @property
-    def id(self):
-        return self.rating_id
-
-    @property
-    def name(self):
-        return self.rating_name
 
 
 @opds.route("/opds/")
@@ -84,10 +56,12 @@ def feed_osd():
 
 
 @opds.route("/opds/search", defaults={'query': ""})
-@opds.route("/opds/search/<query>")
+@opds.route("/opds/search/<path:query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
-    return feed_search(query.strip())
+    # Handle strange query from Libera Reader with + instead of spaces
+    plus_query = unquote_plus(request.environ['RAW_URI'].split('/opds/search/')[1]).strip()
+    return feed_search(plus_query)
 
 
 @opds.route("/opds/search", methods=["GET"])
@@ -99,26 +73,7 @@ def feed_normal_search():
 @opds.route("/opds/books")
 @requires_basic_auth_if_no_ano
 def feed_booksindex():
-    shift = 0
-    off = int(request.args.get("offset") or 0)
-    entries = calibre_db.session.query(func.upper(func.substr(db.Books.sort, 1, 1)).label('id'))\
-        .filter(calibre_db.common_filters()).group_by(func.upper(func.substr(db.Books.sort, 1, 1))).all()
-
-    elements = []
-    if off == 0:
-        elements.append({'id': "00", 'name':_("All")})
-        shift = 1
-    for entry in entries[
-                 off + shift - 1:
-                 int(off + int(config.config_books_per_page) - shift)]:
-        elements.append({'id': entry.id, 'name': entry.id})
-
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(entries) + 1)
-    return render_xml_template('feed.xml',
-                               letterelements=elements,
-                               folder='opds.feed_letter_books',
-                               pagination=pagination)
+    return render_element_index(db.Books.sort, None, 'opds.feed_letter_books')
 
 
 @opds.route("/opds/books/letter/<book_id>")
@@ -129,7 +84,8 @@ def feed_letter_books(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         letter,
-                                                        [db.Books.sort])
+                                                        [db.Books.sort],
+                                                        True, config.config_read_column)
 
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -139,15 +95,16 @@ def feed_letter_books(book_id):
 def feed_new():
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books, True, [db.Books.timestamp.desc()])
+                                                        db.Books, True, [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    entries = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).order_by(func.random())\
-        .limit(config.config_books_per_page)
+    query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+    entries = query.filter(calibre_db.common_filters()).order_by(func.random()).limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
@@ -158,7 +115,8 @@ def feed_best_rated():
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -171,43 +129,23 @@ def feed_hot():
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        downloadBook = calibre_db.get_book(book.Downloads.book_id)
-        if downloadBook:
-            entries.append(
-                calibre_db.get_filtered_book(book.Downloads.book_id)
-            )
+        query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+        download_book = query.filter(calibre_db.common_filters()).filter(
+            book.Downloads.book_id == db.Books.id).first()
+        if download_book:
+            entries.append(download_book)
         else:
             ub.delete_download(book.Downloads.book_id)
-    numBooks = entries.__len__()
+    num_books = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1),
-                            config.config_books_per_page, numBooks)
+                            config.config_books_per_page, num_books)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
-    shift = 0
-    off = int(request.args.get("offset") or 0)
-    entries = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('id'))\
-        .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters())\
-        .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
-
-    elements = []
-    if off == 0:
-        elements.append({'id': "00", 'name':_("All")})
-        shift = 1
-    for entry in entries[
-                 off + shift - 1:
-                 int(off + int(config.config_books_per_page) - shift)]:
-        elements.append({'id': entry.id, 'name': entry.id})
-
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(entries) + 1)
-    return render_xml_template('feed.xml',
-                               letterelements=elements,
-                               folder='opds.feed_letter_author',
-                               pagination=pagination)
+    return render_element_index(db.Authors.sort, db.books_authors_link, 'opds.feed_letter_author')
 
 
 @opds.route("/opds/author/letter/<book_id>")
@@ -228,12 +166,7 @@ def feed_letter_author(book_id):
 @opds.route("/opds/author/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
-    off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books,
-                                                        db.Books.authors.any(db.Authors.id == book_id),
-                                                        [db.Books.timestamp.desc()])
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_dataset(db.Authors, book_id)
 
 
 @opds.route("/opds/publisher")
@@ -254,37 +187,14 @@ def feed_publisherindex():
 @opds.route("/opds/publisher/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_publisher(book_id):
-    off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books,
-                                                        db.Books.publishers.any(db.Publishers.id == book_id),
-                                                        [db.Books.timestamp.desc()])
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_dataset(db.Publishers, book_id)
 
 
 @opds.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
-    shift = 0
-    off = int(request.args.get("offset") or 0)
-    entries = calibre_db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('id'))\
-        .join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters())\
-        .group_by(func.upper(func.substr(db.Tags.name, 1, 1))).all()
-    elements = []
-    if off == 0:
-        elements.append({'id': "00", 'name':_("All")})
-        shift = 1
-    for entry in entries[
-                 off + shift - 1:
-                 int(off + int(config.config_books_per_page) - shift)]:
-        elements.append({'id': entry.id, 'name': entry.id})
+    return render_element_index(db.Tags.name, db.books_tags_link, 'opds.feed_letter_category')
 
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(entries) + 1)
-    return render_xml_template('feed.xml',
-                               letterelements=elements,
-                               folder='opds.feed_letter_category',
-                               pagination=pagination)
 
 @opds.route("/opds/category/letter/<book_id>")
 @requires_basic_auth_if_no_ano
@@ -306,36 +216,14 @@ def feed_letter_category(book_id):
 @opds.route("/opds/category/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_category(book_id):
-    off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books,
-                                                        db.Books.tags.any(db.Tags.id == book_id),
-                                                        [db.Books.timestamp.desc()])
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_dataset(db.Tags, book_id)
 
 
 @opds.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
-    shift = 0
-    off = int(request.args.get("offset") or 0)
-    entries = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('id'))\
-        .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters())\
-        .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
-    elements = []
-    if off == 0:
-        elements.append({'id': "00", 'name':_("All")})
-        shift = 1
-    for entry in entries[
-                 off + shift - 1:
-                 int(off + int(config.config_books_per_page) - shift)]:
-        elements.append({'id': entry.id, 'name': entry.id})
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(entries) + 1)
-    return render_xml_template('feed.xml',
-                               letterelements=elements,
-                               folder='opds.feed_letter_series',
-                               pagination=pagination)
+    return render_element_index(db.Series.sort, db.books_series_link, 'opds.feed_letter_series')
+
 
 @opds.route("/opds/series/letter/<book_id>")
 @requires_basic_auth_if_no_ano
@@ -361,7 +249,8 @@ def feed_series(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.series.any(db.Series.id == book_id),
-                                                        [db.Books.series_index])
+                                                        [db.Books.series_index],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -370,7 +259,7 @@ def feed_series(book_id):
 def feed_ratingindex():
     off = request.args.get("offset") or 0
     entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
-                               (db.Ratings.rating / 2).label('name')) \
+                                       (db.Ratings.rating / 2).label('name')) \
         .join(db.books_ratings_link)\
         .join(db.Books)\
         .filter(calibre_db.common_filters()) \
@@ -388,12 +277,7 @@ def feed_ratingindex():
 @opds.route("/opds/ratings/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_ratings(book_id):
-    off = request.args.get("offset") or 0
-    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
-                                                        db.Books,
-                                                        db.Books.ratings.any(db.Ratings.id == book_id),
-                                                        [db.Books.timestamp.desc()])
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    return render_xml_dataset(db.Ratings, book_id)
 
 
 @opds.route("/opds/formats")
@@ -420,7 +304,8 @@ def feed_format(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.data.any(db.Data.format == book_id.upper()),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -429,20 +314,12 @@ def feed_format(book_id):
 @requires_basic_auth_if_no_ano
 def feed_languagesindex():
     off = request.args.get("offset") or 0
-    if current_user.filter_language() == u"all":
+    if current_user.filter_language() == "all":
         languages = calibre_db.speaking_language()
     else:
-        #try:
-        #    cur_l = LC.parse(current_user.filter_language())
-        #except UnknownLocaleError:
-        #    cur_l = None
         languages = calibre_db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
         languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].lang_code)
-        #if cur_l:
-        #    languages[0].name = cur_l.get_language_name(get_locale())
-        #else:
-        #    languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(languages))
     return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
@@ -455,7 +332,8 @@ def feed_languages(book_id):
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books,
                                                         db.Books.languages.any(db.Languages.id == book_id),
-                                                        [db.Books.timestamp.desc()])
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -463,7 +341,8 @@ def feed_languages(book_id):
 @requires_basic_auth_if_no_ano
 def feed_shelfindex():
     off = request.args.get("offset") or 0
-    shelf = g.shelves_access
+    shelf = ub.session.query(ub.Shelf).filter(
+        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     number = len(shelf)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
@@ -485,24 +364,32 @@ def feed_shelf(book_id):
     result = list()
     # user is allowed to access shelf
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == book_id).order_by(
-            ub.BookShelf.order.asc()).all()
-        for book in books_in_shelf:
-            cur_book = calibre_db.get_book(book.book_id)
-            result.append(cur_book)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(result))
+        result, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                                           config.config_books_per_page,
+                                                           db.Books,
+                                                           ub.BookShelf.shelf == shelf.id,
+                                                           [ub.BookShelf.order.asc()],
+                                                           True, config.config_read_column,
+                                                           ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
+        # delete shelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        wrong_entries = calibre_db.session.query(ub.BookShelf) \
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
+            .filter(db.Books.id == None).all()
+        for entry in wrong_entries:
+            log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
+            try:
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == entry.book_id).delete()
+                ub.session.commit()
+            except (OperationalError, InvalidRequestError) as e:
+                ub.session.rollback()
+                log.error_or_exception("Settings Database error: {}".format(e))
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 def opds_download_link(book_id, book_format):
-    # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
-    # workaround, loading the user from the request and checking it's download rights here
-    # in case of anonymous browsing user is None
-    user = load_user_from_request(request) or current_user
-    if not user.role_download():
+    if not current_user.role_download():
         return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
@@ -523,47 +410,6 @@ def get_metadata_calibre_companion(uuid, library):
         return response
     else:
         return ""
-
-
-def feed_search(term):
-    if term:
-        entries, __, ___ = calibre_db.get_search_results(term)
-        entriescount = len(entries) if len(entries) > 0 else 1
-        pagination = Pagination(1, entriescount, entriescount)
-        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
-    else:
-        return render_xml_template('feed.xml', searchterm="")
-
-
-def check_auth(username, password):
-    try:
-        username = username.encode('windows-1252')
-    except UnicodeEncodeError:
-        username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
-                                            username.decode('utf-8').lower()).first()
-    if bool(user and check_password_hash(str(user.password), password)):
-        return True
-    else:
-        ip_Address = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ip_Address)
-        return False
-
-
-def authenticate():
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
-
-
-def render_xml_template(*args, **kwargs):
-    # ToDo: return time in current timezone similar to %z
-    currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    xml = render_template(current_time=currtime, instance=config.config_calibre_web_title, *args, **kwargs)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
 
 
 @opds.route("/opds/thumb_240_240/<book_id>")
@@ -589,3 +435,71 @@ def feed_unread_books():
     off = request.args.get("offset") or 0
     result, pagination = render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
+
+
+class FeedObject:
+    def __init__(self, rating_id, rating_name):
+        self.rating_id = rating_id
+        self.rating_name = rating_name
+
+    @property
+    def id(self):
+        return self.rating_id
+
+    @property
+    def name(self):
+        return self.rating_name
+
+
+def feed_search(term):
+    if term:
+        entries, __, ___ = calibre_db.get_search_results(term, config=config)
+        entries_count = len(entries) if len(entries) > 0 else 1
+        pagination = Pagination(1, entries_count, entries_count)
+        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+    else:
+        return render_xml_template('feed.xml', searchterm="")
+
+
+
+def render_xml_template(*args, **kwargs):
+    # ToDo: return time in current timezone similar to %z
+    currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    xml = render_template(current_time=currtime, instance=config.config_calibre_web_title, *args, **kwargs)
+    response = make_response(xml)
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
+    return response
+
+
+def render_xml_dataset(data_table, book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
+                                                        db.Books,
+                                                        getattr(db.Books, data_table.__tablename__).any(data_table.id == book_id),
+                                                        [db.Books.timestamp.desc()],
+                                                        True, config.config_read_column)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+
+def render_element_index(database_column, linked_table, folder):
+    shift = 0
+    off = int(request.args.get("offset") or 0)
+    entries = calibre_db.session.query(func.upper(func.substr(database_column, 1, 1)).label('id'), None, None)
+    # query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+    if linked_table is not None:
+        entries = entries.join(linked_table).join(db.Books)
+    entries = entries.filter(calibre_db.common_filters()).group_by(func.upper(func.substr(database_column, 1, 1))).all()
+    elements = []
+    if off == 0:
+        elements.append({'id': "00", 'name': _("All")})
+        shift = 1
+    for entry in entries[
+                 off + shift - 1:
+                 int(off + int(config.config_books_per_page) - shift)]:
+        elements.append({'id': entry.id, 'name': entry.id})
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries) + 1)
+    return render_xml_template('feed.xml',
+                               letterelements=elements,
+                               folder=folder,
+                               pagination=pagination)

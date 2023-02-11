@@ -15,7 +15,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+/* exported TableActions, RestrictionActions, EbookActions, TaskActions, responseHandler */
 /* global getPath, confirmDialog */
 
 var selections = [];
@@ -42,20 +42,38 @@ $(function() {
         }, 1000);
     }
 
+    $("#cancel_task_confirm").click(function() {
+        //get data-id attribute of the clicked element
+        var taskId = $(this).data("task-id");
+        $.ajax({
+            method: "post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/canceltask",
+            data: JSON.stringify({"task_id": taskId}),
+        });
+    });
+    //triggered when modal is about to be shown
+    $("#cancelTaskModal").on("show.bs.modal", function(e) {
+        //get data-id attribute of the clicked element and store in button
+        var taskId = $(e.relatedTarget).data("task-id");
+        $(e.currentTarget).find("#cancel_task_confirm").data("task-id", taskId);
+    });
+
     $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
         function (e, rowsAfter, rowsBefore) {
             var rows = rowsAfter;
 
             if (e.type === "uncheck-all") {
-                rows = rowsBefore;
+                selections = [];
+            } else {
+                var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+                    return row.id;
+                });
+
+                var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+                selections = window._[func](selections, ids);
             }
-
-            var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-                return row.id;
-            });
-
-            var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-            selections = window._[func](selections, ids);
             if (selections.length >= 2) {
                 $("#merge_books").removeClass("disabled");
                 $("#merge_books").attr("aria-disabled", false);
@@ -107,8 +125,9 @@ $(function() {
             url: window.location.pathname + "/../ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success(booTitles) {
+                $('#merge_from').empty();
                 $.each(booTitles.from, function(i, item) {
-                    $("<span>- " + item + "</span>").appendTo("#merge_from");
+                    $("<span>- " + item + "</span><p></p>").appendTo("#merge_from");
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
@@ -529,25 +548,19 @@ $(function() {
         },
     });
 
-    $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
-        if (value === "denied_column_value") {
-            ConfirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
-        }
-    });
-
     $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
         var rows = rowsAfter;
 
         if (e.type === "uncheck-all") {
-            rows = rowsBefore;
+            selections = [];
+        } else {
+	        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+	            return row.id;
+	        });
+	        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+            selections = window._[func](selections, ids);
         }
-
-        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-            return row.id;
-        });
-        var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
-        selections = window._[func](selections, ids);
         handle_header_buttons();
     });
 });
@@ -581,6 +594,7 @@ function handle_header_buttons () {
         $(".header_select").removeAttr("disabled");
     }
 }
+
 /* Function for deleting domain restrictions */
 function TableActions (value, row) {
     return [
@@ -618,6 +632,19 @@ function UserActions (value, row) {
     ].join("");
 }
 
+/* Function for cancelling tasks */
+function TaskActions (value, row) {
+    var cancellableStats = [0, 1, 2];
+    if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
+        return [
+            "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
+            "<i class=\"glyphicon glyphicon-ban-circle\"></i>",
+            "</div>"
+        ].join("");
+    }
+    return '';
+}
+
 /* Function for keeping checked rows */
 function responseHandler(res) {
     $.each(res.rows, function (i, row) {
@@ -631,14 +658,21 @@ function singleUserFormatter(value, row) {
 }
 
 function checkboxFormatter(value, row){
-    if(value & this.column)
+    if (value & this.column)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', ' + this.column + ')">';
 }
+function bookCheckboxFormatter(value, row){
+    if (value)
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+    else
+        return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="BookCheckboxChange(this, ' + row.id + ', \'' + this.name + '\')">';
+}
+
 
 function singlecheckboxFormatter(value, row){
-    if(value)
+    if (value)
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" checked onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
     else
         return '<input type="checkbox" class="chk" data-pk="' + row.id + '" data-name="' + this.field + '" onchange="checkboxChange(this, ' + row.id + ', \'' + this.name + '\', 0)">';
@@ -793,7 +827,7 @@ function handleListServerResponse (data) {
 function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
         method: "post",
-        url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+        url: getPath() + "/ajax/editlistusers/" + field,
         data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
         error: function(data) {
             handleListServerResponse([{type:"danger", message:data.responseText}])
@@ -801,6 +835,22 @@ function checkboxChange(checkbox, userId, field, field_index) {
         success: handleListServerResponse
     });
 }
+
+function BookCheckboxChange(checkbox, userId, field) {
+    var value = checkbox.checked ? "True" : "False";
+    var element = checkbox;
+    $.ajax({
+        method: "post",
+        url: getPath() + "/ajax/editbooks/" + field,
+        data: {"pk": userId, "value": value},
+        error: function(data) {
+            element.checked = !element.checked;
+            handleListServerResponse([{type:"danger", message:data.responseText}])
+        },
+        success: handleListServerResponse
+    });
+}
+
 
 function selectHeader(element, field) {
     if (element.value !== "None") {

@@ -22,6 +22,7 @@
 
 import json
 from datetime import datetime
+from functools import wraps
 
 from flask import Blueprint, request, make_response, abort, url_for, flash, redirect
 from flask_login import login_required, current_user, login_user
@@ -31,10 +32,6 @@ from sqlalchemy.sql.expression import true
 from . import config, logger, ub
 from .render_template import render_title_template
 
-try:
-    from functools import wraps
-except ImportError:
-    pass  # We're not using Python 3
 
 remotelogin = Blueprint('remotelogin', __name__)
 log = logger.create()
@@ -61,8 +58,8 @@ def remote_login():
     ub.session.add(auth_token)
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
-    log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
-    return render_title_template('remote_login.html', title=_(u"Login"), token=auth_token.auth_token,
+    log.debug("Remot Login request with token: %s", auth_token.auth_token)
+    return render_title_template('remote_login.html', title=_("Login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")
 
 
@@ -74,8 +71,8 @@ def verify_token(token):
 
     # Token not found
     if auth_token is None:
-        flash(_(u"Token not found"), category="error")
-        log.error(u"Remote Login token not found")
+        flash(_("Token not found"), category="error")
+        log.error("Remote Login token not found")
         return redirect(url_for('web.index'))
 
     # Token expired
@@ -83,8 +80,8 @@ def verify_token(token):
         ub.session.delete(auth_token)
         ub.session_commit()
 
-        flash(_(u"Token has expired"), category="error")
-        log.error(u"Remote Login token expired")
+        flash(_("Token has expired"), category="error")
+        log.error("Remote Login token expired")
         return redirect(url_for('web.index'))
 
     # Update token with user information
@@ -92,8 +89,8 @@ def verify_token(token):
     auth_token.verified = True
     ub.session_commit()
 
-    flash(_(u"Success! Please return to your device"), category="success")
-    log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
+    flash(_("Success! Please return to your device"), category="success")
+    log.debug("Remote Login token for userid %s verified", auth_token.user_id)
     return redirect(url_for('web.index'))
 
 
@@ -108,7 +105,7 @@ def token_verified():
     # Token not found
     if auth_token is None:
         data['status'] = 'error'
-        data['message'] = _(u"Token not found")
+        data['message'] = _("Token not found")
 
     # Token expired
     elif datetime.now() > auth_token.expiration:
@@ -116,7 +113,7 @@ def token_verified():
         ub.session_commit()
 
         data['status'] = 'error'
-        data['message'] = _(u"Token has expired")
+        data['message'] = _("Token has expired")
 
     elif not auth_token.verified:
         data['status'] = 'not_verified'
@@ -129,8 +126,8 @@ def token_verified():
         ub.session_commit("User {} logged in via remotelogin, token deleted".format(user.name))
 
         data['status'] = 'success'
-        log.debug(u"Remote Login for userid %s succeded", user.id)
-        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.name), category="success")
+        log.debug("Remote Login for userid %s succeeded", user.id)
+        flash(_("Success! You are now logged in as: %(nickname)s", nickname=user.name), category="success")
 
     response = make_response(json.dumps(data, ensure_ascii=False))
     response.headers["Content-Type"] = "application/json; charset=utf-8"

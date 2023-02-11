@@ -21,11 +21,8 @@ import sys
 from base64 import b64decode, b64encode
 from jsonschema import validate, exceptions, __version__
 from datetime import datetime
-try:
-    # pylint: disable=unused-import
-    from urllib import unquote
-except ImportError:
-    from urllib.parse import unquote
+
+from urllib.parse import unquote
 
 from flask import json
 from .. import logger
@@ -138,12 +135,9 @@ class SyncToken:
             archive_last_modified = get_datetime_from_json(data_json, "archive_last_modified")
             reading_state_last_modified = get_datetime_from_json(data_json, "reading_state_last_modified")
             tags_last_modified = get_datetime_from_json(data_json, "tags_last_modified")
-            # books_last_id = data_json["books_last_id"]
         except TypeError:
             log.error("SyncToken timestamps don't parse to a datetime.")
             return SyncToken(raw_kobo_store_token=raw_kobo_store_token)
-        #except KeyError:
-        #    books_last_id = -1
 
         return SyncToken(
             raw_kobo_store_token=raw_kobo_store_token,
@@ -152,7 +146,6 @@ class SyncToken:
             archive_last_modified=archive_last_modified,
             reading_state_last_modified=reading_state_last_modified,
             tags_last_modified=tags_last_modified,
-            #books_last_id=books_last_id
         )
 
     def set_kobo_store_header(self, store_headers):
@@ -176,16 +169,14 @@ class SyncToken:
                 "archive_last_modified": to_epoch_timestamp(self.archive_last_modified),
                 "reading_state_last_modified": to_epoch_timestamp(self.reading_state_last_modified),
                 "tags_last_modified": to_epoch_timestamp(self.tags_last_modified),
-                #"books_last_id":self.books_last_id
             },
         }
         return b64encode_json(token)
 
     def __str__(self):
-        return "{},{},{},{},{},{}".format(self.raw_kobo_store_token,
-                                       self.books_last_created,
+        return "{},{},{},{},{},{}".format(self.books_last_created,
                                        self.books_last_modified,
                                        self.archive_last_modified,
                                        self.reading_state_last_modified,
-                                       self.tags_last_modified)
-                                       #self.books_last_id)
+                                       self.tags_last_modified,
+                                       self.raw_kobo_store_token)

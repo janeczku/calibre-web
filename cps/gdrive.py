@@ -55,7 +55,7 @@ def authenticate_google_drive():
     try:
         authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
     except gdriveutils.InvalidConfigError:
-        flash(_(u'Google Drive setup not completed, try to deactivate and activate Google Drive again'),
+        flash(_('Google Drive setup not completed, try to deactivate and activate Google Drive again'),
               category="error")
         return redirect(url_for('web.index'))
     return redirect(authUrl)
@@ -91,9 +91,9 @@ def watch_gdrive():
             config.save()
         except HttpError as e:
             reason=json.loads(e.content)['error']['errors'][0]
-            if reason['reason'] == u'push.webhookUrlUnauthorized':
-                flash(_(u'Callback domain is not verified, '
-                        u'please follow steps to verify domain in google developer console'), category="error")
+            if reason['reason'] == 'push.webhookUrlUnauthorized':
+                flash(_('Callback domain is not verified, '
+                        'please follow steps to verify domain in google developer console'), category="error")
             else:
                 flash(reason['message'], category="error")
 
@@ -109,7 +109,7 @@ def revoke_watch_gdrive():
         try:
             gdriveutils.stopChannel(gdriveutils.Gdrive.Instance().drive, last_watch_response['id'],
                                     last_watch_response['resourceId'])
-        except HttpError:
+        except (HttpError, AttributeError):
             pass
         config.config_google_drive_watch_changes_response = {}
         config.save()
@@ -152,7 +152,7 @@ try:
                     move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
                     calibre_db.reconnect_db(config, ub.app_DB_path)
         except Exception as ex:
-            log.debug_or_exception(ex)
+            log.error_or_exception(ex)
         return ''
 except AttributeError:
     pass

@@ -28,14 +28,24 @@ $("#have_read_cb").on("change", function() {
         data: $(this).closest("form").serialize(),
         error: function(response) {
             var data = [{type:"danger", message:response.responseText}]
-            $("#flash_success").remove();
+            // $("#flash_success").parent().remove();
             $("#flash_danger").remove();
+            $(".row-fluid.text-center").remove();
             if (!jQuery.isEmptyObject(data)) {
-                data.forEach(function (item) {
-                    $(".navbar").after('<div class="row-fluid text-center" >' +
-                        '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
-                        '</div>');
-                });
+                $("#have_read_cb").prop("checked", !$("#have_read_cb").prop("checked"));
+                if($("#bookDetailsModal").is(":visible")) {
+                    data.forEach(function (item) {
+                        $(".modal-header").after('<div id="flash_' + item.type +
+                            '" class="text-center alert alert-' + item.type + '">' + item.message + '</div>');
+                    });
+                } else
+                {
+                    data.forEach(function (item) {
+                        $(".navbar").after('<div class="row-fluid text-center" >' +
+                            '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                            '</div>');
+                    });
+                }
             }
         }
     });
@@ -59,17 +69,20 @@ $("#archived_cb").on("change", function() {
         )
     };
 
-    $("#shelf-actions").on("click", "[data-shelf-action]", function (e) {
+    $("#add-to-shelves, #remove-from-shelves").on("click", "[data-shelf-action]", function (e) {
         e.preventDefault();
-
-        $.get(this.href)
+        $.ajax({
+                url: $(this).data('href'),
+                method:"post",
+                data: {csrf_token:$("input[name='csrf_token']").val()},
+            })
             .done(function() {
                 var $this = $(this);
                 switch ($this.data("shelf-action")) {
                     case "add":
                         $("#remove-from-shelves").append(
                             templates.remove({
-                                add: this.href,
+                                add: $this.data('href'),
                                 remove: $this.data("remove-href"),
                                 content: $("<div>").text(this.textContent).html()
                             })
@@ -79,7 +92,7 @@ $("#archived_cb").on("change", function() {
                         $("#add-to-shelves").append(
                             templates.add({
                                 add: $this.data("add-href"),
-                                remove: this.href,
+                                remove: $this.data('href'),
                                 content: $("<div>").text(this.textContent).html(),
                             })
                         );

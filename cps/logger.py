@@ -42,23 +42,17 @@ logging.addLevelName(logging.CRITICAL, "CRIT")
 
 class _Logger(logging.Logger):
 
-    def debug_or_exception(self, message, *args, **kwargs):
+    def error_or_exception(self, message, stacklevel=2, *args, **kwargs):
         if sys.version_info > (3, 7):
             if is_debug_enabled():
-                self.exception(message, stacklevel=2, *args, **kwargs)
+                self.exception(message, stacklevel=stacklevel, *args, **kwargs)
             else:
-                self.error(message, stacklevel=2, *args, **kwargs)
-        elif sys.version_info > (3, 0):
+                self.error(message, stacklevel=stacklevel, *args, **kwargs)
+        else:
             if is_debug_enabled():
                 self.exception(message, stack_info=True, *args, **kwargs)
             else:
                 self.error(message, *args, **kwargs)
-        else:
-            if is_debug_enabled():
-                self.exception(message, *args, **kwargs)
-            else:
-                self.error(message, *args, **kwargs)
-
 
     def debug_no_auth(self, message, *args, **kwargs):
         message = message.strip("\r\n")
@@ -71,6 +65,7 @@ class _Logger(logging.Logger):
 def get(name=None):
     return logging.getLogger(name)
 
+
 def create():
     parent_frame = inspect.stack(0)[1]
     if hasattr(parent_frame, 'frame'):
@@ -80,8 +75,10 @@ def create():
     parent_module = inspect.getmodule(parent_frame)
     return get(parent_module.__name__)
 
+
 def is_debug_enabled():
     return logging.root.level <= logging.DEBUG
+
 
 def is_info_enabled(logger):
     return logging.getLogger(logger).level <= logging.INFO
@@ -119,10 +116,10 @@ def get_accesslogfile(log_file):
 
 
 def setup(log_file, log_level=None):
-    '''
+    """
     Configure the logging output.
     May be called multiple times.
-    '''
+    """
     log_level = log_level or DEFAULT_LOG_LEVEL
     logging.setLoggerClass(_Logger)
     logging.getLogger(__package__).setLevel(log_level)
@@ -132,7 +129,7 @@ def setup(log_file, log_level=None):
         # avoid spamming the log with debug messages from libraries
         r.setLevel(log_level)
 
-    # Otherwise name get's destroyed on windows
+    # Otherwise, name gets destroyed on Windows
     if log_file != LOG_TO_STDERR and log_file != LOG_TO_STDOUT:
         log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
@@ -164,13 +161,14 @@ def setup(log_file, log_level=None):
         r.removeHandler(h)
         h.close()
     r.addHandler(file_handler)
+    logging.captureWarnings(True)
     return "" if log_file == DEFAULT_LOG_FILE else log_file
 
 
 def create_access_log(log_file, log_name, formatter):
-    '''
+    """
     One-time configuration for the web server's access log.
-    '''
+    """
     log_file = _absolute_log_file(log_file, DEFAULT_ACCESS_LOG)
     logging.debug("access log: %s", log_file)
 
@@ -187,8 +185,7 @@ def create_access_log(log_file, log_name, formatter):
 
     file_handler.setFormatter(formatter)
     access_log.addHandler(file_handler)
-    return access_log, \
-           "" if _absolute_log_file(log_file, DEFAULT_ACCESS_LOG) == DEFAULT_ACCESS_LOG else log_file
+    return access_log, "" if _absolute_log_file(log_file, DEFAULT_ACCESS_LOG) == DEFAULT_ACCESS_LOG else log_file
 
 
 # Enable logging of smtp lib debug output
