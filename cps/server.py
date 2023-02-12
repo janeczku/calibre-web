@@ -22,7 +22,6 @@ import errno
 import signal
 import socket
 import subprocess  # nosec
-from .services.background_scheduler import BackgroundScheduler
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -268,6 +267,7 @@ class WebServer(object):
 
     @staticmethod
     def shutdown_scheduler():
+        from .services.background_scheduler import BackgroundScheduler
         scheduler = BackgroundScheduler()
         if scheduler:
             scheduler.scheduler.shutdown()
