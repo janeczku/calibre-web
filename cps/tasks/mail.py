@@ -109,7 +109,8 @@ class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
 
 class TaskEmail(CalibreTask):
-    def __init__(self, subject, filepath, attachment, settings, recipient, task_message, text, internal=False):
+    def __init__(self, subject, filepath, attachment, settings, recipient, task_message, text, internal=False
+                 , display_name=""):
         super(TaskEmail, self).__init__(task_message)
         self.subject = subject
         self.attachment = attachment
@@ -119,6 +120,9 @@ class TaskEmail(CalibreTask):
         self.text = text
         self.asyncSMTP = None
         self.results = dict()
+        if display_name == "":
+            display_name = attachment
+        self.display_name = display_name
 
     # from calibre code:
     # https://github.com/kovidgoyal/calibre/blob/731ccd92a99868de3e2738f65949f19768d9104c/src/calibre/utils/smtp.py#L60
@@ -150,7 +154,7 @@ class TaskEmail(CalibreTask):
                 if content_type is None or encoding is not None:
                     content_type = 'application/octet-stream'
                 main_type, sub_type = content_type.split('/', 1)
-                message.add_attachment(data, maintype=main_type, subtype=sub_type, filename=self.attachment)
+                message.add_attachment(data, maintype=main_type, subtype=sub_type, filename=self.display_name)
             else:
                 self._handleError("Attachment not found")
                 return
