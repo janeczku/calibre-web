@@ -112,15 +112,17 @@ def create_app():
 
     cli_param.init()
 
-    ub.init_db(cli_param.settings_path, cli_param.user_credentials)
-
+    ub.init_db(cli_param.settings_path)
     # pylint: disable=no-member
     encrypt_key, error = config_sql.get_encryption_key(os.path.dirname(cli_param.settings_path))
 
     config_sql.load_configuration(ub.session, encrypt_key)
     config.init_config(ub.session, encrypt_key, cli_param)
+
     if error:
         log.error(error)
+
+    ub.password_change(cli_param.user_credentials)
 
     if not limiter:
         log.info('*** "flask-limiter" is needed for calibre-web to run. '
