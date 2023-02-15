@@ -612,7 +612,7 @@ def reset_password(user_id):
     if not config.get_mail_server_configured():
         return 2, None
     try:
-        password = generate_random_password()
+        password = generate_random_password(config.config_password_min_length)
         existing_user.password = generate_password_hash(password)
         ub.session.commit()
         send_registration_mail(existing_user.email, existing_user.name, password, True)
@@ -622,9 +622,9 @@ def reset_password(user_id):
         return 0, None
 
 
-def generate_random_password():
+def generate_random_password(min_length):
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
-    passlen = 8
+    passlen = min_length
     return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 

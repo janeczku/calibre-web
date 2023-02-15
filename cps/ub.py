@@ -55,6 +55,7 @@ from werkzeug.security import generate_password_hash
 
 from . import constants, logger
 
+
 log = logger.create()
 
 session = None
@@ -845,7 +846,12 @@ def init_db(app_db_path, user_credentials=None):
             if not password:
                 print("Empty password is not allowed")
                 sys.exit(4)
-            user.password = generate_password_hash(password)
+            try:
+                from .helper import valid_password
+                user.password = generate_password_hash(valid_password(password))
+            except Exception:
+                print("Password doesn't comply with password validation rules")
+                sys.exit(4)
             if session_commit() == "":
                 print("Password for user '{}' changed".format(username))
                 sys.exit(0)

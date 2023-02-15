@@ -382,7 +382,7 @@
             <div data-related="password_settings">
               <div class="form-group" style="margin-left:10px;">
                 <label for="config_password_min_length">{{_('Minimum password length')}}</label>
-                <input type="number" min="0" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
+                <input type="number" min="1" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
               </div>
               <div class="form-group" style="margin-left:10px;">
                 <input type="checkbox" id="config_password_number" name="config_password_number"  {% if config.config_password_number %}checked{% endif %}>
