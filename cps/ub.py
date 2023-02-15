@@ -818,7 +818,7 @@ def init_db_thread():
     return Session()
 
 
-def init_db(app_db_path, user_credentials=None):
+def init_db(app_db_path):
     # Open session for database connection
     global session
     global app_DB_path
@@ -839,6 +839,7 @@ def init_db(app_db_path, user_credentials=None):
         create_admin_user(session)
         create_anonymous_user(session)
 
+def password_change(user_credentials=None):
     if user_credentials:
         username, password = user_credentials.split(':', 1)
         user = session.query(User).filter(func.lower(User.name) == username.lower()).first()
