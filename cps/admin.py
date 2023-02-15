@@ -1798,7 +1798,10 @@ def _configuration_update_helper():
         _config_checkbox(to_save, "config_password_lower")
         _config_checkbox(to_save, "config_password_upper")
         _config_checkbox(to_save, "config_password_special")
-        _config_int(to_save, "config_password_min_length")
+        if 0 < int(to_save.get("config_password_min_length", "0")) < 41:
+            _config_int(to_save, "config_password_min_length")
+        else:
+            return _configuration_result(_('Password length has to be between 1 and 40'))
         reboot_required |= _config_int(to_save, "config_session")
         reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
 
@@ -2003,6 +2006,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                 content.name = check_username(to_save["name"])
             if to_save.get("kindle_mail") != content.kindle_mail:
                 content.kindle_mail = valid_email(to_save["kindle_mail"]) if to_save["kindle_mail"] else ""
+            content.password = generate_password_hash(helper.valid_password(to_save.get("password", "")))
         except Exception as ex:
             log.error(ex)
             flash(str(ex), category="error")

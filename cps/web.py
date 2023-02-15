@@ -1255,8 +1255,8 @@ def register_post():
     if check_valid_domain(email):
         content.name = nickname
         content.email = email
-        password = generate_random_password()
-        content.password = generate_password_hash(password)
+        password = generate_random_password(config.config_password_min_length)
+        content.password = generate_password_hash(valid_password(password))
         content.role = config.config_default_role
         content.locale = config.config_default_locale
         content.sidebar_view = config.config_default_show
@@ -1412,7 +1412,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     try:
         if current_user.role_passwd() or current_user.role_admin():
             if to_save.get('password', "") != "":
-                current_user.password = generate_password_hash(to_save.get("password"))
+                current_user.password = generate_password_hash(valid_password(to_save.get("password", "")))
         if to_save.get("eReader_mail", current_user.kindle_mail) != current_user.kindle_mail:
             current_user.kindle_mail = valid_email(to_save.get("eReader_mail"))
         new_email = valid_email(to_save.get("email", current_user.email))
