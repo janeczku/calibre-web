@@ -52,6 +52,7 @@ def requires_basic_auth_if_no_ano(f):
             login_result, error = services.ldap.bind_user(auth.username, auth.password)
             if login_result:
                 user = _fetch_user_by_name(auth.username)
+                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
                 login_user(user)
                 return f(*args, **kwargs)
             elif login_result is not None:
@@ -68,6 +69,7 @@ def _load_user_from_auth_header(username, password):
     limiter.check()
     user = _fetch_user_by_name(username)
     if bool(user and check_password_hash(str(user.password), password)) and user.name != "Guest":
+        [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
         login_user(user)
         return user
     else:
@@ -102,6 +104,7 @@ def load_user_from_reverse_proxy_header(req):
             if rp_header_username:
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
+                    [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
                     login_user(user)
                     return user
     return None

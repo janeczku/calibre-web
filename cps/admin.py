@@ -1961,12 +1961,6 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             log.warning("No admin user remaining, can't remove admin role from {}".format(content.name))
             flash(_("No admin user remaining, can't remove admin role"), category="error")
             return redirect(url_for('admin.admin'))
-        anonymous = content.is_anonymous
-        content.role = constants.selected_roles(to_save)
-        if anonymous:
-            content.role |= constants.ROLE_ANONYMOUS
-        else:
-            content.role &= ~constants.ROLE_ANONYMOUS
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
         sidebar, __ = get_sidebar_config()
@@ -1994,6 +1988,15 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         if to_save.get("locale"):
             content.locale = to_save["locale"]
         try:
+            anonymous = content.is_anonymous
+            content.role = constants.selected_roles(to_save)
+            if anonymous:
+                content.role |= constants.ROLE_ANONYMOUS
+            else:
+                content.role &= ~constants.ROLE_ANONYMOUS
+                if to_save.get("password", ""):
+                    content.password = generate_password_hash(helper.valid_password(to_save.get["password"]))
+
             new_email = valid_email(to_save.get("email", content.email))
             if not new_email:
                 raise Exception(_("Email can't be empty and has to be a valid Email"))
@@ -2006,7 +2009,6 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
                 content.name = check_username(to_save["name"])
             if to_save.get("kindle_mail") != content.kindle_mail:
                 content.kindle_mail = valid_email(to_save["kindle_mail"]) if to_save["kindle_mail"] else ""
-            content.password = generate_password_hash(helper.valid_password(to_save.get("password", "")))
         except Exception as ex:
             log.error(ex)
             flash(str(ex), category="error")

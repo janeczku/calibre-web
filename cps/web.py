@@ -1256,7 +1256,7 @@ def register_post():
         content.name = nickname
         content.email = email
         password = generate_random_password(config.config_password_min_length)
-        content.password = generate_password_hash(valid_password(password))
+        content.password = generate_password_hash(password)
         content.role = config.config_default_role
         content.locale = config.config_default_locale
         content.sidebar_view = config.config_default_show
