@@ -265,7 +265,7 @@ class WebServer(object):
         if os.environ.get('FLASK_DEBUG'):
             subprocess.run(args, close_fds=True)  # nosec
         else:
-            subprocess.Popen(args, close_fds=True)  # nosec
+            subprocess.run(args, close_fds=True)  # nosec
         return True
 
     @staticmethod
