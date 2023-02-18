@@ -152,7 +152,7 @@ class WebServer(object):
         # The value of __package__ indicates how Python was called. It may
         # not exist if a setuptools script is installed as an egg. It may be
         # set incorrectly for entry points created with pip on Windows.
-        if getattr(__main__, "__package__", "") == "" or (
+        if getattr(__main__, "__package__", "") in ["", None] or (
             os.name == "nt"
             and __main__.__package__ == ""
             and not os.path.exists(py_script)
@@ -265,7 +265,7 @@ class WebServer(object):
         if os.environ.get('FLASK_DEBUG'):
             subprocess.run(args, close_fds=True)  # nosec
         else:
-            subprocess.Popen(args, close_fds=True)  # nosec        
+            subprocess.Popen(args, close_fds=True)  # nosec
         return True
 
     @staticmethod
