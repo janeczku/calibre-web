@@ -153,7 +153,7 @@ class WebServer(object):
         # The value of __package__ indicates how Python was called. It may
         # not exist if a setuptools script is installed as an egg. It may be
         # set incorrectly for entry points created with pip on Windows.
-        if getattr(__main__, "__package__", None) is None or (
+        if getattr(__main__, "__package__", "") == "" or (
             os.name == "nt"
             and __main__.__package__ == ""
             and not os.path.exists(py_script)
@@ -263,7 +263,10 @@ class WebServer(object):
 
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
-        subprocess.call(args, close_fds=True)  # nosec
+        if os.environ.get('FLASK_DEBUG'):
+            subprocess.run(args, close_fds=True)  # nosec
+        else:
+            subprocess.Popen(args, close_fds=True)  # nosec
         return True
 
     @staticmethod
