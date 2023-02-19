@@ -193,6 +193,8 @@ class WebServer(object):
                 rv.extend(("-m", py_module.lstrip(".")))
 
         rv.extend(args)
+        if os.name == 'nt':
+            rv = ['"{}"'.format(a) for a in rv]
         return rv
 
     def _start_gevent(self):
@@ -262,10 +264,7 @@ class WebServer(object):
 
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
-        if os.environ.get('FLASK_DEBUG'):
-            subprocess.run(args, close_fds=True)  # nosec
-        else:
-            subprocess.run(args, close_fds=True)  # nosec
+        os.execv(args[0].lstrip('"').rstrip('"'), args)
         return True
 
     @staticmethod
