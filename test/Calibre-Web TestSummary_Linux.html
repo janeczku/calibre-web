@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-02-10 18:46:27</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-02-19 19:38:02</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-02-11 01:04:02</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-02-20 01:56:35</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 20 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 23 min</p>
         </div>
       </div>
       </div>
@@ -726,11 +726,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -749,33 +749,11 @@
     
     
     
-        <tr id="ft9.2" class="none bg-danger">
+        <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft9.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft9.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 176, in test_convert_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Started&#39; != &#39;Finished&#39;
-- Started
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1676,9 +1654,9 @@ AssertionError: 20 != 10</pre>
     <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">15</td>
+        <td class="text-center">17</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c16', 18)">Detail</a>
@@ -1786,33 +1764,11 @@ AssertionError: 20 != 10</pre>
     
     
     
-        <tr id="et16.12" class="none bg-info">
+        <tr id='pt16.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.12')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et16.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et16.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 571, in test_edit_language
-    self.edit_book(content={&#39;languages&#39;: &#39;German&#39;})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1754, in edit_book
-    ele.send_keys(Keys.CONTROL, &#34;a&#34;)
-AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1826,31 +1782,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
     
     
-        <tr id="ft16.14" class="none bg-danger">
+        <tr id='pt16.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.14')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft16.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft16.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 604, in test_edit_rating
-    self.assertEqual(1, len(books[1]))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3697,11 +3633,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3738,11 +3674,31 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
     
     
-        <tr id='pt42.4' class='hiddenRow bg-success'>
+        <tr id="ft42.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 135, in test_cover_change_on_upload_new_cover
+    self.assertGreaterEqual(diff(BytesIO(updated_cover), BytesIO(original_cover), delete_diff_file=True), 0.03)
+AssertionError: 0.029520666495068845 not greater than or equal to 0.03</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3774,11 +3730,31 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
     
     
-        <tr id='pt42.8' class='hiddenRow bg-success'>
+        <tr id="ft42.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft42.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft42.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 310, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.006835200746965453 != 0.0 within 0.0001 delta (0.006835200746965453 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4853,9 +4829,9 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>425</td>
-        <td>413</td>
+        <td>414</td>
         <td>3</td>
-        <td>2</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -4884,7 +4860,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.19.0-28-generic #29~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Dec 15 12:05:40 UTC 2 x86_64 x86_64</td>
+              <td>Linux 5.19.0-32-generic #33~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Jan 30 17:03:34 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5034,7 +5010,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5064,7 +5040,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5094,7 +5070,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5136,7 +5112,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5172,7 +5148,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5214,7 +5190,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.77.0</td>
+              <td>2.78.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5292,7 +5268,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.39.0</td>
+              <td>0.40.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -5304,7 +5280,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
 </div>
 
 <script>
-    drawCircle(413, 3, 2, 7);
+    drawCircle(414, 3, 1, 7);
     showCase(5);
 </script>
 
