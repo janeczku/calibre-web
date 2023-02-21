@@ -181,11 +181,25 @@
         {% for c in cc %}
         <div class="real_custom_columns">
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
-            {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
-                {{ (column.value / 2)|formatfloat }}
+                {% if column.value > 0 %}
+                  <div class="rating">
+                    <p>
+                      {{ c.name }}:
+                      {% for number in range((column.value / 2)|int(2)) %}
+                        <span class="glyphicon glyphicon-star good"></span>
+                        {% if loop.last and loop.index < 5 %}
+                          {% for numer in range(5 - loop.index) %}
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                          {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+                    </p>
+                  </div>
+                {% endif %}
               {% else %}
+                {{ c.name }}:
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
                     <span class="glyphicon glyphicon-ok"></span>
