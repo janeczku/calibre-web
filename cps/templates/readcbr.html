@@ -76,7 +76,6 @@
 
   <div id="mainContent" tabindex="-1">
     <div id="mainText" style="display:none"></div>
-    <canvas id="mainImage"></canvas>
   </div>
   <div id="left" class="arrow" onclick="showLeftPage()">‹</div>
   <div id="right" class="arrow" onclick="showRightPage()">›</div>
@@ -94,6 +93,8 @@
           <tbody>
           <tr><td id="prev_page_key">&larr;</td> <td>{{_('Previous Page')}}</td></tr>
           <tr><td id="next_page_key">&rarr;</td> <td>{{_('Next Page')}}</td></tr>
+          <tr><td>S</td>      <td>{{_('Single Page Display')}}</td></tr>
+          <tr><td>O</td>      <td>{{_('Long Strip Display')}}</td></tr>
           <tr><td>B</td>      <td>{{_('Scale to Best')}}</td></tr>
           <tr><td>W</td>      <td>{{_('Scale to Width')}}</td></tr>
           <tr><td>H</td>      <td>{{_('Scale to Height')}}</td></tr>
@@ -118,6 +119,15 @@
               <div class="inputs">
                 <label for="lightTheme"><input type="radio" id="lightTheme" name="theme" value="light" /> {{_('Light')}}</label>
                 <label for="darkTheme"><input type="radio" id="darkTheme" name="theme" value="dark" /> {{_('Dark')}}</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Display')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="singlePage"><input type="radio" id="singlePage" name="pageDisplay" value="0" /> {{_('Single Page')}}</label>
+                <label for="longStrip"><input type="radio" id="longStrip" name="pageDisplay" value="1" /> {{_('Long Strip')}}</label>
               </div>
             </td>
           </tr>
@@ -158,15 +168,6 @@
               <div class="inputs">
                 <label for="leftToRight"><input type="radio" id="leftToRight" name="direction" value="0" /> {{_('Left to Right')}}</label>
                 <label for="rightToLeft"><input type="radio" id="rightToLeft" name="direction" value="1" /> {{_('Right to Left')}}</label>
-              </div>
-            </td>
-          </tr>
-	        <tr>
-            <th>{{_('Next Page')}}:</th>
-            <td>
-              <div class="inputs">
-                <label for="resetToTop"><input type="radio" id="resetToTop" name="nextPage" value="0" /> {{_('Reset to Top')}}</label>
-                <label for="rememberPosition"><input type="radio" id="rememberPosition" name="nextPage" value="1" /> {{_('Remember Position')}}</label>
               </div>
             </td>
           </tr>
