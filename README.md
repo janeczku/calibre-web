@@ -46,6 +46,12 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 3. Optional features can also be installed via pip, please refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details 
 4. Calibre-Web can be started afterwards by typing `cps` 
 
+Issues with Raspberry Pi - Raspberry Pi OS:
+Depending on your version of pip it's possible that the installation fails with `Failed to build cryptography
+ERROR: Could not build wheels for cryptography, which is required to install pyproject.toml-based projects`. 
+In this case please try to update pip with `./venv/bin/python3 -m pip install --upgrade pip` first, and then try installing Calibre-Web again. 
+If this isn't working please also install cargo via `sudo apt install cargo`, and try installing Calibre-Web again.
+
 In the Wiki there are also examples for: a [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [installation on Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [installation on a Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
 
 ## Quick start

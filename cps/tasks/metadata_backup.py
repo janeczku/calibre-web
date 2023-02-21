@@ -149,7 +149,7 @@ class TaskBackupMetadata(CalibreTask):
         package.set("unique-identifier", "uuid_id")
         package.set("version", "2.0")
 
-        # generate metadata element and all subelements of it
+        # generate metadata element and all sub elements of it
         metadata = etree.SubElement(package, "metadata", nsmap=NSMAP)
         identifier = etree.SubElement(metadata, PURL + "identifier", id="calibre_id", nsmap=NSMAP)
         identifier.set(OPF + "scheme", "calibre")
