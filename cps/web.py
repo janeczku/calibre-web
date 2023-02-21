@@ -1411,10 +1411,10 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
     current_user.random_books = 0
     try:
         if current_user.role_passwd() or current_user.role_admin():
-            if to_save.get('password', "") != "":
-                current_user.password = generate_password_hash(valid_password(to_save.get("password", "")))
-        if to_save.get("eReader_mail", current_user.kindle_mail) != current_user.kindle_mail:
-            current_user.kindle_mail = valid_email(to_save.get("eReader_mail"))
+            if to_save.get("password", "") != "":
+	            current_user.password = generate_password_hash(to_save.get("password"))
+        if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
+            current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
         new_email = valid_email(to_save.get("email", current_user.email))
         if not new_email:
             raise Exception(_("Email can't be empty and has to be a valid Email"))
