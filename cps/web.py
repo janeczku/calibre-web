@@ -1161,7 +1161,14 @@ def serve_book(book_id, book_format, anyname):
     data = calibre_db.get_book_format(book_id, book_format.upper())
     if not data:
         return "File not in Database"
-    log.info('Serving book: %s', data.name)
+    
+    range_header = request.headers.get('Range', None)
+    if not range_header:
+        log.info('Serving book: %s', data.name)
+        response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+        response.headers['Accept-Ranges'] = 'bytes'
+        return response
+    
     if config.config_use_google_drive:
         try:
             headers = Headers()
