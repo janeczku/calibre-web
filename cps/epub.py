@@ -151,7 +151,7 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
 
     cover_file = None
     for cs in cover_section:
-        if cs.endswith('.xhtml') or s.endswith('.html'):
+        if cs.endswith('.xhtml') or cs.endswith('.html'):
             markup = epub_zip.read(os.path.join(cover_path, cs))
             markup_tree = etree.fromstring(markup)
             # no matter xhtml or html with no namespace
