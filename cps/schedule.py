@@ -27,14 +27,12 @@ from .tasks.metadata_backup import TaskBackupMetadata
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
-    # config.schedule_reconnect or
-    # Reconnect Calibre database (metadata.db)
+    # Reconnect Calibre database (metadata.db) based on config.schedule_reconnect
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
     # ToDo make configurable. Generate metadata.opf file for each changed book
-    if False:
-        tasks.append([lambda: TaskBackupMetadata("en"), 'backup metadata', False])
+    tasks.append([lambda: TaskBackupMetadata("en"), 'backup metadata', False])
 
     # Generate all missing book cover thumbnails
     if config.schedule_generate_book_covers:

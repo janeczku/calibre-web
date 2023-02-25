@@ -22,8 +22,8 @@ from urllib.request import urlopen
 from lxml import etree
 from html import escape
 
-from cps import config, db, fs, gdriveutils, logger, ub
-from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
+from cps import config, db, gdriveutils, logger
+from cps.services.worker import CalibreTask
 from flask_babel import lazy_gettext as N_
 
 OPF_NAMESPACE = "http://www.idpf.org/2007/opf"
@@ -74,7 +74,10 @@ class TaskBackupMetadata(CalibreTask):
     def backup_metadata(self):
         try:
             metadata_backup = self.calibre_db.session.query(db.Metadata_Dirtied).all()
-            custom_columns = self.calibre_db.session.query(db.CustomColumns).order_by(db.CustomColumns.label).all()
+            custom_columns = (self.calibre_db.session.query(db.CustomColumns)
+                              .filter(db.CustomColumns.mark_for_delete == 0)
+                              .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
+                              .order_by(db.CustomColumns.label).all())
             count = len(metadata_backup)
             i = 0
             for backup in metadata_backup:
@@ -226,11 +229,11 @@ class TaskBackupMetadata(CalibreTask):
         # doc = etree.tostring(package, xml_declaration=True, encoding='utf-8', pretty_print=True) # .replace(b"&amp;quot;", b"&quot;")
         try:
             with open(book_metadata_filepath, 'wb') as f:
-                # f.write(doc)
                 doc.write(f, xml_declaration=True, encoding='utf-8', pretty_print=True)
         except Exception:
             # ToDo: Folder not writeable error
             pass
+
     @property
     def name(self):
         return "Metadata backup"
