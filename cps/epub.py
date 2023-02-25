@@ -21,6 +21,7 @@ import zipfile
 from lxml import etree
 
 from . import isoLanguages, cover
+from . import config
 from .helper import split_authors
 from .constants import BookMeta
 
@@ -40,6 +41,30 @@ def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     if extension in cover.COVER_EXTENSIONS:
         cf = zip_file.read(zip_cover_path)
     return cover.cover_processing(tmp_file_name, cf, extension)
+
+def get_epub_layout(book, book_data):
+    ns = {
+        'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
+        'pkg': 'http://www.idpf.org/2007/opf',
+    }
+
+    file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
+
+    epubZip = zipfile.ZipFile(file_path)
+
+    txt = epubZip.read('META-INF/container.xml')
+    tree = etree.fromstring(txt)
+    cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
+    cf = epubZip.read(cfname)
+    tree = etree.fromstring(cf)
+    p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
+
+    layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
+
+    if len(layout) == 0:
+        return None
+    else:
+        return layout[0]
 
 
 def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
