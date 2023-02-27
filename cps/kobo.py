@@ -21,6 +21,7 @@ import base64
 import datetime
 import os
 import uuid
+import zipfile
 from time import gmtime, strftime
 import json
 from urllib.parse import unquote
@@ -460,18 +461,21 @@ def get_metadata(book):
             continue
         for kobo_format in KOBO_FORMATS[book_data.format]:
             # log.debug('Id: %s, Format: %s' % (book.id, kobo_format))
-            if get_epub_layout(book, book_data) == 'pre-paginated':
-                kobo_format = 'EPUB3FL'
-            download_urls.append(
-                {
-                    "Format": kobo_format,
-                    "Size": book_data.uncompressed_size,
-                    "Url": get_download_url_for_book(book, book_data.format),
-                    # The Kobo forma accepts platforms: (Generic, Android)
-                    "Platform": "Generic",
-                    # "DrmType": "None", # Not required
-                }
-            )
+            try:
+                if get_epub_layout(book, book_data) == 'pre-paginated':
+                    kobo_format = 'EPUB3FL'
+                download_urls.append(
+                    {
+                        "Format": kobo_format,
+                        "Size": book_data.uncompressed_size,
+                        "Url": get_download_url_for_book(book, book_data.format),
+                        # The Kobo forma accepts platforms: (Generic, Android)
+                        "Platform": "Generic",
+                        # "DrmType": "None", # Not required
+                    }
+                )
+            except (zipfile.BadZipfile, FileNotFoundError) as e:
+                log.error(e)
 
     book_uuid = book.uuid
     metadata = {
