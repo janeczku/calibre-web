@@ -47,11 +47,9 @@ def get_epub_layout(book, book_data):
         'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
         'pkg': 'http://www.idpf.org/2007/opf',
     }
-
     file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
 
     epubZip = zipfile.ZipFile(file_path)
-
     txt = epubZip.read('META-INF/container.xml')
     tree = etree.fromstring(txt)
     cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
