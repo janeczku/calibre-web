@@ -27,8 +27,7 @@ from .tasks.metadata_backup import TaskBackupMetadata
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
-    # config.schedule_reconnect or
-    # Reconnect Calibre database (metadata.db)
+    # Reconnect Calibre database (metadata.db) based on config.schedule_reconnect
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 

@@ -30,6 +30,8 @@ from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_limiter import RateLimitExceeded
+from flask_limiter.util import get_remote_address
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
@@ -46,7 +48,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status
+    edit_book_read_status, valid_password
 from .pagination import Pagination
 from .redirect import redirect_back
 from .babel import get_available_locale
@@ -54,8 +56,10 @@ from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
 from .kobo_sync_status import change_archived_books
+from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
+
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -1230,8 +1234,62 @@ def send_to_ereader(book_id, book_format, convert):
 
 # ################################### Login Logout ##################################################################
 
+@web.route('/register', methods=['POST'])
+@limiter.limit("40/day", key_func=get_remote_address)
+@limiter.limit("3/minute", key_func=get_remote_address)
+def register_post():
+    if not config.config_public_reg:
+        abort(404)
+    to_save = request.form.to_dict()
+    try:
+        limiter.check()
+    except RateLimitExceeded:
+        flash(_(u"Please wait one minute to register next user"), category="error")
+        return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    if current_user is not None and current_user.is_authenticated:
+        return redirect(url_for('web.index'))
+    if not config.get_mail_server_configured():
+        flash(_("Oops! Email server is not configured, please contact your administrator."), category="error")
+        return render_title_template('register.html', title=_("Register"), page="register")
+    nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
+    if not nickname or not to_save.get("email"):
+        flash(_("Oops! Please complete all fields."), category="error")
+        return render_title_template('register.html', title=_("Register"), page="register")
+    try:
+        nickname = check_username(nickname)
+        email = check_email(to_save.get("email", ""))
+    except Exception as ex:
+        flash(str(ex), category="error")
+        return render_title_template('register.html', title=_("Register"), page="register")
 
-@web.route('/register', methods=['GET', 'POST'])
+    content = ub.User()
+    if check_valid_domain(email):
+        content.name = nickname
+        content.email = email
+        password = generate_random_password(config.config_password_min_length)
+        content.password = generate_password_hash(password)
+        content.role = config.config_default_role
+        content.locale = config.config_default_locale
+        content.sidebar_view = config.config_default_show
+        try:
+            ub.session.add(content)
+            ub.session.commit()
+            if feature_support['oauth']:
+                register_user_with_oauth(content)
+            send_registration_mail(to_save.get("email", "").strip(), nickname, password)
+        except Exception:
+            ub.session.rollback()
+            flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
+            return render_title_template('register.html', title=_("Register"), page="register")
+    else:
+        flash(_("Oops! Your Email is not allowed."), category="error")
+        log.warning('Registering failed for user "{}" Email: {}'.format(nickname, to_save.get("email","")))
+        return render_title_template('register.html', title=_("Register"), page="register")
+    flash(_("Success! Confirmation Email has been sent."), category="success")
+    return redirect(url_for('web.login'))
+
+
+@web.route('/register', methods=['GET'])
 def register():
     if not config.config_public_reg:
         abort(404)
@@ -1240,114 +1298,20 @@ def register():
     if not config.get_mail_server_configured():
         flash(_("Oops! Email server is not configured, please contact your administrator."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
-
-    if request.method == "POST":
-        to_save = request.form.to_dict()
-        nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
-        if not nickname or not to_save.get("email"):
-            flash(_("Oops! Please complete all fields."), category="error")
-            return render_title_template('register.html', title=_("Register"), page="register")
-        try:
-            nickname = check_username(nickname)
-            email = check_email(to_save.get("email", ""))
-        except Exception as ex:
-            flash(str(ex), category="error")
-            return render_title_template('register.html', title=_("Register"), page="register")
-
-        content = ub.User()
-        if check_valid_domain(email):
-            content.name = nickname
-            content.email = email
-            password = generate_random_password()
-            content.password = generate_password_hash(password)
-            content.role = config.config_default_role
-            content.locale = config.config_default_locale
-            content.sidebar_view = config.config_default_show
-            try:
-                ub.session.add(content)
-                ub.session.commit()
-                if feature_support['oauth']:
-                    register_user_with_oauth(content)
-                send_registration_mail(to_save.get("email", "").strip(), nickname, password)
-            except Exception:
-                ub.session.rollback()
-                flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
-                return render_title_template('register.html', title=_("Register"), page="register")
-        else:
-            flash(_("Oops! Your Email is not allowed."), category="error")
-            log.warning('Registering failed for user "{}" Email: {}'.format(nickname,
-                                                                                     to_save.get("email","")))
-            return render_title_template('register.html', title=_("Register"), page="register")
-        flash(_("Success! Confirmation Email has been sent."), category="success")
-        return redirect(url_for('web.login'))
-
     if feature_support['oauth']:
         register_user_with_oauth()
     return render_title_template('register.html', config=config, title=_("Register"), page="register")
 
 
-@web.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('web.index'))
-    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
-        log.error("Cannot activate LDAP authentication")
-        flash(_("Oops! Cannot activate LDAP authentication"), category="error")
-    if request.method == "POST":
-        form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form['username'].strip().lower()) \
-            .first()
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
-            login_result, error = services.ldap.bind_user(form['username'], form['password'])
-            if login_result:
-                login_user(user, remember=bool(form.get('remember_me')))
-                ub.store_user_session()
-                log.debug("You are now logged in as: '{}'".format(user.name))
-                flash(_("Success! You are now logged in as: %(nickname)s", nickname=user.name),
-                      category="success")
-                return redirect_back(url_for("web.index"))
-            elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
-                    and user.name != "Guest":
-                login_user(user, remember=bool(form.get('remember_me')))
-                ub.store_user_session()
-                log.info("Local Fallback Login as: '{}'".format(user.name))
-                flash(_("Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known",
-                        nickname=user.name),
-                      category="warning")
-                return redirect_back(url_for("web.index"))
-            elif login_result is None:
-                log.info(error)
-                flash(_("Oops! Login Failed: %(message)s", message=error), category="error")
-            else:
-                ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_address)
-                flash(_("Oops! Invalid Username or Password."), category="error")
-        else:
-            ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-            if form.get('forgot', "") == 'forgot':
-                if user is not None and user.name != "Guest":
-                    ret, __ = reset_password(user.id)
-                    if ret == 1:
-                        flash(_("Success! New Password was sent to your Email."), category="info")
-                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_address)
-                    else:
-                        log.error("An unknown error occurred. Please try again later")
-                        flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
-                else:
-                    flash(_("Oops! Please enter a valid username to reset password"), category="error")
-                    log.warning('Username missing for password reset IP-address: %s', ip_address)
-            else:
-                if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
-                    login_user(user, remember=bool(form.get('remember_me')))
-                    ub.store_user_session()
-                    log.debug("You are now logged in as: '%s'", user.name)
-                    flash(_("Success! You are now logged in as: %(nickname)s", nickname=user.name), category="success")
-                    config.config_is_initial = False
-                    return redirect_back(url_for("web.index"))
-                else:
-                    log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
-                    flash(_("Oops! Invalid Username or Password."), category="error")
+def handle_login_user(user, remember, message, category):
+    login_user(user, remember=remember)
+    ub.store_user_session()
+    flash(message, category=category)
+    [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+    return redirect_back(url_for("web.index"))
 
+
+def render_login(username="", password=""):
     next_url = request.args.get('next', default=url_for("web.index"), type=str)
     if url_for("web.logout") == next_url:
         next_url = url_for("web.index")
@@ -1355,8 +1319,89 @@ def login():
                                  title=_("Login"),
                                  next_url=next_url,
                                  config=config,
+                                 username=username,
+                                 password=password,
                                  oauth_check=oauth_check,
                                  mail=config.get_mail_server_configured(), page="login")
+
+
+@web.route('/login', methods=['GET'])
+def login():
+    if current_user is not None and current_user.is_authenticated:
+        return redirect(url_for('web.index'))
+    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
+        log.error(u"Cannot activate LDAP authentication")
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
+    return render_login()
+
+
+@web.route('/login', methods=['POST'])
+@limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+def login_post():
+    form = request.form.to_dict()
+    try:
+        limiter.check()
+    except RateLimitExceeded:
+        flash(_(u"Please wait one minute before next login"), category="error")
+        return render_login(form.get("username", ""), form.get("password", ""))
+    if current_user is not None and current_user.is_authenticated:
+        return redirect(url_for('web.index'))
+    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
+        log.error(u"Cannot activate LDAP authentication")
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
+        .first()
+    remember_me = bool(form.get('remember_me'))
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+        login_result, error = services.ldap.bind_user(form['username'], form['password'])
+        if login_result:
+            log.debug(u"You are now logged in as: '{}'".format(user.name))
+            return handle_login_user(user,
+                                     remember_me,
+                                     _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
+                                     "success")
+        elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
+                and user.name != "Guest":
+            log.info("Local Fallback Login as: '{}'".format(user.name))
+            return handle_login_user(user,
+                                     remember_me,
+                                     _(u"Fallback Login as: '%(nickname)s', "
+                                       u"LDAP Server not reachable, or user not known", nickname=user.name),
+                                     "warning")
+        elif login_result is None:
+            log.info(error)
+            flash(_(u"Could not login: %(message)s", message=error), category="error")
+        else:
+            ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+            log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ip_address)
+            flash(_(u"Wrong Username or Password"), category="error")
+    else:
+        ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+        if form.get('forgot', "") == 'forgot':
+            if user is not None and user.name != "Guest":
+                ret, __ = reset_password(user.id)
+                if ret == 1:
+                    flash(_(u"New Password was send to your email address"), category="info")
+                    log.info('Password reset for user "%s" IP-address: %s', form['username'], ip_address)
+                else:
+                    log.error(u"An unknown error occurred. Please try again later")
+                    flash(_(u"An unknown error occurred. Please try again later."), category="error")
+            else:
+                flash(_(u"Please enter valid username to reset password"), category="error")
+                log.warning('Username missing for password reset IP-address: %s', ip_address)
+        else:
+            if user and check_password_hash(str(user.password), form['password']) and user.name != "Guest":
+                config.config_is_initial = False
+                log.debug(u"You are now logged in as: '{}'".format(user.name))
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"You are now logged in as: '%(nickname)s'", nickname=user.name),
+                                         "success")
+            else:
+                log.warning('Login failed for user "{}" IP-address: {}'.format(form['username'], ip_address))
+                flash(_(u"Wrong Username or Password"), category="error")
+    return render_login(form.get("username", ""), form.get("password", ""))
 
 
 @web.route('/logout')
@@ -1375,10 +1420,10 @@ def logout():
 def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
     to_save = request.form.to_dict()
     current_user.random_books = 0
-    if current_user.role_passwd() or current_user.role_admin():
-        if to_save.get("password"):
-            current_user.password = generate_password_hash(to_save.get("password"))
     try:
+        if current_user.role_passwd() or current_user.role_admin():
+            if to_save.get("password", "") != "":
+	            current_user.password = generate_password_hash(to_save.get("password"))
         if to_save.get("kindle_mail", current_user.kindle_mail) != current_user.kindle_mail:
             current_user.kindle_mail = valid_email(to_save.get("kindle_mail"))
         new_email = valid_email(to_save.get("email", current_user.email))
@@ -1405,6 +1450,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         flash(str(ex), category="error")
         return render_title_template("user_edit.html",
                                      content=current_user,
+                                     config=config,
                                      translations=translations,
                                      profile=1,
                                      languages=languages,
@@ -1456,6 +1502,7 @@ def profile():
                                  profile=1,
                                  languages=languages,
                                  content=current_user,
+                                 config=config,
                                  kobo_support=kobo_support,
                                  title=_("%(name)s's Profile", name=current_user.name),
                                  page="me",

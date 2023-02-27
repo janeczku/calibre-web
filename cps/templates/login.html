@@ -7,11 +7,11 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label for="username">{{_('Username')}}</label>
-      <input type="text" class="form-control" id="username" name="username" autocapitalize="off" placeholder="{{_('Username')}}">
+      <input type="text" class="form-control" id="username" name="username" autocapitalize="off" placeholder="{{_('Username')}}" value="{{ username }}">
     </div>
     <div class="form-group">
       <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}">
+      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
     </div>
     <div class="checkbox">
       <label>

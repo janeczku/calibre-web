@@ -22,7 +22,6 @@
 
 import os
 import re
-import base64
 import json
 import operator
 import time
@@ -104,7 +103,6 @@ def before_request():
     if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
         logout_user()
     g.constants = constants
-    # g.user = current_user
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
@@ -116,6 +114,7 @@ def before_request():
                                  'admin.simulatedbchange',
                                  'admin.db_configuration',
                                  'web.login',
+                                 'web.login_post',
                                  'web.logout',
                                  'admin.load_dialogtexts',
                                  'admin.ajax_pathchooser'):
@@ -214,12 +213,12 @@ def admin():
             commit = version['version']
 
     all_user = ub.session.query(ub.User).all()
-    email_settings = config.get_mail_settings()
+    # email_settings = mail_config.get_mail_settings()
     schedule_time = format_time(datetime_time(hour=config.schedule_start_time), format="short")
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
     schedule_duration = format_timedelta(t, threshold=.99)
 
-    return render_title_template("admin.html", allUser=all_user, email=email_settings, config=config, commit=commit,
+    return render_title_template("admin.html", allUser=all_user, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
                                  schedule_duration=schedule_duration,
                                  title=_("Admin page"), page="admin")
@@ -1084,7 +1083,7 @@ def _config_checkbox_int(to_save, x):
 
 
 def _config_string(to_save, x):
-    return config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
+    return config.set_from_dictionary(to_save, x, lambda y: y.strip().strip(u'\u200B\u200C\u200D\ufeff') if y else y)
 
 
 def _configuration_gdrive_helper(to_save):
@@ -1173,9 +1172,9 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
-    if to_save.get("config_ldap_serv_password", "") != "":
+    if to_save.get("config_ldap_serv_password_e", "") != "":
         reboot_required |= 1
-        config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
+        config.set_from_dictionary(to_save, "config_ldap_serv_password_e")
     config.save()
 
     if not config.config_ldap_provider_url \
@@ -1187,7 +1186,7 @@ def _configuration_ldap_helper(to_save):
 
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
-            if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
+            if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password_e):
                 return reboot_required, _configuration_result(_('Please Enter a LDAP Service Account and Password'))
         else:
             if not config.config_ldap_serv_username:
@@ -1255,7 +1254,7 @@ def new_user():
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
-@admi.route("/admin/mailsettings")
+@admi.route("/admin/mailsettings", methods=["GET"])
 @login_required
 @admin_required
 def edit_mailsettings():
@@ -1288,7 +1287,7 @@ def update_mailsettings():
     else:
         _config_int(to_save, "mail_port")
         _config_int(to_save, "mail_use_ssl")
-        _config_string(to_save, "mail_password")
+        _config_string(to_save, "mail_password_e")
         _config_int(to_save, "mail_size", lambda y: int(y) * 1024 * 1024)
         config.mail_server = to_save.get('mail_server', "").strip()
         config.mail_from = to_save.get('mail_from', "").strip()
@@ -1348,7 +1347,7 @@ def update_scheduledtasks():
     error = False
     to_save = request.form.to_dict()
     if 0 <= int(to_save.get("schedule_start_time")) <= 23:
-        _config_int(to_save, "schedule_start_time")
+        _config_int( to_save, "schedule_start_time")
     else:
         flash(_("Invalid start time for task specified"), category="error")
         error = True
@@ -1771,10 +1770,10 @@ def _configuration_update_helper():
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
         _config_string(to_save, "config_goodreads_api_key")
-        _config_string(to_save, "config_goodreads_api_secret")
+        _config_string(to_save, "config_goodreads_api_secret_e")
         if services.goodreads_support:
             services.goodreads_support.connect(config.config_goodreads_api_key,
-                                               config.config_goodreads_api_secret,
+                                               config.config_goodreads_api_secret_e,
                                                config.config_use_goodreads)
 
         _config_int(to_save, "config_updatechannel")
@@ -1787,10 +1786,25 @@ def _configuration_update_helper():
         if config.config_login_type == constants.LOGIN_OAUTH:
             reboot_required |= _configuration_oauth_helper(to_save)
 
+        # logfile configuration
         reboot, message = _configuration_logfile_helper(to_save)
         if message:
             return message
         reboot_required |= reboot
+
+        # security configuration
+        _config_checkbox(to_save, "config_password_policy")
+        _config_checkbox(to_save, "config_password_number")
+        _config_checkbox(to_save, "config_password_lower")
+        _config_checkbox(to_save, "config_password_upper")
+        _config_checkbox(to_save, "config_password_special")
+        if 0 < int(to_save.get("config_password_min_length", "0")) < 41:
+            _config_int(to_save, "config_password_min_length")
+        else:
+            return _configuration_result(_('Password length has to be between 1 and 40'))
+        reboot_required |= _config_int(to_save, "config_session")
+        reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
+
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
         if "config_rarfile_location" in to_save:
@@ -1859,11 +1873,11 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.sidebar_view |= constants.DETAIL_RANDOM
 
     content.role = constants.selected_roles(to_save)
-    content.password = generate_password_hash(to_save["password"])
     try:
         if not to_save["name"] or not to_save["email"] or not to_save["password"]:
             log.info("Missing entries on new user")
             raise Exception(_("Oops! Please complete all fields."))
+        content.password = generate_password_hash(helper.valid_password(to_save.get("password", "")))
         content.email = check_email(to_save["email"])
         # Query username, if not existing, change
         content.name = check_username(to_save["name"])
@@ -1947,14 +1961,6 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             log.warning("No admin user remaining, can't remove admin role from {}".format(content.name))
             flash(_("No admin user remaining, can't remove admin role"), category="error")
             return redirect(url_for('admin.admin'))
-        if to_save.get("password"):
-            content.password = generate_password_hash(to_save["password"])
-        anonymous = content.is_anonymous
-        content.role = constants.selected_roles(to_save)
-        if anonymous:
-            content.role |= constants.ROLE_ANONYMOUS
-        else:
-            content.role &= ~constants.ROLE_ANONYMOUS
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
         sidebar, __ = get_sidebar_config()
@@ -1982,6 +1988,15 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
         if to_save.get("locale"):
             content.locale = to_save["locale"]
         try:
+            anonymous = content.is_anonymous
+            content.role = constants.selected_roles(to_save)
+            if anonymous:
+                content.role |= constants.ROLE_ANONYMOUS
+            else:
+                content.role &= ~constants.ROLE_ANONYMOUS
+                if to_save.get("password", ""):
+                    content.password = generate_password_hash(helper.valid_password(to_save.get["password"]))
+
             new_email = valid_email(to_save.get("email", content.email))
             if not new_email:
                 raise Exception(_("Email can't be empty and has to be a valid Email"))

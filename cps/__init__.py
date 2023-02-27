@@ -42,6 +42,11 @@ from . import cache_buster
 from . import ub, db
 
 try:
+    from flask_limiter import Limiter
+    limiter_present = True
+except ImportError:
+    limiter_present = False
+try:
     from flask_wtf.csrf import CSRFProtect
     wtf_present = True
 except ImportError:
@@ -81,7 +86,7 @@ app.config.update(
 
 lm = MyLoginManager()
 
-config = config_sql._ConfigSQL()
+config = config_sql.ConfigSQL()
 
 cli_param = CliParameter()
 
@@ -96,33 +101,36 @@ web_server = WebServer()
 
 updater_thread = Updater()
 
+if limiter_present:
+    limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=True)
+else:
+    limiter = None
 
 def create_app():
-    lm.login_view = 'web.login'
-    lm.anonymous_user = ub.Anonymous
-    lm.session_protection = 'strong'
-
     if csrf:
         csrf.init_app(app)
 
     cli_param.init()
 
-    ub.init_db(cli_param.settings_path, cli_param.user_credentials)
-
+    ub.init_db(cli_param.settings_path)
     # pylint: disable=no-member
-    config_sql.load_configuration(config, ub.session, cli_param)
+    encrypt_key, error = config_sql.get_encryption_key(os.path.dirname(cli_param.settings_path))
 
-    db.CalibreDB.update_config(config)
-    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
-    calibre_db.init_db()
+    config_sql.load_configuration(ub.session, encrypt_key)
+    config.init_config(ub.session, encrypt_key, cli_param)
 
-    updater_thread.init_updater(config, web_server)
-    # Perform dry run of updater and exit afterwards
-    if cli_param.dry_run:
-        updater_thread.dry_run()
-        sys.exit(0)
-    updater_thread.start()
+    if error:
+        log.error(error)
 
+    ub.password_change(cli_param.user_credentials)
+
+    if not limiter:
+        log.info('*** "flask-limiter" is needed for calibre-web to run. '
+                 'Please install it using pip: "pip install flask-limiter" ***')
+        print('*** "flask-limiter" is needed for calibre-web to run. '
+              'Please install it using pip: "pip install flask-limiter" ***')
+        web_server.stop(True)
+        sys.exit(8)
     if sys.version_info < (3, 0):
         log.info(
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
@@ -139,6 +147,22 @@ def create_app():
               'Please install it using pip: "pip install flask-WTF" ***')
         web_server.stop(True)
         sys.exit(7)
+
+    lm.login_view = 'web.login'
+    lm.anonymous_user = ub.Anonymous
+    lm.session_protection = 'strong' if config.config_session == 1 else "basic"
+
+    db.CalibreDB.update_config(config)
+    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
+    calibre_db.init_db()
+
+    updater_thread.init_updater(config, web_server)
+    # Perform dry run of updater and exit afterwards
+    if cli_param.dry_run:
+        updater_thread.dry_run()
+        sys.exit(0)
+    updater_thread.start()
+
     for res in dependency_check() + dependency_check(True):
         log.info('*** "{}" version does not meet the requirements. '
                  'Should: {}, Found: {}, please consider installing required version ***'
@@ -150,7 +174,6 @@ def create_app():
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
     log.info('Starting Calibre Web...')
-
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
@@ -168,9 +191,13 @@ def create_app():
         services.ldap.init_app(app, config)
     if services.goodreads_support:
         services.goodreads_support.connect(config.config_goodreads_api_key,
-                                           config.config_goodreads_api_secret,
+                                           config.config_goodreads_api_secret_e,
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
+    # Configure rate limiter
+    app.config.update(RATELIMIT_ENABLED=config.config_ratelimiter)
+    limiter.init_app(app)
+
     # Register scheduled tasks
     from .schedule import register_scheduled_tasks, register_startup_tasks
     register_scheduled_tasks(config.schedule_reconnect)

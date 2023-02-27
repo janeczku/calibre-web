@@ -202,8 +202,8 @@ class TaskEmail(CalibreTask):
             self.asyncSMTP.set_debuglevel(1)
         if use_ssl == 1:
             self.asyncSMTP.starttls()
-        if self.settings["mail_password"]:
-            self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password"]))
+        if self.settings["mail_password_e"]:
+            self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password_e"]))
 
         # Convert message to something to send
         fp = StringIO()

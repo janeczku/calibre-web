@@ -151,13 +151,13 @@ $("#form-upload").uploadprogress({
 });
 
 $(document).ready(function() {
-  var inp = $('#query').first()
-  if (inp.length) {
-    var val = inp.val()
-    if (val.length) {
-      inp.val('').blur().focus().val(val)
+    var inp = $('#query').first()
+    if (inp.length) {
+        var val = inp.val()
+        if (val.length) {
+            inp.val('').blur().focus().val(val)
+        }
     }
-  }
 });
 
 $(".session").click(function() {
