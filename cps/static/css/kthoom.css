@@ -149,6 +149,20 @@ body {
   word-wrap: break-word;
 }
 
+#mainContent > canvas {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.long-strip > .mainImage {
+  margin-bottom: 4px;
+}
+
+.long-strip > .mainImage:last-child {
+  margin-bottom: 0px !important;
+}
+
 #titlebar {
   min-height: 25px;
   height: auto;

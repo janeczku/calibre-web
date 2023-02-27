@@ -1165,11 +1165,15 @@ def serve_book(book_id, book_format, anyname):
     data = calibre_db.get_book_format(book_id, book_format.upper())
     if not data:
         return "File not in Database"
-    log.info('Serving book: %s', data.name)
+    range_header = request.headers.get('Range', None)
+
     if config.config_use_google_drive:
         try:
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
+            if not range_header:
+                log.info('Serving book: %s', data.name)
+                headers['Accept-Ranges'] = 'bytes'
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
             return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
         except AttributeError as ex:
@@ -1177,6 +1181,7 @@ def serve_book(book_id, book_format, anyname):
             return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
+            log.info('Serving book: %s', data.name)
             try:
                 rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
                                "rb").read()
@@ -1186,7 +1191,13 @@ def serve_book(book_id, book_format, anyname):
             except FileNotFoundError:
                 log.error("File Not Found")
                 return "File Not Found"
-        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
+        # enable byte range read of pdf
+        response = make_response(
+            send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+        if not range_header:
+            log.info('Serving book: %s', data.name)
+            response.headers['Accept-Ranges'] = 'bytes'
+        return response
 
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
