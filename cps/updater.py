@@ -401,7 +401,7 @@ class Updater(threading.Thread):
             os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
             os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml', os.sep + 'venv', os.sep + 'virtualenv',
-            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2',
+            os.sep + 'access.log', os.sep + 'access.log1', os.sep + 'access.log2', os.sep + '.key',
             os.sep + '.calibre-web.log.swp', os.sep + '_sqlite3.so', os.sep + 'cps' + os.sep + '.HOMEDIR',
             os.sep + 'gmail.json', os.sep + 'exclude.txt', os.sep + 'cps' + os.sep + 'cache'
         ]
