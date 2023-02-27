@@ -1940,10 +1940,10 @@ def _delete_user(content):
             log.info("User {} deleted".format(content.name))
             return _("User '%(nick)s' deleted", nick=content.name)
         else:
-            log.warning(_("Can't delete Guest User"))
+            # log.warning(_("Can't delete Guest User"))
             raise Exception(_("Can't delete Guest User"))
     else:
-        log.warning("No admin user remaining, can't delete user")
+        # log.warning("No admin user remaining, can't delete user")
         raise Exception(_("No admin user remaining, can't delete user"))
 
 
