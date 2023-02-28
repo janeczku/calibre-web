@@ -163,7 +163,7 @@ def queue_metadata_backup():
     show_text = {}
     log.warning("Queuing all books for metadata backup")
     helper.set_all_metadata_dirty()
-    show_text['text'] = _('Success! Books queued for Metadata Backup')
+    show_text['text'] = _('Success! Books queued for Metadata Backup, please check Tasks for result')
     return json.dumps(show_text)
 
 
@@ -1995,7 +1995,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             else:
                 content.role &= ~constants.ROLE_ANONYMOUS
                 if to_save.get("password", ""):
-                    content.password = generate_password_hash(helper.valid_password(to_save.get["password"]))
+                    content.password = generate_password_hash(helper.valid_password(to_save.get("password", "")))
 
             new_email = valid_email(to_save.get("email", content.email))
             if not new_email:
