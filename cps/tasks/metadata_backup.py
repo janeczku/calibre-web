@@ -89,7 +89,6 @@ class TaskBackupMetadata(CalibreTask):
                     self.open_metadata(book, custom_columns)
                 else:
                     self.log.error("Book {} not found in database".format(backup.book))
-                    # self._handleError("Book {} not found in database".format(backup.book))
                 i += 1
                 self.progress = (1.0 / count) * i
             self._handleSuccess()
@@ -230,9 +229,8 @@ class TaskBackupMetadata(CalibreTask):
         try:
             with open(book_metadata_filepath, 'wb') as f:
                 doc.write(f, xml_declaration=True, encoding='utf-8', pretty_print=True)
-        except Exception:
-            # ToDo: Folder not writeable error
-            pass
+        except Exception as ex:
+            raise Exception('Writing Metadata failed with error: {} '.format(ex))
 
     @property
     def name(self):
