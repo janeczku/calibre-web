@@ -37,7 +37,7 @@ beautifulsoup4>=4.0.1,<4.12.0
 cchardet>=2.0.0,<2.2.0
 
 # Comics
-natsort>=2.2.0,<8.3.0
+natsort>=2.2.0,<8.4.0
 comicapi>=2.2.0,<2.3.0
 
 # Kobo integration
