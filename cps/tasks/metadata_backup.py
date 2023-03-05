@@ -177,6 +177,9 @@ class TaskBackupMetadata(CalibreTask):
             for b in book.comments:
                 description = etree.SubElement(metadata, PURL + "description", nsmap=NSMAP)
                 description.text = b.text
+        for b in book.publishers:
+            publisher = etree.SubElement(metadata, PURL + "publisher", nsmap=NSMAP)
+            publisher.text = str(b.name)
         if not book.languages:
             language = etree.SubElement(metadata, PURL + "language", nsmap=NSMAP)
             language.text = self.export_language
