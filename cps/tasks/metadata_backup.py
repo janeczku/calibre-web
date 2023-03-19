@@ -173,7 +173,7 @@ class TaskBackupMetadata(CalibreTask):
 
         date = etree.SubElement(metadata, PURL + "date", nsmap=NSMAP)
         date.text = '{d.year:04}-{d.month:02}-{d.day:02}T{d.hour:02}:{d.minute:02}:{d.second:02}'.format(d=book.pubdate)
-        if book.comments:
+        if book.comments and book.comments[0].text:
             for b in book.comments:
                 description = etree.SubElement(metadata, PURL + "description", nsmap=NSMAP)
                 description.text = b.text
@@ -201,6 +201,10 @@ class TaskBackupMetadata(CalibreTask):
             etree.SubElement(metadata, "meta", name="calibre:series_index",
                              content=str(book.series_index),
                              nsmap=NSMAP)
+        if len(book.ratings) and book.ratings[0].rating > 0:
+            etree.SubElement(metadata, "meta", name="calibre:rating",
+                             content=str(book.ratings[0].rating),
+                             nsmap=NSMAP)
         etree.SubElement(metadata, "meta", name="calibre:timestamp",
                          content='{d.year:04}-{d.month:02}-{d.day:02}T{d.hour:02}:{d.minute:02}:{d.second:02}'.format(
                              d=book.timestamp),
@@ -214,8 +218,8 @@ class TaskBackupMetadata(CalibreTask):
             extra = None
             cc_entry = getattr(book, "custom_column_" + str(cc.id))
             if cc_entry.__len__():
-                value = cc_entry[0].get("value")
-                extra = cc_entry[0].get("extra")
+                value = cc_entry[0].value
+                extra = cc_entry[0].extra if hasattr(cc_entry[0], "extra") else None
             etree.SubElement(metadata, "meta", name="calibre:user_metadata:#{}".format(cc.label),
                              content=cc.to_json(value, extra, sequence),
                              nsmap=NSMAP)
