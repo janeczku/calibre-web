@@ -218,7 +218,7 @@ class TaskBackupMetadata(CalibreTask):
             extra = None
             cc_entry = getattr(book, "custom_column_" + str(cc.id))
             if cc_entry.__len__():
-                value = cc_entry[0].value
+                value = [c.value for c in cc_entry] if cc.is_multiple else cc_entry[0].value
                 extra = cc_entry[0].extra if hasattr(cc_entry[0], "extra") else None
             etree.SubElement(metadata, "meta", name="calibre:user_metadata:#{}".format(cc.label),
                              content=cc.to_json(value, extra, sequence),
