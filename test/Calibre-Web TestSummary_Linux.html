@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-03-05 19:08:50</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-03-20 06:27:14</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-03-06 01:50:49</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-03-20 13:00:29</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 46 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 35 min</p>
         </div>
       </div>
       </div>
@@ -236,120 +236,380 @@
 
     <tr id="su" class="errorClass">
         <td>TestBackupMetadata</td>
-        <td class="text-center">14</td>
-        <td class="text-center">13</td>
-        <td class="text-center">0</td>
+        <td class="text-center">16</td>
         <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">14</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c2', 14)">Detail</a>
+            <a onclick="showClassDetail('c2', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt2.1' class='hiddenRow bg-success'>
+        <tr id="ft2.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_all</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 111, in test_backup_all
+    self.assertEqual(1, len(res))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.2' class='hiddenRow bg-success'>
+        <tr id="et2.2" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt2.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_book_custom_bool</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 237, in test_backup_change_book_author
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Frodo Beutlin/Der Buchtitel (1)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt2.4' class='hiddenRow bg-success'>
+        <tr id="et2.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_description</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 337, in test_backup_change_book_description
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.5' class='hiddenRow bg-success'>
+        <tr id="et2.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_language</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 297, in test_backup_change_book_language
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.6' class='hiddenRow bg-success'>
+        <tr id="et2.5" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 205, in test_backup_change_book_publisher
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Frodo Beutlin/Der Buchtitel (1)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.7' class='hiddenRow bg-success'>
+        <tr id="et2.6" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publishing_date</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 260, in test_backup_change_book_publishing_date
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Hector Goncalves/book9 (11)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.8' class='hiddenRow bg-success'>
+        <tr id="et2.7" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt2.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_book_read_status</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 318, in test_backup_change_book_rating
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt2.10' class='hiddenRow bg-success'>
+        <tr id="et2.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_seriesindex</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 166, in test_backup_change_book_seriesindex
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Frodo Beutlin/Der Buchtitel (1)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt2.11' class='hiddenRow bg-success'>
+        <tr id="et2.9" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_tags</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 276, in test_backup_change_book_tags
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Peter Parker/Very long extra super turbo cool tit (4)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et2.10" class="none bg-info">
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_book_title</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 221, in test_backup_change_book_title
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/John Doe/Buuko (7)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et2.11" class="none bg-info">
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_bool</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 356, in test_backup_change_custom_bool
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
         <tr id="et2.12" class="none bg-info">
             <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_book_title</div>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_float</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
@@ -364,11 +624,13 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 224, in test_backup_change_book_title
-    self.edit_book(7, content={&#39;title&#39;: &#39;Buuko&#39;})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1772, in edit_book
-    ele.send_keys(Keys.CONTROL, &#34;a&#34;)
-AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 389, in test_backup_change_custom_float
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -378,7 +640,73 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
     
     
-        <tr id='pt2.13' class='hiddenRow bg-success'>
+        <tr id="et2.13" class="none bg-info">
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_int</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 422, in test_backup_change_custom_int
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et2.14" class="none bg-info">
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_rating</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.14')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 455, in test_backup_change_custom_rating
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Asterix Lionherd/comicdemo (3)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_gdrive</div>
             </td>
@@ -387,11 +715,35 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
     
     
-        <tr id='pt2.14' class='hiddenRow bg-success'>
+        <tr id="et2.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_upload_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 490, in test_upload_book
+    metadata = read_opf_metadata(meta_path)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 21, in read_opf_metadata
+    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
+  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 905, in open
+    file = builtins.open(filename, mode, buffering)
+FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Noname 23/book9 (15)/metadata.opf&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1524,11 +1876,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditAuthorsGdrive</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1556,11 +1908,31 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id="ft14.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_one_author_two_books</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft14.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft14.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 235, in test_change_capital_one_author_two_books
+    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
+AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;e48627fb-832f-4b00-a0f4-491ce8c36819&#34;, element=&#34;68e15ae5-a7f8-46ff-947a-86ca13bc4c45&#34;)&gt; is not false</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1770,12 +2142,12 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c16', 1)">Detail</a>
@@ -1784,42 +2156,22 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;send_keys&#39;</pre>
 
     
     
-        <tr id="et16.1" class="none bg-info">
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et16.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et16.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 84, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
+        <td class="text-center">16</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c17', 18)">Detail</a>
@@ -1837,11 +2189,42 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id="et17.2" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et17.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et17.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 386, in test_edit_author
+    self.fill_basic_config({&#34;config_unicode_filename&#34;: 0})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 398, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 302, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:180:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:392:5
+element.find/&lt;/&lt;@chrome://remote/content/marionette/element.sys.mjs:134:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1963,11 +2346,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt17.16' class='hiddenRow bg-success'>
+        <tr id="et17.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et17.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et17.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 231, in test_edit_title
+    self.assertEqual(ele.text, u&#39;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#39;)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3848,8 +4251,8 @@ IndexError: list index out of range</pre>
     <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">2</td>
-        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3868,89 +4271,29 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft44.2" class="none bg-danger">
+        <tr id='pt44.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft44.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft44.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 193, in test_cache_of_deleted_book
-    self.assertEqual(len(res), 1)
-AssertionError: 2 != 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft44.3" class="none bg-danger">
+        <tr id='pt44.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft44.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft44.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 80, in test_cover_cache_on_database_change
-    self.assertLessEqual(len(res), 1, res)
-AssertionError: 2 not less than or equal to 1 : [{&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Metadata backup: Backing up Metadata&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 0s&#39;, &#39;start&#39;: &#39;3/6/23, 12:12\u202fAM&#39;}, {&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Cover Thumbnails: Generated 222 cover thumbnails&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 5s&#39;, &#39;start&#39;: &#39;3/6/23, 12:12\u202fAM&#39;}]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft44.4" class="none bg-danger">
+        <tr id='pt44.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft44.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft44.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 123, in test_cover_change_on_upload_new_cover
-    self.assertLessEqual(len(res), 1)
-AssertionError: 2 not less than or equal to 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3964,31 +4307,11 @@ AssertionError: 2 not less than or equal to 1</pre>
     
     
     
-        <tr id="ft44.6" class="none bg-danger">
+        <tr id='pt44.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft44.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft44.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 230, in test_cover_on_upload_book
-    self.assertLessEqual(len(res), 1)
-AssertionError: 2 not less than or equal to 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4019,9 +4342,9 @@ AssertionError: 2 not less than or equal to 1</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 320, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 310, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.007264083411142234 != 0.0 within 0.0001 delta (0.007264083411142234 difference)</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -5100,10 +5423,10 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>445</td>
-        <td>431</td>
-        <td>5</td>
-        <td>2</td>
+        <td>447</td>
+        <td>421</td>
+        <td>3</td>
+        <td>16</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5240,7 +5563,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>pypdf</th>
-              <td>3.5.1</td>
+              <td>3.5.2</td>
               <td>Basic</td>
             </tr>
           
@@ -5258,7 +5581,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.46</td>
+              <td>1.4.47</td>
               <td>Basic</td>
             </tr>
           
@@ -5288,7 +5611,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5318,7 +5641,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5348,7 +5671,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5390,7 +5713,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5426,7 +5749,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5468,7 +5791,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.80.0</td>
+              <td>2.81.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5558,7 +5881,7 @@ AssertionError: 0.0036014628073451605 not greater than or equal to 0.04</pre>
 </div>
 
 <script>
-    drawCircle(431, 5, 2, 7);
+    drawCircle(421, 3, 16, 7);
     showCase(5);
 </script>
 
