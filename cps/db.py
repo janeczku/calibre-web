@@ -408,7 +408,7 @@ class CustomColumns(Base):
         content['table'] = "custom_column_" + str(self.id)
         content['column'] = "value"
         content['datatype'] = self.datatype
-        content['is_multiple'] = None if not self.is_multiple else self.is_multiple
+        content['is_multiple'] = None if not self.is_multiple else "|"
         content['kind'] = "field"
         content['name'] = self.name
         content['search_terms'] = ['#' + self.label]
@@ -422,9 +422,12 @@ class CustomColumns(Base):
         content['is_csp'] = False
         content['is_editable'] = self.editable
         content['rec_index'] = sequence + 22     # toDo why ??
-        content['#value#'] = value
+        if isinstance(value, datetime):
+            content['#value#'] = {"__class__": "datetime.datetime", "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
+        else:
+            content['#value#'] = value
         content['#extra#'] = extra
-        content['is_multiple2'] = {}
+        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",", "list_to_ui": ", "}
         return json.dumps(content, ensure_ascii=False)
 
 
