@@ -344,7 +344,7 @@ def getFileFromEbooksFolder(path, fileName):
 
 
 def moveGdriveFileRemote(origin_file_id, new_title):
-    origin_file_id['title']= new_title
+    origin_file_id['title'] = new_title
     origin_file_id.Upload()
 
 
@@ -422,7 +422,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
             driveFile.Upload()
 
 
-def uploadFileToEbooksFolder(destFile, f):
+def uploadFileToEbooksFolder(destFile, f, string=False):
     drive = getDrive(Gdrive.Instance().drive)
     parent = getEbooksFolder(drive)
     splitDir = destFile.split('/')
@@ -435,7 +435,10 @@ def uploadFileToEbooksFolder(destFile, f):
             else:
                 driveFile = drive.CreateFile({'title': x,
                                               'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
-            driveFile.SetContentFile(f)
+            if not string:
+                driveFile.SetContentFile(f)
+            else:
+                driveFile.SetContentString(f)
             driveFile.Upload()
         else:
             existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
