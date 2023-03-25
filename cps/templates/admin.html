@@ -186,6 +186,10 @@
             <div class="col-xs-6 col-sm-3">{{_('Reconnect Calibre Database')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_reconnect) }}</div>
           </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Generate Metadata Backup Files')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_metadata_backup) }}</div>
+          </div>
 
         </div>
       <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
@@ -207,10 +211,11 @@
     <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
     <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
   </div>
+{% if config.schedule_metadata_backup %}
   <div class="row form-group">
     <div class="btn btn-default" id="metadata_backup" data-toggle="modal" data-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</div>
   </div>
-
+{%  endif %}
   <div class="row">
     <div class="col">
       <h2>{{_('Version Information')}}</h2>

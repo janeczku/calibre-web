@@ -1358,6 +1358,7 @@ def update_scheduledtasks():
         error = True
     _config_checkbox(to_save, "schedule_generate_book_covers")
     _config_checkbox(to_save, "schedule_generate_series_covers")
+    _config_checkbox(to_save, "schedule_metadata_backup")
     _config_checkbox(to_save, "schedule_reconnect")
 
     if not error:
