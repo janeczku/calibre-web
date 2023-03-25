@@ -153,6 +153,7 @@ class _Settings(_Base):
     schedule_generate_book_covers = Column(Boolean, default=False)
     schedule_generate_series_covers = Column(Boolean, default=False)
     schedule_reconnect = Column(Boolean, default=False)
+    schedule_metadata_backup = Column(Boolean, default=False)
 
     config_password_policy = Column(Boolean, default=True)
     config_password_min_length = Column(Integer, default=8)
