@@ -25,7 +25,7 @@ import chardet  # dependency of requests
 import copy
 
 from flask import Blueprint, jsonify
-from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
+from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -1214,22 +1214,20 @@ def download_link(book_id, book_format, anyname):
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
-        flash(_("Please configure the SMTP mail settings first."), category="error")
+        response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
+        return Response(json.dumps(response), mimetype='application/json')
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
                            current_user.name)
         if result is None:
-            flash(_("Success! Book queued for sending to %(eReadermail)s", eReadermail=current_user.kindle_mail),
-                  category="success")
             ub.update_download(book_id, int(current_user.id))
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
+                                                       eReadermail=current_user.kindle_mail)}]
         else:
-            flash(_("Oops! There was an error sending book: %(res)s", res=result), category="error")
+            response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:
-        flash(_("Oops! Please update your profile with a valid eReader Email."), category="error")
-    if "HTTP_REFERER" in request.environ:
-        return redirect(request.environ["HTTP_REFERER"])
-    else:
-        return redirect(url_for('web.index'))
+        response = [{'type': "danger", 'message': _("Oops! Please update your profile with a valid eReader Email.")}]
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 # ################################### Login Logout ##################################################################

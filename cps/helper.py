@@ -172,10 +172,6 @@ def check_send_to_ereader(entry):
             book_formats.append({'format': 'Epub',
                                  'convert': 0,
                                  'text': _('Send %(format)s to eReader', format='Epub')})
-        if 'MOBI' in formats:
-            book_formats.append({'format': 'Mobi',
-                                 'convert': 0,
-                                 'text': _('Send %(format)s to eReader', format='Mobi')})
         if 'PDF' in formats:
             book_formats.append({'format': 'Pdf',
                                  'convert': 0,
@@ -205,8 +201,8 @@ def check_read_formats(entry):
 
 
 # Files are processed in the following order/priority:
-# 1: If Mobi file is existing, it's directly send to eReader email,
-# 2: If Epub file is existing, it's converted and send to eReader email,
+# 1: If epub file is existing, it's directly send to eReader email,
+# 2: If mobi file is existing, it's converted and send to eReader email,
 # 3: If Pdf file is existing, it's directly send to eReader email
 def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id):
     """Send email with attachments"""
@@ -214,7 +210,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
 
     if convert == 1:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, 'epub', book_format.lower(), user_id, ereader_mail)
+        return convert_book_format(book_id, calibrepath, 'mobi', book_format.lower(), user_id, ereader_mail)
     if convert == 2:
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, 'azw3', book_format.lower(), user_id, ereader_mail)
