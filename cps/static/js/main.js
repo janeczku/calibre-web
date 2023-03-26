@@ -425,7 +425,7 @@ $(function() {
         }
         $.ajax({
             dataType: "json",
-            url: getPath() + "/../../get_update_status",
+            url: getPath() + "/get_update_status",
             success: function success(data) {
                 $this.html(buttonText);
 
