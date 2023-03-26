@@ -1173,7 +1173,8 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
 
-    to_save["config_ldap_provider_url"] = urlparse(to_save.get("config_ldap_provider_url","")).hostname or ""
+    address = urlparse(to_save.get("config_ldap_provider_url", ""))
+    to_save["config_ldap_provider_url"] = (address.hostname or address.path).strip("/")
     reboot_required |= _config_string(to_save, "config_ldap_provider_url")
 
     if to_save.get("config_ldap_serv_password_e", "") != "":
