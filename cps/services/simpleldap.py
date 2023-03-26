@@ -20,6 +20,7 @@ import base64
 
 from flask_simpleldap import LDAP, LDAPException
 from flask_simpleldap import ldap as pyLDAP
+from flask import current_app
 from .. import constants, logger
 
 try:
@@ -28,8 +29,40 @@ except ImportError:
     pass
 
 log = logger.create()
-_ldap = LDAP()
 
+
+class mySimpleLDap(LDAP):
+
+    @staticmethod
+    def init_app(app):
+        super(mySimpleLDap, mySimpleLDap).init_app(app)
+        app.config.setdefault('LDAP_LOGLEVEL', 0)
+
+
+    @property
+    def initialize(self):
+        """Initialize a connection to the LDAP server.
+
+        :return: LDAP connection object.
+        """
+        try:
+            log_level = 2 if current_app.config['LDAP_LOGLEVEL'] == logger.logging.DEBUG else 0
+            conn = pyLDAP.initialize('{0}://{1}:{2}'.format(
+                current_app.config['LDAP_SCHEMA'],
+                current_app.config['LDAP_HOST'],
+                current_app.config['LDAP_PORT']), trace_level=log_level)
+            conn.set_option(pyLDAP.OPT_NETWORK_TIMEOUT,
+                            current_app.config['LDAP_TIMEOUT'])
+            conn = self._set_custom_options(conn)
+            conn.protocol_version = pyLDAP.VERSION3
+            if current_app.config['LDAP_USE_TLS']:
+                conn.start_tls_s()
+            return conn
+        except pyLDAP.LDAPError as e:
+            raise LDAPException(self.error(e.args))
+
+
+_ldap = mySimpleLDap()
 
 def init_app(app, config):
     if config.config_login_type != constants.LOGIN_LDAP:
@@ -70,7 +103,7 @@ def init_app(app, config):
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
     app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
     app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
-
+    app.config['LDAP_LOGLEVEL'] = config.config_log_level
     try:
         _ldap.init_app(app)
     except ValueError:
