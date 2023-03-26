@@ -304,7 +304,7 @@ $(function() {
     }
 
     function fillFileTable(path, type, folder, filt) {
-        var request_path = "/../../ajax/pathchooser/";
+        var request_path = "/ajax/pathchooser/";
         $.ajax({
             dataType: "json",
             data: {
@@ -673,7 +673,7 @@ $(function() {
         $.ajax({
             method:"post",
             dataType: "json",
-            url: getPath() + "/../../ajax/simulatedbchange",
+            url: getPath() + "/ajax/simulatedbchange",
             data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( data.change ) {
@@ -700,8 +700,7 @@ $(function() {
         e.stopPropagation();
         this.blur();
         window.scrollTo({top: 0, behavior: 'smooth'});
-        var request_path = "/../../admin/ajaxconfig";
-        var loader = "/../..";
+        var request_path = "/admin/ajaxconfig";
         $("#flash_success").remove();
         $("#flash_danger").remove();
         $.post(getPath() + request_path, $(this).closest("form").serialize(), function(data) {
@@ -710,7 +709,7 @@ $(function() {
                 $("#spinning_success").show();
                 var rebootInterval = setInterval(function(){
                     $.get({
-                        url:getPath() + "/../../admin/alive",
+                        url:getPath() + "/admin/alive",
                         success: function (d, statusText, xhr) {
                             if (xhr.status < 400) {
                                 $("#spinning_success").hide();

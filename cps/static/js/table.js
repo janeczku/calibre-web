@@ -49,7 +49,7 @@ $(function() {
             method: "post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: getPath() + "/../ajax/canceltask",
+            url: getPath() + "/ajax/canceltask",
             data: JSON.stringify({"task_id": taskId}),
         });
     });
