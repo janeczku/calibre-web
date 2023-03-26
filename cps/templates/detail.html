@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-9 col-lg-9 book-meta">
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group" role="group" aria-label="Download, send to E-Reader, reading">
+                <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
                     {% if current_user.role_download() %}
                         {% if entry.data|length %}
                             <div class="btn-group" role="group">
@@ -151,11 +151,10 @@
 
             {% endif %}
 
-            {% if entry.languages.__len__() > 0 %}
+            {% if entry.languages|length > 0 %}
                 <div class="languages">
                     <p>
-                        <span class="label label-default">{{ _('Language') }}: {% for language in entry.languages %}
-                            {{ language.language_name }}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+                        <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
                     </p>
                 </div>
             {% endif %}

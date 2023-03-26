@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-03-21 20:06:00</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-03-25 19:54:15</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-03-22 02:49:32</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-03-26 03:41:52</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 40 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 46 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">3</td>
+        <td class="text-center">22</td>
         <td class="text-center">0</td>
-        <td class="text-center">19</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 22)">Detail</a>
@@ -257,64 +257,20 @@
     
     
     
-        <tr id="et2.2" class="none bg-info">
+        <tr id='pt2.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 174, in test_backup_change_book_author
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.3" class="none bg-info">
+        <tr id='pt2.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_description</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.3')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 296, in test_backup_change_book_description
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -328,498 +284,146 @@ AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</p
     
     
     
-        <tr id="et2.5" class="none bg-info">
+        <tr id='pt2.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_language</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 256, in test_backup_change_book_language
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.6" class="none bg-info">
+        <tr id='pt2.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 142, in test_backup_change_book_publisher
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.7" class="none bg-info">
+        <tr id='pt2.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publishing_date</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 197, in test_backup_change_book_publishing_date
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.8" class="none bg-info">
+        <tr id='pt2.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 277, in test_backup_change_book_rating
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.9" class="none bg-info">
+        <tr id='pt2.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_seriesindex</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.9')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 103, in test_backup_change_book_seriesindex
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.10" class="none bg-info">
+        <tr id='pt2.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_tags</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.10')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 213, in test_backup_change_book_tags
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.11" class="none bg-info">
+        <tr id='pt2.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.11')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 158, in test_backup_change_book_title
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.12" class="none bg-info">
+        <tr id='pt2.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_Comment</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.12')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 496, in test_backup_change_custom_Comment
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.13" class="none bg-info">
+        <tr id='pt2.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_Enum</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 557, in test_backup_change_custom_Enum
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.14" class="none bg-info">
+        <tr id='pt2.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_bool</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 315, in test_backup_change_custom_bool
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.15" class="none bg-info">
+        <tr id='pt2.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_categories</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 523, in test_backup_change_custom_categories
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.16" class="none bg-info">
+        <tr id='pt2.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_date</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 468, in test_backup_change_custom_date
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.17" class="none bg-info">
+        <tr id='pt2.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_float</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 348, in test_backup_change_custom_float
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.18" class="none bg-info">
+        <tr id='pt2.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_int</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.18')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 381, in test_backup_change_custom_int
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.19" class="none bg-info">
+        <tr id='pt2.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.19')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.19" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.19').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 414, in test_backup_change_custom_rating
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.20" class="none bg-info">
+        <tr id='pt2.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_text</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.20')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.20" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.20').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 441, in test_backup_change_custom_text
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -833,40 +437,18 @@ AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</p
     
     
     
-        <tr id="et2.22" class="none bg-info">
+        <tr id='pt2.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_upload_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.22')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.22" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.22').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 594, in test_upload_book
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 596, in read_opf_metadata
-    result[&#39;pub_date&#39;] = datetime.strptime(soup.find(&#34;dc:date&#34;).contents[0], &#34;%Y-%m-%dT%H:%M:%S&#34;)
-AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
     <tr id="su" class="passClass">
-        <td>TestBackupMetadata</td>
+        <td>TestBackupMetadataGdrive</td>
         <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
@@ -881,7 +463,7 @@ AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</p
     
         <tr id='pt3.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_gdrive</div>
+                <div class='testcase'>TestBackupMetadataGdrive - test_backup_gdrive</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1303,7 +885,7 @@ AttributeError: module &#39;datetime&#39; has no attribute &#39;strptime&#39;</p
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 209, in test_convert_email
     self.assertEqual(1, task_len)
-AssertionError: 1 != 4</pre>
+AssertionError: 1 != 3</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1633,11 +1215,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooks</td>
         <td class="text-center">36</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
+        <td class="text-center">34</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -1764,11 +1346,34 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
     
     
-        <tr id='pt13.14' class='hiddenRow bg-success'>
+        <tr id="ft13.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_language</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.14')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 415, in test_edit_language
+    self.assertEqual(&#39;German&#39;, values[&#39;languages&#39;][1])
+AssertionError: &#39;German&#39; != &#39;\n                            German&#39;
+- German
++ 
+                            German</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2331,9 +1936,9 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">14</td>
+        <td class="text-center">15</td>
+        <td class="text-center">2</td>
         <td class="text-center">1</td>
-        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 18)">Detail</a>
@@ -2351,42 +1956,11 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
     
     
-        <tr id="et18.2" class="none bg-info">
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 386, in test_edit_author
-    self.fill_basic_config({&#34;config_unicode_filename&#34;: 0})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 398, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 302, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:180:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:392:5
-element.find/&lt;/&lt;@chrome://remote/content/marionette/element.sys.mjs:134:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2472,11 +2046,34 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.sys.mjs:134:16
     
     
     
-        <tr id='pt18.12' class='hiddenRow bg-success'>
+        <tr id="ft18.12" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft18.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft18.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 598, in test_edit_language
+    self.assertEqual(&#39;German&#39;, values[&#39;languages&#39;][1])
+AssertionError: &#39;German&#39; != &#39;\n                            German&#39;
+- German
++ 
+                            German</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2525,9 +2122,9 @@ element.find/&lt;/&lt;@chrome://remote/content/marionette/element.sys.mjs:134:16
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 231, in test_edit_title
-    self.assertEqual(ele.text, u&#39;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#39;)
-AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 189, in test_edit_title
+    self.assertEqual(&#39;The camicdemo&#39;, books[1][8][&#39;title&#39;])
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2537,31 +2134,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
     
     
-        <tr id="et18.17" class="none bg-info">
+        <tr id='pt18.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 811, in test_upload_book_lit
-    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2583,7 +2160,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 892, in test_watch_metadata
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 902, in test_watch_metadata
     self.assertTrue(button)
 AssertionError: False is not true</pre>
                     </div>
@@ -2596,11 +2173,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2610,11 +2187,31 @@ AssertionError: False is not true</pre>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id="ft19.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 68, in test_load_metadata
+    self.assertEqual(30, len(results))
+AssertionError: 30 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4453,8 +4050,8 @@ AssertionError: False is not true</pre>
     <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">3</td>
-        <td class="text-center">4</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4473,89 +4070,29 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft45.2" class="none bg-danger">
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 193, in test_cache_of_deleted_book
-    self.assertEqual(len(res), 1)
-AssertionError: 2 != 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft45.3" class="none bg-danger">
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 80, in test_cover_cache_on_database_change
-    self.assertLessEqual(len(res), 1, res)
-AssertionError: 2 not less than or equal to 1 : [{&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Metadata backup: Backing up Metadata&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 0s&#39;, &#39;start&#39;: &#39;3/22/23, 1:13\u202fAM&#39;}, {&#39;user&#39;: &#39;System&#39;, &#39;task&#39;: &#39;Cover Thumbnails: Generated 222 cover thumbnails&#39;, &#39;result&#39;: &#39;Finished&#39;, &#39;progress&#39;: &#39;100 %&#39;, &#39;duration&#39;: &#39; 5s&#39;, &#39;start&#39;: &#39;3/22/23, 1:13\u202fAM&#39;}]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft45.4" class="none bg-danger">
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 123, in test_cover_change_on_upload_new_cover
-    self.assertLessEqual(len(res), 1)
-AssertionError: 2 not less than or equal to 1</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4604,9 +4141,9 @@ AssertionError: 2 not less than or equal to 1</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 320, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.0 not greater than or equal to 0.04</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 310, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.006465888577653282 != 0.0 within 0.0001 delta (0.006465888577653282 difference)</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -5686,9 +5223,9 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>454</td>
-        <td>418</td>
+        <td>439</td>
         <td>6</td>
-        <td>23</td>
+        <td>2</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5874,31 +5411,31 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
             <tr>
               <th>google-api-python-client</th>
               <td>2.82.0</td>
-              <td>TestBackupMetadata</td>
+              <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
-              <td>TestBackupMetadata</td>
+              <td>0.22.0</td>
+              <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>oauth2client</th>
               <td>4.1.3</td>
-              <td>TestBackupMetadata</td>
+              <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>PyDrive2</th>
               <td>1.15.1</td>
-              <td>TestBackupMetadata</td>
+              <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
               <td>6.0</td>
-              <td>TestBackupMetadata</td>
+              <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
@@ -5909,7 +5446,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
+              <td>0.22.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5939,7 +5476,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
+              <td>0.22.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5969,7 +5506,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
+              <td>0.22.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6011,7 +5548,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
+              <td>0.22.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6047,7 +5584,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>httplib2</th>
-              <td>0.21.0</td>
+              <td>0.22.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6173,7 +5710,7 @@ AssertionError: 0.0 not greater than or equal to 0.04</pre>
 </div>
 
 <script>
-    drawCircle(418, 6, 23, 7);
+    drawCircle(439, 6, 2, 7);
     showCase(5);
 </script>
 
