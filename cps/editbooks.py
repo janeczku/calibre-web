@@ -226,7 +226,7 @@ def edit_book(book_id):
     except (OperationalError, IntegrityError, StaleDataError, InterfaceError) as e:
         log.error_or_exception("Database error: {}".format(e))
         calibre_db.session.rollback()
-        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
     except Exception as ex:
         log.error_or_exception(ex)
@@ -302,7 +302,8 @@ def upload():
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
-                flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+                flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
+                      category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
@@ -451,7 +452,7 @@ def edit_list_book(param):
         calibre_db.session.rollback()
         log.error_or_exception("Database error: {}".format(e))
         ret = Response(json.dumps({'success': False,
-                                   'msg': 'Database error: {}'.format(e.orig)}),
+                                   'msg': 'Database error: {}'.format(e.orig if hasattr(e, "orig") else e)}),
                        mimetype='application/json')
     return ret
 
@@ -563,7 +564,7 @@ def table_xchange_author_title():
                 calibre_db.session.commit()
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
-                log.error_or_exception("Database error: %s", e)
+                log.error_or_exception("Database error: {}".format(e))
                 return json.dumps({'success': False})
 
             if config.config_use_google_drive:
@@ -1199,7 +1200,8 @@ def upload_single_file(file_request, book, book_id):
                 except (OperationalError, IntegrityError, StaleDataError) as e:
                     calibre_db.session.rollback()
                     log.error_or_exception("Database error: {}".format(e))
-                    flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+                    flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
+                          category="error")
                     return False  # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
