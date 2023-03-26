@@ -30,6 +30,7 @@ import string
 from datetime import datetime, timedelta
 from datetime import time as datetime_time
 from functools import wraps
+from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user
@@ -1157,7 +1158,6 @@ def _configuration_logfile_helper(to_save):
 
 def _configuration_ldap_helper(to_save):
     reboot_required = False
-    reboot_required |= _config_string(to_save, "config_ldap_provider_url")
     reboot_required |= _config_int(to_save, "config_ldap_port")
     reboot_required |= _config_int(to_save, "config_ldap_authentication")
     reboot_required |= _config_string(to_save, "config_ldap_dn")
@@ -1172,6 +1172,10 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
+
+    to_save["config_ldap_provider_url"] = urlparse(to_save.get("config_ldap_provider_url","")).hostname or ""
+    reboot_required |= _config_string(to_save, "config_ldap_provider_url")
+
     if to_save.get("config_ldap_serv_password_e", "") != "":
         reboot_required |= 1
         config.set_from_dictionary(to_save, "config_ldap_serv_password_e")
