@@ -30,6 +30,14 @@ except ImportError:
 
 log = logger.create()
 
+class LDAPLogger(object):
+
+    def write(self, message):
+        try:
+            log.debug(message.strip("\n").replace("\n", ""))
+        except Exception:
+            log.debug("Logging Error")
+
 
 class mySimpleLDap(LDAP):
 
@@ -37,7 +45,6 @@ class mySimpleLDap(LDAP):
     def init_app(app):
         super(mySimpleLDap, mySimpleLDap).init_app(app)
         app.config.setdefault('LDAP_LOGLEVEL', 0)
-
 
     @property
     def initialize(self):
@@ -50,7 +57,7 @@ class mySimpleLDap(LDAP):
             conn = pyLDAP.initialize('{0}://{1}:{2}'.format(
                 current_app.config['LDAP_SCHEMA'],
                 current_app.config['LDAP_HOST'],
-                current_app.config['LDAP_PORT']), trace_level=log_level)
+                current_app.config['LDAP_PORT']), trace_level=log_level, trace_file=LDAPLogger())
             conn.set_option(pyLDAP.OPT_NETWORK_TIMEOUT,
                             current_app.config['LDAP_TIMEOUT'])
             conn = self._set_custom_options(conn)
