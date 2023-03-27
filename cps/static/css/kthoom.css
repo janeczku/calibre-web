@@ -131,9 +131,13 @@ body {
   display: none !important;
 }
 
-#mainContent {
+#scrollWrapper {
   overflow: auto;
+}
+
+#mainContent {
   outline: none;
+  margin: auto;
 }
 
 #mainText {
@@ -150,9 +154,13 @@ body {
 }
 
 #mainContent > canvas {
-  display: block;
+  display: inline;
   margin-left: auto;
   margin-right: auto;
+}
+
+#mainContent > canvas.block {
+  display: block;
 }
 
 .long-strip > .mainImage {

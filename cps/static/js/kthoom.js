@@ -72,7 +72,8 @@ var settings = {
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
 	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar
-    pageDisplay: 0 // 0 = Single Page, 1 = Long Strip
+    pageDisplay: 0, // 0 = Single Page, 1 = Long Strip
+    blockCover: false // 
 };
 
 kthoom.saveSettings = function() {
@@ -267,7 +268,7 @@ function updatePage() {
 
 function setTheme() {
     $("body").toggleClass("dark-theme", settings.theme === "dark");
-	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+	$("#scrollWrapper").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 }
 
 function pageDisplayUpdate() {
@@ -276,6 +277,10 @@ function pageDisplayUpdate() {
         $(".mainImage").eq(currentImage).removeClass("hide");
         $("#mainContent").removeClass("long-strip");
     } else {
+        $(".mainImage").eq(0).removeClass("block")
+        if (settings.blockCover === true) {
+            $(".mainImage").eq(0).addClass("block")
+        }
         $(".mainImage").removeClass("hide");
         $("#mainContent").addClass("long-strip");
         scrollCurrentImageIntoView();
@@ -442,11 +447,11 @@ function showNextPage() {
 function scrollCurrentImageIntoView() {
     if(settings.pageDisplay == 0) {
         // This will scroll all the way up when Single Page is selected
-		$("#mainContent").scrollTop(0);
+		$("#scrollWrapper").scrollTop(0);
     } else {
         // This will scroll to the image when Long Strip is selected
-        $("#mainContent").stop().animate({
-            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#mainContent").scrollTop() - $("#mainContent").offset().top
+        $("#scrollWrapper").stop().animate({
+            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#scrollWrapper").scrollTop() - $("#scrollWrapper").offset().top
         }, 200);
     }
 }
@@ -484,6 +489,10 @@ function updateScale() {
     $("#mainContent > canvas.error").css("height", 200);
 
     $("#mainContent").css({maxHeight: maxheight + 5});
+    if ($("#mainContent > canvas").length > 0) {
+        $("#mainContent").css("max-width", "100%");
+        $("#mainContent").css({maxWidth: canvasArray.width()*2 + 5});
+    }
     kthoom.setSettings();
     kthoom.saveSettings();
 }
@@ -618,6 +627,12 @@ function drawCanvas() {
     x.strokeStyle = (settings.theme === "dark") ? "white" : "black";
     x.fillText("Loading Page #" + (currentImage + 1), innerWidth / 2, 100);
 
+    if ($("#mainContent > canvas").length > 0) {
+        $("#mainContent").css("max-width", "100%");
+        $("#mainContent").css({maxWidth: $("#mainContent > canvas").width()*2 + 5});
+    }
+
+
     $("#mainContent").append(canvasElement);
 }
 
@@ -654,7 +669,7 @@ function init(filename) {
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
         setTimeout(function() {
             // Focus on the TOC or the main content area, depending on which is open
-            $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
+            $("#main:not(.closed) #scrollWrapper, #sidebar.open #tocView").focus();
             scrollTocToActive();
         }, 500);
     });
@@ -674,7 +689,7 @@ function init(filename) {
 
         settings[this.name] = value;
 
-        if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
+        if(["hflip", "vflip", "rotateTimes", "blockCover"].includes(this.name)) {
             reloadImages();
         } else if(this.name === "direction") {
             return updateProgress();
@@ -687,7 +702,7 @@ function init(filename) {
     // Close modal
     $(".closer, .overlay").click(function() {
         $(".md-show").removeClass("md-show");
-		$("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
+		$("#scrollWrapper").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
@@ -701,7 +716,7 @@ function init(filename) {
         $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
 			// Focus on main container so you can use up/down keys immediately after fullscreen
-			$("#mainContent").focus();
+			$("#scrollWrapper").focus();
         });
 
         if (screenfull.raw) {
@@ -715,9 +730,9 @@ function init(filename) {
     }
 
     // Focus the scrollable area so that keyboard scrolling work as expected
-    $("#mainContent").focus();
+    $("#scrollWrapper").focus();
 
-    $("#mainContent").swipe( {
+    $("#scrollWrapper").swipe( {
         swipeRight:function() {
             showLeftPage();
         },
@@ -728,8 +743,8 @@ function init(filename) {
     $(".mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
         // where the user clicked in the image.
-        var mainContentWidth = $("#mainContent").width();
-        var mainContentHeight = $("#mainContent").height();
+        var mainContentWidth = $("#scrollWrapper").width();
+        var mainContentHeight = $("#scrollWrapper").height();
         var comicWidth = evt.target.clientWidth;
         var comicHeight = evt.target.clientHeight;
         var offsetX = (mainContentWidth - comicWidth) / 2;
@@ -762,8 +777,8 @@ function init(filename) {
     });
 
     // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
-    $("#mainContent").scroll(function(){
-        var scroll = $("#mainContent").scrollTop();
+    $("#scrollWrapper").scroll(function(){
+        var scroll = $("#scrollWrapper").scrollTop();
         if(settings.pageDisplay === 0) {
             // Don't trigger the scroll for Single Page
         } else if(scroll > prevScrollPosition) {
@@ -792,5 +807,5 @@ function init(filename) {
 }
 
 function currentImageOffset(imageIndex) {
-    return $(".mainImage").eq(imageIndex).offset().top - $("#mainContent").position().top
+    return $(".mainImage").eq(imageIndex).offset().top - $("#scrollWrapper").position().top
 }
