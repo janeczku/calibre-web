@@ -747,9 +747,10 @@ def get_book_cover(book_id, resolution=None):
     return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
 
 
-# Called only by kobo sync -> cover not found should be answered with 404 and not with default cover
-def get_book_cover_with_uuid(book_uuid, resolution=None):
+def get_book_cover_with_uuid(book_uuid, resolution=None, none_on_missing=False):
     book = calibre_db.get_book_by_uuid(book_uuid)
+    if not book and none_on_missing:
+        return  # allows kobo.HandleCoverImageRequest to proxy request
     return get_book_cover_internal(book, use_generic_cover_on_failure=False, resolution=resolution)
 
 
