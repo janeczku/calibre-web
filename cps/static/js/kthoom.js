@@ -281,7 +281,7 @@ function pageDisplayUpdate() {
         $(".mainImage").eq(currentImage).removeClass("hide");
 
         if (settings.pageDisplay === 1) {
-            $("#mainContent").removeClass("double");
+            $("#mainContent").addClass("double");
             $(".mainImage").eq(currentImage+1).removeClass("hide");
         }
     } else if (settings.pageDisplay === 2){

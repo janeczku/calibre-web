@@ -156,11 +156,13 @@ body {
 }
 
 #mainContent > canvas {
-  display: inline;
+  display: inline-block;
   margin-left: auto;
   margin-right: auto;
 }
+
 #mainContent.double > canvas {
+  vertical-align: middle;
   padding-left: 2.5px;
   padding-right: 2.5px;
 }
