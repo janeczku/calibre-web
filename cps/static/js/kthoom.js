@@ -73,7 +73,6 @@ var settings = {
     direction: 0, // 0 = Left to Right, 1 = Right to Left
 	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar
     pageDisplay: 0, // 0 = Single Page, 1 = Long Strip
-    soloCover: false // 
 };
 
 kthoom.saveSettings = function() {
@@ -282,21 +281,6 @@ function pageDisplayUpdate() {
 
         if (settings.pageDisplay === 1) {
             $(".mainImage").eq(currentImage+1).removeClass("hide");
-            // Only display 1 image if it or its neighbors are landscape
-            for (let i=-1; i<=1; i++) {
-                var ratioStr = $(".mainImage").eq(currentImage+i).css("aspect-ratio")
-                if (!(ratioStr)) continue
-                ratioStr = ratioStr.split(" ")
-                if (parseFloat(ratioStr[1]) / parseFloat(ratioStr[3]) > 1 ) {
-                    if ([-1, 1].includes(i)) {
-                        $(".mainImage").eq(currentImage+i).addClass("hide")
-                    } else {
-                        $(".mainImage").eq(currentImage-1).addClass("hide")
-                        $(".mainImage").eq(currentImage+1).addClass("hide")
-                        $(".mainImage").eq(currentImage).css("height", innerHeight - 50 )
-                    }
-                }
-            }
         }
     } else if (settings.pageDisplay === 2){
         $("#mainContent").addClass("long-strip");
@@ -487,7 +471,7 @@ function updateScale() {
     canvasArray.css("width", "");
     canvasArray.css("height", "");
     canvasArray.css("maxWidth", "");
-    canvasArray.css("maxHeight", "100%");
+    canvasArray.css("maxHeight", "");
 
 
     switch (settings.fitMode) {
@@ -519,7 +503,7 @@ function updateScale() {
         pageDisplayUpdate();
     } else if (settings.pageDisplay === 3) {
         var paddingSize = (innerWidth - $(".mainImage").width()) / 2
-        $("#mainContent").css('--edge-padding', paddingSize.toString() + "px")
+        $("#mainContent").css('--edge-padding', paddingSize + "px")
     }
 
 
@@ -652,7 +636,7 @@ function drawCanvas() {
         canvasElement.addClass("hide");
     } else if (settings.pageDisplay === 3) {
         var paddingSize = (innerWidth - $(".mainImage").width()) / 2
-        $("#mainContent").css('--edge-padding', paddingSize.toString() + "px")
+        $("#mainContent").css('--edge-padding', paddingSize + "px")
     }
 
 
