@@ -282,6 +282,21 @@ function pageDisplayUpdate() {
 
         if (settings.pageDisplay === 1) {
             $(".mainImage").eq(currentImage+1).removeClass("hide");
+            // Only display 1 image if it or its neighbors are landscape
+            for (let i=-1; i<=1; i++) {
+                var ratioStr = $(".mainImage").eq(currentImage+i).css("aspect-ratio")
+                if (!(ratioStr)) continue
+                ratioStr = ratioStr.split(" ")
+                if (parseFloat(ratioStr[1]) / parseFloat(ratioStr[3]) > 1 ) {
+                    if ([-1, 1].includes(i)) {
+                        $(".mainImage").eq(currentImage+i).addClass("hide")
+                    } else {
+                        $(".mainImage").eq(currentImage-1).addClass("hide")
+                        $(".mainImage").eq(currentImage+1).addClass("hide")
+                        $(".mainImage").eq(currentImage).css("height", innerHeight - 50 )
+                    }
+                }
+            }
         }
     } else if (settings.pageDisplay === 2){
         $("#mainContent").addClass("long-strip");
@@ -487,7 +502,7 @@ function updateScale() {
             if (settings.pageDisplay != 1) {
                 canvasArray.css("width", "100%");
             } else {
-                canvasArray.css("width", "50%")
+                canvasArray.css("width", "calc(50% - 5px)")
             }
             break;
         default:
@@ -626,7 +641,7 @@ function drawCanvas() {
             if (settings.pageDisplay != 1) {
                 canvasElement.css("width", "100%");
             } else {
-                canvasElement.css("width", "50%")
+                canvasElement.css("width", "calc(50% - 5px)")
             }
             break;
         default:

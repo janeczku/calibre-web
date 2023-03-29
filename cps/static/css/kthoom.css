@@ -156,8 +156,10 @@ body {
 
 #mainContent > canvas {
   display: inline;
-  margin-left: 2.5px;
-  margin-right: 2.5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2.5px;
+  padding-right: 2.5px;
 }
 
 
@@ -176,7 +178,6 @@ body {
 
 #mainContent.wide-strip > .mainImage {
   display: inline-block;
-  margin-right: 5px;
 }
 
 #mainContent.wide-strip > .mainImage:first-of-type {
@@ -184,7 +185,6 @@ body {
 }
 
 #mainContent.wide-strip > .mainImage:last-of-type {
-  margin-right: 0px;
   padding-right: var(--edge-padding);
 }
 
