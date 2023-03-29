@@ -72,7 +72,7 @@ var settings = {
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
 	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar
-    pageDisplay: 0, // 0 = Single Page, 1 = Long Strip
+    pageDisplay: 0 // 0 = Single Page, 1 = Long Strip
 };
 
 kthoom.saveSettings = function() {
