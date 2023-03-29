@@ -137,6 +137,7 @@ body {
 
 #mainContent {
   --edge-padding: 0px;
+  white-space: nowrap;
   outline: none;
   margin: auto;
 }
