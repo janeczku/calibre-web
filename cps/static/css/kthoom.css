@@ -159,10 +159,11 @@ body {
   display: inline;
   margin-left: auto;
   margin-right: auto;
+}
+#mainContent.double > canvas {
   padding-left: 2.5px;
   padding-right: 2.5px;
 }
-
 
 #mainContent.long-strip > canvas {
   display: block;

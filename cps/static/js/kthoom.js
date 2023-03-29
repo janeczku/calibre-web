@@ -272,6 +272,7 @@ function setTheme() {
 
 function pageDisplayUpdate() {
     $(".mainImage").removeClass("hide");
+    $("#mainContent").removeClass("double");
     $("#mainContent").removeClass("long-strip");
     $("#mainContent").removeClass("wide-strip");
 
@@ -280,6 +281,7 @@ function pageDisplayUpdate() {
         $(".mainImage").eq(currentImage).removeClass("hide");
 
         if (settings.pageDisplay === 1) {
+            $("#mainContent").removeClass("double");
             $(".mainImage").eq(currentImage+1).removeClass("hide");
         }
     } else if (settings.pageDisplay === 2){
