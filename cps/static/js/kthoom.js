@@ -501,13 +501,11 @@ function updateScale() {
     $("#mainContent").css({maxHeight: maxheight + 5});
 
     if(settings.pageDisplay <= 1) {
-        canvasArray.addClass("hide");
         pageDisplayUpdate();
     } else if (settings.pageDisplay === 3) {
         var paddingSize = (innerWidth - $(".mainImage").width()) / 2
         $("#mainContent").css('--edge-padding', paddingSize + "px")
     }
-
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -634,13 +632,12 @@ function drawCanvas() {
             break;
     }
 
-    if(settings.pageDisplay === 0 ) {
+    if(settings.pageDisplay === 0) {
         canvasElement.addClass("hide");
     } else if (settings.pageDisplay === 3) {
         var paddingSize = (innerWidth - $(".mainImage").width()) / 2
         $("#mainContent").css('--edge-padding', paddingSize + "px")
     }
-
 
     //Fill with Placeholder text. setImage will override this
     canvasElement.width = innerWidth - 100;
@@ -843,7 +840,6 @@ function init(filename) {
 function currentImageOffset(imageIndex) {
     if (settings.pageDisplay===3) {
         if (imageIndex===0) return $("#mainContent").position().left
-
         var padding = (innerWidth - $(".mainImage").eq(imageIndex).width()) / 2
         return $(".mainImage").eq(imageIndex).offset().left - $("#mainContent").position().left - padding
     }
