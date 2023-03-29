@@ -136,6 +136,7 @@ body {
 }
 
 #mainContent {
+  --edge-padding: 0px;
   outline: none;
   margin: auto;
 }
@@ -155,20 +156,36 @@ body {
 
 #mainContent > canvas {
   display: inline;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 2.5px;
+  margin-right: 2.5px;
 }
 
-#mainContent > canvas.block {
+
+#mainContent.long-strip > canvas {
   display: block;
-}
-
-.long-strip > .mainImage {
   margin-bottom: 4px;
 }
 
-.long-strip > .mainImage:last-child {
+#mainContent.long-strip > .mainImage:last-child {
   margin-bottom: 0px !important;
+}
+
+#mainContent.wide-strip {
+  white-space: nowrap;
+}
+
+#mainContent.wide-strip > .mainImage {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+#mainContent.wide-strip > .mainImage:first-of-type {
+  padding-left: var(--edge-padding);
+}
+
+#mainContent.wide-strip > .mainImage:last-of-type {
+  margin-right: 0px;
+  padding-right: var(--edge-padding);
 }
 
 #titlebar {
