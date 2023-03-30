@@ -73,9 +73,10 @@
       </div>
     </div>
   </div>
-
-  <div id="mainContent" tabindex="-1">
-    <div id="mainText" style="display:none"></div>
+  <div id="scrollWrapper">
+    <div id="mainContent" tabindex="-1">
+      <div id="mainText" style="display:none"></div>
+    </div>
   </div>
   <div id="left" class="arrow" onclick="showLeftPage()">‹</div>
   <div id="right" class="arrow" onclick="showRightPage()">›</div>
@@ -127,7 +128,10 @@
             <td>
               <div class="inputs">
                 <label for="singlePage"><input type="radio" id="singlePage" name="pageDisplay" value="0" /> {{_('Single Page')}}</label>
-                <label for="longStrip"><input type="radio" id="longStrip" name="pageDisplay" value="1" /> {{_('Long Strip')}}</label>
+                <label for="doublePage"><input type="radio" id="doublePage" name="pageDisplay" value="1" /> {{_('Double Page')}}</label>
+                <br />
+                <label for="longStrip"><input type="radio" id="longStrip" name="pageDisplay" value="2" /> {{_('Long Strip')}}</label>
+                <label for="wideStrip"><input type="radio" id="wideStrip" name="pageDisplay" value="3" /> {{_('Wide Strip')}}</label>
               </div>
             </td>
           </tr>

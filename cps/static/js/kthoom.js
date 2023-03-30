@@ -72,7 +72,7 @@ var settings = {
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
 	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar
-    pageDisplay: 0 // 0 = Single Page, 1 = Long Strip
+    pageDisplay: 0 // 0 = Single Page, 1 = Double Page, 2 = Long Strip, 3 = Wide Strip
 };
 
 kthoom.saveSettings = function() {
@@ -267,17 +267,35 @@ function updatePage() {
 
 function setTheme() {
     $("body").toggleClass("dark-theme", settings.theme === "dark");
-	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+	$("#scrollWrapper").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 }
 
 function pageDisplayUpdate() {
-    if(settings.pageDisplay === 0) {
+    $(".mainImage").removeClass("hide");
+    $(".mainImage").removeClass("right");
+    $("#mainContent").removeClass("double");
+    $("#mainContent").removeClass("long-strip");
+    $("#mainContent").removeClass("wide-strip");
+    $("#scrollWrapper").removeClass("reverse-order");
+    
+    if(settings.pageDisplay <= 1) {
         $(".mainImage").addClass("hide");
         $(".mainImage").eq(currentImage).removeClass("hide");
-        $("#mainContent").removeClass("long-strip");
-    } else {
-        $(".mainImage").removeClass("hide");
+        
+        if (settings.pageDisplay === 1) {
+            if (settings.direction === 1) { 
+                $(".mainImage").eq(currentImage).addClass("right");
+                $("#scrollWrapper").addClass("reverse-order") 
+            }
+            $("#mainContent").addClass("double");
+            $(".mainImage").eq(currentImage+1).removeClass("hide");
+        }
+    } else if (settings.pageDisplay === 2){
         $("#mainContent").addClass("long-strip");
+        scrollCurrentImageIntoView();
+    } else if (settings.pageDisplay === 3) {
+        if (settings.direction != 0) { $("#scrollWrapper").addClass("reverse-order") }
+        $("#mainContent").addClass("wide-strip");
         scrollCurrentImageIntoView();
     }
 }
@@ -440,13 +458,18 @@ function showNextPage() {
 }
 
 function scrollCurrentImageIntoView() {
-    if(settings.pageDisplay == 0) {
+    if(settings.pageDisplay <= 1) {
         // This will scroll all the way up when Single Page is selected
-		$("#mainContent").scrollTop(0);
-    } else {
+		$("#scrollWrapper").scrollTop(0);
+    } else if (settings.pageDisplay === 2) {
         // This will scroll to the image when Long Strip is selected
-        $("#mainContent").stop().animate({
-            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#mainContent").scrollTop() - $("#mainContent").offset().top
+        $("#scrollWrapper").stop().animate({
+            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#scrollWrapper").scrollTop() - $("#scrollWrapper").offset().top
+        }, 200);
+    } else if (settings.pageDisplay === 3) {
+        var padding = (innerWidth - $(".mainImage").eq(currentImage).width()) / 2
+        $("#scrollWrapper").stop().animate({
+            scrollLeft: $(".mainImage").eq(currentImage).offset().left + $("#scrollWrapper").scrollLeft() - $("#scrollWrapper").offset().left - padding
         }, 200);
     }
 }
@@ -460,21 +483,25 @@ function updateScale() {
     canvasArray.css("maxWidth", "");
     canvasArray.css("maxHeight", "");
 
-    if(settings.pageDisplay === 0) {
-        canvasArray.addClass("hide");
-        pageDisplayUpdate();
-    }
 
     switch (settings.fitMode) {
         case kthoom.Key.B:
-            canvasArray.css("maxWidth", "100%");
             canvasArray.css("maxHeight", maxheight + "px");
+            canvasArray.css("maxWidth", "100%");
+            if (settings.pageDisplay === 1) {
+                canvasArray.css("maxWidth", "calc(50% - 5px)");
+            } else if (settings.pageDisplay === 3) {
+                canvasArray.css("maxWidth", "");
+            }
             break;
         case kthoom.Key.H:
             canvasArray.css("maxHeight", maxheight + "px");
             break;
         case kthoom.Key.W:
             canvasArray.css("width", "100%");
+            if (settings.pageDisplay === 1) {
+                canvasArray.css("width", "calc(50% - 5px)")
+            }
             break;
         default:
             break;
@@ -484,6 +511,14 @@ function updateScale() {
     $("#mainContent > canvas.error").css("height", 200);
 
     $("#mainContent").css({maxHeight: maxheight + 5});
+
+    if(settings.pageDisplay <= 1) {
+        pageDisplayUpdate();
+    } else if (settings.pageDisplay === 3) {
+            var marginSize = (innerWidth - $(".mainImage").width()) / 2
+            $("#mainContent").css('--edge-margin', marginSize + "px")
+    }
+
     kthoom.setSettings();
     kthoom.saveSettings();
 }
@@ -592,14 +627,22 @@ function drawCanvas() {
 
     switch (settings.fitMode) {
         case kthoom.Key.B:
-            canvasElement.css("maxWidth", "100%");
             canvasElement.css("maxHeight", maxheight + "px");
+            canvasElement.css("maxWidth", "100%");
+            if (settings.pageDisplay === 1) {
+                canvasElement.css("maxWidth", "calc(50% - 5px)");
+            } else if (settings.pageDisplay === 3) {
+                canvasElement.css("maxWidth", "");
+            }
             break;
         case kthoom.Key.H:
             canvasElement.css("maxHeight", maxheight + "px");
             break;
         case kthoom.Key.W:
             canvasElement.css("width", "100%");
+            if (settings.pageDisplay === 1) {
+                canvasElement.css("width", "calc(50% - 5px)")
+            }
             break;
         default:
             break;
@@ -607,6 +650,9 @@ function drawCanvas() {
 
     if(settings.pageDisplay === 0) {
         canvasElement.addClass("hide");
+    // } else if (settings.pageDisplay === 3) {
+    //     var marginSize = (innerWidth - $(".mainImage").width()) / 2
+    //     $("#mainContent").css('--edge-margin', marginSize + "px")
     }
 
     //Fill with Placeholder text. setImage will override this
@@ -618,7 +664,9 @@ function drawCanvas() {
     x.strokeStyle = (settings.theme === "dark") ? "white" : "black";
     x.fillText("Loading Page #" + (currentImage + 1), innerWidth / 2, 100);
 
+
     $("#mainContent").append(canvasElement);
+    updateScale()
 }
 
 function init(filename) {
@@ -641,8 +689,11 @@ function init(filename) {
 
     $(document).keydown(keyHandler);
 
-    $(window).resize(function() {
+    $(window).resize(function(event) {
         updateScale();
+        if (settings.pageDisplay > 1) {
+            scrollCurrentImageIntoView()
+        }
     });
 
     // Open TOC menu
@@ -654,7 +705,7 @@ function init(filename) {
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
         setTimeout(function() {
             // Focus on the TOC or the main content area, depending on which is open
-            $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
+            $("#main:not(.closed) #scrollWrapper, #sidebar.open #tocView").focus();
             scrollTocToActive();
         }, 500);
     });
@@ -677,7 +728,7 @@ function init(filename) {
         if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
             reloadImages();
         } else if(this.name === "direction") {
-            return updateProgress();
+            updateProgress();
         }
         
         updatePage();
@@ -687,7 +738,7 @@ function init(filename) {
     // Close modal
     $(".closer, .overlay").click(function() {
         $(".md-show").removeClass("md-show");
-		$("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
+		$("#scrollWrapper").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
@@ -701,7 +752,7 @@ function init(filename) {
         $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
 			// Focus on main container so you can use up/down keys immediately after fullscreen
-			$("#mainContent").focus();
+			$("#scrollWrapper").focus();
         });
 
         if (screenfull.raw) {
@@ -715,9 +766,9 @@ function init(filename) {
     }
 
     // Focus the scrollable area so that keyboard scrolling work as expected
-    $("#mainContent").focus();
+    $("#scrollWrapper").focus();
 
-    $("#mainContent").swipe( {
+    $("#scrollWrapper").swipe( {
         swipeRight:function() {
             showLeftPage();
         },
@@ -728,8 +779,8 @@ function init(filename) {
     $(".mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
         // where the user clicked in the image.
-        var mainContentWidth = $("#mainContent").width();
-        var mainContentHeight = $("#mainContent").height();
+        var mainContentWidth = $("#scrollWrapper").width();
+        var mainContentHeight = $("#scrollWrapper").height();
         var comicWidth = evt.target.clientWidth;
         var comicHeight = evt.target.clientHeight;
         var offsetX = (mainContentWidth - comicWidth) / 2;
@@ -762,14 +813,19 @@ function init(filename) {
     });
 
     // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
-    $("#mainContent").scroll(function(){
-        var scroll = $("#mainContent").scrollTop();
-        if(settings.pageDisplay === 0) {
-            // Don't trigger the scroll for Single Page
-        } else if(scroll > prevScrollPosition) {
+    $("#scrollWrapper").scroll(function(){
+        if (settings.pageDisplay <= 1) return
+        
+        var scroll = $("#scrollWrapper").scrollTop();
+        if (settings.pageDisplay === 3) {
+            scroll = Math.abs($("#scrollWrapper").scrollLeft());
+        }
+
+
+        if (scroll > prevScrollPosition) {
             //Scroll Down
             if(currentImage + 1 < imageFiles.length) {
-                if(currentImageOffset(currentImage + 1) <= 1) {
+                if(currentImageOffset(currentImage + 1) <= scroll) {
                     currentImage++;
                     scrollTocToActive();
                     updateProgress();
@@ -778,7 +834,7 @@ function init(filename) {
         } else {
             //Scroll Up
             if(currentImage - 1 > -1 ) {
-                if(currentImageOffset(currentImage - 1) >= 0) {
+                if(currentImageOffset(currentImage - 1) >= scroll) {
                     currentImage--;
                     scrollTocToActive();
                     updateProgress();
@@ -789,8 +845,27 @@ function init(filename) {
         // Update scroll position
         prevScrollPosition = scroll;
     });
+
+    // Scroll Wheel up/down increments/decrements page on Wide Strip view
+    $("#scrollWrapper").get(0).addEventListener("wheel", (event) => {
+        if (settings.pageDisplay != 3) return
+
+        $("#scrollWrapper").animate({
+            scrollLeft: "+="+event.deltaY
+        }, 20, "linear", false);
+    })
 }
 
 function currentImageOffset(imageIndex) {
-    return $(".mainImage").eq(imageIndex).offset().top - $("#mainContent").position().top
+    var imgOffset = $(".mainImage").eq(imageIndex).offset()
+    var scrollPos = $("#mainContent").position()
+    if (settings.pageDisplay===3) {
+        var centerPoint = ($("#scrollWrapper").width() - $(".mainImage").eq(imageIndex).width()) / 2
+        if (settings.direction === 1) {
+            scrollPos.right = scrollPos.left + $("#mainContent").width()
+            return Math.abs(imgOffset.left - scrollPos.right) - $(".mainImage").eq(imageIndex).width() - centerPoint
+        }
+        return imgOffset.left - scrollPos.left - centerPoint
+    }
+    return imgOffset.top - scrollPos.top
 }

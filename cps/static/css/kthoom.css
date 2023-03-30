@@ -131,9 +131,15 @@ body {
   display: none !important;
 }
 
-#mainContent {
+#scrollWrapper {
   overflow: auto;
+}
+
+#mainContent {
+  --edge-margin: 0px;
+  white-space: nowrap;
   outline: none;
+  margin: auto;
 }
 
 #mainText {
@@ -150,17 +156,73 @@ body {
 }
 
 #mainContent > canvas {
-  display: block;
+  display: inline-block;
   margin-left: auto;
   margin-right: auto;
+  vertical-align: middle;
 }
 
-.long-strip > .mainImage {
+#mainContent.double > canvas {
+  vertical-align: middle;
+  margin-left: 2.5px;
+  margin-right: 2.5px;
+}
+
+#mainContent.long-strip > canvas {
+  display: block;
   margin-bottom: 4px;
 }
 
-.long-strip > .mainImage:last-child {
+#mainContent.long-strip > canvas:last-child {
   margin-bottom: 0px !important;
+}
+
+#mainContent.wide-strip > canvas {
+  margin-left: 2.5px;
+  margin-right: 2.5px;
+}
+
+#mainContent.wide-strip > canvas:first-of-type {
+  margin-left: var(--edge-margin);
+}
+
+#mainContent.wide-strip > canvas:last-of-type {
+  margin-right: var(--edge-margin);
+}
+
+#scrollWrapper.reverse-order {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#scrollWrapper.reverse-order > #mainContent {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#scrollWrapper.reverse-order > #mainContent > canvas {
+  align-self: flex-start;
+  object-fit: contain;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+#scrollWrapper.reverse-order > #mainContent > canvas {
+  object-position: right;
+}
+
+#scrollWrapper.reverse-order > #mainContent > canvas.right {
+  object-position: left;
+}
+
+#scrollWrapper.reverse-order > #mainContent.wide-strip > canvas:first-of-type {
+  margin-right: var(--edge-margin);
+  margin-left: 2.5px;
+}
+
+#scrollWrapper.reverse-order > #mainContent.wide-strip > canvas:last-of-type {
+  margin-left: var(--edge-margin);
+  margin-right: 2.5px;
 }
 
 #titlebar {
