@@ -164,12 +164,16 @@ body {
 
 #mainContent.double > canvas {
   vertical-align: middle;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-left: 2.5px;
   margin-right: 2.5px;
 }
 
 #mainContent.long-strip > canvas {
   display: block;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-bottom: 4px;
 }
 
