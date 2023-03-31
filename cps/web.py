@@ -1516,13 +1516,14 @@ def profile():
 @viewer_required
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
-    book.ordered_authors = calibre_db.order_authors([book], False)
 
     if not book:
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
+
+    book.ordered_authors = calibre_db.order_authors([book], False)
 
     # check if book has a bookmark
     bookmark = None

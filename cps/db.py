@@ -829,8 +829,6 @@ class CalibreDB:
 
     # Orders all Authors in the list according to authors sort
     def order_authors(self, entries, list_return=False, combined=False):
-        # entries_copy = copy.deepcopy(entries)
-        # entries_copy =[]
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
