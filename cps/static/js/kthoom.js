@@ -267,16 +267,12 @@ function updatePage() {
 
 function setTheme() {
     $("body").toggleClass("dark-theme", settings.theme === "dark");
-	$("#scrollWrapper").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 }
 
 function pageDisplayUpdate() {
-    $(".mainImage").removeClass("hide");
-    $(".mainImage").removeClass("right");
-    $("#mainContent").removeClass("double");
-    $("#mainContent").removeClass("long-strip");
-    $("#mainContent").removeClass("wide-strip");
-    $("#scrollWrapper").removeClass("reverse-order");
+    $(".mainImage").removeClass(["hide", "right"]);
+    $("#mainContent").removeClass(["double", "long-strip", "wide-strip", "reverse-order"]);
     
     if(settings.pageDisplay <= 1) {
         $(".mainImage").addClass("hide");
@@ -285,7 +281,7 @@ function pageDisplayUpdate() {
         if (settings.pageDisplay === 1) {
             if (settings.direction === 1) { 
                 $(".mainImage").eq(currentImage).addClass("right");
-                $("#scrollWrapper").addClass("reverse-order") 
+                $("#mainContent").addClass("reverse-order") 
             }
             $("#mainContent").addClass("double");
             $(".mainImage").eq(currentImage+1).removeClass("hide");
@@ -294,7 +290,7 @@ function pageDisplayUpdate() {
         $("#mainContent").addClass("long-strip");
         scrollCurrentImageIntoView();
     } else if (settings.pageDisplay === 3) {
-        if (settings.direction != 0) { $("#scrollWrapper").addClass("reverse-order") }
+        if (settings.direction != 0) { $("#mainContent").addClass("reverse-order") }
         $("#mainContent").addClass("wide-strip");
         scrollCurrentImageIntoView();
     }
@@ -460,16 +456,16 @@ function showNextPage() {
 function scrollCurrentImageIntoView() {
     if(settings.pageDisplay <= 1) {
         // This will scroll all the way up when Single Page is selected
-		$("#scrollWrapper").scrollTop(0);
+		$("#mainContent").scrollTop(0);
     } else if (settings.pageDisplay === 2) {
         // This will scroll to the image when Long Strip is selected
-        $("#scrollWrapper").stop().animate({
-            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#scrollWrapper").scrollTop() - $("#scrollWrapper").offset().top
+        $("#mainContent").stop().animate({
+            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#mainContent").scrollTop() - $("#mainContent").offset().top
         }, 200);
     } else if (settings.pageDisplay === 3) {
         var padding = (innerWidth - $(".mainImage").eq(currentImage).width()) / 2
-        $("#scrollWrapper").stop().animate({
-            scrollLeft: $(".mainImage").eq(currentImage).offset().left + $("#scrollWrapper").scrollLeft() - $("#scrollWrapper").offset().left - padding
+        $("#mainContent").stop().animate({
+            scrollLeft: $(".mainImage").eq(currentImage).offset().left + $("#mainContent").scrollLeft() - $("#mainContent").offset().left - padding
         }, 200);
     }
 }
@@ -705,7 +701,7 @@ function init(filename) {
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
         setTimeout(function() {
             // Focus on the TOC or the main content area, depending on which is open
-            $("#main:not(.closed) #scrollWrapper, #sidebar.open #tocView").focus();
+            $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
             scrollTocToActive();
         }, 500);
     });
@@ -738,7 +734,7 @@ function init(filename) {
     // Close modal
     $(".closer, .overlay").click(function() {
         $(".md-show").removeClass("md-show");
-		$("#scrollWrapper").focus(); // focus back on the main container so you use up/down keys without having to click on it
+		$("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
@@ -752,7 +748,7 @@ function init(filename) {
         $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
 			// Focus on main container so you can use up/down keys immediately after fullscreen
-			$("#scrollWrapper").focus();
+			$("#mainContent").focus();
         });
 
         if (screenfull.raw) {
@@ -766,9 +762,9 @@ function init(filename) {
     }
 
     // Focus the scrollable area so that keyboard scrolling work as expected
-    $("#scrollWrapper").focus();
+    $("#mainContent").focus();
 
-    $("#scrollWrapper").swipe( {
+    $("#mainContent").swipe( {
         swipeRight:function() {
             showLeftPage();
         },
@@ -779,8 +775,8 @@ function init(filename) {
     $(".mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
         // where the user clicked in the image.
-        var mainContentWidth = $("#scrollWrapper").width();
-        var mainContentHeight = $("#scrollWrapper").height();
+        var mainContentWidth = $("#mainContent").width();
+        var mainContentHeight = $("#mainContent").height();
         var comicWidth = evt.target.clientWidth;
         var comicHeight = evt.target.clientHeight;
         var offsetX = (mainContentWidth - comicWidth) / 2;
@@ -813,19 +809,18 @@ function init(filename) {
     });
 
     // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
-    $("#scrollWrapper").scroll(function(){
+    $("#mainContent").scroll(function(){
         if (settings.pageDisplay <= 1) return
         
-        var scroll = $("#scrollWrapper").scrollTop();
+        var scroll = $("#mainContent").scrollTop();
         if (settings.pageDisplay === 3) {
-            scroll = Math.abs($("#scrollWrapper").scrollLeft());
+            scroll = Math.abs($("#mainContent").scrollLeft());
         }
-
 
         if (scroll > prevScrollPosition) {
             //Scroll Down
             if(currentImage + 1 < imageFiles.length) {
-                if(currentImageOffset(currentImage + 1) <= scroll) {
+                if(currentImageOffset(currentImage + 1) <= 0) {
                     currentImage++;
                     scrollTocToActive();
                     updateProgress();
@@ -834,7 +829,7 @@ function init(filename) {
         } else {
             //Scroll Up
             if(currentImage - 1 > -1 ) {
-                if(currentImageOffset(currentImage - 1) >= scroll) {
+                if(currentImageOffset(currentImage - 1) > 0) {
                     currentImage--;
                     scrollTocToActive();
                     updateProgress();
@@ -847,12 +842,17 @@ function init(filename) {
     });
 
     // Scroll Wheel up/down increments/decrements page on Wide Strip view
-    $("#scrollWrapper").get(0).addEventListener("wheel", (event) => {
+    $("#mainContent").get(0).addEventListener("wheel", (event) => {
         if (settings.pageDisplay != 3) return
-
-        $("#scrollWrapper").animate({
-            scrollLeft: "+="+event.deltaY
-        }, 20, "linear", false);
+        var maxScrollHeight = $("#mainContent").get(0).scrollHeight - $("#mainContent").outerHeight()
+        if (
+               event.deltaY > 0 && $("#mainContent").scrollTop() == maxScrollHeight
+            || event.deltaY < 0 && $("#mainContent").scrollTop() == 0
+        ) {
+            $("#mainContent").animate({
+                scrollLeft: "+="+event.deltaY
+            }, 25, "swing", false);
+        }
     })
 }
 
@@ -860,7 +860,7 @@ function currentImageOffset(imageIndex) {
     var imgOffset = $(".mainImage").eq(imageIndex).offset()
     var scrollPos = $("#mainContent").position()
     if (settings.pageDisplay===3) {
-        var centerPoint = ($("#scrollWrapper").width() - $(".mainImage").eq(imageIndex).width()) / 2
+        var centerPoint = ($("#mainContent").width() - $(".mainImage").eq(imageIndex).width()) / 2
         if (settings.direction === 1) {
             scrollPos.right = scrollPos.left + $("#mainContent").width()
             return Math.abs(imgOffset.left - scrollPos.right) - $(".mainImage").eq(imageIndex).width() - centerPoint
