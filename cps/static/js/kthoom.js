@@ -844,10 +844,10 @@ function init(filename) {
     // Scroll Wheel up/down increments/decrements page on Wide Strip view
     $("#mainContent").get(0).addEventListener("wheel", (event) => {
         if (settings.pageDisplay != 3) return
-        var maxScrollHeight = $("#mainContent").get(0).scrollHeight - $("#mainContent").outerHeight()
+        var maxScrollHeight = Math.floor($("#mainContent").get(0).scrollHeight - $("#mainContent").outerHeight())
         if (
-               event.deltaY > 0 && $("#mainContent").scrollTop() == maxScrollHeight
-            || event.deltaY < 0 && $("#mainContent").scrollTop() == 0
+               (event.deltaY > 0 && $("#mainContent").scrollTop() >= maxScrollHeight)
+            || (event.deltaY < 0 && $("#mainContent").scrollTop() < 1)
         ) {
             $("#mainContent").animate({
                 scrollLeft: "+="+event.deltaY
