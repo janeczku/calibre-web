@@ -685,7 +685,7 @@ function init(filename) {
 
     $(document).keydown(keyHandler);
 
-    $(window).resize(function(event) {
+    $(window).resize(function() {
         updateScale();
         if (settings.pageDisplay > 1) {
             scrollCurrentImageIntoView()
@@ -820,7 +820,7 @@ function init(filename) {
         if (scroll > prevScrollPosition) {
             //Scroll Down
             if(currentImage + 1 < imageFiles.length) {
-                if(currentImageOffset(currentImage + 1) <= 0) {
+                if(currentImageOffset(currentImage + 1) <= 1) {
                     currentImage++;
                     scrollTocToActive();
                     updateProgress();
@@ -829,7 +829,7 @@ function init(filename) {
         } else {
             //Scroll Up
             if(currentImage - 1 > -1 ) {
-                if(currentImageOffset(currentImage - 1) > 0) {
+                if(currentImageOffset(currentImage - 1) >= 0) {
                     currentImage--;
                     scrollTocToActive();
                     updateProgress();
