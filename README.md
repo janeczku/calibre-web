@@ -9,6 +9,23 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/calibreweb?logo=pypi&logoColor=fff&style=flat-square)](https://pypi.org/project/calibreweb/)
 [![Discord](https://img.shields.io/discord/838810113564344381?label=Discord&logo=discord&style=flat-square)](https://discord.gg/h2VsJ2NEfB)
 
+<details>
+<summary><strong>Table of Contents</strong> (click to expand)</summary>
+
+1. [About](#calibre-web)
+2. [Features](#features)
+3. [Installation](#installation)
+   - [Installation via pip (recommended)](#installation-via-pip-recommended)
+   - [Quick start](#quick-start)
+   - [Requirements](#requirements)
+4. [Docker Images](#docker-images)
+5. [Contributor Recognition](#contributor-recognition)
+6. [Contact](#contact)
+7. [Contributing to Calibre-Web](#contributing-to-calibre-web)
+
+</details>
+
+
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
 ![Main screen](https://github.com/janeczku/calibre-web/wiki/images/main_screen.png)
@@ -85,6 +102,10 @@ Pre-built Docker images are available in the following Docker Hub repositories (
 
   - Set "path to convertertool" to `/usr/bin/ebook-convert`
   - Set "path to unrar" to `/usr/bin/unrar`
+
+## Contributor Recognition
+
+We would like to thank all the [contributors](https://github.com/janeczku/calibre-web/graphs/contributors) and maintainers of Calibre-Web for their valuable input and dedication to the project. Your contributions are greatly appreciated.
 
 ## Contact
 
