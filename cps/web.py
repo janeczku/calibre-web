@@ -360,6 +360,8 @@ def get_sort_function(sort_param, data):
         order = [func.count(ub.Downloads.book_id).desc()]
     if sort_param == 'hotasc':
         order = [func.count(ub.Downloads.book_id).asc()]
+    if sort_param == 'random':
+        order = [func.random()]
     if sort_param is None:
         sort_param = "new"
     return order, sort_param
