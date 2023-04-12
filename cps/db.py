@@ -993,7 +993,7 @@ class CalibreDB:
                 title = title[len(prep):] + ', ' + prep
             return title.strip()
 
-        conn = conn or self.session.connection().connection.connection
+        conn = conn or self.session.connection().connection.driver_connection
         try:
             conn.create_function("title_sort", 1, _title_sort)
         except sqliteOperationalError:
