@@ -405,9 +405,9 @@ def _encrypt_fields(session, secret_key):
         session.query(exists().where(_Settings.mail_password_e)).scalar()
     except OperationalError:
         with session.bind.connect() as conn:
-            conn.execute("ALTER TABLE settings ADD column 'mail_password_e' String")
-            conn.execute("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String")
-            conn.execute("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String")
+            conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
         session.commit()
         crypter = Fernet(secret_key)
         settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
