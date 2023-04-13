@@ -295,11 +295,14 @@ def check_shelf_edit_permissions(cur_shelf):
 
 
 def check_shelf_view_permissions(cur_shelf):
-    if cur_shelf.is_public:
-        return True
-    if current_user.is_anonymous or cur_shelf.user_id != current_user.id:
-        log.error("User is unauthorized to view non-public shelf: {}".format(cur_shelf.name))
-        return False
+    try:
+        if cur_shelf.is_public:
+            return True
+        if current_user.is_anonymous or cur_shelf.user_id != current_user.id:
+            log.error("User is unauthorized to view non-public shelf: {}".format(cur_shelf.name))
+            return False
+    except Exception as e:
+        log.error(e)
     return True
 
 
