@@ -187,7 +187,7 @@ def HandleSyncRequest():
                            .order_by(ub.ArchivedBook.last_modified)
                            .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                            .join(ub.Shelf)
-                           .filter(ub.Shelf.user_id == current_user.id)
+                           .filter(or_(ub.Shelf.user_id == current_user.id, ub.Shelf.is_public == 1))
                            .filter(ub.Shelf.kobo_sync)
                            .distinct())
     else:
@@ -285,7 +285,7 @@ def HandleSyncRequest():
         changed_reading_states = changed_reading_states.join(ub.BookShelf,
                                                              ub.KoboReadingState.book_id == ub.BookShelf.book_id)\
             .join(ub.Shelf)\
-            .filter(current_user.id == ub.Shelf.user_id)\
+            .filter(or_(current_user.id == ub.Shelf.user_id, ub.Shelf.is_public == 1))\
             .filter(ub.Shelf.kobo_sync,
                     or_(
                         ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified,
@@ -537,8 +537,10 @@ def HandleTagCreate():
         abort(400, description="Malformed tags POST request. Data has empty 'Name', missing 'Name' or 'Items' field")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
-                                              current_user.id).one_or_none()
+                                              or_(current_user.id,
+                                                  ub.Shelf.is_public == 1)).one_or_none()
     if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
+        log.debug("User is unauthaurized to create shelf.")
         abort(401, description="User is unauthaurized to create shelf.")
 
     if not shelf:
@@ -557,9 +559,10 @@ def HandleTagCreate():
 @requires_kobo_auth
 def HandleTagUpdate(tag_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
-                                              ub.Shelf.user_id == current_user.id).one_or_none()
+                                              or_(ub.Shelf.user_id == current_user.id,
+                                                  ub.Shelf.is_public == 1)).one_or_none()
     if not shelf:
-        log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb")
+        log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb: " + str(tag_id))
         if config.config_kobo_proxy:
             return redirect_or_proxy_request()
         else:
@@ -619,12 +622,14 @@ def HandleTagAddItem(tag_id):
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
-                                              ub.Shelf.user_id == current_user.id).one_or_none()
+                                              or_(ub.Shelf.user_id == current_user.id,
+                                                  ub.Shelf.is_public == 1)).one_or_none()
     if not shelf:
-        log.debug("Received Kobo request on a collection unknown to CalibreWeb")
+        log.debug("Received Kobo request on a collection unknown to CalibreWeb: " + str(tag_id))
         abort(404, description="Collection isn't known to CalibreWeb")
 
     if not shelf_lib.check_shelf_edit_permissions(shelf):
+        log.debug("User is unauthaurized to edit shelf: " + str(tag_id))
         abort(401, description="User is unauthaurized to edit shelf.")
 
     items_unknown_to_calibre = add_items_to_shelf(items, shelf)
@@ -649,13 +654,15 @@ def HandleTagRemoveItem(tag_id):
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
-                                              ub.Shelf.user_id == current_user.id).one_or_none()
+                                              or_(ub.Shelf.user_id == current_user.id,
+                                                  ub.Shelf.is_public == 1)).one_or_none()
     if not shelf:
         log.debug(
-            "Received a request to remove an item from a Collection unknown to CalibreWeb.")
+            "Received a request to remove an item from a Collection unknown to CalibreWeb: " + str(tag_id))
         abort(404, description="Collection isn't known to CalibreWeb")
 
     if not shelf_lib.check_shelf_edit_permissions(shelf):
+        log.debug("User is unauthaurized to edit shelf: " + str(tag_id))
         abort(401, description="User is unauthaurized to edit shelf.")
 
     items_unknown_to_calibre = []
@@ -682,7 +689,6 @@ def HandleTagRemoveItem(tag_id):
 
 
 # Add new, changed, or deleted shelves to the sync_results.
-# Note: Public shelves that aren't owned by the user aren't supported.
 def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     new_tags_last_modified = sync_token.tags_last_modified
     # transmit all archived shelfs independent of last sync (why should this matter?)
@@ -703,7 +709,7 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     if only_kobo_shelves:
         for shelf in ub.session.query(ub.Shelf).filter(
             func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
-            ub.Shelf.user_id == current_user.id,
+            or_(ub.Shelf.user_id == current_user.id, ub.Shelf.is_public == 1),
             not ub.Shelf.kobo_sync
         ):
             sync_results.append({
@@ -720,14 +726,14 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
         shelflist = ub.session.execute(select(ub.Shelf).outerjoin(ub.BookShelf).filter(
             or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
                 func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
-            ub.Shelf.user_id == current_user.id,
+            or_(ub.Shelf.user_id == current_user.id, ub.Shelf.is_public == 1),
             *extra_filters
         ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc())).columns(ub.Shelf)
     else:
         shelflist = ub.session.query(ub.Shelf).outerjoin(ub.BookShelf).filter(
             or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
                 func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
-            ub.Shelf.user_id == current_user.id,
+            or_(ub.Shelf.user_id == current_user.id, ub.Shelf.is_public == 1),
             *extra_filters
         ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc())
 
