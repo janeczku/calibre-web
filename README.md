@@ -94,7 +94,7 @@ Pre-built Docker images are available in the following Docker Hub repositories (
 #### **LinuxServer - x64, aarch64**
 - [Docker Hub](https://hub.docker.com/r/linuxserver/calibre-web)
 - [GitHub](https://github.com/linuxserver/docker-calibre-web)
-- [GitHub - Optional Calibre layer]([https://github.com/linuxserver/docker-calibre-web/tree/calibre](https://github.com/linuxserver/docker-mods/tree/universal-calibre))
+- [GitHub - Optional Calibre layer](https://github.com/linuxserver/docker-mods/tree/universal-calibre)
 
   Include the environment variable `DOCKER_MODS=linuxserver/mods:universal-calibre` in your Docker run/compose file to add the Calibre `ebook-convert` binary (x64 only). Omit this variable for a lightweight image.
 
