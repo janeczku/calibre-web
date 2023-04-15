@@ -1540,9 +1540,9 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         log.debug("Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
-    elif book_format.lower() == "djvu":
+    elif book_format.lower() in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
-        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title)
+        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title, extension=book_format.lower())
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:
