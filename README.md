@@ -85,7 +85,7 @@ Optionally, to enable on-the-fly conversion from one ebook format to another whe
 
 A pre-built Docker image is available in these Docker Hub repository (maintained by the LinuxServer team):
 
-#### **LinuxServer - x64, armhf, aarch64**
+#### **LinuxServer - x64, aarch64**
 + Docker Hub - [https://hub.docker.com/r/linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web)
 + Github - [https://github.com/linuxserver/docker-calibre-web](https://github.com/linuxserver/docker-calibre-web)
 + Github - (Optional Calibre layer) - [https://github.com/linuxserver/docker-mods/tree/universal-calibre](https://github.com/linuxserver/docker-mods/tree/universal-calibre) 
