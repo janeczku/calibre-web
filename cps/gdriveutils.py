@@ -147,7 +147,7 @@ engine = create_engine('sqlite:///{0}'.format(cli_param.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
-Session = sessionmaker()
+Session = sessionmaker(autoflush=False)
 Session.configure(bind=engine)
 session = scoped_session(Session)
 
