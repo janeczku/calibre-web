@@ -503,6 +503,7 @@ if ($("body.shelf").length > 0) {
 // Rest of Tooltips
 $(".home-btn > a").attr({
     "data-toggle": "tooltip",
+    "href": $(".navbar-brand")[0].href,
     "title": $(document.body).attr("data-text"),    // Home
     "data-placement": "bottom"
 })
