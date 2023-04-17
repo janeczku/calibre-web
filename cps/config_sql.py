@@ -531,7 +531,7 @@ def get_encryption_key(key_path):
     key_file = os.path.join(key_path, ".key")
     generate = True
     error = ""
-    if os.path.exists(key_file) and  os.path.getsize(key_file) > 32:
+    if os.path.exists(key_file) and os.path.getsize(key_file) > 32:
         with open(key_file, "rb") as f:
             key = f.read()
         try:
