@@ -959,7 +959,10 @@ def do_download_file(book, book_format, client, data, headers):
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
         # ToDo Check headers parameter
         for element in headers:
-            response.headers[element[0]] = element[1]
+            response.headers[element[0]] = element[1]    
+        # Solve Chinese garbled code
+        from urllib.parse import unquote
+        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''{}".format(quote(data.name))
         log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
         return response
 
