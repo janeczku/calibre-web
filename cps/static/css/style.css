@@ -172,7 +172,7 @@ table .bg-dark-danger a { color: #fff; }
 
 .container-fluid .book .cover span .img {
   bottom: 0;
-  height: 100%;
+  width: 100%;
   position: absolute;
 }
 
