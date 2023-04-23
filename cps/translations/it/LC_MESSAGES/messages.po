@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-04-16 15:05+0200\n"
-"PO-Revision-Date: 2023-02-04 20:25+0100\n"
+"POT-Creation-Date: 2023-04-18 20:06+0200\n"
+"PO-Revision-Date: 2023-04-18 09:04+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -32,16 +32,15 @@ msgstr "Eseguo l'arresto del server, per favore chiudi la finestra"
 
 #: cps/admin.py:155
 msgid "Success! Database Reconnected"
-msgstr "OK! Database riconnesso"
+msgstr "Tutto OK! Database riconnesso"
 
 #: cps/admin.py:158
 msgid "Unknown command"
 msgstr "Comando sconosciuto"
 
 #: cps/admin.py:169
-#, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "L'e-mail di test è stato accodata con successo per essere spedita a %(email)s, per favore verifica tramite il pulsante 'Attività' il risultato"
+msgstr "Tutto OK! Libri in coda per il backup dei metadati, controlla le attività per il risultato"
 
 #: cps/admin.py:202 cps/editbooks.py:577 cps/editbooks.py:579
 #: cps/editbooks.py:615 cps/editbooks.py:632 cps/editbooks.py:1241
@@ -284,7 +283,7 @@ msgstr "Modifica le impostazioni del server e-mail"
 
 #: cps/admin.py:1288
 msgid "Success! Gmail Account Verified."
-msgstr "OK! Account Gmail verificato."
+msgstr "Tutto OK! Account Gmail verificato."
 
 #: cps/admin.py:1307 cps/admin.py:1310 cps/admin.py:1692 cps/admin.py:1825
 #: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:229
@@ -298,7 +297,7 @@ msgstr "Errore nel database: %(error)s."
 #: cps/admin.py:1317
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "L'e-mail di test è stato accodata con successo per essere spedita a %(email)s, per favore verifica tramite il pulsante 'Attività' il risultato"
+msgstr "L'e-mail di test è stato accodata con successo per essere spedita a %(email)s, per favore controlla le attività per il risultato"
 
 #: cps/admin.py:1320
 #, python-format
@@ -345,7 +344,7 @@ msgstr "Modifica l'utente %(nick)s"
 #: cps/admin.py:1430
 #, python-format
 msgid "Success! Password for user %(user)s reset"
-msgstr "OK! Reimpostazione della password per l'utente %(user)s"
+msgstr "Tutto OK! Reimpostazione della password per l'utente %(user)s"
 
 #: cps/admin.py:1436
 msgid "Oops! Please configure the SMTP mail settings."
@@ -455,7 +454,7 @@ msgstr "La posizione del Certfile non è valida, per favore indica il percorso c
 
 #: cps/admin.py:1812
 msgid "Password length has to be between 1 and 40"
-msgstr ""
+msgstr "La lunghezza della password deve essere compresa tra 1 e 40"
 
 #: cps/admin.py:1864
 msgid "Database Settings updated"
@@ -760,7 +759,7 @@ msgstr "Formato dell'indirizzo e-mail non valido"
 
 #: cps/helper.py:703
 msgid "Password doesn't comply with password validation rules"
-msgstr ""
+msgstr "La password non è conforme alle regole di convalida della password"
 
 #: cps/helper.py:853
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
@@ -816,7 +815,7 @@ msgstr "Metti in coda tutti i libri per il backup dei metadati"
 
 #: cps/kobo_auth.py:90
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Per favore accedi a Calibe-Web non da localhost per ottenere un api-endpoint valido per il lettore kobo"
+msgstr "Per favore accedi a Calibe-Web non da localhost per ottenere un api_endpoint valido per il lettore kobo"
 
 #: cps/kobo_auth.py:116
 msgid "Kobo Setup"
@@ -830,7 +829,7 @@ msgstr "Registra con %(provider)s"
 #: cps/oauth_bb.py:138 cps/remotelogin.py:130
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "OK! Ora sei connesso come: %(nickname)s"
+msgstr "Tutto OK! Ora sei connesso come: %(nickname)s"
 
 #: cps/oauth_bb.py:148
 #, python-format
@@ -908,7 +907,7 @@ msgstr "Il token è scaduto"
 
 #: cps/remotelogin.py:92
 msgid "Success! Please return to your device"
-msgstr "OK! Torna al tuo dispositivo"
+msgstr "Tutto OK! Torna al tuo dispositivo"
 
 #: cps/render_template.py:42 cps/web.py:414
 msgid "Books"
@@ -1322,14 +1321,13 @@ msgid "File formats list"
 msgstr "Elenco dei formati"
 
 #: cps/web.py:1217
-#, fuzzy
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Configura prima le impostazioni del server SMTP."
+msgstr "Prima configura le impostazioni del server SMTP..."
 
 #: cps/web.py:1224
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
-msgstr "OK! Libro in coda per l'invio a %(eReadermail)s"
+msgstr "Tutto OK! Libro in coda per l'invio a %(eReadermail)s"
 
 #: cps/web.py:1227
 #, python-format
@@ -1342,7 +1340,7 @@ msgstr "Per favore aggiorna il tuo profilo con un'e-mail eReader valida."
 
 #: cps/web.py:1245
 msgid "Please wait one minute to register next user"
-msgstr ""
+msgstr "Attendi un minuto per registrare l'utente successivo"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1246
@@ -1361,56 +1359,51 @@ msgstr "La tua e-mail non è consentita."
 
 #: cps/web.py:1286
 msgid "Success! Confirmation Email has been sent."
-msgstr "OK! L'e-mail di conferma è stata inviata."
+msgstr "Tutto OK! L'e-mail di conferma è stata inviata."
 
 #: cps/web.py:1332 cps/web.py:1350
-#, fuzzy
 msgid "Cannot activate LDAP authentication"
-msgstr "Non posso attivare l'autenticazione LDAP"
+msgstr "Impossibile attivare l'autenticazione LDAP"
 
 #: cps/web.py:1344
 msgid "Please wait one minute before next login"
-msgstr ""
+msgstr "Attendi un minuto prima dell'accesso successivo"
 
 #: cps/web.py:1360
-#, fuzzy, python-format
+#, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "OK! Ora sei connesso come: %(nickname)s"
+msgstr "ora sei connesso come: '%(nickname)s'"
 
 #: cps/web.py:1367
-#, fuzzy, python-format
+#, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Accesso di riserva come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
 
 #: cps/web.py:1372
-#, fuzzy, python-format
+#, python-format
 msgid "Could not login: %(message)s"
-msgstr "Non posso accedere: %(message)s"
+msgstr "Impossibile accedere: %(message)s"
 
 #: cps/web.py:1376 cps/web.py:1401
-#, fuzzy
 msgid "Wrong Username or Password"
-msgstr "Nome utente o password errati."
+msgstr "Nome utente o password errati"
 
 #: cps/web.py:1383
-#, fuzzy
 msgid "New Password was send to your email address"
-msgstr "OK! La nuova password è stata inviata alla tua e-mail."
+msgstr "La nuova password è stata inviata al tuo indirizzo email"
 
 #: cps/web.py:1387
-#, fuzzy
 msgid "An unknown error occurred. Please try again later."
-msgstr "Si è verificato un errore sconosciuto: per favore riprova."
+msgstr "Si è verificato un errore sconosciuto. Per favore riprova più tardi."
 
 #: cps/web.py:1389
-#, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "Inserisci un nome utente valido per reimpostare la password"
 
 #: cps/web.py:1397
-#, fuzzy, python-format
+#, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "OK! Ora sei connesso come: %(nickname)s"
+msgstr "Ora sei connesso come: '%(nickname)s'"
 
 #: cps/web.py:1455 cps/web.py:1505
 #, python-format
@@ -1419,7 +1412,7 @@ msgstr "Profilo di %(name)s"
 
 #: cps/web.py:1471
 msgid "Success! Profile Updated"
-msgstr "OK! Profilo aggiornato"
+msgstr "Tutto OK! Profilo aggiornato"
 
 #: cps/web.py:1475
 msgid "Oops! An account already exists for this Email."
@@ -1687,7 +1680,7 @@ msgstr "Ricollega il database di Calibre"
 
 #: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
 msgid "Generate Metadata Backup Files"
-msgstr ""
+msgstr "Genera file di backup dei metadati"
 
 #: cps/templates/admin.html:197
 msgid "Refresh Thumbnail Cache"
@@ -2390,50 +2383,48 @@ msgid "Location of Unrar binary"
 msgstr "Percorso del file binario di UnRar"
 
 #: cps/templates/config_edit.html:361
-#, fuzzy
 msgid "Security Settings"
-msgstr "Impostazioni OAuth"
+msgstr "Impostazioni sicurezza"
 
 #: cps/templates/config_edit.html:369
 msgid "Limit failed login attempts"
-msgstr ""
+msgstr "Limita i tentativi di accesso falliti"
 
 #: cps/templates/config_edit.html:372
 msgid "Session protection"
-msgstr ""
+msgstr "Protezione sessione"
 
 #: cps/templates/config_edit.html:374
 msgid "Basic"
-msgstr ""
+msgstr "Di base"
 
 #: cps/templates/config_edit.html:375
 msgid "Strong"
-msgstr ""
+msgstr "Forte"
 
 #: cps/templates/config_edit.html:380
-#, fuzzy
 msgid "User Password policy"
-msgstr "Reimposta la password dell'utente"
+msgstr "Politica password utente"
 
 #: cps/templates/config_edit.html:384
 msgid "Minimum password length"
-msgstr ""
+msgstr "Lunghezza minima password"
 
 #: cps/templates/config_edit.html:389
 msgid "Enforce number"
-msgstr ""
+msgstr "Obbliga numero"
 
 #: cps/templates/config_edit.html:393
 msgid "Enforce lowercase characters"
-msgstr ""
+msgstr "Obbliga caratteri minuscoli"
 
 #: cps/templates/config_edit.html:397
 msgid "Enforce uppercase characters"
-msgstr ""
+msgstr "Obbliga caratteri maiuscoli"
 
 #: cps/templates/config_edit.html:401
 msgid "Enforce special characters"
-msgstr ""
+msgstr "Obbliga caratteri speciali"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
@@ -3009,11 +3000,11 @@ msgstr "Pagina successiva"
 
 #: cps/templates/readcbr.html:96
 msgid "Single Page Display"
-msgstr ""
+msgstr "Visualizzazione a pagina singola"
 
 #: cps/templates/readcbr.html:97
 msgid "Long Strip Display"
-msgstr ""
+msgstr "Visualizzazione a striscia lunga"
 
 #: cps/templates/readcbr.html:98
 msgid "Scale to Best"
@@ -3045,16 +3036,15 @@ msgstr "Capovolgi immagine"
 
 #: cps/templates/readcbr.html:126
 msgid "Display"
-msgstr ""
+msgstr "Visualizzazione"
 
 #: cps/templates/readcbr.html:129
-#, fuzzy
 msgid "Single Page"
-msgstr "Pagina di amministrazione"
+msgstr "Pagina singola"
 
 #: cps/templates/readcbr.html:130
 msgid "Long Strip"
-msgstr ""
+msgstr "Striscia lunga"
 
 #: cps/templates/readcbr.html:135
 msgid "Scale"
@@ -3446,7 +3436,7 @@ msgstr "Modifica gli scaffali pubblici"
 
 #: cps/templates/user_table.html:152
 msgid "Sync selected Shelves with Kobo"
-msgstr "Sincronizza con Kobo gli scaffali selezionati"
+msgstr "Sincronizza gli scaffali selezionati con Kobo"
 
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
