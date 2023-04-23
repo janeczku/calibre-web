@@ -25,7 +25,7 @@ import chardet  # dependency of requests
 import copy
 
 from flask import Blueprint, jsonify
-from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for
+from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -396,7 +396,7 @@ def render_books_list(data, sort_param, book_id, page):
     elif data == "archived":
         return render_archived_books(page, order)
     elif data == "search":
-        term = json.loads(flask_session.get('query', ''))
+        term = (request.args.get('query') or '')
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_search_results(term, offset, order, config.config_books_per_page)
     elif data == "advsearch":
@@ -1214,22 +1214,20 @@ def download_link(book_id, book_format, anyname):
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
-        flash(_("Please configure the SMTP mail settings first."), category="error")
+        response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
+        return Response(json.dumps(response), mimetype='application/json')
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
                            current_user.name)
         if result is None:
-            flash(_("Success! Book queued for sending to %(eReadermail)s", eReadermail=current_user.kindle_mail),
-                  category="success")
             ub.update_download(book_id, int(current_user.id))
+            response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
+                                                       eReadermail=current_user.kindle_mail)}]
         else:
-            flash(_("Oops! There was an error sending book: %(res)s", res=result), category="error")
+            response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:
-        flash(_("Oops! Please update your profile with a valid eReader Email."), category="error")
-    if "HTTP_REFERER" in request.environ:
-        return redirect(request.environ["HTTP_REFERER"])
-    else:
-        return redirect(url_for('web.index'))
+        response = [{'type': "danger", 'message': _("Oops! Please update your profile with a valid eReader Email.")}]
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 # ################################### Login Logout ##################################################################
@@ -1518,13 +1516,14 @@ def profile():
 @viewer_required
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
-    book.ordered_authors = calibre_db.order_authors([book], False)
 
     if not book:
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
+
+    book.ordered_authors = calibre_db.order_authors([book], False)
 
     # check if book has a bookmark
     bookmark = None
@@ -1541,9 +1540,9 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         log.debug("Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
-    elif book_format.lower() == "djvu":
+    elif book_format.lower() in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
-        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title)
+        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title, extension=book_format.lower())
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:

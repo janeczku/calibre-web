@@ -314,9 +314,6 @@ $(document).mouseup(function (e) {
     });
 });
 
-// Split path name to array and remove blanks
-url = window.location.pathname
-
 // Move create shelf
 $("#nav_createshelf").prependTo(".your-shelves");
 
@@ -359,31 +356,6 @@ $(document).on("click", ".dropdown-toggle", function () {
         $(this).addClass("offscreen");
     });
 });
-
-// Fade out content on page unload
-// delegate all clicks on "a" tag (links)
-/*$(document).on("click", "a:not(.btn-toolbar a, a[href*='shelf/remove'], .identifiers a, .bookinfo , .btn-group > a, #add-to-shelves a, #book-list a, .stat.blur a )", function () {
-
-    // get the href attribute
-    var newUrl = $(this).attr("href");
-
-    // veryfy if the new url exists or is a hash
-    if (!newUrl || newUrl[0] === "#") {
-        // set that hash
-        location.hash = newUrl;
-        return;
-    }
-
-    now, fadeout the html (whole page)
-      $( '.blur-wrapper' ).fadeOut(250);
-    $(".row-fluid .col-sm-10").fadeOut(500,function () {
-        // when the animation is complete, set the new location
-        location = newUrl;
-    });
-
-    // prevent the default browser behavior.
-    return false;
-});*/
 
 // Collapse long text into read-more
 $("div.comments").readmore({
@@ -447,6 +419,8 @@ if ($("body.author").length > 0) {
     }
 }
 
+// Split path name to array and remove blanks
+url = window.location.pathname
 // Ereader Page - add class to iframe body on ereader page after it loads.
 backurl = "../../book/" + url[2]
 $("body.epub #title-controls")
@@ -529,6 +503,7 @@ if ($("body.shelf").length > 0) {
 // Rest of Tooltips
 $(".home-btn > a").attr({
     "data-toggle": "tooltip",
+    "href": $(".navbar-brand")[0].href,
     "title": $(document.body).attr("data-text"),    // Home
     "data-placement": "bottom"
 })

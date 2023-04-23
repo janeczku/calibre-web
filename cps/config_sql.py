@@ -153,6 +153,7 @@ class _Settings(_Base):
     schedule_generate_book_covers = Column(Boolean, default=False)
     schedule_generate_series_covers = Column(Boolean, default=False)
     schedule_reconnect = Column(Boolean, default=False)
+    schedule_metadata_backup = Column(Boolean, default=False)
 
     config_password_policy = Column(Boolean, default=True)
     config_password_min_length = Column(Integer, default=8)
@@ -404,9 +405,9 @@ def _encrypt_fields(session, secret_key):
         session.query(exists().where(_Settings.mail_password_e)).scalar()
     except OperationalError:
         with session.bind.connect() as conn:
-            conn.execute("ALTER TABLE settings ADD column 'mail_password_e' String")
-            conn.execute("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String")
-            conn.execute("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String")
+            conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
         session.commit()
         crypter = Fernet(secret_key)
         settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
@@ -530,7 +531,7 @@ def get_encryption_key(key_path):
     key_file = os.path.join(key_path, ".key")
     generate = True
     error = ""
-    if os.path.exists(key_file) and  os.path.getsize(key_file) > 32:
+    if os.path.exists(key_file) and os.path.getsize(key_file) > 32:
         with open(key_file, "rb") as f:
             key = f.read()
         try:

@@ -35,13 +35,12 @@ search = Blueprint('search', __name__)
 log = logger.create()
 
 
-@search.route("/search", methods=["POST"])
+@search.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def simple_search():
-    term = dict(request.form).get("query")
+    term = request.args.get("query")
     if term:
-        flask_session['query'] = json.dumps(term.strip())
-        return redirect(url_for('web.books_list', data="search", sort_param='stored', query="")) # term.strip()
+        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term.strip()))
     else:
         return render_title_template('search.html',
                                      searchterm="",

@@ -85,20 +85,11 @@ $(document).on("change", "select[data-controlall]", function() {
     }
 });
 
-/*$(document).on("click", "#sendbtn", function (event) {
-    postButton(event, $(this).data('action'));
-});
-
-$(document).on("click", ".sendbutton", function (event) {
-    // $(".sendbutton").on("click", "body", function(event) {
-    postButton(event, $(this).data('action'));
-});*/
 
 $(document).on("click", ".postAction", function (event) {
     // $(".sendbutton").on("click", "body", function(event) {
     postButton(event, $(this).data('action'));
 });
-
 
 
 // Syntax has to be bind not on, otherwise problems with firefox
@@ -313,7 +304,7 @@ $(function() {
     }
 
     function fillFileTable(path, type, folder, filt) {
-        var request_path = "/../../ajax/pathchooser/";
+        var request_path = "/ajax/pathchooser/";
         $.ajax({
             dataType: "json",
             data: {
@@ -321,7 +312,7 @@ $(function() {
                 folder: folder,
                 filter: filt
             },
-            url: window.location.pathname + request_path,
+            url: getPath() + request_path,
             success: function success(data) {
                 if ($("#element_selected").text() ==="") {
                     $("#element_selected").text(data.cwd);
@@ -434,7 +425,7 @@ $(function() {
         }
         $.ajax({
             dataType: "json",
-            url: window.location.pathname + "/../../get_update_status",
+            url: getPath() + "/get_update_status",
             success: function success(data) {
                 $this.html(buttonText);
 
@@ -538,6 +529,7 @@ $(function() {
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
             $("#flash_danger").remove();
+            $("#flash_success").remove();
             var $modalBody = $(this).find(".modal-body");
 
             // Prevent static assets from loading multiple times
@@ -650,7 +642,6 @@ $(function() {
         );
     });
 
-
     $("#user_submit").click(function() {
         this.closest("form").submit();
     });
@@ -682,7 +673,7 @@ $(function() {
         $.ajax({
             method:"post",
             dataType: "json",
-            url: window.location.pathname + "/../../ajax/simulatedbchange",
+            url: getPath() + "/ajax/simulatedbchange",
             data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
                 if ( data.change ) {
@@ -709,17 +700,16 @@ $(function() {
         e.stopPropagation();
         this.blur();
         window.scrollTo({top: 0, behavior: 'smooth'});
-        var request_path = "/../../admin/ajaxconfig";
-        var loader = "/../..";
+        var request_path = "/admin/ajaxconfig";
         $("#flash_success").remove();
         $("#flash_danger").remove();
-        $.post(window.location.pathname + request_path, $(this).closest("form").serialize(), function(data) {
+        $.post(getPath() + request_path, $(this).closest("form").serialize(), function(data) {
             $('#config_upload_formats').val(data.config_upload);
             if(data.reboot) {
                 $("#spinning_success").show();
                 var rebootInterval = setInterval(function(){
                     $.get({
-                        url:window.location.pathname + "/../../admin/alive",
+                        url:getPath() + "/admin/alive",
                         success: function (d, statusText, xhr) {
                             if (xhr.status < 400) {
                                 $("#spinning_success").hide();
@@ -745,7 +735,6 @@ $(function() {
             $(this).data('value'),
             function(value){
                 postButton(event, $("#delete_shelf").data("action"));
-                // $("#delete_shelf").closest("form").submit()
             }
         );
 

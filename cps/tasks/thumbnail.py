@@ -138,7 +138,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
         # Replace outdated or missing thumbnails
         for thumbnail in book_cover_thumbnails:
-            if book.last_modified > thumbnail.generated_at:
+            if book.last_modified.replace(tzinfo=None) > thumbnail.generated_at:
                 generated += 1
                 self.update_book_cover_thumbnail(book, thumbnail)
 
