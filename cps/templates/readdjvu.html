@@ -18,6 +18,6 @@
     <script src="{{ url_for('static', filename='js/reading/djvu_reader.js') }}"></script>
   </head>
   <body>
-	<div id="djvuContainer" file="{{ url_for('web.serve_book', book_id=djvufile, book_format='djvu') }}"></div>
+	<div id="djvuContainer" file="{{ url_for('web.serve_book', book_id=djvufile, book_format=extension) }}"></div>
   </body>
 </html>
