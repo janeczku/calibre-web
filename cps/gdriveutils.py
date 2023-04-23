@@ -147,7 +147,7 @@ engine = create_engine('sqlite:///{0}'.format(cli_param.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
-Session = sessionmaker()
+Session = sessionmaker(autoflush=False)
 Session.configure(bind=engine)
 session = scoped_session(Session)
 
@@ -174,30 +174,12 @@ class PermissionAdded(Base):
         return str(self.gdrive_id)
 
 
-def migrate():
-    if not engine.dialect.has_table(engine.connect(), "permissions_added"):
-        PermissionAdded.__table__.create(bind = engine)
-    for sql in session.execute(text("select sql from sqlite_master where type='table'")):
-        if 'CREATE TABLE gdrive_ids' in sql[0]:
-            currUniqueConstraint = 'UNIQUE (gdrive_id)'
-            if currUniqueConstraint in sql[0]:
-                sql=sql[0].replace(currUniqueConstraint, 'UNIQUE (gdrive_id, path)')
-                sql=sql.replace(GdriveId.__tablename__, GdriveId.__tablename__ + '2')
-                session.execute(sql)
-                session.execute(text("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
-                                "gdrive_id, path FROM gdrive_ids;"))
-                session.commit()
-                session.execute(text('DROP TABLE %s' % 'gdrive_ids'))
-                session.execute(text('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids'))
-            break
-
 if not os.path.exists(cli_param.gd_path):
     try:
         Base.metadata.create_all(engine)
     except Exception as ex:
         log.error("Error connect to database: {} - {}".format(cli_param.gd_path, ex))
         raise
-migrate()
 
 
 def getDrive(drive=None, gauth=None):
@@ -344,7 +326,7 @@ def getFileFromEbooksFolder(path, fileName):
 
 
 def moveGdriveFileRemote(origin_file_id, new_title):
-    origin_file_id['title']= new_title
+    origin_file_id['title'] = new_title
     origin_file_id.Upload()
 
 
@@ -422,7 +404,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
             driveFile.Upload()
 
 
-def uploadFileToEbooksFolder(destFile, f):
+def uploadFileToEbooksFolder(destFile, f, string=False):
     drive = getDrive(Gdrive.Instance().drive)
     parent = getEbooksFolder(drive)
     splitDir = destFile.split('/')
@@ -435,7 +417,10 @@ def uploadFileToEbooksFolder(destFile, f):
             else:
                 driveFile = drive.CreateFile({'title': x,
                                               'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
-            driveFile.SetContentFile(f)
+            if not string:
+                driveFile.SetContentFile(f)
+            else:
+                driveFile.SetContentString(f)
             driveFile.Upload()
         else:
             existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %

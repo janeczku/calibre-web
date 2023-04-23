@@ -829,8 +829,6 @@ class CalibreDB:
 
     # Orders all Authors in the list according to authors sort
     def order_authors(self, entries, list_return=False, combined=False):
-        # entries_copy = copy.deepcopy(entries)
-        # entries_copy =[]
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
@@ -995,7 +993,7 @@ class CalibreDB:
                 title = title[len(prep):] + ', ' + prep
             return title.strip()
 
-        conn = conn or self.session.connection().connection.connection
+        conn = conn or self.session.connection().connection.driver_connection
         try:
             conn.create_function("title_sort", 1, _title_sort)
         except sqliteOperationalError:

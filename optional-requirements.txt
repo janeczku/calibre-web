@@ -1,8 +1,8 @@
 # GDrive Integration
-google-api-python-client>=1.7.11,<2.78.0
+google-api-python-client>=1.7.11,<2.90.0
 gevent>20.6.0,<23.0.0
 greenlet>=0.4.17,<2.1.0
-httplib2>=0.9.2,<0.22.0
+httplib2>=0.9.2,<0.23.0
 oauth2client>=4.0.0,<4.1.4
 uritemplate>=3.0.0,<4.2.0
 pyasn1-modules>=0.0.8,<0.3.0
@@ -13,7 +13,7 @@ rsa>=3.4.2,<4.10.0
 
 # Gmail
 google-auth-oauthlib>=0.4.3,<0.9.0
-google-api-python-client>=1.7.11,<2.78.0
+google-api-python-client>=1.7.11,<2.90.0
 
 # goodreads
 goodreads>=0.3.2,<0.4.0
@@ -34,7 +34,7 @@ markdown2>=2.0.0,<2.5.0
 html2text>=2020.1.16,<2022.1.1
 python-dateutil>=2.1,<2.9.0
 beautifulsoup4>=4.0.1,<4.12.0
-cchardet>=2.0.0,<2.2.0
+faust-cchardet>=2.1.18
 
 # Comics
 natsort>=2.2.0,<8.4.0

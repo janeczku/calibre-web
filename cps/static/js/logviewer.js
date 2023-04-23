@@ -36,7 +36,7 @@ function init(logType) {
     d.innerHTML = "loading ...";
 
     $.ajax({
-        url: window.location.pathname + "/../../ajax/log/" + logType,
+        url: getPath() + "/ajax/log/" + logType,
         datatype: "text",
         cache: false
     })

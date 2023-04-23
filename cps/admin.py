@@ -30,6 +30,7 @@ import string
 from datetime import datetime, timedelta
 from datetime import time as datetime_time
 from functools import wraps
+from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from flask_login import login_required, current_user, logout_user
@@ -100,10 +101,12 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    if not ub.check_user_session(current_user.id, flask_session.get('_id')) and 'opds' not in request.path:
+    if not ub.check_user_session(current_user.id,
+                                 flask_session.get('_id')) and 'opds' not in request.path \
+      and config.config_session == 1:
         logout_user()
     g.constants = constants
-    g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION','')
+    g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION', '')
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
@@ -1157,7 +1160,6 @@ def _configuration_logfile_helper(to_save):
 
 def _configuration_ldap_helper(to_save):
     reboot_required = False
-    reboot_required |= _config_string(to_save, "config_ldap_provider_url")
     reboot_required |= _config_int(to_save, "config_ldap_port")
     reboot_required |= _config_int(to_save, "config_ldap_authentication")
     reboot_required |= _config_string(to_save, "config_ldap_dn")
@@ -1172,6 +1174,11 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
+
+    address = urlparse(to_save.get("config_ldap_provider_url", ""))
+    to_save["config_ldap_provider_url"] = (address.hostname or address.path).strip("/")
+    reboot_required |= _config_string(to_save, "config_ldap_provider_url")
+
     if to_save.get("config_ldap_serv_password_e", "") != "":
         reboot_required |= 1
         config.set_from_dictionary(to_save, "config_ldap_serv_password_e")
@@ -1358,6 +1365,7 @@ def update_scheduledtasks():
         error = True
     _config_checkbox(to_save, "schedule_generate_book_covers")
     _config_checkbox(to_save, "schedule_generate_series_covers")
+    _config_checkbox(to_save, "schedule_metadata_backup")
     _config_checkbox(to_save, "schedule_reconnect")
 
     if not error:
