@@ -886,9 +886,16 @@ class CalibreDB:
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
+        #splits search term into single words
         author_terms = re.split("[, ]+", term)
+
+        #search authors for match
         for author_term in author_terms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
+
+
+
+
         query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
             query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
@@ -900,17 +907,23 @@ class CalibreDB:
             query = query.outerjoin(join[0])
 
         cc = self.get_cc_columns(config, filter_config_custom_read=True)
+
+        #search each category for exact matches with the tag
         filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                              Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                              Books.authors.any(and_(*q)),
                              Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
                              func.lower(Books.title).ilike("%" + term + "%")]
+
+
         for c in cc:
             if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
+
+        #filter out multiple languages and archived books, then return all that match at least one of filter_expression
         return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
