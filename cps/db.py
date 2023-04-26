@@ -20,6 +20,7 @@
 import os
 import re
 import json
+import traceback
 from datetime import datetime
 from urllib.parse import quote
 import unidecode
@@ -49,7 +50,7 @@ from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
 from weakref import WeakSet
-
+from fuzzywuzzy.fuzz import ratio
 
 log = logger.create()
 
@@ -885,6 +886,7 @@ class CalibreDB:
     def search_query(self, term, config, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.session.connection().connection.connection.create_function("ratio", 2, ratio)
         q = list()
         #splits search term into single words
         words = re.split("[, ]+", term)
@@ -915,18 +917,20 @@ class CalibreDB:
         # filter out multiple languages and archived books,
         results=query.filter(self.common_filters(True))
 
-        for word in words:
-            filter_expression=[
-                Books.tags.any(func.lower(Tags.name).ilike("%" + word + "%")),
-                Books.series.any(func.lower(Series.name).ilike("%" + word + "%")),
-                #change to or_ to allow mix of title and author in query term
-                Books.authors.any(or_(*q)),
-                Books.publishers.any(func.lower(Publishers.name).ilike("%" + word + "%")),
-                func.lower(Books.title).ilike("%" + word + "%")
-            ]
-            results=results.filter(or_(*filter_expression))
+        # for word in words:
+        #     filter_expression=[
+        #         Books.tags.any(func.lower(Tags.name).ilike("%" + word + "%")),
+        #         Books.series.any(func.lower(Series.name).ilike("%" + word + "%")),
+        #         #change to or_ to allow mix of title and author in query term
+        #         Books.authors.any(or_(*q)),
+        #         Books.publishers.any(func.lower(Publishers.name).ilike("%" + word + "%")),
+        #         func.lower(Books.title).ilike("%" + word + "%")
+        #     ]
+        #     results=results.filter(or_(*filter_expression))
 
-        return results
+        try: return results.filter(func.ratio(Books.title,term)>80)
+        except Exception:
+            print(traceback.format_exc())
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
         tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
