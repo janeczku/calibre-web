@@ -916,7 +916,7 @@ class CalibreDB:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
-                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%"))) #TODO ?
+                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
         # filter out multiple languages and archived books,
         results=query.filter(self.common_filters(True))
 
