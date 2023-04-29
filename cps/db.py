@@ -50,7 +50,10 @@ from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
 from weakref import WeakSet
-from fuzzywuzzy.fuzz import ratio
+from thefuzz.fuzz import partial_ratio
+
+# %-level, 100 means exact match
+FUZZY_SEARCH_ACCURACY=80
 
 log = logger.create()
 
@@ -886,7 +889,7 @@ class CalibreDB:
     def search_query(self, term, config, *join):
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
-        self.session.connection().connection.connection.create_function("ratio", 2, ratio)
+        self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
         q = list()
         #splits search term into single words
         words = re.split("[, ]+", term)
@@ -894,7 +897,7 @@ class CalibreDB:
         words.sort(key=len,reverse=True)
         #search authors for match
         for word in words:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + word + "%")))
+            q.append(Books.authors.any(func.partial_ratio(func.lower(Authors.name),word)>=FUZZY_SEARCH_ACCURACY))
 
         query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
@@ -917,18 +920,19 @@ class CalibreDB:
         # filter out multiple languages and archived books,
         results=query.filter(self.common_filters(True))
 
-        # for word in words:
-        #     filter_expression=[
-        #         Books.tags.any(func.lower(Tags.name).ilike("%" + word + "%")),
-        #         Books.series.any(func.lower(Series.name).ilike("%" + word + "%")),
-        #         #change to or_ to allow mix of title and author in query term
-        #         Books.authors.any(or_(*q)),
-        #         Books.publishers.any(func.lower(Publishers.name).ilike("%" + word + "%")),
-        #         func.lower(Books.title).ilike("%" + word + "%")
-        #     ]
-        #     results=results.filter(or_(*filter_expression))
+        #search tags, series and titles, also add author queries
+        for word in words:
+            filter_expression=[
+                Books.tags.any(func.partial_ratio(func.lower(Tags.name),word)>=FUZZY_SEARCH_ACCURACY),
+                Books.series.any(func.partial_ratio(func.lower(Series.name),word)>=FUZZY_SEARCH_ACCURACY),
+                #change to or_ to allow mix of title and author in query term
+                Books.authors.any(or_(*q)),
+                Books.publishers.any(func.partial_ratio(func.lower(Publishers.name),word)>=FUZZY_SEARCH_ACCURACY),
+                func.partial_ratio(func.lower(Books.title),word)>=FUZZY_SEARCH_ACCURACY
+            ]
+            results=results.filter(or_(*filter_expression))
 
-        try: return results.filter(func.ratio(Books.title,term)>80)
+        try: return results
         except Exception:
             print(traceback.format_exc())
 
