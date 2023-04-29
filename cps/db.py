@@ -916,7 +916,7 @@ class CalibreDB:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
-                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%"))) #TODO ?
+                        func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
         # filter out multiple languages and archived books,
         results=query.filter(self.common_filters(True))
 
@@ -932,9 +932,7 @@ class CalibreDB:
             ]
             results=results.filter(or_(*filter_expression))
 
-        try: return results
-        except Exception:
-            print(traceback.format_exc())
+        return results
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
         tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
