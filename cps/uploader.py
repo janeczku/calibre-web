@@ -88,7 +88,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
         log.warning('cannot parse metadata, using default: %s', ex)
 
     if not meta.title.strip():
-        meta = original_file_name
+        meta = meta._replace(title=original_file_name)
     if not meta.author.strip() or meta.author.lower() == 'unknown':
         meta = meta._replace(author=_('Unknown'))
     return meta
