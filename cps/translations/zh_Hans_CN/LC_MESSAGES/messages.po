@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-18 20:06+0200\n"
+"POT-Creation-Date: 2023-04-30 19:37+0300\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -39,9 +39,8 @@ msgid "Unknown command"
 msgstr "未知命令"
 
 #: cps/admin.py:169
-#, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "发送给 %(email)s 的测试邮件已加入队列。请检查任务结果"
+msgstr "成功！书籍已排队进行元数据备份，请检查任务列表以获取结果"
 
 #: cps/admin.py:202 cps/editbooks.py:577 cps/editbooks.py:579
 #: cps/editbooks.py:615 cps/editbooks.py:632 cps/editbooks.py:1241
@@ -290,7 +289,7 @@ msgstr "Gmail 账户验证成功"
 #: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:229
 #: cps/editbooks.py:305 cps/editbooks.py:1203 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
-#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1480
+#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "数据库错误：%(error)s"
@@ -329,7 +328,7 @@ msgstr "指定任务的持续时间无效"
 msgid "Scheduled tasks settings updated"
 msgstr "已更新计划任务设置"
 
-#: cps/admin.py:1384 cps/admin.py:1433 cps/admin.py:2040 cps/web.py:1280
+#: cps/admin.py:1384 cps/admin.py:1433 cps/admin.py:2040 cps/web.py:1281
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试"
 
@@ -455,7 +454,7 @@ msgstr "证书文件路径无效，请输入正确的路径"
 
 #: cps/admin.py:1812
 msgid "Password length has to be between 1 and 40"
-msgstr ""
+msgstr "密码长度必须在1到40之间"
 
 #: cps/admin.py:1864
 msgid "Database Settings updated"
@@ -465,7 +464,7 @@ msgstr "数据库设置已更新"
 msgid "Database Configuration"
 msgstr "数据库配置"
 
-#: cps/admin.py:1887 cps/web.py:1254
+#: cps/admin.py:1887 cps/web.py:1255
 msgid "Oops! Please complete all fields."
 msgstr "请填写所有字段！"
 
@@ -499,7 +498,7 @@ msgstr "无法删除游客用户"
 msgid "No admin user remaining, can't delete user"
 msgstr "管理员账户不存在，无法删除用户"
 
-#: cps/admin.py:2010 cps/web.py:1429
+#: cps/admin.py:2010 cps/web.py:1430
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
 
@@ -523,13 +522,13 @@ msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 
 #: cps/db.py:972 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:558 cps/web.py:592 cps/web.py:667 cps/web.py:692 cps/web.py:973
-#: cps/web.py:1003 cps/web.py:1039 cps/web.py:1067 cps/web.py:1106
+#: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
+#: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "无"
 
-#: cps/editbooks.py:110 cps/editbooks.py:896 cps/web.py:525 cps/web.py:1521
-#: cps/web.py:1565 cps/web.py:1610
+#: cps/editbooks.py:110 cps/editbooks.py:896 cps/web.py:525 cps/web.py:1522
+#: cps/web.py:1566 cps/web.py:1611
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
@@ -760,7 +759,7 @@ msgstr "无效的邮箱格式"
 
 #: cps/helper.py:703
 msgid "Password doesn't comply with password validation rules"
-msgstr ""
+msgstr "密码不符合密码验证规则"
 
 #: cps/helper.py:853
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
@@ -894,7 +893,7 @@ msgstr "{} 星"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:67
 #: cps/templates/layout.html:101 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1317
+#: cps/templates/login.html:21 cps/web.py:1318
 msgid "Login"
 msgstr "登录"
 
@@ -971,7 +970,7 @@ msgid "Show Random Books"
 msgstr "显示随机书籍"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1110
+#: cps/templates/index.xml:83 cps/web.py:1111
 msgid "Categories"
 msgstr "分类"
 
@@ -1009,7 +1008,7 @@ msgstr "显示出版社栏目"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1082
+#: cps/web.py:1083
 msgid "Languages"
 msgstr "语言"
 
@@ -1294,12 +1293,12 @@ msgstr "评分：无"
 msgid "Rating: %(rating)s stars"
 msgstr "评分：%(rating)s 星"
 
-#: cps/web.py:647
+#: cps/web.py:645
 #, python-format
 msgid "File format: %(format)s"
 msgstr "文件格式：%(format)s"
 
-#: cps/web.py:684
+#: cps/web.py:682
 #, python-format
 msgid "Category: %(name)s"
 msgstr "分类：%(name)s"
@@ -1313,115 +1312,109 @@ msgstr "语言：%(name)s"
 msgid "Downloads"
 msgstr "下载次数"
 
-#: cps/web.py:1042
+#: cps/web.py:1043
 msgid "Ratings list"
 msgstr "评分列表"
 
-#: cps/web.py:1069
+#: cps/web.py:1070
 msgid "File formats list"
 msgstr "文件格式列表"
 
-#: cps/web.py:1217
-#, fuzzy
+#: cps/web.py:1218
 msgid "Please configure the SMTP mail settings first..."
 msgstr "请先配置 SMTP 邮箱设置..."
 
-#: cps/web.py:1224
+#: cps/web.py:1225
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "书籍已经成功加入 %(eReadermail)s 的发送队列"
 
-#: cps/web.py:1227
+#: cps/web.py:1228
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
-#: cps/web.py:1229
+#: cps/web.py:1230
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "请先配置您的 Kindle 邮箱"
 
-#: cps/web.py:1245
+#: cps/web.py:1246
 msgid "Please wait one minute to register next user"
-msgstr ""
+msgstr "请等待一分钟注册下一个用户"
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1246
-#: cps/web.py:1251 cps/web.py:1255 cps/web.py:1261 cps/web.py:1281
-#: cps/web.py:1285 cps/web.py:1298 cps/web.py:1301
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1247
+#: cps/web.py:1252 cps/web.py:1256 cps/web.py:1262 cps/web.py:1282
+#: cps/web.py:1286 cps/web.py:1299 cps/web.py:1302
 msgid "Register"
 msgstr "注册"
 
-#: cps/web.py:1250 cps/web.py:1297
+#: cps/web.py:1251 cps/web.py:1298
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "邮件服务未配置，请联系网站管理员！"
 
-#: cps/web.py:1283
+#: cps/web.py:1284
 msgid "Oops! Your Email is not allowed."
 msgstr "您的电子邮件不允许注册"
 
-#: cps/web.py:1286
+#: cps/web.py:1287
 msgid "Success! Confirmation Email has been sent."
 msgstr "确认邮件已经发送到您的邮箱"
 
-#: cps/web.py:1332 cps/web.py:1350
-#, fuzzy
+#: cps/web.py:1333 cps/web.py:1351
 msgid "Cannot activate LDAP authentication"
 msgstr "无法激活 LDAP 认证"
 
-#: cps/web.py:1344
+#: cps/web.py:1345
 msgid "Please wait one minute before next login"
-msgstr ""
+msgstr "下次登录前请等待一分钟"
 
-#: cps/web.py:1360
-#, fuzzy, python-format
+#: cps/web.py:1361
+#, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1367
-#, fuzzy, python-format
+#: cps/web.py:1368
+#, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
-#: cps/web.py:1372
-#, fuzzy, python-format
+#: cps/web.py:1373
+#, python-format
 msgid "Could not login: %(message)s"
 msgstr "无法登录：%(message)s"
 
-#: cps/web.py:1376 cps/web.py:1401
-#, fuzzy
+#: cps/web.py:1377 cps/web.py:1402
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:1383
-#, fuzzy
+#: cps/web.py:1384
 msgid "New Password was send to your email address"
 msgstr "新密码已发送到您的邮箱"
 
-#: cps/web.py:1387
-#, fuzzy
+#: cps/web.py:1388
 msgid "An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试"
 
-#: cps/web.py:1389
-#, fuzzy
+#: cps/web.py:1390
 msgid "Please enter valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
-#: cps/web.py:1397
-#, fuzzy, python-format
+#: cps/web.py:1398
+#, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1455 cps/web.py:1505
+#: cps/web.py:1456 cps/web.py:1506
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
-#: cps/web.py:1471
+#: cps/web.py:1472
 msgid "Success! Profile Updated"
 msgstr "资料已更新"
 
-#: cps/web.py:1475
+#: cps/web.py:1476
 msgid "Oops! An account already exists for this Email."
 msgstr "使用此邮箱的账号已经存在"
 
@@ -1687,7 +1680,7 @@ msgstr "重新连接到 Calibre 库"
 
 #: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
 msgid "Generate Metadata Backup Files"
-msgstr ""
+msgstr "生成元数据备份文件"
 
 #: cps/templates/admin.html:197
 msgid "Refresh Thumbnail Cache"
@@ -2390,50 +2383,48 @@ msgid "Location of Unrar binary"
 msgstr "Unrar 程序路径"
 
 #: cps/templates/config_edit.html:361
-#, fuzzy
 msgid "Security Settings"
-msgstr "OAuth 设置"
+msgstr "安全设置"
 
 #: cps/templates/config_edit.html:369
 msgid "Limit failed login attempts"
-msgstr ""
+msgstr "限制失败的登录尝试"
 
 #: cps/templates/config_edit.html:372
 msgid "Session protection"
-msgstr ""
+msgstr "会话保护"
 
 #: cps/templates/config_edit.html:374
 msgid "Basic"
-msgstr ""
+msgstr "基本"
 
 #: cps/templates/config_edit.html:375
 msgid "Strong"
-msgstr ""
+msgstr "强"
 
 #: cps/templates/config_edit.html:380
-#, fuzzy
 msgid "User Password policy"
-msgstr "重置用户密码"
+msgstr "用户密码策略"
 
 #: cps/templates/config_edit.html:384
 msgid "Minimum password length"
-msgstr ""
+msgstr "最小密码长度"
 
 #: cps/templates/config_edit.html:389
 msgid "Enforce number"
-msgstr ""
+msgstr "必须使用数字"
 
 #: cps/templates/config_edit.html:393
 msgid "Enforce lowercase characters"
-msgstr ""
+msgstr "必须使用小写字符"
 
 #: cps/templates/config_edit.html:397
 msgid "Enforce uppercase characters"
-msgstr ""
+msgstr "必须使用大写字符"
 
 #: cps/templates/config_edit.html:401
 msgid "Enforce special characters"
-msgstr ""
+msgstr "必须使用特殊字符"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
@@ -3009,11 +3000,11 @@ msgstr "下一页"
 
 #: cps/templates/readcbr.html:96
 msgid "Single Page Display"
-msgstr ""
+msgstr "单页显示"
 
 #: cps/templates/readcbr.html:97
 msgid "Long Strip Display"
-msgstr ""
+msgstr "长条显示"
 
 #: cps/templates/readcbr.html:98
 msgid "Scale to Best"
@@ -3045,16 +3036,15 @@ msgstr "翻转图片"
 
 #: cps/templates/readcbr.html:126
 msgid "Display"
-msgstr ""
+msgstr "显示"
 
 #: cps/templates/readcbr.html:129
-#, fuzzy
 msgid "Single Page"
-msgstr "管理页"
+msgstr "单页"
 
 #: cps/templates/readcbr.html:130
 msgid "Long Strip"
-msgstr ""
+msgstr "长条"
 
 #: cps/templates/readcbr.html:135
 msgid "Scale"

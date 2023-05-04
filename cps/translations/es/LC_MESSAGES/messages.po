@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-04-18 20:06+0200\n"
+"POT-Creation-Date: 2023-04-30 19:37+0300\n"
 "PO-Revision-Date: 2020-05-25 17:22+0200\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -301,7 +301,7 @@ msgstr ""
 #: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:229
 #: cps/editbooks.py:305 cps/editbooks.py:1203 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
-#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1480
+#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Error en la base de datos: %(error)s."
@@ -340,7 +340,7 @@ msgstr ""
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1384 cps/admin.py:1433 cps/admin.py:2040 cps/web.py:1280
+#: cps/admin.py:1384 cps/admin.py:1433 cps/admin.py:2040 cps/web.py:1281
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ha ocurrido un error desconocido. Por favor vuelva a intentarlo más tarde."
 
@@ -481,7 +481,7 @@ msgstr "Actualizados los ajustes del servidor de correo electrónico"
 msgid "Database Configuration"
 msgstr "Configuración de la base de datos"
 
-#: cps/admin.py:1887 cps/web.py:1254
+#: cps/admin.py:1887 cps/web.py:1255
 msgid "Oops! Please complete all fields."
 msgstr "¡Por favor, rellena todos los campos!"
 
@@ -516,7 +516,7 @@ msgstr "No puedes borrar al Usuario Invitado"
 msgid "No admin user remaining, can't delete user"
 msgstr "No queda ningún usuario administrador, no se puede borrar al usuario"
 
-#: cps/admin.py:2010 cps/web.py:1429
+#: cps/admin.py:2010 cps/web.py:1430
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
@@ -540,13 +540,13 @@ msgstr "Columna personalizada No.%(column)d no existe en la base de datos calibr
 
 #: cps/db.py:972 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:558 cps/web.py:592 cps/web.py:667 cps/web.py:692 cps/web.py:973
-#: cps/web.py:1003 cps/web.py:1039 cps/web.py:1067 cps/web.py:1106
+#: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
+#: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "Ninguno"
 
-#: cps/editbooks.py:110 cps/editbooks.py:896 cps/web.py:525 cps/web.py:1521
-#: cps/web.py:1565 cps/web.py:1610
+#: cps/editbooks.py:110 cps/editbooks.py:896 cps/web.py:525 cps/web.py:1522
+#: cps/web.py:1566 cps/web.py:1611
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "oh, oh, el libro seleccionado no está disponible. El archivo no existe o no es accesible"
 
@@ -919,7 +919,7 @@ msgstr "{} Estrellas"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:67
 #: cps/templates/layout.html:101 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1317
+#: cps/templates/login.html:21 cps/web.py:1318
 msgid "Login"
 msgstr "Inicio de sesión"
 
@@ -997,7 +997,7 @@ msgid "Show Random Books"
 msgstr "Mostrar libros al azar"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1110
+#: cps/templates/index.xml:83 cps/web.py:1111
 msgid "Categories"
 msgstr "Categorías"
 
@@ -1039,7 +1039,7 @@ msgstr "Mostrar selección de editores"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1082
+#: cps/web.py:1083
 msgid "Languages"
 msgstr "Idiomas"
 
@@ -1331,12 +1331,12 @@ msgstr ""
 msgid "Rating: %(rating)s stars"
 msgstr "Calificación: %(rating)s estrellas"
 
-#: cps/web.py:647
+#: cps/web.py:645
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Formato del archivo: %(format)s"
 
-#: cps/web.py:684
+#: cps/web.py:682
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Categoría : %(name)s"
@@ -1350,117 +1350,117 @@ msgstr "Idioma: %(name)s"
 msgid "Downloads"
 msgstr "Descargas"
 
-#: cps/web.py:1042
+#: cps/web.py:1043
 msgid "Ratings list"
 msgstr "Lista de calificaciones"
 
-#: cps/web.py:1069
+#: cps/web.py:1070
 msgid "File formats list"
 msgstr "Lista de formatos"
 
-#: cps/web.py:1217
+#: cps/web.py:1218
 #, fuzzy
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configura primero los parámetros del servidor SMTP..."
 
-#: cps/web.py:1224
+#: cps/web.py:1225
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Libro puesto en la cola de envío a %(eReadermail)s"
 
-#: cps/web.py:1227
+#: cps/web.py:1228
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Ha sucedido un error en el envío del libro: %(res)s"
 
-#: cps/web.py:1229
+#: cps/web.py:1230
 #, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Por favor actualiza tu perfil con la dirección de correo de su kindle..."
 
-#: cps/web.py:1245
+#: cps/web.py:1246
 msgid "Please wait one minute to register next user"
 msgstr ""
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1246
-#: cps/web.py:1251 cps/web.py:1255 cps/web.py:1261 cps/web.py:1281
-#: cps/web.py:1285 cps/web.py:1298 cps/web.py:1301
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1247
+#: cps/web.py:1252 cps/web.py:1256 cps/web.py:1262 cps/web.py:1282
+#: cps/web.py:1286 cps/web.py:1299 cps/web.py:1302
 msgid "Register"
 msgstr "Registro"
 
-#: cps/web.py:1250 cps/web.py:1297
+#: cps/web.py:1251 cps/web.py:1298
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "El servidor de correo no está configurado, por favor, ¡avisa a tu administrador!"
 
-#: cps/web.py:1283
+#: cps/web.py:1284
 msgid "Oops! Your Email is not allowed."
 msgstr "Su correo electrónico no está permitido para registrarse"
 
-#: cps/web.py:1286
+#: cps/web.py:1287
 msgid "Success! Confirmation Email has been sent."
 msgstr "Se ha enviado un correo electrónico de verificación a su cuenta de correo."
 
-#: cps/web.py:1332 cps/web.py:1350
+#: cps/web.py:1333 cps/web.py:1351
 #, fuzzy
 msgid "Cannot activate LDAP authentication"
 msgstr "No se puede activar la autenticación LDAP"
 
-#: cps/web.py:1344
+#: cps/web.py:1345
 msgid "Please wait one minute before next login"
 msgstr ""
 
-#: cps/web.py:1360
+#: cps/web.py:1361
 #, fuzzy, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "has iniciado sesión como : '%(nickname)s'"
 
-#: cps/web.py:1367
+#: cps/web.py:1368
 #, fuzzy, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Fallback login como: '%(nickname)s', no se puede acceder al servidor LDAP o usuario desconocido"
 
-#: cps/web.py:1372
+#: cps/web.py:1373
 #, fuzzy, python-format
 msgid "Could not login: %(message)s"
 msgstr "No se pudo entrar: %(message)s"
 
-#: cps/web.py:1376 cps/web.py:1401
+#: cps/web.py:1377 cps/web.py:1402
 #, fuzzy
 msgid "Wrong Username or Password"
 msgstr "Usuario o contraseña inválido"
 
-#: cps/web.py:1383
+#: cps/web.py:1384
 #, fuzzy
 msgid "New Password was send to your email address"
 msgstr "Una nueva contraseña se ha enviado a su cuenta de correo electrónico"
 
-#: cps/web.py:1387
+#: cps/web.py:1388
 #, fuzzy
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ha ocurrido un error desconocido. Por favor vuelva a intentarlo más tarde."
 
-#: cps/web.py:1389
+#: cps/web.py:1390
 #, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "Por favor, introduce un usuario válido para restablecer la contraseña"
 
-#: cps/web.py:1397
+#: cps/web.py:1398
 #, fuzzy, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "has iniciado sesión como : '%(nickname)s'"
 
-#: cps/web.py:1455 cps/web.py:1505
+#: cps/web.py:1456 cps/web.py:1506
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "Perfil de %(name)s"
 
-#: cps/web.py:1471
+#: cps/web.py:1472
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "Perfil actualizado"
 
-#: cps/web.py:1475
+#: cps/web.py:1476
 #, fuzzy
 msgid "Oops! An account already exists for this Email."
 msgstr "Encontrada una cuenta existente para esa dirección de correo electrónico"
