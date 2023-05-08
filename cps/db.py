@@ -931,7 +931,15 @@ class CalibreDB:
                 func.partial_ratio(func.lower(Books.title),word)>=FUZZY_SEARCH_ACCURACY
             ]
             results=results.filter(or_(*filter_expression))
+        #TODO sort
 
+        # score = 0
+        # for word in words:
+        #     score += max(
+        #         attr1 % word,
+        #         attr2 % word,
+        #     )
+        # sort by score desc
         return results
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
