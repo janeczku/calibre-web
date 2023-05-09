@@ -23,6 +23,8 @@ import json
 import traceback
 from datetime import datetime
 from urllib.parse import quote
+
+import sqlalchemy
 import unidecode
 
 from sqlite3 import OperationalError as sqliteOperationalError
@@ -918,7 +920,7 @@ class CalibreDB:
                             'custom_column_' + str(c.id)).any(
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
         # filter out multiple languages and archived books,
-        results=query.filter(self.common_filters(True))
+        results:sqlalchemy.orm.Query=query.filter(self.common_filters(True))
 
         #search tags, series and titles, also add author queries
         for word in words:
@@ -933,6 +935,10 @@ class CalibreDB:
             results=results.filter(or_(*filter_expression))
         #TODO sort
 
+        results.order_by(lambda Book:Book.title+Book.tags+Book.authors)
+        # v1
+        # results.order_by(desc(lambda Book:levenshtein(Book.title+Book.tags+Book.authors,term)))
+        # v2
         # score = 0
         # for word in words:
         #     score += max(
