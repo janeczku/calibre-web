@@ -40,6 +40,7 @@ try:
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import desc,asc
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -585,7 +586,7 @@ class CalibreDB:
             return False, False
         try:
             check_engine = create_engine('sqlite://',
-                                         echo=False,
+                                         echo=True,
                                          isolation_level="SERIALIZABLE",
                                          connect_args={'check_same_thread': False},
                                          poolclass=StaticPool)
@@ -935,7 +936,6 @@ class CalibreDB:
             results=results.filter(or_(*filter_expression))
         #TODO sort
 
-        results.order_by(lambda Book:Book.title+Book.tags+Book.authors)
         # v1
         # results.order_by(desc(lambda Book:levenshtein(Book.title+Book.tags+Book.authors,term)))
         # v2
@@ -966,9 +966,12 @@ class CalibreDB:
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
+        self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
+        self.session.connection().connection.connection.create_function("sort", 1, lambda tags :print(f"<Book:  {tags} >") or 3)
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()#*order
+        #result = self.search_query(term, config, *join).order_by(desc(func.sort(Books.tags))).all()#*order
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
