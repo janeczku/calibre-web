@@ -887,7 +887,7 @@ class CalibreDB:
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     def search_query(self, term, config, *join):
-        term.strip().lower()
+        term=term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
         q = list()
