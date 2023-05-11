@@ -53,7 +53,7 @@ from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
 from weakref import WeakSet
-from thefuzz.fuzz import partial_ratio
+from thefuzz.fuzz import partial_ratio, partial_token_set_ratio
 
 # %-level, 100 means exact match
 FUZZY_SEARCH_ACCURACY=80
@@ -954,7 +954,7 @@ class CalibreDB:
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
-        self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
+        self.session.connection().connection.connection.create_function("partial_token_set_ratio", 2, partial_token_set_ratio)
         self.session.connection().connection.connection.create_function("sort", 1, lambda tags :print(f"<Book:  {tags} >") or 3)
         order = order[0] if order else [Books.sort]
         pagination = None
