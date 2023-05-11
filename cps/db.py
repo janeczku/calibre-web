@@ -959,7 +959,7 @@ class CalibreDB:
         order = order[0] if order else [Books.sort]
         pagination = None
         #result = self.search_query(term, config, *join).order_by(*order).all()#*order
-        result = self.search_query(term, config, *join).order_by(desc(func.partial_ratio(Books.title+" "+Books.author_sort,term))).all()
+        result = self.search_query(term, config, *join).order_by(desc(func.partial_ratio(Books.title.name+" "+Books.author_sort.name+" "+Books.tags.get(),term))).all()
         for row in result:
             print(row)
 
