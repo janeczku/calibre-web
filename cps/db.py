@@ -889,7 +889,7 @@ class CalibreDB:
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, config, *join):
+    def search_query(self, term, config, *join)->sqlalchemy.orm.Query:
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
@@ -921,7 +921,7 @@ class CalibreDB:
                             'custom_column_' + str(c.id)).any(
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
         # filter out multiple languages and archived books,
-        results:sqlalchemy.orm.Query=query.filter(self.common_filters(True))
+        results=query.filter(self.common_filters(True))
 
         #search tags, series and titles, also add author queries
         for word in words:
@@ -934,18 +934,6 @@ class CalibreDB:
                 func.partial_ratio(func.lower(Books.title),word)>=FUZZY_SEARCH_ACCURACY
             ]
             results=results.filter(or_(*filter_expression))
-        #TODO sort
-
-        # v1
-        # results.order_by(desc(lambda Book:levenshtein(Book.title+Book.tags+Book.authors,term)))
-        # v2
-        # score = 0
-        # for word in words:
-        #     score += max(
-        #         attr1 % word,
-        #         attr2 % word,
-        #     )
-        # sort by score desc
         return results
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
@@ -970,7 +958,11 @@ class CalibreDB:
         self.session.connection().connection.connection.create_function("sort", 1, lambda tags :print(f"<Book:  {tags} >") or 3)
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()#*order
+        #result = self.search_query(term, config, *join).order_by(*order).all()#*order
+        result = self.search_query(term, config, *join).order_by(desc(func.partial_ratio(Books.title+" "+Books.author_sort,term))).all()
+        for row in result:
+            print(row)
+
         #result = self.search_query(term, config, *join).order_by(desc(func.sort(Books.tags))).all()#*order
         result_count = len(result)
         if offset != None and limit != None:
