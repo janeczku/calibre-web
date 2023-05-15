@@ -8,9 +8,10 @@ class EpubParser {
 
     getTextByteLength() {
         let size = 0;
-        for (let key in y = Object.keys(this.files)) {
-            let file = this.files[y[key]];
+        for (let key of Object.keys(this.files)) {
+            let file = this.files[key];
             if (file.name.endsWith("html")) {
+                console.log(file.name+" "+file._data.uncompressedSize)
                 size += file._data.uncompressedSize;
             }
         }
@@ -65,9 +66,10 @@ class EpubParser {
         let bytesize = 0;
         for (let file of this.getSpine()) {
             if (file !== currentFile) {
-                let filepath = this.absPath(this.resolveIDref(currentFile));
+                let filepath = this.absPath(this.resolveIDref(file));
                 //ignore non text files
                 if (filepath.endsWith("html")) {
+                    console.log(filepath+" "+bytesize)
                     bytesize += this.files[filepath]._data.uncompressedSize;
                 }
             } else {
