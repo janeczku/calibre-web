@@ -3,15 +3,16 @@ class EpubParser {
         this.files = filesList;
         this.parser = new DOMParser();
         this.opfXml = this.getOPFXml();
+        this.encoder = new TextEncoder();
     }
 
 
-    getTextByteLength() {
+    getTotalByteLength() {
         let size = 0;
         for (let key of Object.keys(this.files)) {
             let file = this.files[key];
             if (file.name.endsWith("html")) {
-                console.log(file.name+" "+file._data.uncompressedSize)
+                console.log(file.name + " " + file._data.uncompressedSize)
                 size += file._data.uncompressedSize;
             }
         }
@@ -69,14 +70,47 @@ class EpubParser {
                 let filepath = this.absPath(this.resolveIDref(file));
                 //ignore non text files
                 if (filepath.endsWith("html")) {
-                    console.log(filepath+" "+bytesize)
+                    console.log(filepath + " " + bytesize)
                     bytesize += this.files[filepath]._data.uncompressedSize;
                 }
             } else {
-                break
+                break;
             }
         }
         return bytesize;
     }
+    cfiToXmlNode(file,cfi){
 
+    }
+    /**
+    takes the node that the cfi points at and counts the bytes of all nodes before that
+     */
+    getCurrentFileProgress(currentFile, CFI) {
+        let size = 0
+        let startnode = this.cfiToXmlNode(currentFile,CFI);
+        let prev = startnode.previousElementSibling;
+        while (prev !== null) {
+            size += this.encoder.encode(prev.outerHTML).length;
+            prev = prev.previousElementSibling;
+        }
+        let parent = startnode.parentElement;
+        while (parent !== null) {
+            let parentPrev = parent.previousElementSibling;
+            while (parentPrev !== null) {
+                size += this.encoder.encode(parentPrev.outerHTML).length;
+                parentPrev = parentPrev.previousElementSibling;
+            }
+            parent=parent.parentElement;
+        }
+        return size;
+    }
+
+    getProgress(currentFile, CFI) {
+        let percentage = this.getTotalByteLength() / (this.getPreviousFilesSize(currentFile) + this.getCurrentFileProgress(currentFile, CFI));
+        if (percentage === Infinity) {
+            return 0;
+        } else {
+            return percentage;
+        }
+    }
 }
