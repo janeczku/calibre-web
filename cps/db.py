@@ -954,12 +954,10 @@ class CalibreDB:
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
-        self.session.connection().connection.connection.create_function("partial_token_set_ratio", 2, partial_token_set_ratio)
-        self.session.connection().connection.connection.create_function("sort", 1, lambda tags :print(f"<Book:  {tags} >") or 3)
         order = order[0] if order else [Books.sort]
         pagination = None
-        #result = self.search_query(term, config, *join).order_by(*order).all()#*order
-        result = self.search_query(term, config, *join).order_by(desc(func.partial_ratio(Books.title.name+" "+Books.author_sort.name+" "+Books.tags.get(),term))).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()
+        #sort here
         for row in result:
             print(row)
 
