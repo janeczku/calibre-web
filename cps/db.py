@@ -23,8 +23,6 @@ import json
 import traceback
 from datetime import datetime
 from urllib.parse import quote
-
-import sqlalchemy
 import unidecode
 
 from sqlite3 import OperationalError as sqliteOperationalError
@@ -40,7 +38,6 @@ try:
     from sqlalchemy.orm import declarative_base
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import desc,asc
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -384,9 +381,11 @@ class Books(Base):
         self.has_cover = (has_cover != None)
 
     def __repr__(self):
-        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
-                                                                 self.last_modified, self.path, self.has_cover)
+                                                                 self.last_modified, self.path, self.has_cover,
+                                                                       [tag.name for tag in self.tags],
+                                                                       [series.name for series in self.series])
 
     @property
     def atom_timestamp(self):
@@ -586,7 +585,7 @@ class CalibreDB:
             return False, False
         try:
             check_engine = create_engine('sqlite://',
-                                         echo=True,
+                                         echo=False,
                                          isolation_level="SERIALIZABLE",
                                          connect_args={'check_same_thread': False},
                                          poolclass=StaticPool)
@@ -889,8 +888,8 @@ class CalibreDB:
         return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
-    def search_query(self, term, config, *join)->sqlalchemy.orm.Query:
-        term.strip().lower()
+    def search_query(self, term, config, *join):
+        term=term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
         q = list()
@@ -957,11 +956,10 @@ class CalibreDB:
         order = order[0] if order else [Books.sort]
         pagination = None
         result = self.search_query(term, config, *join).order_by(*order).all()
-        #sort here
-        for row in result:
-            print(row)
-
-        #result = self.search_query(term, config, *join).order_by(desc(func.sort(Books.tags))).all()#*order
+        sorted(result,key=lambda book:1)
+        for res in result:
+            print(res[0])
+            print(f"{res[0].title} {[tag.name for tag in res[0].tags]} {[series.name for series in res[0].series]}")
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
