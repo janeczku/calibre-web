@@ -60,6 +60,7 @@ from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 
+from functools import lru_cache
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -404,16 +405,36 @@ def render_books_list(data, sort_param, book_id, page):
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_adv_search_results(term, offset, order, config.config_books_per_page)
     else:
-        website = data or "newest"
-        entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order[0],
-                                                                True, config.config_read_column,
-                                                                db.books_series_link,
-                                                                db.Books.id == db.books_series_link.c.book,
-                                                                db.Series)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_("Books"), page=website, order=order[1])
+        # the current user is only important for the cache key formation by lru
+        return get_books(data, sort_param, book_id, page, int(current_user.id))
 
-
+@lru_cache
+def get_books(data, sort_param, book_id, page, user_id):
+    website = data or "newest"
+    order = get_sort_function(sort_param, data)
+    entries, random, pagination = calibre_db.fill_indexpage(
+        page,
+        0,
+        db.Books,
+        True,
+        order[0],
+        True,
+        config.config_read_column,
+        db.books_series_link,
+        db.Books.id == db.books_series_link.c.book,
+        db.Series
+    )
+    return render_title_template(
+        'index.html',
+        random=random,
+        entries=entries,
+        pagination=pagination,
+        title=_("Books"),
+        page=website,
+        order=order[1]
+    )
+    
+    
 def render_rated_books(page, book_id, order):
     if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
