@@ -104,8 +104,7 @@
 </div>
 <div class="overlay"></div>
 <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/compress/jszip_epub.min.js') }}">
-</script>
+<script src="{{ url_for('static', filename='js/compress/jszip_epub.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
 <script type="text/javascript">
     window.calibre = {
@@ -153,19 +152,7 @@
 <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/pako.min.js') }}"</script>
-<script>
-    function getTextByteLength() {
-        let size = 0;
-        const files = reader.rendition.book.archive.zip.files;
-        for (let key in y = Object.keys(files)) {
-            let file = files[y[key]];
-            if (file.name.endsWith(".html")) {
-                size += file._data.uncompressedSize;
-            }
-        }
-        return size;
-    }
-</script>
+<script src="{{ url_for('static', filename='js/reading/epub-progress.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pako.min.js') }}"></script>
 </body>
 </html>
