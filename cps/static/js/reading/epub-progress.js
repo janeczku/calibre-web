@@ -12,7 +12,7 @@ class EpubParser {
         for (let key of Object.keys(this.files)) {
             let file = this.files[key];
             if (file.name.endsWith("html")) {
-                console.log(file.name + " " + file._data.uncompressedSize)
+                // console.log(file.name + " " + file._data.uncompressedSize)
                 size += file._data.uncompressedSize;
             }
         }
@@ -71,7 +71,7 @@ class EpubParser {
                 let filepath = this.resolveIDref(file);
                 //ignore non text files
                 if (filepath.endsWith("html")) {
-                    console.log(filepath + " " + bytesize)
+                    // console.log(filepath + " " + bytesize)
                     bytesize += this.files[filepath]._data.uncompressedSize;
                 }
             } else {
@@ -94,8 +94,8 @@ class EpubParser {
         let currentNode = xml.getElementsByTagName("html")[0];
         for (const component of components) {
             this.validateChildNodes(currentNode);
-            console.log(currentNode);
-            console.log(component);
+            // console.log(currentNode);
+            // console.log(component);
             let index = 0;
             if (component.includes("[")) {
                 index = parseInt(component.split("[")[0]) - 1;
@@ -140,9 +140,9 @@ class EpubParser {
         let xmlnsLength = startnode.parentNode.namespaceURI.length;
         let prev = startnode.parentNode.previousElementSibling;
         while (prev !== null) {
-            console.log("size: "+size)
-            console.log(prev.outerHTML)
-            console.log(this.encoder.encode(prev.outerHTML).length - xmlnsLength)
+            // console.log("size: "+size)
+            // console.log(prev.outerHTML)
+            // console.log(this.encoder.encode(prev.outerHTML).length - xmlnsLength)
             size += this.encoder.encode(prev.outerHTML).length - xmlnsLength;
             prev = prev.previousElementSibling;
         }
@@ -150,8 +150,8 @@ class EpubParser {
         while (parent !== null) {
             let parentPrev = parent.previousElementSibling;
             while (parentPrev !== null) {
-                console.log(parentPrev.outerHTML)
-                console.log(this.encoder.encode(parentPrev.outerHTML).length - xmlnsLength)
+                // console.log(parentPrev.outerHTML)
+                // console.log(this.encoder.encode(parentPrev.outerHTML).length - xmlnsLength)
 
                 size += this.encoder.encode(parentPrev.outerHTML).length - xmlnsLength;
                 parentPrev = parentPrev.previousElementSibling;
@@ -162,7 +162,7 @@ class EpubParser {
     }
 
     getProgress(currentFile, CFI) {
-        let percentage = this.getTotalByteLength() / (this.getPreviousFilesSize(currentFile) + this.getCurrentFileProgress(CFI));
+        let percentage = (this.getPreviousFilesSize(currentFile) + this.getCurrentFileProgress(CFI))/this.getTotalByteLength();
         if (percentage === Infinity) {
             return 0;
         } else {
@@ -170,5 +170,30 @@ class EpubParser {
         }
     }
 }
+function waitFor(variable, callback) {
+  var interval = setInterval(function() {
+    if (variable!==undefined) {
+      clearInterval(interval);
+      callback();
+    }
+  }, 200);
+}
 
-e = new EpubParser(reader.book.archive.zip.files)
+/**
+ * returns progress percentage
+ * @return {number}
+ */
+function calculateProgress(){
+    let data=reader.rendition.currentLocation().end;
+    return epubParser.getProgress(epubParser.absPath(data.href),data.cfi).toFixed(2)*100;
+}
+var epubParser;
+waitFor(reader.book,()=>{
+    epubParser = new EpubParser(reader.book.archive.zip.files);
+})
+
+window.addEventListener('hashchange',()=>{console.log("test")})
+/*
+document.getElementById("next").addEventListener('click',calculateProgress);
+document.getElementById("prev").addEventListener('click',calculateProgress);
+*/
