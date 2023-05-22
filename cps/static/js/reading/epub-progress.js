@@ -7,7 +7,7 @@ class EpubParser {
     }
 
 
-    getTotalByteLength() {
+    getTotalByteLength() { //TODO unrealistic values
         let size = 0;
         for (let key of Object.keys(this.files)) {
             let file = this.files[key];
@@ -171,7 +171,7 @@ class EpubParser {
     }
 }
 function waitFor(variable, callback) {
-  var interval = setInterval(function() {
+  const interval = setInterval(function() {
     if (variable!==undefined) {
       clearInterval(interval);
       callback();
@@ -185,12 +185,12 @@ function waitFor(variable, callback) {
  */
 function calculateProgress(){
     let data=reader.rendition.currentLocation().end;
-    return epubParser.getProgress(epubParser.absPath(data.href),data.cfi).toFixed(2)*100;
+    return Math.round(epubParser.getProgress(epubParser.absPath(data.href),data.cfi)*100);
 }
 var epubParser;
 waitFor(reader.book,()=>{
     epubParser = new EpubParser(reader.book.archive.zip.files);
-})
+});
 /*
 register new event emitter locationchange that fires on urlchange
 source: https://stackoverflow.com/a/52809105/21941129
@@ -214,7 +214,10 @@ source: https://stackoverflow.com/a/52809105/21941129
         window.dispatchEvent(new Event('locationchange'));
     });
 })();
+let progressDiv=document.getElementById("progress");
 window.addEventListener('locationchange',()=>{
-    let newPos=epubParser.calculateProgress();
+    let newPos=calculateProgress();
+    console.log(newPos);
+    progressDiv.textContent=newPos+"%";
     //getelement set element value
 });
