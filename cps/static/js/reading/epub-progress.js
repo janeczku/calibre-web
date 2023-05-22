@@ -191,9 +191,30 @@ var epubParser;
 waitFor(reader.book,()=>{
     epubParser = new EpubParser(reader.book.archive.zip.files);
 })
-
-window.addEventListener('hashchange',()=>{console.log("test")})
 /*
-document.getElementById("next").addEventListener('click',calculateProgress);
-document.getElementById("prev").addEventListener('click',calculateProgress);
+register new event emitter locationchange that fires on urlchange
+source: https://stackoverflow.com/a/52809105/21941129
 */
+(() => {
+    let oldPushState = history.pushState;
+    history.pushState = function pushState() {
+        let ret = oldPushState.apply(this, arguments);
+        window.dispatchEvent(new Event('locationchange'));
+        return ret;
+    };
+
+    let oldReplaceState = history.replaceState;
+    history.replaceState = function replaceState() {
+        let ret = oldReplaceState.apply(this, arguments);
+        window.dispatchEvent(new Event('locationchange'));
+        return ret;
+    };
+
+    window.addEventListener('popstate', () => {
+        window.dispatchEvent(new Event('locationchange'));
+    });
+})();
+window.addEventListener('locationchange',()=>{
+    let newPos=epubParser.calculateProgress();
+    //getelement set element value
+});
