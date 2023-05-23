@@ -62,9 +62,10 @@ class EpubParser {
 
     /**
      returns the sum of the bytesize of all html files that are located before it in the spine
-     @param {string} currentFile idref of the current file, also part of the CFI, e.g. here: #epubcfi(/6/2[titlepage]!/4/1:0) it would be "titlepage"
+     @param {string} filepath path of the current file, also part of the CFI, e.g. here: #epubcfi(/6/2[titlepage]!/4/1:0) it would be "titlepage"
      */
-    getPreviousFilesSize(currentFile) {
+    getPreviousFilesSize(filepath) {
+        let currentFile=this.getIdRef(filepath);
         let bytesize = 0;
         for (let file of this.getSpine()) {
             if (file !== currentFile) {
@@ -80,7 +81,9 @@ class EpubParser {
         }
         return bytesize;
     }
-
+    getIdRef(filepath){
+        return this.opfXml.querySelector(`[href="${filepath}"]`).getAttribute("id");
+    }
     /**
      * resolves the given cfi to the xml node it points to
      * @param {string} cfi epub-cfi string in the form: epubcfi(/6/16[id13]!/4[id2]/4/2[doc12]/1:0)
@@ -161,11 +164,19 @@ class EpubParser {
         return size;
     }
 
+    /**
+     * @param currentFile filepath
+     * @param CFI
+     * @return {number} percentage
+     */
     getProgress(currentFile, CFI) {
         let percentage = (this.getPreviousFilesSize(currentFile) + this.getCurrentFileProgress(CFI))/this.getTotalByteLength();
         if (percentage === Infinity) {
             return 0;
-        } else {
+        } else if (percentage>1){
+            return 1;
+        }
+        else{
             return percentage;
         }
     }
@@ -185,7 +196,7 @@ function waitFor(variable, callback) {
  */
 function calculateProgress(){
     let data=reader.rendition.currentLocation().end;
-    return Math.round(epubParser.getProgress(epubParser.absPath(data.href),data.cfi)*100);
+    return Math.round(epubParser.getProgress(data.href,data.cfi)*100);
 }
 var epubParser;
 waitFor(reader.book,()=>{
