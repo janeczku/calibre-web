@@ -828,7 +828,8 @@ input:-moz-placeholder { color: #454545; }
 .icon-resize-small::before { content: '\e808'; } /* '' */
 
 #progress{
-    right: 40px;
-    bottom: 40px;
-    text-align: center;
+    right: 4rem;
+    bottom: 4rem;
+    width: fit-content;
+    position: absolute;
 }
