@@ -1632,3 +1632,10 @@ def show_book(book_id):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
+
+
+@web.route('/cache', methods=['GET'])
+def clear_cache():
+    if current_user.role_admin():
+        get_books.cache_clear()
+    return redirect(url_for('web.index'))
