@@ -6,8 +6,7 @@ class EpubParser {
         this.encoder = new TextEncoder();
     }
 
-
-    getTotalByteLength() { //TODO unrealistic values
+    getTotalByteLength() {
         let size = 0;
         for (let key of Object.keys(this.files)) {
             let file = this.files[key];
@@ -35,7 +34,6 @@ class EpubParser {
         this.opfDir = path.split("/").slice(0, -1).join("/");
         return this.parser.parseFromString(this.decompress(path), "text/xml");
     }
-
 
     getSpine() {
         return Array.from(this.opfXml.getElementsByTagName("spine")[0].children).map(node => node.getAttribute("idref"));
@@ -81,71 +79,32 @@ class EpubParser {
         }
         return bytesize;
     }
+
     getIdRef(filepath){
         return this.opfXml.querySelector(`[href="${filepath}"]`).getAttribute("id");
     }
     /**
      * resolves the given cfi to the xml node it points to
-     * @param {string} cfi epub-cfi string in the form: epubcfi(/6/16[id13]!/4[id2]/4/2[doc12]/1:0)
-     * @return XML Text-Node
+     * @param {string} cfistr epub-cfi string in the form: epubcfi(/6/16[id13]!/4[id2]/4/2[doc12]/1:0)
+     * @return object with attributes "node" and "offset"
      */
-    cfiToXmlNode(cfi) {
-        let cfiPath = cfi.split("(")[1].split(")")[0];
+    cfiToXmlNode(cfistr) {
+        let cfi = new CFI(cfistr);
+        let cfiPath = cfistr.split("(")[1].split(")")[0];
         let fileId = cfiPath.split("!")[0].split("[")[1].split("]")[0];
-        let xml = this.parser.parseFromString(this.decompress(this.resolveIDref(fileId)), "text/xml");
-        let components = cfiPath.split("!")[1].split("/").slice(1);
-        let currentNode = xml.getElementsByTagName("html")[0];
-        for (const component of components) {
-            this.validateChildNodes(currentNode);
-            // console.log(currentNode);
-            // console.log(component);
-            let index = 0;
-            if (component.includes("[")) {
-                index = parseInt(component.split("[")[0]) - 1;
-                currentNode = currentNode.childNodes[index];
-                console.assert(currentNode.getAttribute("id") === component.split("[")[1].split("]")[0], "failed to resolve node");
-            } else if (component.includes(":")) {
-                index = component.split(":")[0] - 1;
-                return currentNode.childNodes[index]; //exit point
-            } else {
-                index = parseInt(component);
-                currentNode = currentNode.childNodes[index - 1];
-            }
-        }
-    }
-
-    /**
-     * inserts missing text/element nodes to keep them alternating
-     * @param {*} parentNode
-     */
-    validateChildNodes(parentNode) {
-        for (let index = 0; index < parentNode.childNodes.length;) {
-            const element = parentNode.childNodes[index];
-            if (index % 2 === 0 && element.nodeType === 1) {
-                element.parentNode.insertBefore(parentNode.ownerDocument.createTextNode(""), element);
-                continue;
-            }
-            if (index % 2 === 1 && element.nodeType === 3) {
-                element.insertBefore(parentNode.ownerDocument.createElement("")); //TODO check
-                continue;
-            }
-            index++;
-        }
-
+        return cfi.resolveLast(this.parser.parseFromString(this.decompress(this.resolveIDref(fileId)),"text/xml"));
     }
 
     /**
      takes the node that the cfi points at and counts the bytes of all nodes before that
      */
     getCurrentFileProgress(CFI) {
-        let size = parseInt(CFI.split(":")[1])//text offset in node
-        let startnode = this.cfiToXmlNode(CFI); //returns text node
+        let parse=this.cfiToXmlNode(CFI);
+        let size=parse.offset;
+        let startnode =  parse.node//returns text node
         let xmlnsLength = startnode.parentNode.namespaceURI.length;
         let prev = startnode.parentNode.previousElementSibling;
         while (prev !== null) {
-            // console.log("size: "+size)
-            // console.log(prev.outerHTML)
-            // console.log(this.encoder.encode(prev.outerHTML).length - xmlnsLength)
             size += this.encoder.encode(prev.outerHTML).length - xmlnsLength;
             prev = prev.previousElementSibling;
         }
@@ -153,9 +112,6 @@ class EpubParser {
         while (parent !== null) {
             let parentPrev = parent.previousElementSibling;
             while (parentPrev !== null) {
-                // console.log(parentPrev.outerHTML)
-                // console.log(this.encoder.encode(parentPrev.outerHTML).length - xmlnsLength)
-
                 size += this.encoder.encode(parentPrev.outerHTML).length - xmlnsLength;
                 parentPrev = parentPrev.previousElementSibling;
             }
@@ -167,7 +123,7 @@ class EpubParser {
     /**
      * @param currentFile filepath
      * @param CFI
-     * @return {number} percentage
+     * @return {number} percentage as decimal
      */
     getProgress(currentFile, CFI) {
         let percentage = (this.getPreviousFilesSize(currentFile) + this.getCurrentFileProgress(CFI))/this.getTotalByteLength();
@@ -181,6 +137,8 @@ class EpubParser {
         }
     }
 }
+
+//wait until variable is assigned a value
 function waitFor(variable, callback) {
   const interval = setInterval(function() {
     if (variable!==undefined) {
@@ -198,14 +156,9 @@ function calculateProgress(){
     let data=reader.rendition.currentLocation().end;
     return Math.round(epubParser.getProgress(data.href,data.cfi)*100);
 }
-var epubParser;
-waitFor(reader.book,()=>{
-    epubParser = new EpubParser(reader.book.archive.zip.files);
-});
-/*
-register new event emitter locationchange that fires on urlchange
-source: https://stackoverflow.com/a/52809105/21941129
-*/
+
+// register new event emitter locationchange that fires on urlchange
+// source: https://stackoverflow.com/a/52809105/21941129
 (() => {
     let oldPushState = history.pushState;
     history.pushState = function pushState() {
@@ -225,10 +178,14 @@ source: https://stackoverflow.com/a/52809105/21941129
         window.dispatchEvent(new Event('locationchange'));
     });
 })();
+
+var epubParser;
+waitFor(reader.book,()=>{
+    epubParser = new EpubParser(reader.book.archive.zip.files);
+});
 let progressDiv=document.getElementById("progress");
+
 window.addEventListener('locationchange',()=>{
     let newPos=calculateProgress();
-    console.log(newPos);
     progressDiv.textContent=newPos+"%";
-    //getelement set element value
 });
