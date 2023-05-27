@@ -381,11 +381,12 @@ class Books(Base):
         self.has_cover = (has_cover != None)
 
     def __repr__(self):
-        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0} , {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover,
-                                                                       [tag.name for tag in self.tags],
-                                                                       [series.name for series in self.series])
+                                                                       " ".join([tag.name for tag in self.tags]),
+                                                                       " ".join([series.name for series in self.series]), " ".join([author.name for author in self.authors])," ".join([publisher.name for publisher in self.publishers]))
+
 
     @property
     def atom_timestamp(self):
@@ -959,7 +960,6 @@ class CalibreDB:
         sorted(result,key=lambda book:1)
         for res in result:
             print(res[0])
-            print(f"{res[0].title} {[tag.name for tag in res[0].tags]} {[series.name for series in res[0].series]}")
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
