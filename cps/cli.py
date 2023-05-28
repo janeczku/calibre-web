@@ -48,6 +48,7 @@ class CliParameter(object):
                                                        'works only in combination with keyfile')
         parser.add_argument('-k', metavar='path', help='path and name to SSL keyfile, e.g. /opt/test.key, '
                                                        'works only in combination with certfile')
+        parser.add_argument('-o', metavar='path', help='path and name Calibre-Web logfile')
         parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-Web',
                             version=version_info())
         parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
@@ -60,6 +61,7 @@ class CliParameter(object):
         parser.add_argument('-r', action='store_true', help='Enable public database reconnect route under /reconnect')
         args = parser.parse_args()
 
+        self.logpath = args.o or ""
         self.settings_path = args.p or os.path.join(_CONFIG_DIR, DEFAULT_SETTINGS_FILE)
         self.gd_path = args.g or os.path.join(_CONFIG_DIR, DEFAULT_GDRIVE_FILE)
 
