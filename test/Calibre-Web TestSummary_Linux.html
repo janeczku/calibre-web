@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-05-21 19:43:08</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-05-27 20:05:01</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-05-22 02:38:06</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-05-28 03:05:40</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 50 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 54 min</p>
         </div>
       </div>
       </div>
@@ -471,11 +471,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestCli</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -503,11 +503,33 @@
     
     
     
-        <tr id='pt4.3' class='hiddenRow bg-success'>
+        <tr id="ft4.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCli - test_change_password</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft4.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft4.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 432, in test_change_password
+    self.check_password_change(&#34;admin:aDmin12!&#34;, &#34;Password for user &#39;admin&#39; changed&#34;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 67, in check_password_change
+    self.assertTrue(re.findall(expectation, nextline))
+AssertionError: [] is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1844,11 +1866,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1858,31 +1880,11 @@
 
     
     
-        <tr id="ft17.1" class="none bg-danger">
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 119, in test_load_metadata
-    self.assertEqual(20, len(results))
-AssertionError: 20 != 10</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2391,11 +2393,11 @@ AssertionError: 20 != 10</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">7</td>
-        <td class="text-center">5</td>
+        <td class="text-center">12</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2450,31 +2452,11 @@ AssertionError: 20 != 10</pre>
     
     
     
-        <tr id="ft27.6" class="none bg-danger">
+        <tr id='pt27.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft27.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft27.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 462, in test_shelves_add_remove_books
-    self.assertEqual(400, r.status_code)
-AssertionError: 400 != 415</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2497,133 +2479,38 @@ AssertionError: 400 != 415</pre>
     
     
     
-        <tr id="ft27.9" class="none bg-danger">
+        <tr id='pt27.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.9')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft27.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft27.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 530, in test_sync_reading_state
-    self.assertEqual(400, r.status_code)
-AssertionError: 400 != 415</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft27.10" class="none bg-danger">
+        <tr id='pt27.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.10')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft27.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft27.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 372, in test_sync_shelf
-    self.assertEqual(&#39;adminShelf (Public)&#39;, shelfnames[0][&#39;name&#39;])
-AssertionError: &#39;adminShelf (Public)&#39; != &#39;BooksAdd&#39;
-- adminShelf (Public)
-+ BooksAdd</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft27.11" class="none bg-danger">
+        <tr id='pt27.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.11')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft27.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft27.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 251, in test_sync_unchanged
-    self.assertEqual(r.json(), [])
-AssertionError: Lists differ: [{&#39;ChangedTag&#39;: {&#39;Tag&#39;: {&#39;Created&#39;: &#39;2023-[237 chars]&#39;}}}] != []
-
-First list contains 1 additional elements.
-First extra element 0:
-{&#39;ChangedTag&#39;: {&#39;Tag&#39;: {&#39;Created&#39;: &#39;2023-05-21T21:24:40Z&#39;, &#39;Id&#39;: &#39;fe3fadd4-c7b4-4bb0-b5ad-3ce523734d75&#39;, &#39;Items&#39;: [{&#39;RevisionId&#39;: &#39;acb241df-563c-4b86-8002-a51ef6bad734&#39;, &#39;Type&#39;: &#39;ProductRevisionTagItem&#39;}], &#39;LastModified&#39;: &#39;2023-05-21T21:24:45Z&#39;, &#39;Name&#39;: &#39;test&#39;, &#39;Type&#39;: &#39;UserTag&#39;}}}
-
-+ []
-- [{&#39;ChangedTag&#39;: {&#39;Tag&#39;: {&#39;Created&#39;: &#39;2023-05-21T21:24:40Z&#39;,
--                          &#39;Id&#39;: &#39;fe3fadd4-c7b4-4bb0-b5ad-3ce523734d75&#39;,
--                          &#39;Items&#39;: [{&#39;RevisionId&#39;: &#39;acb241df-563c-4b86-8002-a51ef6bad734&#39;,
--                                     &#39;Type&#39;: &#39;ProductRevisionTagItem&#39;}],
--                          &#39;LastModified&#39;: &#39;2023-05-21T21:24:45Z&#39;,
--                          &#39;Name&#39;: &#39;test&#39;,
--                          &#39;Type&#39;: &#39;UserTag&#39;}}}]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft27.12" class="none bg-danger">
+        <tr id='pt27.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft27.12')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft27.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft27.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 269, in test_sync_upload
-    self.assertEqual(1, len(data))
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3333,11 +3220,11 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
         <td class="text-center">23</td>
-        <td class="text-center">22</td>
-        <td class="text-center">1</td>
+        <td class="text-center">23</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3491,31 +3378,11 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id="ft36.17" class="none bg-danger">
+        <tr id='pt36.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft36.17')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft36.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft36.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_opds_feed.py&#34;, line 590, in test_opds_search
-    self.assertEqual(200, r.status_code)
-AssertionError: 200 != 500</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5219,8 +5086,8 @@ AssertionError: 200 != 500</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>455</td>
-        <td>441</td>
-        <td>7</td>
+        <td>447</td>
+        <td>1</td>
         <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
@@ -5400,7 +5267,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5430,7 +5297,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5460,7 +5327,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5490,7 +5357,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5532,7 +5399,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5568,7 +5435,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5610,7 +5477,7 @@ AssertionError: 200 != 500</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.86.0</td>
+              <td>2.87.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5700,7 +5567,7 @@ AssertionError: 200 != 500</pre>
 </div>
 
 <script>
-    drawCircle(441, 7, 0, 7);
+    drawCircle(447, 1, 0, 7);
     showCase(5);
 </script>
 
