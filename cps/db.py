@@ -954,10 +954,10 @@ class CalibreDB:
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
+        self.session.connection().connection.connection.create_function("partial_token_set_ratio", 2, partial_token_set_ratio)
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()
-        sorted(result,key=lambda book:1)
+        result = self.search_query(term, config, *join).order_by(func.desc(func.partial_token_set_ratio(str(Books),term))).all()
         for res in result:
             print(res[0])
         result_count = len(result)
