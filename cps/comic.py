@@ -89,12 +89,14 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
     cover_data = extension = None
     if use_comic_meta:
         archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
-        for index, name in enumerate(archive.getPageNameList()):
+        name_list = archive.getPageNameList if hasattr(archive, "getPageNameList") else archive.get_page_name_list
+        for index, name in enumerate(name_list()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
                 if extension in cover.COVER_EXTENSIONS:
-                    cover_data = archive.getPage(index)
+                    get_page = archive.getPage if hasattr(archive, "getPageNameList") else archive.get_page
+                    cover_data = get_page(index)
                     break
     else:
         cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_executable)
@@ -104,16 +106,21 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
 def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable):
     if use_comic_meta:
         archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
-        if archive.seemsToBeAComicArchive():
-            if archive.hasMetadata(MetaDataStyle.CIX):
+        if hasattr(archive, "seemsToBeAComicArchive"):
+            seems_archive = archive.seemsToBeAComicArchive
+        else:
+            seems_archive = archive.seems_to_be_a_comic_archive
+        if seems_archive():
+            has_metadata = archive.hasMetadata if hasattr(archive, "hasMetadata") else archive.has_metadata
+            if has_metadata(MetaDataStyle.CIX):
                 style = MetaDataStyle.CIX
-            elif archive.hasMetadata(MetaDataStyle.CBI):
+            elif has_metadata(MetaDataStyle.CBI):
                 style = MetaDataStyle.CBI
             else:
                 style = None
 
-            # if style is not None:
-            loaded_metadata = archive.readMetadata(style)
+            read_metadata = archive.readMetadata if hasattr(archive, "readMetadata") else archive.read_metadata
+            loaded_metadata = read_metadata(style)
 
             lang = loaded_metadata.language or ""
             loaded_metadata.language = isoLanguages.get_lang3(lang)

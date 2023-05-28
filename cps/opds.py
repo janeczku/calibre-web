@@ -55,7 +55,7 @@ def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
-@opds.route("/opds/search", defaults={'query': ""})
+# @opds.route("/opds/search", defaults={'query': ""})
 @opds.route("/opds/search/<path:query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
