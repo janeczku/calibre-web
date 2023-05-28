@@ -52,7 +52,7 @@ from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
 from weakref import WeakSet
-from thefuzz.fuzz import partial_ratio, partial_token_set_ratio
+from thefuzz.fuzz import partial_ratio, partial_token_set_ratio, partial_token_sort_ratio, ratio
 
 # %-level, 100 means exact match
 FUZZY_SEARCH_ACCURACY = 80
@@ -387,7 +387,7 @@ class Books(Base):
                                                                 self.timestamp, self.pubdate, self.series_index,
                                                                 self.last_modified, self.path, self.has_cover)
 
-    def __sort_str(self):
+    def __str__(self):
         return "{0} {1} {2} {3} {4}".format(self.title, " ".join([tag.name for tag in self.tags]),
                                                 " ".join(
                                                     [series.name for series
@@ -904,15 +904,13 @@ class CalibreDB:
     def search_query(self, term, config, *join):
         term = term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
-        self.session.connection().connection.connection.create_function("partial_ratio", 2, partial_ratio)
+        self.session.connection().connection.connection.create_function("max_ratio", 2, max_ratio)
         q = list()
         # splits search term into single words
         words = re.split("[, ]+", term)
         # put the longest words first to make queries more efficient
         words.sort(key=len, reverse=True)
-        # search authors for match
-        for word in words:
-            q.append(Books.authors.any(func.partial_ratio(func.lower(Authors.name), word) >= FUZZY_SEARCH_ACCURACY))
+        words=[x for x in filter(lambda w:len(w)>3,words)]
 
         query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
@@ -934,18 +932,17 @@ class CalibreDB:
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
         # filter out multiple languages and archived books,
         results = query.filter(self.common_filters(True))
-
+        filters=[filter_expression] if filter_expression else []
         # search tags, series and titles, also add author queries
         for word in words:
-            filter_expression = [
-                Books.tags.any(func.partial_ratio(func.lower(Tags.name), word) >= FUZZY_SEARCH_ACCURACY),
-                Books.series.any(func.partial_ratio(func.lower(Series.name), word) >= FUZZY_SEARCH_ACCURACY),
-                # change to or_ to allow mix of title and author in query term
-                Books.authors.any(or_(*q)),
-                Books.publishers.any(func.partial_ratio(func.lower(Publishers.name), word) >= FUZZY_SEARCH_ACCURACY),
-                func.partial_ratio(func.lower(Books.title), word) >= FUZZY_SEARCH_ACCURACY
-            ]
-            results = results.filter(or_(*filter_expression))
+            filters.append(or_(*[
+                Books.tags.any(func.max_ratio(func.lower(Tags.name), word) >= FUZZY_SEARCH_ACCURACY),
+                Books.series.any(func.max_ratio(func.lower(Series.name), word) >= FUZZY_SEARCH_ACCURACY),
+                Books.authors.any(func.max_ratio(func.lower(Authors.name), word) >= FUZZY_SEARCH_ACCURACY),
+                Books.publishers.any(func.max_ratio(func.lower(Publishers.name), word) >= FUZZY_SEARCH_ACCURACY),
+                func.max_ratio(func.lower(Books.title), word) >= FUZZY_SEARCH_ACCURACY
+            ]))
+        results = results.filter(and_(*filters))
         return results
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
@@ -966,14 +963,12 @@ class CalibreDB:
 
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
-        self.session.connection().connection.connection.create_function("partial_token_set_ratio", 2,
-                                                                        partial_token_set_ratio)
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(
-            desc(func.partial_token_set_ratio(str(Books), term))).all()
+        result = self.search_query(term, config, *join).order_by(*order).all()
+        result = sorted(result,key=lambda query:partial_token_sort_ratio(str(query[0]),term),reverse=True)
         for res in result:
-            print(res[0])
+            print(str(res[0]))
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
@@ -1091,6 +1086,11 @@ def lcase(s):
         _log.error_or_exception(ex)
         return s.lower()
 
+
+def max_ratio(string:str,term):
+    """applies ratio on each word of string and returns the max value"""
+    words=string.split()
+    return max([ratio(word.strip(":"),term) for word in words])
 
 class Category:
     name = None
