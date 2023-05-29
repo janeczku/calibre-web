@@ -86,9 +86,9 @@ app.config.update(
 
 lm = MyLoginManager()
 
-config = config_sql.ConfigSQL()
-
 cli_param = CliParameter()
+
+config = config_sql.ConfigSQL()
 
 if wtf_present:
     csrf = CSRFProtect()

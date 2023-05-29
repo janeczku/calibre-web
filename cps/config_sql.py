@@ -83,9 +83,9 @@ class _Settings(_Base):
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
-    config_logfile = Column(String)
+    config_logfile = Column(String, default=logger.DEFAULT_LOG_FILE)
     config_access_log = Column(SmallInteger, default=0)
-    config_access_logfile = Column(String)
+    config_access_logfile = Column(String, default=logger.DEFAULT_ACCESS_LOG)
 
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
@@ -341,14 +341,17 @@ class ConfigSQL(object):
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
         else:
             # pylint: disable=access-member-before-definition
-            logfile = logger.setup(self.config_logfile, self.config_log_level)
-        if logfile != self.config_logfile:
-            log.warning("Log path %s not valid, falling back to default", self.config_logfile)
+            logfile = logger.setup(cli_param.logpath or self.config_logfile, self.config_log_level)
+        if logfile != os.path.abspath(self.config_logfile):
+            if logfile != os.path.abspath(cli_param.logpath):
+                log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
+            s.config_logfile = logfile
             self._session.merge(s)
             try:
                 self._session.commit()
