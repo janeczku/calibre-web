@@ -54,8 +54,8 @@ from .pagination import Pagination
 from weakref import WeakSet
 from thefuzz.fuzz import partial_ratio, partial_token_set_ratio, partial_token_sort_ratio, ratio
 
-# %-level, 100 means exact match
-FUZZY_SEARCH_ACCURACY = 80
+# %-level, 100 means exact match, 75 allows exactly 1 wrong character in a 4 letter word
+FUZZY_SEARCH_ACCURACY = 75
 
 log = logger.create()
 
@@ -911,6 +911,9 @@ class CalibreDB:
         # put the longest words first to make queries more efficient
         words.sort(key=len, reverse=True)
         words=[x for x in filter(lambda w:len(w)>3,words)]
+        # no word in search term is longer than 3 letters -> return empty query #TODO give some kind of error message
+        if not any([len(word)>3 for word in words]):
+            return self.session.query(Books).filter(False)
 
         query = self.generate_linked_query(config.config_read_column, Books)
         if len(join) == 6:
@@ -1090,7 +1093,7 @@ def lcase(s):
 def max_ratio(string:str,term):
     """applies ratio on each word of string and returns the max value"""
     words=string.split()
-    return max([ratio(word.strip(":"),term) for word in words])
+    return max([ratio(word.strip(":"),term) if len(word.strip(":")) > 3 else 0 for word in words]) # ignore words of len < 3#do not compare words of len < 3 -> too generic
 
 class Category:
     name = None
