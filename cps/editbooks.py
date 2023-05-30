@@ -1271,14 +1271,15 @@ def search_objects_remove(db_book_object, db_type, input_elements):
     del_elements = []
     for c_elements in db_book_object:
         found = False
-        if db_type == 'languages':
-            type_elements = c_elements.lang_code
-        elif db_type == 'custom':
+        #if db_type == 'languages':
+        #    type_elements = c_elements.lang_code
+        if db_type == 'custom':
             type_elements = c_elements.value
         else:
-            type_elements = c_elements.name
+            # type_elements = c_elements.name
+            type_elements = c_elements
         for inp_element in input_elements:
-            if inp_element.lower() == type_elements.lower():
+            if type_elements == inp_element:
                 found = True
                 break
         # if the element was not found in the new list, add it to remove list
@@ -1292,13 +1293,11 @@ def search_objects_add(db_book_object, db_type, input_elements):
     for inp_element in input_elements:
         found = False
         for c_elements in db_book_object:
-            if db_type == 'languages':
-                type_elements = c_elements.lang_code
-            elif db_type == 'custom':
+            if db_type == 'custom':
                 type_elements = c_elements.value
             else:
-                type_elements = c_elements.name
-            if inp_element == type_elements:
+                type_elements = c_elements
+            if type_elements == inp_element:
                 found = True
                 break
         if not found:
@@ -1314,39 +1313,38 @@ def remove_objects(db_book_object, db_session, del_elements):
             changed = True
             if len(del_element.books) == 0:
                 db_session.delete(del_element)
+                db_session.flush()
     return changed
 
 
 def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
     changed = False
-    if db_type == 'languages':
-        db_filter = db_object.lang_code
-    elif db_type == 'custom':
+    if db_type == 'custom':
         db_filter = db_object.value
     else:
-        db_filter = db_object.name
+        db_filter = db_object
     for add_element in add_elements:
         # check if an element with that name exists
+        changed = True
         db_element = db_session.query(db_object).filter(db_filter == add_element).first()
         # if no element is found add it
-        if db_type == 'author':
-            new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')), "")
-        elif db_type == 'series':
-            new_element = db_object(add_element, add_element)
-        elif db_type == 'custom':
-            new_element = db_object(value=add_element)
-        elif db_type == 'publisher':
-            new_element = db_object(add_element, None)
-        else:  # db_type should be tag or language
-            new_element = db_object(add_element)
         if db_element is None:
-            changed = True
+            if db_type == 'author':
+                new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')))
+            elif db_type == 'series':
+                new_element = db_object(add_element, add_element)
+            elif db_type == 'custom':
+                new_element = db_object(value=add_element)
+            elif db_type == 'publisher':
+                new_element = db_object(add_element, None)
+            else:  # db_type should be tag or language
+                new_element = db_object(add_element)
             db_session.add(new_element)
             db_book_object.append(new_element)
         else:
+            # check for new case of element
             db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
-            changed = True
             db_book_object.append(db_element)
     return changed
 
@@ -1382,13 +1380,24 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     if not isinstance(input_elements, list):
         raise TypeError(str(input_elements) + " should be passed as a list")
     input_elements = [x for x in input_elements if x != '']
-    # we have all input element (authors, series, tags) names now
+
+    changed = False
+    # If elements are renamed (upper lower case), rename it
+    for rec_a, rec_b in zip(db_book_object, input_elements):
+        if db_type == "custom":
+            if rec_a.value.casefold() == rec_b.casefold() and rec_a.value != rec_b:
+                create_objects_for_addition(rec_a, rec_b, db_type)
+        else:
+            if rec_a.get().casefold() == rec_b.casefold() and rec_a.get() != rec_b:
+                create_objects_for_addition(rec_a, rec_b, db_type)
+        # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
     del_elements = search_objects_remove(db_book_object, db_type, input_elements)
     # 2. search for elements that need to be added
     add_elements = search_objects_add(db_book_object, db_type, input_elements)
+
     # if there are elements to remove, we remove them now
-    changed = remove_objects(db_book_object, db_session, del_elements)
+    changed |= remove_objects(db_book_object, db_session, del_elements)
     # if there are elements to add, we add them now!
     if len(add_elements) > 0:
         changed |= add_objects(db_book_object, db_object, db_session, db_type, add_elements)
