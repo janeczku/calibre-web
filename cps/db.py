@@ -905,14 +905,13 @@ class CalibreDB:
         term = term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         self.session.connection().connection.connection.create_function("max_ratio", 2, max_ratio)
-        q = list()
         # splits search term into single words
-        words = re.split("[, ]+", term)
+        words = re.split("[,\s]+", term)
         # put the longest words first to make queries more efficient
         words.sort(key=len, reverse=True)
-        words=[x for x in filter(lambda w:len(w)>3,words)]
+        words=list(filter(lambda w:len(w)>3,words))
         # no word in search term is longer than 3 letters -> return empty query #TODO give some kind of error message
-        if not any([len(word)>3 for word in words]):
+        if len(words)==0:
             return self.session.query(Books).filter(False)
 
         query = self.generate_linked_query(config.config_read_column, Books)
@@ -970,8 +969,6 @@ class CalibreDB:
         pagination = None
         result = self.search_query(term, config, *join).order_by(*order).all()
         result = sorted(result,key=lambda query:partial_token_sort_ratio(str(query[0]),term),reverse=True)
-        for res in result:
-            print(str(res[0]))
         result_count = len(result)
         if offset != None and limit != None:
             offset = int(offset)
