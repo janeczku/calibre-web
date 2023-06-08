@@ -287,7 +287,7 @@ class Languages(Base):
         self.lang_code = lang_code
 
     def get(self):
-        if self.language_name:
+        if hasattr(self, "language_name"):
             return self.language_name
         else:
             return self.lang_code

@@ -1319,10 +1319,12 @@ def remove_objects(db_book_object, db_session, del_elements):
 
 def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
     changed = False
-    if db_type == 'custom':
+    if db_type == 'languages':
+        db_filter = db_object.lang_code
+    elif db_type == 'custom':
         db_filter = db_object.value
     else:
-        db_filter = db_object
+        db_filter = db_object.name
     for add_element in add_elements:
         # check if an element with that name exists
         changed = True
