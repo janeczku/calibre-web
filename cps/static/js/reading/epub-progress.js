@@ -52,7 +52,3 @@ qFinished(()=>{
     window.dispatchEvent(new Event('locationchange'))
 });
 })
-
-
-
-
