@@ -40,6 +40,7 @@ from flask_babel import get_locale
 from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
+from sqlalchemy.sql.expression import func
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status
 from . import config, ub, db, calibre_db
@@ -1328,7 +1329,9 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
     for add_element in add_elements:
         # check if an element with that name exists
         changed = True
-        db_element = db_session.query(db_object).filter(db_filter == add_element).first()
+        # db_session.query(db.Tags).filter((func.lower(db.Tags.name).ilike("GênOt"))).all()
+        db_element = db_session.query(db_object).filter((func.lower(db_filter).ilike(add_element))).first()
+        # db_element = db_session.query(db_object).filter(func.lower(db_filter) == add_element.lower()).first()
         # if no element is found add it
         if db_element is None:
             if db_type == 'author':
@@ -1344,10 +1347,15 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             db_session.add(new_element)
             db_book_object.append(new_element)
         else:
-            # check for new case of element
-            db_element = create_objects_for_addition(db_element, add_element, db_type)
+            db_no_case = db_session.query(db_object).filter(db_filter == add_element).first()
+            if db_no_case:
+                # check for new case of element
+                db_element = create_objects_for_addition(db_element, add_element, db_type)
+            else:
+                db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
             db_book_object.append(db_element)
+
     return changed
 
 
