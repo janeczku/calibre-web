@@ -1246,10 +1246,9 @@ def handle_title_on_edit(book, book_title):
 
 
 def handle_author_on_edit(book, author_name, update_stored=True):
+    change = False
     # handle author(s)
     input_authors, renamed = prepare_authors(author_name)
-
-    change = modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
     # everything then is assembled for sorted author field in database
@@ -1265,6 +1264,9 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     if book.author_sort != sort_authors and update_stored:
         book.author_sort = sort_authors
         change = True
+
+    change |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
+
     return input_authors, change, renamed
 
 
