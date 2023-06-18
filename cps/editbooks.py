@@ -471,7 +471,7 @@ def get_sorted_entry(field, bookid):
             if field == 'sort':
                 return json.dumps({'sort': book.title})
             if field == 'author_sort':
-                return json.dumps({'author_sort': book.author})
+                return json.dumps({'authors': " & ".join([a.name for a in calibre_db.order_authors([book])])})
     return ""
 
 
@@ -1250,13 +1250,14 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     # handle author(s)
     input_authors, renamed = prepare_authors(author_name)
 
+    # change |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
     # everything then is assembled for sorted author field in database
     sort_authors_list = list()
     for inp in input_authors:
         stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
         if not stored_author:
-            stored_author = helper.get_sorted_author(inp)
+            stored_author = helper.get_sorted_author(inp.replace('|', ','))
         else:
             stored_author = stored_author.sort
         sort_authors_list.append(helper.get_sorted_author(stored_author))
