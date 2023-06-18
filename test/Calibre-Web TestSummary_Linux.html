@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-05-27 20:05:01</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-06-18 11:18:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-05-28 03:05:40</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-06-18 17:27:42</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 54 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 10 min</p>
         </div>
       </div>
       </div>
@@ -471,15 +471,15 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCli</td>
-        <td class="text-center">12</td>
-        <td class="text-center">11</td>
-        <td class="text-center">1</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c4', 12)">Detail</a>
+            <a onclick="showClassDetail('c4', 13)">Detail</a>
         </td>
     </tr>
 
@@ -503,33 +503,11 @@
     
     
     
-        <tr id="ft4.3" class="none bg-danger">
+        <tr id='pt4.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_change_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 432, in test_change_password
-    self.check_password_change(&#34;admin:aDmin12!&#34;, &#34;Password for user &#39;admin&#39; changed&#34;)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 67, in check_password_change
-    self.assertTrue(re.findall(expectation, nextline))
-AssertionError: [] is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -590,7 +568,7 @@ AssertionError: [] is not true</pre>
     
         <tr id='pt4.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestCli - test_no_database</div>
+                <div class='testcase'>TestCli - test_logfile</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -599,7 +577,7 @@ AssertionError: [] is not true</pre>
     
         <tr id='pt4.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+                <div class='testcase'>TestCli - test_no_database</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -607,6 +585,15 @@ AssertionError: [] is not true</pre>
     
     
         <tr id='pt4.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_writeonly_static_files</div>
             </td>
@@ -1197,13 +1184,13 @@ AssertionError: [] is not true</pre>
 
     <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
-        <td class="text-center">36</td>
+        <td class="text-center">37</td>
         <td class="text-center">35</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 36)">Detail</a>
+            <a onclick="showClassDetail('c13', 37)">Detail</a>
         </td>
     </tr>
 
@@ -1382,7 +1369,7 @@ AssertionError: [] is not true</pre>
     
         <tr id="st13.20" class="none bg-warning">
             <td>
-                <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
+                <div class='testcase'>TestEditBooks - test_rename_upper_lowercase</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
@@ -1396,6 +1383,32 @@ AssertionError: [] is not true</pre>
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
+                        <pre class="text-left">For some reason it works, but during test it fails, only if executed in debugger it works</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="st13.21" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.21')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st13.21" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_st13.21').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
                         <pre class="text-left">Not Implemented</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -1406,7 +1419,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.21' class='hiddenRow bg-success'>
+        <tr id='pt13.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_author</div>
             </td>
@@ -1415,7 +1428,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.22' class='hiddenRow bg-success'>
+        <tr id='pt13.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
             </td>
@@ -1424,7 +1437,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.23' class='hiddenRow bg-success'>
+        <tr id='pt13.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_language</div>
             </td>
@@ -1433,7 +1446,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.24' class='hiddenRow bg-success'>
+        <tr id='pt13.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
             </td>
@@ -1442,7 +1455,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.25' class='hiddenRow bg-success'>
+        <tr id='pt13.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_series</div>
             </td>
@@ -1451,7 +1464,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.26' class='hiddenRow bg-success'>
+        <tr id='pt13.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
             </td>
@@ -1460,7 +1473,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.27' class='hiddenRow bg-success'>
+        <tr id='pt13.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
@@ -1469,7 +1482,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.28' class='hiddenRow bg-success'>
+        <tr id='pt13.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1478,7 +1491,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.29' class='hiddenRow bg-success'>
+        <tr id='pt13.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1487,7 +1500,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.30' class='hiddenRow bg-success'>
+        <tr id='pt13.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1496,7 +1509,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.31' class='hiddenRow bg-success'>
+        <tr id='pt13.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1505,7 +1518,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.32' class='hiddenRow bg-success'>
+        <tr id='pt13.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1514,7 +1527,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.33' class='hiddenRow bg-success'>
+        <tr id='pt13.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1523,7 +1536,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.34' class='hiddenRow bg-success'>
+        <tr id='pt13.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1532,7 +1545,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.35' class='hiddenRow bg-success'>
+        <tr id='pt13.36' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cbz_coverformats</div>
             </td>
@@ -1541,7 +1554,7 @@ AssertionError: [] is not true</pre>
     
     
     
-        <tr id='pt13.36' class='hiddenRow bg-success'>
+        <tr id='pt13.37' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
@@ -3466,43 +3479,50 @@ AssertionError: [] is not true</pre>
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestPipInstall</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 3)">Detail</a>
+            <a onclick="showClassDetail('c38', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id="et38.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestPipInstall - test_command_start</div>
+                <div class='testcase'>_FailedTest - test_pip_install</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt38.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et38.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et38.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et38.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
+    from build import make_release
+ModuleNotFoundError: No module named &#39;build&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt38.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestPipInstall - test_module_start</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5086,10 +5106,10 @@ AssertionError: [] is not true</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>455</td>
-        <td>447</td>
-        <td>1</td>
+        <td>446</td>
         <td>0</td>
-        <td>7</td>
+        <td>1</td>
+        <td>8</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5117,7 +5137,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.19.0-41-generic #42~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Apr 18 17:40:00 UTC 2 x86_64 x86_64</td>
+              <td>Linux 5.19.0-45-generic #46~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jun 7 15:06:04 UTC 20 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5261,13 +5281,13 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>2.3.4</td>
+              <td>2.3.6</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5297,7 +5317,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5327,7 +5347,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5357,7 +5377,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5387,7 +5407,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>comicapi</th>
-              <td>2.2.1</td>
+              <td>3.0.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -5399,7 +5419,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5435,7 +5455,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5477,7 +5497,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.87.0</td>
+              <td>2.89.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5513,7 +5533,7 @@ AssertionError: [] is not true</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.21.0</td>
+              <td>0.21.1</td>
               <td>TestGoodreads</td>
             </tr>
           
@@ -5567,7 +5587,7 @@ AssertionError: [] is not true</pre>
 </div>
 
 <script>
-    drawCircle(447, 1, 0, 7);
+    drawCircle(446, 0, 1, 8);
     showCase(5);
 </script>
 
