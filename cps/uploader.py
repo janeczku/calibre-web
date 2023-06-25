@@ -69,7 +69,7 @@ except ImportError as e:
     use_fb2_meta = False
 
 
-def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
+def process(tmp_file_path, original_file_name, original_file_extension, rar_executable):
     meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
     extension_upper = original_file_extension.upper()
     try:
@@ -83,7 +83,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
-                                        rarExecutable)
+                                        rar_executable)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
@@ -248,7 +248,7 @@ def get_magick_version():
     return ret
 
 
-def upload(uploadfile, rarExcecutable):
+def upload(uploadfile, rar_excecutable):
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
 
     if not os.path.isdir(tmp_dir):
@@ -260,4 +260,4 @@ def upload(uploadfile, rarExcecutable):
     tmp_file_path = os.path.join(tmp_dir, md5)
     log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
-    return process(tmp_file_path, filename_root, file_extension, rarExcecutable)
+    return process(tmp_file_path, filename_root, file_extension, rar_excecutable)
