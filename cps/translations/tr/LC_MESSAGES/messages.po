@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-04-30 19:37+0300\n"
+"POT-Creation-Date: 2023-06-25 11:30+0200\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -45,8 +45,8 @@ msgstr ""
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "%(eReadermail)s'a gönderilmek üzere başarıyla sıraya alındı"
 
-#: cps/admin.py:202 cps/editbooks.py:577 cps/editbooks.py:579
-#: cps/editbooks.py:615 cps/editbooks.py:632 cps/editbooks.py:1241
+#: cps/admin.py:202 cps/editbooks.py:578 cps/editbooks.py:580
+#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Bilinmeyen"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "No Valid Book Language Given"
 msgstr ""
 
-#: cps/admin.py:530 cps/editbooks.py:443
+#: cps/admin.py:530 cps/editbooks.py:444
 msgid "Parameter not found"
 msgstr ""
 
@@ -290,8 +290,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1307 cps/admin.py:1310 cps/admin.py:1692 cps/admin.py:1825
-#: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:229
-#: cps/editbooks.py:305 cps/editbooks.py:1203 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:230
+#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -524,122 +524,122 @@ msgstr "yüklü değil"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:731 cps/search.py:137 cps/web.py:731
+#: cps/db.py:749 cps/search.py:137 cps/web.py:731
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
-#: cps/db.py:972 cps/templates/config_edit.html:204
+#: cps/db.py:990 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "Hiçbiri"
 
-#: cps/editbooks.py:110 cps/editbooks.py:896 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr ""
 
-#: cps/editbooks.py:154 cps/editbooks.py:1224
+#: cps/editbooks.py:155 cps/editbooks.py:1225
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:174 cps/editbooks.py:717
+#: cps/editbooks.py:175 cps/editbooks.py:718
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:216
+#: cps/editbooks.py:217
 msgid "Metadata successfully updated"
 msgstr "Metaveri başarıyla güncellendi"
 
-#: cps/editbooks.py:234
+#: cps/editbooks.py:235
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:291
+#: cps/editbooks.py:292
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "%(file)s dosyası yüklendi"
 
-#: cps/editbooks.py:319
+#: cps/editbooks.py:320
 msgid "Source or destination format for conversion missing"
 msgstr "Dönüştürme için kaynak ya da hedef biçimi eksik"
 
-#: cps/editbooks.py:327
+#: cps/editbooks.py:328
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "eKitap %(book_format)s formatlarına dönüştürülmek üzere başarıyla sıraya alındı"
 
-#: cps/editbooks.py:331
+#: cps/editbooks.py:332
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Bu eKitabı dönüştürürken bir hata oluştu: %(res)s"
 
-#: cps/editbooks.py:636
+#: cps/editbooks.py:637
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Yüklenen eKitap muhtemelen kitaplıkta zaten var. Yenisini yüklemeden değiştirmeyi düşünün: "
 
-#: cps/editbooks.py:691 cps/editbooks.py:1016
+#: cps/editbooks.py:692 cps/editbooks.py:1017
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s geçerli bir dil değil"
 
-#: cps/editbooks.py:729 cps/editbooks.py:1164
+#: cps/editbooks.py:730 cps/editbooks.py:1165
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "'%(ext)s' uzantılı dosyaların bu sunucuya yüklenmesine izin verilmiyor"
 
-#: cps/editbooks.py:733 cps/editbooks.py:1168
+#: cps/editbooks.py:734 cps/editbooks.py:1169
 msgid "File to be uploaded must have an extension"
 msgstr "Yüklenecek dosyanın mutlaka bir uzantısı olması gerekli"
 
-#: cps/editbooks.py:741
+#: cps/editbooks.py:742
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "%(filename)s dosyası geçici dizine kaydedilemedi"
 
-#: cps/editbooks.py:761
+#: cps/editbooks.py:762
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:818 cps/editbooks.py:820
+#: cps/editbooks.py:819 cps/editbooks.py:821
 msgid "Book Format Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:827 cps/editbooks.py:829
+#: cps/editbooks.py:828 cps/editbooks.py:830
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:881
+#: cps/editbooks.py:882
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:931
+#: cps/editbooks.py:932
 msgid "edit metadata"
 msgstr "metaveri düzenle"
 
-#: cps/editbooks.py:980
+#: cps/editbooks.py:981
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1159
+#: cps/editbooks.py:1160
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1180
+#: cps/editbooks.py:1181
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "%(path)s dizini oluşturulamadı. (İzin reddedildi)"
 
-#: cps/editbooks.py:1185
+#: cps/editbooks.py:1186
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "%(file)s dosyası kaydedilemedi."
 
-#: cps/editbooks.py:1209
+#: cps/editbooks.py:1210
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "%(book)s kitabına %(ext)s dosya biçimi eklendi"
@@ -1071,7 +1071,7 @@ msgstr ""
 msgid "Show Books List"
 msgstr ""
 
-#: cps/search.py:48 cps/search.py:392 cps/templates/book_edit.html:236
+#: cps/search.py:48 cps/search.py:398 cps/templates/book_edit.html:236
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
