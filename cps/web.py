@@ -1551,6 +1551,11 @@ def read_book(book_id, book_format):
                 log.debug("Start mp3 listening for %d", book_id)
                 return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
                                              entry=entries, bookmark=bookmark)
+        for fileExt in constants.EXTENSIONS_VIDEO:
+            if book_format.lower() == fileExt:
+                entries = calibre_db.get_filtered_book(book_id)
+                log.debug("Start video watching for %d", book_id)
+                return serve_book.__closure__[0].cell_contents(book_id, book_format.lower())
         for fileExt in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileExt:
                 all_name = str(book_id)

@@ -142,7 +142,8 @@ except ValueError:
 del env_CALIBRE_PORT
 
 
-EXTENSIONS_AUDIO = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
+EXTENSIONS_AUDIO = {'mp3', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
+EXTENSIONS_VIDEO = {'mp4', 'avi', 'mkv', 'webm'}
 EXTENSIONS_CONVERT_FROM = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf',
                            'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr']
 EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',
