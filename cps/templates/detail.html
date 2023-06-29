@@ -120,7 +120,7 @@
                                 <a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.audio_entries[0]) }}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{ _('Listen in Browser') }} - {{ entry.audio_entries[0] }}</a>
                             {% endif %}
                         </div>
-                        {% elif entry.video_entries|length > 0 and current_user.role_viewer() %}
+                    {% elif entry.video_entries|length > 0 and current_user.role_viewer() %}
                         <div class="btn-group" role="group">
                             {% if entry.video_entries|length > 1 %}
                                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
