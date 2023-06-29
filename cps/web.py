@@ -1600,9 +1600,12 @@ def show_book(book_id):
         entry.reader_list = check_read_formats(entry)
 
         entry.audio_entries = []
+        entry.video_entries = []
         for media_format in entry.data:
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
+            if media_format.format.lower() in constants.EXTENSIONS_VIDEO:
+                entry.video_entries.append(media_format.format.lower())
 
         return render_title_template('detail.html',
                                      entry=entry,
