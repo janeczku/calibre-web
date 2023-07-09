@@ -33,6 +33,7 @@ from functools import wraps
 from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
+from flask import Markup
 from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
@@ -1035,7 +1036,8 @@ def pathchooser():
 
     for f in folders:
         try:
-            data = {"name": f, "fullpath": os.path.join(cwd, f)}
+            sanitized_f = str(Markup.escape(f))
+            data = {"name": sanitized_f, "fullpath": os.path.join(cwd, sanitized_f)}
             data["sort"] = data["fullpath"].lower()
         except Exception:
             continue
