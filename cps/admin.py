@@ -1296,7 +1296,8 @@ def update_mailsettings():
     else:
         _config_int(to_save, "mail_port")
         _config_int(to_save, "mail_use_ssl")
-        _config_string(to_save, "mail_password_e")
+        if "mail_password_e" in to_save:
+            _config_string(to_save, "mail_password_e")
         _config_int(to_save, "mail_size", lambda y: int(y) * 1024 * 1024)
         config.mail_server = to_save.get('mail_server', "").strip()
         config.mail_from = to_save.get('mail_from', "").strip()
@@ -1780,7 +1781,8 @@ def _configuration_update_helper():
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
         _config_string(to_save, "config_goodreads_api_key")
-        _config_string(to_save, "config_goodreads_api_secret_e")
+        if "config_goodreads_api_secret_e" in to_save:
+            _config_string(to_save, "config_goodreads_api_secret_e")
         if services.goodreads_support:
             services.goodreads_support.connect(config.config_goodreads_api_key,
                                                config.config_goodreads_api_secret_e,
