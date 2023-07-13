@@ -147,11 +147,18 @@ table .bg-dark-danger a { color: #fff; }
 .cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
-  height: auto;
+  width: 180px;
+  height: 180px;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-fluid .book .cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .author-link img {
