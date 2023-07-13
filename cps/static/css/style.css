@@ -147,8 +147,11 @@ table .bg-dark-danger a { color: #fff; }
 .cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
-  height: 225px;
+  height: auto;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .author-link img {
