@@ -140,19 +140,26 @@ table .bg-dark-danger a { color: #fff; }
 
 .container-fluid .book {
   margin-top: 20px;
+  margin-right: 10px;
   max-width: 180px;
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
 }
+
+.container-fluid .book:last-child {
+  margin-right: 0; /* Remove the margin on the last book */
+}
+
 .cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
-  width: 180px;
-  height: 180px;
+  width: 180px; /* Set a fixed width for the cover container */
+  height: 180px; /* Set a fixed height for the cover container */
   position: relative;
   overflow: hidden;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd; /* Add a subtle border */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow effect */
 }
 
 .container-fluid .book .cover img {
