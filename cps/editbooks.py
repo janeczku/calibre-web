@@ -753,10 +753,11 @@ def move_coverfile(meta, db_book):
         cover_file = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
     new_cover_path = os.path.join(config.config_calibre_dir, db_book.path)
     try:
-        os.makedirs(new_cover_path, exist_ok=True)
-        copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
-        if meta.cover:
-            os.unlink(meta.cover)
+        if cover_file != "img":    
+            os.makedirs(new_cover_path, exist_ok=True)
+            copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
+            if meta.cover:
+                os.unlink(meta.cover)
     except OSError as e:
         log.error("Failed to move cover file %s: %s", new_cover_path, e)
         flash(_("Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,

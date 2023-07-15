@@ -54,7 +54,7 @@ from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, EXTENSIONS_IMAGE
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
@@ -783,7 +783,11 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
         # Send the book cover from the Calibre directory
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
-            if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
+            image_files = [f for f in os.listdir(cover_file_path) if os.path.isfile(os.path.join(cover_file_path, f)) and
+                           f.lower().endswith(EXTENSIONS_IMAGE)]
+            if len(image_files) == 1:
+                return send_from_directory(cover_file_path, image_files[0])
+            elif len(image_files) > 1 or os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
                 return get_cover_on_failure(use_generic_cover_on_failure)

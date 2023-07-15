@@ -23,7 +23,7 @@ from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta
+from .constants import BookMeta, EXTENSIONS_IMAGE, EXTENSIONS_VIDEO
 from .helper import split_authors
 
 log = logger.create()
@@ -85,8 +85,10 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
                                         original_file_name,
                                         original_file_extension,
                                         rarExecutable)
-        elif ".WEBM" == extension_upper or ".MP4" == extension_upper:
+        elif extension_upper in EXTENSIONS_VIDEO:
             meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
+        elif extension_upper in EXTENSIONS_IMAGE:
+            meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
 
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
@@ -270,8 +272,26 @@ def video_cover(tmp_file_path):
     except Exception as ex:
         log.warning('Cannot extract cover image, using default: %s', ex)
         return None
-    
-    
+
+
+def image_metadata(tmp_file_path, original_file_name, original_file_extension):
+    meta = BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=original_file_name,
+        author='Unknown',
+        cover='img'
+        description='',
+        tags='',
+        series="",
+        series_id="",
+        languages="",
+        publisher="",
+        pubdate="",
+        identifiers=[])
+    return meta
+
+
 def get_magick_version():
     ret = dict()
     if not use_generic_pdf_cover:
