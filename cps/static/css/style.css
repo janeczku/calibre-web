@@ -141,31 +141,35 @@ table .bg-dark-danger a { color: #fff; }
 .container-fluid .book {
   margin-top: 20px;
   margin-right: 10px;
-  max-width: 180px;
+  max-width: 150px;
   display: inline-block;
   vertical-align: top;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .container-fluid .book:last-child {
-  margin-right: 0; /* Remove the margin on the last book */
+  margin-right: 0;
 }
 
 .cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
-  width: 180px; /* Set a fixed width for the cover container */
-  height: 180px; /* Set a fixed height for the cover container */
+  width: 150px;
+  height: 150px;
   position: relative;
   overflow: hidden;
-  border: 1px solid #ddd; /* Add a subtle border */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a box shadow effect */
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .container-fluid .book .cover img {
-  width: 100%;
   height: 100%;
-  object-fit: cover;
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .author-link img {
