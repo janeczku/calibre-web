@@ -147,7 +147,34 @@
                                 <a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.video_entries[0]) }}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-film"></span> {{ _('Watch in Browser') }} - {{ entry.video_entries[0] }}</a>
                             {% endif %}
                         </div>
-                    {% endif %}
+                        {% elif entry.image_entries|length > 0 and current_user.role_viewer() %}
+                        <div class="btn-group" role="group">
+                            {% if entry.image_entries|length > 1 %}
+                                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-picture"></span> {{ _('View in Browser') }}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
+                                    {% for format in entry.reader_list %}
+                                        <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
+
+                                    {% for format in entry.data %}
+                                        {% if format.format|lower in entry.image_entries %}
+                                            <li><a target="_blank"
+                                                   href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{ format.format|lower }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.image_entries[0]) }}" id="listenbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-picture"></span> {{ _('View in Browser') }} - {{ entry.image_entries[0] }}</a>
+                            {% endif %}    
+                        </div>
+                    {% endif %}        
                 </div>
             </div>
             <h2 id="title">{{ entry.title }}</h2>

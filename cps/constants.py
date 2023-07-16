@@ -143,7 +143,8 @@ del env_CALIBRE_PORT
 
 
 EXTENSIONS_AUDIO = {'mp3', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
-EXTENSIONS_VIDEO = {'mp4', 'avi', 'mkv', 'webm', 'm4v', 'mov', 'wmv', 'mpg', 'mpeg', 'flv', '3gp', '3g2', 'ogv'}    
+EXTENSIONS_VIDEO = {'mp4', 'webm', 'avi', 'mkv', 'm4v', 'mpg', 'mpeg', 'ogv'}
+EXTENSIONS_IMAGE = {'jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'}    
 EXTENSIONS_CONVERT_FROM = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf',
                            'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr']
 EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',
@@ -151,7 +152,7 @@ EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'djv',
                      'prc', 'doc', 'docx', 'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg',
                      'opus', 'wav', 'flac', 'm4a', 'm4b', "avi", "mkv", "webm", "m4v", "mov", "wmv", "mpg",
-                        "mpeg", "flv", "3gp", "3g2", "ogv", "jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff"}
+                        "mpeg", "flv", "3gp", "3g2", "ogv", "jpg", "jpeg", "png", "gif", "svg", "webp"}
 
 
 def has_flag(value, bit_flag):

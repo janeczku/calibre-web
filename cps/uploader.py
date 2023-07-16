@@ -18,12 +18,13 @@
 
 import os
 import hashlib
+import shutil
 import subprocess
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta
+from .constants import BookMeta, EXTENSIONS_IMAGE, EXTENSIONS_VIDEO
 from .helper import split_authors
 
 log = logger.create()
@@ -85,8 +86,10 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
                                         original_file_name,
                                         original_file_extension,
                                         rarExecutable)
-        elif ".WEBM" == extension_upper or ".MP4" == extension_upper:
+        elif extension_upper in ['.MP4', '.WEBM', '.AVI', '.MKV', '.M4V', '.MPG', '.MPEG','.OGV']:
             meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
+        elif extension_upper in ['.JPG', '.JPEG', '.PNG', '.GIF', '.SVG', '.WEBP']:
+            meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
 
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
@@ -265,13 +268,31 @@ def video_cover(tmp_file_path):
     ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
     try:
         subprocess.call([ffmpeg_executable, '-i', tmp_file_path, '-vframes', '1', '-y', os.path.splitext(tmp_file_path)[0] + '.cover.jpg'])
-        tmp_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-        return tmp_file_path
+        return None
     except Exception as ex:
         log.warning('Cannot extract cover image, using default: %s', ex)
         return None
-    
-    
+
+
+def image_metadata(tmp_file_path, original_file_name, original_file_extension):
+    shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
+    meta = BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=original_file_name,
+        author='Unknown',
+        cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+        description='',
+        tags='',
+        series="",
+        series_id="",
+        languages="",
+        publisher="",
+        pubdate="",
+        identifiers=[])
+    return meta
+
+
 def get_magick_version():
     ret = dict()
     if not use_generic_pdf_cover:
