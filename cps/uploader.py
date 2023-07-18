@@ -68,6 +68,13 @@ except ImportError as e:
     log.debug('Cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
+try:
+    from . import mp3
+    use_mp3_meta = True
+except ImportError as e:
+    log.debug('Cannot import mp3, extracting mp3 metadata will not work: %s', e)
+    use_mp3_meta = False
+
 
 def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
     meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
@@ -75,15 +82,17 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExecu
     try:
         if ".PDF" == extension_upper:
             meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-        elif extension_upper in [".KEPUB", ".EPUB"] and use_epub_meta is True:
+        elif extension_upper in [".KEPUB", ".EPUB"] and use_epub_meta:
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
-        elif ".FB2" == extension_upper and use_fb2_meta is True:
+        elif ".FB2" == extension_upper and use_fb2_meta:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
         elif extension_upper in ['.CBZ', '.CBT', '.CBR']:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
                                         rarExecutable)
+        elif extension_upper == ".MP3" and use_mp3_meta:
+            meta = mp3.get_mp3_file_info(tmp_file_path, original_file_extension, original_file_name)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
