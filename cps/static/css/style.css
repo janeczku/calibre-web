@@ -1,3 +1,5 @@
+/* General styles for all screen sizes */
+
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
   font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -456,17 +458,5 @@ div.log {
 #detailcover:fullscreen { cursor:zoom-out; border: 0; }
 
 .error-list {
-  margin-top: 5px;
+    margin-top: 5px;
 }
-
-.container-fluid .book {
-  margin-top: 0;
-  margin-right: 0;
-  max-width: 120px;
-  display: inline-block;
-  vertical-align: top;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-  
