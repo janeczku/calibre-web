@@ -17,6 +17,5 @@ flask-wtf>=0.14.2,<1.2.0
 chardet>=3.0.0,<4.1.0
 advocate>=1.0.0,<1.1.0
 Flask-Limiter>=2.3.0,<3.4.0
-pillow
 smartcrop>=0.4.0
 Pillow>=10.0.0
