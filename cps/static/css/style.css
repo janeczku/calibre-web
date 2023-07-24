@@ -1,5 +1,3 @@
-/* General styles for all screen sizes */
-
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
   font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -140,9 +138,9 @@ table .bg-dark-danger a { color: #fff; }
 .container-fluid .new-books h2 { margin: 50px 0 0 0; }
 
 .container-fluid .book {
-  margin-top: 0;
-  margin-right: 0;
-  max-width: 120px; /* Adjust this value as needed */
+  margin-top: 20px;
+  margin-right: 10px;
+  max-width: 150px;
   display: inline-block;
   vertical-align: top;
   box-sizing: border-box;
