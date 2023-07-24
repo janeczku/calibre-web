@@ -19,7 +19,7 @@
 import os
 import hashlib
 import shutil
-import subprocess
+from subprocess import run
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
@@ -262,15 +262,25 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
         pubdate="",
         identifiers=[])
     return meta
-    
+
+
 def video_cover(tmp_file_path):
-    """ generate cover image from video using ffmpeg """
+    """generate cover image from video using ffmpeg"""
     ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
+    ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+    ffmpeg_args = [
+        ffmpeg_executable,
+        '-i', tmp_file_path,
+        '-vframes', '1',
+        '-y', ffmpeg_output_file
+    ]
+
     try:
-        subprocess.call([ffmpeg_executable, '-i', tmp_file_path, '-vframes', '1', '-y', os.path.splitext(tmp_file_path)[0] + '.cover.jpg'])
-        return None
-    except Exception as ex:
-        log.warning('Cannot extract cover image, using default: %s', ex)
+        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
+
+    except Exception as e:
+        log.warning(f"ffmpeg failed: {e}")
         return None
 
 
