@@ -36,6 +36,7 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
+from urllib.parse import urlparse
 
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -1414,6 +1415,14 @@ def logout():
     log.debug("User logged out")
     return redirect(url_for('web.login'))
 
+@web.route('/clear')
+def clear():
+    o = urlparse(request.base_url)
+    host = o.hostname
+    response = make_response(redirect('/login'))
+    response.set_cookie('session', '', expires=0, httponly=True, domain=host)
+    response.set_cookie('remember_token', '', expires=0, httponly=True,domain=host)
+    return response
 
 # ################################### Users own configuration #########################################################
 def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
