@@ -2432,7 +2432,7 @@ msgstr ""
 #: cps/templates/config_edit.html:380
 #, fuzzy
 msgid "User Password policy"
-msgstr "Redefinir senha do usuário"
+msgstr "Política de senha do usuário"
 
 #: cps/templates/config_edit.html:384
 msgid "Minimum password length"
@@ -2628,7 +2628,7 @@ msgstr "Use Conta de E-Mail Padrão"
 #: cps/templates/email_edit.html:16
 #, fuzzy
 msgid "Gmail Account"
-msgstr "Escolha o Tipo do Servidor"
+msgstr "Conta Gmail"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account"
@@ -3072,7 +3072,7 @@ msgstr ""
 #: cps/templates/readcbr.html:129
 #, fuzzy
 msgid "Single Page"
-msgstr "Página de Administração"
+msgstr "Página única"
 
 #: cps/templates/readcbr.html:130
 msgid "Long Strip"
