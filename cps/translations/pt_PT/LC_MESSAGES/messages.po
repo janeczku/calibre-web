@@ -985,7 +985,7 @@ msgstr "Categorias"
 #: cps/render_template.py:74 cps/templates/user_table.html:158
 #, fuzzy
 msgid "Show Category Section"
-msgstr "Mostrar seção da categoria"
+msgstr "Mostrar secção da categoria"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
@@ -996,7 +996,7 @@ msgstr "Séries"
 #: cps/render_template.py:77 cps/templates/user_table.html:157
 #, fuzzy
 msgid "Show Series Section"
-msgstr "Mostrar seção de séries"
+msgstr "Mostrar secção de séries"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
@@ -1006,7 +1006,7 @@ msgstr "Autores"
 #: cps/render_template.py:80 cps/templates/user_table.html:160
 #, fuzzy
 msgid "Show Author Section"
-msgstr "Mostrar seção de autor"
+msgstr "Mostrar secção de autor"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:977
@@ -1027,7 +1027,7 @@ msgstr "Idiomas"
 #: cps/render_template.py:88 cps/templates/user_table.html:155
 #, fuzzy
 msgid "Show Language Section"
-msgstr "Mostrar seção de idioma"
+msgstr "Mostrar secção de idioma"
 
 #: cps/render_template.py:89 cps/templates/index.xml:104
 msgid "Ratings"
@@ -1036,7 +1036,7 @@ msgstr "Pontuações"
 #: cps/render_template.py:91 cps/templates/user_table.html:164
 #, fuzzy
 msgid "Show Ratings Section"
-msgstr "Mostrar seção de pontuações"
+msgstr "Mostrar secção de pontuações"
 
 #: cps/render_template.py:92 cps/templates/index.xml:112
 msgid "File formats"
@@ -1045,7 +1045,7 @@ msgstr "Formatos de ficheiro"
 #: cps/render_template.py:94 cps/templates/user_table.html:165
 #, fuzzy
 msgid "Show File Formats Section"
-msgstr "Mostrar seção de formatos de ficheiro"
+msgstr "Mostrar secção de formatos de ficheiro"
 
 #: cps/render_template.py:96 cps/web.py:776
 msgid "Archived Books"
@@ -3476,4 +3476,4 @@ msgstr "Sincronizar com Kobo as estantes selecionadas"
 #: cps/templates/user_table.html:156
 #, fuzzy
 msgid "Show Read/Unread Section"
-msgstr "Mostrar seção de lidos/não lidos"
+msgstr "Mostrar secção de lidos/não lidos"
