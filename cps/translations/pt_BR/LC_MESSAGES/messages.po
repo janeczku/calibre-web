@@ -100,7 +100,7 @@ msgstr "Nenhum usuário administrador restante, impossível remover a função d
 
 #: cps/admin.py:494 cps/admin.py:508
 msgid "Value has to be true or false"
-msgstr "Valor não pode ser Verdadeiro ou Falso"
+msgstr "Valor tem de ser Verdadeiro ou Falso"
 
 #: cps/admin.py:496
 msgid "Invalid role"
