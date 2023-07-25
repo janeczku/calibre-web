@@ -814,7 +814,7 @@ msgstr "Erro excecutando UnRar"
 #: cps/helper.py:1078
 #, fuzzy
 msgid "Cover"
-msgstr "Descubra"
+msgstr "Capa"
 
 #: cps/helper.py:1080 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
@@ -985,7 +985,7 @@ msgstr "Categorias"
 #: cps/render_template.py:74 cps/templates/user_table.html:158
 #, fuzzy
 msgid "Show Category Section"
-msgstr "Mostrar seleção de categoria"
+msgstr "Mostrar seção de categoria"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:90
@@ -996,7 +996,7 @@ msgstr "Série"
 #: cps/render_template.py:77 cps/templates/user_table.html:157
 #, fuzzy
 msgid "Show Series Section"
-msgstr "Mostrar seleção de séries"
+msgstr "Mostrar seção de séries"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
 #: cps/templates/index.xml:69
@@ -1006,7 +1006,7 @@ msgstr "Autores"
 #: cps/render_template.py:80 cps/templates/user_table.html:160
 #, fuzzy
 msgid "Show Author Section"
-msgstr "Mostrar seleção de autor"
+msgstr "Mostrar seção de autor"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
 #: cps/templates/index.xml:76 cps/web.py:977
@@ -1016,7 +1016,7 @@ msgstr "Editoras"
 #: cps/render_template.py:84 cps/templates/user_table.html:163
 #, fuzzy
 msgid "Show Publisher Section"
-msgstr "Mostrar seleção de editoras"
+msgstr "Mostrar seção de editoras"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
 #: cps/templates/index.xml:97 cps/templates/search_form.html:107
@@ -1027,7 +1027,7 @@ msgstr "Idiomas"
 #: cps/render_template.py:88 cps/templates/user_table.html:155
 #, fuzzy
 msgid "Show Language Section"
-msgstr "Mostrar seleção de idioma"
+msgstr "Mostrar seção de idioma"
 
 #: cps/render_template.py:89 cps/templates/index.xml:104
 msgid "Ratings"
@@ -1036,7 +1036,7 @@ msgstr "Avaliações"
 #: cps/render_template.py:91 cps/templates/user_table.html:164
 #, fuzzy
 msgid "Show Ratings Section"
-msgstr "Mostrar seleção de avaliações"
+msgstr "Mostrar seção de avaliações"
 
 #: cps/render_template.py:92 cps/templates/index.xml:112
 msgid "File formats"
@@ -1045,7 +1045,7 @@ msgstr "Formatos de arquivo"
 #: cps/render_template.py:94 cps/templates/user_table.html:165
 #, fuzzy
 msgid "Show File Formats Section"
-msgstr "Mostrar seleção de formatos de arquivo"
+msgstr "Mostrar seção de formatos de arquivo"
 
 #: cps/render_template.py:96 cps/web.py:776
 msgid "Archived Books"
@@ -1500,7 +1500,7 @@ msgstr "E-mail"
 #: cps/tasks/metadata_backup.py:46
 #, fuzzy
 msgid "Backing up Metadata"
-msgstr "editar metadados"
+msgstr "Cópia de segurança de metadados"
 
 #: cps/tasks/thumbnail.py:96
 #, python-format
@@ -3476,5 +3476,5 @@ msgstr "Sincronizar Estantes Selecionadas com Kobo"
 #: cps/templates/user_table.html:156
 #, fuzzy
 msgid "Show Read/Unread Section"
-msgstr "Mostrar seleção de lidos/não lidos"
+msgstr "Mostrar seção de lidos/não lidos"
 
