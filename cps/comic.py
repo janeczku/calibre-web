@@ -36,6 +36,12 @@ try:
         from comicapi import __version__ as comic_version
     except ImportError:
         comic_version = ''
+    try:
+        from comicapi.comicarchive import load_archive_plugins
+        import comicapi.utils
+        comicapi.utils.add_rar_paths()
+    except ImportError:
+        load_archive_plugins = None
 except (ImportError, LookupError) as e:
     log.debug('Cannot import comicapi, extracting comic metadata will not work: %s', e)
     import zipfile
@@ -88,7 +94,10 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
 def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
     cover_data = extension = None
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
+        try:
+            archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
+        except TypeError:
+            archive = ComicArchive(tmp_file_name)
         name_list = archive.getPageNameList if hasattr(archive, "getPageNameList") else archive.get_page_name_list
         for index, name in enumerate(name_list()):
             ext = os.path.splitext(name)
@@ -105,7 +114,11 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
 
 def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable):
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
+        try:
+            archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
+        except TypeError:
+            load_archive_plugins(force=True, rar=rar_executable)
+            archive = ComicArchive(tmp_file_path)
         if hasattr(archive, "seemsToBeAComicArchive"):
             seems_archive = archive.seemsToBeAComicArchive
         else:
