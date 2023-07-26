@@ -7279,6 +7279,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         float: right
     }
 
+    body.blur #main-nav + #scnd-nav .create-shelf, body.blur #main-nav + .col-sm-2 #scnd-nav .create-shelf {
+      float: none;
+      margin: 5px 0 10px -10px;
+    }
+
     #main-nav + #scnd-nav .nav-head.hidden-xs {
         display: list-item !important;
         width: 225px
