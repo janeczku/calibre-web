@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-06-25 11:30+0200\n"
+"POT-Creation-Date: 2023-07-26 20:48+0200\n"
 "PO-Revision-Date: 2023-06-25 11:29+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -22,271 +22,271 @@ msgstr ""
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: cps/admin.py:145
+#: cps/admin.py:146
 msgid "Server restarted, please reload page."
 msgstr "Server neu gestartet, Seite bitte neu laden."
 
-#: cps/admin.py:147
+#: cps/admin.py:148
 msgid "Performing Server shutdown, please close window."
 msgstr "Server wird heruntergefahren, Fenster bitte schließen."
 
-#: cps/admin.py:155
+#: cps/admin.py:156
 msgid "Success! Database Reconnected"
 msgstr "Datenbank wurde erneut verbunden"
 
-#: cps/admin.py:158
+#: cps/admin.py:159
 msgid "Unknown command"
 msgstr "Unbekannter Befehl"
 
-#: cps/admin.py:169
+#: cps/admin.py:170
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Bücher wurden für Metadaten Backup eingereiht, für das Ergebnis bitte Aufgaben überprüfen"
 
-#: cps/admin.py:202 cps/editbooks.py:578 cps/editbooks.py:580
+#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
 #: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: cps/admin.py:227
+#: cps/admin.py:228
 msgid "Admin page"
 msgstr "Admin Seite"
 
-#: cps/admin.py:247
+#: cps/admin.py:248
 msgid "Basic Configuration"
 msgstr "Basiskonfiguration"
 
-#: cps/admin.py:285
+#: cps/admin.py:286
 msgid "UI Configuration"
 msgstr "Benutzeroberflächenkonfiguration"
 
-#: cps/admin.py:319 cps/templates/admin.html:51
+#: cps/admin.py:320 cps/templates/admin.html:51
 msgid "Edit Users"
 msgstr "Benutzer bearbeiten"
 
-#: cps/admin.py:363 cps/opds.py:494 cps/templates/grid.html:14
+#: cps/admin.py:364 cps/opds.py:494 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Alle"
 
-#: cps/admin.py:390 cps/admin.py:1399
+#: cps/admin.py:391 cps/admin.py:1402
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
-#: cps/admin.py:404
+#: cps/admin.py:405
 msgid "{} users deleted successfully"
 msgstr "{} Benutzer erfolgreich gelöscht"
 
-#: cps/admin.py:427 cps/templates/config_view_edit.html:133
+#: cps/admin.py:428 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "Zeige alle"
 
-#: cps/admin.py:448 cps/admin.py:454
+#: cps/admin.py:449 cps/admin.py:455
 msgid "Malformed request"
 msgstr "Ungültige Anfrage"
 
-#: cps/admin.py:466 cps/admin.py:2016
+#: cps/admin.py:467 cps/admin.py:2020
 msgid "Guest Name can't be changed"
 msgstr "Guest Name kann nicht geändert werden"
 
-#: cps/admin.py:478
+#: cps/admin.py:479
 msgid "Guest can't have this role"
 msgstr "Guest Benutzer kann diese Rolle nicht haben"
 
-#: cps/admin.py:490 cps/admin.py:1970
+#: cps/admin.py:491 cps/admin.py:1974
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Kein Admin Benutzer verblieben Admin Berechtigung kann nicht entfernt werden"
 
-#: cps/admin.py:494 cps/admin.py:508
+#: cps/admin.py:495 cps/admin.py:509
 msgid "Value has to be true or false"
 msgstr "Wert muss true oder false sein"
 
-#: cps/admin.py:496
+#: cps/admin.py:497
 msgid "Invalid role"
 msgstr "Ungültige Rolle"
 
-#: cps/admin.py:500
+#: cps/admin.py:501
 msgid "Guest can't have this view"
 msgstr "Guest Benutzer kann diese Sichtbarkeit nicht haben"
 
-#: cps/admin.py:510
+#: cps/admin.py:511
 msgid "Invalid view"
 msgstr "Ungültige Sichtbarkeit"
 
-#: cps/admin.py:513
+#: cps/admin.py:514
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr "Guest Sprache wird automatisch bestimmt und kann nicht eingestellt werden"
 
-#: cps/admin.py:517
+#: cps/admin.py:518
 msgid "No Valid Locale Given"
 msgstr "Keine gültige Sprache gewählt"
 
-#: cps/admin.py:528
+#: cps/admin.py:529
 msgid "No Valid Book Language Given"
 msgstr "Keine gültige Buchsprache gewählt"
 
-#: cps/admin.py:530 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:444
 msgid "Parameter not found"
 msgstr "Parameter wurde nicht gefunden"
 
-#: cps/admin.py:567
+#: cps/admin.py:568
 msgid "Invalid Read Column"
 msgstr "Ungültige Lese Spalte"
 
-#: cps/admin.py:573
+#: cps/admin.py:574
 msgid "Invalid Restricted Column"
 msgstr "Ungültiger Spaltenname für Einschränkung"
 
-#: cps/admin.py:593 cps/admin.py:1841
+#: cps/admin.py:594 cps/admin.py:1845
 msgid "Calibre-Web configuration updated"
 msgstr "Konfiguration von Calibre-Web wurde aktualisiert"
 
-#: cps/admin.py:605
+#: cps/admin.py:606
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Möchten Sie wirklich den Kobo Token löschen?"
 
-#: cps/admin.py:607
+#: cps/admin.py:608
 msgid "Do you really want to delete this domain?"
 msgstr "Möchten Sie wirklich diese Domain löschen?"
 
-#: cps/admin.py:609
+#: cps/admin.py:610
 msgid "Do you really want to delete this user?"
 msgstr "Möchten Sie wirklich diesen Benutzer löschen?"
 
-#: cps/admin.py:611
+#: cps/admin.py:612
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Möchten Sie wirklich dieses Bücherregal löschen?"
 
-#: cps/admin.py:613
+#: cps/admin.py:614
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Möchten Sie wirklich die Anzeigesprache der ausgewählten Benutzer ändern?"
 
-#: cps/admin.py:615
+#: cps/admin.py:616
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr "Möchten Sie wirklich die Büchersprachen für die ausgewählten Benutzer ändern?"
 
-#: cps/admin.py:617
+#: cps/admin.py:618
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "Möchten Sie wirklich die ausgewählte Rolle für die ausgewählten Benutzer verändern?"
 
-#: cps/admin.py:619
+#: cps/admin.py:620
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
 msgstr "Möchten Sie wirklich die ausgewählten Sichtbarkeitsbeschränkungen der ausgewählten Benutzer ändern?"
 
-#: cps/admin.py:621
+#: cps/admin.py:622
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr "Möchten Sie wirklich die Sichtbarkeiten für die ausgewählten Benutzer verändern?"
 
-#: cps/admin.py:624
+#: cps/admin.py:625
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "Möchten Sie wirklich die Synchronisation von Bücherregalen für die ausgewählten Benutzer verändern?"
 
-#: cps/admin.py:626
+#: cps/admin.py:627
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Ort der Calibre Datenbank editieren?"
 
-#: cps/admin.py:628
+#: cps/admin.py:629
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
 msgstr "Calibre-Web wird nach neuen Covern suchen und Cover Miniaturansichten aktualisieren, dies kann eine Weile dauern?"
 
-#: cps/admin.py:631
+#: cps/admin.py:632
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
 msgstr "Möchten Sie wirklich die Synchronisationsdatenbank von Calibre-Web löschen, um eine komplette Synchronisation zu erzwingen?"
 
-#: cps/admin.py:874 cps/admin.py:880 cps/admin.py:890 cps/admin.py:900
+#: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr "Verbieten"
 
-#: cps/admin.py:876 cps/admin.py:882 cps/admin.py:892 cps/admin.py:902
+#: cps/admin.py:877 cps/admin.py:883 cps/admin.py:893 cps/admin.py:903
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr "Erlauben"
 
-#: cps/admin.py:917
+#: cps/admin.py:918
 msgid "{} sync entries deleted"
 msgstr "{} Synchronisationseinträge gelöscht"
 
-#: cps/admin.py:965
+#: cps/admin.py:966
 msgid "Tag not found"
 msgstr "Tag nicht gefunden"
 
-#: cps/admin.py:977
+#: cps/admin.py:978
 msgid "Invalid Action"
 msgstr "Ungültige Aktion"
 
-#: cps/admin.py:1106
+#: cps/admin.py:1108
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr "client_secrets.json ist nicht für Web Anwendungen konfiguriert"
 
-#: cps/admin.py:1151
+#: cps/admin.py:1153
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Logdatei Pfad ist ungültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1157
+#: cps/admin.py:1159
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Zugriffs Logdatei Pfad ist ungültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1191
+#: cps/admin.py:1193
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "Bitte einen LDAP Server, Port, DN und Benutzer Objekt angeben"
 
-#: cps/admin.py:1197
+#: cps/admin.py:1199
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr "Bitte einen LDAP Service Account und Password eingeben"
 
-#: cps/admin.py:1200
+#: cps/admin.py:1202
 msgid "Please Enter a LDAP Service Account"
 msgstr "Bitte einen LDAP Service Account eingeben"
 
-#: cps/admin.py:1205
+#: cps/admin.py:1207
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP Gruppen Objekt Filter benötigt genau eine \"%s\" Format Kennung"
 
-#: cps/admin.py:1207
+#: cps/admin.py:1209
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP Gruppen Objekt Filter hat ungleiche Anzahl von Klammern"
 
-#: cps/admin.py:1211
+#: cps/admin.py:1213
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP Benutzer Objekt Filter benötigt genau eine \"%s\" Format Kennung"
 
-#: cps/admin.py:1213
+#: cps/admin.py:1215
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP Benutzer Objekt Filter hat ungleiche Anzahl von Klammern"
 
-#: cps/admin.py:1220
+#: cps/admin.py:1222
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr "Der LDAP Member User Filter benötigt genau eine \"%s\" Formatierungsmarkierung"
 
-#: cps/admin.py:1222
+#: cps/admin.py:1224
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "LDAP Member User Filter hat eine ungleiche Anzahl von geöffneten und geschlossenen Klammern"
 
-#: cps/admin.py:1229
+#: cps/admin.py:1231
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP CA-Zertifikat, Zertifikat oder Key Datei ist kein gültiger Pfad"
 
-#: cps/admin.py:1260 cps/templates/admin.html:53
+#: cps/admin.py:1262 cps/templates/admin.html:53
 msgid "Add New User"
 msgstr "Neuen Benutzer hinzufügen"
 
-#: cps/admin.py:1269 cps/templates/admin.html:100
+#: cps/admin.py:1271 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "SMTP-Einstellungen ändern"
 
-#: cps/admin.py:1288
+#: cps/admin.py:1290
 msgid "Success! Gmail Account Verified."
 msgstr "G-Mail Konto verifiziert."
 
-#: cps/admin.py:1307 cps/admin.py:1310 cps/admin.py:1692 cps/admin.py:1825
-#: cps/admin.py:1923 cps/admin.py:2044 cps/editbooks.py:230
+#: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
 #: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
@@ -294,215 +294,215 @@ msgstr "G-Mail Konto verifiziert."
 msgid "Oops! Database Error: %(error)s."
 msgstr "Datenbankfehler: %(error)s."
 
-#: cps/admin.py:1317
+#: cps/admin.py:1320
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr "Test E-Mail an %(email)s wurde zum Senden in die Warteschlange eingereiht, für das Ergebnis bitte Aufgaben überprüfen"
 
-#: cps/admin.py:1320
+#: cps/admin.py:1323
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Es trat ein Fehler beim Versenden der Test-E-Mail auf: %(res)s"
 
-#: cps/admin.py:1322
+#: cps/admin.py:1325
 msgid "Please configure your e-mail address first..."
 msgstr "Bitte zuerst E-Mail Adresse konfigurieren..."
 
-#: cps/admin.py:1324
+#: cps/admin.py:1327
 msgid "Email Server Settings updated"
 msgstr "Einstellungen des E-Mail-Servers aktualisiert"
 
-#: cps/admin.py:1347 cps/templates/admin.html:195
+#: cps/admin.py:1350 cps/templates/admin.html:195
 msgid "Edit Scheduled Tasks Settings"
 msgstr "Einstellungen für Geplante Aufgaben"
 
-#: cps/admin.py:1359
+#: cps/admin.py:1362
 msgid "Invalid start time for task specified"
 msgstr "Ungültigen Startzeitpunkt für Aufgaben spezifiziert"
 
-#: cps/admin.py:1364
+#: cps/admin.py:1367
 msgid "Invalid duration for task specified"
 msgstr "Ungültige Laufzeit für Aufgaben spezifiziert"
 
-#: cps/admin.py:1374
+#: cps/admin.py:1377
 msgid "Scheduled tasks settings updated"
 msgstr "Einstellungen für Geplante Aufgaben aktualisiert"
 
-#: cps/admin.py:1384 cps/admin.py:1433 cps/admin.py:2040 cps/web.py:1281
+#: cps/admin.py:1387 cps/admin.py:1436 cps/admin.py:2044 cps/web.py:1281
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
-#: cps/admin.py:1388
+#: cps/admin.py:1391
 msgid "Settings DB is not Writeable"
 msgstr "Einstellungsdatenbank ist nicht schreibbar"
 
-#: cps/admin.py:1418 cps/admin.py:2032
+#: cps/admin.py:1421 cps/admin.py:2036
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Benutzer %(nick)s bearbeiten"
 
-#: cps/admin.py:1430
+#: cps/admin.py:1433
 #, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr "Passwort für Benutzer %(user)s wurde zurückgesetzt"
 
-#: cps/admin.py:1436
+#: cps/admin.py:1439
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr "Bitte zuerst die SMTP-Einstellung konfigurieren."
 
-#: cps/admin.py:1447
+#: cps/admin.py:1450
 msgid "Logfile viewer"
 msgstr "Logdatei Anzeige"
 
-#: cps/admin.py:1513
+#: cps/admin.py:1516
 msgid "Requesting update package"
 msgstr "Frage Update an"
 
-#: cps/admin.py:1514
+#: cps/admin.py:1517
 msgid "Downloading update package"
 msgstr "Lade Update herunter"
 
-#: cps/admin.py:1515
+#: cps/admin.py:1518
 msgid "Unzipping update package"
 msgstr "Entpacke Update"
 
-#: cps/admin.py:1516
+#: cps/admin.py:1519
 msgid "Replacing files"
 msgstr "Ersetze Dateien"
 
-#: cps/admin.py:1517
+#: cps/admin.py:1520
 msgid "Database connections are closed"
 msgstr "Schließe Datenbankverbindungen"
 
-#: cps/admin.py:1518
+#: cps/admin.py:1521
 msgid "Stopping server"
 msgstr "Stoppe Server"
 
-#: cps/admin.py:1519
+#: cps/admin.py:1522
 msgid "Update finished, please press okay and reload page"
 msgstr "Update abgeschlossen, bitte okay drücken und Seite neu laden"
 
-#: cps/admin.py:1520 cps/admin.py:1521 cps/admin.py:1522 cps/admin.py:1523
-#: cps/admin.py:1524 cps/admin.py:1525
+#: cps/admin.py:1523 cps/admin.py:1524 cps/admin.py:1525 cps/admin.py:1526
+#: cps/admin.py:1527 cps/admin.py:1528
 msgid "Update failed:"
 msgstr "Update fehlgeschlagen:"
 
-#: cps/admin.py:1520 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
+#: cps/admin.py:1523 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
 msgstr "HTTP Fehler"
 
-#: cps/admin.py:1521 cps/updater.py:391 cps/updater.py:628
+#: cps/admin.py:1524 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
 msgstr "Verbindungsfehler"
 
-#: cps/admin.py:1522 cps/updater.py:393 cps/updater.py:630
+#: cps/admin.py:1525 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
 msgstr "Timeout beim Verbindungsaufbau"
 
-#: cps/admin.py:1523 cps/updater.py:395 cps/updater.py:632
+#: cps/admin.py:1526 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
 msgstr "Allgemeiner Fehler"
 
-#: cps/admin.py:1524
+#: cps/admin.py:1527
 msgid "Update file could not be saved in temp dir"
 msgstr "Updatedatei konnte nicht in Temporärem Ordner gespeichert werden"
 
-#: cps/admin.py:1525
+#: cps/admin.py:1528
 msgid "Files could not be replaced during update"
 msgstr "Dateien konnten während des Updates nicht ausgetauscht werden"
 
-#: cps/admin.py:1549
+#: cps/admin.py:1552
 msgid "Failed to extract at least One LDAP User"
 msgstr "Mindestens ein LDAP Benutzer konnte nicht extrahiert werden"
 
-#: cps/admin.py:1594
+#: cps/admin.py:1597
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Mindestens ein LDAP Benutzer konnte nicht erzeugt werden"
 
-#: cps/admin.py:1607
+#: cps/admin.py:1610
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Fehler: %(ldaperror)s"
 
-#: cps/admin.py:1611
+#: cps/admin.py:1614
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Fehler: Keine Benutzerinformationen von LDAP Server empfangen"
 
-#: cps/admin.py:1644
+#: cps/admin.py:1647
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Mindestens ein LDAP Benutzer wurde nicht in der Datenbank gefudnen"
 
-#: cps/admin.py:1646
+#: cps/admin.py:1649
 msgid "{} User Successfully Imported"
 msgstr "{} Benutzer erfolgreich importiert"
 
-#: cps/admin.py:1704
+#: cps/admin.py:1707
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "DB Pfad ist nicht gültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1724
+#: cps/admin.py:1727
 msgid "DB is not Writeable"
 msgstr "Datenbank ist nicht schreibbar"
 
-#: cps/admin.py:1737
+#: cps/admin.py:1740
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr "Schlüsseldatei ist ungültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1741
+#: cps/admin.py:1744
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Zertifikatsdatei ist ungültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1812
+#: cps/admin.py:1816
 msgid "Password length has to be between 1 and 40"
 msgstr "Passwortlänge muss zwischen 1 und 40 Zeichen liegen"
 
-#: cps/admin.py:1864
+#: cps/admin.py:1868
 msgid "Database Settings updated"
 msgstr "Datenbankeinstellung aktualisiert"
 
-#: cps/admin.py:1872
+#: cps/admin.py:1876
 msgid "Database Configuration"
 msgstr "Datenbank-Konfiguration"
 
-#: cps/admin.py:1887 cps/web.py:1255
+#: cps/admin.py:1891 cps/web.py:1255
 msgid "Oops! Please complete all fields."
 msgstr "Bitte alle Felder ausfüllen."
 
-#: cps/admin.py:1896
+#: cps/admin.py:1900
 msgid "E-mail is not from valid domain"
 msgstr "E-Mail bezieht sich nicht auf eine gültige Domain"
 
-#: cps/admin.py:1902
+#: cps/admin.py:1906
 msgid "Add new user"
 msgstr "Neuen Benutzer hinzufügen"
 
-#: cps/admin.py:1913
+#: cps/admin.py:1917
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Benutzer '%(user)s' angelegt"
 
-#: cps/admin.py:1919
+#: cps/admin.py:1923
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Es existiert bereits ein Account für diese E-Mailadresse oder diesen Benutzernamen."
 
-#: cps/admin.py:1949
+#: cps/admin.py:1953
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Benutzer '%(nick)s' gelöscht"
 
-#: cps/admin.py:1952
+#: cps/admin.py:1956
 msgid "Can't delete Guest User"
 msgstr "Guest Benutzer kann nicht gelöscht werden"
 
-#: cps/admin.py:1955
+#: cps/admin.py:1959
 msgid "No admin user remaining, can't delete user"
 msgstr "Benutzer kann nicht gelöscht werden, es wäre kein Admin Benutzer übrig"
 
-#: cps/admin.py:2010 cps/web.py:1430
+#: cps/admin.py:2014 cps/web.py:1430
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-Mail kann nicht leer sein und muss gültig sein"
 
-#: cps/admin.py:2036
+#: cps/admin.py:2040
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Benutzer '%(nick)s' aktualisiert"
