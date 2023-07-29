@@ -27,9 +27,10 @@ from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape  # dependency of flask
 from functools import wraps
+import re
 
 try:
-    from lxml.html.clean import clean_html
+    from lxml.html.clean import clean_html, Cleaner
 except ImportError:
     clean_html = None
 
@@ -599,6 +600,8 @@ def identifier_list(to_save, book):
         val_key = id_val_prefix + type_key[len(id_type_prefix):]
         if val_key not in to_save.keys():
             continue
+        if to_save[val_key].startswith("data:"):
+            to_save[val_key], __, __ = str.partition(to_save[val_key], ",")
         result.append(db.Identifiers(to_save[val_key], type_value, book.id))
     return result
 
