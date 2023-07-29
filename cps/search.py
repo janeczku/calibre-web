@@ -375,13 +375,19 @@ def render_prepare_search_form(cc):
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
-    join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    entries, result_count, pagination = calibre_db.get_search_results(term,
-                                                                      config,
-                                                                      offset,
-                                                                      order,
-                                                                      limit,
-                                                                      *join)
+    if term:
+        join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
+        entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                          config,
+                                                                          offset,
+                                                                          order,
+                                                                          limit,
+                                                                          *join)
+    else:
+        entries = list()
+        order = [None, None]
+        pagination = result_count = None
+
     return render_title_template('search.html',
                                  searchterm=term,
                                  pagination=pagination,
