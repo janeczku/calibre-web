@@ -173,6 +173,9 @@ class Identifiers(Base):
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
+        elif self.val.lower().startswith("data:"):
+            link , __, __ = str.partition(self.val, ",")
+            return link
         else:
             return "{0}".format(self.val)
 

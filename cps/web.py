@@ -396,7 +396,7 @@ def render_books_list(data, sort_param, book_id, page):
     elif data == "archived":
         return render_archived_books(page, order)
     elif data == "search":
-        term = (request.args.get('query') or '')
+        term = request.args.get('query', None)
         offset = int(int(config.config_books_per_page) * (page - 1))
         return render_search_results(term, offset, order, config.config_books_per_page)
     elif data == "advsearch":
