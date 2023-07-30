@@ -61,7 +61,7 @@ def get_epub_layout(book, book_data):
         p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
 
         layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
-    except (etree.XMLSyntaxError, KeyError) as e:
+    except (etree.XMLSyntaxError, KeyError, IndexError) as e:
         log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
         layout = []
 
