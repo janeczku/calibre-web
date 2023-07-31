@@ -1041,7 +1041,7 @@ def get_download_link(book_id, book_format, client):
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
-            quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
+            quote(file_name), book_format, quote(file_name), book_format)
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
