@@ -21,10 +21,11 @@ import zipfile
 from lxml import etree
 
 from . import isoLanguages, cover
-from . import config
+from . import config, logger
 from .helper import split_authors
 from .constants import BookMeta
 
+log = logger.create()
 
 def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     if cover_file is None:
@@ -49,15 +50,20 @@ def get_epub_layout(book, book_data):
     }
     file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
 
-    epubZip = zipfile.ZipFile(file_path)
-    txt = epubZip.read('META-INF/container.xml')
-    tree = etree.fromstring(txt)
-    cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
-    cf = epubZip.read(cfname)
-    tree = etree.fromstring(cf)
-    p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
+    try:
+        epubZip = zipfile.ZipFile(file_path)
+        txt = epubZip.read('META-INF/container.xml')
+        tree = etree.fromstring(txt)
+        cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
+        cf = epubZip.read(cfname)
 
-    layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
+        tree = etree.fromstring(cf)
+        p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
+
+        layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
+    except (etree.XMLSyntaxError, KeyError, IndexError) as e:
+        log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
+        layout = []
 
     if len(layout) == 0:
         return None
