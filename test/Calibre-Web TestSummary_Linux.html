@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-06-18 11:18:49</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-07-26 21:47:14</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-06-18 17:27:42</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-07-27 04:10:01</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 10 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 21 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">22</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">20</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 22)">Detail</a>
@@ -293,11 +293,32 @@
     
     
     
-        <tr id='pt2.6' class='hiddenRow bg-success'>
+        <tr id="ft2.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 150, in test_backup_change_book_publisher
+    self.assertEqual(metadata[&#39;publisher&#39;], &#39;Lo,执|1u&#39;)
+AssertionError: &#39;&#39; != &#39;Lo,执|1u&#39;
++ Lo,执|1u</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -374,11 +395,33 @@
     
     
     
-        <tr id='pt2.15' class='hiddenRow bg-success'>
+        <tr id="et2.15" class="none bg-info">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_categories</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et2.15" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et2.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 538, in test_backup_change_custom_categories
+    self.assertCountEqual(custom[&#34;#value#&#34;], [&#34;Kulo&#34;, &#34;Smudo&#34;])
+  File &#34;/usr/lib/python3.10/unittest/case.py&#34;, line 1188, in assertCountEqual
+    first_seq, second_seq = list(first), list(second)
+TypeError: &#39;NoneType&#39; object is not iterable</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -972,11 +1015,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -995,11 +1038,33 @@
     
     
     
-        <tr id='pt11.2' class='hiddenRow bg-success'>
+        <tr id="ft11.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft11.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft11.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 176, in test_convert_only
+    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
+AssertionError: &#39;Started&#39; != &#39;Finished&#39;
+- Started
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1903,11 +1968,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2070,11 +2135,31 @@
     
     
     
-        <tr id='pt18.18' class='hiddenRow bg-success'>
+        <tr id="ft18.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft18.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft18.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 916, in test_watch_metadata
+    self.assertTrue(button)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3479,60 +3564,53 @@
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 1)">Detail</a>
+            <a onclick="showClassDetail('c38', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et38.1" class="none bg-info">
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et38.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et38.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et38.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
-    from build import make_release
-ModuleNotFoundError: No module named &#39;build&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestReader</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3578,11 +3656,37 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
     
     
     
-        <tr id='pt39.5' class='hiddenRow bg-success'>
+        <tr id="ft39.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft39.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft39.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 272, in test_sound_listener
+    self.sound_test(&#39;music.mp3&#39;, &#39;Unknown - music&#39;, &#39;0:03&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 260, in sound_test
+    self.assertEqual(duration, duration_item.text)
+AssertionError: &#39;0:03&#39; != &#39;0:02&#39;
+- 0:03
+?    ^
++ 0:02
+?    ^</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3950,11 +4054,11 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3991,11 +4095,31 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id="ft45.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft45.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft45.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 135, in test_cover_change_on_upload_new_cover
+    self.assertGreaterEqual(diff(BytesIO(updated_cover), BytesIO(original_cover), delete_diff_file=True), 0.03)
+AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5105,9 +5229,9 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>455</td>
-        <td>446</td>
-        <td>0</td>
+        <td>457</td>
+        <td>443</td>
+        <td>5</td>
         <td>1</td>
         <td>8</td>
         <td>&nbsp;</td>
@@ -5137,7 +5261,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.19.0-45-generic #46~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jun 7 15:06:04 UTC 20 x86_64 x86_64</td>
+              <td>Linux 6.2.0-25-generic #25~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Wed Jun 28 09:55:23 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5227,7 +5351,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>lxml</th>
-              <td>4.9.2</td>
+              <td>4.9.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5257,7 +5381,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.48</td>
+              <td>1.4.49</td>
               <td>Basic</td>
             </tr>
           
@@ -5287,7 +5411,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5305,19 +5429,19 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5335,19 +5459,19 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5365,19 +5489,19 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5395,19 +5519,19 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>comicapi</th>
-              <td>3.0.0</td>
+              <td>3.2.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -5419,7 +5543,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5437,13 +5561,13 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5455,7 +5579,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5473,13 +5597,13 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5497,7 +5621,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.89.0</td>
+              <td>2.95.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5515,13 +5639,13 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.15.4</td>
+              <td>1.16.1</td>
               <td>TestSetupGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0</td>
+              <td>6.0.1</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5539,13 +5663,13 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.17.3</td>
+              <td>4.18.4</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.17.3</td>
+              <td>4.18.4</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5557,7 +5681,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.17.3</td>
+              <td>4.18.4</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -5587,7 +5711,7 @@ ModuleNotFoundError: No module named &#39;build&#39;</pre>
 </div>
 
 <script>
-    drawCircle(446, 0, 1, 8);
+    drawCircle(443, 5, 1, 8);
     showCase(5);
 </script>
 

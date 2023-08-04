@@ -732,28 +732,27 @@ def delete_book(book, calibrepath, book_format):
         return delete_book_file(book, calibrepath, book_format)
 
 
-def get_cover_on_failure(use_generic_cover):
-    if use_generic_cover:
-        try:
-            return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
-        except PermissionError:
-            log.error("No permission to access generic_cover.jpg file.")
-            abort(403)
-    abort(404)
+def get_cover_on_failure():
+    try:
+        return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+    except PermissionError:
+        log.error("No permission to access generic_cover.jpg file.")
+        abort(403)
 
 
 def get_book_cover(book_id, resolution=None):
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+    return get_book_cover_internal(book, resolution=resolution)
 
 
-# Called only by kobo sync -> cover not found should be answered with 404 and not with default cover
 def get_book_cover_with_uuid(book_uuid, resolution=None):
     book = calibre_db.get_book_by_uuid(book_uuid)
-    return get_book_cover_internal(book, use_generic_cover_on_failure=False, resolution=resolution)
+    if not book:
+        return  # allows kobo.HandleCoverImageRequest to proxy request
+    return get_book_cover_internal(book, resolution=resolution)
 
 
-def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None):
+def get_book_cover_internal(book, resolution=None):
     if book and book.has_cover:
 
         # Send the book cover thumbnail if it exists in cache
@@ -769,16 +768,16 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
-                    return get_cover_on_failure(use_generic_cover_on_failure)
+                    return get_cover_on_failure()
                 path = gd.get_cover_via_gdrive(book.path)
                 if path:
                     return redirect(path)
                 else:
                     log.error('{}/cover.jpg not found on Google Drive'.format(book.path))
-                    return get_cover_on_failure(use_generic_cover_on_failure)
+                    return get_cover_on_failure()
             except Exception as ex:
                 log.error_or_exception(ex)
-                return get_cover_on_failure(use_generic_cover_on_failure)
+                return get_cover_on_failure()
 
         # Send the book cover from the Calibre directory
         else:
@@ -786,9 +785,9 @@ def get_book_cover_internal(book, use_generic_cover_on_failure, resolution=None)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
-                return get_cover_on_failure(use_generic_cover_on_failure)
+                return get_cover_on_failure()
     else:
-        return get_cover_on_failure(use_generic_cover_on_failure)
+        return get_cover_on_failure()
 
 
 def get_book_cover_thumbnail(book, resolution):
@@ -811,7 +810,7 @@ def get_series_thumbnail_on_failure(series_id, resolution):
         .filter(db.Books.has_cover == 1) \
         .first()
 
-    return get_book_cover_internal(book, use_generic_cover_on_failure=True, resolution=resolution)
+    return get_book_cover_internal(book, resolution=resolution)
 
 
 def get_series_cover_thumbnail(series_id, resolution=None):
@@ -1042,7 +1041,7 @@ def get_download_link(book_id, book_format, client):
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
-            quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
+            quote(file_name), book_format, quote(file_name), book_format)
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
