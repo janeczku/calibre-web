@@ -94,6 +94,19 @@
                     <input type="range" min="75" max="200" value="100" id="fontSizeFader" step="25">
                 </div>
               </div>
+              <div class="font" id="font">
+                <label class="item">{{_('Font')}}:</label>
+                <button type="button" id="default" onclick="selectFont(this.id)"><span>✓</span>{{_('Default')}}</button> 
+                <button type="button" id="Yahei" onclick="selectFont(this.id)"><span></span>{{_('Yahei')}}</button>
+                <button type="button" id="SimSun" onclick="selectFont(this.id)"><span></span>{{_('SimSun')}}</button>
+                <button type="button" id="KaiTi" onclick="selectFont(this.id)"><span></span>{{_('KaiTi')}}</button>
+                <button type="button" id="Arial" onclick="selectFont(this.id)"><span></span>{{_('Arial')}}</button>
+              </div>
+              <div class="layou" id="layout">
+                <label class="item">{{ _('Spread') }}:</label>
+                <button type="button" id="spread" onclick="spread(this.id)"><span>✓</span>{{_('Two columns')}}</button>
+                <button type="button" id="nonespread" onclick="spread(this.id)"><span></span>{{_('One column')}}</button>
+              </div>
               <div class="closer icon-cancel-circled"></div>
           </div>
       </div>
@@ -146,6 +159,35 @@
         fontSizeFader.addEventListener ("change", function () {
             reader.rendition.themes.fontSize(`${this.value}%`)
         });
+
+        let defaultFont;
+
+        function selectFont(id) {
+          if (!defaultFont) {
+            defaultFont = reader.rendition.getContents()[0]?.css('font-family');
+          }
+
+          spans = document.getElementById("font").querySelectorAll("span");
+          for(var i = 0; i < spans.length; i++) {
+            spans[i].textContent = "";
+          }
+          document.getElementById(id).querySelector("span").textContent = "✓";
+          
+          if (id == 'default') {
+            reader.rendition.themes.font(defaultFont);
+            return;
+          }
+          reader.rendition.themes.font(id);
+        }
+
+        function spread(id) {
+          spans = document.getElementById("layout").querySelectorAll("span");
+          for(var i = 0; i < spans.length; i++) {
+            spans[i].textContent = "";
+          }
+          document.getElementById(id).querySelector("span").textContent = "✓";
+          reader.rendition.spread(id==='spread'?true:'none');
+        }
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-07-26 20:48+0200\n"
+"POT-Creation-Date: 2023-08-09 16:33+0800\n"
 "PO-Revision-Date: 2021-05-13 11:00+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -43,10 +43,12 @@ msgstr "Okänt kommando"
 #: cps/admin.py:170
 #, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera Uppgifter för resultat"
+msgstr ""
+"Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera "
+"Uppgifter för resultat"
 
-#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
-#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
+#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Okänd"
@@ -129,7 +131,7 @@ msgstr "Inget giltigt språk anges"
 msgid "No Valid Book Language Given"
 msgstr "Inget giltigt bokspråk anges"
 
-#: cps/admin.py:531 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:445
 msgid "Parameter not found"
 msgstr "Parameter hittades inte"
 
@@ -167,24 +169,38 @@ msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Är du säker på att du vill ändra språk för valda användare?"
 
 #: cps/admin.py:616
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
+msgid ""
+"Are you sure you want to change visible book languages for selected "
+"user(s)?"
 msgstr "Är du säker på att du vill ändra synliga bokspråk för valda användare?"
 
 #: cps/admin.py:618
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected role for the selected "
+"user(s)?"
 msgstr "Är du säker på att du vill ändra den valda rollen för de valda användarna?"
 
 #: cps/admin.py:620
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Är du säker på att du vill ändra de valda begränsningarna för de valda användarna?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the "
+"selected user(s)?"
+msgstr ""
+"Är du säker på att du vill ändra de valda begränsningarna för de valda "
+"användarna?"
 
 #: cps/admin.py:622
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Är du säker på att du vill ändra de valda synlighetsbegränsningarna för de valda användarna?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for "
+"the selected user(s)?"
+msgstr ""
+"Är du säker på att du vill ändra de valda synlighetsbegränsningarna för "
+"de valda användarna?"
 
 #: cps/admin.py:625
 #, fuzzy
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected "
+"user(s)?"
 msgstr "Är du säker på att du vill ändra den valda rollen för de valda användarna?"
 
 #: cps/admin.py:627
@@ -193,11 +209,15 @@ msgid "Are you sure you want to change Calibre library location?"
 msgstr "Är du säker på att du vill stoppa Calibre-Web?"
 
 #: cps/admin.py:629
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, "
+"this may take a while?"
 msgstr ""
 
 #: cps/admin.py:632
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full "
+"sync with your Kobo Reader?"
 msgstr ""
 
 #: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
@@ -277,8 +297,12 @@ msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "Användarfilter för LDAP-medlemmar har omatchad parentes"
 
 #: cps/admin.py:1231
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr "LDAP-certifikat, certifikat eller nyckelplats är inte giltigt, vänligen ange rätt sökväg"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please "
+"Enter Correct Path"
+msgstr ""
+"LDAP-certifikat, certifikat eller nyckelplats är inte giltigt, vänligen "
+"ange rätt sökväg"
 
 #: cps/admin.py:1262 cps/templates/admin.html:53
 msgid "Add New User"
@@ -293,8 +317,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
-#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
+#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -304,7 +328,9 @@ msgstr "Databasfel: %(error)s."
 #: cps/admin.py:1320
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera Uppgifter för resultat"
+msgstr ""
+"Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera "
+"Uppgifter för resultat"
 
 #: cps/admin.py:1323
 #, python-format
@@ -527,133 +553,151 @@ msgstr "inte installerad"
 msgid "Execution permissions missing"
 msgstr "Körningstillstånd saknas"
 
-#: cps/db.py:749 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Anpassad kolumn n.%(column)d finns inte i calibre-databasen"
 
-#: cps/db.py:990 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "Ingen"
 
-#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
-msgstr "Hoppsan! Vald boktitel är inte tillgänglig. Filen finns inte eller är inte tillgänglig"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not "
+"accessible"
+msgstr ""
+"Hoppsan! Vald boktitel är inte tillgänglig. Filen finns inte eller är "
+"inte tillgänglig"
 
-#: cps/editbooks.py:155 cps/editbooks.py:1225
+#: cps/editbooks.py:156 cps/editbooks.py:1228
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:175 cps/editbooks.py:718
+#: cps/editbooks.py:176 cps/editbooks.py:721
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr "Identifierare är inte skiftlägeskänsliga, skriver över gammal identifierare"
+msgstr ""
+"Identifierare är inte skiftlägeskänsliga, skriver över gammal "
+"identifierare"
 
-#: cps/editbooks.py:217
+#: cps/editbooks.py:218
 msgid "Metadata successfully updated"
 msgstr "Metadata uppdaterades"
 
-#: cps/editbooks.py:235
+#: cps/editbooks.py:236
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:292
+#: cps/editbooks.py:293
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Filen %(file)s uppladdad"
 
-#: cps/editbooks.py:320
+#: cps/editbooks.py:321
 msgid "Source or destination format for conversion missing"
 msgstr "Källa eller målformat för konvertering saknas"
 
-#: cps/editbooks.py:328
+#: cps/editbooks.py:329
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Boken är i kö för konvertering till %(book_format)s"
 
-#: cps/editbooks.py:332
+#: cps/editbooks.py:333
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Det gick inte att konvertera den här boken: %(res)s"
 
-#: cps/editbooks.py:637
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Uppladdad bok finns förmodligen i biblioteket, överväg att ändra innan du laddar upp nya: "
+#: cps/editbooks.py:640
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
+msgstr ""
+"Uppladdad bok finns förmodligen i biblioteket, överväg att ändra innan du"
+" laddar upp nya: "
 
-#: cps/editbooks.py:692 cps/editbooks.py:1017
+#: cps/editbooks.py:695 cps/editbooks.py:1020
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s är inte ett giltigt språk"
 
-#: cps/editbooks.py:730 cps/editbooks.py:1165
+#: cps/editbooks.py:733 cps/editbooks.py:1168
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Filändelsen '%(ext)s' får inte laddas upp till den här servern"
 
-#: cps/editbooks.py:734 cps/editbooks.py:1169
+#: cps/editbooks.py:737 cps/editbooks.py:1172
 msgid "File to be uploaded must have an extension"
 msgstr "Filen som ska laddas upp måste ha en ändelse"
 
-#: cps/editbooks.py:742
+#: cps/editbooks.py:745
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Filen %(filename)s kunde inte sparas i temp dir"
 
-#: cps/editbooks.py:762
+#: cps/editbooks.py:765
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Det gick inte att flytta omslagsfil %(file)s: %(error)s"
 
-#: cps/editbooks.py:819 cps/editbooks.py:821
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Format Successfully Deleted"
 msgstr "Bokformat har tagits bort"
 
-#: cps/editbooks.py:828 cps/editbooks.py:830
+#: cps/editbooks.py:831 cps/editbooks.py:833
 msgid "Book Successfully Deleted"
 msgstr "Boken har tagits bort"
 
-#: cps/editbooks.py:882
+#: cps/editbooks.py:885
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:932
+#: cps/editbooks.py:935
 msgid "edit metadata"
 msgstr "redigera metadata"
 
-#: cps/editbooks.py:981
+#: cps/editbooks.py:984
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1160
+#: cps/editbooks.py:1163
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1181
+#: cps/editbooks.py:1184
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Det gick inte att skapa sökväg %(path)s (behörighet nekad)."
 
-#: cps/editbooks.py:1186
+#: cps/editbooks.py:1189
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Det gick inte att lagra filen %(file)s."
 
-#: cps/editbooks.py:1210
+#: cps/editbooks.py:1213
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Filformatet %(ext)s lades till %(book)s"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Installationen av Google Drive är inte klar, försök att inaktivera och aktivera Google Drive igen"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
+msgstr ""
+"Installationen av Google Drive är inte klar, försök att inaktivera och "
+"aktivera Google Drive igen"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Återuppringningsdomänen är inte verifierad, följ stegen för att verifiera domänen i Google utvecklarkonsol"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
+msgstr ""
+"Återuppringningsdomänen är inte verifierad, följ stegen för att verifiera"
+" domänen i Google utvecklarkonsol"
 
 #: cps/helper.py:81
 #, python-format
@@ -670,7 +714,7 @@ msgstr "%(format)s hittades inte på Google Drive: %(fn)s"
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s hittades inte: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:59
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Skicka till Kindle"
@@ -725,7 +769,9 @@ msgstr ""
 #: cps/helper.py:365
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "Borttagning av bokmapp för boken %(id)s misslyckades, sökvägen har undermappar: %(path)s"
+msgstr ""
+"Borttagning av bokmapp för boken %(id)s misslyckades, sökvägen har "
+"undermappar: %(path)s"
 
 #: cps/helper.py:371
 #, python-format
@@ -734,13 +780,17 @@ msgstr "Borttagning av boken %(id)s misslyckades: %(message)s"
 
 #: cps/helper.py:382
 #, fuzzy, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid:"
+" %(path)s"
 msgstr "Borttagning av boken %(id)s, boksökväg inte giltig: %(path)s"
 
 #: cps/helper.py:447
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
+msgstr ""
+"Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med "
+"fel: %(error)s"
 
 #: cps/helper.py:519 cps/helper.py:528
 #, python-format
@@ -750,7 +800,9 @@ msgstr "Filen %(file)s hittades inte på Google Drive"
 #: cps/helper.py:562
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
+msgstr ""
+"Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med "
+"fel: %(error)s"
 
 #: cps/helper.py:582
 msgid "Error in rename file in path: {}"
@@ -778,64 +830,70 @@ msgstr "Ogiltigt e-postadressformat"
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:853
+#: cps/helper.py:852
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:863
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "Fel vid hämtning av omslaget"
 
-#: cps/helper.py:866
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "Fel på omslagsformat"
 
-#: cps/helper.py:869
-msgid "You are not allowed to access localhost or the local network for cover uploads"
+#: cps/helper.py:868
+msgid ""
+"You are not allowed to access localhost or the local network for cover "
+"uploads"
 msgstr ""
 
-#: cps/helper.py:879
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "Det gick inte att skapa sökväg för omslag"
 
-#: cps/helper.py:895
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Omslagsfilen är inte en giltig bildfil eller kunde inte lagras"
 
-#: cps/helper.py:906
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Endast jpg/jpeg/png/webp/bmp-filer stöds som omslagsfil"
 
-#: cps/helper.py:918
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:922
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Endast jpg/jpeg-filer stöds som omslagsfil"
 
-#: cps/helper.py:974
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
 msgstr "Unrar binär fil hittades inte"
 
-#: cps/helper.py:985
+#: cps/helper.py:984
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Fel vid körning av UnRar"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1077
 #, fuzzy
 msgid "Cover"
 msgstr "Upptäck"
 
-#: cps/helper.py:1080 cps/templates/admin.html:216
+#: cps/helper.py:1079 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
 #: cps/kobo_auth.py:90
 #, fuzzy
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Vänligen få tillgång till calibre-web från icke localhost för att få giltig api_endpoint för Kobo-enhet"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint "
+"for kobo device"
+msgstr ""
+"Vänligen få tillgång till calibre-web från icke localhost för att få "
+"giltig api_endpoint för Kobo-enhet"
 
 #: cps/kobo_auth.py:116
 msgid "Kobo Setup"
@@ -1265,11 +1323,17 @@ msgstr "Oväntade data vid läsning av uppdateringsinformation"
 
 #: cps/updater.py:438 cps/updater.py:550
 msgid "No update available. You already have the latest version installed"
-msgstr "Ingen uppdatering tillgänglig. Du har redan den senaste versionen installerad"
+msgstr ""
+"Ingen uppdatering tillgänglig. Du har redan den senaste versionen "
+"installerad"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att uppdatera till den senaste versionen."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
+msgstr ""
+"En ny uppdatering är tillgänglig. Klicka på knappen nedan för att "
+"uppdatera till den senaste versionen."
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
@@ -1277,12 +1341,18 @@ msgstr "Kunde inte hämta uppdateringsinformation"
 
 #: cps/updater.py:484
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Klicka på knappen nedan för att uppdatera till den senaste stabila versionen."
+msgstr ""
+"Klicka på knappen nedan för att uppdatera till den senaste stabila "
+"versionen."
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att uppdatera till version: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
+msgstr ""
+"En ny uppdatering är tillgänglig. Klicka på knappen nedan för att "
+"uppdatera till version: %(version)s"
 
 #: cps/updater.py:536
 msgid "No release information available"
@@ -1411,7 +1481,9 @@ msgstr "du är nu inloggad som: \"%(nickname)s\""
 
 #: cps/web.py:1368
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
 msgstr ""
 
 #: cps/web.py:1373
@@ -1509,7 +1581,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:266
+#: cps/tasks/mail.py:269
 msgid "E-mail"
 msgstr ""
 
@@ -1926,8 +1998,12 @@ msgid "Rating"
 msgstr "Betyg"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Omslagswebbadress (jpg, omslag hämtas och lagras i databasen, fältet är efteråt tomt igen)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
+msgstr ""
+"Omslagswebbadress (jpg, omslag hämtas och lagras i databasen, fältet är "
+"efteråt tomt igen)"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
@@ -2316,12 +2392,18 @@ msgid "SSL"
 msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP CACertificate-sökväg (behövs endast för autentisering av klientcertifikat)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate "
+"Authentication)"
+msgstr ""
+"LDAP CACertificate-sökväg (behövs endast för autentisering av "
+"klientcertifikat)"
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP-certifikatsökväg (behövs endast för autentisering av klientcertifikat)"
+msgstr ""
+"LDAP-certifikatsökväg (behövs endast för autentisering av "
+"klientcertifikat)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
@@ -2714,8 +2796,12 @@ msgid "Next"
 msgstr "Nästa"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Öppna filen .kobo/Kobo/Kobo eReader.conf i en textredigerare och lägg till (eller redigera):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or "
+"edit):"
+msgstr ""
+"Öppna filen .kobo/Kobo/Kobo eReader.conf i en textredigerare och lägg "
+"till (eller redigera):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
@@ -2973,11 +3059,17 @@ msgstr "och från hårddisken"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Viktigt Kobo-notering: borttagna böcker kommer att finnas kvar på alla kopplade Kobo-enheter."
+msgstr ""
+"Viktigt Kobo-notering: borttagna böcker kommer att finnas kvar på alla "
+"kopplade Kobo-enheter."
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Böcker måste först arkiveras och enheten synkroniseras innan en bok säkert kan tas bort."
+msgid ""
+"Books must first be archived and the device synced before a book can "
+"safely be deleted."
+msgstr ""
+"Böcker måste först arkiveras och enheten synkroniseras innan en bok "
+"säkert kan tas bort."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -3040,6 +3132,48 @@ msgstr "Fyll i texten igen när sidofält är öppna."
 #: cps/templates/read.html:93
 msgid "Font Sizes"
 msgstr ""
+
+#: cps/templates/read.html:98
+msgid "Font"
+msgstr ""
+
+#: cps/templates/read.html:99
+#, fuzzy
+msgid "Default"
+msgstr "Ta bort"
+
+#: cps/templates/read.html:100
+msgid "Yahei"
+msgstr ""
+
+#: cps/templates/read.html:101
+msgid "SimSun"
+msgstr ""
+
+#: cps/templates/read.html:102
+#, fuzzy
+msgid "KaiTi"
+msgstr "Väntar"
+
+#: cps/templates/read.html:103
+#, fuzzy
+msgid "Arial"
+msgstr "Vertikal"
+
+#: cps/templates/read.html:106
+#, fuzzy
+msgid "Spread"
+msgstr "Läst"
+
+#: cps/templates/read.html:107
+#, fuzzy
+msgid "Two columns"
+msgstr "Ogiltig roll"
+
+#: cps/templates/read.html:108
+#, fuzzy
+msgid "One column"
+msgstr "Ogiltig roll"
 
 #: cps/templates/readcbr.html:7
 #, fuzzy
@@ -3371,7 +3505,9 @@ msgid "This task will be cancelled. Any progress made by this task will be saved
 msgstr ""
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled "
+"time."
 msgstr ""
 
 #: cps/templates/user_edit.html:20
@@ -3511,4 +3647,10 @@ msgstr ""
 #, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "Visa läst/oläst val"
+
+#~ msgid "Choose a font below"
+#~ msgstr ""
+
+#~ msgid "Two Columns"
+#~ msgstr ""
 
