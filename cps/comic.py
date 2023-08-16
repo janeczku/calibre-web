@@ -52,6 +52,12 @@ except (ImportError, LookupError) as e:
     except (ImportError, SyntaxError) as e:
         log.debug('Cannot import rarfile, extracting cover files from rar files will not work: %s', e)
         use_rarfile = False
+    try:
+        import py7zr
+        use_7zip = True
+    except (ImportError, SyntaxError) as e:
+        log.debug('Cannot import py7zr, extracting cover files from CB7 files will not work: %s', e)
+        use_7zip = False
     use_comic_meta = False
 
 
@@ -84,10 +90,22 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
                 if len(ext) > 1:
                     extension = ext[1].lower()
                     if extension in cover.COVER_EXTENSIONS:
-                        cover_data = cf.read(name)
+                        cover_data = cf.read([name])
                         break
         except Exception as ex:
-            log.debug('Rarfile failed with error: {}'.format(ex))
+            log.error('Rarfile failed with error: {}'.format(ex))
+    elif original_file_extension.upper() == '.CB7' and use_7zip:
+        cf = py7zr.SevenZipFile(tmp_file_name)
+        for name in cf.getnames():
+            ext = os.path.splitext(name)
+            if len(ext) > 1:
+                extension = ext[1].lower()
+                if extension in cover.COVER_EXTENSIONS:
+                    try:
+                        cover_data = cf.read(name)[name].read()
+                    except (py7zr.Bad7zFile, OSError) as ex:
+                        log.error('7Zip file failed with error: {}'.format(ex))
+                    break
     return cover_data, extension
 
 
