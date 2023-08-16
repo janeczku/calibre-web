@@ -930,7 +930,11 @@ def get_current_bookmark_response(current_bookmark):
 @kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
 def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
-    resolution = None if height > 1000 else COVER_THUMBNAIL_SMALL
+    try:
+        resolution = None if int(height) > 1000 else COVER_THUMBNAIL_SMALL
+    except ValueError:
+        log.error("Requested height %s of book %s is invalid" % (book_uuid, height))
+        resolution = COVER_THUMBNAIL_SMALL
     book_cover = helper.get_book_cover_with_uuid(book_uuid, resolution=resolution)
     if book_cover:
         log.debug("Serving local cover image of book %s" % book_uuid)
