@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-07-26 21:47:14</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-08-17 20:59:16</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-07-27 04:10:01</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-08-18 03:31:30</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 21 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 32 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">20</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
+        <td class="text-center">22</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 22)">Detail</a>
@@ -293,32 +293,11 @@
     
     
     
-        <tr id="ft2.6" class="none bg-danger">
+        <tr id='pt2.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 150, in test_backup_change_book_publisher
-    self.assertEqual(metadata[&#39;publisher&#39;], &#39;Lo,执|1u&#39;)
-AssertionError: &#39;&#39; != &#39;Lo,执|1u&#39;
-+ Lo,执|1u</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -395,33 +374,11 @@ AssertionError: &#39;&#39; != &#39;Lo,执|1u&#39;
     
     
     
-        <tr id="et2.15" class="none bg-info">
+        <tr id='pt2.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_categories</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 538, in test_backup_change_custom_categories
-    self.assertCountEqual(custom[&#34;#value#&#34;], [&#34;Kulo&#34;, &#34;Smudo&#34;])
-  File &#34;/usr/lib/python3.10/unittest/case.py&#34;, line 1188, in assertCountEqual
-    first_seq, second_seq = list(first), list(second)
-TypeError: &#39;NoneType&#39; object is not iterable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1015,11 +972,11 @@ TypeError: &#39;NoneType&#39; object is not iterable</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1038,33 +995,11 @@ TypeError: &#39;NoneType&#39; object is not iterable</pre>
     
     
     
-        <tr id="ft11.2" class="none bg-danger">
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft11.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft11.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 176, in test_convert_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Started&#39; != &#39;Finished&#39;
-- Started
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1079,15 +1014,15 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestEditAdditionalBooks</td>
+        <td class="text-center">20</td>
         <td class="text-center">17</td>
-        <td class="text-center">16</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 17)">Detail</a>
+            <a onclick="showClassDetail('c12', 20)">Detail</a>
         </td>
     </tr>
 
@@ -1201,7 +1136,36 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id="et12.13" class="none bg-info">
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 225, in test_upload_metadata_cb7
+    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
@@ -1210,7 +1174,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt12.14' class='hiddenRow bg-success'>
+        <tr id='pt12.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
@@ -1219,7 +1183,42 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='st12.15' class='none bg-warning'>
+        <tr id="st12.16" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.16')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_st12.16" class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_st12.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='st12.18' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
@@ -1228,7 +1227,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt12.16' class='hiddenRow bg-success'>
+        <tr id='pt12.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
@@ -1237,7 +1236,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt12.17' class='hiddenRow bg-success'>
+        <tr id='pt12.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
@@ -1247,15 +1246,15 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooks</td>
-        <td class="text-center">37</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
+        <td class="text-center">38</td>
+        <td class="text-center">34</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
+        <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 37)">Detail</a>
+            <a onclick="showClassDetail('c13', 38)">Detail</a>
         </td>
     </tr>
 
@@ -1538,7 +1537,36 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.28' class='hiddenRow bg-success'>
+        <tr id="et13.28" class="none bg-info">
+            <td>
+                <div class='testcase'>TestEditBooks - test_upload_book_cb7</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.28')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.28" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.28').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 1159, in test_upload_book_cb7
+    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
@@ -1547,7 +1575,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.29' class='hiddenRow bg-success'>
+        <tr id='pt13.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1556,7 +1584,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.30' class='hiddenRow bg-success'>
+        <tr id='pt13.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1565,7 +1593,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.31' class='hiddenRow bg-success'>
+        <tr id='pt13.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1574,7 +1602,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.32' class='hiddenRow bg-success'>
+        <tr id='pt13.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1583,7 +1611,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.33' class='hiddenRow bg-success'>
+        <tr id='pt13.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1592,7 +1620,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.34' class='hiddenRow bg-success'>
+        <tr id='pt13.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1601,7 +1629,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.35' class='hiddenRow bg-success'>
+        <tr id='pt13.36' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1610,7 +1638,7 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.36' class='hiddenRow bg-success'>
+        <tr id='pt13.37' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cbz_coverformats</div>
             </td>
@@ -1619,11 +1647,31 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt13.37' class='hiddenRow bg-success'>
+        <tr id="et13.38" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.38')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.38" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.38').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 866, in test_upload_cover_hdd
+    self.delete_book(details[&#39;id&#39;])
+NameError: name &#39;details&#39; is not defined</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1944,11 +1992,11 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1958,22 +2006,42 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id="ft17.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 167, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
+        <td class="text-center">16</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 18)">Detail</a>
@@ -1991,11 +2059,34 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id="ft18.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft18.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft18.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 317, in test_edit_author
+    self.assertEqual(u&#39;O0ü name&#39;, author.get_attribute(&#39;value&#39;))
+AssertionError: &#39;O0ü name&#39; != &#39; O0ü name &#39;
+- O0ü name
++  O0ü name 
+? +        +</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2117,11 +2208,31 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id='pt18.16' class='hiddenRow bg-success'>
+        <tr id="et18.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et18.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 129, in test_edit_title
+    self.assertEqual(u&#39;O0ü 执&#39;, values[&#39;title&#39;])
+KeyError: &#39;title&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2135,31 +2246,11 @@ AssertionError: &#39;Started&#39; != &#39;Finished&#39;
     
     
     
-        <tr id="ft18.18" class="none bg-danger">
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 916, in test_watch_metadata
-    self.assertTrue(button)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3606,11 +3697,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestReader</td>
         <td class="text-center">6</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3656,37 +3747,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft39.5" class="none bg-danger">
+        <tr id='pt39.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft39.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft39.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 272, in test_sound_listener
-    self.sound_test(&#39;music.mp3&#39;, &#39;Unknown - music&#39;, &#39;0:03&#39;)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 260, in sound_test
-    self.assertEqual(duration, duration_item.text)
-AssertionError: &#39;0:03&#39; != &#39;0:02&#39;
-- 0:03
-?    ^
-+ 0:02
-?    ^</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4054,11 +4119,11 @@ AssertionError: &#39;0:03&#39; != &#39;0:02&#39;
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4095,31 +4160,11 @@ AssertionError: &#39;0:03&#39; != &#39;0:02&#39;
     
     
     
-        <tr id="ft45.4" class="none bg-danger">
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 135, in test_cover_change_on_upload_new_cover
-    self.assertGreaterEqual(diff(BytesIO(updated_cover), BytesIO(original_cover), delete_diff_file=True), 0.03)
-AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5229,11 +5274,11 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>457</td>
-        <td>443</td>
-        <td>5</td>
-        <td>1</td>
-        <td>8</td>
+        <td>461</td>
+        <td>446</td>
+        <td>2</td>
+        <td>4</td>
+        <td>9</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5261,13 +5306,13 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.2.0-25-generic #25~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Wed Jun 28 09:55:23 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.2.0-26-generic #26~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Jul 13 16:27:29 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Python</th>
-              <td>3.10.6</td>
+              <td>3.10.12</td>
               <td>Basic</td>
             </tr>
           
@@ -5279,7 +5324,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>APScheduler</th>
-              <td>3.10.1</td>
+              <td>3.10.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5405,13 +5450,13 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>2.3.6</td>
+              <td>2.3.7</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5429,7 +5474,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5441,7 +5486,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5459,7 +5504,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5471,7 +5516,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5489,7 +5534,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5501,7 +5546,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5519,7 +5564,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5536,14 +5581,26 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
             </tr>
           
             <tr>
+              <th>py7zr</th>
+              <td>0.20.6</td>
+              <td>TestEditAdditionalBooks</td>
+            </tr>
+          
+            <tr>
               <th>rarfile</th>
               <td>4.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
+              <th>py7zr</th>
+              <td>0.20.6</td>
+              <td>TestEditBooks</td>
+            </tr>
+          
+            <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5561,7 +5618,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5579,7 +5636,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5597,7 +5654,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5621,7 +5678,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.95.0</td>
+              <td>2.97.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5639,7 +5696,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.16.1</td>
+              <td>1.17.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5663,13 +5720,13 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.18.4</td>
+              <td>4.19.0</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.18.4</td>
+              <td>4.19.0</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5681,7 +5738,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.18.4</td>
+              <td>4.19.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -5711,7 +5768,7 @@ AssertionError: 0.0288805190529425 not greater than or equal to 0.03</pre>
 </div>
 
 <script>
-    drawCircle(443, 5, 1, 8);
+    drawCircle(446, 2, 4, 9);
     showCase(5);
 </script>
 
