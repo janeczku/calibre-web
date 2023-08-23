@@ -1047,7 +1047,7 @@ def make_calibre_web_auth_response():
                 "RefreshToken": RefreshToken,
                 "TokenType": "Bearer",
                 "TrackingId": str(uuid.uuid4()),
-                "UserKey": content['UserKey'],
+                "UserKey": content.get('UserKey',""),
             }
         )
     )
