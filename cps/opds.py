@@ -21,9 +21,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import json
 from urllib.parse import unquote_plus
 
-from flask import Blueprint, request, render_template, make_response, abort
+from flask import Blueprint, request, render_template, make_response, abort, Response
 from flask_login import current_user
 from flask_babel import get_locale
 from flask_babel import gettext as _
@@ -410,6 +411,17 @@ def get_metadata_calibre_companion(uuid, library):
         return response
     else:
         return ""
+
+
+@opds.route("/opds/stats")
+@requires_basic_auth_if_no_ano
+def get_database_stats():
+    stat = dict()
+    stat['books'] = calibre_db.session.query(db.Books).count()
+    stat['authors'] = calibre_db.session.query(db.Authors).count()
+    stat['categories'] = calibre_db.session.query(db.Tags).count()
+    stat['series'] = calibre_db.session.query(db.Series).count()
+    return Response(json.dumps(stat), mimetype="application/json")
 
 
 @opds.route("/opds/thumb_240_240/<book_id>")
