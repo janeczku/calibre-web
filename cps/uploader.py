@@ -79,7 +79,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         elif ".FB2" == extension_upper and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-        elif extension_upper in ['.CBZ', '.CBT', '.CBR']:
+        elif extension_upper in ['.CBZ', '.CBT', '.CBR', ".CB7"]:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
@@ -88,7 +88,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
         log.warning('cannot parse metadata, using default: %s', ex)
 
     if not meta.title.strip():
-        meta = original_file_name
+        meta = meta._replace(title=original_file_name)
     if not meta.author.strip() or meta.author.lower() == 'unknown':
         meta = meta._replace(author=_('Unknown'))
     return meta
