@@ -40,6 +40,7 @@ $(".sendbtn-form").click(function() {
     $.ajax({
         method: 'post',
         url: $(this).data('href'),
+        data: {csrf_token: $("input[name='csrf_token']").val()},
         success: function (data) {
             handleResponse(data)
         }
