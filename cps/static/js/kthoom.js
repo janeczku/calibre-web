@@ -71,7 +71,8 @@ var settings = {
     fitMode: kthoom.Key.B,
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
-	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar
+    nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
+	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar	
     pageDisplay: 0 // 0 = Single Page, 1 = Long Strip
 };
 
@@ -131,7 +132,7 @@ var createURLFromArray = function(array, mimeType) {
     }
 
     if ((typeof URL !== "function" && typeof URL !== "object") ||
-      typeof URL.createObjectURL !== "function") {
+        typeof URL.createObjectURL !== "function") {
         throw "Browser support for Object URLs is missing";
     }
 
@@ -206,7 +207,7 @@ function initProgressClick() {
     });
 }
 
-function loadFromArrayBuffer(ab) {
+function loadFromArrayBuffer(ab, lastCompletion = 0) {
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
@@ -246,7 +247,7 @@ function loadFromArrayBuffer(ab) {
                                         } else {
                                             $("#left").show();
                                         }
-                                        updatePage();
+                                        updatePage(lastCompletion);
                                     }
                                 } else {
                                     totalImages--;
@@ -261,17 +262,6 @@ function loadFromArrayBuffer(ab) {
 }
 
 function scrollTocToActive() {
-    $(".page").text((currentImage + 1 ) + "/" + totalImages);
-
-    // Mark the current page in the TOC
-    $("#tocView a[data-page]")
-    // Remove the currently active thumbnail
-        .removeClass("active")
-        // Find the new one
-        .filter("[data-page=" + (currentImage + 1) + "]")
-        // Set it to active
-        .addClass("active");
-
     // Scroll to the thumbnail in the TOC on page change
     $("#tocView").stop().animate({
         scrollTop: $("#tocView a.active").position().top
@@ -279,11 +269,30 @@ function scrollTocToActive() {
 }
 
 function updatePage() {
+    $(".page").text((currentImage + 1 ) + "/" + totalImages);
+
+    // Mark the current page in the TOC
+    $("#tocView a[data-page]")
+        // Remove the currently active thumbnail
+        .removeClass("active")
+        // Find the new one
+        .filter("[data-page=" + (currentImage + 1) + "]")
+        // Set it to active
+        .addClass("active");
+
     scrollTocToActive();
-    scrollCurrentImageIntoView();
     updateProgress();
     pageDisplayUpdate();
     setTheme();
+
+    if (imageFiles[currentImage]) {
+        setImage(imageFiles[currentImage].dataURI);
+    } else {
+        setImage("loading");
+    }
+
+    $("body").toggleClass("dark-theme", settings.theme === "dark");
+    $("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -359,6 +368,7 @@ function setImage(url, _canvas) {
         img.onerror = function() {
             canvas.width = innerWidth - 100;
             canvas.height = 300;
+            updateScale(true);            
             x.fillStyle = "black";
             x.font = "50px sans-serif";
             x.strokeStyle = "black";
@@ -412,6 +422,8 @@ function setImage(url, _canvas) {
             scrollTo(0, 0);
             x.drawImage(img, 0, 0);
 
+            updateScale(false);
+
             canvas.style.display = "";
             $("body").css("overflowY", "");
             x.restore();
@@ -450,6 +462,9 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     }
     updateDirectionButtons();
 }
@@ -461,6 +476,9 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     }
     updateDirectionButtons();
 }
@@ -477,7 +495,7 @@ function scrollCurrentImageIntoView() {
     }
 }
 
-function updateScale() {
+function updateScale(clear) {
     var canvasArray = $("#mainContent > canvas");
     var maxheight = innerHeight - 50;
     
@@ -486,7 +504,7 @@ function updateScale() {
     canvasArray.css("maxWidth", "");
     canvasArray.css("maxHeight", "");
 
-    if(settings.pageDisplay === 0) {
+    if(!clear) {
         canvasArray.addClass("hide");
         pageDisplayUpdate();
     }
@@ -653,7 +671,7 @@ function init(filename) {
     request.responseType = "arraybuffer";
     request.addEventListener("load", function() {
         if (request.status >= 200 && request.status < 300) {
-            loadFromArrayBuffer(request.response);
+            loadFromArrayBuffer(request.response, currentImage);
         } else {
             console.warn(request.statusText, request.responseText);
         }
@@ -708,7 +726,7 @@ function init(filename) {
         }
         
         updatePage();
-        updateScale();
+        updateScale(false);
     });
 
     // Close modal
@@ -721,6 +739,9 @@ function init(filename) {
     $("#thumbnails").on("click", "a", function() {
         currentImage = $(this).data("page") - 1;
         updatePage();
+        if (settings.nextPage === 0) {
+            $("#mainContent").scrollTop(0);
+        }
     });
 
     // Fullscreen mode

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -20,23 +21,6 @@
   <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/compress/uncompress.js') }}"></script>
   <script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
-  <script>
-    var updateArrows = function() {
-      if ($('input[name="direction"]:checked').val() === "0") {
-        $("#prev_page_key").html("&larr;");
-        $("#next_page_key").html("&rarr;");
-      } else {
-        $("#prev_page_key").html("&rarr;");
-        $("#next_page_key").html("&larr;");
-      }
-    };
-    document.onreadystatechange = function () {
-      if (document.readyState == "complete") {
-      	init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
-      	updateArrows();
-      }
-    }
-  </script>
 </head>
 <body>
 <div id="sidebar">
@@ -77,8 +61,8 @@
   <div id="mainContent" tabindex="-1">
     <div id="mainText" style="display:none"></div>
   </div>
-  <div id="left" class="arrow" style="display:none" onclick="showLeftPage()">‹</div>
-  <div id="right" class="arrow" style="display:none" onclick="showRightPage()">›</div>
+  <div id="left" class="arrow" style="display:none" onclick="showLeftPage(); setBookmark();">‹</div>
+  <div id="right" class="arrow" style="display:none" onclick="showRightPage(); setBookmark();">›</div>
 </div>
 
 <div class="modal md-effect-1" id="settings-modal">
@@ -89,8 +73,8 @@
         <table>
           <thead>
           <tr><th colspan="2">{{_('Keyboard Shortcuts')}}</th></tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
           <tr><td id="prev_page_key">&larr;</td> <td>{{_('Previous Page')}}</td></tr>
           <tr><td id="next_page_key">&rarr;</td> <td>{{_('Next Page')}}</td></tr>
           <tr><td>S</td>      <td>{{_('Single Page Display')}}</td></tr>
@@ -102,21 +86,21 @@
           <tr><td>R</td>      <td>{{_('Rotate Right')}}</td></tr>
           <tr><td>L</td>      <td>{{_('Rotate Left')}}</td></tr>
           <tr><td>F</td>      <td>{{_('Flip Image')}}</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="settings-column">
-        <table id="settings">
-          <thead>
-          <tr>
-            <th>{{_('Settings')}}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th>{{_('Theme')}}:</th>
-            <td>
-              <div class="inputs">
+            </tbody>
+          </table>
+        </div>
+        <div class="settings-column">
+          <table id="settings">
+            <thead>
+              <tr>
+                <th>{{_('Settings')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>{{_('Theme')}}:</th>
+                <td>
+                  <div class="inputs">
                 <label for="lightTheme"><input type="radio" id="lightTheme" name="theme" value="light" /> {{_('Light')}}</label>
                 <label for="darkTheme"><input type="radio" id="darkTheme" name="theme" value="dark" /> {{_('Dark')}}</label>
               </div>
@@ -139,59 +123,118 @@
                 <label for="fitWidth"><input type="radio" id="fitWidth" name="fitMode" value="87" /> {{_('Width')}}</label>
                 <label for="fitHeight"><input type="radio" id="fitHeight" name="fitMode" value="72" /> {{_('Height')}}</label>
                 <label for="fitNative"><input type="radio" id="fitNative" name="fitMode" value="78" /> {{_('Native')}}</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>{{_('Rotate')}}:</th>
-            <td>
-              <div class="inputs">
-                <label for="r0"><input type="radio" id="r0" name="rotateTimes" value="0" /> 0&deg;</label>
-                <label for="r90"><input type="radio" id="r90" name="rotateTimes" value="1" /> 90&deg;</label>
-                <label for="r180"><input type="radio" id="r180" name="rotateTimes" value="2" /> 180&deg;</label>
-                <label for="r270"><input type="radio" id="r270" name="rotateTimes" value="3" /> 270&deg;</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>{{_('Flip')}}:</th>
-            <td>
-              <div class="inputs">
-                <label for="vflip"><input type="checkbox" id="vflip" name="vflip" /> {{_('Horizontal')}}</label>
-                <label for="hflip"><input type="checkbox" id="hflip" name="hflip" /> {{_('Vertical')}}</label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <th>{{_('Direction')}}:</th>
-            <td>
-              <div class="inputs">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>{{_('Rotate')}}:</th>
+                <td>
+                  <div class="inputs">
+                    <label for="r0"><input type="radio" id="r0" name="rotateTimes" value="0" /> 0&deg;</label>
+                    <label for="r90"><input type="radio" id="r90" name="rotateTimes" value="1" /> 90&deg;</label>
+                    <label for="r180"><input type="radio" id="r180" name="rotateTimes" value="2" /> 180&deg;</label>
+                    <label for="r270"><input type="radio" id="r270" name="rotateTimes" value="3" /> 270&deg;</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>{{_('Flip')}}:</th>
+                <td>
+                  <div class="inputs">
+                    <label for="vflip"><input type="checkbox" id="vflip" name="vflip" /> {{_('Horizontal')}}</label>
+                    <label for="hflip"><input type="checkbox" id="hflip" name="hflip" /> {{_('Vertical')}}</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>{{_('Direction')}}:</th>
+                <td>
+                  <div class="inputs">
                 <label for="leftToRight"><input type="radio" id="leftToRight" name="direction" value="0" /> {{_('Left to Right')}}</label>
                 <label for="rightToLeft"><input type="radio" id="rightToLeft" name="direction" value="1" /> {{_('Right to Left')}}</label>
               </div>
             </td>
           </tr>
           <tr>
+            <th>{{_('Next Page')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="resetToTop"><input type="radio" id="resetToTop" name="nextPage" value="0" /> {{_('Reset to Top')}}</label>
+                <label for="rememberPosition"><input type="radio" id="rememberPosition" name="nextPage" value="1" /> {{_('Remember Position')}}</label>
+                  </div>
+                </td>
+              </tr>
+              <tr>                
             <th>{{_('Scrollbar')}}:</th>
             <td>
               <div class="inputs">
                 <label for="showScrollbar"><input type="radio" id="showScrollbar" name="scrollbar" value="1" /> {{_('Show')}}</label>
                 <label for="hideScrollbar"><input type="radio" id="hideScrollbar" name="scrollbar" value="0" /> {{_('Hide')}}</label>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+      <div class="closer icon-cancel-circled"></div>
     </div>
-    <div class="closer icon-cancel-circled"></div>
   </div>
-</div>
-<div class="overlay"></div>
-<script>
-  $('input[name="direction"]').change(function() {
-    updateArrows();
-  });
-</script>
+  <div class="overlay"></div>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <script>
+    var updateArrows = function () {
+      if ($('input[name="direction"]:checked').val() === "0") {
+        $("#prev_page_key").html("&larr;");
+        $("#next_page_key").html("&rarr;");
+      } else {
+        $("#prev_page_key").html("&rarr;");
+        $("#next_page_key").html("&larr;");
+      }
+    };
+  </script>
+  <script>
+    function setBookmark() {
+      // get csrf_token
+      let csrf_token = $("input[name='csrf_token']").val();
+      //This sends a bookmark update to calibreweb.
+      $.ajax(calibre.bookmarkUrl, {
+        method: "post",
+        data: {
+          csrf_token: csrf_token,
+          bookmark: currentImage
+        }
+      }).fail(function (xhr, status, error) {
+        console.error(error);
+      });
+    }
+
+    window.calibre = {
+      filePath: "{{ url_for('static', filename='js/libs/') }}",
+      cssPath: "{{ url_for('static', filename='css/') }}",
+      bookUrl: "{{ url_for('static', filename=comicfile) }}/",
+      bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=comicfile, book_format=extension.upper()) }}",
+      bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
+      useBookmarks: "{{ current_user.is_authenticated | tojson }}"
+    };
+    if (calibre.useBookmarks) {
+      currentImage = eval(calibre.bookmark);
+      if (typeof currentImage !== 'number'){
+        currentImage = 0;
+      }
+    }
+    
+    document.onreadystatechange = function () {
+      if (document.readyState == "complete") {
+        init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
+        updateArrows();
+      }
+    }
+  </script>
+  <script>
+    $('input[name="direction"]').change(function() {
+        updateArrows();
+      });
+    </script>
 </body>
 </html>

@@ -98,7 +98,7 @@ class Amazon(Metadata):
                     try:
                         match.authors = [next(
                             filter(lambda i: i != " " and i != "\n" and not i.startswith("{"),
-                                   x.findAll(text=True))).strip()
+                                   x.findAll(string=True))).strip()
                                         for x in soup2.findAll("span", attrs={"class": "author"})]
                     except (AttributeError, TypeError, StopIteration):
                         match.authors = ""
