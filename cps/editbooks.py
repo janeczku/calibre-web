@@ -1227,7 +1227,7 @@ def upload_single_file(file_request, book, book_id):
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
-                rarExecutable=config.config_rarfile_location)
+                rar_executable=config.config_rarfile_location)
     return None
 
 
