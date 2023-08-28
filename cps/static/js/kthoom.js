@@ -177,12 +177,31 @@ kthoom.ImageFile = function(file) {
     }
 };
 
+function updateDirectionButtons(){
+    $("#right").show();
+    $("#left").show();
+    if (currentImage == 0 ) {
+        if (settings.direction === 0) {
+            $("#left").hide();
+        } else {
+            $("#right").hide();
+        }
+    }
+    if ((currentImage + 1) >= Math.max(totalImages, imageFiles.length)) {
+        if (settings.direction === 0) {
+            $("#right").hide();
+        } else {
+            $("#left").hide();
+        }
+    }
+}
 function initProgressClick() {
     $("#progress").click(function(e) {
         var offset = $(this).offset();
         var x = e.pageX - offset.left;
         var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
         currentImage = Math.max(1, Math.ceil(rate * totalImages)) - 1;
+        updateDirectionButtons();
         updatePage();
     });
 }
@@ -222,6 +241,11 @@ function loadFromArrayBuffer(ab) {
                                     
                                     // display first page if we haven't yet
                                     if (imageFiles.length === currentImage + 1) {
+                                        if (settings.direction === 0) {
+                                            $("#right").show();
+                                        } else {
+                                            $("#left").show();
+                                        }
                                         updatePage();
                                     }
                                 } else {
@@ -427,6 +451,7 @@ function showPrevPage() {
     } else {
         updatePage();
     }
+    updateDirectionButtons();
 }
 
 function showNextPage() {
@@ -437,6 +462,7 @@ function showNextPage() {
     } else {
         updatePage();
     }
+    updateDirectionButtons();
 }
 
 function scrollCurrentImageIntoView() {
@@ -677,6 +703,7 @@ function init(filename) {
         if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
             reloadImages();
         } else if(this.name === "direction") {
+            updateDirectionButtons();
             return updateProgress();
         }
         
@@ -726,7 +753,7 @@ function init(filename) {
         },
     });
     $(".mainImage").click(function(evt) {
-        // Firefox does not support offsetX/Y so we have to manually calculate
+        // Firefox does not support offsetX/Y, so we have to manually calculate
         // where the user clicked in the image.
         var mainContentWidth = $("#mainContent").width();
         var mainContentHeight = $("#mainContent").height();
