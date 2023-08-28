@@ -25,16 +25,15 @@ from datetime import datetime
 import json
 from shutil import copyfile
 from uuid import uuid4
-from markupsafe import escape  # dependency of flask
+from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
-import re
 
 try:
     from lxml.html.clean import clean_html, Cleaner
 except ImportError:
     clean_html = None
 
-from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
+from flask import Blueprint, request, flash, redirect, url_for, abort, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale

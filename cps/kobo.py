@@ -930,20 +930,26 @@ def get_current_bookmark_response(current_bookmark):
 @kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
 def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
-    book_cover = helper.get_book_cover_with_uuid(book_uuid, resolution=COVER_THUMBNAIL_SMALL)
-    if not book_cover:
-        if config.config_kobo_proxy:
-            log.debug("Cover for unknown book: %s proxied to kobo" % book_uuid)
-            return redirect(KOBO_IMAGEHOST_URL +
-                            "/{book_uuid}/{width}/{height}/false/image.jpg".format(book_uuid=book_uuid,
-                                                                                   width=width,
-                                                                                   height=height), 307)
-        else:
-            log.debug("Cover for unknown book: %s requested" % book_uuid)
-            # additional proxy request make no sense, -> direct return
-            return make_response(jsonify({}))
-    log.debug("Cover request received for book %s" % book_uuid)
-    return book_cover
+    try:
+        resolution = None if int(height) > 1000 else COVER_THUMBNAIL_SMALL
+    except ValueError:
+        log.error("Requested height %s of book %s is invalid" % (book_uuid, height))
+        resolution = COVER_THUMBNAIL_SMALL
+    book_cover = helper.get_book_cover_with_uuid(book_uuid, resolution=resolution)
+    if book_cover:
+        log.debug("Serving local cover image of book %s" % book_uuid)
+        return book_cover
+
+    if not config.config_kobo_proxy:
+        log.debug("Returning 404 for cover image of unknown book %s" % book_uuid)
+        # additional proxy request make no sense, -> direct return
+        return abort(404)
+
+    log.debug("Redirecting request for cover image of unknown book %s to Kobo" % book_uuid)
+    return redirect(KOBO_IMAGEHOST_URL +
+                    "/{book_uuid}/{width}/{height}/false/image.jpg".format(book_uuid=book_uuid,
+                                                                            width=width,
+                                                                            height=height), 307)
 
 
 @kobo.route("")
