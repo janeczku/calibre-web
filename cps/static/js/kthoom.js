@@ -179,19 +179,21 @@ kthoom.ImageFile = function(file) {
 };
 
 function updateDirectionButtons(){
-    $("#right").show();
-    $("#left").show();
     if (currentImage == 0 ) {
         if (settings.direction === 0) {
+            $("#right").show();
             $("#left").hide();
         } else {
+            $("#left").show();
             $("#right").hide();
         }
     }
     if ((currentImage + 1) >= Math.max(totalImages, imageFiles.length)) {
         if (settings.direction === 0) {
+            $("#left").show();
             $("#right").hide();
         } else {
+            $("#right").show();
             $("#left").hide();
         }
     }
