@@ -8,16 +8,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2021-06-12 08:52)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-26 20:48+0200\n"
+"POT-Creation-Date: 2023-08-09 16:33+0800\n"
 "PO-Revision-Date: 2021-06-12 15:35+0200\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language: pl\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -44,11 +45,13 @@ msgstr "Nieznane polecenie"
 #: cps/admin.py:170
 #, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "Testowy e-mail czeka w kolejce do wysłania do %(email)s, sprawdź zadania, aby uzyskać wynik"
+msgstr ""
+"Testowy e-mail czeka w kolejce do wysłania do %(email)s, sprawdź zadania,"
+" aby uzyskać wynik"
 
 # ???
-#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
-#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
+#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Nieznany"
@@ -102,7 +105,9 @@ msgstr "Gość nie może pełnić tej roli"
 
 #: cps/admin.py:491 cps/admin.py:1974
 msgid "No admin user remaining, can't remove admin role"
-msgstr "Nie można odebrać praw administratora. Brak na serwerze innego konta z prawami administratora"
+msgstr ""
+"Nie można odebrać praw administratora. Brak na serwerze innego konta z "
+"prawami administratora"
 
 #: cps/admin.py:495 cps/admin.py:509
 msgid "Value has to be true or false"
@@ -132,7 +137,7 @@ msgstr "Nie podano prawidłowej lokalizacji"
 msgid "No Valid Book Language Given"
 msgstr "Nie podano obowiązującego języka książki"
 
-#: cps/admin.py:531 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:445
 msgid "Parameter not found"
 msgstr "Nie znaleziono parametru"
 
@@ -171,35 +176,59 @@ msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Czy na pewno chcesz zmienić ustawienia lokalne wybranego użytkownika(ów)?"
 
 #: cps/admin.py:616
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Czy na pewno chcesz zmienić widoczne języki książek dla wybranego użytkownika (użytkowników)?"
+msgid ""
+"Are you sure you want to change visible book languages for selected "
+"user(s)?"
+msgstr ""
+"Czy na pewno chcesz zmienić widoczne języki książek dla wybranego "
+"użytkownika (użytkowników)?"
 
 #: cps/admin.py:618
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr "Czy na pewno chcesz zmienić wybraną rolę dla wybranego użytkownika (użytkowników)?"
+msgid ""
+"Are you sure you want to change the selected role for the selected "
+"user(s)?"
+msgstr ""
+"Czy na pewno chcesz zmienić wybraną rolę dla wybranego użytkownika "
+"(użytkowników)?"
 
 #: cps/admin.py:620
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Czy na pewno chcesz zmienić wybrane ograniczenia dla wybranego użytkownika(ów)?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the "
+"selected user(s)?"
+msgstr ""
+"Czy na pewno chcesz zmienić wybrane ograniczenia dla wybranego "
+"użytkownika(ów)?"
 
 #: cps/admin.py:622
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Czy na pewno chcesz zmienić wybrane ograniczenia widoczności dla wybranego użytkownika(ów)?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for "
+"the selected user(s)?"
+msgstr ""
+"Czy na pewno chcesz zmienić wybrane ograniczenia widoczności dla "
+"wybranego użytkownika(ów)?"
 
 #: cps/admin.py:625
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Czy na pewno chcesz zmienić zachowanie synchronizacji półek dla wybranego użytkownika(ów)?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected "
+"user(s)?"
+msgstr ""
+"Czy na pewno chcesz zmienić zachowanie synchronizacji półek dla wybranego"
+" użytkownika(ów)?"
 
 #: cps/admin.py:627
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Czy na pewno chcesz zmienić lokalizację biblioteki Calibre?"
 
 #: cps/admin.py:629
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, "
+"this may take a while?"
 msgstr ""
 
 #: cps/admin.py:632
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full "
+"sync with your Kobo Reader?"
 msgstr ""
 
 #: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
@@ -237,11 +266,15 @@ msgstr "Lokalizacja pliku dziennika jest nieprawidłowa, wprowadź poprawną śc
 
 #: cps/admin.py:1159
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "Lokalizacja pliku dziennika dostępu jest nieprawidłowa, wprowadź poprawną ścieżkę"
+msgstr ""
+"Lokalizacja pliku dziennika dostępu jest nieprawidłowa, wprowadź poprawną"
+" ścieżkę"
 
 #: cps/admin.py:1193
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "Wprowadź dostawcę LDAP, port, nazwę wyróżniającą i identyfikator obiektu użytkownika"
+msgstr ""
+"Wprowadź dostawcę LDAP, port, nazwę wyróżniającą i identyfikator obiektu "
+"użytkownika"
 
 #: cps/admin.py:1199
 msgid "Please Enter a LDAP Service Account and Password"
@@ -263,7 +296,9 @@ msgstr "Filtr obiektów grupy LDAP ma niedopasowany nawias"
 #: cps/admin.py:1213
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "Filtr obiektów użytkownika LDAP musi mieć jeden identyfikator formatu \"% s\""
+msgstr ""
+"Filtr obiektów użytkownika LDAP musi mieć jeden identyfikator formatu \"%"
+" s\""
 
 #: cps/admin.py:1215
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
@@ -272,15 +307,21 @@ msgstr "Filtr obiektów użytkownika LDAP ma niedopasowany nawias"
 #: cps/admin.py:1222
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr "Filtr użytkownika członka LDAP musi mieć jedno \"%s\" identyfikator formatu"
+msgstr ""
+"Filtr użytkownika członka LDAP musi mieć jedno \"%s\" identyfikator "
+"formatu"
 
 #: cps/admin.py:1224
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "Filtr użytkownika członka LDAP ma niedopasowane nawiasy"
 
 #: cps/admin.py:1231
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr "Główny urząd certyfikatu LDAP, Certyfikat lub Lokalizacja Klucza nie jest prawidłowa, Proszę wprowadzić poprawną ścieżkę"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please "
+"Enter Correct Path"
+msgstr ""
+"Główny urząd certyfikatu LDAP, Certyfikat lub Lokalizacja Klucza nie jest"
+" prawidłowa, Proszę wprowadzić poprawną ścieżkę"
 
 #: cps/admin.py:1262 cps/templates/admin.html:53
 msgid "Add New User"
@@ -295,8 +336,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
-#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
+#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -306,7 +347,9 @@ msgstr "Błąd bazy danych: %(error)s."
 #: cps/admin.py:1320
 #, fuzzy, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "Testowy e-mail czeka w kolejce do wysłania do %(email)s, sprawdź zadania, aby uzyskać wynik"
+msgstr ""
+"Testowy e-mail czeka w kolejce do wysłania do %(email)s, sprawdź zadania,"
+" aby uzyskać wynik"
 
 #: cps/admin.py:1323
 #, python-format
@@ -464,7 +507,9 @@ msgstr "Lokalizacja pliku klucza jest nieprawidłowa, wprowadź poprawną ście�
 
 #: cps/admin.py:1744
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "Lokalizacja pliku certyfikatu jest nieprawidłowa, wprowadź poprawną ścieżkę"
+msgstr ""
+"Lokalizacja pliku certyfikatu jest nieprawidłowa, wprowadź poprawną "
+"ścieżkę"
 
 #: cps/admin.py:1816
 msgid "Password length has to be between 1 and 40"
@@ -512,7 +557,9 @@ msgstr "Nie można usunąć użytkownika gościa"
 
 #: cps/admin.py:1959
 msgid "No admin user remaining, can't delete user"
-msgstr "Nie można usunąć użytkownika. Brak na serwerze innego konta z prawami administratora"
+msgstr ""
+"Nie można usunąć użytkownika. Brak na serwerze innego konta z prawami "
+"administratora"
 
 #: cps/admin.py:2014 cps/web.py:1430
 msgid "Email can't be empty and has to be a valid Email"
@@ -531,133 +578,151 @@ msgstr "nie zainstalowane"
 msgid "Execution permissions missing"
 msgstr "Brak uprawnienia do wykonywania pliku"
 
-#: cps/db.py:749 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Niestandardowa kolumna No.%(column)d nie istnieje w bazie calibre"
 
-#: cps/db.py:990 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "Brak"
 
-#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not "
+"accessible"
 msgstr "Błąd otwierania e-booka. Plik nie istnieje lub jest niedostępny"
 
-#: cps/editbooks.py:155 cps/editbooks.py:1225
+#: cps/editbooks.py:156 cps/editbooks.py:1228
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:175 cps/editbooks.py:718
+#: cps/editbooks.py:176 cps/editbooks.py:721
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr "W identyfikatorach nie jest rozróżniana wielkość liter, nadpisywanie starego identyfikatora"
+msgstr ""
+"W identyfikatorach nie jest rozróżniana wielkość liter, nadpisywanie "
+"starego identyfikatora"
 
-#: cps/editbooks.py:217
+#: cps/editbooks.py:218
 msgid "Metadata successfully updated"
 msgstr "Metadane zostały pomyślnie zaktualizowane"
 
-#: cps/editbooks.py:235
+#: cps/editbooks.py:236
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:292
+#: cps/editbooks.py:293
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Wysłano plik %(file)s"
 
-#: cps/editbooks.py:320
+#: cps/editbooks.py:321
 msgid "Source or destination format for conversion missing"
 msgstr "Brak formatu źródłowego lub docelowego do konwersji"
 
-#: cps/editbooks.py:328
+#: cps/editbooks.py:329
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "Książka została pomyślnie umieszczona w zadaniach do konwersji %(book_format)s"
+msgstr ""
+"Książka została pomyślnie umieszczona w zadaniach do konwersji "
+"%(book_format)s"
 
-#: cps/editbooks.py:332
+#: cps/editbooks.py:333
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Podczas konwersji książki wystąpił błąd: %(res)s"
 
-#: cps/editbooks.py:637
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Wysłana książka prawdopodobnie istnieje w bibliotece, rozważ zmianę przed przesłaniem nowej: "
+#: cps/editbooks.py:640
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
+msgstr ""
+"Wysłana książka prawdopodobnie istnieje w bibliotece, rozważ zmianę przed"
+" przesłaniem nowej: "
 
-#: cps/editbooks.py:692 cps/editbooks.py:1017
+#: cps/editbooks.py:695 cps/editbooks.py:1020
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s nie jest prawidłowym językiem"
 
-#: cps/editbooks.py:730 cps/editbooks.py:1165
+#: cps/editbooks.py:733 cps/editbooks.py:1168
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Rozszerzenie pliku '%(ext)s' nie jest dozwolone do wysłania na ten serwer"
 
-#: cps/editbooks.py:734 cps/editbooks.py:1169
+#: cps/editbooks.py:737 cps/editbooks.py:1172
 msgid "File to be uploaded must have an extension"
 msgstr "Plik do wysłania musi mieć rozszerzenie"
 
-#: cps/editbooks.py:742
+#: cps/editbooks.py:745
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Nie można zapisać pliku %(filename)s w katalogu tymczasowym"
 
-#: cps/editbooks.py:762
+#: cps/editbooks.py:765
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Nie udało się przenieść pliku okładki %(file)s:%(error)s"
 
-#: cps/editbooks.py:819 cps/editbooks.py:821
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Format Successfully Deleted"
 msgstr "Plik książki w wybranym formacie został usunięty"
 
-#: cps/editbooks.py:828 cps/editbooks.py:830
+#: cps/editbooks.py:831 cps/editbooks.py:833
 msgid "Book Successfully Deleted"
 msgstr "Książka została usunięta"
 
-#: cps/editbooks.py:882
+#: cps/editbooks.py:885
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:932
+#: cps/editbooks.py:935
 msgid "edit metadata"
 msgstr "edytuj metadane"
 
-#: cps/editbooks.py:981
+#: cps/editbooks.py:984
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s nie jest poprawną liczbą, pomijanie"
 
-#: cps/editbooks.py:1160
+#: cps/editbooks.py:1163
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1181
+#: cps/editbooks.py:1184
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nie udało się utworzyć łącza %(path)s (Odmowa dostępu)."
 
-#: cps/editbooks.py:1186
+#: cps/editbooks.py:1189
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Nie można zapisać pliku %(file)s."
 
-#: cps/editbooks.py:1210
+#: cps/editbooks.py:1213
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Format pliku %(ext)s dodany do %(book)s"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Konfiguracja Google Drive nie została zakończona, spróbuj dezaktywować i ponownie aktywować Google Drive"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
+msgstr ""
+"Konfiguracja Google Drive nie została zakończona, spróbuj dezaktywować i "
+"ponownie aktywować Google Drive"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Zwrotna domena nie jest zweryfikowana, proszę zweryfikowania domenę w konsoli deweloperskiej google"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
+msgstr ""
+"Zwrotna domena nie jest zweryfikowana, proszę zweryfikowania domenę w "
+"konsoli deweloperskiej google"
 
 #: cps/helper.py:81
 #, python-format
@@ -674,7 +739,7 @@ msgstr "Nie znaleziono %(format)s na Google Drive: %(fn)s"
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s nie znaleziono: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:59
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Wyślij do Kindle"
@@ -731,7 +796,9 @@ msgstr ""
 #: cps/helper.py:365
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "Usuwanie folderu książki dla książki %(id)s nie powiodło się, ścieżka ma podfoldery: %(path)s"
+msgstr ""
+"Usuwanie folderu książki dla książki %(id)s nie powiodło się, ścieżka ma "
+"podfoldery: %(path)s"
 
 #: cps/helper.py:371
 #, python-format
@@ -740,13 +807,17 @@ msgstr "Usuwanie książki %(id)s zakończyło się błędem: %(message)s"
 
 #: cps/helper.py:382
 #, fuzzy, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid:"
+" %(path)s"
 msgstr "Usuwanie książki %(id)s, ścieżka książki jest niepoprawna: %(path)s"
 
 #: cps/helper.py:447
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się błędem: %(error)s"
+msgstr ""
+"Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się błędem: "
+"%(error)s"
 
 #: cps/helper.py:519 cps/helper.py:528
 #, python-format
@@ -756,7 +827,9 @@ msgstr "Nie znaleziono pliku %(file)s na Google Drive"
 #: cps/helper.py:562
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się błędem: %(error)s"
+msgstr ""
+"Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się błędem: "
+"%(error)s"
 
 #: cps/helper.py:582
 msgid "Error in rename file in path: {}"
@@ -784,64 +857,72 @@ msgstr "Nieprawidłowy format adresu e-mail"
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:853
+#: cps/helper.py:852
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:863
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "Błąd przy pobieraniu okładki"
 
-#: cps/helper.py:866
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "Błędny format okładki"
 
-#: cps/helper.py:869
-msgid "You are not allowed to access localhost or the local network for cover uploads"
+#: cps/helper.py:868
+msgid ""
+"You are not allowed to access localhost or the local network for cover "
+"uploads"
 msgstr ""
 
-#: cps/helper.py:879
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "Nie udało się utworzyć ścieżki dla okładki"
 
-#: cps/helper.py:895
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "Plik okładki nie jest poprawnym plikiem obrazu lub nie mógł zostać zapisany"
+msgstr ""
+"Plik okładki nie jest poprawnym plikiem obrazu lub nie mógł zostać "
+"zapisany"
 
-#: cps/helper.py:906
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Jako plik okładki obsługiwane są tylko pliki jpg/jpeg/png/webp/bmp"
 
-#: cps/helper.py:918
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:922
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg"
 
-#: cps/helper.py:974
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
 msgstr "Plik wykonywalny programu unrar nie znaleziony"
 
-#: cps/helper.py:985
+#: cps/helper.py:984
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Błąd przy wykonywaniu unrar"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1077
 #, fuzzy
 msgid "Cover"
 msgstr "Odkrywaj"
 
-#: cps/helper.py:1080 cps/templates/admin.html:216
+#: cps/helper.py:1079 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
 #: cps/kobo_auth.py:90
 #, fuzzy
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Aby uzyskać prawidłowy api_endpoint dla urządzenia Kobo, należy skorzystać z dostępu do calibre-web spoza localhost"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint "
+"for kobo device"
+msgstr ""
+"Aby uzyskać prawidłowy api_endpoint dla urządzenia Kobo, należy "
+"skorzystać z dostępu do calibre-web spoza localhost"
 
 #: cps/kobo_auth.py:116
 msgid "Kobo Setup"
@@ -1117,7 +1198,9 @@ msgstr "Status przeczytania = %(status)s"
 #: cps/search.py:323
 #, fuzzy
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "Błąd podczas wyszukiwania kolumn niestandardowych, proszę zrestartować Calibre-Web"
+msgstr ""
+"Błąd podczas wyszukiwania kolumn niestandardowych, proszę zrestartować "
+"Calibre-Web"
 
 #: cps/search.py:342 cps/search.py:374 cps/templates/layout.html:57
 msgid "Advanced Search"
@@ -1130,7 +1213,9 @@ msgstr "Podano niewłaściwą półkę"
 #: cps/shelf.py:55
 #, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Niestety, nie posiadasz uprawnień do dodania książki do półki: %(shelfname)s"
+msgstr ""
+"Niestety, nie posiadasz uprawnień do dodania książki do półki: "
+"%(shelfname)s"
 
 #: cps/shelf.py:64
 #, python-format
@@ -1276,8 +1361,12 @@ msgid "No update available. You already have the latest version installed"
 msgstr "Brak dostępnej aktualizacji. Masz już zainstalowaną najnowszą wersję"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Dostępna jest nowa aktualizacja. Kliknij przycisk poniżej, aby zaktualizować do najnowszej wersji."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
+msgstr ""
+"Dostępna jest nowa aktualizacja. Kliknij przycisk poniżej, aby "
+"zaktualizować do najnowszej wersji."
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
@@ -1285,12 +1374,18 @@ msgstr "Nie można pobrać informacji o aktualizacji"
 
 #: cps/updater.py:484
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Kliknij przycisk poniżej, aby zaktualizować do najnowszej stabilnej wersji."
+msgstr ""
+"Kliknij przycisk poniżej, aby zaktualizować do najnowszej stabilnej "
+"wersji."
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "Dostępna jest nowa aktualizacja. Kliknij przycisk poniżej, aby zaktualizować do wersji: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
+msgstr ""
+"Dostępna jest nowa aktualizacja. Kliknij przycisk poniżej, aby "
+"zaktualizować do wersji: %(version)s"
 
 #: cps/updater.py:536
 msgid "No release information available"
@@ -1419,8 +1514,12 @@ msgstr "zalogowałeś się jako: '%(nickname)s'"
 
 #: cps/web.py:1368
 #, fuzzy, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not known"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
+msgstr ""
+"Fallback Login as: %(nickname)s, LDAP Server not reachable, or user not "
+"known"
 
 #: cps/web.py:1373
 #, fuzzy, python-format
@@ -1497,7 +1596,9 @@ msgstr "Kepubify-converter spowodowało błąd: %(error)s"
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Konwertowany plik nie został znaleziony, lub więcej niż jeden plik w folderze %(folder)s"
+msgstr ""
+"Konwertowany plik nie został znaleziony, lub więcej niż jeden plik w "
+"folderze %(folder)s"
 
 #: cps/tasks/convert.py:247
 #, python-format
@@ -1517,7 +1618,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:266
+#: cps/tasks/mail.py:269
 msgid "E-mail"
 msgstr ""
 
@@ -1937,7 +2038,9 @@ msgid "Rating"
 msgstr "Ocena"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
 msgstr "Pobierz okładkę z linku (JPEG - obraz zostanie pobrany i zapisany w bazie)"
 
 #: cps/templates/book_edit.html:108
@@ -2177,7 +2280,9 @@ msgstr "Unieważnij"
 
 #: cps/templates/config_db.html:68
 msgid "New db location is invalid, please enter valid path"
-msgstr "Nowa lokalizacja bazy danych jest nieprawidłowa, proszę podać prawidłową ścieżkę"
+msgstr ""
+"Nowa lokalizacja bazy danych jest nieprawidłowa, proszę podać prawidłową "
+"ścieżkę"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
@@ -2332,16 +2437,24 @@ msgid "SSL"
 msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "Ścieżka certyfikatu urzędu certyfikacji LDAP (wymagana tylko dla uwierzytelniania certyfikatu klienta)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate "
+"Authentication)"
+msgstr ""
+"Ścieżka certyfikatu urzędu certyfikacji LDAP (wymagana tylko dla "
+"uwierzytelniania certyfikatu klienta)"
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "Ścieżka certyfikatu LDAP (potrzebna tylko do uwierzytelniania certyfikatem klienta)"
+msgstr ""
+"Ścieżka certyfikatu LDAP (potrzebna tylko do uwierzytelniania "
+"certyfikatem klienta)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "Ścieżka pliku klucza LDAP (wymagana tylko dla uwierzytelniania certyfikatem klienta)"
+msgstr ""
+"Ścieżka pliku klucza LDAP (wymagana tylko dla uwierzytelniania "
+"certyfikatem klienta)"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
@@ -2522,7 +2635,9 @@ msgstr "Wyrażenie regularne dla ignorowanych kolumn"
 
 #: cps/templates/config_view_edit.html:51
 msgid "Link Read/Unread Status to Calibre Column"
-msgstr "Link do statusu Przeczytanych/Nieprzeczytanych książek z kolumny Calibre (własna kolumna)"
+msgstr ""
+"Link do statusu Przeczytanych/Nieprzeczytanych książek z kolumny Calibre "
+"(własna kolumna)"
 
 #: cps/templates/config_view_edit.html:60
 msgid "View Restrictions based on Calibre column"
@@ -2730,8 +2845,12 @@ msgid "Next"
 msgstr "Następne"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Otwórz plik .kobo/Kobo/Kobo eReader.conf w edytorze tekstu i dodaj (lub edytuj):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or "
+"edit):"
+msgstr ""
+"Otwórz plik .kobo/Kobo/Kobo eReader.conf w edytorze tekstu i dodaj (lub "
+"edytuj):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
@@ -2744,7 +2863,9 @@ msgstr ""
 
 #: cps/templates/http_error.html:34
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "Instancja Calibre-Web jest nieskonfigurowana, proszę skontaktować się z administratorem"
+msgstr ""
+"Instancja Calibre-Web jest nieskonfigurowana, proszę skontaktować się z "
+"administratorem"
 
 # | msgid "Create a Shelf"
 #: cps/templates/http_error.html:44
@@ -2994,11 +3115,17 @@ msgstr "i z dysku twardego"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Ważne dla Kobo: usunięte książki pozostaną na każdym połączonym urządzeniu Kobo."
+msgstr ""
+"Ważne dla Kobo: usunięte książki pozostaną na każdym połączonym "
+"urządzeniu Kobo."
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Książki muszą najpierw zostać zarchiwizowane a urządzenie zsynchronizowane, zanim książka będzie mogła zostać bezpiecznie usunięta."
+msgid ""
+"Books must first be archived and the device synced before a book can "
+"safely be deleted."
+msgstr ""
+"Książki muszą najpierw zostać zarchiwizowane a urządzenie "
+"zsynchronizowane, zanim książka będzie mogła zostać bezpiecznie usunięta."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -3061,6 +3188,49 @@ msgstr "Przepływ tekstu, gdy paski boczne są otwarte."
 #: cps/templates/read.html:93
 msgid "Font Sizes"
 msgstr ""
+
+#: cps/templates/read.html:98
+msgid "Font"
+msgstr ""
+
+# ???
+#: cps/templates/read.html:99
+#, fuzzy
+msgid "Default"
+msgstr "Usuń"
+
+#: cps/templates/read.html:100
+msgid "Yahei"
+msgstr ""
+
+#: cps/templates/read.html:101
+msgid "SimSun"
+msgstr ""
+
+#: cps/templates/read.html:102
+#, fuzzy
+msgid "KaiTi"
+msgstr "Oczekiwanie"
+
+#: cps/templates/read.html:103
+#, fuzzy
+msgid "Arial"
+msgstr "Pionowo"
+
+#: cps/templates/read.html:106
+#, fuzzy
+msgid "Spread"
+msgstr "Przeczytana"
+
+#: cps/templates/read.html:107
+#, fuzzy
+msgid "Two columns"
+msgstr "Nieprawidłowa kolumna odczytu"
+
+#: cps/templates/read.html:108
+#, fuzzy
+msgid "One column"
+msgstr "Nieprawidłowa kolumna odczytu"
 
 #: cps/templates/readcbr.html:7
 #, fuzzy
@@ -3393,7 +3563,9 @@ msgid "This task will be cancelled. Any progress made by this task will be saved
 msgstr ""
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled "
+"time."
 msgstr ""
 
 #: cps/templates/user_edit.html:20
@@ -3534,4 +3706,10 @@ msgstr "Zsynchronizuj wybrane półki z Kobo"
 #, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "Pokaż wybór przeczytane/nieprzeczytane"
+
+#~ msgid "Choose a font below"
+#~ msgstr ""
+
+#~ msgid "Two Columns"
+#~ msgstr ""
 

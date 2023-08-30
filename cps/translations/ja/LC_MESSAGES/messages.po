@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-07-26 20:48+0200\n"
+"POT-Creation-Date: 2023-08-09 16:33+0800\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -45,8 +45,8 @@ msgstr "不明なコマンド"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "%(email)s へのテストメール送信がキューに追加されました。結果を見るにはタスクを確認してください"
 
-#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
-#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
+#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "不明"
@@ -129,7 +129,7 @@ msgstr "有効な言語設定がありません"
 msgid "No Valid Book Language Given"
 msgstr "有効な本の言語がありません"
 
-#: cps/admin.py:531 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:445
 msgid "Parameter not found"
 msgstr "パラメータが見つかりません"
 
@@ -166,23 +166,33 @@ msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "選択したユーザーの言語設定を変更してもよろしいですか？"
 
 #: cps/admin.py:616
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
+msgid ""
+"Are you sure you want to change visible book languages for selected "
+"user(s)?"
 msgstr "選択したユーザーが表示できる本の言語を変更してもよろしいですか？"
 
 #: cps/admin.py:618
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected role for the selected "
+"user(s)?"
 msgstr "選択したユーザーの選択したロールを変更してもよろしいですか？"
 
 #: cps/admin.py:620
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the "
+"selected user(s)?"
 msgstr "選択したユーザーの選択した制限を変更してもよろしいですか？"
 
 #: cps/admin.py:622
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for "
+"the selected user(s)?"
 msgstr "選択したユーザーの選択した表示制限を変更してもよろしいですか？"
 
 #: cps/admin.py:625
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected "
+"user(s)?"
 msgstr "選択したユーザーの本棚同期の動作を変更してもよろしいですか？"
 
 #: cps/admin.py:627
@@ -190,11 +200,15 @@ msgid "Are you sure you want to change Calibre library location?"
 msgstr "Calibreライブラリのパスを変更してもよろしいですか？"
 
 #: cps/admin.py:629
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, "
+"this may take a while?"
 msgstr "Calibre-Webは新しい表紙を検索してそのサムネイルを更新しますが、これにはしばらく時間がかかるかもしれません"
 
 #: cps/admin.py:632
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full "
+"sync with your Kobo Reader?"
 msgstr "Calibre-Webの同期DBを削除して強制的にKoboリーダーと同期してもよろしいですか？"
 
 #: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
@@ -273,7 +287,9 @@ msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "LDAPのメンバーフィルタ内の括弧が一致しません"
 
 #: cps/admin.py:1231
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please "
+"Enter Correct Path"
 msgstr "LDAPのCA証明書、証明書、キーの場所が無効です。正しいパスを入力してください"
 
 #: cps/admin.py:1262 cps/templates/admin.html:53
@@ -289,8 +305,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
-#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
+#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -519,132 +535,140 @@ msgstr "インストールされていません"
 msgid "Execution permissions missing"
 msgstr "実行権限がありません"
 
-#: cps/db.py:749 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "カスタムカラムの%(column)d列目がcalibreのDBに存在しません"
 
-#: cps/db.py:990 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "なし"
 
-#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not "
+"accessible"
 msgstr "選択した本は利用できません。ファイルが存在しないか、アクセスできません"
 
-#: cps/editbooks.py:155 cps/editbooks.py:1225
+#: cps/editbooks.py:156 cps/editbooks.py:1228
 msgid "User has no rights to upload cover"
 msgstr "ユーザーは表紙をアップロードする権限がありません"
 
-#: cps/editbooks.py:175 cps/editbooks.py:718
+#: cps/editbooks.py:176 cps/editbooks.py:721
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "IDは大文字小文字を区別しません。元のIDを上書きします"
 
-#: cps/editbooks.py:217
+#: cps/editbooks.py:218
 msgid "Metadata successfully updated"
 msgstr "メタデータを更新しました"
 
-#: cps/editbooks.py:235
+#: cps/editbooks.py:236
 msgid "Error editing book: {}"
 msgstr "本編集中のエラー: {}"
 
-#: cps/editbooks.py:292
+#: cps/editbooks.py:293
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "ファイル %(file)s をアップロードしました"
 
-#: cps/editbooks.py:320
+#: cps/editbooks.py:321
 msgid "Source or destination format for conversion missing"
 msgstr "変換元の形式または変換後の形式が指定されていません"
 
-#: cps/editbooks.py:328
+#: cps/editbooks.py:329
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "本の %(book_format)s への変換がキューに追加されました"
 
-#: cps/editbooks.py:332
+#: cps/editbooks.py:333
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "この本の変換中にエラーが発生しました: %(res)s"
 
-#: cps/editbooks.py:637
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+#: cps/editbooks.py:640
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
 msgstr "アップロードした本はすでにライブラリに存在します。新しくアップロードする前に変更を加えてください: "
 
-#: cps/editbooks.py:692 cps/editbooks.py:1017
+#: cps/editbooks.py:695 cps/editbooks.py:1020
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' は有効な言語ではありません"
 
-#: cps/editbooks.py:730 cps/editbooks.py:1165
+#: cps/editbooks.py:733 cps/editbooks.py:1168
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "ファイル拡張子 '%(ext)s' をこのサーバーにアップロードすることは許可されていません"
 
-#: cps/editbooks.py:734 cps/editbooks.py:1169
+#: cps/editbooks.py:737 cps/editbooks.py:1172
 msgid "File to be uploaded must have an extension"
 msgstr "アップロードするファイルには拡張子が必要です"
 
-#: cps/editbooks.py:742
+#: cps/editbooks.py:745
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "ファイル %(filename)s は一時フォルダに保存できませんでした"
 
-#: cps/editbooks.py:762
+#: cps/editbooks.py:765
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "表紙ファイル %(file)s の移動に失敗しました: %(error)s"
 
-#: cps/editbooks.py:819 cps/editbooks.py:821
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Format Successfully Deleted"
 msgstr "本の形式を削除しました"
 
-#: cps/editbooks.py:828 cps/editbooks.py:830
+#: cps/editbooks.py:831 cps/editbooks.py:833
 msgid "Book Successfully Deleted"
 msgstr "本を削除しました"
 
-#: cps/editbooks.py:882
+#: cps/editbooks.py:885
 msgid "You are missing permissions to delete books"
 msgstr "本を削除する権限がありません"
 
-#: cps/editbooks.py:932
+#: cps/editbooks.py:935
 msgid "edit metadata"
 msgstr "メタデータを編集"
 
-#: cps/editbooks.py:981
+#: cps/editbooks.py:984
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s は有効な数字ではありません。スキップします"
 
-#: cps/editbooks.py:1160
+#: cps/editbooks.py:1163
 msgid "User has no rights to upload additional file formats"
 msgstr "新たなファイル形式をアップロードする権限がありません"
 
-#: cps/editbooks.py:1181
+#: cps/editbooks.py:1184
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "%(path)s の作成に失敗しました (Permission denied)。"
 
-#: cps/editbooks.py:1186
+#: cps/editbooks.py:1189
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "ファイル %(file)s を保存できません。"
 
-#: cps/editbooks.py:1210
+#: cps/editbooks.py:1213
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "ファイル形式 %(ext)s が %(book)s に追加されました"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
 msgstr "Googleドライブの設定が完了していません。Googleドライブを無効にしてから再度有効にしてみてください"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
 msgstr "コールバックドメインが認証されていません。Google Developer Consoleでドメインを認証してください"
 
 #: cps/helper.py:81
@@ -662,7 +686,7 @@ msgstr "Googleドライブ: %(fn)s に %(format)s はありません"
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s がありません: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:59
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
 msgid "Send to eReader"
 msgstr "E-Readerに送信"
 
@@ -725,7 +749,9 @@ msgstr "本 %(id)s の削除に失敗しました: %(message)s"
 
 #: cps/helper.py:382
 #, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid:"
+" %(path)s"
 msgstr "本 %(id)s はDBのみから削除されます。DB内の本のパスが有効ではありません: %(path)s"
 
 #: cps/helper.py:447
@@ -769,62 +795,66 @@ msgstr "メールアドレスの形式が無効"
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:853
+#: cps/helper.py:852
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "表紙のアップロードに必要なPythonモジュール 'advocate' がインストールされていません"
 
-#: cps/helper.py:863
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "表紙のダウンロードに失敗しました"
 
-#: cps/helper.py:866
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "表紙形式エラー"
 
-#: cps/helper.py:869
-msgid "You are not allowed to access localhost or the local network for cover uploads"
+#: cps/helper.py:868
+msgid ""
+"You are not allowed to access localhost or the local network for cover "
+"uploads"
 msgstr "表紙アップロードのためにlocalhostやローカルネットワークにアクセスすることは許可されていません"
 
-#: cps/helper.py:879
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "表紙ファイルの作成に失敗しました"
 
-#: cps/helper.py:895
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "表紙ファイルが有効な画像ファイルでないか、または保存できませんでした"
 
-#: cps/helper.py:906
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "表紙ファイルは jpg/jpeg/png/webp/bmp のみ対応しています"
 
-#: cps/helper.py:918
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr "表紙ファイルの内容が無効です"
 
-#: cps/helper.py:922
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "表紙ファイルは jpg/jpeg のみ対応しています"
 
-#: cps/helper.py:974
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
 msgstr "Unrarのバイナリファイルが見つかりません"
 
-#: cps/helper.py:985
+#: cps/helper.py:984
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Unrarの実行中にエラーが発生しました"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1077
 #, fuzzy
 msgid "Cover"
 msgstr "見つける"
 
-#: cps/helper.py:1080 cps/templates/admin.html:216
+#: cps/helper.py:1079 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
 #: cps/kobo_auth.py:90
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint "
+"for kobo device"
 msgstr "localhost以外からCalibre-Webにアクセスし、有効なKobo端末用APIエンドポイントを取得してください"
 
 #: cps/kobo_auth.py:116
@@ -1255,7 +1285,9 @@ msgid "No update available. You already have the latest version installed"
 msgstr "アップデートはありません。すでに最新バージョンがインストールされています"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
 msgstr "アップデートが利用可能です。下のボタンをクリックして最新バージョンにアップデートしてください。"
 
 #: cps/updater.py:474
@@ -1268,7 +1300,9 @@ msgstr "下のボタンをクリックして最新の安定バージョンにア
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
 msgstr "アップデートが利用可能です。下のボタンをクリックしてバージョン: %(version)s にアップデートしてください。"
 
 #: cps/updater.py:536
@@ -1398,7 +1432,9 @@ msgstr "%(nickname)s としてログイン中"
 
 #: cps/web.py:1368
 #, fuzzy, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
 msgstr "代わりに '%(nickname)s' としてログインします。LDAPサーバーにアクセスできないか、ユーザーが存在しません"
 
 #: cps/web.py:1373
@@ -1496,7 +1532,7 @@ msgstr "変換"
 msgid "Reconnecting Calibre database"
 msgstr "Calibre DBと再接続中"
 
-#: cps/tasks/mail.py:266
+#: cps/tasks/mail.py:269
 msgid "E-mail"
 msgstr "メール"
 
@@ -1911,7 +1947,9 @@ msgid "Rating"
 msgstr "評価"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
 msgstr "表紙をURLから取得 (JPEG画像がダウンロードされDBに保存されます)"
 
 #: cps/templates/book_edit.html:108
@@ -2297,7 +2335,9 @@ msgid "SSL"
 msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate "
+"Authentication)"
 msgstr "LDAPのCA証明書のパス (クライアント証明書による認証の場合のみ必要)"
 
 #: cps/templates/config_edit.html:217
@@ -2693,7 +2733,9 @@ msgid "Next"
 msgstr "次"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or "
+"edit):"
 msgstr ".kobo/Kobo/Kobo eReader.confファイルをテキストエディタで開いて追加(編集)してください:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
@@ -2953,7 +2995,9 @@ msgid "Important Kobo Note: deleted books will remain on any paired Kobo device.
 msgstr "Koboに関する重要な注意: 削除された本はどの連携されたKobo端末にも残ります。"
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgid ""
+"Books must first be archived and the device synced before a book can "
+"safely be deleted."
 msgstr "本を安全に削除するためには、初めに本をアーカイブした上で端末と同期する必要があります"
 
 #: cps/templates/modal_dialogs.html:76
@@ -3015,6 +3059,48 @@ msgstr "サイドバーが開いているとき、テキストを再度流し込
 #: cps/templates/read.html:93
 msgid "Font Sizes"
 msgstr ""
+
+#: cps/templates/read.html:98
+msgid "Font"
+msgstr ""
+
+#: cps/templates/read.html:99
+#, fuzzy
+msgid "Default"
+msgstr "削除"
+
+#: cps/templates/read.html:100
+msgid "Yahei"
+msgstr ""
+
+#: cps/templates/read.html:101
+msgid "SimSun"
+msgstr ""
+
+#: cps/templates/read.html:102
+#, fuzzy
+msgid "KaiTi"
+msgstr "待機中"
+
+#: cps/templates/read.html:103
+#, fuzzy
+msgid "Arial"
+msgstr "垂直方向"
+
+#: cps/templates/read.html:106
+#, fuzzy
+msgid "Spread"
+msgstr "既読"
+
+#: cps/templates/read.html:107
+#, fuzzy
+msgid "Two columns"
+msgstr "無効な読み取り列"
+
+#: cps/templates/read.html:108
+#, fuzzy
+msgid "One column"
+msgstr "無効な読み取り列"
 
 #: cps/templates/readcbr.html:7
 msgid "Comic Reader"
@@ -3342,7 +3428,9 @@ msgid "This task will be cancelled. Any progress made by this task will be saved
 msgstr "このタスクはキャンセルされます。このタスクによる進捗はすべて保存されます。"
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled "
+"time."
 msgstr "これがスケジュールタスクの場合、次のスケジュールの時刻にはもう一度実行されます。"
 
 #: cps/templates/user_edit.html:20
@@ -3480,4 +3568,10 @@ msgstr "選択した本棚をKoboと同期"
 #, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "既読/未読の選択を表示"
+
+#~ msgid "Choose a font below"
+#~ msgstr ""
+
+#~ msgid "Two Columns"
+#~ msgstr ""
 

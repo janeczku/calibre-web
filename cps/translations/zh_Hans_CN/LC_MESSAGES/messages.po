@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-07-26 20:48+0200\n"
+"POT-Creation-Date: 2023-08-09 16:33+0800\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -42,8 +42,8 @@ msgstr "未知命令"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "成功！书籍已排队进行元数据备份，请检查任务列表以获取结果"
 
-#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
-#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
+#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "未知"
@@ -126,7 +126,7 @@ msgstr "无可用本地化"
 msgid "No Valid Book Language Given"
 msgstr "无有效书籍语言"
 
-#: cps/admin.py:531 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:445
 msgid "Parameter not found"
 msgstr "参数未找到"
 
@@ -163,23 +163,33 @@ msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "您确定要修改选定用户的本地化设置吗？"
 
 #: cps/admin.py:616
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
+msgid ""
+"Are you sure you want to change visible book languages for selected "
+"user(s)?"
 msgstr "您确定要修改选定用户的可见书籍语言吗？"
 
 #: cps/admin.py:618
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected role for the selected "
+"user(s)?"
 msgstr "您确定要修改选定用户的选定角色吗？"
 
 #: cps/admin.py:620
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the "
+"selected user(s)?"
 msgstr "您确定要修改选定用户的选定限制吗？"
 
 #: cps/admin.py:622
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for "
+"the selected user(s)?"
 msgstr "您确定要修改选定用户的选定可视化限制吗？"
 
 #: cps/admin.py:625
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected "
+"user(s)?"
 msgstr "您确定要更改所选用户的书架同步行为吗？"
 
 #: cps/admin.py:627
@@ -187,11 +197,15 @@ msgid "Are you sure you want to change Calibre library location?"
 msgstr "您确定要更改 Calibre 库位置吗？"
 
 #: cps/admin.py:629
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, "
+"this may take a while?"
 msgstr "Calibre-Web 将搜索更新封面，并更新缩略图，这可能需要一段时间"
 
 #: cps/admin.py:632
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full "
+"sync with your Kobo Reader?"
 msgstr "您确定要删除 Calibre-Web 的同步数据库以强制与您的 Kobo Reader 进行完全同步吗"
 
 #: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
@@ -270,7 +284,9 @@ msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "LDAP 成员用户过滤器中有不匹配的括号"
 
 #: cps/admin.py:1231
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please "
+"Enter Correct Path"
 msgstr "LDAP CA证书、证书或密钥位置无效，请输入正确的路径"
 
 #: cps/admin.py:1262 cps/templates/admin.html:53
@@ -286,8 +302,8 @@ msgid "Success! Gmail Account Verified."
 msgstr "Gmail 账户验证成功"
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
-#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
+#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -515,132 +531,140 @@ msgstr "未安装"
 msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
-#: cps/db.py:749 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 
-#: cps/db.py:990 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "无"
 
-#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not "
+"accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
-#: cps/editbooks.py:155 cps/editbooks.py:1225
+#: cps/editbooks.py:156 cps/editbooks.py:1228
 msgid "User has no rights to upload cover"
 msgstr "用户没有权限上传封面"
 
-#: cps/editbooks.py:175 cps/editbooks.py:718
+#: cps/editbooks.py:176 cps/editbooks.py:721
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "标识符不区分大小写，覆盖旧标识符"
 
-#: cps/editbooks.py:217
+#: cps/editbooks.py:218
 msgid "Metadata successfully updated"
 msgstr "已成功更新元数据"
 
-#: cps/editbooks.py:235
+#: cps/editbooks.py:236
 msgid "Error editing book: {}"
 msgstr "编辑书籍时出错: {}"
 
-#: cps/editbooks.py:292
+#: cps/editbooks.py:293
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "文件 %(file)s 已上传"
 
-#: cps/editbooks.py:320
+#: cps/editbooks.py:321
 msgid "Source or destination format for conversion missing"
 msgstr "转换的源格式或目的格式缺失"
 
-#: cps/editbooks.py:328
+#: cps/editbooks.py:329
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "书籍已经被成功加入 %(book_format)s 格式转换队列"
 
-#: cps/editbooks.py:332
+#: cps/editbooks.py:333
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书籍时出现错误： %(res)s"
 
-#: cps/editbooks.py:637
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+#: cps/editbooks.py:640
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
 msgstr "上传的书籍可能已经存在，建议修改后重新上传： "
 
-#: cps/editbooks.py:692 cps/editbooks.py:1017
+#: cps/editbooks.py:695 cps/editbooks.py:1020
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' 不是一种有效语言"
 
-#: cps/editbooks.py:730 cps/editbooks.py:1165
+#: cps/editbooks.py:733 cps/editbooks.py:1168
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "不能上传文件扩展名为“%(ext)s”的文件到此服务器"
 
-#: cps/editbooks.py:734 cps/editbooks.py:1169
+#: cps/editbooks.py:737 cps/editbooks.py:1172
 msgid "File to be uploaded must have an extension"
 msgstr "要上传的文件必须具有扩展名"
 
-#: cps/editbooks.py:742
+#: cps/editbooks.py:745
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "文件 %(filename)s 无法保存到临时目录"
 
-#: cps/editbooks.py:762
+#: cps/editbooks.py:765
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "移动封面文件失败 %(file)s：%(error)s"
 
-#: cps/editbooks.py:819 cps/editbooks.py:821
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Format Successfully Deleted"
 msgstr "书籍的此格式副本已成功删除"
 
-#: cps/editbooks.py:828 cps/editbooks.py:830
+#: cps/editbooks.py:831 cps/editbooks.py:833
 msgid "Book Successfully Deleted"
 msgstr "书籍已成功删除"
 
-#: cps/editbooks.py:882
+#: cps/editbooks.py:885
 msgid "You are missing permissions to delete books"
 msgstr "您没有删除书籍的权限"
 
-#: cps/editbooks.py:932
+#: cps/editbooks.py:935
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/editbooks.py:981
+#: cps/editbooks.py:984
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
 
-#: cps/editbooks.py:1160
+#: cps/editbooks.py:1163
 msgid "User has no rights to upload additional file formats"
 msgstr "用户没有权限上传其他文件格式"
 
-#: cps/editbooks.py:1181
+#: cps/editbooks.py:1184
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "创建路径 %(path)s 失败 (权限不足)"
 
-#: cps/editbooks.py:1186
+#: cps/editbooks.py:1189
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "保存文件 %(file)s 失败"
 
-#: cps/editbooks.py:1210
+#: cps/editbooks.py:1213
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "已添加 %(ext)s 格式到 %(book)s"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
 msgstr "Google Drive 设置未完成，请尝试停用并再次激活 Google 云端硬盘"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
 msgstr "回调域名尚未被校验，请在 Google 开发者控制台按步骤校验域名"
 
 #: cps/helper.py:81
@@ -658,7 +682,7 @@ msgstr "Google Drive %(fn)s 上找不到 %(format)s"
 msgid "%(format)s not found: %(fn)s"
 msgstr "找不到 %(format)s：%(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:59
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
 msgid "Send to eReader"
 msgstr "发送到电子阅读器"
 
@@ -718,7 +742,9 @@ msgstr "删除书籍 %(id)s 失败：%(message)s"
 
 #: cps/helper.py:382
 #, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid:"
+" %(path)s"
 msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无效： %(path)s"
 
 #: cps/helper.py:447
@@ -761,60 +787,64 @@ msgstr "无效的邮箱格式"
 msgid "Password doesn't comply with password validation rules"
 msgstr "密码不符合密码验证规则"
 
-#: cps/helper.py:853
+#: cps/helper.py:852
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "上传封面所需的 Python 模块 'advocate' 未安装"
 
-#: cps/helper.py:863
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "下载封面时出错"
 
-#: cps/helper.py:866
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "封面格式出错"
 
-#: cps/helper.py:869
-msgid "You are not allowed to access localhost or the local network for cover uploads"
+#: cps/helper.py:868
+msgid ""
+"You are not allowed to access localhost or the local network for cover "
+"uploads"
 msgstr "您没有访问本地主机或本地网络进行封面上传"
 
-#: cps/helper.py:879
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "创建封面路径失败"
 
-#: cps/helper.py:895
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的图片文件，或者无法存储它"
 
-#: cps/helper.py:906
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "封面文件只支持 jpg、jpeg、png、webp、bmp 文件"
 
-#: cps/helper.py:918
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr "封面文件内容无效"
 
-#: cps/helper.py:922
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:974
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
 msgstr "找不到 Unrar 执行文件"
 
-#: cps/helper.py:985
+#: cps/helper.py:984
 msgid "Error executing UnRar"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1077
 msgid "Cover"
 msgstr "封面"
 
-#: cps/helper.py:1080 cps/templates/admin.html:216
+#: cps/helper.py:1079 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "将所有书籍加入元数据备份队列"
 
 #: cps/kobo_auth.py:90
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint "
+"for kobo device"
 msgstr "请不要从 localhost 访问 Calibre-Web，以便 Kobo 设备能获取有效的 api_endpoint"
 
 #: cps/kobo_auth.py:116
@@ -1236,7 +1266,9 @@ msgid "No update available. You already have the latest version installed"
 msgstr "无可用更新。您已经安装了最新版本"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
 msgstr "有新的更新。单击下面的按钮以更新到最新版本"
 
 #: cps/updater.py:474
@@ -1249,7 +1281,9 @@ msgstr "点击下面按钮更新到最新稳定版本"
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
 msgstr "有新的更新。单击下面的按钮以更新到版本: %(version)s"
 
 #: cps/updater.py:536
@@ -1376,7 +1410,9 @@ msgstr "您现在已以“%(nickname)s”身份登录"
 
 #: cps/web.py:1368
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
 msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
 #: cps/web.py:1373
@@ -1469,7 +1505,7 @@ msgstr "转换"
 msgid "Reconnecting Calibre database"
 msgstr "正在重新连接到 Calibre 数据库"
 
-#: cps/tasks/mail.py:266
+#: cps/tasks/mail.py:269
 msgid "E-mail"
 msgstr "电子邮件"
 
@@ -1882,7 +1918,9 @@ msgid "Rating"
 msgstr "评分"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
 msgstr "从 URL 获取封面（JPEG - 图片将下载并存储在数据库中）"
 
 #: cps/templates/book_edit.html:108
@@ -2268,7 +2306,9 @@ msgid "SSL"
 msgstr "SSL 协议"
 
 #: cps/templates/config_edit.html:210
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate "
+"Authentication)"
 msgstr "LDAP CA证书路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:217
@@ -2659,7 +2699,9 @@ msgid "Next"
 msgstr "下一个"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or "
+"edit):"
 msgstr "在文本编辑器中打开 .kobo/Kobo/Kobo eReader.conf，添加（或编辑）:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
@@ -2919,7 +2961,9 @@ msgid "Important Kobo Note: deleted books will remain on any paired Kobo device.
 msgstr "Kobo 重要提示：被删除的书籍将保留在任何配对的 Kobo 设备上"
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgid ""
+"Books must first be archived and the device synced before a book can "
+"safely be deleted."
 msgstr "在安全删除图书之前，必须先将图书归档并与设备同步"
 
 #: cps/templates/modal_dialogs.html:76
@@ -2981,6 +3025,42 @@ msgstr "打开侧栏时重排文本"
 #: cps/templates/read.html:93
 msgid "Font Sizes"
 msgstr "字体大小"
+
+#: cps/templates/read.html:98
+msgid "Font"
+msgstr "字体"
+
+#: cps/templates/read.html:99
+msgid "Default"
+msgstr "默认"
+
+#: cps/templates/read.html:100
+msgid "Yahei"
+msgstr "雅黑"
+
+#: cps/templates/read.html:101
+msgid "SimSun"
+msgstr "宋体"
+
+#: cps/templates/read.html:102
+msgid "KaiTi"
+msgstr "楷体"
+
+#: cps/templates/read.html:103
+msgid "Arial"
+msgstr "Arial"
+
+#: cps/templates/read.html:106
+msgid "Spread"
+msgstr "分栏"
+
+#: cps/templates/read.html:107
+msgid "Two columns"
+msgstr "两列"
+
+#: cps/templates/read.html:108
+msgid "One column"
+msgstr "一列"
 
 #: cps/templates/readcbr.html:7
 msgid "Comic Reader"
@@ -3307,7 +3387,9 @@ msgid "This task will be cancelled. Any progress made by this task will be saved
 msgstr "这个任务将被取消。此任务所有的更改都将被保存"
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled "
+"time."
 msgstr "如果这是计划任务，则将在下一个计划的时间内重新运行"
 
 #: cps/templates/user_edit.html:20
@@ -3441,4 +3523,7 @@ msgstr "同步所选书架到 Kobo"
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
 msgstr "显示已读、未读栏目"
+
+#~ msgid "Choose a font below"
+#~ msgstr "选择字体"
 

@@ -27,3 +27,21 @@
     border: none;
     outline: none;
 }
+
+.item {
+    font-size: 20px;
+    font-weight: 400;
+    font-family: Open Sans;
+    padding-right: 10px;
+    color: white;
+}
+
+.item~button {
+    display: inline-block;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 5%;
+    margin-right: 1%;
+    font-size: 16px;
+}

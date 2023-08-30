@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-07-26 20:48+0200\n"
+"POT-Creation-Date: 2023-08-09 16:33+0800\n"
 "PO-Revision-Date: 2020-06-09 21:11+0100\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.11.0\n"
+"Generated-By: Babel 2.12.1\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -44,8 +44,8 @@ msgstr "Neznámý příkaz"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(eReadermail)s"
 
-#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
-#: cps/editbooks.py:616 cps/editbooks.py:633 cps/editbooks.py:1242
+#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Neznámý"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "No Valid Book Language Given"
 msgstr ""
 
-#: cps/admin.py:531 cps/editbooks.py:444
+#: cps/admin.py:531 cps/editbooks.py:445
 msgid "Parameter not found"
 msgstr ""
 
@@ -167,25 +167,35 @@ msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Jste si jisti, že chcete odstranit tuto polici?"
 
 #: cps/admin.py:616
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
+msgid ""
+"Are you sure you want to change visible book languages for selected "
+"user(s)?"
 msgstr ""
 
 #: cps/admin.py:618
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected role for the selected "
+"user(s)?"
 msgstr ""
 
 #: cps/admin.py:620
 #, fuzzy
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the "
+"selected user(s)?"
 msgstr "Jste si jisti, že chcete odstranit tuto polici?"
 
 #: cps/admin.py:622
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for "
+"the selected user(s)?"
 msgstr ""
 
 #: cps/admin.py:625
 #, fuzzy
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected "
+"user(s)?"
 msgstr "Jste si jisti, že chcete odstranit tuto polici?"
 
 #: cps/admin.py:627
@@ -194,11 +204,15 @@ msgid "Are you sure you want to change Calibre library location?"
 msgstr "Opravdu chcete vypnout?"
 
 #: cps/admin.py:629
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, "
+"this may take a while?"
 msgstr ""
 
 #: cps/admin.py:632
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full "
+"sync with your Kobo Reader?"
 msgstr ""
 
 #: cps/admin.py:875 cps/admin.py:881 cps/admin.py:891 cps/admin.py:901
@@ -235,11 +249,15 @@ msgstr "Umístění zápisového souboru není platné. Určete prosím platnou 
 
 #: cps/admin.py:1159
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "Umístění zápisového souboru pro přístup není platné. Určete prosím platnou polohu"
+msgstr ""
+"Umístění zápisového souboru pro přístup není platné. Určete prosím "
+"platnou polohu"
 
 #: cps/admin.py:1193
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "Prosím zadejte LDAP poskytovatele, port, DN a Identifikátor objektu uživatele"
+msgstr ""
+"Prosím zadejte LDAP poskytovatele, port, DN a Identifikátor objektu "
+"uživatele"
 
 #: cps/admin.py:1199
 #, fuzzy
@@ -262,7 +280,9 @@ msgstr "Filtr objektů skupiny LDAP má nesrovnatelnou závorku"
 #: cps/admin.py:1213
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "Filtr uživatelských objektů LDAP musí mít jeden “%s” formátový identifikátor"
+msgstr ""
+"Filtr uživatelských objektů LDAP musí mít jeden “%s” formátový "
+"identifikátor"
 
 #: cps/admin.py:1215
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
@@ -278,7 +298,9 @@ msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
 #: cps/admin.py:1231
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please "
+"Enter Correct Path"
 msgstr ""
 
 #: cps/admin.py:1262 cps/templates/admin.html:53
@@ -294,8 +316,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
-#: cps/editbooks.py:306 cps/editbooks.py:1204 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
+#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1481
 #, python-format
@@ -529,133 +551,149 @@ msgstr "není nainstalováno"
 msgid "Execution permissions missing"
 msgstr "Chybí povolení k exekuci"
 
-#: cps/db.py:749 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Vlastní sloupec %(column)d neexistuje v databázi"
 
-#: cps/db.py:990 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
 #: cps/web.py:1003 cps/web.py:1040 cps/web.py:1068 cps/web.py:1107
 msgid "None"
 msgstr "Žádné"
 
-#: cps/editbooks.py:111 cps/editbooks.py:897 cps/web.py:525 cps/web.py:1522
+#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1522
 #: cps/web.py:1566 cps/web.py:1611
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
-msgstr "Jejda! Vybraná kniha není k dispozici. Soubor neexistuje nebo není přístupný"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not "
+"accessible"
+msgstr ""
+"Jejda! Vybraná kniha není k dispozici. Soubor neexistuje nebo není "
+"přístupný"
 
-#: cps/editbooks.py:155 cps/editbooks.py:1225
+#: cps/editbooks.py:156 cps/editbooks.py:1228
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:175 cps/editbooks.py:718
+#: cps/editbooks.py:176 cps/editbooks.py:721
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
-#: cps/editbooks.py:217
+#: cps/editbooks.py:218
 msgid "Metadata successfully updated"
 msgstr "Metadata úspěšně aktualizována"
 
-#: cps/editbooks.py:235
+#: cps/editbooks.py:236
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:292
+#: cps/editbooks.py:293
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Soubor %(file)s nahrán"
 
-#: cps/editbooks.py:320
+#: cps/editbooks.py:321
 msgid "Source or destination format for conversion missing"
 msgstr "Chybí zdrojový nebo cílový formát pro převod"
 
-#: cps/editbooks.py:328
+#: cps/editbooks.py:329
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kniha byla úspěšně zařazena do fronty pro převod do %(book_format)s"
 
-#: cps/editbooks.py:332
+#: cps/editbooks.py:333
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Při převodu této knihy došlo k chybě: %(res)s"
 
-#: cps/editbooks.py:637
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
+#: cps/editbooks.py:640
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
+msgstr ""
+"Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před"
+" nahráním nové: "
 
-#: cps/editbooks.py:692 cps/editbooks.py:1017
+#: cps/editbooks.py:695 cps/editbooks.py:1020
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s není platným jazykem"
 
-#: cps/editbooks.py:730 cps/editbooks.py:1165
+#: cps/editbooks.py:733 cps/editbooks.py:1168
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Soubor s příponou '%(ext)s' nelze odeslat na tento server"
 
-#: cps/editbooks.py:734 cps/editbooks.py:1169
+#: cps/editbooks.py:737 cps/editbooks.py:1172
 msgid "File to be uploaded must have an extension"
 msgstr "Soubor, který má být odeslán musí mít příponu"
 
-#: cps/editbooks.py:742
+#: cps/editbooks.py:745
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Soubor %(filename)s nemohl být uložen do dočasného adresáře"
 
-#: cps/editbooks.py:762
+#: cps/editbooks.py:765
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Nepodařilo se přesunout soubor obalu %(file)s: %(error)s"
 
-#: cps/editbooks.py:819 cps/editbooks.py:821
+#: cps/editbooks.py:822 cps/editbooks.py:824
 msgid "Book Format Successfully Deleted"
 msgstr "Formát knihy úspěšně smazán"
 
-#: cps/editbooks.py:828 cps/editbooks.py:830
+#: cps/editbooks.py:831 cps/editbooks.py:833
 msgid "Book Successfully Deleted"
 msgstr "Kniha úspěšně smazána"
 
-#: cps/editbooks.py:882
+#: cps/editbooks.py:885
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:932
+#: cps/editbooks.py:935
 msgid "edit metadata"
 msgstr "upravit metadata"
 
-#: cps/editbooks.py:981
+#: cps/editbooks.py:984
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1160
+#: cps/editbooks.py:1163
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1181
+#: cps/editbooks.py:1184
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nepodařilo se vytvořit cestu %(path)s (oprávnění odepřeno)."
 
-#: cps/editbooks.py:1186
+#: cps/editbooks.py:1189
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Uložení souboru %(file)s se nezdařilo."
 
-#: cps/editbooks.py:1210
+#: cps/editbooks.py:1213
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Formát souboru %(ext)s přidán do %(book)s"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a aktivovat Google Drive"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
+msgstr ""
+"Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a "
+"aktivovat Google Drive"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Doména zpětného volání není ověřena, postupujte podle pokynů k ověření domény v konzole pro vývojáře google"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
+msgstr ""
+"Doména zpětného volání není ověřena, postupujte podle pokynů k ověření "
+"domény v konzole pro vývojáře google"
 
 #: cps/helper.py:81
 #, python-format
@@ -672,7 +710,7 @@ msgstr "%(format)s nenalezen na Google Drive: %(fn)s"
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s nenalezen: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:59
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Poslat do Kindle"
@@ -736,7 +774,9 @@ msgstr "Mazání knihy selhalo %(id)s failed: %(message)s"
 
 #: cps/helper.py:382
 #, fuzzy, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid:"
+" %(path)s"
 msgstr "Mazání knihy %(id)s, cesta ke knize není platná %(path)s"
 
 #: cps/helper.py:447
@@ -779,64 +819,70 @@ msgstr ""
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:853
+#: cps/helper.py:852
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:863
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "Chyba stahování obalu"
 
-#: cps/helper.py:866
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "Chyba formátu obalu"
 
-#: cps/helper.py:869
-msgid "You are not allowed to access localhost or the local network for cover uploads"
+#: cps/helper.py:868
+msgid ""
+"You are not allowed to access localhost or the local network for cover "
+"uploads"
 msgstr ""
 
-#: cps/helper.py:879
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "Vytvoření cesty obalu selhalo"
 
-#: cps/helper.py:895
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Soubor obalu není platný, nebo nelze uložit"
 
-#: cps/helper.py:906
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:918
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:922
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Pouze jpg/jpeg jsou podporované soubory pro obal"
 
-#: cps/helper.py:974
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
 msgstr "Unrar binární soubor nenalezen"
 
-#: cps/helper.py:985
+#: cps/helper.py:984
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Chyba provádění UnRar"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1077
 #, fuzzy
 msgid "Cover"
 msgstr "Objevte"
 
-#: cps/helper.py:1080 cps/templates/admin.html:216
+#: cps/helper.py:1079 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
 #: cps/kobo_auth.py:90
 #, fuzzy
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Pro získání platného api_endpoint pro zařízení Kobo, přístupte na calibre-web bez localhost"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint "
+"for kobo device"
+msgstr ""
+"Pro získání platného api_endpoint pro zařízení Kobo, přístupte na "
+"calibre-web bez localhost"
 
 #: cps/kobo_auth.py:116
 msgid "Kobo Setup"
@@ -1269,8 +1315,12 @@ msgid "No update available. You already have the latest version installed"
 msgstr "Aktualizace není k dispozici. Máte nainstalovanou nejnovější verzi"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na nejnovější verzi."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
+msgstr ""
+"Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na "
+"nejnovější verzi."
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
@@ -1282,8 +1332,12 @@ msgstr "Klepnutím na tlačítko níže aktualizujte na nejnovější stabilní 
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na verzi: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
+msgstr ""
+"Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na "
+"verzi: %(version)s"
 
 #: cps/updater.py:536
 msgid "No release information available"
@@ -1412,8 +1466,12 @@ msgstr "nyní jste přihlášen jako: '%(nickname)s'"
 
 #: cps/web.py:1368
 #, fuzzy, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Záložní přihlášení jako: ‘%(nickname)s’, server LDAP není dosažitelný nebo neznámý uživatel"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
+msgstr ""
+"Záložní přihlášení jako: ‘%(nickname)s’, server LDAP není dosažitelný "
+"nebo neznámý uživatel"
 
 #: cps/web.py:1373
 #, fuzzy, python-format
@@ -1491,7 +1549,9 @@ msgstr "Kepubify-převaděč selhal: %(error)s"
 #: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Převedený soubor nebyl nalezen nebo více než jeden soubor ve složce %(folder)s"
+msgstr ""
+"Převedený soubor nebyl nalezen nebo více než jeden soubor ve složce "
+"%(folder)s"
 
 #: cps/tasks/convert.py:247
 #, python-format
@@ -1511,7 +1571,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:266
+#: cps/tasks/mail.py:269
 msgid "E-mail"
 msgstr ""
 
@@ -1927,8 +1987,12 @@ msgid "Rating"
 msgstr "Hodnocení"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Adresa URL obalu (jpg, obal je stažen a uložen v databázi, pole je potom opět prázdné)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
+msgstr ""
+"Adresa URL obalu (jpg, obal je stažen a uložen v databázi, pole je potom "
+"opět prázdné)"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
@@ -2317,7 +2381,9 @@ msgid "SSL"
 msgstr "SSL"
 
 #: cps/templates/config_edit.html:210
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate "
+"Authentication)"
 msgstr ""
 
 #: cps/templates/config_edit.html:217
@@ -2714,8 +2780,12 @@ msgid "Next"
 msgstr "Další"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Otevřte soubor .kobo/Kobo/Kobo eReader.conf v textovém editoru a vložte (nebo upravte):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or "
+"edit):"
+msgstr ""
+"Otevřte soubor .kobo/Kobo/Kobo eReader.conf v textovém editoru a vložte "
+"(nebo upravte):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 #, fuzzy
@@ -2973,11 +3043,17 @@ msgstr "a z hard disku"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Důležitá Kobo poznámka: smazané knihy zůstanou na jakémkoli spárovaném zařízení Kobo."
+msgstr ""
+"Důležitá Kobo poznámka: smazané knihy zůstanou na jakémkoli spárovaném "
+"zařízení Kobo."
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Knihy musí být nejprve archivovány a zařízení musí být synchronizováno, než bude kniha bezpečně smazána."
+msgid ""
+"Books must first be archived and the device synced before a book can "
+"safely be deleted."
+msgstr ""
+"Knihy musí být nejprve archivovány a zařízení musí být synchronizováno, "
+"než bude kniha bezpečně smazána."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -3040,6 +3116,46 @@ msgstr "Po otevření postranních panelů přeformátujte text."
 
 #: cps/templates/read.html:93
 msgid "Font Sizes"
+msgstr ""
+
+#: cps/templates/read.html:98
+msgid "Font"
+msgstr ""
+
+#: cps/templates/read.html:99
+#, fuzzy
+msgid "Default"
+msgstr "Smazat"
+
+#: cps/templates/read.html:100
+msgid "Yahei"
+msgstr ""
+
+#: cps/templates/read.html:101
+msgid "SimSun"
+msgstr ""
+
+#: cps/templates/read.html:102
+#, fuzzy
+msgid "KaiTi"
+msgstr "Čekám"
+
+#: cps/templates/read.html:103
+#, fuzzy
+msgid "Arial"
+msgstr "Svisle"
+
+#: cps/templates/read.html:106
+#, fuzzy
+msgid "Spread"
+msgstr "Přečteno"
+
+#: cps/templates/read.html:107
+msgid "Two columns"
+msgstr ""
+
+#: cps/templates/read.html:108
+msgid "One column"
 msgstr ""
 
 #: cps/templates/readcbr.html:7
@@ -3373,7 +3489,9 @@ msgid "This task will be cancelled. Any progress made by this task will be saved
 msgstr ""
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled "
+"time."
 msgstr ""
 
 #: cps/templates/user_edit.html:20
@@ -3522,4 +3640,10 @@ msgstr ""
 #, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "Zobrazit výběr sérií"
+
+#~ msgid "Choose a font below"
+#~ msgstr ""
+
+#~ msgid "Two Columns"
+#~ msgstr ""
 
