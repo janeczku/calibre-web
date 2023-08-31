@@ -34,7 +34,7 @@ if typing.TYPE_CHECKING:
 class MyWSGIContainer(WSGIContainer):
 
     def __call__(self, request: httputil.HTTPServerRequest) -> None:
-        if tornado.version_info > (6, 2, 0, 0):
+        if tornado.version_info < (6, 2, 0, 0):
             data = {}  # type: Dict[str, Any]
             response = []  # type: List[bytes]
 
@@ -91,9 +91,9 @@ class MyWSGIContainer(WSGIContainer):
 
 
     def environ(self, request: httputil.HTTPServerRequest) -> Dict[Text, Any]:
-        if isinstance(WSGIContainer.environ, FunctionType):
+        try:
             environ = WSGIContainer.environ(self, request)
-        else:
+        except TypeError as e:
             environ = WSGIContainer.environ(request)
         environ['RAW_URI'] = request.path
         return environ

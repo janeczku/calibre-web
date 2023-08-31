@@ -61,8 +61,8 @@
   <div id="mainContent" tabindex="-1">
     <div id="mainText" style="display:none"></div>
   </div>
-  <div id="left" class="arrow" style="display:none" onclick="showLeftPage(); setBookmark();">‹</div>
-  <div id="right" class="arrow" style="display:none" onclick="showRightPage(); setBookmark();">›</div>
+  <div id="left" class="arrow" style="display:none">‹</div>
+  <div id="right" class="arrow" style="display:none">›</div>
 </div>
 
 <div class="modal md-effect-1" id="settings-modal">
@@ -183,58 +183,23 @@
   <div class="overlay"></div>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <script>
-    var updateArrows = function () {
-      if ($('input[name="direction"]:checked').val() === "0") {
-        $("#prev_page_key").html("&larr;");
-        $("#next_page_key").html("&rarr;");
-      } else {
-        $("#prev_page_key").html("&rarr;");
-        $("#next_page_key").html("&larr;");
-      }
-    };
-  </script>
-  <script>
-    function setBookmark() {
-      // get csrf_token
-      let csrf_token = $("input[name='csrf_token']").val();
-      //This sends a bookmark update to calibreweb.
-      $.ajax(calibre.bookmarkUrl, {
-        method: "post",
-        data: {
-          csrf_token: csrf_token,
-          bookmark: currentImage
-        }
-      }).fail(function (xhr, status, error) {
-        console.error(error);
-      });
-    }
-
     window.calibre = {
-      filePath: "{{ url_for('static', filename='js/libs/') }}",
-      cssPath: "{{ url_for('static', filename='css/') }}",
-      bookUrl: "{{ url_for('static', filename=comicfile) }}/",
-      bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=comicfile, book_format=extension.upper()) }}",
-      bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-      useBookmarks: "{{ current_user.is_authenticated | tojson }}"
+        bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=comicfile, book_format=extension.upper()) }}",
+        bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
+        useBookmarks: "{{ current_user.is_authenticated | tojson }}"
     };
-    if (calibre.useBookmarks) {
-      currentImage = eval(calibre.bookmark);
-      if (typeof currentImage !== 'number'){
-        currentImage = 0;
-      }
-    }
-    
+
     document.onreadystatechange = function () {
       if (document.readyState == "complete") {
-        init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
-        updateArrows();
+          if (calibre.useBookmarks) {
+              currentImage = eval(calibre.bookmark);
+              if (typeof currentImage !== 'number') {
+                  currentImage = 0;
+              }
+          }
+          init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
       }
     }
   </script>
-  <script>
-    $('input[name="direction"]').change(function() {
-        updateArrows();
-      });
-    </script>
 </body>
 </html>

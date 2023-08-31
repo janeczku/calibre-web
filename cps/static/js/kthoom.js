@@ -133,7 +133,7 @@ var createURLFromArray = function(array, mimeType) {
 
     if ((typeof URL !== "function" && typeof URL !== "object") ||
         typeof URL.createObjectURL !== "function") {
-        throw "Browser support for Object URLs is missing";
+            throw "Browser support for Object URLs is missing";
     }
 
     return URL.createObjectURL(blob);
@@ -179,6 +179,8 @@ kthoom.ImageFile = function(file) {
 };
 
 function updateDirectionButtons(){
+    $("#right").show();
+    $("#left").show();
     if (currentImage == 0 ) {
         if (settings.direction === 0) {
             $("#right").show();
@@ -205,11 +207,12 @@ function initProgressClick() {
         var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
         currentImage = Math.max(1, Math.ceil(rate * totalImages)) - 1;
         updateDirectionButtons();
+        setBookmark();
         updatePage();
     });
 }
 
-function loadFromArrayBuffer(ab, lastCompletion = 0) {
+function loadFromArrayBuffer(ab) {
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
@@ -244,12 +247,8 @@ function loadFromArrayBuffer(ab, lastCompletion = 0) {
                                     
                                     // display first page if we haven't yet
                                     if (imageFiles.length === currentImage + 1) {
-                                        if (settings.direction === 0) {
-                                            $("#right").show();
-                                        } else {
-                                            $("#left").show();
-                                        }
-                                        updatePage(lastCompletion);
+                                        updateDirectionButtons();
+                                        updatePage();
                                     }
                                 } else {
                                     totalImages--;
@@ -264,13 +263,6 @@ function loadFromArrayBuffer(ab, lastCompletion = 0) {
 }
 
 function scrollTocToActive() {
-    // Scroll to the thumbnail in the TOC on page change
-    $("#tocView").stop().animate({
-        scrollTop: $("#tocView a.active").position().top
-    }, 200);
-}
-
-function updatePage() {
     $(".page").text((currentImage + 1 ) + "/" + totalImages);
 
     // Mark the current page in the TOC
@@ -282,19 +274,18 @@ function updatePage() {
         // Set it to active
         .addClass("active");
 
+    // Scroll to the thumbnail in the TOC on page change
+    $("#tocView").stop().animate({
+        scrollTop: $("#tocView a.active").position().top
+    }, 200);
+}
+
+function updatePage() {
     scrollTocToActive();
+    scrollCurrentImageIntoView();
     updateProgress();
     pageDisplayUpdate();
     setTheme();
-
-    if (imageFiles[currentImage]) {
-        setImage(imageFiles[currentImage].dataURI);
-    } else {
-        setImage("loading");
-    }
-
-    $("body").toggleClass("dark-theme", settings.theme === "dark");
-    $("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -370,7 +361,6 @@ function setImage(url, _canvas) {
         img.onerror = function() {
             canvas.width = innerWidth - 100;
             canvas.height = 300;
-            updateScale(true);            
             x.fillStyle = "black";
             x.font = "50px sans-serif";
             x.strokeStyle = "black";
@@ -424,8 +414,6 @@ function setImage(url, _canvas) {
             scrollTo(0, 0);
             x.drawImage(img, 0, 0);
 
-            updateScale(false);
-
             canvas.style.display = "";
             $("body").css("overflowY", "");
             x.restore();
@@ -447,6 +435,7 @@ function showLeftPage() {
     } else {
         showNextPage();
     }
+    setBookmark();
 }
 
 function showRightPage() {
@@ -455,6 +444,7 @@ function showRightPage() {
     } else {
         showPrevPage();
     }
+    setBookmark();
 }
 
 function showPrevPage() {
@@ -464,9 +454,6 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
-        if (settings.nextPage === 0) {
-            $("#mainContent").scrollTop(0);
-        }
     }
     updateDirectionButtons();
 }
@@ -478,9 +465,6 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
-        if (settings.nextPage === 0) {
-            $("#mainContent").scrollTop(0);
-        }
     }
     updateDirectionButtons();
 }
@@ -497,7 +481,7 @@ function scrollCurrentImageIntoView() {
     }
 }
 
-function updateScale(clear) {
+function updateScale() {
     var canvasArray = $("#mainContent > canvas");
     var maxheight = innerHeight - 50;
     
@@ -506,7 +490,7 @@ function updateScale(clear) {
     canvasArray.css("maxWidth", "");
     canvasArray.css("maxHeight", "");
 
-    if(!clear) {
+    if(settings.pageDisplay === 0) {
         canvasArray.addClass("hide");
         pageDisplayUpdate();
     }
@@ -667,13 +651,23 @@ function drawCanvas() {
     $("#mainContent").append(canvasElement);
 }
 
+function updateArrows() {
+    if ($('input[name="direction"]:checked').val() === "0") {
+        $("#prev_page_key").html("&larr;");
+        $("#next_page_key").html("&rarr;");
+    } else {
+        $("#prev_page_key").html("&rarr;");
+        $("#next_page_key").html("&larr;");
+    }
+};
+
 function init(filename) {
     var request = new XMLHttpRequest();
     request.open("GET", filename);
     request.responseType = "arraybuffer";
-    request.addEventListener("load", function() {
+    request.addEventListener("load", function () {
         if (request.status >= 200 && request.status < 300) {
-            loadFromArrayBuffer(request.response, currentImage);
+            loadFromArrayBuffer(request.response);
         } else {
             console.warn(request.statusText, request.responseText);
         }
@@ -687,18 +681,18 @@ function init(filename) {
 
     $(document).keydown(keyHandler);
 
-    $(window).resize(function() {
+    $(window).resize(function () {
         updateScale();
     });
 
     // Open TOC menu
-    $("#slider").click(function() {
+    $("#slider").click(function () {
         $("#sidebar").toggleClass("open");
         $("#main").toggleClass("closed");
         $(this).toggleClass("icon-menu icon-right");
 
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
-        setTimeout(function() {
+        setTimeout(function () {
             // Focus on the TOC or the main content area, depending on which is open
             $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
             scrollTocToActive();
@@ -706,12 +700,12 @@ function init(filename) {
     });
 
     // Open Settings modal
-    $("#setting").click(function() {
+    $("#setting").click(function () {
         $("#settings-modal").toggleClass("md-show");
     });
 
     // On Settings input change
-    $("#settings input").on("change", function() {
+    $("#settings input").on("change", function () {
         // Get either the checked boolean or the assigned value
         var value = this.type === "checkbox" ? this.checked : this.value;
 
@@ -720,43 +714,40 @@ function init(filename) {
 
         settings[this.name] = value;
 
-        if(["hflip", "vflip", "rotateTimes"].includes(this.name)) {
+        if (["hflip", "vflip", "rotateTimes"].includes(this.name)) {
             reloadImages();
-        } else if(this.name === "direction") {
+        } else if (this.name === "direction") {
             updateDirectionButtons();
             return updateProgress();
         }
-        
+
         updatePage();
-        updateScale(false);
+        updateScale();
     });
 
     // Close modal
-    $(".closer, .overlay").click(function() {
+    $(".closer, .overlay").click(function () {
         $(".md-show").removeClass("md-show");
-		$("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
+        $("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
-    $("#thumbnails").on("click", "a", function() {
+    $("#thumbnails").on("click", "a", function () {
         currentImage = $(this).data("page") - 1;
         updatePage();
-        if (settings.nextPage === 0) {
-            $("#mainContent").scrollTop(0);
-        }
     });
 
     // Fullscreen mode
     if (typeof screenfull !== "undefined") {
-        $("#fullscreen").click(function() {
+        $("#fullscreen").click(function () {
             screenfull.toggle($("#container")[0]);
-			// Focus on main container so you can use up/down keys immediately after fullscreen
-			$("#mainContent").focus();
+            // Focus on main container so you can use up/down keys immediately after fullscreen
+            $("#mainContent").focus();
         });
 
         if (screenfull.raw) {
             var $button = $("#fullscreen");
-            document.addEventListener(screenfull.raw.fullscreenchange, function() {
+            document.addEventListener(screenfull.raw.fullscreenchange, function () {
                 screenfull.isFullscreen
                     ? $button.addClass("icon-resize-small").removeClass("icon-resize-full")
                     : $button.addClass("icon-resize-full").removeClass("icon-resize-small");
@@ -767,15 +758,15 @@ function init(filename) {
     // Focus the scrollable area so that keyboard scrolling work as expected
     $("#mainContent").focus();
 
-    $("#mainContent").swipe( {
-        swipeRight:function() {
+    $("#mainContent").swipe({
+        swipeRight: function () {
             showLeftPage();
         },
-        swipeLeft:function() {
+        swipeLeft: function () {
             showRightPage();
         },
     });
-    $(".mainImage").click(function(evt) {
+    $(".mainImage").click(function (evt) {
         // Firefox does not support offsetX/Y, so we have to manually calculate
         // where the user clicked in the image.
         var mainContentWidth = $("#mainContent").width();
@@ -812,24 +803,30 @@ function init(filename) {
     });
 
     // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
-    $("#mainContent").scroll(function(){
+    $("#mainContent").scroll(function (event){
         var scroll = $("#mainContent").scrollTop();
-        if(settings.pageDisplay === 0) {
+        var viewLength = 0;
+        $(".mainImage").each(function(){
+            viewLength += $(this).height();
+        });        
+        if (settings.pageDisplay === 0) {
             // Don't trigger the scroll for Single Page
-        } else if(scroll > prevScrollPosition) {
+        } else if (scroll > prevScrollPosition) {
             //Scroll Down
-            if(currentImage + 1 < imageFiles.length) {
-                if(currentImageOffset(currentImage + 1) <= 1) {
+            if (currentImage + 1 < imageFiles.length) {
+                if (currentImageOffset(currentImage + 1) <= 1) {
                     currentImage++;
+                    console.log(Math.round(imageFiles.length / viewLength * scroll, 0));
                     scrollTocToActive();
                     updateProgress();
                 }
             }
         } else {
             //Scroll Up
-            if(currentImage - 1 > -1 ) {
-                if(currentImageOffset(currentImage - 1) >= 0) {
+            if (currentImage - 1 > -1) {
+                if (currentImageOffset(currentImage - 1) >= 0) {
                     currentImage--;
+                    console.log(Math.round(imageFiles.length / viewLength * scroll, 0));
                     scrollTocToActive();
                     updateProgress();
                 }
@@ -844,3 +841,31 @@ function init(filename) {
 function currentImageOffset(imageIndex) {
     return $(".mainImage").eq(imageIndex).offset().top - $("#mainContent").position().top
 }
+
+function setBookmark() {
+  // get csrf_token
+    let csrf_token = $("input[name='csrf_token']").val();
+    //This sends a bookmark update to calibreweb.
+    $.ajax(calibre.bookmarkUrl, {
+        method: "post",
+        data: {
+            csrf_token: csrf_token,
+            bookmark: currentImage
+        }
+    }).fail(function (xhr, status, error) {
+        console.error(error);
+    });
+}
+
+$(function() {
+    $('input[name="direction"]').change(function () {
+        updateArrows();
+    });
+
+    $('#left').click(function () {
+        showLeftPage();
+    });
+    $('#right').click(function () {
+        showRightPage();
+    });
+});
