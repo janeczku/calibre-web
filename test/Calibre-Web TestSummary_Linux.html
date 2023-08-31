@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-08-29 20:07:04</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-08-30 20:29:50</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-08-30 02:37:10</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-08-31 03:01:14</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 30 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 31 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">19</td>
-        <td class="text-center">1</td>
-        <td class="text-center">2</td>
+        <td class="text-center">22</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 22)">Detail</a>
@@ -257,42 +257,11 @@
     
     
     
-        <tr id="ft2.2" class="none bg-danger">
+        <tr id='pt2.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 188, in test_backup_change_book_author
-    self.assertEqual([&#34;Hector Gonçalves&#34;], metadata[&#39;author&#39;])
-AssertionError: Lists differ: [&#39;Hector Gonçalves&#39;] != [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Hector Gonçalves&#39;]
-
-First differing element 0:
-&#39;Hector Gonçalves&#39;
-&#39;Frodo Beutlin&#39;
-
-Second list contains 2 additional elements.
-First extra element 1:
-&#39;Norbert Halagal&#39;
-
-- [&#39;Hector Gonçalves&#39;]
-+ [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Hector Gonçalves&#39;]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -324,35 +293,11 @@ First extra element 1:
     
     
     
-        <tr id="et2.6" class="none bg-info">
+        <tr id='pt2.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 143, in test_backup_change_book_publisher
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 579, in read_opf_metadata
-    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
-  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 906, in open
-    file = builtins.open(filename, mode, buffering)
-FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Frodo Beutlin/Der Buchtitel (1)/metadata.opf&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -375,35 +320,11 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id="et2.9" class="none bg-info">
+        <tr id='pt2.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_book_seriesindex</div>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_book_series_index</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.9')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 104, in test_backup_change_book_seriesindex
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 579, in read_opf_metadata
-    with codecs.open(filename, &#34;r&#34;, &#34;utf-8&#34;) as f:
-  File &#34;/usr/lib/python3.10/codecs.py&#34;, line 906, in open
-    file = builtins.open(filename, mode, buffering)
-FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/Dokumente/tüst db/Frodo Beutlin/Der Buchtitel (1)/metadata.opf&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1093,12 +1014,12 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">20</td>
-        <td class="text-center">17</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 20)">Detail</a>
@@ -1215,31 +1136,11 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id="et12.13" class="none bg-info">
+        <tr id='pt12.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 225, in test_upload_metadata_cb7
-    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1854,11 +1755,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksList</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1976,31 +1877,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="ft16.13" class="none bg-danger">
+        <tr id='pt16.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.13')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft16.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft16.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 185, in test_bookslist_edit_series
-    self.assertEqual(3, len(elements))
-AssertionError: 3 != 4</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2051,12 +1932,12 @@ AssertionError: 3 != 4</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c17', 1)">Detail</a>
@@ -2065,26 +1946,26 @@ AssertionError: 3 != 4</pre>
 
     
     
-        <tr id="et17.1" class="none bg-info">
+        <tr id="ft17.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 63, in test_load_metadata
-    if &#39;https://comicvine.gamespot.com/&#39; == results[10][&#39;source&#39;]:
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 119, in test_load_metadata
+    self.assertEqual(20, len(results))
+AssertionError: 20 != 10</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3722,11 +3603,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestReader</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3772,11 +3653,37 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt39.5' class='hiddenRow bg-success'>
+        <tr id="ft39.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft39.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft39.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 271, in test_sound_listener
+    self.sound_test(&#39;music.flac&#39;, &#39;Unknown - music&#39;, &#39;0:02&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 260, in sound_test
+    self.assertEqual(duration, duration_item.text)
+AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
+- 0:02
+?    ^
++ 0:01
+?    ^</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5300,9 +5207,9 @@ IndexError: list index out of range</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>462</td>
-        <td>447</td>
+        <td>451</td>
         <td>2</td>
-        <td>4</td>
+        <td>0</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5793,7 +5700,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(447, 2, 4, 9);
+    drawCircle(451, 2, 0, 9);
     showCase(5);
 </script>
 
