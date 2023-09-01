@@ -24,7 +24,7 @@ from tornado import httputil
 from tornado.ioloop import IOLoop
 
 from typing import List, Tuple, Optional, Callable, Any, Dict, Text
-from types import TracebackType, FunctionType
+from types import TracebackType
 import typing
 
 if typing.TYPE_CHECKING:
@@ -34,7 +34,7 @@ if typing.TYPE_CHECKING:
 class MyWSGIContainer(WSGIContainer):
 
     def __call__(self, request: httputil.HTTPServerRequest) -> None:
-        if tornado.version_info < (6, 2, 0, 0):
+        if tornado.version_info < (6, 3, 0, -99):
             data = {}  # type: Dict[str, Any]
             response = []  # type: List[bytes]
 
