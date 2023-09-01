@@ -134,10 +134,12 @@ class Identifiers(Base):
             return "ISSN"
         elif format_type == "isfdb":
             return "ISFDB"
-        if format_type == "lubimyczytac":
+        elif format_type == "lubimyczytac":
             return "Lubimyczytac"
-        if format_type == "databazeknih":
+        elif format_type == "databazeknih":
             return "Databáze knih"
+        elif format_type == "moly_hu":
+            return "Moly.hu"
         else:
             return self.type
 
@@ -171,6 +173,8 @@ class Identifiers(Base):
             return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
+        elif format_type == "moly_hu":
+            return "https://moly.hu/konyvek/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):
