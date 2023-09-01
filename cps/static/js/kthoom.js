@@ -803,7 +803,7 @@ function init(filename) {
     });
 
     // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
-    $("#mainContent").scroll(function (event){
+    $("#mainContent").scroll(function (){
         var scroll = $("#mainContent").scrollTop();
         var viewLength = 0;
         $(".mainImage").each(function(){
@@ -815,8 +815,11 @@ function init(filename) {
             //Scroll Down
             if (currentImage + 1 < imageFiles.length) {
                 if (currentImageOffset(currentImage + 1) <= 1) {
-                    currentImage++;
-                    console.log(Math.round(imageFiles.length / viewLength * scroll, 0));
+                    currentImage = Math.floor((imageFiles.length) / (viewLength-viewLength/(imageFiles.length)) * scroll, 0);
+                    if ( currentImage >= imageFiles.length) {
+                        currentImage = imageFiles.length - 1;
+                    }
+                    console.log(currentImage);
                     scrollTocToActive();
                     updateProgress();
                 }
@@ -825,14 +828,13 @@ function init(filename) {
             //Scroll Up
             if (currentImage - 1 > -1) {
                 if (currentImageOffset(currentImage - 1) >= 0) {
-                    currentImage--;
-                    console.log(Math.round(imageFiles.length / viewLength * scroll, 0));
+                    currentImage = Math.floor((imageFiles.length) / (viewLength-viewLength/(imageFiles.length)) * scroll, 0);
+                    console.log(currentImage);
                     scrollTocToActive();
                     updateProgress();
                 }
             }
         }
-
         // Update scroll position
         prevScrollPosition = scroll;
     });
