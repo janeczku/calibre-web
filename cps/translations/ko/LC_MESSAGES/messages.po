@@ -33,7 +33,7 @@ msgstr "서버를 종료하는 중, 창을 닫아야 함"
 
 #: cps/admin.py:156
 msgid "Success! Database Reconnected"
-msgstr ""
+msgstr "성공적으로 DB를 다시 연결하였습니다."
 
 #: cps/admin.py:159
 msgid "Unknown command"
@@ -190,7 +190,7 @@ msgstr "캘리버 서재의 언어를 변경하시겠습니까?"
 
 #: cps/admin.py:629
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
-msgstr ""
+msgstr "Calibre-Web은 업데이트된 표지를 검색하고 표지 섬네일 업데이트합니다. 시간이 오래 걸릴 수 있습니다."
 
 #: cps/admin.py:632
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
@@ -285,7 +285,7 @@ msgstr "이메일 서버 설정 편집"
 
 #: cps/admin.py:1290
 msgid "Success! Gmail Account Verified."
-msgstr ""
+msgstr "Gmail 계정 인증에 성공하였습니다."
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
 #: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
@@ -316,19 +316,19 @@ msgstr "이메일 서버 설정 업데이트됨"
 
 #: cps/admin.py:1350 cps/templates/admin.html:195
 msgid "Edit Scheduled Tasks Settings"
-msgstr ""
+msgstr "예약 작업 설정 편집"
 
 #: cps/admin.py:1362
 msgid "Invalid start time for task specified"
-msgstr ""
+msgstr "지정된 작업의 시작 시간이 잘못 설정되었습니다."
 
 #: cps/admin.py:1367
 msgid "Invalid duration for task specified"
-msgstr ""
+msgstr "지정된 작업의 기간이 잘못 설정되었습니다."
 
 #: cps/admin.py:1377
 msgid "Scheduled tasks settings updated"
-msgstr ""
+msgstr "예약된 작업 설정을 업데이트 하였습니다."
 
 #: cps/admin.py:1387 cps/admin.py:1436 cps/admin.py:2044 cps/web.py:1281
 msgid "Oops! An unknown error occurred. Please try again later."
@@ -336,7 +336,7 @@ msgstr "알 수없는 오류가 발생했습니다. 나중에 다시 시도 해�
 
 #: cps/admin.py:1391
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "저장할 수 없는 설정 DB입니다."
 
 #: cps/admin.py:1421 cps/admin.py:2036
 #, python-format
@@ -457,7 +457,7 @@ msgstr "올바르지 않은 인증서 파일 위치. 올바른 경로 입력 필
 
 #: cps/admin.py:1816
 msgid "Password length has to be between 1 and 40"
-msgstr ""
+msgstr "비밀번호 길이는 1에서 40 사이여야 합니다."
 
 #: cps/admin.py:1868
 msgid "Database Settings updated"
@@ -503,7 +503,7 @@ msgstr "관리자 계정이 하나 뿐일 때는 관리자 권한을 삭제할 �
 
 #: cps/admin.py:2014 cps/web.py:1430
 msgid "Email can't be empty and has to be a valid Email"
-msgstr ""
+msgstr "이메일은 반드시 입력해야 하며 유효한 이메일이어야 합니다."
 
 #: cps/admin.py:2040
 #, python-format
@@ -537,7 +537,7 @@ msgstr "선택한 책 제목을 사용할 수 없습니다. 파일이 존재하�
 
 #: cps/editbooks.py:155 cps/editbooks.py:1225
 msgid "User has no rights to upload cover"
-msgstr ""
+msgstr "표지를 업로드 할 수 있는 권한이 없는 사용자입니다."
 
 #: cps/editbooks.py:175 cps/editbooks.py:718
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
@@ -549,7 +549,7 @@ msgstr "메타데이터가 성공적으로 업데이트되었습니다"
 
 #: cps/editbooks.py:235
 msgid "Error editing book: {}"
-msgstr ""
+msgstr "책 편집 중 오류 발생: {}"
 
 #: cps/editbooks.py:292
 #, python-format
@@ -608,7 +608,7 @@ msgstr "책이 성공적으로 삭제되었습니다"
 
 #: cps/editbooks.py:882
 msgid "You are missing permissions to delete books"
-msgstr ""
+msgstr "책을 삭제할 수 있는 권한이 없습니다."
 
 #: cps/editbooks.py:932
 msgid "edit metadata"
@@ -621,7 +621,7 @@ msgstr "%(seriesindex)s은(는) 유효한 숫자가 아닙니다. 건너뜁니�
 
 #: cps/editbooks.py:1160
 msgid "User has no rights to upload additional file formats"
-msgstr ""
+msgstr "추가 파일 유형을 업로드 할 권한이 없는 사용자입니다."
 
 #: cps/editbooks.py:1181
 #, python-format
@@ -711,7 +711,7 @@ msgstr "요청한 파일을 읽을 수 없습니다. 올바른 권한인가요?"
 
 #: cps/helper.py:342
 msgid "Read status could not set: {}"
-msgstr ""
+msgstr "읽기 상태를 설정할 수 없음: {}"
 
 #: cps/helper.py:365
 #, python-format
@@ -745,7 +745,7 @@ msgstr "제목 이름을 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했�
 
 #: cps/helper.py:582
 msgid "Error in rename file in path: {}"
-msgstr ""
+msgstr "경로에서 파일 이름을 바꾸는 중 오류가 발생: {}"
 
 #: cps/helper.py:600
 #, python-format
@@ -754,7 +754,7 @@ msgstr "Google 드라이브에서 책 경로 %(path)s을(를) 찾을 수 없습�
 
 #: cps/helper.py:665
 msgid "Found an existing account for this Email address"
-msgstr ""
+msgstr "다른 계정에서 사용하고 있는 이메일 주소입니다."
 
 #: cps/helper.py:673
 msgid "This username is already taken"
@@ -767,11 +767,11 @@ msgstr "이메일 주소 형식이 잘못되었습니다"
 
 #: cps/helper.py:703
 msgid "Password doesn't comply with password validation rules"
-msgstr ""
+msgstr "규칙에 어긋나는 비밀번호입니다."
 
 #: cps/helper.py:853
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr ""
+msgstr "표지 업로드에 필요한 Python 모듈 'advocate'이 설치되지 않았습니다."
 
 #: cps/helper.py:863
 msgid "Error Downloading Cover"
@@ -783,7 +783,7 @@ msgstr "표지 형식 오류"
 
 #: cps/helper.py:869
 msgid "You are not allowed to access localhost or the local network for cover uploads"
-msgstr ""
+msgstr "표지 업로드를 위해 localhost 또는 로컬 네트워크에 액세스할 수 없습니다."
 
 #: cps/helper.py:879
 msgid "Failed to create path for cover"
@@ -821,7 +821,7 @@ msgstr "발견"
 
 #: cps/helper.py:1080 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
-msgstr ""
+msgstr "메타데이터 백업을 위해 모든 도서를 대기열에 추가"
 
 #: cps/kobo_auth.py:90
 #, fuzzy
@@ -1166,7 +1166,7 @@ msgstr "책장 편집"
 
 #: cps/shelf.py:229
 msgid "Error deleting Shelf"
-msgstr ""
+msgstr "서제를 삭제하는 동안 오류 발생"
 
 #: cps/shelf.py:231
 #, fuzzy
@@ -1238,11 +1238,11 @@ msgstr "종료"
 
 #: cps/tasks_status.py:70
 msgid "Ended"
-msgstr ""
+msgstr "종료됨"
 
 #: cps/tasks_status.py:72
 msgid "Cancelled"
-msgstr ""
+msgstr "취소됨"
 
 #: cps/tasks_status.py:74
 msgid "Unknown Status"
@@ -1307,7 +1307,7 @@ msgstr "시리즈: %(serie)s"
 
 #: cps/web.py:620
 msgid "Rating: None"
-msgstr ""
+msgstr "평가: 없음음"
 
 #: cps/web.py:629
 #, python-format
@@ -1363,7 +1363,7 @@ msgstr "Kindle로 보내는 유효한 이메일 주소로 프로필을 업데이
 
 #: cps/web.py:1246
 msgid "Please wait one minute to register next user"
-msgstr ""
+msgstr "1분 이상 지난 후 다음 사용자를 등록하세요."
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1247
@@ -1391,7 +1391,7 @@ msgstr "LDAP 인증을 활성화할 수 없습니다"
 
 #: cps/web.py:1345
 msgid "Please wait one minute before next login"
-msgstr ""
+msgstr "1분 이상 지난 후 로그인을 하세요."
 
 #: cps/web.py:1361
 #, fuzzy, python-format
@@ -1492,15 +1492,15 @@ msgstr "오류로 인한 Calibre 실패: %(error)s"
 
 #: cps/tasks/convert.py:275
 msgid "Convert"
-msgstr ""
+msgstr "변환"
 
 #: cps/tasks/database.py:28
 msgid "Reconnecting Calibre database"
-msgstr ""
+msgstr "Calibre DB를 다시 연결합니다."
 
 #: cps/tasks/mail.py:266
 msgid "E-mail"
-msgstr ""
+msgstr "이메일일"
 
 #: cps/tasks/metadata_backup.py:46
 #, fuzzy
@@ -1510,20 +1510,20 @@ msgstr "메타데이터 편집"
 #: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
-msgstr ""
+msgstr "%(count)개의 표지 섬네일을 생성하였습니다."
 
 #: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
 #: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
-msgstr ""
+msgstr "표지 섬네일"
 
 #: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
-msgstr ""
+msgstr "{0} 시리즈 섬네일을 생성하였습니다."
 
 #: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
-msgstr ""
+msgstr "표지 섬네일 캐시를 삭제합니다."
 
 #: cps/tasks/upload.py:38 cps/templates/admin.html:20
 #: cps/templates/layout.html:81 cps/templates/user_table.html:145
@@ -1686,37 +1686,37 @@ msgstr "UI 환경 설정 편집"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
-msgstr ""
+msgstr "예약된 작업"
 
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 #: cps/templates/tasks.html:18
 msgid "Start Time"
-msgstr ""
+msgstr "시작 시간"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum Duration"
-msgstr ""
+msgstr "최대 기간"
 
 #: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
 msgid "Generate Thumbnails"
-msgstr ""
+msgstr "섬네일 생성성"
 
 #: cps/templates/admin.html:182
 msgid "Generate series cover thumbnails"
-msgstr ""
+msgstr "시리즈 표지 섬네일 생성"
 
 #: cps/templates/admin.html:186 cps/templates/admin.html:208
 #: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
-msgstr ""
+msgstr "Calibre DB 다시 연결"
 
 #: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
 msgid "Generate Metadata Backup Files"
-msgstr ""
+msgstr "메타 정보 백업 파일 생성"
 
 #: cps/templates/admin.html:197
 msgid "Refresh Thumbnail Cache"
-msgstr ""
+msgstr "섬네일 캐시 새로 고침침"
 
 #: cps/templates/admin.html:203
 msgid "Administration"
@@ -1740,7 +1740,7 @@ msgstr "종료"
 
 #: cps/templates/admin.html:221
 msgid "Version Information"
-msgstr ""
+msgstr "버전 정보"
 
 #: cps/templates/admin.html:225
 msgid "Version"
@@ -1788,7 +1788,7 @@ msgstr "종료를 하시겠습니까?"
 
 #: cps/templates/admin.html:283
 msgid "Updating, please do not reload this page"
-msgstr "Встановлення оновлень, будь-ласка, не оновлюйте сторінку"
+msgstr "업데이트 중입니다. 이 페이지를 새로고침 하지 마세요."
 
 #: cps/templates/author.html:15
 msgid "via"
@@ -2089,7 +2089,7 @@ msgstr "코멘트"
 
 #: cps/templates/book_table.html:75
 msgid "Archive Status"
-msgstr ""
+msgstr "아카이브 상태태"
 
 #: cps/templates/book_table.html:77 cps/templates/search_form.html:42
 msgid "Read Status"
@@ -2133,7 +2133,7 @@ msgstr "구글 드라이브 인증"
 
 #: cps/templates/config_db.html:32
 msgid "Google Drive Calibre folder"
-msgstr "Google Drive Calibre 폴더"
+msgstr "구글 드라이브 Calibre 폴더"
 
 #: cps/templates/config_db.html:40
 msgid "Metadata Watch Channel ID"
@@ -2421,44 +2421,44 @@ msgstr "OAuth 설정"
 
 #: cps/templates/config_edit.html:369
 msgid "Limit failed login attempts"
-msgstr ""
+msgstr "로그인 시도 제한"
 
 #: cps/templates/config_edit.html:372
 msgid "Session protection"
-msgstr ""
+msgstr "세션 보호"
 
 #: cps/templates/config_edit.html:374
 msgid "Basic"
-msgstr ""
+msgstr "기본"
 
 #: cps/templates/config_edit.html:375
 msgid "Strong"
-msgstr ""
+msgstr "강함함"
 
 #: cps/templates/config_edit.html:380
 #, fuzzy
 msgid "User Password policy"
-msgstr "사용자 비밀번호 초기화"
+msgstr "사용자 비밀번호 정책"
 
 #: cps/templates/config_edit.html:384
 msgid "Minimum password length"
-msgstr ""
+msgstr "최소 비밀번호 길이"
 
 #: cps/templates/config_edit.html:389
 msgid "Enforce number"
-msgstr ""
+msgstr "반드시 숫자 입력"
 
 #: cps/templates/config_edit.html:393
 msgid "Enforce lowercase characters"
-msgstr ""
+msgstr "반드시 소문자 입력"
 
 #: cps/templates/config_edit.html:397
 msgid "Enforce uppercase characters"
-msgstr ""
+msgstr "반드시 대문자 입력"
 
 #: cps/templates/config_edit.html:401
 msgid "Enforce special characters"
-msgstr ""
+msgstr "반드시 특수문자 입력력"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
@@ -2620,7 +2620,7 @@ msgstr "(공개)"
 
 #: cps/templates/detail.html:339
 msgid "Edit Metadata"
-msgstr "메타저오 편집"
+msgstr "메타정보보 편집"
 
 #: cps/templates/email_edit.html:13
 msgid "Email Account Type"
@@ -2634,11 +2634,11 @@ msgstr "표준 이메일 계정 사용"
 #: cps/templates/email_edit.html:16
 #, fuzzy
 msgid "Gmail Account"
-msgstr "서버 유형 선택"
+msgstr "Gmail 계정"
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account"
-msgstr ""
+msgstr "Gmail 계정 설정정"
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2706,7 +2706,7 @@ msgstr "코보 연동 토큰"
 
 #: cps/templates/grid.html:21
 msgid "List"
-msgstr ""
+msgstr "목록"
 
 #: cps/templates/http_error.html:34
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
@@ -2878,7 +2878,7 @@ msgstr "책 상세정보"
 
 #: cps/templates/list.html:22
 msgid "Grid"
-msgstr ""
+msgstr "그리드드"
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
@@ -3006,7 +3006,7 @@ msgstr "어둡게"
 
 #: cps/templates/read.html:83
 msgid "Sepia"
-msgstr ""
+msgstr "세피아"
 
 #: cps/templates/read.html:84
 #, fuzzy
@@ -3019,7 +3019,7 @@ msgstr "사이드바가 열려 있을 때 텍스트 다시 배열."
 
 #: cps/templates/read.html:93
 msgid "Font Sizes"
-msgstr ""
+msgstr "글자 크기기"
 
 #: cps/templates/readcbr.html:7
 msgid "Comic Reader"
@@ -3039,11 +3039,11 @@ msgstr "다음 페이지"
 
 #: cps/templates/readcbr.html:96
 msgid "Single Page Display"
-msgstr ""
+msgstr "한 페이지 보기기"
 
 #: cps/templates/readcbr.html:97
 msgid "Long Strip Display"
-msgstr ""
+msgstr "Long Strip Display"
 
 #: cps/templates/readcbr.html:98
 msgid "Scale to Best"
@@ -3075,7 +3075,7 @@ msgstr "이미지 뒤집기"
 
 #: cps/templates/readcbr.html:126
 msgid "Display"
-msgstr ""
+msgstr "화면"
 
 #: cps/templates/readcbr.html:129
 #, fuzzy
@@ -3084,7 +3084,7 @@ msgstr "관리자 페이지"
 
 #: cps/templates/readcbr.html:130
 msgid "Long Strip"
-msgstr ""
+msgstr "Long Strip"
 
 #: cps/templates/readcbr.html:135
 msgid "Scale"
@@ -3188,7 +3188,7 @@ msgstr "이 확인 링크는 10분 후에 만료됩니다."
 
 #: cps/templates/schedule_edit.html:33
 msgid "Generate Series Cover Thumbnails"
-msgstr ""
+msgstr "시리즈 섬네일 표지 생성"
 
 #: cps/templates/search.html:6
 msgid "No Results Found"
@@ -3312,7 +3312,7 @@ msgstr "시스템 통계"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "프로그램램"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3340,15 +3340,15 @@ msgstr "실행 시간"
 
 #: cps/templates/tasks.html:20
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: cps/templates/tasks.html:40
 msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr ""
+msgstr "이 작업을 취소합니다. 이 작업의 모든 진행사항은 반영됩니다."
 
 #: cps/templates/tasks.html:41
 msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr ""
+msgstr "이 작업이 예약된 작업이라면, 다음 예약 시간에 다시 실행됩니다."
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
@@ -3485,4 +3485,3 @@ msgstr "선택한 서재를 코보와 동기화"
 #, fuzzy
 msgid "Show Read/Unread Section"
 msgstr "읽음/읽지 않음 선택 표시"
-
