@@ -21,8 +21,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import smartcrop
 from datetime import datetime
 import json
+from PIL import Image
 from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape  # dependency of flask
@@ -755,9 +757,19 @@ def move_coverfile(meta, db_book):
     else:
         cover_file = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
     new_cover_path = os.path.join(config.config_calibre_dir, db_book.path)
+
     try:
         os.makedirs(new_cover_path, exist_ok=True)
-        copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
+        image = Image.open(cover_file)
+
+        # crop image to square 150x150 using smartcrop
+        cropper = smartcrop.SmartCrop()
+        result = cropper.crop(image, 150, 150)
+        x, y, width, height = result['top_crop']['x'], result['top_crop']['y'], \
+                                result['top_crop']['width'], result['top_crop']['height']
+        cropped_image = image.crop((x, y, x + width, y + height))
+        cropped_image.save(os.path.join(new_cover_path, "cover.jpg"))
+
         if meta.cover:
             os.unlink(meta.cover)
     except OSError as e:
