@@ -1,4 +1,4 @@
-{% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
+{% from 'modal_dialogs.html' import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal, youtube_download_modal %}
 {% import 'image.html' as image %}
 <!DOCTYPE html>
 <html lang="{{ current_user.locale }}">
@@ -83,6 +83,13 @@
                       </div>
                     </form>
                   </li>
+                  <li>
+                  <button id="btn-download-youtube" class="btn btn-default navbar-btn" data-toggle="modal"
+                    data-target="#youtubeDownloadModal">
+                    <span class="glyphicon glyphicon-download-alt"></span>
+                    {{_(' Add YouTube Videos')}}
+                  </button>
+                </li>
               {% endif %}
               {% if not current_user.is_anonymous and not simple%}
                 <li class="top_tasks"><a id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
@@ -205,7 +212,9 @@
         </div>
       </div>
     </div>
-    {% block modal %}{% endblock %}
+    {% block modal %}
+    {{ youtube_download_modal() }}
+    {% endblock %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
