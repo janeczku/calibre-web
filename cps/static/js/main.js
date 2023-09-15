@@ -149,6 +149,133 @@ $(document).ready(function() {
             inp.val('').blur().focus().val(val)
         }
     }
+
+    // Function to toggle advanced options visibility
+    function toggleAdvancedOptions() {
+        var advancedOptions = $("#advancedOptions");
+        if (advancedOptions.is(":visible")) {
+            advancedOptions.hide();
+            $("#advancedOptionsToggle").text("Show advanced options")
+        } else {
+            advancedOptions.show();
+            $("#advancedOptionsToggle").text("Hide advanced options")
+        }
+    }
+
+    // Handle click event for the advanced options toggle
+    $("#advancedOptionsToggle").click(function(event) {
+        event.preventDefault();
+        toggleAdvancedOptions();
+    });
+
+    // Function to initiate the YouTube download AJAX request
+    function initiateYoutubeDownload() {
+        var url = $("#youtubeURL").val();
+        var videoQuality = $("input[name='videoQuality']:checked").val();
+        var maxVideos = $("#maxVideos").val();
+        var maxVideosSize = $("#maxVideosSize").val();
+        var addToBookshelf = $("#addToBookshelf").is(":checked");
+
+        // Set empty number values to zero
+        maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
+        maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
+
+        // Check if the input URL is a valid YouTube URL
+        if (!isValidYoutubeURL(url)) {
+            alert("Invalid YouTube URL");
+            return;
+        }
+
+        $.ajax({
+            url: "/books/youtube",
+            method: "POST",
+            data: {
+                csrf_token: $("#youtubeDownloadForm input[name=csrf_token]").val(),
+                youtubeURL: url,
+                videoQuality: videoQuality,
+                maxVideos: maxVideos,
+                maxVideosSize: maxVideosSize,
+                addToBookshelf: addToBookshelf
+            },
+            success: function(response) {
+                // Handle success response here
+                if (response && response.location) {
+                    // Redirect to the specified location
+                    window.location.href = response.location;
+                } else {
+                    // Handle any specific success behavior
+                    console.log("YouTube download request successful.");
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle error here
+                console.log("YouTube download request failed:", error);
+                $("#youtubeDownloadForm .error-message").text("YouTube download request failed.");
+            }
+        });
+    }
+
+    // Handle Enter key press event in the input field
+    $(document).on('keydown', function(event) {
+        // Check if the pressed key is Enter (key code 13)
+        if (event.which === 13 && $("#youtubeDownloadModal").is(":visible")) {
+            initiateYoutubeDownload();
+        }
+    });
+
+    // Handle the "Start" button click event
+    $("#btn-download-youtube-submit").click(function() {
+        initiateYoutubeDownload();
+    });
+
+    // Handle change event for the video quality radio buttons
+    $("input[name='videoQuality']").change(function() {
+        // Handle change event
+    });
+
+    // Handle input event for the max videos input
+    $("#maxVideos").on('input', function() {
+        var inputValue = $(this).val();
+        if (!/^\d*$/.test(inputValue)) {
+            alert("Please enter a valid number.");
+            $(this).val("");
+        }
+
+        // If maxVideos is changed, disable and clear maxVideosSize
+        if (inputValue) {
+            $("#maxVideosSize").prop("disabled", true).val("");
+        } else {
+            $("#maxVideosSize").prop("disabled", false);
+        }
+    });
+
+    // Handle input event for the max size input
+    $("#maxVideosSize").on('input', function() {
+        var inputValue = $(this).val();
+        if (!/^\d*$/.test(inputValue)) {
+            alert("Please enter a valid number.");
+            $(this).val("");
+        }
+
+        // If maxVideosSize is changed, disable and clear maxVideos
+        if (inputValue) {
+            $("#maxVideos").prop("disabled", true).val("");
+        } else {
+            $("#maxVideos").prop("disabled", false);
+        }
+    });
+
+    // Handle change event for the add to bookshelf checkbox
+    $("#addToBookshelf").change(function() {
+        // Handle change event
+    });
+
+    // Function to validate YouTube URL (updated to handle https://youtube.com/@handle)
+    function isValidYoutubeURL(url) {
+        var youtubeURLPattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/playlist\?list=|youtube\.com\/channel\/|youtube\.com\/@)([a-zA-Z0-9_-]{11}|[a-zA-Z0-9_-]{34})/;
+        return youtubeURLPattern.test(url);
+    }
+
 });
 
 $(".session").click(function() {
