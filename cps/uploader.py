@@ -16,8 +16,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import json
 import os
 import hashlib
+import shutil
+from subprocess import run
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
@@ -84,6 +87,12 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
+        elif extension_upper in ['.MP4', '.WEBM', '.AVI', '.MKV', '.M4V', '.MPG', '.MPEG','.OGV']:
+            meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
+
+        elif extension_upper in ['.JPG', '.JPEG', '.PNG', '.GIF', '.SVG', '.WEBP']:
+            meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
+
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
@@ -237,6 +246,94 @@ def pdf_preview(tmp_file_path, tmp_dir):
         log.warning('Cannot extract cover image, using default: %s', ex)
         log.warning('On Windows this error could be caused by missing ghostscript')
         return None
+
+
+def video_metadata(tmp_file_path, original_file_name, original_file_extension):
+    video_id = os.path.splitext(original_file_name)[0][:11]
+    youtube_id = os.path.splitext(original_file_name)[0][11:]
+    json_file_path = os.path.join("/output", youtube_id, "cache", "videos.json")
+    coverfile_path = os.path.splitext(original_file_name)[0] + '.webp'
+    if os.path.isfile(coverfile_path):
+        coverfile_path = os.path.splitext(tmp_file_path)[0] + '.cover.webp'
+        os.rename(os.path.splitext(original_file_name)[0] + '.webp', coverfile_path)
+        os.remove(os.path.splitext(original_file_name)[0] + '.webm')
+        return coverfile_path  
+    if os.path.isfile(json_file_path):
+        with open(json_file_path) as json_file:
+            data = json.load(json_file)
+            title = data[video_id]['snippet']['title']
+            author = data[video_id]['snippet']['videoOwnerChannelTitle']
+            description = data[video_id]['snippet']['description']
+            publisher = 'YouTube'
+            pubdate = data[video_id]['contentDetails']['videoPublishedAt'][0:10]
+
+            meta = BookMeta(
+                file_path=tmp_file_path,
+                extension=original_file_extension,
+                title=title,
+                author=author,
+                cover=coverfile_path,
+                description=description,
+                tags='',
+                series="",
+                series_id="",
+                languages="",
+                publisher=publisher,
+                pubdate=pubdate,
+                identifiers=[])
+            return meta
+    else:
+        ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
+        ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+        ffmpeg_args = [
+            ffmpeg_executable,
+            '-i', tmp_file_path,
+            '-vframes', '1',
+            '-y', ffmpeg_output_file
+        ]
+
+        try:
+            ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+            log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
+
+        except Exception as e:
+            log.warning(f"ffmpeg failed: {e}")
+            return None
+        
+        meta = BookMeta(
+            file_path=tmp_file_path,
+            extension=original_file_extension,
+            title=original_file_name,
+            author='Unknown',
+            cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+            description='',
+            tags='',
+            series="",
+            series_id="",
+            languages="",
+            publisher="",
+            pubdate="",
+            identifiers=[])
+        return meta
+
+
+def image_metadata(tmp_file_path, original_file_name, original_file_extension):
+    shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
+    meta = BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=original_file_name,
+        author='Unknown',
+        cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+        description='',
+        tags='',
+        series="",
+        series_id="",
+        languages="",
+        publisher="",
+        pubdate="",
+        identifiers=[])
+    return meta
 
 
 def get_magick_version():
