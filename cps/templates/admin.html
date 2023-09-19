@@ -20,6 +20,7 @@
             <th class="hidden-xs hidden-sm">{{_('Upload')}}</th>
           {%  endif %}
             <th class="hidden-xs hidden-sm">{{_('Download')}}</th>
+            <th class="hidden-xs hidden-sm">{{_('Send to eReader')}}</th>
             <th class="hidden-xs hidden-sm hidden-md">{{_('View Books')}}</th>
             <th class="hidden-xs hidden-sm hidden-md">{{_('Edit')}}</th>
             <th class="hidden-xs hidden-sm hidden-md">{{_('Delete')}}</th>
@@ -38,6 +39,7 @@
             <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_upload()) }}</td>
             {%  endif %}
             <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_download()) }}</td>
+            <td class="hidden-xs hidden-sm">{{ display_bool_setting(user.role_send_to_ereader()) }}</td>
             <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_viewer()) }}</td>
             <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_edit()) }}</td>
             <td class="hidden-xs hidden-sm hidden-md">{{ display_bool_setting(user.role_delete_books()) }}</td>

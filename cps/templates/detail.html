@@ -43,6 +43,8 @@
                                 {% endif %}
                             </div>
                         {% endif %}
+                    {% endif %}
+                    {% if current_user.role_send_to_ereader() %}
                         {% if current_user.kindle_mail and entry.email_share_list %}
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             {% if entry.email_share_list.__len__() == 1 %}
