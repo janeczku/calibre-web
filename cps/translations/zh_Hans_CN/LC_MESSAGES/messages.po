@@ -2355,7 +2355,7 @@ msgstr "获取 %(provider)s OAuth 凭证"
 #: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth 客户端 Secret"
+msgstr "%(provider)s OAuth 客户端 Id"
 
 #: cps/templates/config_edit.html:304
 #, python-format
