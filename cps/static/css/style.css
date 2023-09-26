@@ -1,4 +1,3 @@
-
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
   font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -140,15 +139,36 @@ table .bg-dark-danger a { color: #fff; }
 
 .container-fluid .book {
   margin-top: 20px;
-  max-width: 180px;
-  display: flex;
-  flex-direction: column;
+  margin-right: 10px;
+  max-width: 150px;
+  display: inline-block;
+  vertical-align: top;
+  box-sizing: border-box;
+  text-align: center;
 }
+
+.container-fluid .book:last-child {
+  margin-right: 0;
+}
+
 .cover { margin-bottom: 10px; }
 
 .container-fluid .book .cover {
-  height: 225px;
+  width: 150px;
+  height: 150px;
   position: relative;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container-fluid .book .cover img {
+  height: 100%;
+  width: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .author-link img {
@@ -437,4 +457,4 @@ div.log {
 
 .error-list {
     margin-top: 5px;
-  }
+}

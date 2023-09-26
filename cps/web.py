@@ -1559,6 +1559,16 @@ def read_book(book_id, book_format):
                 log.debug("Start mp3 listening for %d", book_id)
                 return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
                                              entry=entries, bookmark=bookmark)
+        for fileExt in constants.EXTENSIONS_IMAGE:
+            if book_format.lower() == fileExt:
+                entries = calibre_db.get_filtered_book(book_id)
+                log.debug("Start image viewing for %d", book_id)
+                return serve_book.__closure__[0].cell_contents(book_id, book_format.lower(), anyname="")
+        for fileExt in constants.EXTENSIONS_VIDEO:
+            if book_format.lower() == fileExt:
+                entries = calibre_db.get_filtered_book(book_id)
+                log.debug("Start video watching for %d", book_id)
+                return serve_book.__closure__[0].cell_contents(book_id, book_format.lower(), anyname="")
         for fileExt in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileExt:
                 all_name = str(book_id)
@@ -1603,9 +1613,15 @@ def show_book(book_id):
         entry.reader_list = check_read_formats(entry)
 
         entry.audio_entries = []
+        entry.video_entries = []
+        entry.image_entries = []
         for media_format in entry.data:
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
+            if media_format.format.lower() in constants.EXTENSIONS_VIDEO:
+                entry.video_entries.append(media_format.format.lower())
+            if media_format.format.lower() in constants.EXTENSIONS_IMAGE:
+                entry.image_entries.append(media_format.format.lower())
 
         return render_title_template('detail.html',
                                      entry=entry,
