@@ -154,6 +154,14 @@
             <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Header Name')}}</div>
             <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
         </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Create Reverse Proxy Users')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_create_users) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Email Header Name')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_email_header_name }}</div>
+        </div>
         {% endif %}
       </div>
       <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>
