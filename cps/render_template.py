@@ -104,14 +104,24 @@ def get_sidebar_config(kwargs=None):
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
 
-    return sidebar, simple
+    top_pages = ub.session.query(ub.Page)\
+        .filter(ub.Page.position == "1")\
+        .filter(ub.Page.is_enabled)\
+        .order_by(ub.Page.order)
+    bottom_pages = ub.session.query(ub.Page)\
+        .filter(ub.Page.position == "0")\
+        .filter(ub.Page.is_enabled)\
+        .order_by(ub.Page.order)
+
+    return sidebar, simple, top_pages, bottom_pages
 
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar, simple = get_sidebar_config(kwargs)
+    sidebar, simple, top_pages, bottom_pages = get_sidebar_config(kwargs)
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
+                               top_pages=top_pages, bottom_pages=bottom_pages,
                                accept=constants.EXTENSIONS_UPLOAD,
                                *args, **kwargs)
     except PermissionError:

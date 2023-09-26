@@ -535,6 +535,16 @@ class Thumbnail(Base):
     generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
     expiration = Column(DateTime, nullable=True)
 
+class Page(Base):
+    __tablename__ = 'page'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    name = Column(String)
+    icon = Column(String)
+    order = Column(Integer)
+    position = Column(String)
+    is_enabled = Column(Boolean, default=True)
 
 # Add missing tables during migration of database
 def add_missing_tables(engine, _session):
@@ -558,7 +568,8 @@ def add_missing_tables(engine, _session):
             trans = conn.begin()
             conn.execute("insert into registration (domain, allow) values('%.%',1)")
             trans.commit()
-
+    if not engine.dialect.has_table(engine.connect(), "page"):
+        Page.__table__.create(bind=engine)
 
 # migrate all settings missing in registration table
 def migrate_registration_table(engine, _session):
