@@ -142,6 +142,9 @@
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
+              {% for element in top_pages %}
+                 <li id="nav_{{element['name']}}" {% if page == element['name'] %}class="active"{% endif %}><a href="{{url_for('page.get_page', file=element['name'])}}"><span class="glyphicon glyphicon-{{element['icon']}}"></span> {{element['title']}}</a></li>
+              {% endfor %}
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if current_user.check_visibility(element['visibility']) and element['public'] %}
@@ -157,6 +160,9 @@
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
                 <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
               {% endif %}
+              {% for element in bottom_pages %}
+                 <li id="nav_{{element['name']}}" {% if page == element['name'] %}class="active"{% endif %}><a href="{{url_for('page.get_page', file=element['name'])}}"><span class="glyphicon glyphicon-{{element['icon']}}"></span> {{element['title']}}</a></li>
+              {% endfor %}
               {% endif %}
 
             </ul>
