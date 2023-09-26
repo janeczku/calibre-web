@@ -311,6 +311,223 @@ def upload():
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
+@editbook.route("/youtube", methods=["POST"])
+@login_required_if_no_ano
+@upload_required
+def youtube():
+    if not config.config_uploading:
+        abort(404)
+    
+    def get_yb_executable():
+        yb_executable = os.getenv("YB_EXECUTABLE", "yb")
+        return yb_executable
+
+    def run_subprocess(command_args):
+        try:
+            completed_process = subprocess.run(
+                command_args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+                text=True
+            )
+            return (True, completed_process.stdout, completed_process.stderr)
+
+        except subprocess.CalledProcessError as e:
+            error_message = f"Subprocess error (return code {e.returncode}): {e.stderr}, {e.stdout}"
+            log.error(error_message)
+            return False, error_message, e.stdout, e.stderr
+        except Exception as e:
+            error_message = f"An error occurred while running the subprocess: {e}"
+            log.error(error_message)
+            return False, error_message
+    
+    def process_youtube_download(youtube_url, video_quality):
+        yb_executable = get_yb_executable()
+
+        if youtube_url:
+            youtube_id = extract_youtube_url(youtube_url)
+
+            download_args = [
+                yb_executable,
+                youtube_id,
+                "/output",
+                video_quality,
+            ]
+            subprocess_result = run_subprocess(download_args)
+            
+            log.info("Subprocess result: {}".format(subprocess_result))
+
+            if subprocess_result[0]:
+                log.info("Renaming files in /output/{}/videos".format(youtube_id))
+                # make a list of requested files with names of directories found in /output/<youtube_id>/videos
+                requested_files = os.listdir("/output/{}/videos".format(youtube_id))
+                # remove "youtube-nsig" from the list of requested files
+                requested_files.remove("youtube-nsig")
+                log.info("Requested files: {}".format(requested_files))
+                renamed_files = rename_files(requested_files, youtube_id)
+                if renamed_files:    
+                    for requested_file in renamed_files:
+                        requested_file = open(requested_file, "rb")
+                        requested_file.filename = os.path.basename(requested_file.name)
+                        requested_file.save = lambda path: copyfile(requested_file.name, path)
+
+                        log.info("Processing file: {}".format(requested_file))
+                        try:
+                            modify_date = False
+                            calibre_db.update_title_sort(config)
+                            calibre_db.session.connection().connection.connection.create_function(
+                                "uuid4", 0, lambda: str(uuid4())
+                            )
+
+                            meta, error = file_handling_on_upload(requested_file)
+                            if error:
+                                return error
+
+                            (
+                                db_book,
+                                input_authors,
+                                title_dir,
+                                renamed_authors,
+                            ) = create_book_on_upload(modify_date, meta)
+
+                            # Comments need book id therefore only possible after flush
+                            modify_date |= edit_book_comments(
+                                Markup(meta.description).unescape(), db_book
+                            )
+
+                            book_id = db_book.id
+                            title = db_book.title
+                           
+                            error = helper.update_dir_structure(
+                                book_id,
+                                config.config_calibre_dir,
+                                input_authors[0],
+                                meta.file_path,
+                                title_dir + meta.extension.lower(),
+                                renamed_author=renamed_authors,
+                            )
+
+                            move_coverfile(meta, db_book)
+
+                            if modify_date:
+                                calibre_db.set_metadata_dirty(book_id)
+                            # save data to database, reread data
+                            calibre_db.session.commit()
+
+                            if error:
+                                flash(error, category="error")
+                            link = '<a href="{}">{}</a>'.format(
+                                url_for("web.show_book", book_id=book_id), escape(title)
+                            )
+                            upload_text = N_("File %(file)s uploaded", file=link)
+                            WorkerThread.add(
+                                current_user.name, TaskUpload(upload_text, escape(title))
+                            )
+                            helper.add_book_to_thumbnail_cache(book_id)
+
+                            if len(renamed_files) < 2:
+                                if current_user.role_edit() or current_user.role_admin():
+                                    resp = {
+                                        "location": url_for(
+                                            "edit-book.show_edit_book", book_id=book_id
+                                        )
+                                    }
+                                    return Response(json.dumps(resp), mimetype="application/json")
+                                else:
+                                    resp = {"location": url_for("web.show_book", book_id=book_id)}
+                                    return Response(json.dumps(resp), mimetype="application/json")
+
+                        except (OperationalError, IntegrityError, StaleDataError) as e:
+                            calibre_db.session.rollback()
+                            log.error_or_exception("Database error: {}".format(e))
+                            flash(
+                                _(
+                                    "Oops! Database Error: %(error)s.",
+                                    error=e.orig if hasattr(e, "orig") else e,
+                                ),
+                                category="error",
+                            )
+        else:
+            flash("Error: 'poetry' executable not found in PATH", category="error")
+            return False
+
+    if request.method == "POST" and "youtubeURL" in request.form:
+        youtube_url = request.form["youtubeURL"]
+        video_quality = request.form.get("videoQuality", "720")
+
+        if process_youtube_download(youtube_url, video_quality):
+            response = {
+                "success": "Downloaded YouTube media successfully",
+            }
+            return jsonify(response)
+        else:
+            response = {
+                "error": "Failed to download YouTube media",
+            }
+            return jsonify(response), 500
+
+def extract_youtube_url(url):
+        try:
+            if "youtube.com" in url:
+                if "watch?v=" in url:
+                    return url.split("watch?v=")[1]
+                elif "playlist?list=" in url:
+                    return url.split("playlist?list=")[1]
+                elif "channel/" in url:
+                    return url.split("channel/")[1]
+                elif "user/" in url:
+                    return url.split("user/")[1]
+                elif "@" in url:
+                    return extract_channel_id_from_handle(url)
+            elif "youtu.be" in url:
+                return url.split("youtu.be/")[1]
+
+            flash("Error: Invalid YouTube URL", category="error")
+            return None
+        except Exception as e:
+            flash("An error occurred while processing the YouTube URL: {}".format(e), category="error")
+            return None
+
+def extract_channel_id_from_handle(url):
+    handle = url.split("@")[1]
+    operational_api_url = "https://yt.lemnoslife.com/channels?handle=" + handle
+    response = requests.get(operational_api_url)
+
+    if response.status_code == 200:
+        return response.json()["items"][0]["id"]
+    else:
+        flash("Error: Failed to retrieve YouTube channel ID from API", category="error")
+        return None
+
+def rename_files(requested_files, youtube_id):
+    # cache_directory_path = "/output/{}/cache".format(youtube_id)
+    video_dir_path = "/output/{}/videos".format(youtube_id)
+    renamed_files = []
+    if not os.path.exists("/tmp/calibre_web"):
+        os.makedirs("/tmp/calibre_web")
+
+    for video_id in requested_files:
+        # video_json_path = os.path.join(cache_directory_path, "videos.json")
+        video_webm_path = os.path.join(video_dir_path, video_id, "video.webm")
+        thumbnail_path = os.path.join(video_dir_path, video_id, "video.webp")
+
+        try:
+            thumbnail_path_new = os.path.join("/tmp", "calibre_web", "{}.webp".format(video_id + youtube_id))
+            move(thumbnail_path, thumbnail_path_new)
+            video_webm_path_new = os.path.join("/tmp", "calibre_web", "{}.webm".format(video_id + youtube_id))
+            move(video_webm_path, video_webm_path_new)
+            renamed_files.append(video_webm_path_new)
+
+            if not os.listdir(video_dir_path):
+                os.rmdir(video_dir_path)
+
+        except Exception as e:
+            flash("An error occurred while renaming the YouTube video file: {}".format(e), category="error")
+            return None
+        
+    return renamed_files
+
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
