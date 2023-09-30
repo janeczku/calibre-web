@@ -85,6 +85,16 @@
               </div>
               <div>
                   <p>
+                    <!-- Hardcoded pagination as the initial value as it is the "default" flow. Need to find a way to do this dynamically on startup-->
+                    <label for="readerFlow">{{_('Reader flow:')}}</label>
+                    <select id="readerFlow" name="readerFlow">
+                      <option value="paginated">{{_('Paginated')}}</option>
+                      <option value="scrolled-doc">{{_('Scrolled')}}</option>
+                    </select>
+                  </p>
+              </div>
+              <div>
+                  <p>
                     <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
                   </p>
               </div>
@@ -145,6 +155,17 @@
         let fontSizeFader = document.getElementById('fontSizeFader');
         fontSizeFader.addEventListener ("change", function () {
             reader.rendition.themes.fontSize(`${this.value}%`)
+        });
+
+        // reader flow settings logic
+        let readerFlow = document.getElementById('readerFlow');
+        readerFlow.addEventListener ("change", function () {
+          reader.rendition.flow(this.value);
+          if (this.value === "paginated") {
+            document.getElementById("divider").classList.add("show");
+          } else {
+            document.getElementById("divider").classList.remove("show");
+          }
         });
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>

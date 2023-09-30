@@ -4,7 +4,7 @@
 .slider {
     position: absolute;
     top: 50%;
-    transform: translate(0,-50%);
+    transform: translate(0,-20%);
     width: 90%;
     height: 60px;
     background: transparent;

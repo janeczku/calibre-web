@@ -416,7 +416,7 @@ input:-moz-placeholder { color: #454545; }
 
 .md-content > div p {
   margin: 0;
-  padding: 10px 0;
+  padding: 0;
 }
 
 #searchResults li > p {
@@ -551,11 +551,11 @@ input:-moz-placeholder { color: #454545; }
   position: relative;
   border-radius: 3px;
   margin: 0 auto;
-  height: 320px;
+  height: 265px;
 }
 
 .md-content > div {
-  padding: 15px 40px 30px;
+  padding: 15px 40px 10px;
   margin: 0;
   font-weight: 300;
   font-size: 14px;
@@ -572,7 +572,7 @@ input:-moz-placeholder { color: #454545; }
   border: none;
   text-align: center;
   text-decoration: none;
-  margin-top: 5%;
+  margin-top: 2%;
   margin-right: 1%;
   font-size: 16px;
 }
