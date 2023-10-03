@@ -333,7 +333,6 @@ $(function() {
                 } else {
                     $("#parent").addClass('hidden')
                 }
-                // console.log(data);
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
                         var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
@@ -396,6 +395,11 @@ $(function() {
             url: getPath() + "/shutdown",
             data: JSON.stringify({"parameter":0}),
             success: function success() {
+                $("#spinner").show();
+                setTimeout(restartTimer, 3000);
+            },
+            error: function (xhr) {
+                // Fix for new tornado versions , not returning a response during restart
                 $("#spinner").show();
                 setTimeout(restartTimer, 3000);
             }
