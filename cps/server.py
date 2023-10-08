@@ -288,4 +288,5 @@ class WebServer(object):
             if _GEVENT:
                 self.wsgiserver.close()
             else:
-                self.wsgiserver.add_callback_from_signal(self.wsgiserver.stop)
+                self.wsgiserver.call_later(1.0, self.wsgiserver.stop)
+                # self.wsgiserver.add_callback()
