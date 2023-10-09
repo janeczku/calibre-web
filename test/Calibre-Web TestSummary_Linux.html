@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-10-05 14:17:33</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-10-11 19:32:23</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-10-05 20:50:36</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-10-12 01:29:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 26 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>4h 56 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">22</td>
-        <td class="text-center">0</td>
+        <td class="text-center">21</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -248,11 +248,31 @@
 
     
     
-        <tr id='pt2.1' class='hiddenRow bg-success'>
+        <tr id="ft2.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_all</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 49, in test_backup_all
+    self.assertEqual(1, len(res))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -471,12 +491,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestCli</td>
         <td class="text-center">13</td>
-        <td class="text-center">9</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c4', 13)">Detail</a>
@@ -503,92 +523,20 @@
     
     
     
-        <tr id="ft4.3" class="none bg-danger">
+        <tr id='pt4.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_change_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 441, in test_change_password
-    self.driver.get(&#34;http://127.0.0.1:8083&#34;)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&amp;u=http%3A//127.0.0.1%3A8083/&amp;c=UTF-8&amp;d=Firefox%20can%E2%80%99t%20establish%20a%20connection%20to%20the%20server%20at%20127.0.0.1%3A8083.
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-UnknownError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:768:5
-checkReadyState@chrome://remote/content/marionette/navigate.sys.mjs:59:24
-onNavigation@chrome://remote/content/marionette/navigate.sys.mjs:327:39
-emit@resource://gre/modules/EventEmitter.sys.mjs:154:20
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.sys.mjs:33:25
-
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 451, in test_change_password
-    self.assertFalse(e)
-AssertionError: WebDriverException() is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft4.4" class="none bg-danger">
+        <tr id='pt4.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_cli_SSL_files</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 277, in test_cli_SSL_files
-    self.driver.get(&#34;https://127.0.0.1:8083&#34;)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&amp;u=https%3A//127.0.0.1%3A8083/&amp;c=UTF-8&amp;d=Firefox%20can%E2%80%99t%20establish%20a%20connection%20to%20the%20server%20at%20127.0.0.1%3A8083.
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-UnknownError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:768:5
-checkReadyState@chrome://remote/content/marionette/navigate.sys.mjs:59:24
-onNavigation@chrome://remote/content/marionette/navigate.sys.mjs:327:39
-emit@resource://gre/modules/EventEmitter.sys.mjs:154:20
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.sys.mjs:33:25
-
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 279, in test_cli_SSL_files
-    self.assertIsNone(&#34;Error&#34;, &#34;HTTPS Connection could not established with key/cert file&#34;)
-AssertionError: &#39;Error&#39; is not None : HTTPS Connection could not established with key/cert file</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -602,45 +550,11 @@ AssertionError: &#39;Error&#39; is not None : HTTPS Connection could not establi
     
     
     
-        <tr id="et4.6" class="none bg-info">
+        <tr id='pt4.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_cli_different_settings_database</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et4.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et4.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et4.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 116, in test_cli_different_settings_database
-    self.driver.refresh()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 663, in refresh
-    self.execute(Command.REFRESH)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&amp;u=http%3A//127.0.0.1%3A8083/&amp;c=UTF-8&amp;d=Firefox%20can%E2%80%99t%20establish%20a%20connection%20to%20the%20server%20at%20127.0.0.1%3A8083.
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-UnknownError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:768:5
-checkReadyState@chrome://remote/content/marionette/navigate.sys.mjs:59:24
-onNavigation@chrome://remote/content/marionette/navigate.sys.mjs:327:39
-emit@resource://gre/modules/EventEmitter.sys.mjs:154:20
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.sys.mjs:33:25</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -690,47 +604,11 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id="ft4.12" class="none bg-danger">
+        <tr id='pt4.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.12')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 402, in test_settingsdb_not_writeable
-    self.driver.get(&#34;http://127.0.0.1:8083&#34;)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&amp;u=http%3A//127.0.0.1%3A8083/&amp;c=UTF-8&amp;d=Firefox%20can%E2%80%99t%20establish%20a%20connection%20to%20the%20server%20at%20127.0.0.1%3A8083.
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-UnknownError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:768:5
-checkReadyState@chrome://remote/content/marionette/navigate.sys.mjs:59:24
-onNavigation@chrome://remote/content/marionette/navigate.sys.mjs:327:39
-emit@resource://gre/modules/EventEmitter.sys.mjs:154:20
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.sys.mjs:33:25
-
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 410, in test_settingsdb_not_writeable
-    self.assertFalse(True, &#34;Inital config failed with nonwriteable database&#34;)
-AssertionError: True is not false : Inital config failed with nonwriteable database</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1114,11 +992,11 @@ AssertionError: True is not false : Inital config failed with nonwriteable datab
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1137,33 +1015,11 @@ AssertionError: True is not false : Inital config failed with nonwriteable datab
     
     
     
-        <tr id="ft11.2" class="none bg-danger">
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft11.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft11.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 176, in test_convert_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-AssertionError: &#39;Started&#39; != &#39;Finished&#39;
-- Started
-+ Finished</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2140,12 +1996,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">14</td>
-        <td class="text-center">1</td>
-        <td class="text-center">3</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 18)">Detail</a>
@@ -2280,153 +2136,38 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="et18.15" class="none bg-info">
+        <tr id='pt18.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 415, in test_edit_series
-    self.get_book_details(9)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1470, in get_book_details
-    cls.driver.get(root_url + &#34;/book/&#34; + str(id))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 449, in get
-    self.execute(Command.GET, {&#34;url&#34;: url})
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: Navigation timed out after 300000 ms
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-TimeoutError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:691:5
-bail@chrome://remote/content/marionette/sync.sys.mjs:211:19</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et18.16" class="none bg-info">
+        <tr id='pt18.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 120, in test_edit_title
-    self.fill_basic_config({&#34;config_unicode_filename&#34;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 399, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 303, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:507:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:132:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et18.17" class="none bg-info">
+        <tr id='pt18.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 825, in test_upload_book_lit
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 399, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 303, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:507:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:132:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft18.18" class="none bg-danger">
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 916, in test_watch_metadata
-    self.assertTrue(button)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3882,12 +3623,12 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestReader</td>
         <td class="text-center">6</td>
-        <td class="text-center">5</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c39', 6)">Detail</a>
@@ -3896,47 +3637,11 @@ AssertionError: False is not true</pre>
 
     
     
-        <tr id="et39.1" class="none bg-info">
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et39.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et39.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et39.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 271, in test_comic_MACOS_files
-    right.click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
-    return self._parent.execute(command, params)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementNotInteractableException: Message: Element &lt;div id=&#34;right&#34; class=&#34;arrow&#34;&gt; could not be scrolled into view
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:189:5
-ElementNotInteractableError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:349:5
-webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:150:11
-interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:119:11
-clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:202:29
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:84:31</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4340,11 +4045,11 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4417,11 +4122,31 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
     
     
     
-        <tr id='pt45.8' class='hiddenRow bg-success'>
+        <tr id="ft45.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft45.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft45.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 311, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.004399004046062869 != 0.0 within 0.0001 delta (0.004399004046062869 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5496,9 +5221,9 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>462</td>
-        <td>442</td>
-        <td>5</td>
-        <td>6</td>
+        <td>450</td>
+        <td>2</td>
+        <td>1</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5677,7 +5402,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5707,7 +5432,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5737,7 +5462,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5767,7 +5492,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5821,7 +5546,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5857,7 +5582,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5899,7 +5624,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.102.0</td>
+              <td>2.103.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5935,7 +5660,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.22.0</td>
+              <td>0.23.0</td>
               <td>TestGoodreads</td>
             </tr>
           
@@ -5989,7 +5714,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild
 </div>
 
 <script>
-    drawCircle(442, 5, 6, 9);
+    drawCircle(450, 2, 1, 9);
     showCase(5);
 </script>
 
