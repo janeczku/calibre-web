@@ -250,34 +250,8 @@ def pdf_preview(tmp_file_path, tmp_dir):
 
 
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
-    # video_id = os.path.splitext(original_file_name)[0][:11]
-    # youtube_id = os.path.splitext(original_file_name)[0][11:]
-    # json_file_path = os.path.join("/output", youtube_id, "cache", "videos.json")
-    # coverfile_path = os.path.splitext(original_file_name)[0] + '.webp'
-    # if os.path.isfile(coverfile_path):
-    #     coverfile_path = os.path.splitext(tmp_file_path)[0] + '.cover.webp'
-    #     os.rename(os.path.splitext(original_file_name)[0] + '.webp', coverfile_path)
-    #     os.remove(os.path.splitext(original_file_name)[0] + '.webm')
-    #     return coverfile_path  
-    # if os.path.isfile(json_file_path):
-    #     with open(json_file_path) as json_file:
-    #         data = json.load(json_file)
-    #         title = data[video_id]['snippet']['title']
-    #         author = data[video_id]['snippet']['videoOwnerChannelTitle']
-    #         description = data[video_id]['snippet']['description']
-    #         publisher = 'YouTube'
-    #         pubdate = data[video_id]['contentDetails']['videoPublishedAt'][0:10]
-
-    # original file name example: Baby_Calm_Down_FULL_HD_Selena_Gomez_Rema_Official_Music_Video_2023_600.22k_[yJ_qhwk2X2c].webm
-    # extract video id from original file name by extracting the string between the brackets "[...]"
-    # if there is a "]" before the extension:
     if ']' in original_file_name:
         video_id = original_file_name.split('[')[1].split(']')[0]
-        # with the video_id, we can get the video info from /var/tmp/download.db (sqlite3 database)
-        # Here are the columns from the database's media table:
-        # id, size, duration, time_uploaded, time_created, time_modified, time_deleted, time_downloaded, fps, view_count, path, webpath, extractor_id, title, live_status, uploader, width, height, type, video_count, audio_count, language, description, playlist_id, chapter_count, chapters
-        # we need the extractor_id (the video_id), title, uploader, description, time_uploaded
-        # we need to check if the video_id is in the database and access the columns we need to get the metadata for BookMeta
         download_db_path = "/var/tmp/download.db"
         if os.path.isfile(download_db_path):
             conn = sqlite3.connect(download_db_path)
@@ -286,7 +260,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             row = c.fetchone()
             if row is not None:
                 title = row[13]
-                author = row[15]
+                author = row[10].split('/Youtube/')[1].replace('_', ' ')
                 description = row[22]
                 publisher = 'YouTube'
                 # example of time_uploaded: 1696464000
@@ -316,23 +290,6 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
         else:
             log.warning('Cannot find download.db, using default')
     else:
-        # ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
-        # ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-        # ffmpeg_args = [
-        #     ffmpeg_executable,
-        #     '-i', tmp_file_path,
-        #     '-vframes', '1',
-        #     '-y', ffmpeg_output_file
-        # ]
-
-        # try:
-        #     ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
-        #     log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
-
-        # except Exception as e:
-        #     log.warning(f"ffmpeg failed: {e}")
-        #     return None
-        
         meta = BookMeta(
             file_path=tmp_file_path,
             extension=original_file_extension,

@@ -180,9 +180,9 @@ $(document).ready(function() {
         maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
         maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
 
-        // Check if the input URL is a valid YouTube URL
-        if (!isValidYoutubeURL(url)) {
-            alert("Invalid YouTube URL");
+        // Check if the input URL is a valid URL
+        if (!isValidURL(url)) {
+            alert("Invalid URL.");
             return;
         }
 
@@ -270,10 +270,10 @@ $(document).ready(function() {
         // Handle change event
     });
 
-    // Function to validate YouTube URL (updated to handle https://youtube.com/@handle)
-    function isValidYoutubeURL(url) {
-        var youtubeURLPattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/playlist\?list=|youtube\.com\/channel\/|youtube\.com\/@)([a-zA-Z0-9_-]{11}|[a-zA-Z0-9_-]{34})/;
-        return youtubeURLPattern.test(url);
+    // Function to validate URL
+    function isValidURL(url) {
+        var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+        return urlPattern.test(url);
     }
 
 });

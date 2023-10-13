@@ -342,19 +342,10 @@ def youtube():
             log.error(error_message)
             return False, error_message
     
-    # def process_youtube_download(youtube_url, video_quality):
     def process_youtube_download(youtube_url):
         yb_executable = get_yb_executable()
 
         if youtube_url:
-            # youtube_id = extract_youtube_url(youtube_url)
-
-            # download_args = [
-            #     yb_executable,
-            #     youtube_id,
-            #     "/output",
-            #     video_quality,
-            # ]
             download_args = [
                 yb_executable,
                 youtube_url,
@@ -364,15 +355,6 @@ def youtube():
             log.info("Subprocess result: {}".format(subprocess_result))
 
             if subprocess_result[0]:
-                # log.info("Renaming files in /output/{}/videos".format(youtube_id))
-                # # make a list of requested files with names of directories found in /output/<youtube_id>/videos
-                # requested_files = os.listdir("/output/{}/videos".format(youtube_id))
-                # # remove "youtube-nsig" from the list of requested files
-                # requested_files.remove("youtube-nsig")
-
-                # make a list of requested files with paths found in media table reading /var/tmp/download.db
-                # select each "path" from media table to get a list of requested files
-                # each "path" is an absolute path to a file in /var/tmp/Youtube/<author>/<title>/<file>
                 requested_files = []
                 download_db_path = "/var/tmp/download.db"
                 conn = sqlite3.connect(download_db_path)
@@ -383,8 +365,6 @@ def youtube():
                 conn.close()
 
                 log.info("Requested files: {}".format(requested_files))
-                # renamed_files = rename_files(requested_files, youtube_id)
-                # if renamed_files:    
                 for requested_file in requested_files:
                     requested_file = open(requested_file, "rb")
                     requested_file.filename = os.path.basename(requested_file.name)
@@ -472,9 +452,7 @@ def youtube():
 
     if request.method == "POST" and "youtubeURL" in request.form:
         youtube_url = request.form["youtubeURL"]
-        # video_quality = request.form.get("videoQuality", "720")
-
-        # if process_youtube_download(youtube_url, video_quality):
+ 
         if process_youtube_download(youtube_url):
             response = {
                 "success": "Downloaded YouTube media successfully",
@@ -486,66 +464,6 @@ def youtube():
             }
             return jsonify(response), 500
 
-# def extract_youtube_url(url):
-#         try:
-#             if "youtube.com" in url:
-#                 if "watch?v=" in url:
-#                     return url.split("watch?v=")[1]
-#                 elif "playlist?list=" in url:
-#                     return url.split("playlist?list=")[1]
-#                 elif "channel/" in url:
-#                     return url.split("channel/")[1]
-#                 elif "user/" in url:
-#                     return url.split("user/")[1]
-#                 elif "@" in url:
-#                     return extract_channel_id_from_handle(url)
-#             elif "youtu.be" in url:
-#                 return url.split("youtu.be/")[1]
-
-#             flash("Error: Invalid YouTube URL", category="error")
-#             return None
-#         except Exception as e:
-#             flash("An error occurred while processing the YouTube URL: {}".format(e), category="error")
-#             return None
-
-# def extract_channel_id_from_handle(url):
-#     handle = url.split("@")[1]
-#     operational_api_url = "https://yt.lemnoslife.com/channels?handle=" + handle
-#     response = requests.get(operational_api_url)
-
-#     if response.status_code == 200:
-#         return response.json()["items"][0]["id"]
-#     else:
-#         flash("Error: Failed to retrieve YouTube channel ID from API", category="error")
-#         return None
-
-# def rename_files(requested_files, youtube_id):
-#     # cache_directory_path = "/output/{}/cache".format(youtube_id)
-#     video_dir_path = "/output/{}/videos".format(youtube_id)
-#     renamed_files = []
-#     if not os.path.exists("/tmp/calibre_web"):
-#         os.makedirs("/tmp/calibre_web")
-
-#     for video_id in requested_files:
-#         # video_json_path = os.path.join(cache_directory_path, "videos.json")
-#         video_webm_path = os.path.join(video_dir_path, video_id, "video.webm")
-#         thumbnail_path = os.path.join(video_dir_path, video_id, "video.webp")
-
-#         try:
-#             thumbnail_path_new = os.path.join("/tmp", "calibre_web", "{}.webp".format(video_id + youtube_id))
-#             move(thumbnail_path, thumbnail_path_new)
-#             video_webm_path_new = os.path.join("/tmp", "calibre_web", "{}.webm".format(video_id + youtube_id))
-#             move(video_webm_path, video_webm_path_new)
-#             renamed_files.append(video_webm_path_new)
-
-#             if not os.listdir(video_dir_path):
-#                 os.rmdir(video_dir_path)
-
-#         except Exception as e:
-#             flash("An error occurred while renaming the YouTube video file: {}".format(e), category="error")
-#             return None
-        
-#     return renamed_files
 
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
@@ -996,19 +914,10 @@ def move_coverfile(meta, db_book):
 
     try:
         os.makedirs(new_cover_path, exist_ok=True)
-        # image = Image.open(cover_file)
-
-        # # crop image to square 150x150 using smartcrop
-        # cropper = smartcrop.SmartCrop()
-        # result = cropper.crop(image, 150, 150)
-        # x, y, width, height = result['top_crop']['x'], result['top_crop']['y'], \
-        #                         result['top_crop']['width'], result['top_crop']['height']
-        # cropped_image = image.crop((x, y, x + width, y + height))
-        # cropped_image.save(os.path.join(new_cover_path, "cover.jpg"))
         move(cover_file, os.path.join(new_cover_path, "cover.jpg"))
 
-        if meta.cover:
-            os.unlink(meta.cover)
+        # if meta.cover:
+        #     os.unlink(meta.cover)
     except OSError as e:
         log.error("Failed to move cover file %s: %s", new_cover_path, e)
         flash(_("Failed to Move Cover File %(file)s: %(error)s", file=new_cover_path,
