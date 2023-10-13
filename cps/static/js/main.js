@@ -181,13 +181,15 @@ $(document).ready(function() {
         maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
 
         // Check if the input URL is a valid URL
+        // First check if URL starts with https:// if not, prepend it
+        url = url.startsWith("https://") ? url : "https://" + url;
         if (!isValidURL(url)) {
-            alert("Invalid URL.");
+            alert("Invalid URL");
             return;
         }
 
         $.ajax({
-            url: "/books/youtube",
+            url: "/live/youtube",
             method: "POST",
             data: {
                 csrf_token: $("#youtubeDownloadForm input[name=csrf_token]").val(),
@@ -272,7 +274,9 @@ $(document).ready(function() {
 
     // Function to validate URL
     function isValidURL(url) {
-        var urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+        // Regex to validate URL (should be any url starting with https://)
+        var urlPattern = /^https?:\/\//i;
+        // Check if the URL matches the pattern
         return urlPattern.test(url);
     }
 
