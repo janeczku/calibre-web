@@ -148,7 +148,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="youtubeDownloadModalLabel">{{_('Download a YouTube Channel or Playlist to your
+        <h4 class="modal-title" id="youtubeDownloadModalLabel">{{_('Download a video to your
           Internet-in-a-Box')}}</h4>
       </div>
       <div class="modal-body">
@@ -156,10 +156,10 @@
           method="post">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
-            <label for="youtubeURL" class="col-sm-2 control-label">{{_('YouTube URL')}}</label>
+            <label for="youtubeURL" class="col-sm-2 control-label">{{_('URL')}}</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="youtubeURL" name="youtubeURL"
-                placeholder="{{_('Enter YouTube URL')}}">
+                placeholder="{{_('Enter URL')}}">
             </div>
           </div>
           <!-- Advanced Options Toggle Button -->

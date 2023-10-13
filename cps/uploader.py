@@ -16,10 +16,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import json
+# import json
+import datetime
 import os
 import hashlib
 import shutil
+import sqlite3
 from subprocess import run
 from tempfile import gettempdir
 from flask_babel import gettext as _
@@ -216,7 +218,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
         tags=tags,
-        series="",Deldesir y
+        series="",
         series_id="",
         languages=','.join(languages),
         publisher=publisher,
@@ -246,115 +248,90 @@ def pdf_preview(tmp_file_path, tmp_dir):
         log.warning('On Windows this error could be caused by missing ghostscript')
         return None
 
-def video_metadata(tmp_file_path, original_file_name, original_file_extension):
-    video_cover(tmp_file_path)
-    meta = BookMeta(
-        file_path=tmp_file_path,
-        extension=original_file_extension,
-        title=original_file_name,
-        author='Unknown',
-        cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
-        description='',
-        tags='',
-        series="",
-        series_id="",
-        languages="",
-        publisher="",
-        pubdate="",
-        identifiers=[])
-    return meta
-
-
-def video_cover(tmp_file_path):
-    """generate cover image from video using ffmpeg"""
-    ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
-    ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-    ffmpeg_args = [
-        ffmpeg_executable,
-        '-i', tmp_file_path,
-        '-vframes', '1',
-        '-y', ffmpeg_output_file
-    ]
-
-    try:
-        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
-        log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
-
-    except Exception as e:
-        log.warning(f"ffmpeg failed: {e}")
-        return None
-
-
-def image_metadata(tmp_file_path, original_file_name, original_file_extension):
-    shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
-    meta = BookMeta(
-        file_path=tmp_file_path,
-        extension=original_file_extension,
-        title=original_file_name,
-        author='Unknown',
-        cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
-        description='',
-        tags='',
-        series="",
-        series_id="",
-        languages="",
-        publisher="",
-        pubdate="",
-        identifiers=[])
-    return meta
-
 
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
-    video_id = os.path.splitext(original_file_name)[0][:11]
-    youtube_id = os.path.splitext(original_file_name)[0][11:]
-    json_file_path = os.path.join("/output", youtube_id, "cache", "videos.json")
-    coverfile_path = os.path.splitext(original_file_name)[0] + '.webp'
-    if os.path.isfile(coverfile_path):
-        coverfile_path = os.path.splitext(tmp_file_path)[0] + '.cover.webp'
-        os.rename(os.path.splitext(original_file_name)[0] + '.webp', coverfile_path)
-        os.remove(os.path.splitext(original_file_name)[0] + '.webm')
-        return coverfile_path  
-    if os.path.isfile(json_file_path):
-        with open(json_file_path) as json_file:
-            data = json.load(json_file)
-            title = data[video_id]['snippet']['title']
-            author = data[video_id]['snippet']['videoOwnerChannelTitle']
-            description = data[video_id]['snippet']['description']
-            publisher = 'YouTube'
-            pubdate = data[video_id]['contentDetails']['videoPublishedAt'][0:10]
+    # video_id = os.path.splitext(original_file_name)[0][:11]
+    # youtube_id = os.path.splitext(original_file_name)[0][11:]
+    # json_file_path = os.path.join("/output", youtube_id, "cache", "videos.json")
+    # coverfile_path = os.path.splitext(original_file_name)[0] + '.webp'
+    # if os.path.isfile(coverfile_path):
+    #     coverfile_path = os.path.splitext(tmp_file_path)[0] + '.cover.webp'
+    #     os.rename(os.path.splitext(original_file_name)[0] + '.webp', coverfile_path)
+    #     os.remove(os.path.splitext(original_file_name)[0] + '.webm')
+    #     return coverfile_path  
+    # if os.path.isfile(json_file_path):
+    #     with open(json_file_path) as json_file:
+    #         data = json.load(json_file)
+    #         title = data[video_id]['snippet']['title']
+    #         author = data[video_id]['snippet']['videoOwnerChannelTitle']
+    #         description = data[video_id]['snippet']['description']
+    #         publisher = 'YouTube'
+    #         pubdate = data[video_id]['contentDetails']['videoPublishedAt'][0:10]
 
-            meta = BookMeta(
-                file_path=tmp_file_path,
-                extension=original_file_extension,
-                title=title,
-                author=author,
-                cover=coverfile_path,
-                description=description,
-                tags='',
-                series="",
-                series_id="",
-                languages="",
-                publisher=publisher,
-                pubdate=pubdate,
-                identifiers=[])
-            return meta
+    # original file name example: Baby_Calm_Down_FULL_HD_Selena_Gomez_Rema_Official_Music_Video_2023_600.22k_[yJ_qhwk2X2c].webm
+    # extract video id from original file name by extracting the string between the brackets "[...]"
+    # if there is a "]" before the extension:
+    if ']' in original_file_name:
+        video_id = original_file_name.split('[')[1].split(']')[0]
+        # with the video_id, we can get the video info from /var/tmp/download.db (sqlite3 database)
+        # Here are the columns from the database's media table:
+        # id, size, duration, time_uploaded, time_created, time_modified, time_deleted, time_downloaded, fps, view_count, path, webpath, extractor_id, title, live_status, uploader, width, height, type, video_count, audio_count, language, description, playlist_id, chapter_count, chapters
+        # we need the extractor_id (the video_id), title, uploader, description, time_uploaded
+        # we need to check if the video_id is in the database and access the columns we need to get the metadata for BookMeta
+        download_db_path = "/var/tmp/download.db"
+        if os.path.isfile(download_db_path):
+            conn = sqlite3.connect(download_db_path)
+            c = conn.cursor()
+            c.execute("SELECT * FROM media WHERE extractor_id=?", (video_id,))
+            row = c.fetchone()
+            if row is not None:
+                title = row[13]
+                author = row[15]
+                description = row[22]
+                publisher = 'YouTube'
+                # example of time_uploaded: 1696464000
+                pubdate = row[3] # time_uploaded
+                # convert time_uploaded to YYYY-MM-DD format
+                pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d')
+
+                # if no cover image, generate one
+                if not os.path.isfile(os.path.splitext(tmp_file_path)[0] + '.cover.jpg'):
+                    generate_video_cover(tmp_file_path)
+
+                meta = BookMeta(
+                    file_path=tmp_file_path,
+                    extension=original_file_extension,
+                    title=title,
+                    author=author,
+                    cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+                    description=description,
+                    tags='',
+                    series="",
+                    series_id="",
+                    languages="",
+                    publisher=publisher,
+                    pubdate=pubdate,
+                    identifiers=[])
+                return meta
+        else:
+            log.warning('Cannot find download.db, using default')
     else:
-        ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
-        ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-        ffmpeg_args = [
-            ffmpeg_executable,
-            '-i', tmp_file_path,
-            '-vframes', '1',
-            '-y', ffmpeg_output_file
-        ]
+        # ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
+        # ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+        # ffmpeg_args = [
+        #     ffmpeg_executable,
+        #     '-i', tmp_file_path,
+        #     '-vframes', '1',
+        #     '-y', ffmpeg_output_file
+        # ]
 
-        try:
-            ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
-            log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
+        # try:
+        #     ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        #     log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
 
-        except Exception as e:
-            log.warning(f"ffmpeg failed: {e}")
-            return None
+        # except Exception as e:
+        #     log.warning(f"ffmpeg failed: {e}")
+        #     return None
         
         meta = BookMeta(
             file_path=tmp_file_path,
@@ -372,6 +349,23 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             identifiers=[])
         return meta
 
+def generate_video_cover(tmp_file_path):
+    ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
+    ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+    ffmpeg_args = [
+        ffmpeg_executable,
+        '-i', tmp_file_path,
+        '-vframes', '1',
+        '-y', ffmpeg_output_file
+    ]
+
+    try:
+        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
+
+    except Exception as e:
+        log.warning(f"ffmpeg failed: {e}")
+        return None
 
 def image_metadata(tmp_file_path, original_file_name, original_file_extension):
     shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
