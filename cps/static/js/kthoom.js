@@ -808,7 +808,7 @@ function init(filename) {
         var viewLength = 0;
         $(".mainImage").each(function(){
             viewLength += $(this).height();
-        });        
+        });
         if (settings.pageDisplay === 0) {
             // Don't trigger the scroll for Single Page
         } else if (scroll > prevScrollPosition) {
