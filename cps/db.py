@@ -663,7 +663,7 @@ class CalibreDB:
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
-                                                          bind=cls.engine))
+                                                          bind=cls.engine, future=True))
         for inst in cls.instances:
             inst.init_session()
 

@@ -1014,7 +1014,7 @@ def series_list():
                                                 func.max(db.Books.series_index), db.Books.id)
                        .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters())
                        .group_by(text('books_series_link.series'))
-                       .having(func.max(db.Books.series_index))
+                       .having(or_(func.max(db.Books.series_index), db.Books.series_index==""))
                        .order_by(order)
                        .all())
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=char_list,
@@ -1569,7 +1569,7 @@ def read_book(book_id, book_format):
                         title = title + " #" + '{0:.2f}'.format(book.series_index).rstrip('0').rstrip('.')
                 log.debug("Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=title,
-                                             extension=fileExt)
+                                             extension=fileExt, bookmark=bookmark)
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")

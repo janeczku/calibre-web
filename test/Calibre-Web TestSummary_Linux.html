@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-08-23 21:16:31</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-10-11 19:32:23</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-08-24 03:51:45</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-10-12 01:29:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 34 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>4h 56 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">22</td>
-        <td class="text-center">22</td>
-        <td class="text-center">0</td>
+        <td class="text-center">21</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -248,11 +248,31 @@
 
     
     
-        <tr id='pt2.1' class='hiddenRow bg-success'>
+        <tr id="ft2.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_all</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 49, in test_backup_all
+    self.assertEqual(1, len(res))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -322,7 +342,7 @@
     
         <tr id='pt2.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_book_seriesindex</div>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_book_series_index</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1014,12 +1034,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">20</td>
-        <td class="text-center">17</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 20)">Detail</a>
@@ -1136,31 +1156,11 @@
     
     
     
-        <tr id="et12.13" class="none bg-info">
+        <tr id='pt12.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 225, in test_upload_metadata_cb7
-    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1246,12 +1246,12 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
         <td class="text-center">38</td>
-        <td class="text-center">34</td>
+        <td class="text-center">36</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 38)">Detail</a>
@@ -1537,31 +1537,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="et13.28" class="none bg-info">
+        <tr id='pt13.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cb7</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.28')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et13.28" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et13.28').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 1159, in test_upload_book_cb7
-    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1647,31 +1627,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="et13.38" class="none bg-info">
+        <tr id='pt13.38' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.38')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et13.38" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et13.38').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 866, in test_upload_cover_hdd
-    self.delete_book(details[&#39;id&#39;])
-NameError: name &#39;details&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1992,12 +1952,12 @@ NameError: name &#39;details&#39; is not defined</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c17', 1)">Detail</a>
@@ -2006,32 +1966,26 @@ NameError: name &#39;details&#39; is not defined</pre>
 
     
     
-        <tr id="ft17.1" class="none bg-danger">
+        <tr id="et17.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 209, in test_load_metadata
-    self.assertEqual(old_results, results)
-AssertionError: Lists differ: [] != [{&#39;cover_element&#39;: &lt;selenium.webdriver.rem[10121 chars]4/&#39;}]
-
-Second list contains 20 additional elements.
-First extra element 0:
-{&#39;cover_element&#39;: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;34034d2d-f804-47c1-b9ad-fcf09f75f812&#34;, element=&#34;6dfe81e2-4752-4f1f-bd33-9388d0d529c1&#34;)&gt;, &#39;cover&#39;: &#39;https://books.google.com/books/content?id=Ub8TAQAAIAAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=1&amp;source=gbs_api&amp;fife=w800-h900&#39;, &#39;source&#39;: &#39;https://books.google.com/&#39;, &#39;author&#39;: &#39;Martin Vogt&#39;, &#39;publisher&#39;: &#39;&#39;, &#39;title&#39;: &#39;Der Buchtitel in der römischen Poesie&#39;, &#39;title_link&#39;: &#39;https://books.google.com/books?id=Ub8TAQAAIAAJ&#39;}
-
-Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 84, in test_load_metadata
+    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3374,13 +3328,13 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
 
     <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
-        <td class="text-center">23</td>
-        <td class="text-center">23</td>
+        <td class="text-center">24</td>
+        <td class="text-center">24</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 23)">Detail</a>
+            <a onclick="showClassDetail('c36', 24)">Detail</a>
         </td>
     </tr>
 
@@ -3559,7 +3513,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
         <tr id='pt36.20' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3568,7 +3522,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
         <tr id='pt36.21' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3577,7 +3531,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
         <tr id='pt36.22' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3585,6 +3539,15 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
     
         <tr id='pt36.23' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt36.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4082,11 +4045,11 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4159,11 +4122,31 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
     
     
     
-        <tr id='pt45.8' class='hiddenRow bg-success'>
+        <tr id="ft45.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft45.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft45.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 311, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.004399004046062869 != 0.0 within 0.0001 delta (0.004399004046062869 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5237,10 +5220,10 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>461</td>
-        <td>448</td>
+        <td>462</td>
+        <td>450</td>
+        <td>2</td>
         <td>1</td>
-        <td>3</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5269,7 +5252,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.2.0-26-generic #26~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Jul 13 16:27:29 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.2.0-34-generic #34~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  7 13:12:03 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5293,7 +5276,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>Babel</th>
-              <td>2.12.1</td>
+              <td>2.13.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5311,13 +5294,13 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>flask-babel</th>
-              <td>3.0.1</td>
+              <td>3.1.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Flask-Limiter</th>
-              <td>3.3.1</td>
+              <td>3.4.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5335,13 +5318,13 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>Flask-WTF</th>
-              <td>1.1.1</td>
+              <td>1.1.2</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>greenlet</th>
-              <td>2.0.2</td>
+              <td>3.0.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5371,19 +5354,19 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>pypdf</th>
-              <td>3.7.1</td>
+              <td>3.15.5</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pytz</th>
-              <td>2022.7.1</td>
+              <td>2023.3.post1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>requests</th>
-              <td>2.28.2</td>
+              <td>2.31.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5395,13 +5378,13 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>tornado</th>
-              <td>6.2</td>
+              <td>6.3.3</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Unidecode</th>
-              <td>1.3.6</td>
+              <td>1.3.7</td>
               <td>Basic</td>
             </tr>
           
@@ -5419,7 +5402,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5449,7 +5432,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5479,7 +5462,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5509,7 +5492,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5551,7 +5534,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>rarfile</th>
-              <td>4.0</td>
+              <td>4.1</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -5563,7 +5546,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5599,7 +5582,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5641,7 +5624,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.97.0</td>
+              <td>2.103.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5677,19 +5660,19 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.21.1</td>
+              <td>0.23.0</td>
               <td>TestGoodreads</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.0</td>
+              <td>4.19.1</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.0</td>
+              <td>4.19.1</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5701,7 +5684,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.0</td>
+              <td>4.19.1</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -5731,7 +5714,7 @@ Diff is 10795 characters long. Set self.maxDiff to None to see it.</pre>
 </div>
 
 <script>
-    drawCircle(448, 1, 3, 9);
+    drawCircle(450, 2, 1, 9);
     showCase(5);
 </script>
 
