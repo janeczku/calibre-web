@@ -142,6 +142,7 @@ def HandleSyncRequest():
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
     log.debug("SyncToken: {}".format(sync_token))
+    log.debug("Download link format {}".format(get_download_url_for_book('[bookid]','[bookformat]')))
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
@@ -367,7 +368,7 @@ def HandleMetadataRequest(book_uuid):
     return response
 
 
-def get_download_url_for_book(book, book_format):
+def get_download_url_for_book(book_id, book_format):
     if not current_app.wsgi_app.is_proxied:
         if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
@@ -379,13 +380,13 @@ def get_download_url_for_book(book, book_format):
             url_base=host,
             url_port=config.config_external_port,
             auth_token=get_auth_token(),
-            book_id=book.id,
+            book_id=book_id,
             book_format=book_format.lower()
         )
     return url_for(
         "kobo.download_book",
         auth_token=kobo_auth.get_auth_token(),
-        book_id=book.id,
+        book_id=book_id,
         book_format=book_format.lower(),
         _external=True,
     )
@@ -468,7 +469,7 @@ def get_metadata(book):
                     {
                         "Format": kobo_format,
                         "Size": book_data.uncompressed_size,
-                        "Url": get_download_url_for_book(book, book_data.format),
+                        "Url": get_download_url_for_book(book.id, book_data.format),
                         # The Kobo forma accepts platforms: (Generic, Android)
                         "Platform": "Generic",
                         # "DrmType": "None", # Not required
