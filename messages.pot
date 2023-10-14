@@ -2175,7 +2175,7 @@ msgid "Enable Uploads"
 msgstr ""
 
 #: cps/templates/config_edit.html:108
-msgid "(Please ensure users having also upload rights)"
+msgid "(Please ensure that users also have upload permissions.)"
 msgstr ""
 
 #: cps/templates/config_edit.html:112
