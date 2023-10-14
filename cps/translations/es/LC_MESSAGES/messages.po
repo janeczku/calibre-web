@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-10-02 20:02+0200\n"
+"POT-Creation-Date: 2023-10-14 15:45+0200\n"
 "PO-Revision-Date: 2020-05-25 17:22+0200\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -48,8 +48,8 @@ msgstr "Comando desconocido"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Puesto en cola un correo electrónico de prueba enviado a %(email)s, por favor, comprueba el resultado en Tareas"
 
-#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
-#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
+#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
+#: cps/editbooks.py:618 cps/editbooks.py:635 cps/editbooks.py:1244
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Desconocido"
@@ -133,7 +133,7 @@ msgstr "No hay un sitio válido"
 msgid "No Valid Book Language Given"
 msgstr "No se ha indicado un idioma válido para el libro"
 
-#: cps/admin.py:531 cps/editbooks.py:445
+#: cps/admin.py:531 cps/editbooks.py:444
 msgid "Parameter not found"
 msgstr "Parámetro no encontrado"
 
@@ -298,8 +298,8 @@ msgid "Success! Gmail Account Verified."
 msgstr ""
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
-#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
+#: cps/editbooks.py:306 cps/editbooks.py:1206 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1489
 #, python-format
@@ -545,110 +545,110 @@ msgstr "Columna personalizada No.%(column)d no existe en la base de datos calibr
 msgid "None"
 msgstr "Ninguno"
 
-#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1530
+#: cps/editbooks.py:111 cps/editbooks.py:899 cps/web.py:525 cps/web.py:1530
 #: cps/web.py:1574 cps/web.py:1619
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "oh, oh, el libro seleccionado no está disponible. El archivo no existe o no es accesible"
 
-#: cps/editbooks.py:156 cps/editbooks.py:1228
+#: cps/editbooks.py:155 cps/editbooks.py:1227
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:176 cps/editbooks.py:721
+#: cps/editbooks.py:175 cps/editbooks.py:720
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Los identificadores no distinguen entre mayúsculas y minúsculas, sobrescribiendo el identificador antiguo"
 
-#: cps/editbooks.py:218
+#: cps/editbooks.py:217
 msgid "Metadata successfully updated"
 msgstr "Metadatos actualizados con éxito"
 
-#: cps/editbooks.py:236
+#: cps/editbooks.py:235
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:293
+#: cps/editbooks.py:292
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "El fichero %(file)s ha sido subido"
 
-#: cps/editbooks.py:321
+#: cps/editbooks.py:320
 msgid "Source or destination format for conversion missing"
 msgstr "Falta la fuente o el formato de destino para la conversión"
 
-#: cps/editbooks.py:329
+#: cps/editbooks.py:328
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Libro puesto a la cola para su conversión a %(book_format)s"
 
-#: cps/editbooks.py:333
+#: cps/editbooks.py:332
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Ocurrió un error al convertir este libro: %(res)s"
 
-#: cps/editbooks.py:640
+#: cps/editbooks.py:639
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "El libro cargado probablemente existe en la biblioteca, considera cambiarlo antes de subirlo de nuevo: "
 
-#: cps/editbooks.py:695 cps/editbooks.py:1020
+#: cps/editbooks.py:694 cps/editbooks.py:1019
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s no es un idioma válido"
 
-#: cps/editbooks.py:733 cps/editbooks.py:1168
+#: cps/editbooks.py:732 cps/editbooks.py:1167
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "No se permite subir archivos con la extensión '%(ext)s' a este servidor"
 
-#: cps/editbooks.py:737 cps/editbooks.py:1172
+#: cps/editbooks.py:736 cps/editbooks.py:1171
 msgid "File to be uploaded must have an extension"
 msgstr "El archivo a subir debe tener una extensión"
 
-#: cps/editbooks.py:745
+#: cps/editbooks.py:744
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "El archivo %(filename)s no pudo salvarse en el directorio temporal (Temp Dir)"
 
-#: cps/editbooks.py:765
+#: cps/editbooks.py:764
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Fallo al mover el archivo de cubierta %(file)s: %(error)s"
 
-#: cps/editbooks.py:822 cps/editbooks.py:824
+#: cps/editbooks.py:821 cps/editbooks.py:823
 msgid "Book Format Successfully Deleted"
 msgstr "Formato de libro eliminado con éxito"
 
-#: cps/editbooks.py:831 cps/editbooks.py:833
+#: cps/editbooks.py:830 cps/editbooks.py:832
 msgid "Book Successfully Deleted"
 msgstr "Libro eliminado con éxito"
 
-#: cps/editbooks.py:885
+#: cps/editbooks.py:884
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:935
+#: cps/editbooks.py:934
 msgid "edit metadata"
 msgstr "editar metadatos"
 
-#: cps/editbooks.py:984
+#: cps/editbooks.py:983
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex) no es un número válido, saltando"
 
-#: cps/editbooks.py:1163
+#: cps/editbooks.py:1162
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1184
+#: cps/editbooks.py:1183
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Fallo al crear la ruta %(path)s (permiso denegado)"
 
-#: cps/editbooks.py:1189
+#: cps/editbooks.py:1188
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Fallo al guardar el archivo %(file)s."
 
-#: cps/editbooks.py:1213
+#: cps/editbooks.py:1212
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Archivo con formato %(ext)s añadido a %(book)s"
@@ -2231,7 +2231,7 @@ msgid "Enable Uploads"
 msgstr "Permitir subidas"
 
 #: cps/templates/config_edit.html:108
-msgid "(Please ensure users having also upload rights)"
+msgid "(Please ensure that users also have upload permissions)"
 msgstr ""
 
 #: cps/templates/config_edit.html:112
@@ -2495,7 +2495,7 @@ msgstr "Número de libros aleatorios a mostrar"
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
 msgstr "Número de autores para mostrar antes de ocultar (0 = desactivar la ocultación)"
 
-#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:117
+#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
 msgid "Theme"
 msgstr "Tema"
 
@@ -2878,7 +2878,7 @@ msgid "Upload done, processing, please wait..."
 msgstr "Carga hecha, procesando, por favor espere ..."
 
 #: cps/templates/layout.html:91 cps/templates/read.html:76
-#: cps/templates/readcbr.html:86 cps/templates/readcbr.html:112
+#: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "Ajustes"
 
@@ -3024,11 +3024,11 @@ msgstr "Catálogo de ebooks de Calibre-Web"
 msgid "epub Reader"
 msgstr "Lector PDF"
 
-#: cps/templates/read.html:81 cps/templates/readcbr.html:120
+#: cps/templates/read.html:81 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "Claro"
 
-#: cps/templates/read.html:82 cps/templates/readcbr.html:121
+#: cps/templates/read.html:82 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "Oscuro"
 
@@ -3049,129 +3049,137 @@ msgstr "Redimensionar el texto cuando las barras laterales están abiertas."
 msgid "Font Sizes"
 msgstr ""
 
-#: cps/templates/readcbr.html:7
+#: cps/templates/readcbr.html:8
 #, fuzzy
 msgid "Comic Reader"
 msgstr "Lector PDF"
 
-#: cps/templates/readcbr.html:91
+#: cps/templates/readcbr.html:75
 msgid "Keyboard Shortcuts"
 msgstr "Atajos de teclado"
 
-#: cps/templates/readcbr.html:94
+#: cps/templates/readcbr.html:78
 msgid "Previous Page"
 msgstr "Página previa"
 
-#: cps/templates/readcbr.html:95
+#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:159
 msgid "Next Page"
 msgstr "Página siguiente"
 
-#: cps/templates/readcbr.html:96
+#: cps/templates/readcbr.html:80
 msgid "Single Page Display"
 msgstr ""
 
-#: cps/templates/readcbr.html:97
+#: cps/templates/readcbr.html:81
 msgid "Long Strip Display"
 msgstr ""
 
-#: cps/templates/readcbr.html:98
+#: cps/templates/readcbr.html:82
 msgid "Scale to Best"
 msgstr "Escalar a mejor"
 
-#: cps/templates/readcbr.html:99
+#: cps/templates/readcbr.html:83
 msgid "Scale to Width"
 msgstr "Escalar a la ancho"
 
-#: cps/templates/readcbr.html:100
+#: cps/templates/readcbr.html:84
 msgid "Scale to Height"
 msgstr "Escalar a lo alto"
 
-#: cps/templates/readcbr.html:101
+#: cps/templates/readcbr.html:85
 msgid "Scale to Native"
 msgstr "Escalado nativo"
 
-#: cps/templates/readcbr.html:102
+#: cps/templates/readcbr.html:86
 msgid "Rotate Right"
 msgstr "Rotar hacia la derecha"
 
-#: cps/templates/readcbr.html:103
+#: cps/templates/readcbr.html:87
 msgid "Rotate Left"
 msgstr "Rotar hacia la izquierda"
 
-#: cps/templates/readcbr.html:104
+#: cps/templates/readcbr.html:88
 msgid "Flip Image"
 msgstr "Voltear imagen"
 
-#: cps/templates/readcbr.html:126
+#: cps/templates/readcbr.html:110
 msgid "Display"
 msgstr ""
 
-#: cps/templates/readcbr.html:129
+#: cps/templates/readcbr.html:113
 #, fuzzy
 msgid "Single Page"
 msgstr "Página de administración"
 
-#: cps/templates/readcbr.html:130
+#: cps/templates/readcbr.html:114
 msgid "Long Strip"
 msgstr ""
 
-#: cps/templates/readcbr.html:135
+#: cps/templates/readcbr.html:119
 msgid "Scale"
 msgstr "Escalar"
 
-#: cps/templates/readcbr.html:138
+#: cps/templates/readcbr.html:122
 msgid "Best"
 msgstr "Mejor"
 
-#: cps/templates/readcbr.html:139
+#: cps/templates/readcbr.html:123
 msgid "Width"
 msgstr "Ancho"
 
-#: cps/templates/readcbr.html:140
+#: cps/templates/readcbr.html:124
 msgid "Height"
 msgstr "Alto"
 
-#: cps/templates/readcbr.html:141
+#: cps/templates/readcbr.html:125
 msgid "Native"
 msgstr "Nativo"
 
-#: cps/templates/readcbr.html:146
+#: cps/templates/readcbr.html:130
 msgid "Rotate"
 msgstr "Rotar"
 
-#: cps/templates/readcbr.html:157
+#: cps/templates/readcbr.html:141
 msgid "Flip"
 msgstr "Voltear"
 
-#: cps/templates/readcbr.html:160
+#: cps/templates/readcbr.html:144
 msgid "Horizontal"
 msgstr "Horizontal"
 
-#: cps/templates/readcbr.html:161
+#: cps/templates/readcbr.html:145
 msgid "Vertical"
 msgstr "Vertical"
 
-#: cps/templates/readcbr.html:166
+#: cps/templates/readcbr.html:150
 msgid "Direction"
 msgstr "Dirección"
 
-#: cps/templates/readcbr.html:169
+#: cps/templates/readcbr.html:153
 msgid "Left to Right"
 msgstr "De izquierda a derecha"
 
-#: cps/templates/readcbr.html:170
+#: cps/templates/readcbr.html:154
 msgid "Right to Left"
 msgstr "De derecha a izquierda"
 
-#: cps/templates/readcbr.html:175
+#: cps/templates/readcbr.html:162
+msgid "Reset to Top"
+msgstr ""
+
+#: cps/templates/readcbr.html:163
+msgid "Remember Position"
+msgstr ""
+
+#: cps/templates/readcbr.html:168
 msgid "Scrollbar"
 msgstr "Barra de desplazamiento"
 
-#: cps/templates/readcbr.html:178
+#: cps/templates/readcbr.html:171
 msgid "Show"
 msgstr "Mostrar"
 
-#: cps/templates/readcbr.html:179
+#: cps/templates/readcbr.html:172
 msgid "Hide"
 msgstr "Ocultar"
 

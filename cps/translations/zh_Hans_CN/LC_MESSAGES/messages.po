@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-02 20:02+0200\n"
+"POT-Creation-Date: 2023-10-14 15:45+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -42,8 +42,8 @@ msgstr "未知命令"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "成功！书籍已排队进行元数据备份，请检查任务列表以获取结果"
 
-#: cps/admin.py:203 cps/editbooks.py:579 cps/editbooks.py:581
-#: cps/editbooks.py:619 cps/editbooks.py:636 cps/editbooks.py:1245
+#: cps/admin.py:203 cps/editbooks.py:578 cps/editbooks.py:580
+#: cps/editbooks.py:618 cps/editbooks.py:635 cps/editbooks.py:1244
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "未知"
@@ -126,7 +126,7 @@ msgstr "无可用本地化"
 msgid "No Valid Book Language Given"
 msgstr "无有效书籍语言"
 
-#: cps/admin.py:531 cps/editbooks.py:445
+#: cps/admin.py:531 cps/editbooks.py:444
 msgid "Parameter not found"
 msgstr "参数未找到"
 
@@ -286,8 +286,8 @@ msgid "Success! Gmail Account Verified."
 msgstr "Gmail 账户验证成功"
 
 #: cps/admin.py:1310 cps/admin.py:1313 cps/admin.py:1695 cps/admin.py:1829
-#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:231
-#: cps/editbooks.py:307 cps/editbooks.py:1207 cps/shelf.py:82 cps/shelf.py:142
+#: cps/admin.py:1927 cps/admin.py:2048 cps/editbooks.py:230
+#: cps/editbooks.py:306 cps/editbooks.py:1206 cps/shelf.py:82 cps/shelf.py:142
 #: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
 #: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1489
 #, python-format
@@ -527,110 +527,110 @@ msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 msgid "None"
 msgstr "无"
 
-#: cps/editbooks.py:112 cps/editbooks.py:900 cps/web.py:525 cps/web.py:1530
+#: cps/editbooks.py:111 cps/editbooks.py:899 cps/web.py:525 cps/web.py:1530
 #: cps/web.py:1574 cps/web.py:1619
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
-#: cps/editbooks.py:156 cps/editbooks.py:1228
+#: cps/editbooks.py:155 cps/editbooks.py:1227
 msgid "User has no rights to upload cover"
 msgstr "用户没有权限上传封面"
 
-#: cps/editbooks.py:176 cps/editbooks.py:721
+#: cps/editbooks.py:175 cps/editbooks.py:720
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "标识符不区分大小写，覆盖旧标识符"
 
-#: cps/editbooks.py:218
+#: cps/editbooks.py:217
 msgid "Metadata successfully updated"
 msgstr "已成功更新元数据"
 
-#: cps/editbooks.py:236
+#: cps/editbooks.py:235
 msgid "Error editing book: {}"
 msgstr "编辑书籍时出错: {}"
 
-#: cps/editbooks.py:293
+#: cps/editbooks.py:292
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "文件 %(file)s 已上传"
 
-#: cps/editbooks.py:321
+#: cps/editbooks.py:320
 msgid "Source or destination format for conversion missing"
 msgstr "转换的源格式或目的格式缺失"
 
-#: cps/editbooks.py:329
+#: cps/editbooks.py:328
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "书籍已经被成功加入 %(book_format)s 格式转换队列"
 
-#: cps/editbooks.py:333
+#: cps/editbooks.py:332
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书籍时出现错误： %(res)s"
 
-#: cps/editbooks.py:640
+#: cps/editbooks.py:639
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "上传的书籍可能已经存在，建议修改后重新上传： "
 
-#: cps/editbooks.py:695 cps/editbooks.py:1020
+#: cps/editbooks.py:694 cps/editbooks.py:1019
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' 不是一种有效语言"
 
-#: cps/editbooks.py:733 cps/editbooks.py:1168
+#: cps/editbooks.py:732 cps/editbooks.py:1167
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "不能上传文件扩展名为“%(ext)s”的文件到此服务器"
 
-#: cps/editbooks.py:737 cps/editbooks.py:1172
+#: cps/editbooks.py:736 cps/editbooks.py:1171
 msgid "File to be uploaded must have an extension"
 msgstr "要上传的文件必须具有扩展名"
 
-#: cps/editbooks.py:745
+#: cps/editbooks.py:744
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "文件 %(filename)s 无法保存到临时目录"
 
-#: cps/editbooks.py:765
+#: cps/editbooks.py:764
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "移动封面文件失败 %(file)s：%(error)s"
 
-#: cps/editbooks.py:822 cps/editbooks.py:824
+#: cps/editbooks.py:821 cps/editbooks.py:823
 msgid "Book Format Successfully Deleted"
 msgstr "书籍的此格式副本已成功删除"
 
-#: cps/editbooks.py:831 cps/editbooks.py:833
+#: cps/editbooks.py:830 cps/editbooks.py:832
 msgid "Book Successfully Deleted"
 msgstr "书籍已成功删除"
 
-#: cps/editbooks.py:885
+#: cps/editbooks.py:884
 msgid "You are missing permissions to delete books"
 msgstr "您没有删除书籍的权限"
 
-#: cps/editbooks.py:935
+#: cps/editbooks.py:934
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/editbooks.py:984
+#: cps/editbooks.py:983
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
 
-#: cps/editbooks.py:1163
+#: cps/editbooks.py:1162
 msgid "User has no rights to upload additional file formats"
 msgstr "用户没有权限上传其他文件格式"
 
-#: cps/editbooks.py:1184
+#: cps/editbooks.py:1183
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "创建路径 %(path)s 失败 (权限不足)"
 
-#: cps/editbooks.py:1189
+#: cps/editbooks.py:1188
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "保存文件 %(file)s 失败"
 
-#: cps/editbooks.py:1213
+#: cps/editbooks.py:1212
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "已添加 %(ext)s 格式到 %(book)s"
@@ -2176,7 +2176,7 @@ msgid "Enable Uploads"
 msgstr "启用上传"
 
 #: cps/templates/config_edit.html:108
-msgid "(Please ensure users having also upload rights)"
+msgid "(Please ensure that users also have upload permissions)"
 msgstr "（请确保用户也有上传权限）"
 
 #: cps/templates/config_edit.html:112
@@ -2438,7 +2438,7 @@ msgstr "随机书籍显示数量"
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
 msgstr "主页中书籍作者的最大显示数量（0=不隐藏）"
 
-#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:117
+#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
 msgid "Theme"
 msgstr "主题"
 
@@ -2814,7 +2814,7 @@ msgid "Upload done, processing, please wait..."
 msgstr "上传完成，正在处理，请稍候..."
 
 #: cps/templates/layout.html:91 cps/templates/read.html:76
-#: cps/templates/readcbr.html:86 cps/templates/readcbr.html:112
+#: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "设置"
 
@@ -2958,11 +2958,11 @@ msgstr "Caliebre-Web 电子书路径"
 msgid "epub Reader"
 msgstr "epub 阅读器"
 
-#: cps/templates/read.html:81 cps/templates/readcbr.html:120
+#: cps/templates/read.html:81 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "浅色"
 
-#: cps/templates/read.html:82 cps/templates/readcbr.html:121
+#: cps/templates/read.html:82 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "深色"
 
@@ -2982,127 +2982,135 @@ msgstr "打开侧栏时重排文本"
 msgid "Font Sizes"
 msgstr "字体大小"
 
-#: cps/templates/readcbr.html:7
+#: cps/templates/readcbr.html:8
 msgid "Comic Reader"
 msgstr "Comic 阅读器"
 
-#: cps/templates/readcbr.html:91
+#: cps/templates/readcbr.html:75
 msgid "Keyboard Shortcuts"
 msgstr "快捷键"
 
-#: cps/templates/readcbr.html:94
+#: cps/templates/readcbr.html:78
 msgid "Previous Page"
 msgstr "上一页"
 
-#: cps/templates/readcbr.html:95
+#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:159
 msgid "Next Page"
 msgstr "下一页"
 
-#: cps/templates/readcbr.html:96
+#: cps/templates/readcbr.html:80
 msgid "Single Page Display"
 msgstr "单页显示"
 
-#: cps/templates/readcbr.html:97
+#: cps/templates/readcbr.html:81
 msgid "Long Strip Display"
 msgstr "长条显示"
 
-#: cps/templates/readcbr.html:98
+#: cps/templates/readcbr.html:82
 msgid "Scale to Best"
 msgstr "缩放到最佳"
 
-#: cps/templates/readcbr.html:99
+#: cps/templates/readcbr.html:83
 msgid "Scale to Width"
 msgstr "按宽度缩放"
 
-#: cps/templates/readcbr.html:100
+#: cps/templates/readcbr.html:84
 msgid "Scale to Height"
 msgstr "按高度缩放"
 
-#: cps/templates/readcbr.html:101
+#: cps/templates/readcbr.html:85
 msgid "Scale to Native"
 msgstr "缩放到原始大小"
 
-#: cps/templates/readcbr.html:102
+#: cps/templates/readcbr.html:86
 msgid "Rotate Right"
 msgstr "向右旋转"
 
-#: cps/templates/readcbr.html:103
+#: cps/templates/readcbr.html:87
 msgid "Rotate Left"
 msgstr "向左旋转"
 
-#: cps/templates/readcbr.html:104
+#: cps/templates/readcbr.html:88
 msgid "Flip Image"
 msgstr "翻转图片"
 
-#: cps/templates/readcbr.html:126
+#: cps/templates/readcbr.html:110
 msgid "Display"
 msgstr "显示"
 
-#: cps/templates/readcbr.html:129
+#: cps/templates/readcbr.html:113
 msgid "Single Page"
 msgstr "单页"
 
-#: cps/templates/readcbr.html:130
+#: cps/templates/readcbr.html:114
 msgid "Long Strip"
 msgstr "长条"
 
-#: cps/templates/readcbr.html:135
+#: cps/templates/readcbr.html:119
 msgid "Scale"
 msgstr "缩放"
 
-#: cps/templates/readcbr.html:138
+#: cps/templates/readcbr.html:122
 msgid "Best"
 msgstr "最佳"
 
-#: cps/templates/readcbr.html:139
+#: cps/templates/readcbr.html:123
 msgid "Width"
 msgstr "宽度"
 
-#: cps/templates/readcbr.html:140
+#: cps/templates/readcbr.html:124
 msgid "Height"
 msgstr "高度"
 
-#: cps/templates/readcbr.html:141
+#: cps/templates/readcbr.html:125
 msgid "Native"
 msgstr "原始"
 
-#: cps/templates/readcbr.html:146
+#: cps/templates/readcbr.html:130
 msgid "Rotate"
 msgstr "旋转"
 
-#: cps/templates/readcbr.html:157
+#: cps/templates/readcbr.html:141
 msgid "Flip"
 msgstr "翻转"
 
-#: cps/templates/readcbr.html:160
+#: cps/templates/readcbr.html:144
 msgid "Horizontal"
 msgstr "水平"
 
-#: cps/templates/readcbr.html:161
+#: cps/templates/readcbr.html:145
 msgid "Vertical"
 msgstr "垂直"
 
-#: cps/templates/readcbr.html:166
+#: cps/templates/readcbr.html:150
 msgid "Direction"
 msgstr "方向"
 
-#: cps/templates/readcbr.html:169
+#: cps/templates/readcbr.html:153
 msgid "Left to Right"
 msgstr "从左到右"
 
-#: cps/templates/readcbr.html:170
+#: cps/templates/readcbr.html:154
 msgid "Right to Left"
 msgstr "从右到左"
 
-#: cps/templates/readcbr.html:175
+#: cps/templates/readcbr.html:162
+msgid "Reset to Top"
+msgstr ""
+
+#: cps/templates/readcbr.html:163
+msgid "Remember Position"
+msgstr ""
+
+#: cps/templates/readcbr.html:168
 msgid "Scrollbar"
 msgstr "工具栏"
 
-#: cps/templates/readcbr.html:178
+#: cps/templates/readcbr.html:171
 msgid "Show"
 msgstr "显示"
 
-#: cps/templates/readcbr.html:179
+#: cps/templates/readcbr.html:172
 msgid "Hide"
 msgstr "隐藏"
 
