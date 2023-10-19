@@ -7,30 +7,34 @@
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
 <table class="table table-striped" id="table_user">
-    <tr>
-        <th>{{_('Name')}}</th>
-        <th>{{_('Title')}}</th>
-        <th>{{_('Icon')}}</th>
-        <th>{{_('Position')}}</th>
-        <th>{{_('Enabled')}}</th>
-        <th>{{_('Order')}}</th>
-    </tr>
+    <thead>
+        <tr>
+            <th>{{_('Name')}}</th>
+            <th>{{_('Title')}}</th>
+            <th>{{_('Icon')}}</th>
+            <th>{{_('Position')}}</th>
+            <th>{{_('Enabled')}}</th>
+            <th>{{_('Order')}}</th>
+        </tr>
+    </thead>
+    <tbody>
     {% for page in pages %}
-    <tr>
-        <td><a class="session" href="{{url_for('editpage.edit_page', file=page.id)}}">{{page.name}}</a></td>
-        <td>{{page.title}}</td>
-        <td>{{page.icon}}</td>
-        <td>{{_('bottom') if page.position == "0" else _('top')}}</td>
-        <td>
-            {% if page.is_enabled %}
+        <tr>
+            <td><a class="session" href="{{url_for('editpage.edit_page', file=page.id)}}">{{page.name}}</a></td>
+            <td>{{page.title}}</td>
+            <td>{{page.icon}}</td>
+            <td>{{_('bottom') if page.position == "0" else _('top')}}</td>
+            <td>
+                {% if page.is_enabled %}
                 <span class="glyphicon glyphicon-ok"></span>
-            {% else %}
+                {% else %}
                 <span class="glyphicon glyphicon-remove"></span>
-            {% endif %}
-        </td>
-        <td>{{page.order}}</td>
-    </tr>
+                {% endif %}
+            </td>
+            <td>{{page.order}}</td>
+        </tr>
     {% endfor %}
+    </tbody>
 </table>
 <a class="session" href="{{url_for('editpage.edit_page', file="new")}}">{{_('New Page')}}</a>
 {% endblock %}
