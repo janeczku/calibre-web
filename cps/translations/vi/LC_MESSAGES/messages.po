@@ -2834,7 +2834,7 @@ msgstr "Tài khoản"
 
 #: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
-msgstr "Đăng suất"
+msgstr "Đăng xuất"
 
 #: cps/templates/layout.html:78 cps/templates/layout.html:134
 msgid "Uploading..."
