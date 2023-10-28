@@ -34,6 +34,8 @@ UPDATER_AVAILABLE = True
 
 # Base dir is parent of current file, necessary if called from different folder
 BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+# if executable file the files should be placed in the parent dir (parallel to the exe file)
+
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
@@ -49,6 +51,9 @@ if HOME_CONFIG:
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
 else:
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
+    if getattr(sys, 'frozen', False):
+        CONFIG_DIR = os.path.abspath(os.path.join(CONFIG_DIR, os.pardir))
+
 
 DEFAULT_SETTINGS_FILE = "app.db"
 DEFAULT_GDRIVE_FILE = "gdrive.db"
