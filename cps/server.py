@@ -131,7 +131,7 @@ class WebServer(object):
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
         except socket.error as ex:
             log.error('%s', ex)
-            log.warning('Unable to listen on "", trying on IPv4 only...')
+            log.warning('Unable to listen on {}, trying on IPv4 only...'.format(address))
             address = ('', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET)
 
