@@ -315,7 +315,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
             extra_headers["x-kobo-recent-reads"] = store_response.headers.get("x-kobo-recent-reads")
 
         except Exception as ex:
-            log.error("Failed to receive or parse response from Kobo's sync endpoint: {}".format(ex))
+            log.error_or_exception("Failed to receive or parse response from Kobo's sync endpoint: {}".format(ex))
     if set_cont:
         extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
