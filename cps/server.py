@@ -27,6 +27,7 @@ try:
     from gevent.pywsgi import WSGIServer
     from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
+    from gevent.socket import socket as GeventSocket
     from gevent import __version__ as _version
     from greenlet import GreenletExit
     import ssl
@@ -95,6 +96,11 @@ class WebServer(object):
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 
+    def _make_gevent_socket_activated(self):
+        # Reuse an already open socket on fd=SD_LISTEN_FDS_START
+        SD_LISTEN_FDS_START = 3
+        return GeventSocket(fileno=SD_LISTEN_FDS_START)
+
     def _make_gevent_unix_socket(self, socket_file):
         # the socket file must not exist prior to bind()
         if os.path.exists(socket_file):
@@ -115,6 +121,10 @@ class WebServer(object):
 
     def _make_gevent_socket(self):
         if os.name != 'nt':
+            socket_activated = os.environ.get("LISTEN_FDS")
+            if socket_activated:
+                sock = self._make_gevent_socket_activated()
+                return sock, sock.getsockname()
             unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
             if unix_socket_file:
                 return self._make_gevent_unix_socket(unix_socket_file), "unix:" + unix_socket_file
