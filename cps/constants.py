@@ -171,6 +171,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages, publisher, pubdate, identifiers')
 
+# python build process likes to have x.y.zbw -> b for beta and w a counting number
 STABLE_VERSION = {'version': '0.6.22 Beta'}
 
 NIGHTLY_VERSION = dict()
