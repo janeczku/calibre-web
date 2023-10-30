@@ -139,3 +139,83 @@
 </div>
 
 {% endmacro %}
+
+{% macro media_download_modal() %}
+<div class="modal fade" id="mediaDownloadModal" tabindex="-1" role="dialog"
+  aria-labelledby="mediaDownloadModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mediaDownloadModalLabel">{{_('Download video(s) to your
+          Internet-in-a-Box')}}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="mediaDownloadForm" class="form-horizontal" action="{{ url_for('edit-book.media') }}"
+          method="post">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="form-group">
+            <label for="mediaURL" class="col-sm-2 control-label">{{_('URL')}}</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="mediaURL" name="mediaURL"
+                placeholder="{{_('Enter URL')}}">
+            </div>
+          </div>
+          <!-- Advanced Options Toggle Button -->
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <a href="#" id="advancedOptionsToggle">Show Advanced Options</a>
+            </div>
+          </div>
+          <!-- Advanced Options (Initially Hidden) -->
+          <div id="advancedOptions" style="display: none;">
+            <!-- Video Quality -->
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{_('Video Quality')}}</label>
+              <div class="col-sm-10">
+                <label class="radio-inline">
+                  <input type="radio" name="videoQuality" value="480">480p
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="videoQuality" value="720" checked>720p
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="videoQuality" value="1080">1080p
+                </label>
+                <!-- Add more quality options as needed -->
+              </div>
+            </div>
+            <!-- Maximum Number of Videos to Download -->
+            <div class="form-group">
+              <label for="maxVideos" class="col-sm-2 control-label">{{_('Max Videos')}}</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="maxVideos" name="maxVideos" min="1" max="100">
+              </div>
+            </div>
+            <!-- Maximum Size of All Videos -->
+            <div class="form-group">
+              <label for="maxVideosSize" class="col-sm-2 control-label">{{_('Max Size (GB)')}}</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="maxVideosSize" name="maxVideosSize" min="1" max="5000">
+              </div>
+            </div>
+            <!-- Add All Videos to Bookshelf -->
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <label class="checkbox-inline">
+                  <input type="checkbox" id="addToBookshelf" name="addToBookshelf"> Add All Videos to Bookshelf
+                </label>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <button type="button" id="btn-download-media-submit" class="btn btn-primary"
+          onclick="$('#mediaDownloadModal').modal('hide')">{{_('Start')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
