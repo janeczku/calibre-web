@@ -179,26 +179,23 @@ kthoom.ImageFile = function(file) {
 };
 
 function updateDirectionButtons(){
-    $("#right").show();
-    $("#left").show();
+    var left, right = 1;
     if (currentImage == 0 ) {
         if (settings.direction === 0) {
-            $("#right").show();
-            $("#left").hide();
+            left = 0;
         } else {
-            $("#left").show();
-            $("#right").hide();
+            right = 0;
         }
     }
     if ((currentImage + 1) >= Math.max(totalImages, imageFiles.length)) {
         if (settings.direction === 0) {
-            $("#left").show();
-            $("#right").hide();
+            right = 0;
         } else {
-            $("#right").show();
-            $("#left").hide();
-        }
+            left = 0;
+       }
     }
+    left === 1 ? $("#left").show() : $("#left").hide();
+    right === 1 ? $("#right").show() : $("#right").hide();
 }
 function initProgressClick() {
     $("#progress").click(function(e) {
