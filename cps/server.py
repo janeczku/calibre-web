@@ -23,7 +23,7 @@ import signal
 import socket
 
 try:
-    from gevwent.pywsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
     from gevent.socket import socket as GeventSocket
@@ -252,7 +252,6 @@ class WebServer(object):
                 sock.setblocking(0)
                 socket_name =sock.getsockname()
                 output = "systemd-socket:" + _readable_listen_address(socket_name[0], socket_name[1])
-                # log.error("Tornado server isn't supporting socket activation, normal port is used")
             elif unix_socket_file and os.name != 'nt':
                 self._prepare_unix_socket(unix_socket_file)
                 output = "unix:" + unix_socket_file
