@@ -149,6 +149,137 @@ $(document).ready(function() {
             inp.val('').blur().focus().val(val)
         }
     }
+
+    // Function to toggle advanced options visibility
+    function toggleAdvancedOptions() {
+        var advancedOptions = $("#advancedOptions");
+        if (advancedOptions.is(":visible")) {
+            advancedOptions.hide();
+            $("#advancedOptionsToggle").text("Show advanced options")
+        } else {
+            advancedOptions.show();
+            $("#advancedOptionsToggle").text("Hide advanced options")
+        }
+    }
+
+    // Handle click event for the advanced options toggle
+    $("#advancedOptionsToggle").click(function(event) {
+        event.preventDefault();
+        toggleAdvancedOptions();
+    });
+
+    // Function to initiate the media download AJAX request
+    function initiateMediaDownload() {
+        var url = $("#mediaURL").val();
+        var videoQuality = $("input[name='videoQuality']:checked").val();
+        var maxVideos = $("#maxVideos").val();
+        var maxVideosSize = $("#maxVideosSize").val();
+        var addToBookshelf = $("#addToBookshelf").is(":checked");
+
+        // Set empty number values to zero
+        maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
+        maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
+
+        // Check if the input URL is a valid URL
+        // First check if URL starts with https:// if not, prepend it
+        url = url.startsWith("https://") ? url : "https://" + url;
+        if (!isValidURL(url)) {
+            alert("Invalid URL");
+            return;
+        }
+
+        $.ajax({
+            url: "/live/media",
+            method: "POST",
+            data: {
+                csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
+                mediaURL: url,
+                videoQuality: videoQuality,
+                maxVideos: maxVideos,
+                maxVideosSize: maxVideosSize,
+                addToBookshelf: addToBookshelf
+            },
+            success: function(response) {
+                // Handle success response here
+                if (response && response.location) {
+                    // Redirect to the specified location
+                    window.location.href = response.location;
+                } else {
+                    // Handle any specific success behavior
+                    console.log("Media download request successful.");
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle error here
+                console.log("Media download request failed:", error);
+                $("#mediaDownloadForm .error-message").text("Media download request failed.");
+            }
+        });
+    }
+
+    // Handle Enter key press event in the input field
+    $(document).on('keydown', function(event) {
+        // Check if the pressed key is Enter (key code 13)
+        if (event.which === 13 && $("#mediaDownloadModal").is(":visible")) {
+            initiateMediaDownload();
+        }
+    });
+
+    // Handle the "Start" button click event
+    $("#btn-download-media-submit").click(function() {
+        initiateMediaDownload();
+    });
+
+    // Handle change event for the video quality radio buttons
+    $("input[name='videoQuality']").change(function() {
+        // Handle change event
+    });
+
+    // Handle input event for the max videos input
+    $("#maxVideos").on('input', function() {
+        var inputValue = $(this).val();
+        if (!/^\d*$/.test(inputValue)) {
+            alert("Please enter a valid number.");
+            $(this).val("");
+        }
+
+        // If maxVideos is changed, disable and clear maxVideosSize
+        if (inputValue) {
+            $("#maxVideosSize").prop("disabled", true).val("");
+        } else {
+            $("#maxVideosSize").prop("disabled", false);
+        }
+    });
+
+    // Handle input event for the max size input
+    $("#maxVideosSize").on('input', function() {
+        var inputValue = $(this).val();
+        if (!/^\d*$/.test(inputValue)) {
+            alert("Please enter a valid number.");
+            $(this).val("");
+        }
+
+        // If maxVideosSize is changed, disable and clear maxVideos
+        if (inputValue) {
+            $("#maxVideos").prop("disabled", true).val("");
+        } else {
+            $("#maxVideos").prop("disabled", false);
+        }
+    });
+
+    // Handle change event for the add to bookshelf checkbox
+    $("#addToBookshelf").change(function() {
+        // Handle change event
+    });
+
+    // Function to validate URL
+    function isValidURL(url) {
+        // Regex to validate URL (should be any url starting with https://)
+        var urlPattern = /^https?:\/\//i;
+        // Check if the URL matches the pattern
+        return urlPattern.test(url);
+    }
+
 });
 
 $(".session").click(function() {
@@ -333,6 +464,7 @@ $(function() {
                 } else {
                     $("#parent").addClass('hidden')
                 }
+                // console.log(data);
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
                         var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";

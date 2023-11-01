@@ -16,13 +16,18 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+# import json
+import datetime
 import os
 import hashlib
+import shutil
+import sqlite3
+from subprocess import run
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta
+from .constants import BookMeta, EXTENSIONS_IMAGE, EXTENSIONS_VIDEO
 from .helper import split_authors
 
 log = logger.create()
@@ -84,6 +89,11 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
+        elif extension_upper in ['.MP4', '.WEBM']]:
+            meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
+        elif extension_upper in ['.JPG', '.JPEG', '.PNG', '.GIF', '.SVG', '.WEBP']:
+            meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
+
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
@@ -237,6 +247,101 @@ def pdf_preview(tmp_file_path, tmp_dir):
         log.warning('Cannot extract cover image, using default: %s', ex)
         log.warning('On Windows this error could be caused by missing ghostscript')
         return None
+
+
+def video_metadata(tmp_file_path, original_file_name, original_file_extension):
+    if ']' in original_file_name:
+        video_id = original_file_name.split('[')[1].split(']')[0]
+        download_db_path = "/var/tmp/download.db"
+        if os.path.isfile(download_db_path):
+            conn = sqlite3.connect(download_db_path)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute("SELECT * FROM media WHERE extractor_id=?", (video_id,))
+            row = c.fetchone()
+            if row is not None:
+                title = row['title']
+                author = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
+                description = row['description']
+                publisher = 'IIAB'
+                # example of time_uploaded: 1696464000
+                pubdate = row['time_uploaded']
+                pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
+                log.debug(f"PUBDATE: {pubdate}")
+                print(f"PUBDATE: {pubdate}")
+
+                # read row[path] to get video file, replace its extension with .webp
+                cover_file_path = row['path'].replace('.webm', '.webp')
+                meta = BookMeta(
+                    file_path=tmp_file_path,
+                    extension=original_file_extension,
+                    title=title,
+                    author=author,
+                    cover=cover_file_path,
+                    description=description,
+                    tags='',
+                    series="",
+                    series_id="",
+                    languages="",
+                    publisher=publisher,
+                    pubdate=pubdate,
+                    identifiers=[])
+                return meta
+            conn.close()
+        else:
+            log.warning('Cannot find download.db, using default')
+    else:
+        meta = BookMeta(
+            file_path=tmp_file_path,
+            extension=original_file_extension,
+            title=original_file_name,
+            author='Unknown',
+            cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+            description='',
+            tags='',
+            series="",
+            series_id="",
+            languages="",
+            publisher="",
+            pubdate="",
+            identifiers=[])
+        return meta
+
+def generate_video_cover(tmp_file_path):
+    ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
+    ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+    ffmpeg_args = [
+        ffmpeg_executable,
+        '-i', tmp_file_path,
+        '-vframes', '1',
+        '-y', ffmpeg_output_file
+    ]
+
+    try:
+        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
+
+    except Exception as e:
+        log.warning(f"ffmpeg failed: {e}")
+        return None
+
+def image_metadata(tmp_file_path, original_file_name, original_file_extension):
+    shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
+    meta = BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=original_file_name,
+        author='Unknown',
+        cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
+        description='',
+        tags='',
+        series="",
+        series_id="",
+        languages="",
+        publisher="",
+        pubdate="",
+        identifiers=[])
+    return meta
 
 
 def get_magick_version():
