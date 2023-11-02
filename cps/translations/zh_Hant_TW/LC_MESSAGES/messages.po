@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-10-21 15:46+0200\n"
+"POT-Creation-Date: 2023-11-02 16:35+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_TW\n"
@@ -931,7 +931,7 @@ msgstr "書籍"
 msgid "Show recent books"
 msgstr "顯示最近書籍"
 
-#: cps/render_template.py:45 cps/templates/index.xml:25
+#: cps/render_template.py:45 cps/templates/index.xml:26
 msgid "Hot Books"
 msgstr "熱門書籍"
 
@@ -948,7 +948,7 @@ msgstr "已下載書籍"
 msgid "Show Downloaded Books"
 msgstr "顯示下載過的書籍"
 
-#: cps/render_template.py:59 cps/templates/index.xml:32 cps/web.py:429
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
 msgid "Top Rated Books"
 msgstr "最高評分書籍"
 
@@ -956,8 +956,8 @@ msgstr "最高評分書籍"
 msgid "Show Top Rated Books"
 msgstr "顯示最高評分書籍"
 
-#: cps/render_template.py:62 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:750
+#: cps/render_template.py:62 cps/templates/index.xml:55
+#: cps/templates/index.xml:59 cps/web.py:750
 msgid "Read Books"
 msgstr "已讀書籍"
 
@@ -966,8 +966,8 @@ msgstr "已讀書籍"
 msgid "Show Read and Unread"
 msgstr "顯示閱讀狀態"
 
-#: cps/render_template.py:66 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:753
+#: cps/render_template.py:66 cps/templates/index.xml:62
+#: cps/templates/index.xml:66 cps/web.py:753
 msgid "Unread Books"
 msgstr "未讀書籍"
 
@@ -979,13 +979,13 @@ msgstr "顯示未讀"
 msgid "Discover"
 msgstr "發現"
 
-#: cps/render_template.py:71 cps/templates/index.xml:50
+#: cps/render_template.py:71 cps/templates/index.xml:51
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "隨機顯示書籍"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1119
+#: cps/templates/index.xml:84 cps/web.py:1119
 msgid "Categories"
 msgstr "分類"
 
@@ -995,7 +995,7 @@ msgid "Show Category Section"
 msgstr "顯示分類選擇"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
-#: cps/templates/book_table.html:68 cps/templates/index.xml:90
+#: cps/templates/book_table.html:68 cps/templates/index.xml:91
 #: cps/templates/search_form.html:69 cps/web.py:1009 cps/web.py:1021
 msgid "Series"
 msgstr "叢書"
@@ -1006,7 +1006,7 @@ msgid "Show Series Section"
 msgstr "顯示叢書選擇"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
-#: cps/templates/index.xml:69
+#: cps/templates/index.xml:70
 msgid "Authors"
 msgstr "作者"
 
@@ -1016,7 +1016,7 @@ msgid "Show Author Section"
 msgstr "顯示作者選擇"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:977
+#: cps/templates/index.xml:77 cps/web.py:977
 msgid "Publishers"
 msgstr "出版社"
 
@@ -1026,7 +1026,7 @@ msgid "Show Publisher Section"
 msgstr "顯示出版社選擇"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
-#: cps/templates/index.xml:97 cps/templates/search_form.html:107
+#: cps/templates/index.xml:98 cps/templates/search_form.html:107
 #: cps/web.py:1091
 msgid "Languages"
 msgstr "語言"
@@ -1036,7 +1036,7 @@ msgstr "語言"
 msgid "Show Language Section"
 msgstr "顯示語言選擇"
 
-#: cps/render_template.py:89 cps/templates/index.xml:104
+#: cps/render_template.py:89 cps/templates/index.xml:105
 msgid "Ratings"
 msgstr "評分"
 
@@ -1045,7 +1045,7 @@ msgstr "評分"
 msgid "Show Ratings Section"
 msgstr "顯示評分選擇"
 
-#: cps/render_template.py:92 cps/templates/index.xml:112
+#: cps/render_template.py:92 cps/templates/index.xml:113
 msgid "File formats"
 msgstr "文件格式"
 
@@ -1072,7 +1072,7 @@ msgid "Show Books List"
 msgstr "顯示書籍列表"
 
 #: cps/search.py:48 cps/search.py:398 cps/templates/book_edit.html:236
-#: cps/templates/feed.xml:33 cps/templates/index.xml:11
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
@@ -2620,7 +2620,7 @@ msgid "Add to shelf"
 msgstr "添加到書架"
 
 #: cps/templates/detail.html:304 cps/templates/detail.html:323
-#: cps/templates/feed.xml:80 cps/templates/layout.html:154
+#: cps/templates/feed.xml:81 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2699,7 +2699,7 @@ msgstr "輸入網域名"
 msgid "Denied Domains (Blacklist)"
 msgstr "禁止註冊的網域名（黑名單）"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:22 cps/templates/layout.html:187
 msgid "Next"
 msgstr "下一個"
 
@@ -2758,72 +2758,72 @@ msgstr "按叢書編號排序"
 msgid "Sort descending according to series index"
 msgstr "按叢書編號逆排序"
 
-#: cps/templates/index.xml:6
+#: cps/templates/index.xml:7
 msgid "Start"
 msgstr "開始"
 
-#: cps/templates/index.xml:18
+#: cps/templates/index.xml:19
 msgid "Alphabetical Books"
 msgstr "字母排序書籍"
 
-#: cps/templates/index.xml:22
+#: cps/templates/index.xml:23
 msgid "Books sorted alphabetically"
 msgstr "按字母排序的書籍"
 
-#: cps/templates/index.xml:29
+#: cps/templates/index.xml:30
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "基於下載數的熱門書籍。"
 
-#: cps/templates/index.xml:36
+#: cps/templates/index.xml:37
 msgid "Popular publications from this catalog based on Rating."
 msgstr "基於評分的熱門書籍。"
 
-#: cps/templates/index.xml:39
+#: cps/templates/index.xml:40
 msgid "Recently added Books"
 msgstr "最近添加的書籍"
 
-#: cps/templates/index.xml:43
+#: cps/templates/index.xml:44
 msgid "The latest Books"
 msgstr "最新書籍"
 
-#: cps/templates/index.xml:46
+#: cps/templates/index.xml:47
 msgid "Random Books"
 msgstr "隨機書籍"
 
-#: cps/templates/index.xml:73
+#: cps/templates/index.xml:74
 msgid "Books ordered by Author"
 msgstr "書籍按作者排序"
 
-#: cps/templates/index.xml:80
+#: cps/templates/index.xml:81
 msgid "Books ordered by publisher"
 msgstr "書籍按出版社排序"
 
-#: cps/templates/index.xml:87
+#: cps/templates/index.xml:88
 msgid "Books ordered by category"
 msgstr "書籍按分類排序"
 
-#: cps/templates/index.xml:94
+#: cps/templates/index.xml:95
 msgid "Books ordered by series"
 msgstr "書籍按叢書排序"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:102
 msgid "Books ordered by Languages"
 msgstr "書籍按語言排序"
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by Rating"
 msgstr "書籍按評分排序"
 
-#: cps/templates/index.xml:116
+#: cps/templates/index.xml:117
 msgid "Books ordered by file formats"
 msgstr "書籍按文件格式排序"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:120 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "書架列表"
 
-#: cps/templates/index.xml:123
+#: cps/templates/index.xml:124
 msgid "Books organized in shelves"
 msgstr "書架上的書"
 
