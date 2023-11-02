@@ -54,8 +54,8 @@ from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
-from .subproc_wrapper import process_wait
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
+from .subproc_wrapper import process_wait, process_open
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
@@ -938,9 +938,10 @@ def save_cover(img, book_path):
 
 
 def do_download_file(book, book_format, client, data, headers):
+    book_name = data.name
     if config.config_use_google_drive:
         # startTime = time.time()
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
@@ -948,19 +949,46 @@ def do_download_file(book, book_format, client, data, headers):
             abort(404)
     else:
         filename = os.path.join(config.config_calibre_dir, book.path)
-        if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
+        if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
             # ToDo: improve error handling
-            log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
+            log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
 
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
-        response = make_response(send_from_directory(filename, data.name + "." + book_format))
+        if config.config_binariesdir:
+            filename, book_name = do_calibre_export(book, book_format)
+
+        response = make_response(send_from_directory(filename, book_name + "." + book_format))
         # ToDo Check headers parameter
         for element in headers:
             response.headers[element[0]] = element[1]
-        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
+        log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
         return response
+
+
+def do_calibre_export(book, book_format):
+    try:
+        quotes = [3, 5, 7, 9]
+        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+        calibredb_binarypath = get_calibre_binarypath("calibredb")
+        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
+                    '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
+                    '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
+        file_name = book.title
+        if len(book.authors) > 0:
+            file_name = file_name + ' - ' + book.authors[0].name
+        p = process_open(opf_command, quotes)
+        _, err = p.communicate()
+        if err:
+            log.error('Metadata embedder encountered an error: %s', err)
+        return tmp_dir, file_name
+    except OSError as ex:
+        # ToDo real error handling
+        log.error_or_exception(ex)
+
 
 ##################################
 
@@ -982,6 +1010,35 @@ def check_unrar(unrar_location):
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
         return _('Error executing UnRar')
+
+
+def check_calibre(calibre_location):
+    if not calibre_location:
+        return
+
+    if not os.path.exists(calibre_location):
+        return _('Could not find the specified directory')
+
+    if not os.path.isdir(calibre_location):
+        return _('Please specify a directory, not a file')
+
+    try:
+        supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES.values()]
+        binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
+        if all(binaries_available):
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            if all(values):
+                version = values[0].group(1)
+                log.debug("calibre version %s", version)
+            else:
+                return _('Calibre binaries not viable')
+        else:
+            missing_binaries=[path for path, available in zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
+            return _('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries))
+
+    except (OSError, UnicodeDecodeError) as err:
+        log.error_or_exception(err)
+        return _('Error excecuting Calibre')
 
 
 def json_serial(obj):
@@ -1045,6 +1102,17 @@ def get_download_link(book_id, book_format, client):
         return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
+
+
+def get_calibre_binarypath(binary):
+        binariesdir = config.config_binariesdir
+        if binariesdir:
+            try:
+                return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
+            except KeyError as ex:
+                log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
+                pass
+        return ""
 
 
 def clear_cover_thumbnail_cache(book_id):
