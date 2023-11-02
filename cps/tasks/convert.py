@@ -19,8 +19,10 @@
 import os
 import re
 from glob import glob
-from shutil import copyfile
+from shutil import copyfile, copyfileobj
 from markupsafe import escape
+from tempfile import gettempdir
+from time import time
 
 from sqlalchemy.exc import SQLAlchemyError
 from flask_babel import lazy_gettext as N_
@@ -35,10 +37,11 @@ from cps.ub import init_db_thread
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
-
+from cps.constants import SUPPORTED_CALIBRE_BINARIES
 
 log = logger.create()
 
+current_milli_time = lambda: int(round(time() * 1000))
 
 class TaskConvert(CalibreTask):
     def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
@@ -61,15 +64,20 @@ class TaskConvert(CalibreTask):
             data = worker_db.get_book_format(self.book_id, self.settings['old_book_format'])
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
-            if df:
+            df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
+            if df and df_cover:
                 datafile = os.path.join(config.config_calibre_dir,
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
+                datafile_cover = os.path.join(config.config_calibre_dir,
+                                        cur_book.path, "cover.jpg")
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
+                df_cover.GetContentFile(datafile_cover)
                 worker_db.session.close()
             else:
+            	# ToDo Include cover in error handling 
                 error_message = _("%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
@@ -79,6 +87,7 @@ class TaskConvert(CalibreTask):
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
             os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
+            os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
 
         if filename:
             if config.config_use_google_drive:
@@ -225,15 +234,30 @@ class TaskConvert(CalibreTask):
         return check, None
 
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext):
+        book_id = self.book_id
         try:
             # Linux py2.7 encode as list without quotes no empty element for parameters
             # linux py3.x no encode and as list without quotes no empty element for parameters
             # windows py2.7 encode as string with quotes empty element for parameters is okay
             # windows py 3.x no encode and as string with quotes empty element for parameters is okay
             # separate handling for windows and linux
-            quotes = [1, 2]
+
+            quotes = [3, 5]
+            tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+            if not os.path.isdir(tmp_dir):
+                os.mkdir(tmp_dir)
+            calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+            opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
+            p = process_open(opf_command, quotes)
+            p.wait()
+            path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
+            with open(path_tmp_opf, 'w') as fd:
+                copyfileobj(p.stdout, fd)
+
+            quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext)]
+                       (file_path + format_new_ext), '--from-opf', path_tmp_opf,
+                       '--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')]
             quotes_index = 3
             if config.config_calibre:
                 parameters = config.config_calibre.split(" ")
