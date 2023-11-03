@@ -24,7 +24,6 @@ import os
 from datetime import datetime
 import json
 import sqlite3
-import subprocess
 from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
@@ -40,7 +39,7 @@ from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import current_user, login_required
-from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError, InvalidRequestError
+from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import func
 
@@ -48,6 +47,7 @@ from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, ko
 from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
+from .tasks.download import TaskDownload
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
@@ -317,172 +317,97 @@ def media():
     if not config.config_uploading:
         abort(404)
     
-    def get_yb_executable():
-        yb_executable = os.getenv("YB_EXECUTABLE", "yb")
-        return yb_executable
-
-    def run_subprocess(command_args):
-        try:
-            completed_process = subprocess.run(
-                command_args,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                check=True,
-                text=True
-            )
-            return (True, completed_process.stdout, completed_process.stderr)
-
-        except subprocess.CalledProcessError as e:
-            error_message = f"Subprocess error (return code {e.returncode}): {e.stderr}, {e.stdout}"
-            log.error(error_message)
-            return False, error_message, e.stdout, e.stderr
-        except Exception as e:
-            error_message = f"An error occurred while running the subprocess: {e}"
-            log.error(error_message)
-            return False, error_message
-    
     def process_media_download(media_url):
-        yb_executable = get_yb_executable()
+        # Use TaskDownload class to download media
+        task_message = N_("Downloading media for %(url)s", url=media_url)
+        requested_files = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))
+        log.info("Requested files: {}".format(requested_files))
+        for requested_file in requested_files:
+            requested_file = open(requested_file, "rb")
+            requested_file.filename = os.path.basename(requested_file.name)
+            requested_file.save = lambda path: copyfile(requested_file.name, path)
 
-        if media_url:
-            download_args = [
-                yb_executable,
-                media_url,
-            ]
-            subprocess_result = run_subprocess(download_args)
-            
-            log.info("Subprocess result: {}".format(subprocess_result))
+            log.info("Processing file: {}".format(requested_file))
+            try:
+                modify_date = False
+                calibre_db.update_title_sort(config)
+                calibre_db.session.connection().connection.connection.create_function(
+                    "uuid4", 0, lambda: str(uuid4())
+                )
 
-            if subprocess_result[0]:
-                requested_files = []
-                download_db_path = "/var/tmp/download.db"
-                conn = sqlite3.connect(download_db_path)
-                c = conn.cursor()
-                c.execute("SELECT path FROM media")
-                for row in c.fetchall():
-                    requested_files.append(row[0])
-                # check also if there is a "playlists" table.
-                # if the "playlists" table exists, create the shelf_title variable to store the playlist title
-                c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
-                if c.fetchone():
-                    c.execute("SELECT title FROM playlists")
-                    shelf_title = c.fetchone()[0]
-                else:
-                    shelf_title = None
-                conn.close()
+                meta, error = file_handling_on_upload(requested_file)
+                if error:
+                    return error
+
+                (
+                    db_book,
+                    input_authors,
+                    title_dir,
+                    renamed_authors,
+                ) = create_book_on_upload(modify_date, meta)
+
+                # Comments need book id therefore only possible after flush
+                modify_date |= edit_book_comments(
+                    Markup(meta.description).unescape(), db_book
+                )
+
+                book_id = db_book.id
+                title = db_book.title
+                
+                error = helper.update_dir_structure(
+                    book_id,
+                    config.config_calibre_dir,
+                    input_authors[0],
+                    meta.file_path,
+                    title_dir + meta.extension.lower(),
+                    renamed_author=renamed_authors,
+                )
+
+                move_coverfile(meta, db_book)
+
+                if modify_date:
+                    calibre_db.set_metadata_dirty(book_id)
+                # save data to database, reread data
+                calibre_db.session.commit()
+
+                if error:
+                    flash(error, category="error")
+                link = '<a href="{}">{}</a>'.format(
+                    url_for("web.show_book", book_id=book_id), escape(title)
+                )
+                upload_text = N_("File %(file)s uploaded", file=link)
+                WorkerThread.add(
+                    current_user.name, TaskUpload(upload_text, escape(title))
+                )
+                helper.add_book_to_thumbnail_cache(book_id)
 
                 if shelf_title:
-                            shelf_object = ub.Shelf()
-                            is_public = 1
-                            if shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
-                                shelf_object.name = shelf_title
-                                shelf_object.is_public = is_public
-                                shelf_object.user_id = int(current_user.id)
-                                ub.session.add(shelf_object)
-                                shelf_action = "created"
-                                flash_text = _("Shelf %(title)s created", title=shelf_title)
-                                try:
-                                    ub.session.commit()
-                                    shelf_id = shelf_object.id
-                                    log.info("Shelf {} {}".format(shelf_title, shelf_action))
-                                    flash(flash_text, category="success")
-                                except (OperationalError, InvalidRequestError) as ex:
-                                    ub.session.rollback()
-                                    log.error_or_exception(ex)
-                                    log.error_or_exception("Settings Database error: {}".format(ex))
-                                    flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
-                                except Exception as ex:
-                                    ub.session.rollback()
-                                    log.error_or_exception(ex)
-                                    flash(_("There was an error"), category="error")
+                    shelf.add_to_shelf.__closure__[0].cell_contents(
+                                shelf_id, book_id
+                            )
 
-                log.info("Requested files: {}".format(requested_files))
-                for requested_file in requested_files:
-                    requested_file = open(requested_file, "rb")
-                    requested_file.filename = os.path.basename(requested_file.name)
-                    requested_file.save = lambda path: copyfile(requested_file.name, path)
+                if len(requested_files) < 2:
+                    if current_user.role_edit() or current_user.role_admin():
+                        resp = {
+                            "location": url_for(
+                                "edit-book.show_edit_book", book_id=book_id
+                            )
+                        }
+                        return Response(json.dumps(resp), mimetype="application/json")
+                    else:
+                        resp = {"location": url_for("web.show_book", book_id=book_id)}
+                        return Response(json.dumps(resp), mimetype="application/json")
 
-                    log.info("Processing file: {}".format(requested_file))
-                    try:
-                        modify_date = False
-                        calibre_db.update_title_sort(config)
-                        calibre_db.session.connection().connection.connection.create_function(
-                            "uuid4", 0, lambda: str(uuid4())
-                        )
-
-                        meta, error = file_handling_on_upload(requested_file)
-                        if error:
-                            return error
-
-                        (
-                            db_book,
-                            input_authors,
-                            title_dir,
-                            renamed_authors,
-                        ) = create_book_on_upload(modify_date, meta)
-
-                        # Comments need book id therefore only possible after flush
-                        modify_date |= edit_book_comments(
-                            Markup(meta.description).unescape(), db_book
-                        )
-
-                        book_id = db_book.id
-                        title = db_book.title
-                        
-                        error = helper.update_dir_structure(
-                            book_id,
-                            config.config_calibre_dir,
-                            input_authors[0],
-                            meta.file_path,
-                            title_dir + meta.extension.lower(),
-                            renamed_author=renamed_authors,
-                        )
-
-                        move_coverfile(meta, db_book)
-
-                        if modify_date:
-                            calibre_db.set_metadata_dirty(book_id)
-                        # save data to database, reread data
-                        calibre_db.session.commit()
-
-                        if error:
-                            flash(error, category="error")
-                        link = '<a href="{}">{}</a>'.format(
-                            url_for("web.show_book", book_id=book_id), escape(title)
-                        )
-                        upload_text = N_("File %(file)s uploaded", file=link)
-                        WorkerThread.add(
-                            current_user.name, TaskUpload(upload_text, escape(title))
-                        )
-                        helper.add_book_to_thumbnail_cache(book_id)
-
-                        if shelf_title:
-                            shelf.add_to_shelf.__closure__[0].cell_contents(
-                                        shelf_id, book_id
-                                    )
-
-                        if len(requested_files) < 2:
-                            if current_user.role_edit() or current_user.role_admin():
-                                resp = {
-                                    "location": url_for(
-                                        "edit-book.show_edit_book", book_id=book_id
-                                    )
-                                }
-                                return Response(json.dumps(resp), mimetype="application/json")
-                            else:
-                                resp = {"location": url_for("web.show_book", book_id=book_id)}
-                                return Response(json.dumps(resp), mimetype="application/json")
-
-                    except (OperationalError, IntegrityError, StaleDataError) as e:
-                        calibre_db.session.rollback()
-                        log.error_or_exception("Database error: {}".format(e))
-                        flash(
-                            _(
-                                "Oops! Database Error: %(error)s.",
-                                error=e.orig if hasattr(e, "orig") else e,
-                            ),
-                            category="error",
-                        )
+            except (OperationalError, IntegrityError, StaleDataError) as e:
+                calibre_db.session.rollback()
+                log.error_or_exception("Database error: {}".format(e))
+                flash(
+                    _(
+                        "Oops! Database Error: %(error)s.",
+                        error=e.orig if hasattr(e, "orig") else e,
+                    ),
+                    category="error",
+                )
         else:
             flash("Error: 'lb' executable not found in PATH", category="error")
             return False
