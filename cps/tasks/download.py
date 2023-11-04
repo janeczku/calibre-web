@@ -6,12 +6,10 @@ from flask_babel import lazy_gettext as N_, gettext as _
 from flask_login import current_user
 from cps import logger
 
-from cps.services.worker import CalibreTask
+from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
 from cps.subproc_wrapper import process_open, process_wait
 from sqlalchemy.exc import OperationalError, InvalidRequestError
-
-STAT_FINISH_SUCCESS = "finish_success"
-STAT_RUNNING = "running"
+from .. import shelf, ub
 
 log = logger.create()
 
@@ -23,14 +21,11 @@ class TaskDownload(CalibreTask):
         self.stat = STAT_FINISH_SUCCESS
         self.progress = 1
 
-    @staticmethod
-    def get_yb_executable():
-        yb_executable = os.getenv("YB_EXECUTABLE", "yb")
-        return yb_executable
-
     def run(self, worker_thread):
         """Run the download task"""
-        self.start_time = datetime.now()
+        log.info("Starting download task for URL: %s", self.media_url)
+        shelf_id = None
+        self.start_time  = self.end_time = datetime.now()
         self.stat = STAT_RUNNING
         self.progress = 0
 
@@ -102,8 +97,8 @@ class TaskDownload(CalibreTask):
 
                     # Log the list of requested files
                     log.info("Requested files: %s", requested_files)
-                    # Return the list of requested files
-                    return requested_files
+                    # Return the list of requested files and the shelf ID
+                    return requested_files, shelf_id
 
                 # Set the progress to 100% and the end time to the current time
                 self.progress = 100
@@ -118,6 +113,10 @@ class TaskDownload(CalibreTask):
         else:
             log.info("No media URL provided")
 
+    def get_yb_executable(self):
+        yb_executable = os.getenv("YB_EXECUTABLE", "yb")
+        return yb_executable
+
     @property
     def name(self):
         return N_("Download Media")
@@ -127,4 +126,4 @@ class TaskDownload(CalibreTask):
 
     @property
     def is_cancellable(self):
-        return False
+        return True  # Change to True if the download task should be cancellable
