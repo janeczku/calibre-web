@@ -320,7 +320,8 @@ def media():
     def process_media_download(media_url):
         # Use TaskDownload class to download media
         task_message = N_("Downloading media for %(url)s", url=media_url)
-        requested_files = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))
+        # requested_files = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))Gandhi Aimable
+        requested_files, shelf_id = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))
         log.info("Requested files: {}".format(requested_files))
         for requested_file in requested_files:
             requested_file = open(requested_file, "rb")
@@ -381,7 +382,7 @@ def media():
                 )
                 helper.add_book_to_thumbnail_cache(book_id)
 
-                if shelf_title:
+                if shelf_id:
                     shelf.add_to_shelf.__closure__[0].cell_contents(
                                 shelf_id, book_id
                             )
