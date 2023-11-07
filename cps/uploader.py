@@ -89,7 +89,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
-        elif extension_upper in ['.MP4', '.WEBM']:
+        elif extension_upper in ['.MP4', '.WEBM', '.MKV']:
             meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
         elif extension_upper in ['.JPG', '.JPEG', '.PNG', '.GIF', '.SVG', '.WEBP']:
             meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
