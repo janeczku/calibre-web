@@ -27,7 +27,7 @@ from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta, EXTENSIONS_IMAGE, EXTENSIONS_VIDEO
+from .constants import BookMeta
 from .helper import split_authors
 
 log = logger.create()
@@ -261,14 +261,12 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             row = c.fetchone()
             if row is not None:
                 title = row['title']
-                author = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
+                author = row['path'].split('/Youtube/')[1].split('/')[0].replace('_', ' ')
                 description = row['description']
-                publisher = 'IIAB'
+                publisher = 'YouTube'
                 # example of time_uploaded: 1696464000
                 pubdate = row['time_uploaded']
                 pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
-                log.debug(f"PUBDATE: {pubdate}")
-                print(f"PUBDATE: {pubdate}")
 
                 # read row[path] to get video file, replace its extension with .webp
                 cover_file_path = row['path'].replace('.webm', '.webp')
