@@ -781,7 +781,7 @@ def get_book_cover_internal(book, resolution=None):
 
         # Send the book cover from the Calibre directory
         else:
-            cover_file_path = os.path.join(config.config_calibre_dir, book.path)
+            cover_file_path = os.path.join(config.get_book_path(), book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
@@ -934,7 +934,7 @@ def save_cover(img, book_path):
         else:
             return False, message
     else:
-        return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
+        return save_cover_from_filestorage(os.path.join(config.get_book_path(), book_path), "cover.jpg", img)
 
 
 def do_download_file(book, book_format, client, data, headers):
@@ -947,7 +947,7 @@ def do_download_file(book, book_format, client, data, headers):
         else:
             abort(404)
     else:
-        filename = os.path.join(config.config_calibre_dir, book.path)
+        filename = os.path.join(config.get_book_path(), book.path)
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))

@@ -239,7 +239,7 @@ class TaskEmail(CalibreTask):
     @classmethod
     def _get_attachment(cls, book_path, filename):
         """Get file as MIMEBase message"""
-        calibre_path = config.config_calibre_dir
+        calibre_path = config.get_book_path()
         if config.config_use_google_drive:
             df = gdriveutils.getFileFromEbooksFolder(book_path, filename)
             if df:

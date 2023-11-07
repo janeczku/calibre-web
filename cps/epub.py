@@ -48,7 +48,8 @@ def get_epub_layout(book, book_data):
         'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
         'pkg': 'http://www.idpf.org/2007/opf',
     }
-    file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
+    file_path = os.path.normpath(os.path.join(config.get_book_path(),
+                                              book.path, book_data.name + "." + book_data.format.lower()))
 
     try:
         epubZip = zipfile.ZipFile(file_path)

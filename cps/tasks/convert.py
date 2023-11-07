@@ -62,11 +62,11 @@ class TaskConvert(CalibreTask):
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             if df:
-                datafile = os.path.join(config.config_calibre_dir,
+                datafile = os.path.join(config.get_book_path(),
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
-                if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
-                    os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
+                if not os.path.exists(os.path.join(config.get_book_path(), cur_book.path)):
+                    os.makedirs(os.path.join(config.get_book_path(), cur_book.path))
                 df.GetContentFile(datafile)
                 worker_db.session.close()
             else:
