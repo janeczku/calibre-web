@@ -108,7 +108,9 @@
               bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=bookid, book_format='EPUB') }}",
               bookUrl: "{{ url_for('web.serve_book', book_id=bookid, book_format='epub', anyname='file.epub') }}",
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-              useBookmarks: "{{ current_user.is_authenticated | tojson }}"
+              useBookmarks: "{{ current_user.is_authenticated | tojson }}",
+              lastCFIUrl: "{{ url_for('web.set_lastcfi', book_id=bookid, book_format='EPUB') }}",
+              lastCFI: "{{ lastCFI.cfi if lastCFI != None }}",
           };
 
           function selectTheme(id) {

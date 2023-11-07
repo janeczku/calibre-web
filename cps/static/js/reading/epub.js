@@ -10,7 +10,8 @@ var reader;
 
     reader = ePubReader(calibre.bookUrl, {
         restore: true,
-        bookmarks: calibre.bookmark ? [calibre.bookmark] : []
+        bookmarks: calibre.bookmark ? [calibre.bookmark] : [],
+        previousLocationCfi: calibre.lastCFI || ""
     });
 
     reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
@@ -53,6 +54,13 @@ var reader;
         }
     });
 
+    var $next = $('#next');
+    var $prev = $('#prev');
+
+    $next.on("click", updateLastCFI.bind(reader));
+
+    $prev.on("click", updateLastCFI.bind(reader));
+
     /**
      * @param {string} action - Add or remove bookmark
      * @param {string|int} location - Location or zero
@@ -73,6 +81,20 @@ var reader;
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
             data: { bookmark: location || "" },
+            headers: { "X-CSRFToken": csrftoken }
+        }).fail(function (xhr, status, error) {
+            alert(error);
+        });
+    }
+
+    function updateLastCFI(event) {
+        var cfi = this.rendition.location.start.cfi;
+        var csrftoken = $("input[name='csrf_token']").val();
+
+        // Save to database
+        $.ajax(calibre.lastCFIUrl, {
+            method: "post",
+            data: { lastCFI: cfi || "" },
             headers: { "X-CSRFToken": csrftoken }
         }).fail(function (xhr, status, error) {
             alert(error);
