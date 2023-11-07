@@ -23,8 +23,7 @@
 import os
 from datetime import datetime
 import json
-import sqlite3
-from shutil import copyfile, move
+from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
@@ -316,13 +315,32 @@ def upload():
 def media():
     if not config.config_uploading:
         abort(404)
+
+    def request_media_download(media_url, original_url):
+        task_message = N_("learning media from %(media_url)s", media_url=media_url)
+        WorkerThread.add(current_user.name, TaskDownload(task_message, media_url, original_url, current_user.name))
+        return True
     
-    def process_media_download(media_url):
-        # Use TaskDownload class to download media
-        task_message = N_("Downloading media for %(url)s", url=media_url)
-        # requested_files = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))Gandhi Aimable
-        requested_files, shelf_id = WorkerThread.add(current_user.name, TaskDownload(task_message, media_url))
-        log.info("Requested files: {}".format(requested_files))
+    if request.method == "POST" and "mediaURL" in request.form:
+        media_url = request.form["mediaURL"]
+        original_url = request.referrer + "meta"
+ 
+        if request_media_download(media_url, original_url):
+            response = {
+                "success": "Downloaded media successfully",
+            }
+            return jsonify(response)
+        else:
+            response = {
+                "error": "Failed to download media",
+            }
+            return jsonify(response), 500
+    
+
+@editbook.route("/meta", methods=["GET"])
+def meta():
+    def move_mediafile(requested_files, shelf_id=None, current_user_name=None):
+        requested_files = requested_files[0][2:-2].split('", "')  # strip first and last char
         for requested_file in requested_files:
             requested_file = open(requested_file, "rb")
             requested_file.filename = os.path.basename(requested_file.name)
@@ -378,7 +396,7 @@ def media():
                 )
                 upload_text = N_("File %(file)s uploaded", file=link)
                 WorkerThread.add(
-                    current_user.name, TaskUpload(upload_text, escape(title))
+                    current_user_name, TaskUpload(upload_text, escape(title))
                 )
                 helper.add_book_to_thumbnail_cache(book_id)
 
@@ -388,16 +406,12 @@ def media():
                             )
 
                 if len(requested_files) < 2:
-                    if current_user.role_edit() or current_user.role_admin():
-                        resp = {
-                            "location": url_for(
-                                "edit-book.show_edit_book", book_id=book_id
-                            )
-                        }
-                        return Response(json.dumps(resp), mimetype="application/json")
-                    else:
-                        resp = {"location": url_for("web.show_book", book_id=book_id)}
-                        return Response(json.dumps(resp), mimetype="application/json")
+                    resp = {
+                        "location": url_for(
+                            "edit-book.show_edit_book", book_id=book_id
+                        )
+                    }
+                    return Response(json.dumps(resp), mimetype="application/json")
 
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
@@ -410,20 +424,21 @@ def media():
                     category="error",
                 )
         else:
-            flash("Error: 'lb' executable not found in PATH", category="error")
+            flash("Error: No file found", category="error")
             return False
 
-    if request.method == "POST" and "mediaURL" in request.form:
-        media_url = request.form["mediaURL"]
- 
-        if process_media_download(media_url):
+    if request.method == "GET" and "requested_files" in request.args:
+        requested_files = request.args.getlist("requested_files")
+        shelf_id = request.args.get("shelf_id", None)
+        current_user_name = request.args.get("current_user_name", None)
+        if move_mediafile(requested_files, shelf_id, current_user_name):
             response = {
-                "success": "Downloaded media successfully",
+                "success": "Moved media successfully",
             }
             return jsonify(response)
         else:
             response = {
-                "error": "Failed to download media",
+                "error": "Failed to move media",
             }
             return jsonify(response), 500
 
