@@ -126,7 +126,7 @@ def edit_book(book_id):
             edited_books_id = book.id
             modify_date = True
             title_author_error = helper.update_dir_structure(edited_books_id,
-                                                             config.config_calibre_dir,
+                                                             config.get_book_path(),
                                                              input_authors[0],
                                                              renamed_author=renamed)
         if title_author_error:
@@ -271,7 +271,7 @@ def upload():
                                                   meta.extension.lower())
                 else:
                     error = helper.update_dir_structure(book_id,
-                                                        config.config_calibre_dir,
+                                                        config.get_book_path(),
                                                         input_authors[0],
                                                         meta.file_path,
                                                         title_dir + meta.extension.lower(),
@@ -321,7 +321,7 @@ def convert_bookformat(book_id):
         return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
-    rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
+    rtn = helper.convert_book_format(book_id, config.get_book_path(), book_format_from.upper(),
                                      book_format_to.upper(), current_user.name)
 
     if rtn is None:
@@ -391,7 +391,7 @@ def edit_list_book(param):
         elif param == 'title':
             sort_param = book.sort
             if handle_title_on_edit(book, vals.get('value', "")):
-                rename_error = helper.update_dir_structure(book.id, config.config_calibre_dir)
+                rename_error = helper.update_dir_structure(book.id, config.get_book_path())
                 if not rename_error:
                     ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
                                    mimetype='application/json')
@@ -409,7 +409,7 @@ def edit_list_book(param):
                            mimetype='application/json')
         elif param == 'authors':
             input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
-            rename_error = helper.update_dir_structure(book.id, config.config_calibre_dir, input_authors[0],
+            rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0],
                                                        renamed_author=renamed)
             if not rename_error:
                 ret = Response(json.dumps({
@@ -513,10 +513,10 @@ def merge_list_book():
                     for element in from_book.data:
                         if element.format not in to_file:
                             # create new data entry with: book_id, book_format, uncompressed_size, name
-                            filepath_new = os.path.normpath(os.path.join(config.config_calibre_dir,
+                            filepath_new = os.path.normpath(os.path.join(config.get_book_path(),
                                                                          to_book.path,
                                                                          to_name + "." + element.format.lower()))
-                            filepath_old = os.path.normpath(os.path.join(config.config_calibre_dir,
+                            filepath_old = os.path.normpath(os.path.join(config.get_book_path(),
                                                                          from_book.path,
                                                                          element.name + "." + element.format.lower()))
                             copyfile(filepath_old, filepath_new)
@@ -556,7 +556,7 @@ def table_xchange_author_title():
 
             if edited_books_id:
                 # toDo: Handle error
-                edit_error = helper.update_dir_structure(edited_books_id, config.config_calibre_dir, input_authors[0],
+                edit_error = helper.update_dir_structure(edited_books_id, config.get_book_path(), input_authors[0],
                                                          renamed_author=renamed)
             if modify_date:
                 book.last_modified = datetime.utcnow()
@@ -753,7 +753,7 @@ def move_coverfile(meta, db_book):
         cover_file = meta.cover
     else:
         cover_file = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
-    new_cover_path = os.path.join(config.config_calibre_dir, db_book.path)
+    new_cover_path = os.path.join(config.get_book_path(), db_book.path)
     try:
         os.makedirs(new_cover_path, exist_ok=True)
         copyfile(cover_file, os.path.join(new_cover_path, "cover.jpg"))
@@ -839,7 +839,7 @@ def delete_book_from_table(book_id, book_format, json_response):
         book = calibre_db.get_book(book_id)
         if book:
             try:
-                result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                result, error = helper.delete_book(book, config.get_book_path(), book_format=book_format.upper())
                 if not result:
                     if json_response:
                         return json.dumps([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
@@ -1172,7 +1172,7 @@ def upload_single_file(file_request, book, book_id):
                 return False
 
             file_name = book.path.rsplit('/', 1)[-1]
-            filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
+            filepath = os.path.normpath(os.path.join(config.get_book_path(), book.path))
             saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
 
             # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
