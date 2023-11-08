@@ -196,8 +196,7 @@ $(document).ready(function() {
                 mediaURL: url,
                 videoQuality: videoQuality,
                 maxVideos: maxVideos,
-                maxVideosSize: maxVideosSize,
-                addToBookshelf: addToBookshelf
+                maxVideosSize: maxVideosSize
             },
             success: function(response) {
                 // Handle success response here
@@ -265,11 +264,6 @@ $(document).ready(function() {
         } else {
             $("#maxVideos").prop("disabled", false);
         }
-    });
-
-    // Handle change event for the add to bookshelf checkbox
-    $("#addToBookshelf").change(function() {
-        // Handle change event
     });
 
     // Function to validate URL
