@@ -102,10 +102,13 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    if not ub.check_user_session(current_user.id,
-                                 flask_session.get('_id')) and 'opds' not in request.path \
-      and config.config_session == 1:
-        logout_user()
+    try:
+        if not ub.check_user_session(current_user.id,
+                                     flask_session.get('_id')) and 'opds' not in request.path \
+          and config.config_session == 1:
+            logout_user()
+    except AttributeError:
+        pass    # ? fails on requesting /ajax/emailstat during restart ?
     g.constants = constants
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION', '')
     g.allow_registration = config.config_public_reg

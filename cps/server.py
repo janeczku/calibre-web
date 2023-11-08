@@ -21,12 +21,12 @@ import os
 import errno
 import signal
 import socket
-import subprocess  # nosec
 
 try:
     from gevent.pywsgi import WSGIServer
     from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
+    from gevent.socket import socket as GeventSocket
     from gevent import __version__ as _version
     from greenlet import GreenletExit
     import ssl
@@ -36,6 +36,7 @@ except ImportError:
     from .tornado_wsgi import MyWSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
+    from tornado.netutil import bind_unix_socket
     from tornado import version as _version
     VERSION = 'Tornado ' + _version
     _GEVENT = False
@@ -95,7 +96,12 @@ class WebServer(object):
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 
-    def _make_gevent_unix_socket(self, socket_file):
+    def _make_gevent_socket_activated(self):
+        # Reuse an already open socket on fd=SD_LISTEN_FDS_START
+        SD_LISTEN_FDS_START = 3
+        return GeventSocket(fileno=SD_LISTEN_FDS_START)
+
+    def _prepare_unix_socket(self, socket_file):
         # the socket file must not exist prior to bind()
         if os.path.exists(socket_file):
             # avoid nuking regular files and symbolic links (could be a mistype or security issue)
@@ -103,35 +109,41 @@ class WebServer(object):
                 raise OSError(errno.EEXIST, os.strerror(errno.EEXIST), socket_file)
             os.remove(socket_file)
 
-        unix_sock = WSGIServer.get_listener(socket_file, family=socket.AF_UNIX)
         self.unix_socket_file = socket_file
 
-        # ensure current user and group have r/w permissions, no permissions for other users
-        # this way the socket can be shared in a semi-secure manner
-        # between the user running calibre-web and the user running the fronting webserver
-        os.chmod(socket_file, 0o660)
-
-        return unix_sock
-
-    def _make_gevent_socket(self):
+    def _make_gevent_listener(self):
         if os.name != 'nt':
+            socket_activated = os.environ.get("LISTEN_FDS")
+            if socket_activated:
+                sock = self._make_gevent_socket_activated()
+                sock_info = sock.getsockname()
+                return sock, "systemd-socket:" + _readable_listen_address(sock_info[0], sock_info[1])
             unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
             if unix_socket_file:
-                return self._make_gevent_unix_socket(unix_socket_file), "unix:" + unix_socket_file
+                self._prepare_unix_socket(unix_socket_file)
+                unix_sock = WSGIServer.get_listener(unix_socket_file, family=socket.AF_UNIX)
+                # ensure current user and group have r/w permissions, no permissions for other users
+                # this way the socket can be shared in a semi-secure manner
+                # between the user running calibre-web and the user running the fronting webserver
+                os.chmod(unix_socket_file, 0o660)
+
+                return unix_sock, "unix:" + unix_socket_file
 
         if self.listen_address:
-            return (self.listen_address, self.listen_port), None
+            return ((self.listen_address, self.listen_port),
+                    _readable_listen_address(self.listen_address, self.listen_port))
 
         if os.name == 'nt':
             self.listen_address = '0.0.0.0'
-            return (self.listen_address, self.listen_port), None
+            return ((self.listen_address, self.listen_port),
+                    _readable_listen_address(self.listen_address, self.listen_port))
 
         try:
             address = ('::', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
         except socket.error as ex:
             log.error('%s', ex)
-            log.warning('Unable to listen on "", trying on IPv4 only...')
+            log.warning('Unable to listen on {}, trying on IPv4 only...'.format(address))
             address = ('', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET)
 
@@ -201,9 +213,7 @@ class WebServer(object):
         ssl_args = self.ssl_args or {}
 
         try:
-            sock, output = self._make_gevent_socket()
-            if output is None:
-                output = _readable_listen_address(self.listen_address, self.listen_port)
+            sock, output = self._make_gevent_listener()
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, handler_class=MyWSGIHandler,
                                          error_log=log,
@@ -228,17 +238,42 @@ class WebServer(object):
         if os.name == 'nt' and sys.version_info > (3, 7):
             import asyncio
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))
+        try:
+            # Max Buffersize set to 200MB
+            http_server = HTTPServer(MyWSGIContainer(self.app),
+                                     max_buffer_size=209700000,
+                                     ssl_options=self.ssl_args)
 
-        # Max Buffersize set to 200MB
-        http_server = HTTPServer(MyWSGIContainer(self.app),
-                                 max_buffer_size=209700000,
-                                 ssl_options=self.ssl_args)
-        http_server.listen(self.listen_port, self.listen_address)
-        self.wsgiserver = IOLoop.current()
-        self.wsgiserver.start()
-        # wait for stop signal
-        self.wsgiserver.close(True)
+            unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
+            if os.environ.get("LISTEN_FDS") and os.name != 'nt':
+                SD_LISTEN_FDS_START = 3
+                sock = socket.socket(fileno=SD_LISTEN_FDS_START)
+                http_server.add_socket(sock)
+                sock.setblocking(0)
+                socket_name =sock.getsockname()
+                output = "systemd-socket:" + _readable_listen_address(socket_name[0], socket_name[1])
+            elif unix_socket_file and os.name != 'nt':
+                self._prepare_unix_socket(unix_socket_file)
+                output = "unix:" + unix_socket_file
+                unix_socket = bind_unix_socket(self.unix_socket_file)
+                http_server.add_socket(unix_socket)
+                # ensure current user and group have r/w permissions, no permissions for other users
+                # this way the socket can be shared in a semi-secure manner
+                # between the user running calibre-web and the user running the fronting webserver
+                os.chmod(self.unix_socket_file, 0o660)
+            else:
+                output = _readable_listen_address(self.listen_address, self.listen_port)
+                http_server.listen(self.listen_port, self.listen_address)
+            log.info('Starting Tornado server on %s', output)
+
+            self.wsgiserver = IOLoop.current()
+            self.wsgiserver.start()
+            # wait for stop signal
+            self.wsgiserver.close(True)
+        finally:
+            if self.unix_socket_file:
+                os.remove(self.unix_socket_file)
+                self.unix_socket_file = None
 
     def start(self):
         try:
