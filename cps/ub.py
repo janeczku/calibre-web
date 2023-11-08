@@ -104,7 +104,7 @@ def check_user_session(user_id, session_key):
     try:
         return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
                                                        User_Sessions.session_key==session_key).one_or_none())
-    except (exc.OperationalError, exc.InvalidRequestError):
+    except (exc.OperationalError, exc.InvalidRequestError) as e:
         session.rollback()
         log.exception(e)
 

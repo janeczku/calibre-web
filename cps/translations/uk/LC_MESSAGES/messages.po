@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2023-10-21 15:46+0200\n"
+"POT-Creation-Date: 2023-11-06 16:47+0100\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -928,7 +928,7 @@ msgstr "Книжки"
 msgid "Show recent books"
 msgstr "Показувати останні книги"
 
-#: cps/render_template.py:45 cps/templates/index.xml:25
+#: cps/render_template.py:45 cps/templates/index.xml:26
 msgid "Hot Books"
 msgstr "Популярні книги"
 
@@ -945,7 +945,7 @@ msgstr ""
 msgid "Show Downloaded Books"
 msgstr ""
 
-#: cps/render_template.py:59 cps/templates/index.xml:32 cps/web.py:429
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
 msgid "Top Rated Books"
 msgstr "Книги з найкращим рейтингом"
 
@@ -953,8 +953,8 @@ msgstr "Книги з найкращим рейтингом"
 msgid "Show Top Rated Books"
 msgstr "Показувати книги з найвищим рейтингом"
 
-#: cps/render_template.py:62 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:750
+#: cps/render_template.py:62 cps/templates/index.xml:55
+#: cps/templates/index.xml:59 cps/web.py:750
 msgid "Read Books"
 msgstr "Прочитані книги"
 
@@ -963,8 +963,8 @@ msgstr "Прочитані книги"
 msgid "Show Read and Unread"
 msgstr "Показувати прочитані та непрочитані книги"
 
-#: cps/render_template.py:66 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:753
+#: cps/render_template.py:66 cps/templates/index.xml:62
+#: cps/templates/index.xml:66 cps/web.py:753
 msgid "Unread Books"
 msgstr "Непрочитані книги"
 
@@ -976,13 +976,13 @@ msgstr "Показати не прочитані"
 msgid "Discover"
 msgstr "Огляд"
 
-#: cps/render_template.py:71 cps/templates/index.xml:50
+#: cps/render_template.py:71 cps/templates/index.xml:51
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "Показувати випадкові книги"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1119
+#: cps/templates/index.xml:84 cps/web.py:1119
 msgid "Categories"
 msgstr "Категорії"
 
@@ -992,7 +992,7 @@ msgid "Show Category Section"
 msgstr "Показувати вибір категорії"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
-#: cps/templates/book_table.html:68 cps/templates/index.xml:90
+#: cps/templates/book_table.html:68 cps/templates/index.xml:91
 #: cps/templates/search_form.html:69 cps/web.py:1009 cps/web.py:1021
 msgid "Series"
 msgstr "Серії"
@@ -1003,7 +1003,7 @@ msgid "Show Series Section"
 msgstr "Показувати вибір серії"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
-#: cps/templates/index.xml:69
+#: cps/templates/index.xml:70
 msgid "Authors"
 msgstr "Автори"
 
@@ -1013,7 +1013,7 @@ msgid "Show Author Section"
 msgstr "Показувати вибір автора"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:977
+#: cps/templates/index.xml:77 cps/web.py:977
 msgid "Publishers"
 msgstr "Видавництва"
 
@@ -1023,7 +1023,7 @@ msgid "Show Publisher Section"
 msgstr "Показувати вибір серії"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
-#: cps/templates/index.xml:97 cps/templates/search_form.html:107
+#: cps/templates/index.xml:98 cps/templates/search_form.html:107
 #: cps/web.py:1091
 msgid "Languages"
 msgstr "Мови"
@@ -1033,7 +1033,7 @@ msgstr "Мови"
 msgid "Show Language Section"
 msgstr "Показувати вибір мови"
 
-#: cps/render_template.py:89 cps/templates/index.xml:104
+#: cps/render_template.py:89 cps/templates/index.xml:105
 msgid "Ratings"
 msgstr "Рейтинги"
 
@@ -1042,7 +1042,7 @@ msgstr "Рейтинги"
 msgid "Show Ratings Section"
 msgstr "Показувати вибір серії"
 
-#: cps/render_template.py:92 cps/templates/index.xml:112
+#: cps/render_template.py:92 cps/templates/index.xml:113
 msgid "File formats"
 msgstr "Формати файлів"
 
@@ -1069,7 +1069,7 @@ msgid "Show Books List"
 msgstr ""
 
 #: cps/search.py:48 cps/search.py:398 cps/templates/book_edit.html:236
-#: cps/templates/feed.xml:33 cps/templates/index.xml:11
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
@@ -2613,7 +2613,7 @@ msgid "Add to shelf"
 msgstr "Додати на книжкову полицю"
 
 #: cps/templates/detail.html:304 cps/templates/detail.html:323
-#: cps/templates/feed.xml:80 cps/templates/layout.html:154
+#: cps/templates/feed.xml:81 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2690,7 +2690,7 @@ msgstr "Введіть домен"
 msgid "Denied Domains (Blacklist)"
 msgstr "Заборонені домени (Чорний список)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:22 cps/templates/layout.html:187
 msgid "Next"
 msgstr "Далі"
 
@@ -2748,72 +2748,72 @@ msgstr ""
 msgid "Sort descending according to series index"
 msgstr ""
 
-#: cps/templates/index.xml:6
+#: cps/templates/index.xml:7
 msgid "Start"
 msgstr "Старт"
 
-#: cps/templates/index.xml:18
+#: cps/templates/index.xml:19
 msgid "Alphabetical Books"
 msgstr ""
 
-#: cps/templates/index.xml:22
+#: cps/templates/index.xml:23
 msgid "Books sorted alphabetically"
 msgstr ""
 
-#: cps/templates/index.xml:29
+#: cps/templates/index.xml:30
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "Популярні книги в цьому каталозі, на основі кількості завантажень"
 
-#: cps/templates/index.xml:36
+#: cps/templates/index.xml:37
 msgid "Popular publications from this catalog based on Rating."
 msgstr "Популярні книги з цього каталогу на основі рейтингу"
 
-#: cps/templates/index.xml:39
+#: cps/templates/index.xml:40
 msgid "Recently added Books"
 msgstr ""
 
-#: cps/templates/index.xml:43
+#: cps/templates/index.xml:44
 msgid "The latest Books"
 msgstr "Останні книги"
 
-#: cps/templates/index.xml:46
+#: cps/templates/index.xml:47
 msgid "Random Books"
 msgstr "Випадковий список книг"
 
-#: cps/templates/index.xml:73
+#: cps/templates/index.xml:74
 msgid "Books ordered by Author"
 msgstr "Книги відсортовані за автором"
 
-#: cps/templates/index.xml:80
+#: cps/templates/index.xml:81
 msgid "Books ordered by publisher"
 msgstr ""
 
-#: cps/templates/index.xml:87
+#: cps/templates/index.xml:88
 msgid "Books ordered by category"
 msgstr "Книги відсортовані за категоріями"
 
-#: cps/templates/index.xml:94
+#: cps/templates/index.xml:95
 msgid "Books ordered by series"
 msgstr "Книги відсортовані за серією"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:102
 msgid "Books ordered by Languages"
 msgstr ""
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by Rating"
 msgstr ""
 
-#: cps/templates/index.xml:116
+#: cps/templates/index.xml:117
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:120 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr ""
 
-#: cps/templates/index.xml:123
+#: cps/templates/index.xml:124
 msgid "Books organized in shelves"
 msgstr ""
 

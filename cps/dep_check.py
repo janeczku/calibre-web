@@ -61,7 +61,7 @@ def dependency_check(optional=False):
     deps = load_dependencies(optional)
     for dep in deps:
         try:
-            dep_version_int = [int(x) for x in dep[0].split('.')]
+            dep_version_int = [int(x) if x.isnumeric() else 0 for x in dep[0].split('.')]
             low_check = [int(x) for x in dep[3].split('.')]
             high_check = [int(x) for x in dep[5].split('.')]
         except AttributeError:

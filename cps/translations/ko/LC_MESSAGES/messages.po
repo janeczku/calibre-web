@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2023-10-21 15:46+0200\n"
+"POT-Creation-Date: 2023-11-06 16:47+0100\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -928,7 +928,7 @@ msgstr "책"
 msgid "Show recent books"
 msgstr "최근 책 보기"
 
-#: cps/render_template.py:45 cps/templates/index.xml:25
+#: cps/render_template.py:45 cps/templates/index.xml:26
 msgid "Hot Books"
 msgstr "인기있는 책"
 
@@ -945,7 +945,7 @@ msgstr "다운로드된 책"
 msgid "Show Downloaded Books"
 msgstr "다운로드된 책 보기"
 
-#: cps/render_template.py:59 cps/templates/index.xml:32 cps/web.py:429
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
 msgid "Top Rated Books"
 msgstr "평점이 높은 책"
 
@@ -953,8 +953,8 @@ msgstr "평점이 높은 책"
 msgid "Show Top Rated Books"
 msgstr "평점이 높은 책 보기"
 
-#: cps/render_template.py:62 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:750
+#: cps/render_template.py:62 cps/templates/index.xml:55
+#: cps/templates/index.xml:59 cps/web.py:750
 msgid "Read Books"
 msgstr "읽은 책"
 
@@ -963,8 +963,8 @@ msgstr "읽은 책"
 msgid "Show Read and Unread"
 msgstr "읽은 책과 읽지 않은 책 보기"
 
-#: cps/render_template.py:66 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:753
+#: cps/render_template.py:66 cps/templates/index.xml:62
+#: cps/templates/index.xml:66 cps/web.py:753
 msgid "Unread Books"
 msgstr "읽지 않은 책"
 
@@ -976,13 +976,13 @@ msgstr "읽지 않은 책 보기"
 msgid "Discover"
 msgstr "발견"
 
-#: cps/render_template.py:71 cps/templates/index.xml:50
+#: cps/render_template.py:71 cps/templates/index.xml:51
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "무작위 추천"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1119
+#: cps/templates/index.xml:84 cps/web.py:1119
 msgid "Categories"
 msgstr "카테고리"
 
@@ -992,7 +992,7 @@ msgid "Show Category Section"
 msgstr "카테고리별 보기"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
-#: cps/templates/book_table.html:68 cps/templates/index.xml:90
+#: cps/templates/book_table.html:68 cps/templates/index.xml:91
 #: cps/templates/search_form.html:69 cps/web.py:1009 cps/web.py:1021
 msgid "Series"
 msgstr "시리즈"
@@ -1003,7 +1003,7 @@ msgid "Show Series Section"
 msgstr "시리즈별 보기"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
-#: cps/templates/index.xml:69
+#: cps/templates/index.xml:70
 msgid "Authors"
 msgstr "저자"
 
@@ -1013,7 +1013,7 @@ msgid "Show Author Section"
 msgstr "저자별 보기"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:977
+#: cps/templates/index.xml:77 cps/web.py:977
 msgid "Publishers"
 msgstr "출판사"
 
@@ -1023,7 +1023,7 @@ msgid "Show Publisher Section"
 msgstr "출판사별 보기"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
-#: cps/templates/index.xml:97 cps/templates/search_form.html:107
+#: cps/templates/index.xml:98 cps/templates/search_form.html:107
 #: cps/web.py:1091
 msgid "Languages"
 msgstr "언어"
@@ -1033,7 +1033,7 @@ msgstr "언어"
 msgid "Show Language Section"
 msgstr "언어별 보기"
 
-#: cps/render_template.py:89 cps/templates/index.xml:104
+#: cps/render_template.py:89 cps/templates/index.xml:105
 msgid "Ratings"
 msgstr "평점"
 
@@ -1042,7 +1042,7 @@ msgstr "평점"
 msgid "Show Ratings Section"
 msgstr "평점별 보기"
 
-#: cps/render_template.py:92 cps/templates/index.xml:112
+#: cps/render_template.py:92 cps/templates/index.xml:113
 msgid "File formats"
 msgstr "파일 유형"
 
@@ -1069,7 +1069,7 @@ msgid "Show Books List"
 msgstr "책 목록 보기"
 
 #: cps/search.py:48 cps/search.py:398 cps/templates/book_edit.html:236
-#: cps/templates/feed.xml:33 cps/templates/index.xml:11
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
@@ -2612,7 +2612,7 @@ msgid "Add to shelf"
 msgstr "서재에 추가"
 
 #: cps/templates/detail.html:304 cps/templates/detail.html:323
-#: cps/templates/feed.xml:80 cps/templates/layout.html:154
+#: cps/templates/feed.xml:81 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2691,7 +2691,7 @@ msgstr "도메인 입력"
 msgid "Denied Domains (Blacklist)"
 msgstr "거부 도메인(블랙리스트)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:22 cps/templates/layout.html:187
 msgid "Next"
 msgstr "다음"
 
@@ -2750,72 +2750,72 @@ msgstr "시리즈 인덱스에 따라 오름차순 정렬"
 msgid "Sort descending according to series index"
 msgstr "시리즈 인덱스에 따라 내림차순 정렬"
 
-#: cps/templates/index.xml:6
+#: cps/templates/index.xml:7
 msgid "Start"
 msgstr "시작"
 
-#: cps/templates/index.xml:18
+#: cps/templates/index.xml:19
 msgid "Alphabetical Books"
 msgstr "가나다(알파벳) 순"
 
-#: cps/templates/index.xml:22
+#: cps/templates/index.xml:23
 msgid "Books sorted alphabetically"
 msgstr "가나다(알파벳)순으로 정렬한 책"
 
-#: cps/templates/index.xml:29
+#: cps/templates/index.xml:30
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "다운로드 기준 인기 도서."
 
-#: cps/templates/index.xml:36
+#: cps/templates/index.xml:37
 msgid "Popular publications from this catalog based on Rating."
 msgstr "별점 기준 인기 도서."
 
-#: cps/templates/index.xml:39
+#: cps/templates/index.xml:40
 msgid "Recently added Books"
 msgstr "최근 추가된 도서"
 
-#: cps/templates/index.xml:43
+#: cps/templates/index.xml:44
 msgid "The latest Books"
 msgstr "최신 도서"
 
-#: cps/templates/index.xml:46
+#: cps/templates/index.xml:47
 msgid "Random Books"
 msgstr "랜덤 정렬"
 
-#: cps/templates/index.xml:73
+#: cps/templates/index.xml:74
 msgid "Books ordered by Author"
 msgstr "저자별 정렬"
 
-#: cps/templates/index.xml:80
+#: cps/templates/index.xml:81
 msgid "Books ordered by publisher"
 msgstr "출판사별 정렬"
 
-#: cps/templates/index.xml:87
+#: cps/templates/index.xml:88
 msgid "Books ordered by category"
 msgstr "카테고리별 정렬"
 
-#: cps/templates/index.xml:94
+#: cps/templates/index.xml:95
 msgid "Books ordered by series"
 msgstr "시리즈별 정렬"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:102
 msgid "Books ordered by Languages"
 msgstr "언어별 정렬"
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by Rating"
 msgstr "평점별 정렬"
 
-#: cps/templates/index.xml:116
+#: cps/templates/index.xml:117
 msgid "Books ordered by file formats"
 msgstr "파일 종류별 정렬"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:120 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "서재"
 
-#: cps/templates/index.xml:123
+#: cps/templates/index.xml:124
 msgid "Books organized in shelves"
 msgstr "서재별 정렬"
 
