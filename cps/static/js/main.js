@@ -220,7 +220,10 @@ $(document).ready(function() {
     $(document).on('keydown', function(event) {
         // Check if the pressed key is Enter (key code 13)
         if (event.which === 13 && $("#mediaDownloadModal").is(":visible")) {
+            event.preventDefault();
+            event.stopPropagation();
             initiateMediaDownload();
+            $("#mediaDownloadModal").modal("hide");
         }
     });
 
