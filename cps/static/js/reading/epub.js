@@ -19,6 +19,7 @@ var reader;
     reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("blackTheme", "/static/css/epub_themes.css");
 
+
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
         reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));
@@ -53,13 +54,8 @@ var reader;
             // Swiped Left
         }
     });
-
-    var $next = $('#next');
-    var $prev = $('#prev');
-
-    $next.on("click", updateLastCFI.bind(reader));
-
-    $prev.on("click", updateLastCFI.bind(reader));
+    
+    reader.rendition.on("locationChanged", updateLastCFI);
 
     /**
      * @param {string} action - Add or remove bookmark
@@ -87,8 +83,8 @@ var reader;
         });
     }
 
-    function updateLastCFI(event) {
-        var cfi = this.rendition.location.start.cfi;
+    function updateLastCFI(location) {
+        var cfi = location.start;
         var csrftoken = $("input[name='csrf_token']").val();
 
         // Save to database
