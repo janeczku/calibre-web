@@ -29,9 +29,18 @@ from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
 
 try:
-    from lxml.html.clean import clean_html, Cleaner
+    from bleach import clean_text as clean_html
+    BLEACH = True
 except ImportError:
-    clean_html = None
+    try:
+        from nh3 import clean as clean_html
+        BLEACH = False
+    except ImportError:
+        try:
+            from lxml.html.clean import clean_html
+            BLEACH = False
+        except ImportError:
+            clean_html = None
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Response, jsonify
 from flask_babel import gettext as _
@@ -1127,7 +1136,10 @@ def edit_book_series_index(series_index, book):
 def edit_book_comments(comments, book):
     modify_date = False
     if comments:
-        comments = clean_html(comments)
+        if BLEACH:
+            comments = clean_html(comments, tags=None, attributes=None)
+        else:
+            comments = clean_html(comments)
     if len(book.comments):
         if book.comments[0].text != comments:
             book.comments[0].text = comments
