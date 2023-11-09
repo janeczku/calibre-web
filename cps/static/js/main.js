@@ -187,15 +187,18 @@ $(document).ready(function() {
             return;
         }
 
-        // Determine the appropriate endpoint based on user input
+        // Use the referrer to determine the endpoint
         var endpoint;
-        if (url.includes("books/media")) {
+        var referrer = document.referrer;
+        var path = new URL(referrer).pathname;  
+        var pathFirstPart = path.split('/')[1];
+        if (pathFirstPart == "books") {
             endpoint = "/books/media";
-        } else if (url.includes("libros/media")) {
+        } else if (pathFirstPart == "libros") {
             endpoint = "/libros/media";
-        } else if (url.includes("livres/media")) {
+        } else if (pathFirstPart == "livres") {
             endpoint = "/livres/media";
-        } else if (url.includes("live/media")) {
+        } else if (pathFirstPart == "live") {
             endpoint = "/live/media";
         } else {
             alert("Unsupported endpoint");
