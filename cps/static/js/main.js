@@ -174,7 +174,6 @@ $(document).ready(function() {
         var videoQuality = $("input[name='videoQuality']:checked").val();
         var maxVideos = $("#maxVideos").val();
         var maxVideosSize = $("#maxVideosSize").val();
-        var addToBookshelf = $("#addToBookshelf").is(":checked");
 
         // Set empty number values to zero
         maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
