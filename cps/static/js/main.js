@@ -188,33 +188,89 @@ $(document).ready(function() {
             return;
         }
 
-        $.ajax({
-            url: "/live/media",
-            method: "POST",
-            data: {
-                csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
-                mediaURL: url,
-                videoQuality: videoQuality,
-                maxVideos: maxVideos,
-                maxVideosSize: maxVideosSize
-            },
-            success: function(response) {
-                // Handle success response here
-                if (response && response.location) {
-                    // Redirect to the specified location
-                    window.location.href = response.location;
-                } else {
-                    // Handle any specific success behavior
-                    console.log("Media download request successful.");
+        function downloadMedia(url, videoQuality, maxVideos, maxVideosSize, csrfToken) {
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: {
+                    csrf_token: csrfToken,
+                    mediaURL: url,
+                    videoQuality: videoQuality,
+                    maxVideos: maxVideos,
+                    maxVideosSize: maxVideosSize
+                },
+                success: function(response) {
+                    // Handle success response here
+                    if (response && response.location) {
+                        // Redirect to the specified location
+                        window.location.href = response.location;
+                    } else {
+                        // Handle any specific success behavior
+                        console.log("Media download request successful.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Handle error here
+                    console.log("Media download request failed:", error);
+                    $("#mediaDownloadForm .error-message").text("Media download request failed.");
+
+                    // Try the next URL if available
+                    var urls = ["/books/media", "/libros/media", "/livres/media", "/live/media"];
+                    var nextUrl = urls.shift();
+                    if (nextUrl) {
+                        downloadMedia(nextUrl, videoQuality, maxVideos, maxVideosSize, csrfToken);
+                    } else {
+                        console.log("All media download requests failed.");
+                        $("#mediaDownloadForm .error-message").text("All media download requests failed.");
+                    }
                 }
-            },
-            error: function(xhr, status, error) {
-                // Handle error here
-                console.log("Media download request failed:", error);
-                $("#mediaDownloadForm .error-message").text("Media download request failed.");
+            });
+        }
+
+        // Handle the "Start" button click event
+        $("#btn-download-media-submit").click(function() {
+            var url = $("#mediaURL").val();
+            var videoQuality = $("input[name='videoQuality']:checked").val();
+            var maxVideos = $("#maxVideos").val();
+            var maxVideosSize = $("#maxVideosSize").val();
+            var csrfToken = $("#mediaDownloadForm input[name=csrf_token]").val();
+
+            // Set empty number values to zero
+            maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
+            maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
+
+            // Check if the input URL is a valid URL
+            // First check if URL starts with https:// if not, prepend it
+            url = url.startsWith("https://") ? url : "https://" + url;
+            if (!isValidURL(url)) {
+                alert("Invalid URL");
+                return;
+            }
+
+            // Try the first URL
+            downloadMedia("/books/media", videoQuality, maxVideos, maxVideosSize, csrfToken);
+        });
+
+        // Handle Enter key press event in the input field
+        $(document).on('keydown', function(event) {
+            // Check if the pressed key is Enter (key code 13)
+            if (event.which === 13 && $("#mediaDownloadModal").is(":visible")) {
+                event.preventDefault();
+                event.stopPropagation();
+                initiateMediaDownload();
+                $("#mediaDownloadModal").modal("hide");
             }
         });
-    }
+
+        // Handle change event for the video quality radio buttons
+        $("input[name='videoQuality']").change(function() {
+            // Handle change event
+        });
+
+        // Handle input event for the max videos input
+        $("#maxVideos").on('input', function() {
+            // Handle input event
+        });
 
     // Handle Enter key press event in the input field
     $(document).on('keydown', function(event) {
