@@ -187,26 +187,13 @@ $(document).ready(function() {
             return;
         }
 
-        // Use the referrer to determine the endpoint
-        var endpoint;
-        var referrer = document.referrer;
-        var path = new URL(referrer).pathname;  
-        var pathFirstPart = path.split('/')[1];
-        if (pathFirstPart == "books") {
-            endpoint = "/books/media";
-        } else if (pathFirstPart == "libros") {
-            endpoint = "/libros/media";
-        } else if (pathFirstPart == "livres") {
-            endpoint = "/livres/media";
-        } else if (pathFirstPart == "live") {
-            endpoint = "/live/media";
-        } else {
-            alert("Unsupported endpoint");
-            return;
-        }
+        var currentURL = window.location.href;
+        var currentURLParts = currentURL.split("/");
+        currentURL = "/" + currentURLParts[3] + "/media";
+        console.log("Current URL:", currentURL);
 
         $.ajax({
-            url: endpoint,
+            url: currentURL,
             method: "POST",
             data: {
                 csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
@@ -225,7 +212,7 @@ $(document).ready(function() {
                     console.log("Media download request successful.");
                 }
             },
-            error: function(xhr, status, error) {
+            error: function(error) {
                 // Handle error here
                 console.log("Media download request failed:", error);
                 $("#mediaDownloadForm .error-message").text("Media download request failed.");
