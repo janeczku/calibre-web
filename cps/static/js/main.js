@@ -187,8 +187,13 @@ $(document).ready(function() {
             return;
         }
 
+        var currentURL = window.location.href;
+        var currentURLParts = currentURL.split("/");
+        currentURL = "/" + currentURLParts[3] + "/media";
+        console.log("Current URL:", currentURL);
+
         $.ajax({
-            url: "/live/media",
+            url: currentURL,
             method: "POST",
             data: {
                 csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
@@ -207,7 +212,7 @@ $(document).ready(function() {
                     console.log("Media download request successful.");
                 }
             },
-            error: function(xhr, status, error) {
+            error: function(error) {
                 // Handle error here
                 console.log("Media download request failed:", error);
                 $("#mediaDownloadForm .error-message").text("Media download request failed.");
