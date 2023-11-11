@@ -217,8 +217,8 @@ def extend_search_term(searchterm,
         searchterm.extend([_("Rating <= %(rating)s", rating=rating_high)])
     if rating_low:
         searchterm.extend([_("Rating >= %(rating)s", rating=rating_low)])
-    if read_status:
-        searchterm.extend([_("Read Status = %(status)s", status=read_status)])
+    if read_status != "Any":
+        searchterm.extend([_("Read Status = '%(status)s'", status=read_status)])
     searchterm.extend(ext for ext in tags['include_extension'])
     searchterm.extend(ext for ext in tags['exclude_extension'])
     # handle custom columns
@@ -283,7 +283,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             cc_present = True
 
     if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
-       or rating_high or description or cc_present or read_status:
+       or rating_high or description or cc_present or read_status != "Any":
         search_term, pub_start, pub_end = extend_search_term(search_term,
                                                              author_name,
                                                              book_title,
@@ -302,7 +302,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
         if pub_end:
             q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
-        q = q.filter(adv_search_read_status(read_status))
+        if read_status != "Any":
+            q = q.filter(adv_search_read_status(read_status))
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])
