@@ -21,7 +21,6 @@ import re
 from glob import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
-from tempfile import gettempdir
 from time import time
 
 from sqlalchemy.exc import SQLAlchemyError
@@ -34,6 +33,7 @@ from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 from cps.kobo_sync_status import remove_synced_book
 from cps.ub import init_db_thread
+from cps.file_helper import get_temp_dir
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
@@ -243,9 +243,10 @@ class TaskConvert(CalibreTask):
             # separate handling for windows and linux
 
             quotes = [3, 5]
-            tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-            if not os.path.isdir(tmp_dir):
-                os.mkdir(tmp_dir)
+            tmp_dir = get_temp_dir()
+            #tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+            #if not os.path.isdir(tmp_dir):
+            #    os.mkdir(tmp_dir)
             calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
             opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
             p = process_open(opf_command, quotes)

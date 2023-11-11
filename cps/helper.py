@@ -25,9 +25,9 @@ import re
 import shutil
 import socket
 from datetime import datetime, timedelta
-from tempfile import gettempdir
 import requests
 import unidecode
+from uuid import uuid4
 
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
@@ -60,6 +60,7 @@ from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
+from .file_helper import get_temp_dir
 
 log = logger.create()
 
@@ -921,10 +922,7 @@ def save_cover(img, book_path):
             return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
-        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-
-        if not os.path.isdir(tmp_dir):
-            os.mkdir(tmp_dir)
+        tmp_dir = get_temp_dir()
         ret, message = save_cover_from_filestorage(tmp_dir, "uploaded_cover.jpg", img)
         if ret is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg').replace("\\", "/"),
@@ -944,7 +942,13 @@ def do_download_file(book, book_format, client, data, headers):
         df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
-            return gd.do_gdrive_download(df, headers)
+            # ToDo check:!!!!!!!!
+            if config.config_binariesdir:
+                output = os.path.join(config.config_calibre_dir, book.path, data.name)
+                gd.ownloadFile(book.path, book_name + "." + book_format, output)
+                filename, download_name = do_calibre_export(book, book_format)
+            else:
+                return gd.do_gdrive_download(df, headers)
         else:
             abort(404)
     else:
@@ -957,34 +961,33 @@ def do_download_file(book, book_format, client, data, headers):
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
         if config.config_binariesdir:
-            filename, book_name = do_calibre_export(book, book_format)
+            filename, download_name = do_calibre_export(book, book_format)
+        else:
+            download_name = book_name
 
-        response = make_response(send_from_directory(filename, book_name + "." + book_format))
-        # ToDo Check headers parameter
-        for element in headers:
-            response.headers[element[0]] = element[1]
-        log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
-        return response
+    response = make_response(send_from_directory(filename, download_name + "." + book_format))
+    # ToDo Check headers parameter
+    for element in headers:
+        response.headers[element[0]] = element[1]
+    log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
+    return response
+
 
 
 def do_calibre_export(book, book_format):
     try:
         quotes = [3, 5, 7, 9]
-        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-        if not os.path.isdir(tmp_dir):
-            os.mkdir(tmp_dir)
+        tmp_dir = get_temp_dir()
         calibredb_binarypath = get_calibre_binarypath("calibredb")
-        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', str(book.id), 
-                    '--with-library', config.config_calibre_dir, '--to-dir', tmp_dir,
-                    '--formats', book_format, "--template", "{} - {{authors}}".format(book.title)]
-        file_name = book.title
-        if len(book.authors) > 0:
-            file_name = file_name + ' - ' + book.authors[0].name
+        temp_file_name = str(uuid4())
+        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', config.config_calibre_dir,
+                       '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
+                       str(book.id)]
         p = process_open(opf_command, quotes)
         _, err = p.communicate()
         if err:
             log.error('Metadata embedder encountered an error: %s', err)
-        return tmp_dir, file_name
+        return tmp_dir, temp_file_name
     except OSError as ex:
         # ToDo real error handling
         log.error_or_exception(ex)
