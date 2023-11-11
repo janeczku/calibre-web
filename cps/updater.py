@@ -31,7 +31,7 @@ from flask_babel import format_datetime
 from flask_babel import gettext as _
 
 from . import constants, logger  #  config, web_server
-from .file_helper import gettempdir
+from .file_helper import get_temp_dir
 
 
 log = logger.create()

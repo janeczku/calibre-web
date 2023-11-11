@@ -942,10 +942,12 @@ def do_download_file(book, book_format, client, data, headers):
         df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
-            # ToDo check:!!!!!!!!
             if config.config_binariesdir:
-                output = os.path.join(config.config_calibre_dir, book.path, data.name)
-                gd.ownloadFile(book.path, book_name + "." + book_format, output)
+                output_path = os.path.join(config.config_calibre_dir, book.path)
+                if not os.path.exists(output_path):
+                    os.makedirs(output_path)
+                output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
+                gd.downloadFile(book.path, book_name + "." + book_format, output)
                 filename, download_name = do_calibre_export(book, book_format)
             else:
                 return gd.do_gdrive_download(df, headers)
@@ -971,7 +973,6 @@ def do_download_file(book, book_format, client, data, headers):
         response.headers[element[0]] = element[1]
     log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
     return response
-
 
 
 def do_calibre_export(book, book_format):
