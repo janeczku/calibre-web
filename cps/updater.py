@@ -25,13 +25,13 @@ import threading
 import time
 import zipfile
 from io import BytesIO
-from tempfile import gettempdir
-
 import requests
+
 from flask_babel import format_datetime
 from flask_babel import gettext as _
 
 from . import constants, logger  #  config, web_server
+from .file_helper import gettempdir
 
 
 log = logger.create()
@@ -85,7 +85,7 @@ class Updater(threading.Thread):
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
             log.debug('Extracting zipfile')
-            tmp_dir = gettempdir()
+            tmp_dir = get_temp_dir()
             z.extractall(tmp_dir)
             folder_name = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(folder_name):

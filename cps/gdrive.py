@@ -23,7 +23,6 @@
 import os
 import hashlib
 import json
-import tempfile
 from uuid import uuid4
 from time import time
 from shutil import move, copyfile
@@ -34,6 +33,7 @@ from flask_login import login_required
 
 from . import logger, gdriveutils, config, ub, calibre_db, csrf
 from .admin import admin_required
+from .file_helper import get_temp_dir
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
 log = logger.create()
@@ -139,9 +139,7 @@ try:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                 if not response['deleted'] and response['file']['title'] == 'metadata.db' \
                     and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
-                    tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
-                    if not os.path.isdir(tmp_dir):
-                        os.mkdir(tmp_dir)
+                    tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')
                     copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))
