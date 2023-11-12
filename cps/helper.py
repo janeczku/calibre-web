@@ -949,6 +949,7 @@ def do_download_file(book, book_format, client, data, headers):
                 output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
                 gd.downloadFile(book.path, book_name + "." + book_format, output)
                 filename, download_name = do_calibre_export(book, book_format)
+                # ToDo: delete path in calibre-folder structure
             else:
                 return gd.do_gdrive_download(df, headers)
         else:
@@ -1027,17 +1028,21 @@ def check_calibre(calibre_location):
         return _('Please specify a directory, not a file')
 
     try:
-        supported_binary_paths = [os.path.join(calibre_location, binary) for binary in SUPPORTED_CALIBRE_BINARIES.values()]
-        binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
+        supported_binary_paths = [os.path.join(calibre_location, binary)
+                                  for binary in SUPPORTED_CALIBRE_BINARIES.values()]
+        binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK)
+                            for binary_path in supported_binary_paths]
         if all(binaries_available):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)')
+                      for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
                 log.debug("calibre version %s", version)
             else:
                 return _('Calibre binaries not viable')
         else:
-            missing_binaries=[path for path, available in zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
+            missing_binaries=[path for path, available in
+                              zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
             return _('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries))
 
     except (OSError, UnicodeDecodeError) as err:
