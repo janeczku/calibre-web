@@ -211,9 +211,8 @@
         </div>
       </div>
     </div>
-    {% block modal %}
+    {% block modal %}{% endblock %}
     {{ media_download_modal() }}
-    {% endblock %}
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
