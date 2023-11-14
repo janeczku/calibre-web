@@ -37,7 +37,7 @@ mv ${DB_FILE} ${DB_FILE}.$(date +%F_%T_%Z) || true
 log "Running command: ${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} && ${XKLB_EXECUTABLE} dl ${DB_FILE} --video ${URL}"
 OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
         ${XKLB_EXECUTABLE} dl ${DB_FILE} --extractor-config "writethumbnail=True" \
-        --video ${URL} --verbose 2>&1)
+        --video ${URL} --verbose)
 
 if [ $? -ne 0 ]; then
     log "An error occurred while running the command. Output: ${OUTPUT}"
