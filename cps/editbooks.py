@@ -333,7 +333,8 @@ def media():
     if request.method == "POST" and "mediaURL" in request.form:
         media_url = request.form["mediaURL"]
         original_url = request.form["serverURL"]
-        original_url = original_url.replace("/media", "/meta")
+        if original_url.endswith("/media"):
+            original_url = original_url.rsplit("/media", 1)[0] + "/meta"
  
         if request_media_download(media_url, original_url):
             response = {
