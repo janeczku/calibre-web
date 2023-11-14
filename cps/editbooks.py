@@ -350,8 +350,36 @@ def media():
 
 @editbook.route("/meta", methods=["GET"])
 def meta():
-    def move_mediafile(requested_files, shelf_id=None, current_user_name=None):
-        requested_files = requested_files[0][2:-2].split('", "')  # strip first and last char
+    def move_mediafile(requested_files, current_user_name=None, shelf_title=None):
+        if shelf_title:
+            shelf_object = ub.Shelf()
+            is_public = 1
+            original_title = shelf_title
+            suffix = 1
+            while not shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
+                suffix += 1
+                shelf_title = f"{original_title} ({suffix})"
+            shelf_object.name = shelf_title
+            shelf_object.is_public = is_public
+            shelf_object.user_id = int(current_user.id)
+            ub.session.add(shelf_object)
+            shelf_action = "created"
+            flash_text = _("Shelf %(title)s created", title=shelf_title)
+            try:
+                ub.session.commit()
+                shelf_id = shelf_object.id
+                log.info("Shelf %s %s", shelf_title, shelf_action)
+                flash(flash_text, category="success")
+            except (OperationalError, InvalidRequestError) as ex:
+                ub.session.rollback()
+                log.error("Settings Database error: %s", ex)
+                flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
+            except Exception as ex:
+                ub.session.rollback()
+                log.error("Error occurred: %s", ex)
+                flash(_("There was an error"), category="error")
+
+        log.info("Requested files list: %s", requested_files)
         for requested_file in requested_files:
             requested_file = open(requested_file, "rb")
             requested_file.filename = os.path.basename(requested_file.name)
@@ -411,10 +439,8 @@ def meta():
                 )
                 helper.add_book_to_thumbnail_cache(book_id)
 
-                if shelf_id:
-                    shelf.add_to_shelf.__closure__[0].cell_contents(
-                                shelf_id, book_id
-                            )
+                if shelf_title:
+                    shelf.add_to_shelf_as_guest(shelf_id, book_id)
 
                 if len(requested_files) < 2:
                     resp = {
@@ -440,9 +466,9 @@ def meta():
 
     if request.method == "GET" and "requested_files" in request.args:
         requested_files = request.args.getlist("requested_files")
-        shelf_id = request.args.get("shelf_id", None)
         current_user_name = request.args.get("current_user_name", None)
-        if move_mediafile(requested_files, shelf_id, current_user_name):
+        shelf_title = request.args.get("shelf_title", None)
+        if move_mediafile(requested_files, current_user_name, shelf_title):
             response = {
                 "success": "Moved media successfully",
             }

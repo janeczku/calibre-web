@@ -284,6 +284,33 @@ def order_shelf(shelf_id):
         abort(404)
 
 
+def add_to_shelf_as_guest(shelf_id, book_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        log.error("Invalid shelf specified: %s", shelf_id)
+
+    book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
+                                                          ub.BookShelf.book_id == book_id).first()
+    if book_in_shelf:
+        log.error("Book %s is already part of %s", book_id, shelf)
+
+    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+    if maxOrder[0] is None:
+        maxOrder = 0
+    else:
+        maxOrder = maxOrder[0]
+
+    shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
+    shelf.last_modified = datetime.utcnow()
+    try:
+        ub.session.merge(shelf)
+        ub.session.commit()
+    except (OperationalError, InvalidRequestError) as e:
+        ub.session.rollback()
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+
+
 def check_shelf_edit_permissions(cur_shelf):
     if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id):
         log.error("User {} not allowed to edit shelf: {}".format(current_user.id, cur_shelf.name))
