@@ -4,13 +4,10 @@ import sqlite3
 from datetime import datetime
 from flask import flash
 from flask_babel import lazy_gettext as N_, gettext as _
-from flask_login import current_user
 
-from cps import ub
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
 from cps.subproc_wrapper import process_open
-from sqlalchemy.exc import OperationalError, InvalidRequestError
-from .. import shelf, ub, logger
+from .. import logger
 
 log = logger.create()
 
@@ -28,7 +25,6 @@ class TaskDownload(CalibreTask):
         """Run the download task"""
         self.worker_thread = worker_thread
         log.info("Starting download task for URL: %s", self.media_url)
-        shelf_id = None
         self.start_time  = self.end_time = datetime.now()
         self.stat = STAT_STARTED
         self.progress = 0
@@ -60,7 +56,6 @@ class TaskDownload(CalibreTask):
                             
                         p.wait()
 
-
                         # Database operations
                         requested_files = []
                         download_db_path = "/var/tmp/download.db"
@@ -78,35 +73,8 @@ class TaskDownload(CalibreTask):
                             shelf_title = None
                         conn.close()
 
-                        if shelf_title:
-                            shelf_object = ub.Shelf()
-                            is_public = 1
-                            if shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
-                                shelf_object.name = shelf_title
-                                shelf_object.is_public = is_public
-                                shelf_object.user_id = int(current_user.id)
-                                ub.session.add(shelf_object)
-                                shelf_action = "created"
-                                flash_text = _("Shelf %(title)s created", title=shelf_title)
-                                try:
-                                    ub.session.commit()
-                                    shelf_id = shelf_object.id
-                                    log.info("Shelf %s %s", shelf_title, shelf_action)
-                                    flash(flash_text, category="success")
-                                except (OperationalError, InvalidRequestError) as ex:
-                                    ub.session.rollback()
-                                    log.error("Settings Database error: %s", ex)
-                                    flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
-                                except Exception as ex:
-                                    ub.session.rollback()
-                                    log.error("Error occurred: %s", ex)
-                                    flash(_("There was an error"), category="error")
-
-                        # Log the list of requested files
-                        log.info("Requested files: %s", requested_files)
-                        requested_files = str(requested_files)
                         if self.original_url:
-                            response = requests.get(self.original_url, params={"shelf_id": shelf_id, "requested_files": requested_files, "current_user_name": self.current_user_name})
+                            response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
                             if response.status_code == 200:
                                 log.info("Successfully sent the list of requested files to %s", self.original_url)
                             else:
