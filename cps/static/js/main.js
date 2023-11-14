@@ -189,15 +189,14 @@ $(document).ready(function() {
 
         var currentURL = new URL(window.location.href);
         currentURL.pathname = currentURL.pathname.split('/').slice(1, 2).join('/') + "/media";
-        var endpoint = currentURL.href;
 
         $.ajax({
-            url: endpoint,
+            url: currentURL.href,
             method: "POST",
             data: {
                 csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
                 mediaURL: url,
-                serverURL: endpoint,
+                serverURL: currentURL.href,
                 videoQuality: videoQuality,
                 maxVideos: maxVideos,
                 maxVideosSize: maxVideosSize
