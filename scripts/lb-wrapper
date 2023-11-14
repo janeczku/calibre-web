@@ -1,1 +1,49 @@
+#!/bin/bash
 
+# Configuration
+XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
+LOG_FILE="/var/log/xklb.log"
+DB_FILE="/var/tmp/download.db"
+URL="$1"
+
+# Function to log messages
+log() {
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" | tee -a ${LOG_FILE}
+}
+
+# Check if xklb is installed
+if ! command -v "${XKLB_EXECUTABLE}" &> /dev/null
+then
+    log "xklb could not be found. Please install xklb and try again."
+    exit 1
+fi
+
+# Check if the user provided any arguments
+if [ $# -eq 0 ]
+then
+    log "No arguments provided. Please provide a URL to download."
+    exit 1
+fi
+
+# Validate URL
+if [[ ! ${URL} =~ ^http[s]?:// ]]
+then
+    log "Invalid URL provided. Please provide a valid URL to download."
+    exit 1
+fi
+
+log "Moving ${DB_FILE} aside if it already exists."
+mv ${DB_FILE} ${DB_FILE}.$(date +%F_%T_%Z) || true
+log "Running command: ${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} && ${XKLB_EXECUTABLE} dl ${DB_FILE} --video ${URL}"
+OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
+        ${XKLB_EXECUTABLE} dl ${DB_FILE} --extractor-config "writethumbnail=True" \
+        --video ${URL} --verbose 2>&1)
+
+if [ $? -ne 0 ]; then
+    log "An error occurred while running the command. Output: ${OUTPUT}"
+    exit 1
+fi
+
+log "Download completed successfully."
+
+exit 0
