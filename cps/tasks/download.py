@@ -33,10 +33,10 @@ class TaskDownload(CalibreTask):
         self.stat = STAT_STARTED
         self.progress = 0
 
-        yb_executable = self.get_yb_executable()
+        lb_executable = self.get_lb_executable()
 
         if self.media_url:
-            subprocess_args = [yb_executable, self.media_url]
+            subprocess_args = [lb_executable, self.media_url]
             log.info("Subprocess args: %s", subprocess_args)
 
             # Execute the download process using process_open
@@ -126,9 +126,9 @@ class TaskDownload(CalibreTask):
         else:
             log.info("No media URL provided")
 
-    def get_yb_executable(self):
-        yb_executable = os.getenv("YB_EXECUTABLE", "yb")
-        return yb_executable
+    def get_lb_executable(self):
+        lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
+        return lb_executable
 
     @property
     def name(self):
