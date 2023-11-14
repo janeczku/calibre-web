@@ -187,17 +187,17 @@ $(document).ready(function() {
             return;
         }
 
-        var currentURL = window.location.href;
-        var currentURLParts = currentURL.split("/");
-        currentURL = "/" + currentURLParts[3] + "/media";
-        console.log("Current URL:", currentURL);
+        var currentURL = new URL(window.location.href);
+        currentURL.pathname = currentURL.pathname.split('/').slice(1, 2).join('/') + "/media";
+        var endpoint = currentURL.href;
 
         $.ajax({
-            url: currentURL,
+            url: endpoint,
             method: "POST",
             data: {
                 csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
                 mediaURL: url,
+                serverURL: endpoint,
                 videoQuality: videoQuality,
                 maxVideos: maxVideos,
                 maxVideosSize: maxVideosSize
