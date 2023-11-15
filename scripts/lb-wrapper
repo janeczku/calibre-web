@@ -33,13 +33,13 @@ then
     exit 1
 fi
 
-log "Moving ${DB_FILE} aside if it already exists."
-mv ${DB_FILE} ${DB_FILE}.$(date +%F_%T_%Z) || true
-log "Running command: ${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
-                      ${XKLB_EXECUTABLE} dl ${DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
+log "Moving ${SURVEY_DB_FILE} aside if it already exists."
+mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) || true
+log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
+                      ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
                       --video ${URL} --verbose"
-OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
-        ${XKLB_EXECUTABLE} dl ${DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
+OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
+        ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
         --video ${URL} --verbose)
 
 if [ $? -ne 0 ]; then
