@@ -5,6 +5,7 @@ from datetime import datetime
 from flask import flash
 from flask_babel import lazy_gettext as N_, gettext as _
 
+from cps.constants import DOWNLOAD_DB_PATH
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
 from cps.subproc_wrapper import process_open
 from .. import logger
@@ -58,8 +59,7 @@ class TaskDownload(CalibreTask):
 
                         # Database operations
                         requested_files = []
-                        download_db_path = "/var/tmp/download.db"
-                        conn = sqlite3.connect(download_db_path)
+                        conn = sqlite3.connect(DOWNLOAD_DB_PATH)
                         c = conn.cursor()
                         c.execute("SELECT path FROM media")
                         for row in c.fetchall():
