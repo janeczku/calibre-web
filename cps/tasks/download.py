@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import flash
 from flask_babel import lazy_gettext as N_, gettext as _
 
-from cps.constants import DOWNLOAD_DB_PATH
+from cps.constants import SURVEY_DB_PATH
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
 from cps.subproc_wrapper import process_open
 from .. import logger
