@@ -260,9 +260,9 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             row = c.fetchone()
             if row is not None:
                 title = row['title']
-                author = row['path'].split('/Youtube/')[1].split('/')[0].replace('_', ' ')
+                author = row['path'].split('/calibre-web/')[1].split('/')[1].replace('_', ' ')
                 description = row['description']
-                publisher = 'YouTube'
+                publisher = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
                 # example of time_uploaded: 1696464000
                 pubdate = row['time_uploaded']
                 pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
