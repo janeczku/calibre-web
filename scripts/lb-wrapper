@@ -2,8 +2,9 @@
 
 # Configuration
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
+PREFIX="/library/downloads/calibre-web"
 LOG_FILE="/var/log/xklb.log"
-DB_FILE="/var/tmp/download.db"
+DB_FILE="${PREFIX}/download.db"
 URL="$1"
 
 # Function to log messages
@@ -34,9 +35,11 @@ fi
 
 log "Moving ${DB_FILE} aside if it already exists."
 mv ${DB_FILE} ${DB_FILE}.$(date +%F_%T_%Z) || true
-log "Running command: ${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} && ${XKLB_EXECUTABLE} dl ${DB_FILE} --video ${URL}"
+log "Running command: ${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
+                      ${XKLB_EXECUTABLE} dl ${DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
+                      --video ${URL} --verbose"
 OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${DB_FILE} ${URL} --verbose && \
-        ${XKLB_EXECUTABLE} dl ${DB_FILE} --extractor-config "writethumbnail=True" \
+        ${XKLB_EXECUTABLE} dl ${DB_FILE} --prefix ${PREFIX} --extractor-config "writethumbnail=True" \
         --video ${URL} --verbose)
 
 if [ $? -ne 0 ]; then
