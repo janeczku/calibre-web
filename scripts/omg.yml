@@ -1,3 +1,5 @@
+# USAGE: https://github.com/iiab/calibre-web/wiki#install
+
 runcmd:
   - apt update
   - apt install pipx -y
