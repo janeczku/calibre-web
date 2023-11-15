@@ -4,7 +4,7 @@
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 PREFIX="/library/downloads/calibre-web"
 LOG_FILE="/var/log/xklb.log"
-DB_FILE="${PREFIX}/survey.db"
+SURVEY_DB_FILE="${PREFIX}/survey.db"
 URL="$1"
 
 # Function to log messages
