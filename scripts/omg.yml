@@ -1,0 +1,28 @@
+runcmd:
+  - apt update
+  - apt install pipx -y
+  - pipx install xklb
+  - ln -s /root/.local/bin/lb /usr/local/bin/lb
+  - curl https://raw.githubusercontent.com/iiab/calibre-web/master/scripts/lb-wrapper > /usr/local/bin/lb-wrapper
+  - chmod a+x /usr/local/bin/lb-wrapper
+  - mkdir /etc/iiab
+  - |
+    cat >> /etc/iiab/local_vars.yml << EOF
+    calibreweb_install: True
+    calibreweb_enabled: True
+    calibreweb_repo_url: https://github.com/iiab/calibre-web
+    calibreweb_version: master
+    kalite_install: False
+    kalite_enabled: False
+    kiwix_install: False
+    kiwix_enabled: False
+    osm_vector_maps_install: False
+    awstats_install: False
+    awstats_enabled: False
+    matomo_install: False
+    matomo_enabled: False
+    captiveportal_install: False
+    admin_console_install: False
+    admin_console_enabled: False
+    EOF
+  - curl iiab.io/risky.txt | bash &
