@@ -27,7 +27,7 @@ from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta
+from .constants import BookMeta, SURVEY_DB_FILE
 from .helper import split_authors
 
 log = logger.create()
@@ -252,9 +252,8 @@ def pdf_preview(tmp_file_path, tmp_dir):
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
     if ']' in original_file_name:
         video_id = original_file_name.split('[')[1].split(']')[0]
-        download_db_path = "/var/tmp/download.db"
-        if os.path.isfile(download_db_path):
-            conn = sqlite3.connect(download_db_path)
+        if os.path.isfile(SURVEY_DB_FILE):
+            conn = sqlite3.connect(SURVEY_DB_FILE)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute("SELECT * FROM media WHERE extractor_id=?", (video_id,))
