@@ -59,7 +59,7 @@ class TaskDownload(CalibreTask):
 
                         # Database operations
                         requested_files = []
-                        conn = sqlite3.connect(DOWNLOAD_DB_PATH)
+                        conn = sqlite3.connect(SURVEY_DB_PATH)
                         c = conn.cursor()
                         c.execute("SELECT path FROM media")
                         for row in c.fetchall():
