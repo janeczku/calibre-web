@@ -45,7 +45,7 @@ DEFAULT_CACHE_DIR   = os.path.join(BASE_DIR, 'cps', 'cache')
 CACHE_DIR           = os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
 
 # Database dir for media files downloaded from the internet
-DOWNLOAD_DB_PATH    = "/library/downloads/calibre-web/downloads.db"
+DOWNLOAD_DB_PATH    = "/library/downloads/calibre-web/download.db"
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"), ".calibre-web")
