@@ -26,9 +26,9 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-# URLs must begin with "https://" or "http://" (for what reason?)
+# 2023-11-15: Good enough for now, URL validation likely to improve soon!
 if [[ ! ${URL} =~ ^http[s]?:// ]]; then
-    log "Invalid URL provided. Please provide a valid URL to download."
+    log 'Invalid URL: xklb commands require URLs begin with "https://" or "http://"'
     exit 1
 fi
 
