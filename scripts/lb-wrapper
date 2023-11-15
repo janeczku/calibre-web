@@ -2,10 +2,10 @@
 
 # Configuration
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
-TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
-LOG_FILE="/var/log/xklb.log"
-SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
 URL="$1"
+LOG_FILE="/var/log/xklb.log"
+TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
@@ -15,22 +15,19 @@ log() {
 }
 
 # Check if xklb is installed
-if ! command -v "${XKLB_EXECUTABLE}" &> /dev/null
-then
+if ! command -v "${XKLB_EXECUTABLE}" &> /dev/null; then
     log "xklb could not be found. Please install xklb and try again."
     exit 1
 fi
 
 # Check if the user provided any arguments
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
     log "No arguments provided. Please provide a URL to download."
     exit 1
 fi
 
-# Validate URL
-if [[ ! ${URL} =~ ^http[s]?:// ]]
-then
+# URLs must begin with "https://" or "http://" (for what reason?)
+if [[ ! ${URL} =~ ^http[s]?:// ]]; then
     log "Invalid URL provided. Please provide a valid URL to download."
     exit 1
 fi
@@ -48,5 +45,3 @@ if [ $? -ne 0 ]; then
 fi
 
 log "Download completed successfully."
-
-exit 0
