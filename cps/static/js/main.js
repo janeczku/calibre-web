@@ -179,6 +179,7 @@ $(document).ready(function() {
         maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
         maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
 
+        /*
         // Check if the input URL is a valid URL
         // First check if URL starts with https:// if not, prepend it
         url = url.startsWith("https://") ? url : "https://" + url;
@@ -186,6 +187,11 @@ $(document).ready(function() {
             alert("Invalid URL");
             return;
         }
+        */
+
+        // Prepend https:// if URL doesn't begin with http:// or https://
+        // As xklb requires: https://github.com/iiab/calibre-web/pull/44
+        url = /^https?:\/\//.test(url) ? url : "https://" + url;
 
         var currentURL = new URL(window.location.href);
         currentURL.pathname = currentURL.pathname.split('/').slice(1, 2).join('/') + "/media";
@@ -272,13 +278,15 @@ $(document).ready(function() {
         }
     });
 
+    /*
     // Function to validate URL
     function isValidURL(url) {
-        // Regex to validate URL (should be any url starting with https://)
+        // Regex to validate URL (should be any url starting with http:// or https://)
         var urlPattern = /^https?:\/\//i;
         // Check if the URL matches the pattern
         return urlPattern.test(url);
     }
+    */
 
 });
 
