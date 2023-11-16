@@ -26,9 +26,11 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-# 2023-11-15: Good enough for now, URL validation likely to improve soon!
+# URL validation already taken care of by cps/static/js/main.js Line ~194,
+# which prepends https:// if URL doesn't already begin with http:// or https://
+# (So test below is not really nec, except to enforce the above, with logging.)
 if [[ ! ${URL} =~ ^http[s]?:// ]]; then
-    log 'Invalid URL: xklb commands require URLs begin with "https://" or "http://"'
+    log 'Invalid URL: xklb commands require URLs begin with "http://" or "https://"'
     exit 1
 fi
 
