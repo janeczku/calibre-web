@@ -56,7 +56,7 @@ from .kobo_auth import requires_kobo_auth, get_auth_token
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
-KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
+KOBO_IMAGEHOST_URL = "https://cdn.kobo.com/book-images/"
 
 SYNC_ITEM_LIMIT = 100
 
