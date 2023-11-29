@@ -38,8 +38,8 @@ log "Moving ${SURVEY_DB_FILE} aside if it already exists."
 mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) || true
 log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --extractor-config "writethumbnail=True" --video ${URL} --verbose"
 OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
-        ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --extractor-config "writethumbnail=True" \
-        --video ${URL} --verbose)
+        ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --writethumbnail \
+        --format='bestvideo[height<=720][vcodec=vp9]+bestaudio/best[height<=720][vcodec=vp9]' --video ${URL} --verbose)
 
 if [ $? -ne 0 ]; then
     log "An error occurred while running the command. Output: ${OUTPUT}"
