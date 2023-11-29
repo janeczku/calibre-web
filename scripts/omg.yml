@@ -1,13 +1,7 @@
 # USAGE: https://github.com/iiab/calibre-web/wiki#install
 
 runcmd:
-  - apt update
-  - apt install pipx -y
-  - pipx install xklb
-  - ln -s /root/.local/bin/lb /usr/local/bin/lb
-  - curl https://raw.githubusercontent.com/iiab/calibre-web/master/scripts/lb-wrapper > /usr/local/bin/lb-wrapper
-  - chmod a+x /usr/local/bin/lb-wrapper
-  - mkdir /etc/iiab
+  - mkdir -p /etc/iiab
   - |
     cat >> /etc/iiab/local_vars.yml << EOF
     calibreweb_install: True
