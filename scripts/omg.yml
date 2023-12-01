@@ -1,4 +1,4 @@
-# USAGE: https://github.com/iiab/calibre-web/wiki#install
+# USAGE: https://github.com/iiab/calibre-web/wiki#wrench-installation
 
 runcmd:
   - mkdir -p /etc/iiab
