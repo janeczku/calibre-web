@@ -333,7 +333,6 @@ $(function() {
                 } else {
                     $("#parent").addClass('hidden')
                 }
-                // console.log(data);
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
                         var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
