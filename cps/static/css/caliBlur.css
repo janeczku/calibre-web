@@ -3296,6 +3296,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     left: 0 !important;
 }
 #add-to-shelves {
+  min-height: 48px;
   max-height: calc(100% - 120px);
   overflow-y: auto;
 }
@@ -4812,8 +4813,8 @@ body.advsearch:not(.blur) > div.container-fluid > div.row-fluid > div.col-sm-10 
     z-index: 999999999999999999999999999999999999
 }
 
-.search #shelf-actions, body.login .home-btn {
-    display: none
+.search #shelf-actions button#add-to-shelf {
+  height: 40px;
 }
 
 body.read:not(.blur) a[href*=readbooks] {
@@ -5134,7 +5135,7 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     right: 5px
 }
 
-#shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
+body:not(.search) #shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
     pointer-events: none
 }
 
@@ -5151,7 +5152,7 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     color: var(--color-primary)
 }
 
-#shelf-actions, #shelf-actions > .btn-group, #shelf-actions > .btn-group > .empty-ul {
+body:not(.search) #shelf-actions, body:not(.search) #shelf-actions > .btn-group, body:not(.search) #shelf-actions > .btn-group > .empty-ul {
     pointer-events: none
 }
 
