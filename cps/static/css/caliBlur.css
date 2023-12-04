@@ -4813,8 +4813,14 @@ body.advsearch:not(.blur) > div.container-fluid > div.row-fluid > div.col-sm-10 
     z-index: 999999999999999999999999999999999999
 }
 
-.search #shelf-actions button#add-to-shelf {
+body.search #shelf-actions button#add-to-shelf {
   height: 40px;
+}
+@media screen and (max-width: 767px) {
+  body.search .discover, body.advsearch .discover {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 body.read:not(.blur) a[href*=readbooks] {
