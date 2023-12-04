@@ -369,6 +369,13 @@ $("div.comments").readmore({
 //     End of Global Work     //
 ///////////////////////////////
 
+// Search Results
+if($("body.search").length > 0) {
+  $('div[aria-label="Add to shelves"]').click(function () {
+    $("#add-to-shelves").toggle();
+  });
+}
+
 // Advanced Search Results
 if($("body.advsearch").length > 0) {
   $("#loader + .container-fluid")
