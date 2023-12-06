@@ -33,7 +33,7 @@ def get_scheduled_tasks(reconnect=True):
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
     # Delete temp folder
-    tasks.append([lambda: TaskDeleteTempFolder(), 'delete temp', False])
+    tasks.append([lambda: TaskDeleteTempFolder(), 'delete temp', True])
 
     # Generate metadata.opf file for each changed book
     if config.schedule_metadata_backup:
@@ -91,7 +91,7 @@ def register_startup_tasks():
         if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, duration):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
         else:
-            scheduler.schedule_tasks_immediately(tasks=[[lambda: TaskDeleteTempFolder(), 'delete temp', False]])
+            scheduler.schedule_tasks_immediately(tasks=[[lambda: TaskDeleteTempFolder(), 'delete temp', True]])
 
 
 def should_task_be_running(start, duration):
