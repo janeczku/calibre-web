@@ -49,6 +49,7 @@ class TaskConvert(CalibreTask):
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
+        self.has_cover = None
         self.settings = settings
         self.ereader_mail = ereader_mail
         self.user = user
@@ -161,7 +162,8 @@ class TaskConvert(CalibreTask):
             if not os.path.exists(config.config_converterpath):
                 self._handleError(N_("Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
                 return
-            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext)
+            has_cover = local_db.get_book(book_id).has_cover
+            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, has_cover)
 
         if check == 0:
             cur_book = local_db.get_book(book_id)
@@ -233,7 +235,7 @@ class TaskConvert(CalibreTask):
                             folder=os.path.dirname(file_path))
         return check, None
 
-    def _convert_calibre(self, file_path, format_old_ext, format_new_ext):
+    def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
         book_id = self.book_id
         try:
             # Linux py2.7 encode as list without quotes no empty element for parameters
@@ -257,8 +259,9 @@ class TaskConvert(CalibreTask):
 
             quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext), '--from-opf', path_tmp_opf,
-                       '--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')]
+                       (file_path + format_new_ext), '--from-opf', path_tmp_opf]
+            if has_cover:
+                command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
             quotes_index = 3
             if config.config_calibre:
                 parameters = config.config_calibre.split(" ")
