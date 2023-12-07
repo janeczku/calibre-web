@@ -268,7 +268,14 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
 
                 # read row[path] to get video file, replace its extension with .webp
-                cover_file_path = row['path'].replace('.webm', '.webp')
+                if os.path.isfile(row['path'].replace('.webm', '.webp')):
+                    cover_file_path = row['path'].replace('.webm', '.webp')
+                elif os.path.isfile(row['path'].replace('.mp4', '.webp')):
+                    cover_file_path = row['path'].replace('.mp4', '.webp')
+                else:
+                    # if no .webm or .mp4 file exists, log a warning and use the default cover
+                    log.warning('Cannot find .webm or .mp4 file, using default cover')
+                    cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
                 meta = BookMeta(
                     file_path=tmp_file_path,
                     extension=original_file_extension,
@@ -286,7 +293,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 return meta
             conn.close()
         else:
-            log.warning('Cannot find download.db, using default')
+            log.warning('Cannot find survey database, using default metadata')
     else:
         meta = BookMeta(
             file_path=tmp_file_path,
