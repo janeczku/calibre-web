@@ -1030,9 +1030,9 @@ def check_calibre(calibre_location):
     try:
         supported_binary_paths = [os.path.join(calibre_location, binary)
                                   for binary in SUPPORTED_CALIBRE_BINARIES.values()]
-        binaries_available=[os.path.isfile(binary_path) and os.access(binary_path, os.X_OK)
-                            for binary_path in supported_binary_paths]
-        if all(binaries_available):
+        binaries_available = [os.path.isfile(binary_path) for binary_path in supported_binary_paths]
+        binaries_executable = [os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
+        if all(binaries_available) and all(binaries_executable):
             values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)')
                       for binary_path in supported_binary_paths]
             if all(values):
@@ -1041,9 +1041,17 @@ def check_calibre(calibre_location):
             else:
                 return _('Calibre binaries not viable')
         else:
+            ret_val = []
             missing_binaries=[path for path, available in
                               zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
-            return _('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries))
+
+            missing_perms=[path for path, available in
+                           zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_executable) if not available]
+            if missing_binaries:
+                ret_val.append(_('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries)))
+            if missing_perms:
+                ret_val.append(_('Missing executable permissions: %(missing)s', missing=", ".join(missing_perms)))
+            return ", ".join(ret_val)
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
