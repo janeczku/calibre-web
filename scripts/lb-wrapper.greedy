@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Configuration
+XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
+URL="$1"
+LOG_FILE="/var/log/xklb.log"
+TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
+
+mkdir -p ${TMP_DOWNLOADS_DIR}
+
+# Function to log messages
+log() {
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" | tee -a ${LOG_FILE}
+}
+
+# Check if xklb is installed
+if ! command -v "${XKLB_EXECUTABLE}" &> /dev/null; then
+    log "xklb could not be found. Please install xklb and try again."
+    exit 1
+fi
+
+# Check if the user provided any arguments
+if [ $# -eq 0 ]; then
+    log "No arguments provided. Please provide a URL to download."
+    exit 1
+fi
+
+# URL validation already taken care of by cps/static/js/main.js Line ~194,
+# which prepends https:// if URL doesn't already begin with http:// or https://
+# (So test below is not really nec, except to enforce the above, with logging.)
+if [[ ! ${URL} =~ ^http[s]?:// ]]; then
+    log 'Invalid URL: xklb commands require URLs begin with "http://" or "https://"'
+    exit 1
+fi
+
+log "Moving ${SURVEY_DB_FILE} aside if it already exists."
+mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) || true
+log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail --video ${URL} --verbose"
+OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
+        ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail \
+        --video ${URL} --verbose)
+
+if [ $? -ne 0 ]; then
+    log "An error occurred while running the command. Output: ${OUTPUT}"
+    exit 1
+fi
+
+log "Download completed successfully."
