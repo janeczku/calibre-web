@@ -238,28 +238,23 @@ class TaskConvert(CalibreTask):
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
         book_id = self.book_id
         try:
-            # Linux py2.7 encode as list without quotes no empty element for parameters
-            # linux py3.x no encode and as list without quotes no empty element for parameters
-            # windows py2.7 encode as string with quotes empty element for parameters is okay
-            # windows py 3.x no encode and as string with quotes empty element for parameters is okay
-            # separate handling for windows and linux
-
-            quotes = [3, 5]
-            tmp_dir = get_temp_dir()
-            #tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-            #if not os.path.isdir(tmp_dir):
-            #    os.mkdir(tmp_dir)
-            calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
-            opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
-            p = process_open(opf_command, quotes)
-            p.wait()
-            path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
-            with open(path_tmp_opf, 'w') as fd:
-                copyfileobj(p.stdout, fd)
+            if config.config_embed_metadata:
+                quotes = [3, 5]
+                tmp_dir = get_temp_dir()
+                calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+                opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id),
+                               '--with-library', config.config_calibre_dir]
+                p = process_open(opf_command, quotes)
+                p.wait()
+                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
+                with open(path_tmp_opf, 'w') as fd:
+                    copyfileobj(p.stdout, fd)
 
             quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext), '--from-opf', path_tmp_opf]
+                       (file_path + format_new_ext)]
+            if config.config_embed_metadata:
+                command.extend('--from-opf', path_tmp_opf)
             if has_cover:
                 command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
             quotes_index = 3
