@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
+{% endblock %}
+{% block body %}
+<h2 class="{{page}}">{{_(title)}}</h2>
+<table class="table table-striped" id="table_user">
+    <thead>
+        <tr>
+            <th>{{_('Name')}}</th>
+            <th>{{_('Title')}}</th>
+            <th>{{_('Icon')}}</th>
+            <th>{{_('Position')}}</th>
+            <th>{{_('Enabled')}}</th>
+            <th>{{_('Order')}}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for page in pages %}
+        <tr>
+            <td><a class="session" href="{{url_for('editpage.edit_page', file=page.id)}}">{{page.name}}</a></td>
+            <td>{{page.title}}</td>
+            <td>{{page.icon}}</td>
+            <td>{{_('bottom') if page.position == "0" else _('top')}}</td>
+            <td>
+                {% if page.is_enabled %}
+                <span class="glyphicon glyphicon-ok"></span>
+                {% else %}
+                <span class="glyphicon glyphicon-remove"></span>
+                {% endif %}
+            </td>
+            <td>{{page.order}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<a class="session" href="{{url_for('editpage.edit_page', file="new")}}">{{_('New Page')}}</a>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+{% if not current_user.locale == 'en' %}
+<script
+    src="{{ url_for('static', filename='js/libs/bootstrap-table/locale/bootstrap-table-' + current_user.locale + '.min.js') }}"
+    charset="UTF-8"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+{% endblock %}

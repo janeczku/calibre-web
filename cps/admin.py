@@ -33,7 +33,7 @@ from functools import wraps
 from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
-from flask import Markup
+from markupsafe import Markup
 from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
@@ -102,10 +102,13 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    if not ub.check_user_session(current_user.id,
-                                 flask_session.get('_id')) and 'opds' not in request.path \
-      and config.config_session == 1:
-        logout_user()
+    try:
+        if not ub.check_user_session(current_user.id,
+                                     flask_session.get('_id')) and 'opds' not in request.path \
+          and config.config_session == 1:
+            logout_user()
+    except AttributeError:
+        pass    # ? fails on requesting /ajax/emailstat during restart ?
     g.constants = constants
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION', '')
     g.allow_registration = config.config_public_reg
@@ -1702,7 +1705,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-        or config.config_calibre_dir != to_save["config_calibre_dir"]:
+       or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1725,6 +1728,9 @@ def _db_configuration_update_helper():
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_("DB is not Writeable"), category="warning")
+    _config_string(to_save, "config_calibre_split_dir")
+    config.config_calibre_split = to_save.get('config_calibre_split', 0) == "on"
+    calibre_db.update_config(config)
     config.save()
     return _db_configuration_result(None, gdrive_error)
 

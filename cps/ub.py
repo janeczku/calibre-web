@@ -104,7 +104,7 @@ def check_user_session(user_id, session_key):
     try:
         return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
                                                        User_Sessions.session_key==session_key).one_or_none())
-    except (exc.OperationalError, exc.InvalidRequestError):
+    except (exc.OperationalError, exc.InvalidRequestError) as e:
         session.rollback()
         log.exception(e)
 
@@ -538,6 +538,16 @@ class Thumbnail(Base):
     generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
     expiration = Column(DateTime, nullable=True)
 
+class Page(Base):
+    __tablename__ = 'page'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    name = Column(String)
+    icon = Column(String)
+    order = Column(Integer)
+    position = Column(String)
+    is_enabled = Column(Boolean, default=True)
 
 # Add missing tables during migration of database
 def add_missing_tables(engine, _session):
@@ -561,7 +571,8 @@ def add_missing_tables(engine, _session):
             trans = conn.begin()
             conn.execute("insert into registration (domain, allow) values('%.%',1)")
             trans.commit()
-
+    if not engine.dialect.has_table(engine.connect(), "page"):
+        Page.__table__.create(bind=engine)
 
 # migrate all settings missing in registration table
 def migrate_registration_table(engine, _session):

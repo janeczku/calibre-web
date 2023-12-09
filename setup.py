@@ -20,7 +20,6 @@
 #  """Calibre-web distribution package setuptools installer."""
 
 from setuptools import setup
-from setuptools import find_packages
 import os
 import re
 import codecs
@@ -40,7 +39,5 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 setup(
-    packages=find_packages("src"),
-    package_dir = {'': 'src'},
     version=find_version("src", "calibreweb", "cps", "constants.py")
 )

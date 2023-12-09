@@ -1014,7 +1014,7 @@ def series_list():
                                                 func.max(db.Books.series_index), db.Books.id)
                        .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters())
                        .group_by(text('books_series_link.series'))
-                       .having(func.max(db.Books.series_index))
+                       .having(or_(func.max(db.Books.series_index), db.Books.series_index==""))
                        .order_by(order)
                        .all())
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=char_list,
@@ -1192,7 +1192,7 @@ def serve_book(book_id, book_format, anyname):
         if book_format.upper() == 'TXT':
             log.info('Serving book: %s', data.name)
             try:
-                rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                rawdata = open(os.path.join(config.get_book_path(), book.path, data.name + "." + book_format),
                                "rb").read()
                 result = chardet.detect(rawdata)
                 return make_response(
@@ -1202,7 +1202,7 @@ def serve_book(book_id, book_format, anyname):
                 return "File Not Found"
         # enable byte range read of pdf
         response = make_response(
-            send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+            send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
         if not range_header:
             log.info('Serving book: %s', data.name)
             response.headers['Accept-Ranges'] = 'bytes'
@@ -1226,7 +1226,7 @@ def send_to_ereader(book_id, book_format, convert):
         response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
         return Response(json.dumps(response), mimetype='application/json')
     elif current_user.kindle_mail:
-        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
+        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
                            current_user.name)
         if result is None:
             ub.update_download(book_id, int(current_user.id))
@@ -1569,7 +1569,7 @@ def read_book(book_id, book_format):
                         title = title + " #" + '{0:.2f}'.format(book.series_index).rstrip('0').rstrip('.')
                 log.debug("Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=title,
-                                             extension=fileExt)
+                                             extension=fileExt, bookmark=bookmark)
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")

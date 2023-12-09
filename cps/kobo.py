@@ -142,6 +142,7 @@ def HandleSyncRequest():
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
     log.debug("SyncToken: {}".format(sync_token))
+    log.debug("Download link format {}".format(get_download_url_for_book('[bookid]','[bookformat]')))
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
@@ -165,12 +166,6 @@ def HandleSyncRequest():
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
     if only_kobo_shelves:
-        #if sqlalchemy_version2:
-        #    changed_entries = select(db.Books,
-        #                             ub.ArchivedBook.last_modified,
-        #                             ub.BookShelf.date_added,
-        #                             ub.ArchivedBook.is_archived)
-        #else:
         changed_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
                                                    ub.BookShelf.date_added,
@@ -191,9 +186,6 @@ def HandleSyncRequest():
                            .filter(ub.Shelf.kobo_sync)
                            .distinct())
     else:
-        #if sqlalchemy_version2:
-        #    changed_entries = select(db.Books, ub.ArchivedBook.last_modified, ub.ArchivedBook.is_archived)
-        #else:
         changed_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
                                                    ub.ArchivedBook.is_archived)
@@ -208,15 +200,12 @@ def HandleSyncRequest():
                            .order_by(db.Books.id))
 
     reading_states_in_new_entitlements = []
-    #if sqlalchemy_version2:
-    #    books = calibre_db.session.execute(changed_entries.limit(SYNC_ITEM_LIMIT))
-    #else:
     books = changed_entries.limit(SYNC_ITEM_LIMIT)
     log.debug("Books to Sync: {}".format(len(books.all())))
     for book in books:
         formats = [data.format for data in book.Books.data]
         if 'KEPUB' not in formats and config.config_kepubifypath and 'EPUB' in formats:
-            helper.convert_book_format(book.Books.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.name)
+            helper.convert_book_format(book.Books.id, config.get_book_path(), 'EPUB', 'KEPUB', current_user.name)
 
         kobo_reading_state = get_or_create_reading_state(book.Books.id)
         entitlement = {
@@ -254,13 +243,6 @@ def HandleSyncRequest():
         new_books_last_created = max(ts_created, new_books_last_created)
         kobo_sync_status.add_synced_books(book.Books.id)
 
-    '''if sqlalchemy_version2:
-        max_change = calibre_db.session.execute(changed_entries
-                                                .filter(ub.ArchivedBook.is_archived)
-                                                .filter(ub.ArchivedBook.user_id == current_user.id)
-                                                .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()))\
-            .columns(db.Books).first()
-    else:'''
     max_change = changed_entries.filter(ub.ArchivedBook.is_archived)\
         .filter(ub.ArchivedBook.user_id == current_user.id) \
         .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()).first()
@@ -270,10 +252,6 @@ def HandleSyncRequest():
     new_archived_last_modified = max(new_archived_last_modified, max_change)
 
     # no. of books returned
-    '''if sqlalchemy_version2:
-        entries = calibre_db.session.execute(changed_entries).all()
-        book_count = len(entries)
-    else:'''
     book_count = changed_entries.count()
     # last entry:
     cont_sync = bool(book_count)
@@ -337,7 +315,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
             extra_headers["x-kobo-recent-reads"] = store_response.headers.get("x-kobo-recent-reads")
 
         except Exception as ex:
-            log.error("Failed to receive or parse response from Kobo's sync endpoint: {}".format(ex))
+            log.error_or_exception("Failed to receive or parse response from Kobo's sync endpoint: {}".format(ex))
     if set_cont:
         extra_headers["x-kobo-sync"] = "continue"
     sync_token.to_headers(extra_headers)
@@ -367,7 +345,7 @@ def HandleMetadataRequest(book_uuid):
     return response
 
 
-def get_download_url_for_book(book, book_format):
+def get_download_url_for_book(book_id, book_format):
     if not current_app.wsgi_app.is_proxied:
         if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
@@ -379,13 +357,13 @@ def get_download_url_for_book(book, book_format):
             url_base=host,
             url_port=config.config_external_port,
             auth_token=get_auth_token(),
-            book_id=book.id,
+            book_id=book_id,
             book_format=book_format.lower()
         )
     return url_for(
         "kobo.download_book",
         auth_token=kobo_auth.get_auth_token(),
-        book_id=book.id,
+        book_id=book_id,
         book_format=book_format.lower(),
         _external=True,
     )
@@ -468,7 +446,7 @@ def get_metadata(book):
                     {
                         "Format": kobo_format,
                         "Size": book_data.uncompressed_size,
-                        "Url": get_download_url_for_book(book, book_data.format),
+                        "Url": get_download_url_for_book(book.id, book_data.format),
                         # The Kobo forma accepts platforms: (Generic, Android)
                         "Platform": "Generic",
                         # "DrmType": "None", # Not required
@@ -522,7 +500,7 @@ def get_metadata(book):
 @requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
-    # catch delete requests, otherwise the are handled in the book delete handler
+    # catch delete requests, otherwise they are handled in the book delete handler
     if request.method == "DELETE":
         abort(405)
     name, items = None, None
@@ -716,14 +694,6 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
             })
         extra_filters.append(ub.Shelf.kobo_sync)
 
-    '''if sqlalchemy_version2:
-        shelflist = ub.session.execute(select(ub.Shelf).outerjoin(ub.BookShelf).filter(
-            or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
-                func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
-            ub.Shelf.user_id == current_user.id,
-            *extra_filters
-        ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc())).columns(ub.Shelf)
-    else:'''
     shelflist = ub.session.query(ub.Shelf).outerjoin(ub.BookShelf).filter(
         or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
             func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
@@ -989,6 +959,7 @@ def HandleUnimplementedRequest(dummy=None):
 @kobo.route("/v1/user/wishlist", methods=["GET", "POST"])
 @kobo.route("/v1/user/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/analytics/<dummy>", methods=["GET", "POST"])
+@kobo.route("/v1/assets", methods=["GET"])
 def HandleUserRequest(dummy=None):
     log.debug("Unimplemented User Request received: %s (request is forwarded to kobo if configured)", request.base_url)
     return redirect_or_proxy_request()

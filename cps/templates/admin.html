@@ -161,6 +161,7 @@
       <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>
       <a class="btn btn-default" id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a>
       <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
+      <a class="btn btn-default" id="list_pages" href="{{url_for('listpages.show_list')}}">{{_('List Pages')}}</a>
     </div>
   </div>
 {%  if feature_support['scheduler'] %}
