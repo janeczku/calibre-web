@@ -36,7 +36,7 @@
     {% endfor %}
     </tbody>
 </table>
-<a class="session" href="{{url_for('editpage.edit_page', file="new")}}">{{_('New Page')}}</a>
+<a class="session" id="new_page" href="{{url_for('editpage.edit_page', file="new")}}">{{_('New Page')}}</a>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
