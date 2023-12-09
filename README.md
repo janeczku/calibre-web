@@ -57,19 +57,27 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 
 ## Installation
 
-#### Installation via pip (recommended)
-1. Create a virtual environment for Calibre-Web to avoid conflicts with existing Python dependencies
-2. Install Calibre-Web via pip: `pip install calibreweb` (or `pip3` depending on your OS/distro)
-3. Install optional features via pip as needed, see [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details
-4. Start Calibre-Web by typing `cps`
+1. NEW Install Instructions:
 
-*Note: Raspberry Pi OS users may encounter issues during installation. If so, please update pip (`./venv/bin/python3 -m pip install --upgrade pip`) and/or install cargo (`sudo apt install cargo`) before retrying the installation.*
+   https://github.com/iiab/calibre-web/wiki#wrench-installation
+
+2. Technical Background explaining Calibre-Web on Internet-in-a-Box (IIAB) :
+
+   https://github.com/iiab/iiab/blob/master/roles/calibre-web/README.rst
+
+#### ~Installation via pip (recommended)~
+1. ~Create a virtual environment for Calibre-Web to avoid conflicts with existing Python dependencies~
+2. ~Install Calibre-Web via pip: `pip install calibreweb` (or `pip3` depending on your OS/distro)~
+3. ~Install optional features via pip as needed, see [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details~
+4. ~Start Calibre-Web by typing `cps`~
+
+~*Note: Raspberry Pi OS users may encounter issues during installation. If so, please update pip (`./venv/bin/python3 -m pip install --upgrade pip`) and/or install cargo (`sudo apt install cargo`) before retrying the installation.*~
 
 Refer to the Wiki for additional installation examples: [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
 
 ## Quick Start
 
-1. Open your browser and navigate to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
+1. Read the NEW Install Instructions above!  ~Open your browser and navigate to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog~
 2. Log in with the default admin credentials
 3. If you don't have a Calibre database, you can use [this database](https://github.com/janeczku/calibre-web/raw/master/library/metadata.db) (move it out of the Calibre-Web folder to prevent overwriting during updates)
 4. Set `Location of Calibre database` to the path of the folder containing your Calibre library (metadata.db) and click "Save"
@@ -77,8 +85,8 @@ Refer to the Wiki for additional installation examples: [manual installation](ht
 6. Configure your Calibre-Web instance via the admin page, referring to the [Basic Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#ui-configuration) guides
 
 #### Default Admin Login:
-- **Username:** admin
-- **Password:** admin123
+- **Username:** Admin
+- **Password:** changeme
 
 ## Requirements
 
