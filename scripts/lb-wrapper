@@ -36,10 +36,10 @@ fi
 
 log "Moving ${SURVEY_DB_FILE} aside if it already exists."
 mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) || true
-log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail -f best -S 'tbr~1000' --video ${URL} --verbose"
+log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail --format best --format-sort 'tbr~1000' --video ${URL} --verbose"
 OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
         ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail \
-        -f best -S 'tbr~1000' --video ${URL} --verbose)
+        --format best --format-sort 'tbr~1000' --video ${URL} --verbose)
 
 if [ $? -ne 0 ]; then
     log "An error occurred while running the command. Output: ${OUTPUT}"
