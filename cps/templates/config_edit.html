@@ -104,6 +104,10 @@
       <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
     </div>
     <div class="form-group">
+      <input type="checkbox" id="config_embed_metadata" name="config_embed_metadata" {% if config.config_embed_metadata %}checked{% endif %}>
+      <label for="config_embed_metadata">{{_('Embed Metadata to Ebook File on Download and Conversion')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}} {{_('(Please ensure that users also have upload permissions)')}}</label>
     </div>

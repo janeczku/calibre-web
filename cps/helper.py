@@ -942,14 +942,13 @@ def do_download_file(book, book_format, client, data, headers):
         df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
-            if config.config_binariesdir:
+            if config.config_binariesdir and config.config_embed_metadata:
                 output_path = os.path.join(config.config_calibre_dir, book.path)
                 if not os.path.exists(output_path):
                     os.makedirs(output_path)
                 output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
                 gd.downloadFile(book.path, book_name + "." + book_format, output)
                 filename, download_name = do_calibre_export(book, book_format)
-                # ToDo: delete path in calibre-folder structure
             else:
                 return gd.do_gdrive_download(df, headers)
         else:
@@ -963,7 +962,7 @@ def do_download_file(book, book_format, client, data, headers):
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
-        if config.config_binariesdir:
+        if config.config_binariesdir and config.config_embed_metadata:
             filename, download_name = do_calibre_export(book, book_format)
         else:
             download_name = book_name
