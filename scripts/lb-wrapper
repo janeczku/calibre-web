@@ -5,7 +5,8 @@ XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
 URL="$1"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
-XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail --format best --format-sort 'tbr~1000' --video ${URL} --verbose"
+FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
+XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail ${FORMAT_OPTIONS} --video ${URL} --verbose"
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
