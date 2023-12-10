@@ -6,9 +6,9 @@
 
 LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
+TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
 URL="$1"
-TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 FORMAT_OPTIONS="--format-sort size"
 XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail ${FORMAT_OPTIONS} --video ${URL} --verbose"
 
@@ -38,7 +38,7 @@ fi
 #     exit 1
 # fi
 
-if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z); then
+if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
     log "Old ${SURVEY_DB_FILE} moved aside."
 fi
 
