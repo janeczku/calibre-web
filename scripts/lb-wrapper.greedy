@@ -43,7 +43,7 @@ if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
 fi
 
 log "Running command: ${XKLB_FULL_CMD}"
-if OUTPUT=$(${XKLB_FULL_CMD}); then
+if OUTPUT=$(eval "${XKLB_FULL_CMD}"); then
     log "Download completed successfully."
 else
     log "An error occurred while running the command. Output: ${OUTPUT}"
