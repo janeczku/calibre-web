@@ -1,26 +1,29 @@
 #!/bin/bash
 
-# Configuration
-XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
-URL="$1"
+# Drop-in replacement for /usr/local/bin/lb-wrapper downloads largest possible
+# HD-style / UltraHD videos, to try to force out-of-memory "502 Bad Gateway"
+# for testing of issues like: https://github.com/iiab/calibre-web/issues/37
+
 LOG_FILE="/var/log/xklb.log"
-TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
+URL="$1"
+TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+FORMAT_OPTIONS="--format-sort size"
+XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail ${FORMAT_OPTIONS} --video ${URL} --verbose"
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
-# Function to log messages
+# Function to log messages (and errors especially!)
 log() {
     echo "$(date +'%Y-%m-%d %H:%M:%S') - $1" | tee -a ${LOG_FILE}
 }
 
-# Check if xklb is installed
-if ! command -v "${XKLB_EXECUTABLE}" &> /dev/null; then
+if ! command -v "${XKLB_EXECUTABLE}"; then
     log "xklb could not be found. Please install xklb and try again."
     exit 1
 fi
 
-# Check if the user provided any arguments
 if [ $# -eq 0 ]; then
     log "No arguments provided. Please provide a URL to download."
     exit 1
@@ -28,22 +31,21 @@ fi
 
 # URL validation already taken care of by cps/static/js/main.js Line ~194,
 # which prepends https:// if URL doesn't already begin with http:// or https://
-# (So test below is not really nec, except to enforce the above, with logging.)
-if [[ ! ${URL} =~ ^http[s]?:// ]]; then
-    log 'Invalid URL: xklb commands require URLs begin with "http://" or "https://"'
-    exit 1
+# (Test below meant well, to enforce with logging, but violates "SSOT" --
+# preconditions should be enforced in 1 single place if possible!)
+# if [[ ! ${URL} =~ ^http[s]?:// ]]; then
+#     log 'Invalid URL: xklb commands require URLs begin with "http://" or "https://"'
+#     exit 1
+# fi
+
+if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z); then
+    log "Old ${SURVEY_DB_FILE} moved aside."
 fi
 
-log "Moving ${SURVEY_DB_FILE} aside if it already exists."
-mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) || true
-log "Running command: ${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail --video ${URL} --verbose"
-OUTPUT=$(${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && \
-        ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail \
-        --video ${URL} --verbose)
-
-if [ $? -ne 0 ]; then
+log "Running command: ${XKLB_FULL_CMD}"
+if OUTPUT=$(${XKLB_FULL_CMD}); then
+    log "Download completed successfully."
+else
     log "An error occurred while running the command. Output: ${OUTPUT}"
     exit 1
 fi
-
-log "Download completed successfully."
