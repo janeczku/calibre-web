@@ -66,29 +66,32 @@ class TaskConvert(CalibreTask):
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
-            if df and df_cover:
+            if df:
                 datafile = os.path.join(config.config_calibre_dir,
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
-                datafile_cover = os.path.join(config.config_calibre_dir,
-                                        cur_book.path, "cover.jpg")
+                if df_cover:
+                    datafile_cover = os.path.join(config.config_calibre_dir,
+                                            cur_book.path, "cover.jpg")
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
-                df_cover.GetContentFile(datafile_cover)
+                if df_cover:
+                    df_cover.GetContentFile(datafile_cover)
                 worker_db.session.close()
             else:
-            	# ToDo Include cover in error handling 
+                # ToDo Include cover in error handling
                 error_message = _("%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
                 worker_db.session.close()
-                return error_message
+                return self._handleError(self, error_message)
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
             os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
-            os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
+            if df_cover:
+                os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
 
         if filename:
             if config.config_use_google_drive:
@@ -254,7 +257,7 @@ class TaskConvert(CalibreTask):
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext)]
             if config.config_embed_metadata:
-                command.extend('--from-opf', path_tmp_opf)
+                command.extend(['--from-opf', path_tmp_opf])
             if has_cover:
                 command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
             quotes_index = 3
