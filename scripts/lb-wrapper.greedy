@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# Drop-in replacement for /usr/local/bin/lb-wrapper downloads largest possible
+# HD-style / UltraHD videos, to try to force out-of-memory "502 Bad Gateway"
+# for testing of issues like: https://github.com/iiab/calibre-web/issues/37
+
 LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
 URL="$1"
-FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
+FORMAT_OPTIONS="--format-sort size"
 XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} --verbose && ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --write-thumbnail ${FORMAT_OPTIONS} --video ${URL} --verbose"
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
