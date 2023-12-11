@@ -502,7 +502,7 @@ def render_element_index(database_column, linked_table, folder):
         entries = entries.join(linked_table).join(db.Books)
     entries = entries.filter(calibre_db.common_filters()).group_by(func.upper(func.substr(database_column, 1, 1))).all()
     elements = []
-    if off == 0:
+    if off == 0 and entries:
         elements.append({'id': "00", 'name': _("All")})
         shift = 1
     for entry in entries[

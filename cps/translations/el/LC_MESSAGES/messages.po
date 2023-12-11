@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-10-21 15:46+0200\n"
+"POT-Creation-Date: 2023-11-06 16:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Depountis Georgios\n"
 "Language: el\n"
@@ -938,7 +938,7 @@ msgstr "Βιβλία"
 msgid "Show recent books"
 msgstr "Προβολή πρόσφατων βιβλίων"
 
-#: cps/render_template.py:45 cps/templates/index.xml:25
+#: cps/render_template.py:45 cps/templates/index.xml:26
 msgid "Hot Books"
 msgstr "Βιβλία στη Μόδα"
 
@@ -955,7 +955,7 @@ msgstr "Κατεβασμένα Βιβλία"
 msgid "Show Downloaded Books"
 msgstr "Προβολή Κατεβασμένων Βιβλίων"
 
-#: cps/render_template.py:59 cps/templates/index.xml:32 cps/web.py:429
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
 msgid "Top Rated Books"
 msgstr "Βιβλία με Κορυφαία Αξιολόγηση"
 
@@ -963,8 +963,8 @@ msgstr "Βιβλία με Κορυφαία Αξιολόγηση"
 msgid "Show Top Rated Books"
 msgstr "Προβολή Βιβλίων με Κορυφαία Αξιολόγηση"
 
-#: cps/render_template.py:62 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:750
+#: cps/render_template.py:62 cps/templates/index.xml:55
+#: cps/templates/index.xml:59 cps/web.py:750
 msgid "Read Books"
 msgstr "Βιβλία που Διαβάστηκαν"
 
@@ -973,8 +973,8 @@ msgstr "Βιβλία που Διαβάστηκαν"
 msgid "Show Read and Unread"
 msgstr "Προβολή διαβασμένων και αδιάβαστων"
 
-#: cps/render_template.py:66 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:753
+#: cps/render_template.py:66 cps/templates/index.xml:62
+#: cps/templates/index.xml:66 cps/web.py:753
 msgid "Unread Books"
 msgstr "Βιβλία που δεν Διαβάστηκαν"
 
@@ -986,13 +986,13 @@ msgstr "Προβολή αδιάβαστων"
 msgid "Discover"
 msgstr "Ανακάλυψε"
 
-#: cps/render_template.py:71 cps/templates/index.xml:50
+#: cps/render_template.py:71 cps/templates/index.xml:51
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "Προβολή Τυχαίων Βιβλίων"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1119
+#: cps/templates/index.xml:84 cps/web.py:1119
 msgid "Categories"
 msgstr "Κατηγορίες"
 
@@ -1002,7 +1002,7 @@ msgid "Show Category Section"
 msgstr "Προβολή επιλογών κατηγορίας"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
-#: cps/templates/book_table.html:68 cps/templates/index.xml:90
+#: cps/templates/book_table.html:68 cps/templates/index.xml:91
 #: cps/templates/search_form.html:69 cps/web.py:1009 cps/web.py:1021
 msgid "Series"
 msgstr "Σειρές"
@@ -1013,7 +1013,7 @@ msgid "Show Series Section"
 msgstr "Προβολή επιλογών σειράς"
 
 #: cps/render_template.py:78 cps/templates/book_table.html:66
-#: cps/templates/index.xml:69
+#: cps/templates/index.xml:70
 msgid "Authors"
 msgstr "Συγγραφείς"
 
@@ -1023,7 +1023,7 @@ msgid "Show Author Section"
 msgstr "Προβολή επιλογών συγγραφέα"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:977
+#: cps/templates/index.xml:77 cps/web.py:977
 msgid "Publishers"
 msgstr "Εκδότες"
 
@@ -1033,7 +1033,7 @@ msgid "Show Publisher Section"
 msgstr "Προβολή επιλογών εκδότη"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
-#: cps/templates/index.xml:97 cps/templates/search_form.html:107
+#: cps/templates/index.xml:98 cps/templates/search_form.html:107
 #: cps/web.py:1091
 msgid "Languages"
 msgstr "Γλώσσες"
@@ -1043,7 +1043,7 @@ msgstr "Γλώσσες"
 msgid "Show Language Section"
 msgstr "Προβολή επιλογών γλώσσας"
 
-#: cps/render_template.py:89 cps/templates/index.xml:104
+#: cps/render_template.py:89 cps/templates/index.xml:105
 msgid "Ratings"
 msgstr "Αξιολογήσεις"
 
@@ -1052,7 +1052,7 @@ msgstr "Αξιολογήσεις"
 msgid "Show Ratings Section"
 msgstr "Προβολή επιλογών αξιολόγησης"
 
-#: cps/render_template.py:92 cps/templates/index.xml:112
+#: cps/render_template.py:92 cps/templates/index.xml:113
 msgid "File formats"
 msgstr "Μορφές αρχείου"
 
@@ -1079,7 +1079,7 @@ msgid "Show Books List"
 msgstr "Προβολή Λίστας Βιβλίων"
 
 #: cps/search.py:48 cps/search.py:398 cps/templates/book_edit.html:236
-#: cps/templates/feed.xml:33 cps/templates/index.xml:11
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:226
 msgid "Search"
@@ -2631,7 +2631,7 @@ msgid "Add to shelf"
 msgstr "Προσθήκη στο ράφι"
 
 #: cps/templates/detail.html:304 cps/templates/detail.html:323
-#: cps/templates/feed.xml:80 cps/templates/layout.html:154
+#: cps/templates/feed.xml:81 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -2709,7 +2709,7 @@ msgstr "Όνομα domain"
 msgid "Denied Domains (Blacklist)"
 msgstr "Domains που Απορρίφθηκαν (Μαύρη λίστα)"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:187
+#: cps/templates/feed.xml:22 cps/templates/layout.html:187
 msgid "Next"
 msgstr "Επόμενο"
 
@@ -2769,72 +2769,72 @@ msgstr ""
 msgid "Sort descending according to series index"
 msgstr ""
 
-#: cps/templates/index.xml:6
+#: cps/templates/index.xml:7
 msgid "Start"
 msgstr "Έναρξη"
 
-#: cps/templates/index.xml:18
+#: cps/templates/index.xml:19
 msgid "Alphabetical Books"
 msgstr ""
 
-#: cps/templates/index.xml:22
+#: cps/templates/index.xml:23
 msgid "Books sorted alphabetically"
 msgstr ""
 
-#: cps/templates/index.xml:29
+#: cps/templates/index.xml:30
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "Δημοφιλείς εκδόσεις από αυτό τον κατάλογο με βάση τις Λήψεις."
 
-#: cps/templates/index.xml:36
+#: cps/templates/index.xml:37
 msgid "Popular publications from this catalog based on Rating."
 msgstr "Δημοφιλείς εκδόσεις από αυτό τον κατάλογο με βάση την Αξιολόγηση."
 
-#: cps/templates/index.xml:39
+#: cps/templates/index.xml:40
 msgid "Recently added Books"
 msgstr "Βιβλία που προστέθηκαν Πρόσφατα"
 
-#: cps/templates/index.xml:43
+#: cps/templates/index.xml:44
 msgid "The latest Books"
 msgstr "Τα τελευταία Βιβλία"
 
-#: cps/templates/index.xml:46
+#: cps/templates/index.xml:47
 msgid "Random Books"
 msgstr "Τυχαία Βιβλία"
 
-#: cps/templates/index.xml:73
+#: cps/templates/index.xml:74
 msgid "Books ordered by Author"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά Συγγραφέα"
 
-#: cps/templates/index.xml:80
+#: cps/templates/index.xml:81
 msgid "Books ordered by publisher"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά εκδότη"
 
-#: cps/templates/index.xml:87
+#: cps/templates/index.xml:88
 msgid "Books ordered by category"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά κατηγορία"
 
-#: cps/templates/index.xml:94
+#: cps/templates/index.xml:95
 msgid "Books ordered by series"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά σειρές"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:102
 msgid "Books ordered by Languages"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά Γλώσσες"
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by Rating"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά Αξιολόγηση"
 
-#: cps/templates/index.xml:116
+#: cps/templates/index.xml:117
 msgid "Books ordered by file formats"
 msgstr "Τα βιβλία ταξινομήθηκαν ανά μορφές αρχείου"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:152
+#: cps/templates/index.xml:120 cps/templates/layout.html:152
 #: cps/templates/search_form.html:87
 msgid "Shelves"
 msgstr "Ράφια"
 
-#: cps/templates/index.xml:123
+#: cps/templates/index.xml:124
 msgid "Books organized in shelves"
 msgstr "Βιβλία οργανωμένα σε ράφια"
 
