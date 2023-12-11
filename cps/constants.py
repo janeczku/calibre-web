@@ -149,7 +149,7 @@ del env_CALIBRE_PORT
 
 EXTENSIONS_AUDIO = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT_FROM = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf',
-                           'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr']
+                           'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr', 'prc']
 EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',
                          'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt']
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'cb7', 'djvu', 'djv',
@@ -173,6 +173,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages, publisher, pubdate, identifiers')
 
+# python build process likes to have x.y.zbw -> b for beta and w a counting number
 STABLE_VERSION = {'version': '0.6.22b'}
 
 NIGHTLY_VERSION = dict()

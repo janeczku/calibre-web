@@ -782,7 +782,7 @@ def get_book_cover_internal(book, resolution=None):
 
         # Send the book cover from the Calibre directory
         else:
-            cover_file_path = os.path.join(config.config_calibre_dir, book.path)
+            cover_file_path = os.path.join(config.get_book_path(), book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
@@ -932,7 +932,7 @@ def save_cover(img, book_path):
         else:
             return False, message
     else:
-        return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
+        return save_cover_from_filestorage(os.path.join(config.get_book_path(), book_path), "cover.jpg", img)
 
 
 def do_download_file(book, book_format, client, data, headers):
@@ -954,7 +954,7 @@ def do_download_file(book, book_format, client, data, headers):
         else:
             abort(404)
     else:
-        filename = os.path.join(config.config_calibre_dir, book.path)
+        filename = os.path.join(config.get_book_path(), book.path)
         if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
@@ -1086,38 +1086,33 @@ def tags_filters():
 # in all calls the email address is checked for validity
 def check_valid_domain(domain_text):
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    if not len(result):
+    if not len(ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()):
         return False
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 0);"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    return not len(result)
+    return not len(ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all())
 
 
 def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
     book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
-    data1= ""
     if book:
         data1 = calibre_db.get_book_format(book.id, book_format.upper())
+        if data1:
+            # collect downloaded books only for registered user and not for anonymous user
+            if current_user.is_authenticated:
+                ub.update_download(book_id, int(current_user.id))
+            file_name = book.title
+            if len(book.authors) > 0:
+                file_name = file_name + ' - ' + book.authors[0].name
+            file_name = get_valid_filename(file_name, replace_whitespace=False)
+            headers = Headers()
+            headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
+            headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
+                quote(file_name), book_format, quote(file_name), book_format)
+            return do_download_file(book, book_format, client, data1, headers)
     else:
         log.error("Book id {} not found for downloading".format(book_id))
-        abort(404)
-    if data1:
-        # collect downloaded books only for registered user and not for anonymous user
-        if current_user.is_authenticated:
-            ub.update_download(book_id, int(current_user.id))
-        file_name = book.title
-        if len(book.authors) > 0:
-            file_name = file_name + ' - ' + book.authors[0].name
-        file_name = get_valid_filename(file_name, replace_whitespace=False)
-        headers = Headers()
-        headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-        headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
-            quote(file_name), book_format, quote(file_name), book_format)
-        return do_download_file(book, book_format, client, data1, headers)
-    else:
-        abort(404)
+    abort(404)
 
 
 def get_calibre_binarypath(binary):

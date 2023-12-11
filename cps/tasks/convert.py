@@ -49,7 +49,6 @@ class TaskConvert(CalibreTask):
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
-        self.has_cover = None
         self.settings = settings
         self.ereader_mail = ereader_mail
         self.user = user
@@ -67,14 +66,14 @@ class TaskConvert(CalibreTask):
                                                      data.name + "." + self.settings['old_book_format'].lower())
             df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
             if df:
-                datafile = os.path.join(config.config_calibre_dir,
+                datafile = os.path.join(config.get_book_path(),
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
                 if df_cover:
-                    datafile_cover = os.path.join(config.config_calibre_dir,
+                    datafile_cover = os.path.join(config.get_book_path(),
                                             cur_book.path, "cover.jpg")
-                if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
-                    os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
+                if not os.path.exists(os.path.join(config.get_book_path(), cur_book.path)):
+                    os.makedirs(os.path.join(config.get_book_path(), cur_book.path))
                 df.GetContentFile(datafile)
                 if df_cover:
                     df_cover.GetContentFile(datafile_cover)

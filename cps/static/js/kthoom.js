@@ -179,8 +179,9 @@ kthoom.ImageFile = function(file) {
 };
 
 function updateDirectionButtons(){
-    var left, right = 1;
-    if (currentImage == 0 ) {
+    var left = 1;
+    var right = 1;
+    if (currentImage <= 0 ) {
         if (settings.direction === 0) {
             left = 0;
         } else {
