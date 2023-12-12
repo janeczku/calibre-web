@@ -566,7 +566,7 @@ class Updater(threading.Thread):
                 try:
                     current_version[2] = int(current_version[2])
                 except ValueError:
-                    current_version[2] = int(current_version[2].split(' ')[0])-1
+                    current_version[2] = int(current_version[2].replace("b", "").split(' ')[0])-1
 
                 # Check if major versions are identical search for newest non-equal commit and update to this one
                 if major_version_update == current_version[0]:
