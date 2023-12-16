@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-12-13 07:20:03</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-12-14 19:40:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-12-14 03:56:05</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-12-15 02:26:13</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>19h 34 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 43 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">18</td>
-        <td class="text-center">1</td>
-        <td class="text-center">2</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 21)">Detail</a>
@@ -257,42 +257,11 @@
     
     
     
-        <tr id="ft2.2" class="none bg-danger">
+        <tr id='pt2.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 193, in test_backup_change_book_author
-    self.assertEqual([&#34;Hector Gonçalves&#34;], metadata[&#39;author&#39;])
-AssertionError: Lists differ: [&#39;Hector Gonçalves&#39;] != [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Hector Gonçalves&#39;]
-
-First differing element 0:
-&#39;Hector Gonçalves&#39;
-&#39;Frodo Beutlin&#39;
-
-Second list contains 2 additional elements.
-First extra element 1:
-&#39;Norbert Halagal&#39;
-
-- [&#39;Hector Gonçalves&#39;]
-+ [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Hector Gonçalves&#39;]</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -324,33 +293,11 @@ First extra element 1:
     
     
     
-        <tr id="et2.6" class="none bg-info">
+        <tr id='pt2.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_publisher</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 148, in test_backup_change_book_publisher
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 621, in read_opf_metadata
-    time_string = soup.find(&#34;dc:date&#34;).contents[0]
-AttributeError: &#39;NoneType&#39; object has no attribute &#39;contents&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -373,33 +320,11 @@ AttributeError: &#39;NoneType&#39; object has no attribute &#39;contents&#39;</p
     
     
     
-        <tr id="et2.9" class="none bg-info">
+        <tr id='pt2.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_series_index</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.9')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 109, in test_backup_change_book_series_index
-    metadata = read_opf_metadata(meta_path)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_func.py&#34;, line 621, in read_opf_metadata
-    time_string = soup.find(&#34;dc:date&#34;).contents[0]
-AttributeError: &#39;NoneType&#39; object has no attribute &#39;contents&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2022,12 +1947,12 @@ AttributeError: &#39;NoneType&#39; object has no attribute &#39;contents&#39;</p
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2036,11 +1961,31 @@ AttributeError: &#39;NoneType&#39; object has no attribute &#39;contents&#39;</p
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
+    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4181,11 +4126,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4258,11 +4203,31 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt48.8' class='hiddenRow bg-success'>
+        <tr id="ft48.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft48.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft48.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft48.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 316, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.0056308123249299725 != 0.0 within 0.0001 delta (0.0056308123249299725 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5359,9 +5324,9 @@ AssertionError: 9 != 8 : Key sorting order wrong: pub_new</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>466</td>
-        <td>451</td>
+        <td>452</td>
         <td>3</td>
-        <td>2</td>
+        <td>1</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -5852,7 +5817,7 @@ AssertionError: 9 != 8 : Key sorting order wrong: pub_new</pre>
 </div>
 
 <script>
-    drawCircle(451, 3, 2, 10);
+    drawCircle(452, 3, 1, 10);
     showCase(5);
 </script>
 
