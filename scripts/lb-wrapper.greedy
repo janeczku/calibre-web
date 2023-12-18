@@ -29,10 +29,11 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-# URL validation already taken care of by cps/static/js/main.js Line ~194,
-# which prepends https:// if URL doesn't already begin with http:// or https://
-# (Test below meant well, to enforce with logging, but violates "SSOT" --
-# preconditions should be enforced in 1 single place if possible!)
+# URL validation already taken care of by cps/static/js/main.js Lines 194-195
+# which (1) trims outer whitespace, and (2) prepends https:// if URL doesn't
+# already begin with http:// or https://
+# (Test below meant well, enforcing much the same things with logging, but
+# let's avoid duplicate code insofar as possible!)
 # if [[ ! ${URL} =~ ^http[s]?:// ]]; then
 #     log 'Invalid URL: xklb commands require URLs begin with "http://" or "https://"'
 #     exit 1
