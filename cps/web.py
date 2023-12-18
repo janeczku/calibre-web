@@ -1195,8 +1195,15 @@ def serve_book(book_id, book_format, anyname):
                 rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
                                "rb").read()
                 result = chardet.detect(rawdata)
-                return make_response(
-                    rawdata.decode(result['encoding'], 'surrogatepass').encode('utf-8', 'surrogatepass'))
+                try:
+                    text_data = rawdata.decode(result['encoding']).encode('utf-8')
+                except UnicodeDecodeError as e:
+                    log.error("Encoding error in text file {}: {}".format(book.id, e))
+                    if "surrogate" in e.reason:
+                        text_data = rawdata.decode(result['encoding'], 'surrogatepass').encode('utf-8', 'surrogatepass')
+                    else:
+                        text_data = rawdata.decode(result['encoding'], 'ignore').encode('utf-8', 'ignore')
+                return make_response(text_data)
             except FileNotFoundError:
                 log.error("File Not Found")
                 return "File Not Found"
