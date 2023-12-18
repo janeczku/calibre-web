@@ -191,6 +191,7 @@ $(document).ready(function() {
 
         // Prepend https:// if URL doesn't begin with http:// or https://
         // As xklb requires: https://github.com/iiab/calibre-web/pull/44
+        url = url.trim();
         url = /^https?:\/\//.test(url) ? url : "https://" + url;
 
         var currentURL = new URL(window.location.href);
