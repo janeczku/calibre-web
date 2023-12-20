@@ -261,7 +261,6 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             if row is not None:
                 title = row['title']
                 author = row['path'].split('/calibre-web/')[1].split('/')[1].replace('_', ' ')
-                description = row['description']
                 publisher = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
                 # example of time_uploaded: 1696464000
                 pubdate = row['time_uploaded']
@@ -275,6 +274,9 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 else:
                     log.warning('Cannot find .webp file, using default cover')
                     cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+                c.execute("SELECT * FROM captions WHERE media_id=?", (1,))
+                row = c.fetchone()
+                description = row['text'] if row is not None else ''
                 meta = BookMeta(
                     file_path=tmp_file_path,
                     extension=original_file_extension,
