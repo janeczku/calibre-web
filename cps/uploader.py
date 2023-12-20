@@ -268,7 +268,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 # find cover file
                 if os.path.isdir(os.path.dirname(row['path'])):
                     for file in os.listdir(os.path.dirname(row['path'])):
-                        if file.endswith('.webp') and os.path.splitext(file)[0] == os.path.splitext(os.path.basename(row['path']))[0]:
+                        if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == os.path.splitext(os.path.basename(row['path']))[0]:
                             cover_file_path = os.path.join(os.path.dirname(row['path']), file)
                             break
                 else:
