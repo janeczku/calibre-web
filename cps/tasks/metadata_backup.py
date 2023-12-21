@@ -137,6 +137,10 @@ class TaskBackupMetadata(CalibreTask):
         identifier2 = etree.SubElement(metadata, PURL + "identifier", id="uuid_id", nsmap=NSMAP)
         identifier2.set(OPF + "scheme", "uuid")
         identifier2.text = book.uuid
+        for i in book.identifiers:
+            identifier = etree.SubElement(metadata, PURL + "identifier", nsmap=NSMAP)
+            identifier.set(OPF + "scheme", i.format_type())
+            identifier.text = str(i.val)
         title = etree.SubElement(metadata, PURL + "title", nsmap=NSMAP)
         title.text = book.title
         for author in book.authors:
