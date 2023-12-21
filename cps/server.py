@@ -239,9 +239,9 @@ class WebServer(object):
             import asyncio
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         try:
-            # Max Buffersize set to 200MB
+            # Max Buffersize set to 10GB
             http_server = HTTPServer(MyWSGIContainer(self.app),
-                                     max_buffer_size=209700000,
+                                     max_buffer_size=1024 * 1024 * 1024 * 10,
                                      ssl_options=self.ssl_args)
 
             unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
