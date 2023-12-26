@@ -137,10 +137,13 @@ def convert_to_kobo_timestamp_string(timestamp):
 
 @kobo.route("/v1/library/sync")
 @requires_kobo_auth
-@download_required
+# @download_required
 def HandleSyncRequest():
+    if not current_user.role_download():
+        log.info("User needs download permissions for syncing library with Kobo")
+        return abort(403)
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
-    log.info("Kobo library sync request received.")
+    log.info("Kobo library sync request received")
     log.debug("SyncToken: {}".format(sync_token))
     log.debug("Download link format {}".format(get_download_url_for_book('[bookid]','[bookformat]')))
     if not current_app.wsgi_app.is_proxied:
