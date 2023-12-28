@@ -60,7 +60,7 @@ from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
-
+from .epub_kindle_fixer import fix_epub
 log = logger.create()
 
 try:
@@ -218,6 +218,8 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
+            if book_format.lower() == "epub":
+                fix_epub(os.path.join(calibrepath,book.path,converted_file_name))
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
             WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
