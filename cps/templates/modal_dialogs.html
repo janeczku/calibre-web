@@ -162,44 +162,6 @@
                 placeholder="{{_('Enter URL')}}">
             </div>
           </div>
-          <!-- Advanced Options Toggle Button -->
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <a href="#" id="advancedOptionsToggle">Show Advanced Options</a>
-            </div>
-          </div>
-          <!-- Advanced Options (Initially Hidden) -->
-          <div id="advancedOptions" style="display: none;">
-            <!-- Video Quality -->
-            <div class="form-group">
-              <label class="col-sm-2 control-label">{{_('Video Quality')}}</label>
-              <div class="col-sm-10">
-                <label class="radio-inline">
-                  <input type="radio" name="videoQuality" value="480">480p
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="videoQuality" value="720" checked>720p
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" name="videoQuality" value="1080">1080p
-                </label>
-                <!-- Add more quality options as needed -->
-              </div>
-            </div>
-            <!-- Maximum Number of Videos to Download -->
-            <div class="form-group">
-              <label for="maxVideos" class="col-sm-2 control-label">{{_('Max Videos')}}</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="maxVideos" name="maxVideos" min="1" max="100">
-              </div>
-            </div>
-            <!-- Maximum Size of All Videos -->
-            <div class="form-group">
-              <label for="maxVideosSize" class="col-sm-2 control-label">{{_('Max Size (GB)')}}</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="maxVideosSize" name="maxVideosSize" min="1" max="5000">
-              </div>
-            </div>
         </form>
       </div>
       <div class="modal-footer">
