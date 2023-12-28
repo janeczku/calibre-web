@@ -150,34 +150,9 @@ $(document).ready(function() {
         }
     }
 
-    // Function to toggle advanced options visibility
-    function toggleAdvancedOptions() {
-        var advancedOptions = $("#advancedOptions");
-        if (advancedOptions.is(":visible")) {
-            advancedOptions.hide();
-            $("#advancedOptionsToggle").text("Show advanced options")
-        } else {
-            advancedOptions.show();
-            $("#advancedOptionsToggle").text("Hide advanced options")
-        }
-    }
-
-    // Handle click event for the advanced options toggle
-    $("#advancedOptionsToggle").click(function(event) {
-        event.preventDefault();
-        toggleAdvancedOptions();
-    });
-
     // Function to initiate the media download AJAX request
     function initiateMediaDownload() {
         var url = $("#mediaURL").val();
-        var videoQuality = $("input[name='videoQuality']:checked").val();
-        var maxVideos = $("#maxVideos").val();
-        var maxVideosSize = $("#maxVideosSize").val();
-
-        // Set empty number values to zero
-        maxVideos = maxVideos === "" ? 0 : parseInt(maxVideos);
-        maxVideosSize = maxVideosSize === "" ? 0 : parseInt(maxVideosSize);
 
         /*
         // Check if the input URL is a valid URL
@@ -203,10 +178,7 @@ $(document).ready(function() {
             data: {
                 csrf_token: $("#mediaDownloadForm input[name=csrf_token]").val(),
                 mediaURL: url,
-                serverURL: currentURL.href,
-                videoQuality: videoQuality,
-                maxVideos: maxVideos,
-                maxVideosSize: maxVideosSize
+                serverURL: currentURL.href
             },
             success: function(response) {
                 // Handle success response here
