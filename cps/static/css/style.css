@@ -164,12 +164,18 @@ table .bg-dark-danger a { color: #fff; }
 }
 
 .container-fluid .book .cover img {
+  object-fit: cover;
+  object-position: center center;
+  width: 100%;
   height: 100%;
-  width: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+}
+
+/* Center the image within the container vertically and horizontally */
+.container-fluid .book .cover span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .author-link img {
