@@ -23,7 +23,7 @@
 import os
 from datetime import datetime
 import json
-from shutil import copyfile
+from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
@@ -329,13 +329,13 @@ def media():
         task_message = N_("learning media from %(media_url)s", media_url=media_url)
         WorkerThread.add(current_user.name, TaskDownload(task_message, media_url, original_url, current_user.name))
         return True
-    
+
     if request.method == "POST" and "mediaURL" in request.form:
         media_url = request.form["mediaURL"]
         original_url = request.form["serverURL"]
         if original_url.endswith("/media"):
             original_url = original_url.rsplit("/media", 1)[0] + "/meta"
- 
+
         if request_media_download(media_url, original_url):
             response = {
                 "success": "Downloaded media successfully",
@@ -346,7 +346,7 @@ def media():
                 "error": "Failed to download media",
             }
             return jsonify(response), 500
-    
+
 
 @editbook.route("/meta", methods=["GET"])
 def meta():
@@ -383,7 +383,7 @@ def meta():
         for requested_file in requested_files:
             requested_file = open(requested_file, "rb")
             requested_file.filename = os.path.basename(requested_file.name)
-            requested_file.save = lambda path: copyfile(requested_file.name, path)
+            requested_file.save = lambda path: move(requested_file.name, path)
 
             log.info("Processing file: {}".format(requested_file))
             try:
@@ -411,7 +411,7 @@ def meta():
 
                 book_id = db_book.id
                 title = db_book.title
-                
+
                 error = helper.update_dir_structure(
                     book_id,
                     config.config_calibre_dir,
