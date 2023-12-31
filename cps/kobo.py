@@ -140,7 +140,7 @@ def convert_to_kobo_timestamp_string(timestamp):
 # @download_required
 def HandleSyncRequest():
     if not current_user.role_download():
-        log.info("User needs download permissions for syncing library with Kobo")
+        log.info("Users need download permissions for syncing library to Kobo reader")
         return abort(403)
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received")
