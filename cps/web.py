@@ -1368,14 +1368,27 @@ def login_post():
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()) \
         .first()
     remember_me = bool(form.get('remember_me'))
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and (user or config.config_ldap_autocreate_user) and form['password'] != "":
         login_result, error = services.ldap.bind_user(form['username'], form['password'])
         if login_result:
-            log.debug(u"You are now logged in as: '{}'".format(user.name))
-            return handle_login_user(user,
-                                     remember_me,
-                                     _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
-                                     "success")
+            log.debug(u"LDAP Login succeeded for user: '{}'".format(form['username']))
+            if config.config_ldap_autocreate_user and not user:
+                log.debug(u"LDAP login succeeded but user does not exist but auto-create has been enabled; trying to create the user")
+                user_data = services.ldap.get_object_details(user=form['username'], query_filter=config.config_ldap_user_object)
+                user_count, message = ldap_import_create_user(user, user_data)
+                user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == form.get('username', "").strip().lower()).first()
+                if not user:
+                    log.error(u"LDAP user auto creation failed")
+
+            if user:
+                log.debug("You are now logged in as: '{}'".format(user.name))
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
+                                         "success")
+            else:
+                log.info("Login failed for user '{}'".format(user.name))
+                flash(_(u"Wrong Username or Password"), category="error")
         elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.name != "Guest":
             log.info("Local Fallback Login as: '{}'".format(user.name))
