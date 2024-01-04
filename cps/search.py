@@ -45,7 +45,7 @@ def simple_search():
         return render_title_template('search.html',
                                      searchterm="",
                                      result_count=0,
-                                     title=_(u"Search"),
+                                     title=_("Search"),
                                      page="search")
 
 
@@ -185,18 +185,18 @@ def extend_search_term(searchterm,
     searchterm.extend((author_name.replace('|', ','), book_title, publisher))
     if pub_start:
         try:
-            searchterm.extend([_(u"Published after ") +
+            searchterm.extend([_("Published after ") +
                                format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
                                            format='medium')])
         except ValueError:
-            pub_start = u""
+            pub_start = ""
     if pub_end:
         try:
-            searchterm.extend([_(u"Published before ") +
+            searchterm.extend([_("Published before ") +
                                format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                            format='medium')])
         except ValueError:
-            pub_end = u""
+            pub_end = ""
     elements = {'tag': db.Tags, 'serie':db.Series, 'shelf':ub.Shelf}
     for key, db_element in elements.items():
         tag_names = calibre_db.session.query(db_element).filter(db_element.id.in_(tags['include_' + key])).all()
@@ -214,11 +214,11 @@ def extend_search_term(searchterm,
         language_names = calibre_db.speaking_language(language_names)
     searchterm.extend(language.name for language in language_names)
     if rating_high:
-        searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
+        searchterm.extend([_("Rating <= %(rating)s", rating=rating_high)])
     if rating_low:
-        searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
-    if read_status:
-        searchterm.extend([_(u"Read Status = %(status)s", status=read_status)])
+        searchterm.extend([_("Rating >= %(rating)s", rating=rating_low)])
+    if read_status != "Any":
+        searchterm.extend([_("Read Status = '%(status)s'", status=read_status)])
     searchterm.extend(ext for ext in tags['include_extension'])
     searchterm.extend(ext for ext in tags['exclude_extension'])
     # handle custom columns
@@ -267,23 +267,23 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             column_start = term.get('custom_column_' + str(c.id) + '_start')
             column_end = term.get('custom_column_' + str(c.id) + '_end')
             if column_start:
-                search_term.extend([u"{} >= {}".format(c.name,
+                search_term.extend(["{} >= {}".format(c.name,
                                                        format_date(datetime.strptime(column_start, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
                 cc_present = True
             if column_end:
-                search_term.extend([u"{} <= {}".format(c.name,
+                search_term.extend(["{} <= {}".format(c.name,
                                                        format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
-            search_term.extend([(u"{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
+            search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
             cc_present = True
 
     if any(tags.values()) or author_name or book_title or publisher or pub_start or pub_end or rating_low \
-       or rating_high or description or cc_present or read_status:
+       or rating_high or description or cc_present or read_status != "Any":
         search_term, pub_start, pub_end = extend_search_term(search_term,
                                                              author_name,
                                                              book_title,
@@ -302,7 +302,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(func.datetime(db.Books.pubdate) > func.datetime(pub_start))
         if pub_end:
             q = q.filter(func.datetime(db.Books.pubdate) < func.datetime(pub_end))
-        q = q.filter(adv_search_read_status(read_status))
+        if read_status != "Any":
+            q = q.filter(adv_search_read_status(read_status))
         if publisher:
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])
@@ -339,7 +340,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  pagination=pagination,
                                  entries=entries,
                                  result_count=result_count,
-                                 title=_(u"Advanced Search"), page="advsearch",
+                                 title=_("Advanced Search"), page="advsearch",
                                  order=order[1])
 
 
@@ -366,22 +367,28 @@ def render_prepare_search_form(cc):
         .filter(calibre_db.common_filters()) \
         .group_by(db.Data.format)\
         .order_by(db.Data.format).all()
-    if current_user.filter_language() == u"all":
+    if current_user.filter_language() == "all":
         languages = calibre_db.speaking_language()
     else:
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series,shelves=shelves, title=_(u"Advanced Search"), cc=cc, page="advsearch")
+                                 series=series,shelves=shelves, title=_("Advanced Search"), cc=cc, page="advsearch")
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
-    join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-    entries, result_count, pagination = calibre_db.get_search_results(term,
-                                                                      config,
-                                                                      offset,
-                                                                      order,
-                                                                      limit,
-                                                                      *join)
+    if term:
+        join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
+        entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                          config,
+                                                                          offset,
+                                                                          order,
+                                                                          limit,
+                                                                          *join)
+    else:
+        entries = list()
+        order = [None, None]
+        pagination = result_count = None
+
     return render_title_template('search.html',
                                  searchterm=term,
                                  pagination=pagination,
@@ -389,7 +396,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                  adv_searchterm=term,
                                  entries=entries,
                                  result_count=result_count,
-                                 title=_(u"Search"),
+                                 title=_("Search"),
                                  page="search",
                                  order=order[1])
 

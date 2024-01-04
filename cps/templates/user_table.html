@@ -125,15 +125,15 @@
         </div>
     </div>
     <table id="user-table" class="table table-no-bordered table-striped"
-           data-url="{{url_for('admin.list_users')}}"  data-locale="{{ g.user.locale }}">
+           data-url="{{url_for('admin.list_users')}}"  data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
             <th data-name="edit" data-buttontext="{{_('Edit User')}}" data-visible="{{visiblility.get('edit')}}" data-formatter="singleUserFormatter">{{_('Edit')}}</th>
             <th data-name="state" data-field="state" data-checkbox="true" data-visible="{{visiblility.get('state')}}" data-sortable="true"></th>
             <th data-name="id" data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ user_table_row('name', _('Enter Username'), _('Username'), true) }}
-            {{ user_table_row('email', _('Enter E-mail Address'), _('E-mail Address'), true) }}
-            {{ user_table_row('kindle_mail', _('Enter E-Reader E-mail Address'), _('E-Reader E-mail'), false) }}
+            {{ user_table_row('email', _('Enter Email'), _('Email'), true) }}
+            {{ user_table_row('kindle_mail', _('Enter eReader Email'), _('eReader Email'), false) }}
             {{ user_select_translations('locale', url_for('admin.table_get_locale'), _('Locale'), true) }}
             {{ user_select_languages('default_language', url_for('admin.table_get_default_lang'), _('Visible Book Languages'), true) }}
             {{ user_table_row('allowed_tags', _("Edit Allowed Tags"), _("Allowed Tags"), false, tags) }}
@@ -152,18 +152,18 @@
             {{ user_single_checkbox_row("kobo_only_shelves_sync", _('Sync selected Shelves with Kobo'))}}
             {%  endif %}
             {{ user_checkbox_row("sidebar_view", "detail_random", _('Show Random Books in Detail View'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show language selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show read/unread selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_series", _('Show series selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_category", _('Show category selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_random", _('Show random books'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_author", _('Show author selection'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_language", _('Show Language Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show Read/Unread Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_series", _('Show Series Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_category", _('Show Category Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_random", _('Show Random Books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_author", _('Show Author Section'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_best_rated", _('Show Top Rated Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_read_and_unread", _('Show Random Books'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_publisher", _('Show publisher selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_rating", _('Show ratings selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_format", _('Show file formats selection'), visiblility, sidebar_settings)}}
-            {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show archived books'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_publisher", _('Show Publisher Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_rating", _('Show Ratings Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_format", _('Show File Formats Section'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show Archived Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
             <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
@@ -185,8 +185,8 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
-{% if not g.user.locale == 'en' %}
-<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% if not current_user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,17 @@
+{
+    "wordMinLength": "รหัสผ่านของคุณสั้นเกินไป",
+    "wordMaxLength": "รหัสผ่านของคุณยาวเกินไป",
+    "wordInvalidChar": "รหัสผ่านของคุณมีอักษรที่ไม่ถูกต้อง",
+    "wordNotEmail": "คุณไม่สามารถใช้รหัสผ่านเหมือนกับอีเมล์ของคุณได้",
+    "wordSimilarToUsername": "รหัสผ่านไม่ควรประกอบด้วยคำที่เป็น username",
+    "wordTwoCharacterClasses": "ลองเป็นกลุ่มคำใหม่",
+    "wordRepetitions": "มีอักษรซ้ำเยอะเกินไป",
+    "wordSequences": "รหัสผ่านของคุณเดาง่ายเกินไป",
+    "errorList": "Errors:",
+    "veryWeak": "เดาง่ายมาก",
+    "weak": "เดาง่าย",
+    "normal": "พอใช้",
+    "medium": "กำลังดี",
+    "strong": "ค่อนข้างดี",
+    "veryStrong": "ดีมาก"
+}

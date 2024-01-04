@@ -64,13 +64,13 @@ class TaskConvert(CalibreTask):
             if df:
                 datafile = os.path.join(config.config_calibre_dir,
                                         cur_book.path,
-                                        data.name + u"." + self.settings['old_book_format'].lower())
+                                        data.name + "." + self.settings['old_book_format'].lower())
                 if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
                     os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
                 df.GetContentFile(datafile)
                 worker_db.session.close()
             else:
-                error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+                error_message = _("%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
                 worker_db.session.close()
@@ -78,7 +78,7 @@ class TaskConvert(CalibreTask):
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
-            os.remove(self.file_path + u'.' + self.settings['old_book_format'].lower())
+            os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
 
         if filename:
             if config.config_use_google_drive:
@@ -89,7 +89,7 @@ class TaskConvert(CalibreTask):
                 # if we're sending to E-Reader after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))
+                    EmailText = N_("%(book)s send to E-Reader", book=escape(self.title))
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
@@ -107,8 +107,8 @@ class TaskConvert(CalibreTask):
         local_db = db.CalibreDB(expire_on_commit=False, init=True)
         file_path = self.file_path
         book_id = self.book_id
-        format_old_ext = u'.' + self.settings['old_book_format'].lower()
-        format_new_ext = u'.' + self.settings['new_book_format'].lower()
+        format_old_ext = '.' + self.settings['old_book_format'].lower()
+        format_new_ext = '.' + self.settings['new_book_format'].lower()
 
         # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
@@ -133,7 +133,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
-                    self._handleError(N_("Database error: %(error)s.", error=e))
+                    self._handleError(N_("Oops! Database Error: %(error)s.", error=e))
                     return
                 self._handleSuccess()
                 local_db.session.close()
@@ -150,7 +150,7 @@ class TaskConvert(CalibreTask):
         else:
             # check if calibre converter-executable is existing
             if not os.path.exists(config.config_converterpath):
-                self._handleError(N_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
+                self._handleError(N_("Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
                 return
             check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext)
 
@@ -199,7 +199,7 @@ class TaskConvert(CalibreTask):
         try:
             p = process_open(command, quotes)
         except OSError as e:
-            return 1, N_(u"Kepubify-converter failed: %(error)s", error=e)
+            return 1, N_("Kepubify-converter failed: %(error)s", error=e)
         self.progress = 0.01
         while True:
             nextline = p.stdout.readlines()
@@ -220,7 +220,7 @@ class TaskConvert(CalibreTask):
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
             else:
-                return 1, N_(u"Converted file not found or more than one file in folder %(folder)s",
+                return 1, N_("Converted file not found or more than one file in folder %(folder)s",
                             folder=os.path.dirname(file_path))
         return check, None
 
@@ -244,7 +244,7 @@ class TaskConvert(CalibreTask):
 
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
-            return 1, N_(u"Ebook-converter failed: %(error)s", error=e)
+            return 1, N_("Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()

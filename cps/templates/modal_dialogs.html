@@ -37,8 +37,8 @@
   </div>
 </div>
 {% endmacro %}
-{% macro delete_book() %}
-{% if g.user.role_delete_books() %}
+{% macro delete_book(allow) %}
+{% if allow %}
 <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -21,25 +21,54 @@ import zipfile
 from lxml import etree
 
 from . import isoLanguages, cover
+from . import config, logger
 from .helper import split_authors
 from .constants import BookMeta
 
+log = logger.create()
 
 def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     if cover_file is None:
         return None
-    else:
-        cf = extension = None
-        zip_cover_path = os.path.join(cover_path, cover_file).replace('\\', '/')
 
-        prefix = os.path.splitext(tmp_file_name)[0]
-        tmp_cover_name = prefix + '.' + os.path.basename(zip_cover_path)
-        ext = os.path.splitext(tmp_cover_name)
-        if len(ext) > 1:
-            extension = ext[1].lower()
-        if extension in cover.COVER_EXTENSIONS:
-            cf = zip_file.read(zip_cover_path)
-        return cover.cover_processing(tmp_file_name, cf, extension)
+    cf = extension = None
+    zip_cover_path = os.path.join(cover_path, cover_file).replace('\\', '/')
+
+    prefix = os.path.splitext(tmp_file_name)[0]
+    tmp_cover_name = prefix + '.' + os.path.basename(zip_cover_path)
+    ext = os.path.splitext(tmp_cover_name)
+    if len(ext) > 1:
+        extension = ext[1].lower()
+    if extension in cover.COVER_EXTENSIONS:
+        cf = zip_file.read(zip_cover_path)
+    return cover.cover_processing(tmp_file_name, cf, extension)
+
+def get_epub_layout(book, book_data):
+    ns = {
+        'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
+        'pkg': 'http://www.idpf.org/2007/opf',
+    }
+    file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
+
+    try:
+        epubZip = zipfile.ZipFile(file_path)
+        txt = epubZip.read('META-INF/container.xml')
+        tree = etree.fromstring(txt)
+        cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
+        cf = epubZip.read(cfname)
+
+        tree = etree.fromstring(cf)
+        p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
+
+        layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
+    except (etree.XMLSyntaxError, KeyError, IndexError) as e:
+        log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
+        layout = []
+
+    if len(layout) == 0:
+        return None
+    else:
+        return layout[0]
 
 
 def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
@@ -80,13 +109,13 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     if epub_metadata['subject'] == 'Unknown':
         epub_metadata['subject'] = ''
 
-    if epub_metadata['publisher'] == u'Unknown':
+    if epub_metadata['publisher'] == 'Unknown':
         epub_metadata['publisher'] = ''
 
-    if epub_metadata['date'] == u'Unknown':
+    if epub_metadata['date'] == 'Unknown':
         epub_metadata['date'] = ''
 
-    if epub_metadata['description'] == u'Unknown':
+    if epub_metadata['description'] == 'Unknown':
         description = tree.xpath("//*[local-name() = 'description']/text()")
         if len(description) > 0:
             epub_metadata['description'] = description
@@ -102,7 +131,10 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
-        identifier_name = node.attrib.values()[-1]
+        try:
+            identifier_name = node.attrib.values()[-1]
+        except IndexError:
+            continue
         identifier_value = node.text
         if identifier_name in ('uuid', 'calibre') or identifier_value is None:
             continue
@@ -131,40 +163,40 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
 def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
     cover_section = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
-    cover_file = None
-    # if len(cover_section) > 0:
     for cs in cover_section:
         cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
         if cover_file:
-            break
-    if not cover_file:
-        meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
-        if len(meta_cover) > 0:
+            return cover_file
+
+    meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
+    if len(meta_cover) > 0:
+        cover_section = tree.xpath(
+            "/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
+        if not cover_section:
             cover_section = tree.xpath(
-                "/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
-            if not cover_section:
-                cover_section = tree.xpath(
-                    "/pkg:package/pkg:manifest/pkg:item[@properties='" + meta_cover[0] + "']/@href", namespaces=ns)
+                "/pkg:package/pkg:manifest/pkg:item[@properties='" + meta_cover[0] + "']/@href", namespaces=ns)
+    else:
+        cover_section = tree.xpath("/pkg:package/pkg:guide/pkg:reference/@href", namespaces=ns)
+
+    cover_file = None
+    for cs in cover_section:
+        if cs.endswith('.xhtml') or cs.endswith('.html'):
+            markup = epub_zip.read(os.path.join(cover_path, cs))
+            markup_tree = etree.fromstring(markup)
+            # no matter xhtml or html with no namespace
+            img_src = markup_tree.xpath("//*[local-name() = 'img']/@src")
+            # Alternative image source
+            if not len(img_src):
+                img_src = markup_tree.xpath("//attribute::*[contains(local-name(), 'href')]")
+            if len(img_src):
+                # img_src maybe start with "../"" so fullpath join then relpath to cwd
+                filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(cover_path, cover_section[0])),
+                                                        img_src[0]))
+                cover_file = _extract_cover(epub_zip, filename, "", tmp_file_path)
         else:
-            cover_section = tree.xpath("/pkg:package/pkg:guide/pkg:reference/@href", namespaces=ns)
-        for cs in cover_section:
-            filetype = cs.rsplit('.', 1)[-1]
-            if filetype == "xhtml" or filetype == "html":  # if cover is (x)html format
-                markup = epub_zip.read(os.path.join(cover_path, cs))
-                markup_tree = etree.fromstring(markup)
-                # no matter xhtml or html with no namespace
-                img_src = markup_tree.xpath("//*[local-name() = 'img']/@src")
-                # Alternative image source
-                if not len(img_src):
-                    img_src = markup_tree.xpath("//attribute::*[contains(local-name(), 'href')]")
-                if len(img_src):
-                    # img_src maybe start with "../"" so fullpath join then relpath to cwd
-                    filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(cover_path, cover_section[0])),
-                                                            img_src[0]))
-                    cover_file = _extract_cover(epub_zip, filename, "", tmp_file_path)
-            else:
-                cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
-            if cover_file: break
+            cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
+        if cover_file:
+            break
     return cover_file
 
 

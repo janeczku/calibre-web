@@ -21,39 +21,26 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import json
 from urllib.parse import unquote_plus
-from functools import wraps
 
-from flask import Blueprint, request, render_template, Response, g, make_response, abort
+from flask import Blueprint, request, render_template, make_response, abort, Response
 from flask_login import current_user
 from flask_babel import get_locale
+from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
-from werkzeug.security import check_password_hash
 
-from . import constants, logger, config, db, calibre_db, ub, services, isoLanguages
+from . import logger, config, db, calibre_db, ub, isoLanguages
+from .usermanagement import requires_basic_auth_if_no_ano
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
-from .usermanagement import load_user_from_request
-from flask_babel import gettext as _
+
 
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
-
-
-def requires_basic_auth_if_no_ano(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if config.config_anonbrowse != 1:
-            if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
-                return authenticate()
-        return f(*args, **kwargs)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and config.config_anonbrowse != 1:
-        return services.ldap.basic_auth_required(f)
-    return decorated
 
 
 @opds.route("/opds/")
@@ -69,7 +56,7 @@ def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
-@opds.route("/opds/search", defaults={'query': ""})
+# @opds.route("/opds/search", defaults={'query': ""})
 @opds.route("/opds/search/<path:query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
@@ -328,7 +315,7 @@ def feed_format(book_id):
 @requires_basic_auth_if_no_ano
 def feed_languagesindex():
     off = request.args.get("offset") or 0
-    if current_user.filter_language() == u"all":
+    if current_user.filter_language() == "all":
         languages = calibre_db.speaking_language()
     else:
         languages = calibre_db.session.query(db.Languages).filter(
@@ -355,7 +342,8 @@ def feed_languages(book_id):
 @requires_basic_auth_if_no_ano
 def feed_shelfindex():
     off = request.args.get("offset") or 0
-    shelf = g.shelves_access
+    shelf = ub.session.query(ub.Shelf).filter(
+        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     number = len(shelf)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
@@ -402,11 +390,7 @@ def feed_shelf(book_id):
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 def opds_download_link(book_id, book_format):
-    # I gave up with this: With enabled ldap login, the user doesn't get logged in, therefore it's always guest
-    # workaround, loading the user from the request and checking its download rights here
-    # in case of anonymous browsing user is None
-    user = load_user_from_request(request) or current_user
-    if not user.role_download():
+    if not current_user.role_download():
         return abort(403)
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
@@ -427,6 +411,17 @@ def get_metadata_calibre_companion(uuid, library):
         return response
     else:
         return ""
+
+
+@opds.route("/opds/stats")
+@requires_basic_auth_if_no_ano
+def get_database_stats():
+    stat = dict()
+    stat['books'] = calibre_db.session.query(db.Books).count()
+    stat['authors'] = calibre_db.session.query(db.Authors).count()
+    stat['categories'] = calibre_db.session.query(db.Tags).count()
+    stat['series'] = calibre_db.session.query(db.Series).count()
+    return Response(json.dumps(stat), mimetype="application/json")
 
 
 @opds.route("/opds/thumb_240_240/<book_id>")
@@ -477,27 +472,6 @@ def feed_search(term):
     else:
         return render_xml_template('feed.xml', searchterm="")
 
-
-def check_auth(username, password):
-    try:
-        username = username.encode('windows-1252')
-    except UnicodeEncodeError:
-        username = username.encode('utf-8')
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) ==
-                                            username.decode('utf-8').lower()).first()
-    if bool(user and check_password_hash(str(user.password), password)):
-        return True
-    else:
-        ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username.decode('utf-8'), ip_address)
-        return False
-
-
-def authenticate():
-    return Response(
-        'Could not verify your access level for that URL.\n'
-        'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 
 def render_xml_template(*args, **kwargs):

@@ -19,7 +19,7 @@
 import datetime
 
 from . import config, constants
-from .services.background_scheduler import BackgroundScheduler, use_APScheduler
+from .services.background_scheduler import BackgroundScheduler, CronTrigger, use_APScheduler
 from .tasks.database import TaskReconnectDatabase
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
@@ -27,13 +27,12 @@ from .tasks.metadata_backup import TaskBackupMetadata
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
-    # config.schedule_reconnect or
-    # Reconnect Calibre database (metadata.db)
+    # Reconnect Calibre database (metadata.db) based on config.schedule_reconnect
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
 
-    # ToDo make configurable. Generate metadata.opf file for each changed book
-    if False:
+    # Generate metadata.opf file for each changed book
+    if config.schedule_metadata_backup:
         tasks.append([lambda: TaskBackupMetadata("en"), 'backup metadata', False])
 
     # Generate all missing book cover thumbnails
@@ -66,10 +65,10 @@ def register_scheduled_tasks(reconnect=True):
         duration = config.schedule_duration
 
         # Register scheduled tasks
-        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger='cron', hour=start)
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger=CronTrigger(hour=start))
         end_time = calclulate_end_time(start, duration)
-        scheduler.schedule(func=end_scheduled_tasks, trigger='cron', name="end scheduled task", hour=end_time.hour,
-                           minute=end_time.minute)
+        scheduler.schedule(func=end_scheduled_tasks, trigger=CronTrigger(hour=end_time.hour, minute=end_time.minute),
+                           name="end scheduled task")
 
         # Kick-off tasks, if they should currently be running
         if should_task_be_running(start, duration):

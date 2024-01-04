@@ -17,6 +17,7 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+from shutil import copyfile, copyfileobj
 from urllib.request import urlopen
 
 from .. import constants
@@ -92,7 +93,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
                 if generated > 0:
                     total_generated += generated
-                    self.message = N_(u'Generated %(count)s cover thumbnails', count=total_generated)
+                    self.message = N_('Generated %(count)s cover thumbnails', count=total_generated)
 
                 # Check if job has been cancelled or ended
                 if self.stat == STAT_CANCELLED:
@@ -137,7 +138,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
         # Replace outdated or missing thumbnails
         for thumbnail in book_cover_thumbnails:
-            if book.last_modified > thumbnail.generated_at:
+            if book.last_modified.replace(tzinfo=None) > thumbnail.generated_at:
                 generated += 1
                 self.update_book_cover_thumbnail(book, thumbnail)
 
@@ -188,14 +189,18 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                 try:
                     stream = urlopen(web_content_link)
                     with Image(file=stream) as img:
+                        filename = self.cache.get_cache_file_path(thumbnail.filename,
+                                                                  constants.CACHE_TYPE_THUMBNAILS)
                         height = get_resize_height(thumbnail.resolution)
                         if img.height > height:
                             width = get_resize_width(thumbnail.resolution, img.width, img.height)
                             img.resize(width=width, height=height, filter='lanczos')
                             img.format = thumbnail.format
-                            filename = self.cache.get_cache_file_path(thumbnail.filename,
-                                                                      constants.CACHE_TYPE_THUMBNAILS)
                             img.save(filename=filename)
+                        else:
+                            with open(filename, 'rb') as fd:
+                                copyfileobj(stream, fd)
+
                 except Exception as ex:
                     # Bubble exception to calling function
                     self.log.debug('Error generating thumbnail file: ' + str(ex))
@@ -210,12 +215,15 @@ class TaskGenerateCoverThumbnails(CalibreTask):
 
                 with Image(filename=book_cover_filepath) as img:
                     height = get_resize_height(thumbnail.resolution)
+                    filename = self.cache.get_cache_file_path(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
                     if img.height > height:
                         width = get_resize_width(thumbnail.resolution, img.width, img.height)
                         img.resize(width=width, height=height, filter='lanczos')
                         img.format = thumbnail.format
-                        filename = self.cache.get_cache_file_path(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
                         img.save(filename=filename)
+                    else:
+                        # take cover as is
+                        copyfile(book_cover_filepath, filename)
 
     @property
     def name(self):

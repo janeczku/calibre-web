@@ -25,7 +25,7 @@
     </tr>
   </tbody>
 </table>
-{% if g.user.role_admin() %}
+{% if current_user.role_admin() %}
   <h3>{{_('System Statistics')}}</h3>
 <table id="libs" class="table">
   <thead>

@@ -7,12 +7,16 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        {% if g.google_site_verification|length > 0 %}
+          <meta name="google-site-verification" content="{{g.google_site_verification}}">
+        {% endif %}          
         <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/reader.css') }}">
     </head>
     <body>
       <div id="sidebar">
@@ -84,12 +88,18 @@
                     <input type="checkbox" id="sidebarReflow" name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
                   </p>
               </div>
+              <div class="fontSizeWrapper">
+                <div class="slider">
+                    <label for="fader">{{ _('Font Sizes') }}</label>
+                    <input type="range" min="75" max="200" value="100" id="fontSizeFader" step="25">
+                </div>
+              </div>
               <div class="closer icon-cancel-circled"></div>
           </div>
       </div>
       <div class="overlay"></div>
       <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/jszip.min.js') }}">
+      <script src="{{ url_for('static', filename='js/compress/jszip_epub.min.js') }}">
       </script> <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
       <script type="text/javascript">
           window.calibre = {
@@ -98,7 +108,7 @@
               bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=bookid, book_format='EPUB') }}",
               bookUrl: "{{ url_for('web.serve_book', book_id=bookid, book_format='epub', anyname='file.epub') }}",
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-              useBookmarks: "{{ g.user.is_authenticated | tojson }}"
+              useBookmarks: "{{ current_user.is_authenticated | tojson }}"
           };
 
           function selectTheme(id) {
@@ -128,7 +138,14 @@
             else if (id == "blackTheme") {
               document.getElementById("main").style.backgroundColor = "black";
             }
-          }
+
+        }
+
+        // font size settings logic
+        let fontSizeFader = document.getElementById('fontSizeFader');
+        fontSizeFader.addEventListener ("change", function () {
+            reader.rendition.themes.fontSize(`${this.value}%`)
+        });
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>

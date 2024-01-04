@@ -26,6 +26,9 @@ See https://github.com/adobe-type-tools/cmap-resources
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="google" content="notranslate">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% if g.google_site_verification|length > 0 %}
+      <meta name="google-site-verification" content="{{g.google_site_verification}}">
+    {% endif %}      
     <title>{{_('PDF Reader')}} | {{title}}</title>
 
     <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -40,7 +43,9 @@ See https://github.com/adobe-type-tools/cmap-resources
     <script type="text/javascript">
     window.addEventListener('webviewerloaded', function() {
         PDFViewerApplicationOptions.set('disableAutoFetch', true);
-        PDFViewerApplicationOptions.set('disableRange', true);
+        PDFViewerApplicationOptions.set('disableRange', false);
+        PDFViewerApplicationOptions.set('disableStream', true);
+        PDFViewerApplicationOptions.set('disablePreferences', true);
         PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
@@ -168,7 +173,7 @@ See https://github.com/adobe-type-tools/cmap-resources
               <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
             </button>
 
-{% if  g.user.role_download() %}
+{% if  current_user.role_download() %}
             <button id="secondaryPrint" class="secondaryToolbarButton visibleMediumView" title="Print" tabindex="53" data-l10n-id="print">
               <span data-l10n-id="print_label">Print</span>
             </button>
@@ -277,7 +282,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                   <span data-l10n-id="presentation_mode_label">Presentation Mode</span>
                 </button>
 
-{% if  g.user.role_download() %}
+{% if  current_user.role_download() %}
                 <button id="print" class="toolbarButton hiddenMediumView" title="Print" tabindex="33" data-l10n-id="print">
                   <span data-l10n-id="print_label">Print</span>
                 </button>

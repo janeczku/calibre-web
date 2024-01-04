@@ -4,7 +4,7 @@
     {% if sort %}data-sortable="true" {% endif %}
     data-visible = "{{visiblility.get(parameter)}}"
     data-escape="true"
-    {% if g.user.role_edit() %}
+    {% if current_user.role_edit() %}
         data-editable-type="text"
         data-editable-url="{{ url_for('edit-book.edit_list_book', param=parameter)}}"
         data-editable-title="{{ edit_text }}"
@@ -53,10 +53,10 @@
     </div>
 
     <table id="books-table" class="table table-no-bordered table-striped"
-           data-url="{{url_for('web.list_books')}}" data-locale="{{ g.user.locale }}">
+           data-url="{{url_for('web.list_books')}}" data-locale="{{ current_user.locale }}">
       <thead>
         <tr>
-          {% if g.user.role_edit() %}
+          {% if current_user.role_edit() %}
             <th data-field="state" data-checkbox="true" data-sortable="true"></th>
           {% endif %}
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
@@ -66,37 +66,37 @@
             {{ text_table_row('authors', _('Enter Authors'),_('Authors'), true, true) }}
             {{ text_table_row('tags', _('Enter Categories'),_('Categories'), false, true) }}
             {{ text_table_row('series', _('Enter Series'),_('Series'), false, true) }}
-            <th data-field="series_index" id="series_index" data-visible="{{visiblility.get('series_index')}}" data-edit-validate="{{ _('This Field is Required') }}" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('edit-book.edit_list_book', param='series_index')}}" data-edit="true" data-editable-title="{{_('Enter Title')}}"{% endif %}>{{_('Series Index')}}</th>
+            <th data-field="series_index" id="series_index" data-visible="{{visiblility.get('series_index')}}" data-edit-validate="{{ _('This Field is Required') }}" data-sortable="true" {% if current_user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('edit-book.edit_list_book', param='series_index')}}" data-edit="true" data-editable-title="{{_('Enter Title')}}"{% endif %}>{{_('Series Index')}}</th>
             {{ text_table_row('languages', _('Enter Languages'),_('Languages'), false, true) }}
             <!--th data-field="pubdate" data-type="date" data-visible="{{visiblility.get('pubdate')}}" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">{{_('Publishing Date')}}</th-->
             {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers'), false, true) }}
-            <th data-field="comments" id="comments" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('comments')}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='comments')}}" data-edit="true" data-editable-title="{{_('Enter comments')}}"{% endif %}>{{_('Comments')}}</th>
-            {% if g.user.check_visibility(32768) %}
+            <th data-field="comments" id="comments" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('comments')}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='comments')}}" data-edit="true" data-editable-title="{{_('Enter comments')}}"{% endif %}>{{_('Comments')}}</th>
+            {% if current_user.check_visibility(32768) %}
                 {{ book_checkbox_row('is_archived', _('Archive Status'), false)}}
             {%  endif %}
             {{ book_checkbox_row('read_status', _('Read Status'), false)}}
             {% for c in cc %}
               {% if c.datatype == "int" %}
-                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="1" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
+                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="1" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype == "rating" %}
-                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-formatter="ratingFormatter" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.5" data-editable-step="1" data-editable-min="1" data-editable-max="5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
+                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-formatter="ratingFormatter" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.5" data-editable-step="1" data-editable-min="1" data-editable-max="5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype == "float" %}
-                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
+                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype == "enumeration" %}
-                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="select" data-editable-source={{ url_for('edit-book.table_get_custom_enum', c_id=c.id)  }} data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
+                <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="select" data-editable-source={{ url_for('edit-book.table_get_custom_enum', c_id=c.id)  }} data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype in ["datetime"] %}
                   <!-- missing -->
               {% elif c.datatype == "text" %}
                  {{ text_table_row('custom_column_' + c.id|string, _('Enter ') + c.name, c.name, false, false) }}
               {% elif c.datatype == "comments" %}
-                  <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if g.user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
+                  <th data-field="custom_column_{{ c.id|string }}" id="custom_column_{{ c.id|string }}" data-escape="true" data-editable-mode="popup"  data-visible="{{visiblility.get('custom_column_'+ c.id|string)}}" data-sortable="false" {% if current_user.role_edit() %} data-editable-type="wysihtml5" data-editable-url="{{ url_for('edit-book.edit_list_book', param='custom_column_'+ c.id|string)}}" data-edit="true" data-editable-title="{{_('Enter ') + c.name}}"{% endif %}>{{c.name}}</th>
               {% elif c.datatype == "bool" %}
                   {{ book_checkbox_row('custom_column_' + c.id|string, c.name, false)}}
               {% else %}
                 <!--{{ text_table_row('custom_column_' + c.id|string, _('Enter ') + c.name, c.name, false, false) }} -->
               {% endif %}
             {% endfor %}
-          {% if g.user.role_delete_books() and g.user.role_edit()%}
+          {% if current_user.role_delete_books() and current_user.role_edit()%}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false">{{_('Delete')}}</th>
           {% endif %}
         </tr>
@@ -104,8 +104,8 @@
     </table>
 {% endblock %}
 {% block modal %}
-{{ delete_book() }}
-{% if g.user.role_edit() %}
+{{ delete_book(current_user.role_delete_books()) }}
+{% if current_user.role_edit() %}
 <div class="modal fade" id="mergeModal" role="dialog" aria-labelledby="metaMergeLabel">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -137,8 +137,8 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
-{% if not g.user.locale == 'en' %}
-<script src="{{ url_for('static', filename='js/libs/bootstrap-table/locale/bootstrap-table-' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% if not current_user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/locale/bootstrap-table-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/libs/wysihtml5-0.3.0.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-wysihtml5-0.0.3.min.js') }}"></script>
