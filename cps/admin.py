@@ -1179,6 +1179,7 @@ def _configuration_ldap_helper(to_save):
     reboot_required |= _config_string(to_save, "config_ldap_cert_path")
     reboot_required |= _config_string(to_save, "config_ldap_key_path")
     _config_string(to_save, "config_ldap_group_name")
+    _config_checkbox(to_save, "config_ldap_autocreate_user")
 
     address = urlparse(to_save.get("config_ldap_provider_url", ""))
     to_save["config_ldap_provider_url"] = (address.hostname or address.path).strip("/")

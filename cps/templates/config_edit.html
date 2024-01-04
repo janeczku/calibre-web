@@ -261,6 +261,10 @@
           <input type="checkbox" id="config_ldap_openldap" name="config_ldap_openldap" {% if config.config_ldap_openldap %}checked{% endif %}>
           <label for="config_ldap_openldap">{{_('LDAP Server is OpenLDAP?')}}</label>
         </div>
+        <div class="form-group">
+          <input type="checkbox" id="config_ldap_autocreate_user" name="config_ldap_autocreate_user" {% if config.config_ldap_autocreate_user %}checked{% endif %}>
+          <label for="config_ldap_autocreate_user">{{_('Automatically create the user when logging in?')}}</label>
+        </div>
           <h4 class="text-center">{{_('Following Settings are Needed For User Import')}}</h4>
           <div class="form-group">
             <label for="config_ldap_group_object_filter">{{_('LDAP Group Object Filter')}}</label>
