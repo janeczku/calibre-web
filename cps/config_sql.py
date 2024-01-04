@@ -137,6 +137,7 @@ class _Settings(_Base):
     config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
     config_ldap_group_members_field = Column(String, default='memberUid')
     config_ldap_group_name = Column(String, default='calibreweb')
+    config_ldap_autocreate_user = Column(Boolean, default=False)
 
     config_kepubifypath = Column(String, default=None)
     config_converterpath = Column(String, default=None)
