@@ -81,4 +81,8 @@ let reader;
             alert(error);
         });
     }
+
+    // default settings load
+    const theme = localStorage.getItem("calibre.reader.theme") ?? "lightTheme";
+    selectTheme(theme);
 })();

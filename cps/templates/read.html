@@ -76,29 +76,30 @@
     <div class="modal md-effect-1" id="settings-modal">
         <div class="md-content">
             <h3>{{_('Settings')}}</h3>
-            <div class="themes" id="themes">
-                Choose a theme below: <br />
-
-                <!-- Hardcoded a tick in the light theme button because it is the "default" theme. Need to find a way to do this dynamically on startup-->
-                <button type="button" id="lightTheme" class="lightTheme" onclick="selectTheme(this.id)"><span
-                        id="lightSelected">✓</span>{{_('Light')}}</button>
-                <button type="button" id="darkTheme" class="darkTheme" onclick="selectTheme(this.id)"><span
-                        id="darkSelected"> </span>{{_('Dark')}}</button>
-                <button type="button" id="sepiaTheme" class="sepiaTheme" onclick="selectTheme(this.id)"><span
-                        id="sepiaSelected"> </span>{{_('Sepia')}}</button>
-                <button type="button" id="blackTheme" class="blackTheme" onclick="selectTheme(this.id)"><span
-                        id="blackSelected"> </span>{{_('Black')}}</button>
+            <div class="themes form-group" id="themes">
+                <label>{{ _('Themes') }}</label>
+                <!-- <small>Choose a theme below:</small> -->
+                <div class="button-group">
+                    <!-- Hardcoded a tick in the light theme button because it is the "default" theme. Need to find a way to do this dynamically on startup-->
+                    <button type="button" id="lightTheme" class="lightTheme" onclick="selectTheme(this.id)"><span
+                            id="lightSelected">✓</span>{{_('Light')}}</button>
+                    <button type="button" id="darkTheme" class="darkTheme" onclick="selectTheme(this.id)"><span
+                            id="darkSelected"> </span>{{_('Dark')}}</button>
+                    <button type="button" id="sepiaTheme" class="sepiaTheme" onclick="selectTheme(this.id)"><span
+                            id="sepiaSelected"> </span>{{_('Sepia')}}</button>
+                    <button type="button" id="blackTheme" class="blackTheme" onclick="selectTheme(this.id)"><span
+                            id="blackSelected"> </span>{{_('Black')}}</button>
+                </div>
             </div>
-            <div>
-                <p>
-                    <input type="checkbox" id="sidebarReflow"
-                        name="sidebarReflow">{{_('Reflow text when sidebars are open.')}}
-                </p>
+            <div class="form-group">
+                <input type="checkbox" id="sidebarReflow" name="sidebarReflow">
+                <span>{{_('Reflow text when sidebars are open.')}}</span>
             </div>
-            <div class="fontSizeWrapper">
+            <div class="form-group fontSizeWrapper">
+                <label for="fader">{{ _('Font Sizes') }}</label>
                 <div class="slider">
-                    <label for="fader">{{ _('Font Sizes') }}</label>
                     <input type="range" min="75" max="200" value="100" id="fontSizeFader" step="25">
+                    <span id="fontSizeValue">1</span>
                 </div>
             </div>
             <div class="closer icon-cancel-circled"></div>
@@ -149,6 +150,9 @@
             // Add tick mark to the button corresponding to the currently selected theme
             document.getElementById(id).querySelector("span").textContent = "✓";
 
+            // Saving theme to local storage
+            localStorage.setItem("calibre.reader.theme", id);
+
             // Apply theme to epubjs iframe
             reader.rendition.themes.select(id);
 
@@ -157,9 +161,11 @@
         }
 
         // font size settings logic
-        let fontSizeFader = document.getElementById('fontSizeFader');
+        const fontSizeFader = document.getElementById('fontSizeFader'),
+            fontSizeValue = document.getElementById('fontSizeValue');
         fontSizeFader.addEventListener("change", function () {
             reader.rendition.themes.fontSize(`${this.value}%`);
+            fontSizeValue.innerText = `${this.value / 100}`;
         });
     </script>
     <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
