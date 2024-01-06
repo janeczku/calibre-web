@@ -1,19 +1,83 @@
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto"), local("Roboto-Regular"),
+    url("fonts/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "OpenSans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("OpenSans"), local("Open Sans"), local("OpenSans-Regular"),
+    url("fonts/OpenSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Montserrat"), local("Montserrat-Regular"),
+    url("fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Poppins"), local("Poppins-Regular"),
+    url("fonts/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Oswald"), local("Oswald-Regular"),
+    url("fonts/Oswald-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "NotoSans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("NotoSans"), local("Noto Sans"), local("NotoSans-Regular"),
+    url("fonts/NotoSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Lato"), local("Lato-Regular"),
+    url("fonts/Lato-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "RobotoSlab";
+  font-style: normal;
+  font-weight: 400;
+  src: local("RobotoSlab"), local("Roboto Slab"), local("RobotoSlab-Regular"),
+    url("fonts/RobotoSlab-Regular.ttf") format("truetype");
+}
+
 .lightTheme {
-	background: #fff;
-	color: #000;
+  background: #fff;
+  color: #000;
 }
 
 .darkTheme {
-	background: #202124;
-	color: #fff
+  background: #202124;
+  color: #fff;
 }
 
 .sepiaTheme {
-	background: #ece1ca;
-	color: #000;
+  background: #ece1ca;
+  color: #000;
 }
 
 .blackTheme {
-	background: #000;
-	color: #fff
+  background: #000;
+  color: #fff;
 }

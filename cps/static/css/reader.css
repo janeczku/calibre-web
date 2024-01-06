@@ -27,6 +27,11 @@ input[type="checkbox"] {
     margin-right: 10px;
 }
 
+select {
+    margin-top: 10px;
+    min-width: 50%;
+}
+
 .slider input[type="range"] {
   display: block;
   width: 80%;

@@ -85,4 +85,9 @@ let reader;
     // default settings load
     const theme = localStorage.getItem("calibre.reader.theme") ?? "lightTheme";
     selectTheme(theme);
+    const font = localStorage.getItem("calibre.reader.font") ?? "Roboto";
+    selectFont(font);
+
+    // enabling script content
+    // reader.rendition.settings.allowScriptedContent = true;
 })();
