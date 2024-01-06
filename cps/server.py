@@ -21,6 +21,7 @@ import os
 import errno
 import signal
 import socket
+import asyncio
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -326,4 +327,5 @@ class WebServer(object):
                 if restart:
                     self.wsgiserver.call_later(1.0, self.wsgiserver.stop)
                 else:
-                    self.wsgiserver.add_callback_from_signal(self.wsgiserver.stop)
+                    self.wsgiserver.asyncio_loop.call_soon_threadsafe(self.wsgiserver.stop)
+

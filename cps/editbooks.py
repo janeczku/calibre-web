@@ -27,8 +27,10 @@ from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
+from lxml.etree import ParserError
 
 try:
+    # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
     from bleach import clean_text as clean_html
     BLEACH = True
 except ImportError:
@@ -1164,10 +1166,14 @@ def edit_book_series_index(series_index, book):
 def edit_book_comments(comments, book):
     modify_date = False
     if comments:
-        if BLEACH:
-            comments = clean_html(comments, tags=None, attributes=None)
-        else:
-            comments = clean_html(comments)
+        try:
+            if BLEACH:
+                comments = clean_html(comments, tags=set(), attributes=set())
+            else:
+                comments = clean_html(comments)
+        except ParserError as e:
+            log.error("Comments of book {} are corrupted: {}".format(book.id, e))
+            comments = ""
     if len(book.comments):
         if book.comments[0].text != comments:
             book.comments[0].text = comments
