@@ -103,7 +103,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             elif s == 'date':
                 epub_metadata[s] = tmp[0][:10]
             else:
-                epub_metadata[s] = tmp[0]
+                epub_metadata[s] = tmp[0].strip()
         else:
             epub_metadata[s] = 'Unknown'
 
