@@ -65,7 +65,7 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 
 *Note: Raspberry Pi OS users may encounter issues during installation. If so, please update pip (`./venv/bin/python3 -m pip install --upgrade pip`) and/or install cargo (`sudo apt install cargo`) before retrying the installation.*
 
-Refer to the Wiki for additional installation examples: [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:Install-Calibre-Web-in-Linux-Mint-19-or-20), [Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
+Refer to the Wiki for additional installation examples: [manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation), [Linux Mint](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-in-Linux-Mint-19-or-20), [Cloud Provider](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider).
 
 ## Quick Start
 
