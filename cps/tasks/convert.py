@@ -22,6 +22,7 @@ from glob import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
 from time import time
+from uuid import uuid4
 
 from sqlalchemy.exc import SQLAlchemyError
 from flask_babel import lazy_gettext as N_
@@ -36,7 +37,7 @@ from cps.ub import init_db_thread
 from cps.file_helper import get_temp_dir
 
 from cps.tasks.mail import TaskEmail
-from cps import gdriveutils
+from cps import gdriveutils, helper
 from cps.constants import SUPPORTED_CALIBRE_BINARIES
 
 log = logger.create()
@@ -124,7 +125,7 @@ class TaskConvert(CalibreTask):
 
         # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
-        # this will allow send to E-Reader workflow to continue to work
+        # this will allow to send to E-Reader workflow to continue to work
         if os.path.isfile(file_path + format_new_ext) or\
                 local_db.get_book_format(self.book_id, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
@@ -207,8 +208,15 @@ class TaskConvert(CalibreTask):
         return
 
     def _convert_kepubify(self, file_path, format_old_ext, format_new_ext):
+        if config.config_embed_metadata:
+            tmp_dir, temp_file_name = helper.do_calibre_export(self.book_id, format_old_ext[1:])
+            filename = os.path.join(tmp_dir, temp_file_name + format_old_ext)
+            temp_file_path = tmp_dir
+        else:
+            filename = file_path + format_old_ext
+            temp_file_path = os.path.dirname(file_path)
         quotes = [1, 3]
-        command = [config.config_kepubifypath, (file_path + format_old_ext), '-o', os.path.dirname(file_path)]
+        command = [config.config_kepubifypath, filename, '-o', temp_file_path, '-i']
         try:
             p = process_open(command, quotes)
         except OSError as e:
@@ -222,13 +230,12 @@ class TaskConvert(CalibreTask):
             if p.poll() is not None:
                 break
 
-        # ToD Handle
         # process returncode
         check = p.returncode
 
         # move file
         if check == 0:
-            converted_file = glob(os.path.join(os.path.dirname(file_path), "*.kepub.epub"))
+            converted_file = glob(os.path.splitext(filename)[0] + "*.kepub.epub")
             if len(converted_file) == 1:
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
@@ -238,17 +245,17 @@ class TaskConvert(CalibreTask):
         return check, None
 
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
-        book_id = self.book_id
         try:
+            # path_tmp_opf = self._embed_metadata()
             if config.config_embed_metadata:
                 quotes = [3, 5]
                 tmp_dir = get_temp_dir()
                 calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
-                opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id),
+                opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
                                '--with-library', config.config_calibre_dir]
                 p = process_open(opf_command, quotes)
                 p.wait()
-                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
+                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
                 with open(path_tmp_opf, 'w') as fd:
                     copyfileobj(p.stdout, fd)
 

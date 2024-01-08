@@ -948,7 +948,7 @@ def do_download_file(book, book_format, client, data, headers):
                     os.makedirs(output_path)
                 output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
                 gd.downloadFile(book.path, book_name + "." + book_format, output)
-                filename, download_name = do_calibre_export(book, book_format)
+                filename, download_name = do_calibre_export(book.id, book_format)
             else:
                 return gd.do_gdrive_download(df, headers)
         else:
@@ -963,7 +963,7 @@ def do_download_file(book, book_format, client, data, headers):
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
         if config.config_binariesdir and config.config_embed_metadata:
-            filename, download_name = do_calibre_export(book, book_format)
+            filename, download_name = do_calibre_export(book.id, book_format)
         else:
             download_name = book_name
 
@@ -975,7 +975,7 @@ def do_download_file(book, book_format, client, data, headers):
     return response
 
 
-def do_calibre_export(book, book_format):
+def do_calibre_export(book_id, book_format):
     try:
         quotes = [3, 5, 7, 9]
         tmp_dir = get_temp_dir()
@@ -983,7 +983,7 @@ def do_calibre_export(book, book_format):
         temp_file_name = str(uuid4())
         opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', config.config_calibre_dir,
                        '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
-                       str(book.id)]
+                       str(book_id)]
         p = process_open(opf_command, quotes)
         _, err = p.communicate()
         if err:
