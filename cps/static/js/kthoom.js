@@ -700,6 +700,11 @@ function init(filename) {
     $("#setting").click(function () {
         $("#settings-modal").toggleClass("md-show");
     });
+    
+    // Open read modal
+    $("#read").click(function () {
+        $("#read-modal").toggleClass("md-show");
+    });
 
     // On Settings input change
     $("#settings input").on("change", function () {
