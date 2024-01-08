@@ -59,9 +59,10 @@
                 <span id="chapter-title"></span>
             </div>
             <div id="title-controls">
-                <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
-                <a id="setting" class="icon-cog">Settings</a>
-                <a id="fullscreen" class="icon-resize-full">Fullscreen</a>
+                <a id="bookmark" class="icon-bookmark-empty" title="{{ _('Bookmark') }}">Bookmark</a>
+                <a id="read" class="icon-volume" title="{{ _('Read Aloud') }}">Read Aloud</a>
+                <a id="setting" class="icon-cog" title="{{ _('Settings') }}">Settings</a>
+                <a id="fullscreen" class="icon-resize-full" title="{{ _('Fullscreen') }}">Fullscreen</a>
             </div>
         </div>
 
@@ -72,6 +73,19 @@
 
         <div id="loader"><img src="{{ url_for('static', filename='img/loader.gif') }}"></div>
     </div>
+
+    <div class="modal md-effect-1" id="read-modal">
+        <div class="md-content">
+            <h3>{{_('Read Aloud')}}</h3>
+            <div class="form-group">
+                <label for="ttsVoice">{{ _('Font Family') }}</label>
+                <select name="ttsVoice" id="ttsVoiceValue">
+                </select>
+            </div>
+            <div class="closer icon-cancel-circled"></div>
+        </div>
+    </div>
+
     <div class="modal md-effect-1" id="settings-modal">
         <div class="md-content">
             <h3>{{_('Settings')}}</h3>
@@ -169,6 +183,9 @@
         }
 
         function selectFont (id) {
+            // Select the option
+            document.getElementById('fontFamilyValue').value = id;
+
             // Saving font to local storage
             localStorage.setItem("calibre.reader.font", id);
             

@@ -867,3 +867,15 @@ input:-moz-placeholder {
 .icon-resize-small::before {
   content: "\e808";
 } /* '' */
+.icon-volume::before {
+  content: "\e816";
+}
+.icon-volume-down::before {
+  content: "\e817";
+}
+.icon-volume-off::before {
+  content: "\e818";
+}
+.icon-volume-up::before {
+  content: "\e819";
+}
