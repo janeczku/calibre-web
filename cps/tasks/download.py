@@ -54,30 +54,30 @@ class TaskDownload(CalibreTask):
                             else:
                                 self.progress = 0.99
 
-                        p.wait()
+                p.wait()
 
-                        # Database operations
-                        requested_files = []
-                        conn = sqlite3.connect(SURVEY_DB_FILE)
-                        c = conn.cursor()
-                        c.execute("SELECT path FROM media")
-                        for row in c.fetchall():
-                            requested_files.append(row[0])
+                # Database operations
+                requested_files = []
+                conn = sqlite3.connect(SURVEY_DB_FILE)
+                c = conn.cursor()
+                c.execute("SELECT path FROM media")
+                for row in c.fetchall():
+                    requested_files.append(row[0])
 
-                        c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
-                        if c.fetchone():
-                            c.execute("SELECT title FROM playlists")
-                            shelf_title = c.fetchone()[0]
-                        else:
-                            shelf_title = None
-                        conn.close()
+                c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
+                if c.fetchone():
+                    c.execute("SELECT title FROM playlists")
+                    shelf_title = c.fetchone()[0]
+                else:
+                    shelf_title = None
+                conn.close()
 
-                        if self.original_url:
-                            response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
-                            if response.status_code == 200:
-                                log.info("Successfully sent the list of requested files to %s", self.original_url)
-                            else:
-                                log.error("Failed to send the list of requested files to %s", self.original_url)
+                if self.original_url:
+                    response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
+                    if response.status_code == 200:
+                        log.info("Successfully sent the list of requested files to %s", self.original_url)
+                    else:
+                        log.error("Failed to send the list of requested files to %s", self.original_url)
 
                 # Set the progress to 100% and the end time to the current time
                 self.progress = 1
