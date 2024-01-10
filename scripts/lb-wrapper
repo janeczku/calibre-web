@@ -23,7 +23,7 @@ mkdir -p ${TMP_DOWNLOADS_DIR}
 log() {
     local level=$1
     local message=$2
-    if [[ $message =~ ^downloading* ]]; then
+    if [[ $message == downloading* ]]; then
         echo "$message"
     else
         echo "$(date +'%Y-%m-%d %H:%M:%S') - [$level] $message" | tee -a ${LOG_FILE}
