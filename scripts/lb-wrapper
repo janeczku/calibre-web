@@ -19,7 +19,7 @@ XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} ${VERBOSITY} 
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
-# Function to log messages e.g. with level "Info" or "Error"
+# Function to log messages e.g. w/ level "Info", "Warning" or "Error"
 log() {
     local level=$1
     local message=$2
