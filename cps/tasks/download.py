@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import sqlite3
 from datetime import datetime
