@@ -41,20 +41,18 @@ class TaskDownload(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 # Define the pattern for the subprocess output
-                pattern_analyze = r"Running ANALYZE"
-                pattern_download = r"'action': 'download'"
+                pattern_progress = r"downloading"
 
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        log.info(line)
-                        if pattern_analyze in line:
-                            log.info("Matched output (ANALYZE): %s", line)
-                            self.progress = 0.1
-                        if pattern_download in line:
-                            log.info("Matched output (download): %s", line)
-                            self.progress = 0.5
-                            
+                        if pattern_progress in line:
+                            percentage = int(re.search(r'\d+', line).group())
+                            if percentage < 100:
+                                self.progress = percentage / 100
+                            else:
+                                self.progress = 0.99
+
                         p.wait()
 
                         # Database operations
