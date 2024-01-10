@@ -61,7 +61,7 @@ log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
 # 1>&2 redirect back-to-STDERR explained at https://stackoverflow.com/a/15936384
 eval "${XKLB_FULL_CMD}" \
      > >(while read -r line; do log "Info" "$line"; done) \
-     2> >(while read -r line; do log "Error" "$line" 1>&2; done) &
+     2> >(while read -r line; do log "Warning" "$line" 1>&2; done) &
 pid=$!
 
 # Wait for background process to complete
