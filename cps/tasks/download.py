@@ -50,6 +50,8 @@ class TaskDownload(CalibreTask):
                     if line:
                         if pattern_progress in line:
                             percentage = int(re.search(r'\d+', line).group())
+                            # 2024-01-10: 99% (a bit arbitrary) is explained here...
+                            # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
                             if percentage < 100:
                                 self.progress = percentage / 100
                             else:
