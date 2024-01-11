@@ -42,7 +42,8 @@ class TaskDownload(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 # Define the pattern for the subprocess output
-                pattern_progress = r"downloading"
+                # Equivalent Regex: https://github.com/iiab/calibre-web/blob/3c3c77f4dbf54ff093c3e3a68ac9b93a522c4070/scripts/lb-wrapper#L26
+                pattern_progress = r"^downloading"
 
                 while p.poll() is None:
                     line = p.stdout.readline()
