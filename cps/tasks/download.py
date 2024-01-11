@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import sqlite3
 from datetime import datetime
@@ -41,44 +42,45 @@ class TaskDownload(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 # Define the pattern for the subprocess output
-                pattern_analyze = r"Running ANALYZE"
-                pattern_download = r"'action': 'download'"
+                # Equivalent Regex: https://github.com/iiab/calibre-web/blob/3c3c77f4dbf54ff093c3e3a68ac9b93a522c4070/scripts/lb-wrapper#L26
+                pattern_progress = r"^downloading"
 
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        log.info(line)
-                        if pattern_analyze in line:
-                            log.info("Matched output (ANALYZE): %s", line)
-                            self.progress = 0.1
-                        if pattern_download in line:
-                            log.info("Matched output (download): %s", line)
-                            self.progress = 0.5
-                            
-                        p.wait()
-
-                        # Database operations
-                        requested_files = []
-                        conn = sqlite3.connect(SURVEY_DB_FILE)
-                        c = conn.cursor()
-                        c.execute("SELECT path FROM media")
-                        for row in c.fetchall():
-                            requested_files.append(row[0])
-
-                        c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
-                        if c.fetchone():
-                            c.execute("SELECT title FROM playlists")
-                            shelf_title = c.fetchone()[0]
-                        else:
-                            shelf_title = None
-                        conn.close()
-
-                        if self.original_url:
-                            response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
-                            if response.status_code == 200:
-                                log.info("Successfully sent the list of requested files to %s", self.original_url)
+                        if pattern_progress in line:
+                            percentage = int(re.search(r'\d+', line).group())
+                            # 2024-01-10: 99% (a bit arbitrary) is explained here...
+                            # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
+                            if percentage < 100:
+                                self.progress = percentage / 100
                             else:
-                                log.error("Failed to send the list of requested files to %s", self.original_url)
+                                self.progress = 0.99
+
+                p.wait()
+
+                # Database operations
+                requested_files = []
+                conn = sqlite3.connect(SURVEY_DB_FILE)
+                c = conn.cursor()
+                c.execute("SELECT path FROM media")
+                for row in c.fetchall():
+                    requested_files.append(row[0])
+
+                c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
+                if c.fetchone():
+                    c.execute("SELECT title FROM playlists")
+                    shelf_title = c.fetchone()[0]
+                else:
+                    shelf_title = None
+                conn.close()
+
+                if self.original_url:
+                    response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
+                    if response.status_code == 200:
+                        log.info("Successfully sent the list of requested files to %s", self.original_url)
+                    else:
+                        log.error("Failed to send the list of requested files to %s", self.original_url)
 
                 # Set the progress to 100% and the end time to the current time
                 self.progress = 1
