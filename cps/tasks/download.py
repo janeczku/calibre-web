@@ -16,6 +16,7 @@ log = logger.create()
 class TaskDownload(CalibreTask):
     def __init__(self, task_message, media_url, original_url, current_user_name):
         super(TaskDownload, self).__init__(task_message)
+        self.message = task_message
         self.media_url = media_url
         self.original_url = original_url
         self.current_user_name = current_user_name
@@ -53,11 +54,16 @@ class TaskDownload(CalibreTask):
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
                             # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
                             if percentage < 100:
+                                self.message = f"Downloading learning media from {self.media_url}"
                                 self.progress = percentage / 100
                             else:
+                                self.message = f"Processing learning media from {self.media_url}"
                                 self.progress = 0.99
 
                 p.wait()
+                self.progress = 1.0
+                self.message = f"Downloaded learning media from {self.media_url}"
+
 
                 # Database operations
                 requested_files = []
