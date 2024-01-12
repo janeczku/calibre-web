@@ -23,11 +23,7 @@ mkdir -p ${TMP_DOWNLOADS_DIR}
 log() {
     local level=$1
     local message=$2
-    if [[ $message == downloading* ]]; then
-        echo "$message"
-    else
-        echo "$(date +'%Y-%m-%d %H:%M:%S') - [$level] $message" | tee -a ${LOG_FILE}
-    fi
+    echo "$(date +'%Y-%m-%d %H:%M:%S') - [$level] $message" | tee -a ${LOG_FILE}
 }
 
 if [ $# -eq 0 ]; then
@@ -58,10 +54,18 @@ fi
 log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
 
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
-# 1>&2 redirect back-to-STDERR explained at https://stackoverflow.com/a/15936384
+# 1>&2 redirect back-to-STDERR to avoid nested (repeat) logging, explained at https://stackoverflow.com/a/15936384
 eval "${XKLB_FULL_CMD}" \
-     > >(while read -r line; do log "Info" "$line"; done) \
-     2> >(while read -r line; do log "Warning" "$line" 1>&2; done) &
+     > >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
+     2> >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
+# 2024-01-11: HOW THIS WORKS...
+# 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
+# 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
+# 2) Then, upon receiving them at STDIN, "> >(...)" again prevents (only those raw lines!) from being logged (as "Info" messages).
+# 3) Then, cps/tasks/download.py uses an equivalent Python REGEX to flag (only these raw lines! yes a 3rd time!)
+#    parsing them to send "percentage download progress" info along to the "Tasks" view in the web front-end:
+#    https://github.com/iiab/calibre-web/blob/d594aeba06ab91e684122ca03062564d71f012e5/cps/tasks/download.py#L46
+
 pid=$!
 
 # Wait for background process to complete
