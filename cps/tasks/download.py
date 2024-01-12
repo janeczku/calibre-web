@@ -28,7 +28,7 @@ class TaskDownload(CalibreTask):
         """Run the download task"""
         self.worker_thread = worker_thread
         log.info("Starting download task for URL: %s", self.media_url)
-        self.start_time  = self.end_time = datetime.now()
+        self.start_time = self.end_time = datetime.now()
         self.stat = STAT_STARTED
         self.progress = 0
 
@@ -43,13 +43,15 @@ class TaskDownload(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 # Define the pattern for the subprocess output
-                # Equivalent Regex: https://github.com/iiab/calibre-web/blob/3c3c77f4dbf54ff093c3e3a68ac9b93a522c4070/scripts/lb-wrapper#L26
+                # Equivalent Regex's: https://github.com/iiab/calibre-web/blob/8684ffb491244e15ab927dfb390114240e483eb3/scripts/lb-wrapper#L59-L60
                 pattern_progress = r"^downloading"
 
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        if pattern_progress in line:
+                        #if "downloading" in line:
+                        #if line.startswith("downloading"):
+                        if re.search(pattern_progress, line):
                             percentage = int(re.search(r'\d+', line).group())
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
                             # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
