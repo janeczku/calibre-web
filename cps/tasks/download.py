@@ -56,15 +56,15 @@ class TaskDownload(CalibreTask):
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
                             # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
                             if percentage < 100:
-                                self.message = f"Downloading learning media from {self.media_url}"
+                                self.message = f"Downloading {self.media_url}..."
                                 self.progress = percentage / 100
                             else:
-                                self.message = f"Processing learning media from {self.media_url}"
+                                self.message = f"Almost done..."
                                 self.progress = 0.99
 
                 p.wait()
                 self.progress = 1.0
-                self.message = f"Downloaded learning media from {self.media_url}"
+                self.message = f"Successfuly downloaded {self.media_url}"
 
 
                 # Database operations
