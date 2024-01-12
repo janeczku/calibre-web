@@ -48,7 +48,8 @@ class TaskDownload(CalibreTask):
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        #if pattern_progress in line:
+                        #if "downloading" in line:
+                        #if line.startswith("downloading"):
                         if re.search(pattern_progress, line):
                             percentage = int(re.search(r'\d+', line).group())
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
