@@ -58,7 +58,7 @@ log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
 eval "${XKLB_FULL_CMD}" \
      > >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
      2> >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
-# 2024-10-11: HOW THIS WORKS...
+# 2024-01-11: HOW THIS WORKS...
 # 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
 # 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
 # 2) Then, upon receiving them at STDIN, "> >(...)" again prevents (only those raw lines!) from being logged (as "Info" messages).
