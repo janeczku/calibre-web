@@ -27,7 +27,7 @@ class TaskDownload(CalibreTask):
         """Run the download task"""
         self.worker_thread = worker_thread
         log.info("Starting download task for URL: %s", self.media_url)
-        self.start_time  = self.end_time = datetime.now()
+        self.start_time = self.end_time = datetime.now()
         self.stat = STAT_STARTED
         self.progress = 0
 
@@ -48,7 +48,8 @@ class TaskDownload(CalibreTask):
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        if pattern_progress in line:
+                        #if pattern_progress in line:
+                        if re.search(pattern_progress, line):
                             percentage = int(re.search(r'\d+', line).group())
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
                             # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
