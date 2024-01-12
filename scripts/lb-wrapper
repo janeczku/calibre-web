@@ -64,7 +64,7 @@ eval "${XKLB_FULL_CMD}" \
 # 2) Then, upon receiving them at STDIN, "> >(...)" again prevents (only those raw lines!) from being logged (as "Info" messages).
 # 3) Then, cps/tasks/download.py uses an equivalent Python REGEX to flag (only these raw lines! yes a 3rd time!)
 #    parsing them to send "percentage download progress" info along to the "Tasks" view in the web front-end:
-#    https://github.com/iiab/calibre-web/blob/d594aeba06ab91e684122ca03062564d71f012e5/cps/tasks/download.py#L46
+#    https://github.com/iiab/calibre-web/blob/870bf6d35f890712f44ce711f3f8f6b541ccf1fe/cps/tasks/download.py#L46
 
 pid=$!
 
