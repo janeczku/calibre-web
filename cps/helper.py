@@ -28,6 +28,7 @@ from datetime import datetime, timedelta
 import requests
 import unidecode
 from uuid import uuid4
+from lxml import etree
 
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
@@ -61,6 +62,7 @@ from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
 from .file_helper import get_temp_dir
+from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub, replace_metadata
 
 log = logger.create()
 
@@ -942,13 +944,18 @@ def do_download_file(book, book_format, client, data, headers):
         df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
-            if config.config_binariesdir and config.config_embed_metadata:
+            if config.config_embed_metadata and (
+                 (book_format == "kepub" and config.config_kepubifypath ) or
+                 (book_format != "kepub" and config.config_binariesdir)):
                 output_path = os.path.join(config.config_calibre_dir, book.path)
                 if not os.path.exists(output_path):
                     os.makedirs(output_path)
                 output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
                 gd.downloadFile(book.path, book_name + "." + book_format, output)
-                filename, download_name = do_calibre_export(book.id, book_format)
+                if book_format == "kepub" and config.config_kepubifypath:
+                    filename, download_name = do_kepubify_metadata_replace(book, output)
+                elif book_format != "kepub" and config.config_binariesdir:
+                    filename, download_name = do_calibre_export(book.id, book_format)
             else:
                 return gd.do_gdrive_download(df, headers)
         else:
@@ -962,8 +969,11 @@ def do_download_file(book, book_format, client, data, headers):
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
-        if config.config_binariesdir and config.config_embed_metadata:
-            filename, download_name = do_calibre_export(book.id, book_format)
+        if book_format == "kepub" and config.config_kepubifypath and config.config_embed_metadata:
+            filename, download_name = do_kepubify_metadata_replace(book, os.path.join(filename,
+                                                                                      book_name + "." + book_format))
+        elif book_format != "kepub" and config.config_binariesdir and config.config_embed_metadata:
+                filename, download_name = do_calibre_export(book.id, book_format)
         else:
             download_name = book_name
 
@@ -975,7 +985,23 @@ def do_download_file(book, book_format, client, data, headers):
     return response
 
 
-def do_calibre_export(book_id, book_format):
+def do_kepubify_metadata_replace(book, file_path):
+    custom_columns = (calibre_db.session.query(db.CustomColumns)
+                      .filter(db.CustomColumns.mark_for_delete == 0)
+                      .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
+                      .order_by(db.CustomColumns.label).all())
+
+    tree, cf_name = get_content_opf(file_path)
+    package = create_new_metadata_backup(book, custom_columns, current_user.locale, _("Cover"), lang_type=2)
+    content = replace_metadata(tree, package)
+    tmp_dir = get_temp_dir()
+    temp_file_name = str(uuid4())
+    # open zipfile and replace metadata block in content.opf
+    updateEpub(file_path, os.path.join(tmp_dir, temp_file_name + ".kepub"), cf_name, content)
+    return tmp_dir, temp_file_name
+
+
+def do_calibre_export(book_id, book_format, ):
     try:
         quotes = [3, 5, 7, 9]
         tmp_dir = get_temp_dir()
@@ -1081,7 +1107,7 @@ def tags_filters():
 
 
 # checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
+# example SELECT * FROM @TABLE WHERE 'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 # in all calls the email address is checked for validity
 def check_valid_domain(domain_text):
