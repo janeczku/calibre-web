@@ -24,7 +24,7 @@ import socket
 import asyncio
 
 try:
-    from gevent_.pywsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
     from gevent.socket import socket as GeventSocket
