@@ -25,9 +25,10 @@ import re
 import shutil
 import socket
 from datetime import datetime, timedelta
-from tempfile import gettempdir
 import requests
 import unidecode
+from uuid import uuid4
+from lxml import etree
 
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
@@ -54,12 +55,14 @@ from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES
-from .subproc_wrapper import process_wait
+from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
+from .subproc_wrapper import process_wait, process_open
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
+from .file_helper import get_temp_dir
+from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub, replace_metadata
 
 log = logger.create()
 
@@ -921,10 +924,7 @@ def save_cover(img, book_path):
             return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
-        tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-
-        if not os.path.isdir(tmp_dir):
-            os.mkdir(tmp_dir)
+        tmp_dir = get_temp_dir()
         ret, message = save_cover_from_filestorage(tmp_dir, "uploaded_cover.jpg", img)
         if ret is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg').replace("\\", "/"),
@@ -938,29 +938,87 @@ def save_cover(img, book_path):
 
 
 def do_download_file(book, book_format, client, data, headers):
+    book_name = data.name
     if config.config_use_google_drive:
         # startTime = time.time()
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
-            return gd.do_gdrive_download(df, headers)
+            if config.config_embed_metadata and (
+                 (book_format == "kepub" and config.config_kepubifypath ) or
+                 (book_format != "kepub" and config.config_binariesdir)):
+                output_path = os.path.join(config.config_calibre_dir, book.path)
+                if not os.path.exists(output_path):
+                    os.makedirs(output_path)
+                output = os.path.join(config.config_calibre_dir, book.path, book_name + "." + book_format)
+                gd.downloadFile(book.path, book_name + "." + book_format, output)
+                if book_format == "kepub" and config.config_kepubifypath:
+                    filename, download_name = do_kepubify_metadata_replace(book, output)
+                elif book_format != "kepub" and config.config_binariesdir:
+                    filename, download_name = do_calibre_export(book.id, book_format)
+            else:
+                return gd.do_gdrive_download(df, headers)
         else:
             abort(404)
     else:
         filename = os.path.join(config.get_book_path(), book.path)
-        if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
+        if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
             # ToDo: improve error handling
-            log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
+            log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
 
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
-        response = make_response(send_from_directory(filename, data.name + "." + book_format))
-        # ToDo Check headers parameter
-        for element in headers:
-            response.headers[element[0]] = element[1]
-        log.info('Downloading file: {}'.format(os.path.join(filename, data.name + "." + book_format)))
-        return response
+        if book_format == "kepub" and config.config_kepubifypath and config.config_embed_metadata:
+            filename, download_name = do_kepubify_metadata_replace(book, os.path.join(filename,
+                                                                                      book_name + "." + book_format))
+        elif book_format != "kepub" and config.config_binariesdir and config.config_embed_metadata:
+                filename, download_name = do_calibre_export(book.id, book_format)
+        else:
+            download_name = book_name
+
+    response = make_response(send_from_directory(filename, download_name + "." + book_format))
+    # ToDo Check headers parameter
+    for element in headers:
+        response.headers[element[0]] = element[1]
+    log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
+    return response
+
+
+def do_kepubify_metadata_replace(book, file_path):
+    custom_columns = (calibre_db.session.query(db.CustomColumns)
+                      .filter(db.CustomColumns.mark_for_delete == 0)
+                      .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
+                      .order_by(db.CustomColumns.label).all())
+
+    tree, cf_name = get_content_opf(file_path)
+    package = create_new_metadata_backup(book, custom_columns, current_user.locale, _("Cover"), lang_type=2)
+    content = replace_metadata(tree, package)
+    tmp_dir = get_temp_dir()
+    temp_file_name = str(uuid4())
+    # open zipfile and replace metadata block in content.opf
+    updateEpub(file_path, os.path.join(tmp_dir, temp_file_name + ".kepub"), cf_name, content)
+    return tmp_dir, temp_file_name
+
+
+def do_calibre_export(book_id, book_format, ):
+    try:
+        quotes = [3, 5, 7, 9]
+        tmp_dir = get_temp_dir()
+        calibredb_binarypath = get_calibre_binarypath("calibredb")
+        temp_file_name = str(uuid4())
+        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', config.config_calibre_dir,
+                       '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
+                       str(book_id)]
+        p = process_open(opf_command, quotes)
+        _, err = p.communicate()
+        if err:
+            log.error('Metadata embedder encountered an error: %s', err)
+        return tmp_dir, temp_file_name
+    except OSError as ex:
+        # ToDo real error handling
+        log.error_or_exception(ex)
+
 
 ##################################
 
@@ -982,6 +1040,47 @@ def check_unrar(unrar_location):
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
         return _('Error executing UnRar')
+
+
+def check_calibre(calibre_location):
+    if not calibre_location:
+        return
+
+    if not os.path.exists(calibre_location):
+        return _('Could not find the specified directory')
+
+    if not os.path.isdir(calibre_location):
+        return _('Please specify a directory, not a file')
+
+    try:
+        supported_binary_paths = [os.path.join(calibre_location, binary)
+                                  for binary in SUPPORTED_CALIBRE_BINARIES.values()]
+        binaries_available = [os.path.isfile(binary_path) for binary_path in supported_binary_paths]
+        binaries_executable = [os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
+        if all(binaries_available) and all(binaries_executable):
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)')
+                      for binary_path in supported_binary_paths]
+            if all(values):
+                version = values[0].group(1)
+                log.debug("calibre version %s", version)
+            else:
+                return _('Calibre binaries not viable')
+        else:
+            ret_val = []
+            missing_binaries=[path for path, available in
+                              zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
+
+            missing_perms=[path for path, available in
+                           zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_executable) if not available]
+            if missing_binaries:
+                ret_val.append(_('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries)))
+            if missing_perms:
+                ret_val.append(_('Missing executable permissions: %(missing)s', missing=", ".join(missing_perms)))
+            return ", ".join(ret_val)
+
+    except (OSError, UnicodeDecodeError) as err:
+        log.error_or_exception(err)
+        return _('Error excecuting Calibre')
 
 
 def json_serial(obj):
@@ -1008,7 +1107,7 @@ def tags_filters():
 
 
 # checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
+# example SELECT * FROM @TABLE WHERE 'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 # in all calls the email address is checked for validity
 def check_valid_domain(domain_text):
@@ -1040,6 +1139,17 @@ def get_download_link(book_id, book_format, client):
     else:
         log.error("Book id {} not found for downloading".format(book_id))
     abort(404)
+
+
+def get_calibre_binarypath(binary):
+        binariesdir = config.config_binariesdir
+        if binariesdir:
+            try:
+                return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
+            except KeyError as ex:
+                log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
+                pass
+        return ""
 
 
 def clear_cover_thumbnail_cache(book_id):

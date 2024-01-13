@@ -156,6 +156,11 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr'
                      'prc', 'doc', 'docx', 'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg',
                      'opus', 'wav', 'flac', 'm4a', 'm4b'}
 
+_extension = ""
+if sys.platform == "win32":
+    _extension = ".exe"
+SUPPORTED_CALIBRE_BINARIES = {binary:binary + _extension for binary in ["ebook-convert", "calibredb"]}
+
 
 def has_flag(value, bit_flag):
     return bit_flag == (bit_flag & (value or 0))
@@ -169,13 +174,11 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION = {'version': '0.6.22 Beta'}
+STABLE_VERSION = {'version': '0.6.22b'}
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
 NIGHTLY_VERSION[1] = '$Format:%cI$'
-# NIGHTLY_VERSION[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
-# NIGHTLY_VERSION[1] = '2018-09-09T10:13:08+02:00'
 
 # CACHE
 CACHE_TYPE_THUMBNAILS    = 'thumbnails'

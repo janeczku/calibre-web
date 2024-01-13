@@ -47,7 +47,7 @@ from . import constants, logger, helper, services, cli_param
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
-    valid_email, check_username
+    valid_email, check_username, get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
@@ -217,7 +217,7 @@ def admin():
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
             commit = format_datetime(form_date - tz, format='short')
         else:
-            commit = version['version']
+            commit = version['version'].replace("b", " Beta")
 
     all_user = ub.session.query(ub.User).all()
     # email_settings = mail_config.get_mail_settings()
@@ -1751,6 +1751,7 @@ def _configuration_update_helper():
 
         _config_checkbox_int(to_save, "config_uploading")
         _config_checkbox_int(to_save, "config_unicode_filename")
+        _config_checkbox_int(to_save, "config_embed_metadata")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
         reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
                             and config.config_login_type == constants.LOGIN_LDAP)
@@ -1767,8 +1768,14 @@ def _configuration_update_helper():
             constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
-        _config_string(to_save, "config_converterpath")
+        _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_kepubifypath")
+        if "config_binariesdir" in to_save:
+            calibre_status = helper.check_calibre(config.config_binariesdir)
+            if calibre_status:
+                return _configuration_result(calibre_status)
+            to_save["config_converterpath"] = get_calibre_binarypath("ebook-convert")
+            _config_string(to_save, "config_converterpath")
 
         reboot_required |= _config_int(to_save, "config_login_type")
 
