@@ -24,7 +24,7 @@ import socket
 import asyncio
 
 try:
-    from gevent.pywsgi import WSGIServer
+    from gevent_.pywsgi import WSGIServer
     from .gevent_wsgi import MyWSGIHandler
     from gevent.pool import Pool
     from gevent.socket import socket as GeventSocket
@@ -37,7 +37,7 @@ except ImportError:
     from .tornado_wsgi import MyWSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
-    from tornado.netutil import bind_unix_socket
+    from tornado import netutil
     from tornado import version as _version
     VERSION = 'Tornado ' + _version
     _GEVENT = False
@@ -256,7 +256,7 @@ class WebServer(object):
             elif unix_socket_file and os.name != 'nt':
                 self._prepare_unix_socket(unix_socket_file)
                 output = "unix:" + unix_socket_file
-                unix_socket = bind_unix_socket(self.unix_socket_file)
+                unix_socket = netutil.bind_unix_socket(self.unix_socket_file)
                 http_server.add_socket(unix_socket)
                 # ensure current user and group have r/w permissions, no permissions for other users
                 # this way the socket can be shared in a semi-secure manner
