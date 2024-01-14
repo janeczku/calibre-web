@@ -328,7 +328,7 @@ def media():
         abort(404)
 
     def request_media_download(media_url, original_url):
-        task_message = N_("learning media from %(media_url)s", media_url=media_url)
+        task_message = N_("downloading %(media_url)s...", media_url=media_url)
         WorkerThread.add(current_user.name, TaskDownload(task_message, media_url, original_url, current_user.name))
         return True
 
