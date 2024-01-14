@@ -32,7 +32,7 @@ class TaskDownload(CalibreTask):
         self.stat = STAT_STARTED
         self.progress = 0
 
-        lb_executable = self.get_lb_executable()
+        lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
 
         if self.media_url:
             subprocess_args = [lb_executable, self.media_url]
@@ -102,11 +102,7 @@ class TaskDownload(CalibreTask):
                 self.stat = STAT_FAIL
 
         else:
-            log.info("No media URL provided")
-
-    def get_lb_executable(self):
-        lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
-        return lb_executable
+            log.info("No media URL provided - skipping download task")
 
     @property
     def name(self):
