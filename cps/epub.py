@@ -71,8 +71,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         'dc': 'http://purl.org/dc/elements/1.1/'
     }
 
-    epub_zip = zipfile.ZipFile(tmp_file_path)
-    tree, cf_name = get_content_opf(epub_zip, ns)
+    tree, cf_name = get_content_opf(tmp_file_path, ns)
 
     cover_path = os.path.dirname(cf_name)
 
@@ -115,6 +114,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
+    epub_zip = zipfile.ZipFile(tmp_file_path)
     cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
 
     identifiers = []

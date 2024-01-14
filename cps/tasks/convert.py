@@ -208,7 +208,7 @@ class TaskConvert(CalibreTask):
         return
 
     def _convert_kepubify(self, file_path, format_old_ext, format_new_ext):
-        if config.config_embed_metadata:
+        if config.config_embed_metadata and config.config_binariesdir:
             tmp_dir, temp_file_name = helper.do_calibre_export(self.book_id, format_old_ext[1:])
             filename = os.path.join(tmp_dir, temp_file_name + format_old_ext)
             temp_file_path = tmp_dir
