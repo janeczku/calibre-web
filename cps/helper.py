@@ -1018,6 +1018,7 @@ def do_calibre_export(book_id, book_format, ):
     except OSError as ex:
         # ToDo real error handling
         log.error_or_exception(ex)
+        return None, None
 
 
 ##################################
