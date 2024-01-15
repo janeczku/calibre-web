@@ -3,7 +3,6 @@ import re
 import requests
 import sqlite3
 from datetime import datetime
-from flask import flash
 from flask_babel import lazy_gettext as N_, gettext as _
 
 from cps.constants import SURVEY_DB_FILE
@@ -83,23 +82,23 @@ class TaskDownload(CalibreTask):
                     shelf_title = None
                 conn.close()
 
-                if self.original_url:
-                    response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
-                    if response.status_code == 200:
-                        log.info("Successfully sent the list of requested files to %s", self.original_url)
-                    else:
-                        log.error("Failed to send the list of requested files to %s", self.original_url)
-
-                # Set the progress to 100% and the end time to the current time
-                self.progress = 1
-                self.end_time = datetime.now()
-                self.stat = STAT_FINISH_SUCCESS
-
+                response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
+                if response.status_code == 200:
+                    log.info("Successfully sent the list of requested files to %s", self.original_url)
+                else:
+                    log.error("Failed to send the list of requested files to %s", self.original_url)
+                    self.progress = 0
+                    self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
+            
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
-                # Handling subprocess failure or errors
-                flash("Failed to complete the download process", category="error")
-                self.stat = STAT_FAIL
+                self.message = f"{self.media_url} failed to download: {e}"
+
+            finally:
+                if p.returncode == 0 and self.progress == 1.0:
+                    self.stat = STAT_FINISH_SUCCESS
+                else:
+                    self.stat = STAT_FAIL
 
         else:
             log.info("No media URL provided - skipping download task")
@@ -109,7 +108,7 @@ class TaskDownload(CalibreTask):
         return N_("Download")
 
     def __str__(self):
-        return "Download %s" % self.media_url
+        return f"Download task for {self.media_url}"
 
     @property
     def is_cancellable(self):
