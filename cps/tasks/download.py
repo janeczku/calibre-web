@@ -99,7 +99,7 @@ class TaskDownload(CalibreTask):
                     finally:
                         shelf_title = None
 
-                conn.close() 
+                conn.close()
 
                 response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
                 if response.status_code == 200:
@@ -108,7 +108,7 @@ class TaskDownload(CalibreTask):
                     log.error("Failed to send the list of requested files to %s", self.original_url)
                     self.progress = 0
                     self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
-            
+
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
                 self.message = f"{self.media_url} failed to download: {e}"
