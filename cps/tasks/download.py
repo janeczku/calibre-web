@@ -85,7 +85,7 @@ class TaskDownload(CalibreTask):
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url} failed to download: {db_error}"
-                    
+
                     # get the shelf title
                     try:
                         shelf_title = conn.execute("SELECT title FROM playlists").fetchone()[0]                                
