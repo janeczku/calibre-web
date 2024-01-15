@@ -3,7 +3,6 @@ import re
 import requests
 import sqlite3
 from datetime import datetime
-from flask import flash
 from flask_babel import lazy_gettext as N_, gettext as _
 
 from cps.constants import SURVEY_DB_FILE
