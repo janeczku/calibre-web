@@ -104,9 +104,15 @@ class TaskDownload(CalibreTask):
                 response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
                 if response.status_code == 200:
                     log.info("Successfully sent the list of requested files to %s", self.original_url)
+                    files_uploaded = response.json()["files_uploaded"]
+                    if files_uploaded:
+                        self.message = f"Successfuly downloaded {self.media_url}. Uploaded files: "
+                        for i, file in enumerate(files_uploaded):
+                            self.message += f"{i+1}. {file} \n"
+                    else:
+                        self.message = f"Successfuly downloaded {self.media_url}. No files uploaded."
                 else:
                     log.error("Failed to send the list of requested files to %s", self.original_url)
-                    self.progress = 0
                     self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
 
             except Exception as e:
