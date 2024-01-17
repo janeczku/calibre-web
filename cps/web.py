@@ -1354,7 +1354,7 @@ def login():
 @limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
 def login_post():
     form = request.form.to_dict()
-    username = form.get('username', "").strip().lower().replace("\n","\\n").replace("\r","")
+    username = form.get('username', "").strip().lower().replace("\n","").replace("\r","")
     try:
         limiter.check()
     except RateLimitExceeded:
