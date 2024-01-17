@@ -435,7 +435,7 @@ def meta():
                 link = '<a href="{}">{}</a>'.format(
                     url_for("web.show_book", book_id=book_id), escape(title)
                 )
-                upload_text = N_("File %(file)s uploaded", file=link)
+                upload_text = N_("File %(file)s downloaded", file=link)
                 WorkerThread.add(
                     current_user_name, TaskUpload(upload_text, escape(title))
                 )
@@ -443,14 +443,6 @@ def meta():
 
                 if shelf_title:
                     shelf.add_to_shelf_as_guest(shelf_id, book_id)
-
-                if len(requested_files) < 2:
-                    resp = {
-                        "location": url_for(
-                            "edit-book.show_edit_book", book_id=book_id
-                        )
-                    }
-                    return Response(json.dumps(resp), mimetype="application/json")
 
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
@@ -462,9 +454,6 @@ def meta():
                     ),
                     category="error",
                 )
-        else:
-            flash("Error: No file found", category="error")
-            return False
 
     if request.method == "GET" and "requested_files" in request.args:
         requested_files = request.args.getlist("requested_files")
