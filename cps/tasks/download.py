@@ -68,28 +68,53 @@ class TaskDownload(CalibreTask):
 
                 # Database operations
                 requested_files = []
-                conn = sqlite3.connect(SURVEY_DB_FILE)
-                c = conn.cursor()
-                c.execute("SELECT path FROM media")
-                for row in c.fetchall():
-                    requested_files.append(row[0])
+                with sqlite3.connect(SURVEY_DB_FILE) as conn:
+                    try:
+                        # Get the requested files from the database
+                        requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if not row[0].startswith("http")]))
 
-                c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='playlists'")
-                if c.fetchone():
-                    c.execute("SELECT title FROM playlists")
-                    shelf_title = c.fetchone()[0]
-                else:
-                    shelf_title = None
+                        # Abort if there are no requested files
+                        if not requested_files:
+                            log.info("No requested files found in the database")
+                            error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
+                            if error:
+                                log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
+                                self.progress = 0
+                                self.message = f"{error[1]} failed to download: {error[0]}"
+                            return
+                    except sqlite3.Error as db_error:
+                        log.error("An error occurred while trying to connect to the database: %s", db_error)
+                        self.message = f"{self.media_url} failed to download: {db_error}"
+
+                    # get the shelf title
+                    try:
+                        shelf_title = conn.execute("SELECT title FROM playlists").fetchone()[0]                                
+                    except sqlite3.Error as db_error:
+                        if "no such table: playlists" in str(db_error):
+                            log.info("No playlists table found in the database")
+                        else:
+                            log.error("An error occurred while trying to connect to the database: %s", db_error)
+                            self.message = f"{self.media_url} failed to download: {db_error}"
+                            self.progress = 0
+                    finally:
+                        shelf_title = None
+
                 conn.close()
 
                 response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
                 if response.status_code == 200:
                     log.info("Successfully sent the list of requested files to %s", self.original_url)
+                    files_uploaded = response.json()["files_uploaded"]
+                    if files_uploaded:
+                        self.message = f"Successfuly downloaded {self.media_url}. Uploaded files: "
+                        for i, file in enumerate(files_uploaded):
+                            self.message += f"{i+1}. {file} \n"
+                    else:
+                        self.message = f"Successfuly downloaded {self.media_url}. No files uploaded."
                 else:
                     log.error("Failed to send the list of requested files to %s", self.original_url)
-                    self.progress = 0
                     self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
-            
+
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
                 self.message = f"{self.media_url} failed to download: {e}"
