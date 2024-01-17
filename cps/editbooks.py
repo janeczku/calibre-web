@@ -455,6 +455,8 @@ def meta():
                     category="error",
                 )
 
+        return True
+
     if request.method == "GET" and "requested_files" in request.args:
         requested_files = request.args.getlist("requested_files")
         current_user_name = request.args.get("current_user_name", None)
