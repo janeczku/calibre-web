@@ -69,6 +69,7 @@ class TaskDownload(CalibreTask):
                 # Database operations
                 requested_files = []
                 with sqlite3.connect(SURVEY_DB_FILE) as conn:
+                    shelf_title = None
                     try:
                         # Get the requested files from the database
                         requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if not row[0].startswith("http")]))
@@ -97,7 +98,7 @@ class TaskDownload(CalibreTask):
                             self.message = f"{self.media_url} failed to download: {db_error}"
                             self.progress = 0
                     finally:
-                        shelf_title = None
+                        log.info("Shelf title: %s", shelf_title)
 
                 conn.close()
 
