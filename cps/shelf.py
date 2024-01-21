@@ -71,6 +71,15 @@ def add_to_shelf(shelf_id, book_id):
     else:
         maxOrder = maxOrder[0]
 
+    if not ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
+                                                 ub.BookShelf.book_id == book_id).one_or_none():
+        log.error("Invalid Book Id: %s. Could not be added to shelf %s", book_id, shelf.name)
+        if not xhr:
+            flash(_("%(book_id)s is a invalid Book Id. Could not be added to Shelf", book_id=book_id),
+                  category="error")
+            return redirect(url_for('web.index'))
+        return "%s is a invalid Book Id. Could not be added to Shelf" % book_id, 400
+
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
     shelf.last_modified = datetime.utcnow()
     try:
