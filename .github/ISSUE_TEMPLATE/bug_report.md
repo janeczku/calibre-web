@@ -1,6 +1,6 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug/Problem report
+about: Create a report to help us improve Calibre-Web
 title: ''
 labels: ''
 assignees: ''
