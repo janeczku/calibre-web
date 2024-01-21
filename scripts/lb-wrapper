@@ -45,7 +45,8 @@ if ! command -v "${XKLB_EXECUTABLE}"; then
     exit 1
 fi
 
-log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
+# 2024-01-21: Not needed as XKLB reports its own version# to /var/log/xklb.log
+# log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
 
 if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
     log "Info" "Old ${SURVEY_DB_FILE} moved aside."
