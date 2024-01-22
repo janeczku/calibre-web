@@ -71,8 +71,7 @@ def add_to_shelf(shelf_id, book_id):
     else:
         maxOrder = maxOrder[0]
 
-    if not ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
-                                                 ub.BookShelf.book_id == book_id).one_or_none():
+    if not calibre_db.session.query(db.Books).filter(db.Books.id == book_id).one_or_none():
         log.error("Invalid Book Id: %s. Could not be added to shelf %s", book_id, shelf.name)
         if not xhr:
             flash(_("%(book_id)s is a invalid Book Id. Could not be added to Shelf", book_id=book_id),
