@@ -5,7 +5,7 @@ import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
 
-from cps.constants import SURVEY_DB_FILE
+from cps.constants import XKLB_DB_FILE
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
 from cps.subproc_wrapper import process_open
 from .. import logger
@@ -68,7 +68,7 @@ class TaskDownload(CalibreTask):
 
                 # Database operations
                 requested_files = []
-                with sqlite3.connect(SURVEY_DB_FILE) as conn:
+                with sqlite3.connect(XKLB_DB_FILE) as conn:
                     shelf_title = None
                     try:
                         # Get the requested files from the database
