@@ -4,7 +4,7 @@ LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 VERBOSITY="-vv"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
-SURVEY_DB_FILE="${TMP_DOWNLOADS_DIR}/survey.db"
+XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
 URL="$1"
 
 # Or download largest possible HD-style / UltraHD videos, to try to force
@@ -12,8 +12,8 @@ URL="$1"
 # FORMAT_OPTIONS="--format-sort size"
 
 FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
-XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${SURVEY_DB_FILE} ${URL} ${VERBOSITY} \
-&& ${XKLB_EXECUTABLE} dl ${SURVEY_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} \
+XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} ${VERBOSITY} \
+&& ${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} \
 --video ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
 
 
@@ -48,9 +48,10 @@ fi
 # 2024-01-21: Not needed as XKLB reports its own version# to /var/log/xklb.log
 # log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
 
-if mv ${SURVEY_DB_FILE} ${SURVEY_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
-    log "Info" "Old ${SURVEY_DB_FILE} moved aside."
-fi
+# 2024-01-24: Not needed as we don't discard the database anymore
+# if mv ${XKLB_DB_FILE} ${XKLB_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
+#     log "Info" "Old ${XKLB_DB_FILE} moved aside."
+# fi
 
 log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
 
