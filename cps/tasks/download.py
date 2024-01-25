@@ -72,7 +72,7 @@ class TaskDownload(CalibreTask):
                     shelf_title = None
                     try:
                         # Get the requested files from the database
-                        requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if not row[0].startswith("http")]))
+                        requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media WHERE start_time >= ? AND start_time <= ?", (self.start_time, self.end_time)).fetchall() if not row[0].startswith("http")]))
 
                         # Abort if there are no requested files
                         if not requested_files:
