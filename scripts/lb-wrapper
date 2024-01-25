@@ -20,7 +20,7 @@ log() {
     echo "$(date +'%Y-%m-%d %H:%M:%S') - [$level] $message" | tee -a ${LOG_FILE}
 }
 
-if [ $# -lt 2 ]; then
+if [ $# -ne 2 ]; then
     log "Error" "Insufficient arguments provided. Please provide a command (tubeadd/dl) and a URL."
     exit 1
 fi
