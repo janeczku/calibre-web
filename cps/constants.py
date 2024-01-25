@@ -46,7 +46,7 @@ CACHE_DIR           = os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
 
 # 2023-11-15: See scripts/lb-wrapper which uses xklb's 'lb tubeadd ...' to save
 # an initial metadata manifest (prior to downloading videos or media) here:
-SURVEY_DB_FILE      = "/library/downloads/calibre-web/survey.db"
+XKLB_DB_FILE      = "/library/calibre-web/xklb-metadata.db"
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"), ".calibre-web")

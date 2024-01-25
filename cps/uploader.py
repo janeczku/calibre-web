@@ -27,7 +27,7 @@ from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
-from .constants import BookMeta, SURVEY_DB_FILE
+from .constants import BookMeta, XKLB_DB_FILE
 from .helper import split_authors
 
 log = logger.create()
@@ -252,8 +252,8 @@ def pdf_preview(tmp_file_path, tmp_dir):
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
     if ']' in original_file_name:
         video_id = original_file_name.split('[')[1].split(']')[0]
-        if os.path.isfile(SURVEY_DB_FILE):
-            conn = sqlite3.connect(SURVEY_DB_FILE)
+        if os.path.isfile(XKLB_DB_FILE):
+            conn = sqlite3.connect(XKLB_DB_FILE)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute("SELECT * FROM media WHERE extractor_id=?", (video_id,))
@@ -294,7 +294,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 return meta
             conn.close()
         else:
-            log.warning('Cannot find survey database, using default metadata')
+            log.warning('Cannot find the xklb database, using default metadata')
     else:
         meta = BookMeta(
             file_path=tmp_file_path,
