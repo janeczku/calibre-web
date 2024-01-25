@@ -48,11 +48,6 @@ fi
 # 2024-01-21: Not needed as XKLB reports its own version# to /var/log/xklb.log
 # log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
 
-# 2024-01-24: Not needed as we don't discard the database anymore
-# if mv ${XKLB_DB_FILE} ${XKLB_DB_FILE}.$(date +%F_%T_%Z) 2> /dev/null; then
-#     log "Info" "Old ${XKLB_DB_FILE} moved aside."
-# fi
-
 log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
 
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
