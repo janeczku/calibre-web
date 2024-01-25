@@ -5,17 +5,11 @@ XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 VERBOSITY="-vv"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
-URL="$1"
+URL="$2"  # Use $2 for the URL argument
 
 # Or download largest possible HD-style / UltraHD videos, to try to force
 # out-of-memory "502 Bad Gateway" for testing of issues like #37 and #79
 # FORMAT_OPTIONS="--format-sort size"
-
-FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
-XKLB_FULL_CMD="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} ${VERBOSITY} \
-&& ${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} \
---video ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
-
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
@@ -26,10 +20,12 @@ log() {
     echo "$(date +'%Y-%m-%d %H:%M:%S') - [$level] $message" | tee -a ${LOG_FILE}
 }
 
-if [ $# -eq 0 ]; then
-    log "Error" "No arguments provided. Please provide a URL to download."
+if [ $# -lt 2 ]; then
+    log "Error" "Insufficient arguments provided. Please provide a command (tubeadd/dl) and a URL."
     exit 1
 fi
+
+command_type=$1
 
 # URL validation already taken care of by cps/static/js/main.js Lines 167-170
 # which (1) trims outer whitespace, and (2) prepends https:// if URL doesn't
@@ -40,21 +36,26 @@ fi
 #     exit 1
 # fi
 
-if ! command -v "${XKLB_EXECUTABLE}"; then
-    log "Error" "xklb could not be found. Please install xklb and try again."
+if [ "$command_type" == "tubeadd" ]; then
+    XKLB_CMD="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} ${VERBOSITY}"
+elif [ "$command_type" == "dl" ]; then
+    FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
+    XKLB_CMD="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
+else
+    log "Error" "Invalid command. Please choose 'tubeadd' or 'dl'."
     exit 1
 fi
 
 # 2024-01-21: Not needed as XKLB reports its own version# to /var/log/xklb.log
 # log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
 
-log "Info" "Running xklb commands: ${XKLB_FULL_CMD}"
+log "Info" "Running xklb command: ${XKLB_CMD}"
 
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
 # 1>&2 redirect back-to-STDERR to avoid nested (repeat) logging, explained at https://stackoverflow.com/a/15936384
-eval "${XKLB_FULL_CMD}" \
-     > >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
-     2> >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
+eval "${XKLB_CMD}" \
+    > >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
+    2> >(while read -r line; do if [[ $line == downloading* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
 # 2024-01-11: HOW THIS WORKS...
 # 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
 # 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
@@ -71,7 +72,7 @@ rc=$?
 
 # Check return code (exit status)
 if [ $rc -eq 0 ]; then
-    log "Info" "lb-wrapper's xklb commands (download) completed successfully."
+    log "Info" "lb-wrapper's xklb command (${command_type}) completed successfully."
 else
     log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
     exit 1
