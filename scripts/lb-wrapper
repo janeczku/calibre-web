@@ -5,7 +5,7 @@ XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 VERBOSITY="-vv"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
-XKLB_INTERNAL_CMD=$1
+XKLB_INTERNAL_CMD="$1"
 URL="$2"  # Use $2 for the URL argument
 
 # Or download largest possible HD-style / UltraHD videos, to try to force
