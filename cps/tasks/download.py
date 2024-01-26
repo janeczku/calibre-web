@@ -13,12 +13,13 @@ from .. import logger
 log = logger.create()
 
 class TaskDownload(CalibreTask):
-    def __init__(self, task_message, media_url, original_url, current_user_name):
+    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_title):
         super(TaskDownload, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
         self.original_url = original_url
         self.current_user_name = current_user_name
+        self.shelf_title = shelf_title
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
@@ -34,7 +35,7 @@ class TaskDownload(CalibreTask):
         lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
 
         if self.media_url:
-            subprocess_args = [lb_executable, self.media_url]
+            subprocess_args = [lb_executable, "dl", self.media_url]
             log.info("Subprocess args: %s", subprocess_args)
 
             # Execute the download process using process_open
@@ -67,16 +68,13 @@ class TaskDownload(CalibreTask):
 
 
                 # Database operations
-                requested_files = []
                 with sqlite3.connect(XKLB_DB_FILE) as conn:
-                    shelf_title = None
                     try:
-                        # Get the requested files from the database
-                        requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if not row[0].startswith("http")]))
+                        requested_file = conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (self.media_url,)).fetchone()[0]
 
-                        # Abort if there are no requested files
-                        if not requested_files:
-                            log.info("No requested files found in the database")
+                        # Abort if there is not a path
+                        if not requested_file:
+                            log.info("No path found in the database")
                             error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
                             if error:
                                 log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
@@ -87,27 +85,15 @@ class TaskDownload(CalibreTask):
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url} failed to download: {db_error}"
 
-                    # get the shelf title
-                    try:
-                        shelf_title = conn.execute("SELECT title FROM playlists").fetchone()[0]                                
-                    except sqlite3.Error as db_error:
-                        if "no such table: playlists" in str(db_error):
-                            log.info("No playlists table found in the database")
-                        else:
-                            log.error("An error occurred while trying to connect to the database: %s", db_error)
-                            self.message = f"{self.media_url} failed to download: {db_error}"
-                            self.progress = 0
-                    finally:
-                        log.info("Shelf title: %s", shelf_title)
-
                 conn.close()
 
-                response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
+                response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_title": self.shelf_title})
                 if response.status_code == 200:
-                    log.info("Successfully sent the list of requested files to %s", self.original_url)
-                    self.message = f"Successfuly downloaded {self.media_url}"
+                    log.info("Successfully sent the requested file to %s", self.original_url)
+                    file_downloaded = response.json()["file_downloaded"]
+                    self.message = f"Successfully downloaded {self.media_url} to {file_downloaded}"
                 else:
-                    log.error("Failed to send the list of requested files to %s", self.original_url)
+                    log.error("Failed to send the requested file to %s", self.original_url)
                     self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
 
             except Exception as e:
