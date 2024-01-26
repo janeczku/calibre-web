@@ -12,9 +12,9 @@ from .. import logger
 
 log = logger.create()
 
-class TaskMediaMeta(CalibreTask):
+class TaskMetadataExtract(CalibreTask):
     def __init__(self, task_message, media_url, original_url, current_user_name):
-        super(TaskMediaMeta, self).__init__(task_message)
+        super(TaskMetadataExtract, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
         self.original_url = original_url
