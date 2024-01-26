@@ -1,22 +1,23 @@
 #!/bin/bash
 
+XKLB_INTERNAL_CMD="$1"
+URL="$2"
+
 LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
-VERBOSITY="-vv"
-TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
-XKLB_INTERNAL_CMD="$1"
-URL="$2"  # Use $2 for the URL argument
+TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+VERBOSITY="-vv"
 
 # Or download largest possible HD-style / UltraHD videos, to try to force
 # out-of-memory "502 Bad Gateway" for testing of issues like #37 and #79
 # FORMAT_OPTIONS="--format-sort size"
-
 FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
+
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
-# Function to log messages e.g. w/ level "Info", "Warning" or "Error"
+# Function to log messages e.g. w/ level "Info", "Debug" or "Error"
 log() {
     local level=$1
     local message=$2
@@ -40,17 +41,17 @@ fi
 if ! command -v "${XKLB_EXECUTABLE}"; then
     log "Error" "xklb could not be found. Please install xklb and try again."
 
-if [ "$XKLB_INTERNAL_CMD" == "tubeadd" ]; then
+# 2024-01-25 Question: "Why separate execution of 'tubeadd' and 'dl' ?"
+# @deldesir Responded: "For listing requested files after tubeadd is done
+# fetching metadata. This will prevent hanging for playlist URLs or short URLs.
+if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
     xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} ${VERBOSITY}"
-elif [ "$XKLB_INTERNAL_CMD" == "dl" ]; then
+elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
     xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
 else
-    log "Error" "Invalid command. Please choose 'tubeadd' or 'dl'."
+    log "Error" "Invalid xklb command. Please choose 'tubeadd' or 'dl'."
     exit 1
 fi
-
-# 2024-01-21: Not needed as XKLB reports its own version# to /var/log/xklb.log
-# log "Info" "xklb version: $(${XKLB_EXECUTABLE} --version)"
 
 log "Info" "Running xklb command: ${xklb_full_cmd}"
 
