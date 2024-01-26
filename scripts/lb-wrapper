@@ -46,6 +46,7 @@ fi
 # 2024-01-25 Question: "Why separate execution of 'tubeadd' and 'dl' ?"
 # @deldesir Responded: "For listing requested files after tubeadd is done
 # fetching metadata. This will prevent hanging for playlist URLs or short URLs.
+# "...to be able to list videos that are not downloaded yet"
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
     xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
