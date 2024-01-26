@@ -40,6 +40,9 @@ fi
 #     exit 1
 # fi
 
+if ! command -v "${XKLB_EXECUTABLE}"; then
+    log "Error" "xklb could not be found. Please install xklb and try again."
+
 if [ "$XKLB_INTERNAL_CMD" == "tubeadd" ]; then
     xklb_full_cmd="${xklb_full_cmd%%&&*}"
 elif [ "$XKLB_INTERNAL_CMD" == "dl" ]; then
