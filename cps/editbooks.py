@@ -57,7 +57,7 @@ from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, ko
 from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
-from .tasks.media_metadata import TaskMediaMeta
+from .tasks.metadata_extract import TaskMetadataExtract
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
@@ -329,7 +329,7 @@ def media():
 
     def request_media_download(media_url, original_url):
         task_message = N_("downloading %(media_url)s...", media_url=media_url)
-        WorkerThread.add(current_user.name, TaskMediaMeta(task_message, media_url, original_url, current_user.name))
+        WorkerThread.add(current_user.name, TaskMetadataExtract(task_message, media_url, original_url, current_user.name))
         return True
 
     if request.method == "POST" and "mediaURL" in request.form:
