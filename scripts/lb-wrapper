@@ -27,7 +27,7 @@ log() {
 }
 
 if [ $# -ne 2 ]; then
-    log "Error" "Insufficient arguments provided. Please provide a command (tubeadd/dl) and a URL."
+    log "Error" "Two arguments are required. Please provide a command (tubeadd/dl) and a URL."
     exit 1
 fi
 
