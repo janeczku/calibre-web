@@ -40,6 +40,8 @@ fi
 
 if ! command -v "${XKLB_EXECUTABLE}"; then
     log "Error" "xklb could not be found. Please install xklb and try again."
+    exit 1
+fi
 
 # 2024-01-25 Question: "Why separate execution of 'tubeadd' and 'dl' ?"
 # @deldesir Responded: "For listing requested files after tubeadd is done
