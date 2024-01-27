@@ -1,4 +1,5 @@
 import os
+import requests
 import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
@@ -22,6 +23,9 @@ class TaskMetadataExtract(CalibreTask):
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
+        self.shelf_title = None
+        self.shelf_id = None
+        self.playlist_id = None
 
     def run(self, worker_thread):
         """Run the metadata fetching task"""
@@ -47,7 +51,6 @@ class TaskMetadataExtract(CalibreTask):
                 # Database operations
                 requested_urls = []
                 with sqlite3.connect(XKLB_DB_FILE) as conn:
-                    shelf_title = None
                     try:
                         # Get the urls from the database
                         requested_urls = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if row[0].startswith("http")]))
@@ -67,23 +70,33 @@ class TaskMetadataExtract(CalibreTask):
 
                     # get the shelf title
                     try:
-                        shelf_title = conn.execute("SELECT title FROM playlists").fetchone()[0]                               
+                        self.playlist_id = self.media_url.split("/")[-1]
+                        if "list=" in self.playlist_id:
+                            self.playlist_id = self.playlist_id.split("list=")[-1]
+                            self.shelf_title = conn.execute("SELECT title FROM playlists WHERE extractor_playlist_id = ?", (self.playlist_id,)).fetchone()[0]                
                     except sqlite3.Error as db_error:
                         if "no such table: playlists" in str(db_error):
                             log.info("No playlists table found in the database")
+                            self.playlist_id = None
                         else:
                             log.error("An error occurred while trying to connect to the database: %s", db_error)
                             self.message = f"{self.media_url} failed to download: {db_error}"
                             self.progress = 0
                     finally:
-                        log.info("Shelf title: %s", shelf_title)
+                        log.info("Shelf title: %s", self.shelf_title)
 
                 conn.close()
 
+                if self.shelf_title:
+                    response = requests.get(self.original_url, params={"current_user_name": self.current_user_name, "shelf_title": self.shelf_title})
+                    if response.status_code == 200:
+                        self.shelf_id = response.json()["shelf_id"]
+                    else:
+                        log.error("An error occurred while trying to send the shelf title to %s", self.original_url)
                 # call the download task for each requested file
                 for requested_url in requested_urls:
-                    # self.worker_thread.add_task("download", requested_url, self.original_url, self.current_user_name)
-                    WorkerThread.add(self.current_user_name, TaskDownload(_("Downloading %(url)s...", url=requested_url), requested_url, self.original_url, self.current_user_name, shelf_title))
+                    WorkerThread.add(self.current_user_name, TaskDownload(_("Downloading %(url)s...", url=requested_url), requested_url, self.original_url, self.current_user_name, self.shelf_id))                    
+
                     # based on the number of urls, the progress will be updated
                     self.progress += 1 / len(requested_urls)
 
@@ -92,7 +105,7 @@ class TaskMetadataExtract(CalibreTask):
                 self.message = f"{self.media_url} failed: {e}"
 
             finally:
-                if p.returncode == 0:
+                if p.returncode == 0 or self.progress == 1.0:
                     self.stat = STAT_FINISH_SUCCESS
                 else:
                     self.stat = STAT_FAIL
