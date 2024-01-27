@@ -13,13 +13,13 @@ from .. import logger
 log = logger.create()
 
 class TaskDownload(CalibreTask):
-    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_title):
+    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_id):
         super(TaskDownload, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
         self.original_url = original_url
         self.current_user_name = current_user_name
-        self.shelf_title = shelf_title
+        self.shelf_id = shelf_id
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
@@ -87,7 +87,7 @@ class TaskDownload(CalibreTask):
 
                 conn.close()
 
-                response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_title": self.shelf_title})
+                response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
                 if response.status_code == 200:
                     log.info("Successfully sent the requested file to %s", self.original_url)
                     file_downloaded = response.json()["file_downloaded"]
@@ -101,7 +101,7 @@ class TaskDownload(CalibreTask):
                 self.message = f"{self.media_url} failed to download: {e}"
 
             finally:
-                if p.returncode == 0 and self.progress == 1.0:
+                if p.returncode == 0 or self.progress == 1.0:
                     self.stat = STAT_FINISH_SUCCESS
                 else:
                     self.stat = STAT_FAIL
