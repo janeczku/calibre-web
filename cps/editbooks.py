@@ -352,35 +352,36 @@ def media():
 
 @editbook.route("/meta", methods=["GET"])
 def meta():
-    def move_mediafile(requested_file, current_user_name=None, shelf_title=None):
-        if shelf_title:
-            shelf_object = ub.Shelf()
-            is_public = 1
-            original_title = shelf_title
-            suffix = 1
-            while not shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
-                suffix += 1
-                shelf_title = f"{original_title} ({suffix})"
-            shelf_object.name = shelf_title
-            shelf_object.is_public = is_public
-            shelf_object.user_id = int(current_user.id)
-            ub.session.add(shelf_object)
-            shelf_action = "created"
-            flash_text = _("Shelf %(title)s created", title=shelf_title)
-            try:
-                ub.session.commit()
-                shelf_id = shelf_object.id
-                log.info("Shelf %s %s", shelf_title, shelf_action)
-                flash(flash_text, category="success")
-            except (OperationalError, InvalidRequestError) as ex:
-                ub.session.rollback()
-                log.error("Settings Database error: %s", ex)
-                flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
-            except Exception as ex:
-                ub.session.rollback()
-                log.error("Error occurred: %s", ex)
-                flash(_("There was an error"), category="error")
+    def create_shelf(current_user_name=None, shelf_title=None):
+        shelf_object = ub.Shelf()
+        is_public = 1
+        original_title = shelf_title
+        suffix = 1
+        while not shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
+            suffix += 1
+            shelf_title = f"{original_title} ({suffix})"
+        shelf_object.name = shelf_title
+        shelf_object.is_public = is_public
+        shelf_object.user_id = int(current_user.id)
+        ub.session.add(shelf_object)
+        shelf_action = "created"
+        flash_text = _("Shelf %(title)s created", title=shelf_title)
+        try:
+            ub.session.commit()
+            shelf_id = shelf_object.id
+            log.info("Shelf %s %s", shelf_title, shelf_action)
+        except (OperationalError, InvalidRequestError) as ex:
+            ub.session.rollback()
+            log.error("Settings Database error: %s", ex)
+        except Exception as ex:
+            ub.session.rollback()
+            log.error("Error occurred: %s", ex)
+        
+        resp = {"shelf_id": shelf_id}
+        return resp
 
+    log.info("Received metadata request: %s", request.args)
+    def move_mediafile(requested_file, current_user_name=None, shelf_id=None):
         log.info("Requested file: %s", requested_file)
         requested_file = open(requested_file, "rb")
         requested_file.filename = os.path.basename(requested_file.name)
@@ -437,7 +438,7 @@ def meta():
  
             helper.add_book_to_thumbnail_cache(book_id)
 
-            if shelf_title:
+            if shelf_id is not None:
                 shelf.add_to_shelf_as_guest(shelf_id, book_id)
 
         except (OperationalError, IntegrityError, StaleDataError) as e:
@@ -451,15 +452,25 @@ def meta():
                 category="error",
             )
 
-        resp = {"file_downloaded": link}
+        resp = {"file_downloaded": link, "shelf_id": shelf_id}
         return resp
 
     if request.method == "GET" and "requested_file" in request.args:
         requested_file = request.args.get("requested_file", None)
         current_user_name = request.args.get("current_user_name", None)
-        shelf_title = request.args.get("shelf_title", None)
+        shelf_id = request.args.get("shelf_id", None)
         try :
-            resp = move_mediafile(requested_file, current_user_name, shelf_title)
+            resp = move_mediafile(requested_file, current_user_name, shelf_id)
+            return jsonify(resp)
+        except Exception as ex:
+            log.error_or_exception(ex)
+            return jsonify({"error": str(ex)}), 500
+        
+    if request.method == "GET" and "shelf_title" in request.args:
+        shelf_title = request.args.get("shelf_title", None)
+        current_user_name = request.args.get("current_user_name", None)
+        try :
+            resp = create_shelf(current_user_name, shelf_title)
             return jsonify(resp)
         except Exception as ex:
             log.error_or_exception(ex)
