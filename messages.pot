@@ -1388,7 +1388,7 @@ msgid "Wrong Username or Password"
 msgstr ""
 
 #: cps/web.py:1399
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr ""
 
 #: cps/web.py:1403
