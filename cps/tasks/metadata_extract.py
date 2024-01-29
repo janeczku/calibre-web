@@ -93,12 +93,20 @@ class TaskMetadataExtract(CalibreTask):
                         self.shelf_id = response.json()["shelf_id"]
                     else:
                         log.error("An error occurred while trying to send the shelf title to %s", self.original_url)
-                # call the download task for each requested file
-                for requested_url in requested_urls:
-                    WorkerThread.add(self.current_user_name, TaskDownload(_("Downloading %(url)s...", url=requested_url), requested_url, self.original_url, self.current_user_name, self.shelf_id))                    
 
-                    # based on the number of urls, the progress will be updated
-                    self.progress += 1 / len(requested_urls)
+                num_requested_urls = len(requested_urls)
+
+                # Add tasks for each requested URL
+                for requested_url in requested_urls:
+                    task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
+                                                 requested_url, self.original_url,
+                                                 self.current_user_name, self.shelf_id
+                                                    )
+                    # Add the task to the worker thread
+                    WorkerThread.add(self.current_user_name, task_download)
+
+                    # Update progress incrementally after all tasks have been added
+                    self.progress += 1 / num_requested_urls
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
