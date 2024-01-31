@@ -45,6 +45,7 @@ class TaskDownload(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 # Define the patterns for the subprocess output
+                # Equivalent Regex's: https://github.com/iiab/calibre-web/blob/8684ffb491244e15ab927dfb390114240e483eb3/scripts/lb-wrapper#L59-L60
                 pattern_progress = r"^downloading"
                 pattern_success = r"\[{}\]:".format(self.media_url)
 
@@ -53,6 +54,8 @@ class TaskDownload(CalibreTask):
                     line = p.stdout.readline()
                     if line:
                         if re.search(pattern_success, line):
+                            # 2024-01-10: 99% (a bit arbitrary) is explained here...
+                            # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
                             self.progress = 0.99
                             break
                         elif re.search(pattern_progress, line):
