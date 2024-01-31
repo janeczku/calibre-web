@@ -274,7 +274,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 else:
                     log.warning('Cannot find .webp file, using default cover')
                     cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-                c.execute("SELECT * FROM captions WHERE media_id=?", (1,))
+                c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
                 row = c.fetchone()
                 description = row['text'] if row is not None else ''
                 meta = BookMeta(
