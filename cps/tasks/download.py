@@ -18,6 +18,7 @@ class TaskDownload(CalibreTask):
         super(TaskDownload, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
+        self.media_url_link = f'<a href="{media_url}" target="_blank">{media_url}</a>'
         self.original_url = original_url
         self.current_user_name = current_user_name
         self.shelf_id = shelf_id
@@ -60,7 +61,7 @@ class TaskDownload(CalibreTask):
                         elif re.search(pattern_progress, line):
                             percentage = int(re.search(r'\d+', line).group())
                             if percentage < 100:
-                                self.message = f"Downloading {self.media_url}..."
+                                self.message = f"Downloading {self.media_url_link}..."
                                 self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
                             if percentage == 100:
                                 complete_progress_cycle += 1
@@ -86,7 +87,7 @@ class TaskDownload(CalibreTask):
                             return
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
-                        self.message = f"{self.media_url} failed to download: {db_error}"
+                        self.message = f"{self.media_url_link} failed to download: {db_error}"
 
                 conn.close()
 
@@ -95,15 +96,16 @@ class TaskDownload(CalibreTask):
                 if response.status_code == 200:
                     log.info("Successfully sent the requested file to %s", self.original_url)
                     file_downloaded = response.json()["file_downloaded"]
-                    self.message = f"Successfully downloaded {self.media_url} to {file_downloaded}"
+                    self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
+
                     self.progress = 1.0
                 else:
                     log.error("Failed to send the requested file to %s", self.original_url)
-                    self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
+                    self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
-                self.message = f"{self.media_url} failed to download: {e}"
+                self.message = f"{self.media_url_link} failed to download: {e}"
 
             finally:
                 if p.returncode == 0 or self.progress == 1.0:
@@ -119,7 +121,7 @@ class TaskDownload(CalibreTask):
         return N_("Download")
 
     def __str__(self):
-        return f"Download task for {self.media_url}"
+        return f"Download task for {self.media_url_link}"
 
     @property
     def is_cancellable(self):
