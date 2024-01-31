@@ -57,7 +57,7 @@ from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, ko
 from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
-from .tasks.download import TaskDownload
+from .tasks.metadata_extract import TaskMetadataExtract
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
@@ -329,7 +329,7 @@ def media():
 
     def request_media_download(media_url, original_url):
         task_message = N_("downloading %(media_url)s...", media_url=media_url)
-        WorkerThread.add(current_user.name, TaskDownload(task_message, media_url, original_url, current_user.name))
+        WorkerThread.add(current_user.name, TaskMetadataExtract(task_message, media_url, original_url, current_user.name))
         return True
 
     if request.method == "POST" and "mediaURL" in request.form:
@@ -352,125 +352,129 @@ def media():
 
 @editbook.route("/meta", methods=["GET"])
 def meta():
-    def move_mediafile(requested_files, current_user_name=None, shelf_title=None):
-        if shelf_title:
-            shelf_object = ub.Shelf()
-            is_public = 1
-            original_title = shelf_title
-            suffix = 1
-            while not shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
-                suffix += 1
-                shelf_title = f"{original_title} ({suffix})"
-            shelf_object.name = shelf_title
-            shelf_object.is_public = is_public
-            shelf_object.user_id = int(current_user.id)
-            ub.session.add(shelf_object)
-            shelf_action = "created"
-            flash_text = _("Shelf %(title)s created", title=shelf_title)
-            try:
-                ub.session.commit()
-                shelf_id = shelf_object.id
-                log.info("Shelf %s %s", shelf_title, shelf_action)
-                flash(flash_text, category="success")
-            except (OperationalError, InvalidRequestError) as ex:
-                ub.session.rollback()
-                log.error("Settings Database error: %s", ex)
-                flash(_("Oops! Database Error: %(error)s.", error=ex.orig), category="error")
-            except Exception as ex:
-                ub.session.rollback()
-                log.error("Error occurred: %s", ex)
-                flash(_("There was an error"), category="error")
+    def create_shelf(current_user_name=None, shelf_title=None):
+        shelf_object = ub.Shelf()
+        is_public = 1
+        original_title = shelf_title
+        suffix = 1
+        while not shelf.check_shelf_is_unique(shelf_title, is_public, shelf_id=None):
+            suffix += 1
+            shelf_title = f"{original_title} ({suffix})"
+        shelf_object.name = shelf_title
+        shelf_object.is_public = is_public
+        shelf_object.user_id = int(current_user.id)
+        ub.session.add(shelf_object)
+        shelf_action = "created"
+        flash_text = _("Shelf %(title)s created", title=shelf_title)
+        try:
+            ub.session.commit()
+            shelf_id = shelf_object.id
+            log.info("Shelf %s %s", shelf_title, shelf_action)
+        except (OperationalError, InvalidRequestError) as ex:
+            ub.session.rollback()
+            log.error("Settings Database error: %s", ex)
+        except Exception as ex:
+            ub.session.rollback()
+            log.error("Error occurred: %s", ex)
+        
+        resp = {"shelf_id": shelf_id}
+        return resp
 
-        log.info("Requested files list: %s", requested_files)
-        for requested_file in requested_files:
-            requested_file = open(requested_file, "rb")
-            requested_file.filename = os.path.basename(requested_file.name)
-            requested_file.save = lambda path: move(requested_file.name, path)
+    log.info("Received metadata request: %s", request.args)
+    def move_mediafile(requested_file, current_user_name=None, shelf_id=None):
+        log.info("Requested file: %s", requested_file)
+        requested_file = open(requested_file, "rb")
+        requested_file.filename = os.path.basename(requested_file.name)
+        requested_file.save = lambda path: move(requested_file.name, path)
 
-            log.info("Processing file: {}".format(requested_file))
-            try:
-                modify_date = False
-                calibre_db.update_title_sort(config)
-                calibre_db.session.connection().connection.connection.create_function(
-                    "uuid4", 0, lambda: str(uuid4())
-                )
+        log.info("Processing file: {}".format(requested_file))
+        try:
+            modify_date = False
+            calibre_db.update_title_sort(config)
+            calibre_db.session.connection().connection.connection.create_function(
+                "uuid4", 0, lambda: str(uuid4())
+            )
 
-                meta, error = file_handling_on_upload(requested_file)
-                if error:
-                    return error
+            meta, error = file_handling_on_upload(requested_file)
+            if error:
+                return error
 
-                (
-                    db_book,
-                    input_authors,
-                    title_dir,
-                    renamed_authors,
-                ) = create_book_on_upload(modify_date, meta)
+            (
+                db_book,
+                input_authors,
+                title_dir,
+                renamed_authors,
+            ) = create_book_on_upload(modify_date, meta)
 
-                # Comments need book id therefore only possible after flush
-                modify_date |= edit_book_comments(
-                    Markup(meta.description).unescape(), db_book
-                )
+            # Comments need book id therefore only possible after flush
+            modify_date |= edit_book_comments(
+                Markup(meta.description).unescape(), db_book
+            )
 
-                book_id = db_book.id
-                title = db_book.title
+            book_id = db_book.id
+            title = db_book.title
 
-                error = helper.update_dir_structure(
-                    book_id,
-                    config.config_calibre_dir,
-                    input_authors[0],
-                    meta.file_path,
-                    title_dir + meta.extension.lower(),
-                    renamed_author=renamed_authors,
-                )
+            error = helper.update_dir_structure(
+                book_id,
+                config.config_calibre_dir,
+                input_authors[0],
+                meta.file_path,
+                title_dir + meta.extension.lower(),
+                renamed_author=renamed_authors,
+            )
 
-                move_coverfile(meta, db_book)
+            move_coverfile(meta, db_book)
 
-                if modify_date:
-                    calibre_db.set_metadata_dirty(book_id)
-                # save data to database, reread data
-                calibre_db.session.commit()
+            if modify_date:
+                calibre_db.set_metadata_dirty(book_id)
+            # save data to database, reread data
+            calibre_db.session.commit()
 
-                if error:
-                    flash(error, category="error")
-                link = '<a href="{}">{}</a>'.format(
-                    url_for("web.show_book", book_id=book_id), escape(title)
-                )
-                upload_text = N_("File %(file)s downloaded", file=link)
-                WorkerThread.add(
-                    current_user_name, TaskUpload(upload_text, escape(title))
-                )
-                helper.add_book_to_thumbnail_cache(book_id)
+            if error:
+                flash(error, category="error")
+            link = '<a href="{}">{}</a>'.format(
+                url_for("web.show_book", book_id=book_id), escape(title)
+            )
+ 
+            helper.add_book_to_thumbnail_cache(book_id)
 
-                if shelf_title:
-                    shelf.add_to_shelf_as_guest(shelf_id, book_id)
+            if shelf_id is not None:
+                shelf.add_to_shelf_as_guest(shelf_id, book_id)
 
-            except (OperationalError, IntegrityError, StaleDataError) as e:
-                calibre_db.session.rollback()
-                log.error_or_exception("Database error: {}".format(e))
-                flash(
-                    _(
-                        "Oops! Database Error: %(error)s.",
-                        error=e.orig if hasattr(e, "orig") else e,
-                    ),
-                    category="error",
-                )
+        except (OperationalError, IntegrityError, StaleDataError) as e:
+            calibre_db.session.rollback()
+            log.error_or_exception("Database error: {}".format(e))
+            flash(
+                _(
+                    "Oops! Database Error: %(error)s.",
+                    error=e.orig if hasattr(e, "orig") else e,
+                ),
+                category="error",
+            )
 
-        return True
+        resp = {"file_downloaded": link, "shelf_id": shelf_id}
+        return resp
 
-    if request.method == "GET" and "requested_files" in request.args:
-        requested_files = request.args.getlist("requested_files")
+    if request.method == "GET" and "requested_file" in request.args:
+        requested_file = request.args.get("requested_file", None)
         current_user_name = request.args.get("current_user_name", None)
+        shelf_id = request.args.get("shelf_id", None)
+        try :
+            resp = move_mediafile(requested_file, current_user_name, shelf_id)
+            return jsonify(resp)
+        except Exception as ex:
+            log.error_or_exception(ex)
+            return jsonify({"error": str(ex)}), 500
+        
+    if request.method == "GET" and "shelf_title" in request.args:
         shelf_title = request.args.get("shelf_title", None)
-        if move_mediafile(requested_files, current_user_name, shelf_title):
-            response = {
-                "success": "Moved media successfully",
-            }
-            return jsonify(response)
-        else:
-            response = {
-                "error": "Failed to move media",
-            }
-            return jsonify(response), 500
+        current_user_name = request.args.get("current_user_name", None)
+        try :
+            resp = create_shelf(current_user_name, shelf_title)
+            return jsonify(resp)
+        except Exception as ex:
+            log.error_or_exception(ex)
+            return jsonify({"error": str(ex)}), 500
 
 
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
