@@ -9,16 +9,18 @@ from cps.constants import XKLB_DB_FILE
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
 from cps.subproc_wrapper import process_open
 from .. import logger
+from time import sleep
 
 log = logger.create()
 
 class TaskDownload(CalibreTask):
-    def __init__(self, task_message, media_url, original_url, current_user_name):
+    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_id):
         super(TaskDownload, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
         self.original_url = original_url
         self.current_user_name = current_user_name
+        self.shelf_id = shelf_id
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
@@ -34,80 +36,69 @@ class TaskDownload(CalibreTask):
         lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
 
         if self.media_url:
-            subprocess_args = [lb_executable, self.media_url]
+            subprocess_args = [lb_executable, "dl", self.media_url]
             log.info("Subprocess args: %s", subprocess_args)
 
             # Execute the download process using process_open
             try:
                 p = process_open(subprocess_args, newlines=True)
 
-                # Define the pattern for the subprocess output
+                # Define the patterns for the subprocess output
                 # Equivalent Regex's: https://github.com/iiab/calibre-web/blob/8684ffb491244e15ab927dfb390114240e483eb3/scripts/lb-wrapper#L59-L60
                 pattern_progress = r"^downloading"
+                pattern_success = r"\[{}\]:".format(self.media_url)
 
+                complete_progress_cycle = 0
                 while p.poll() is None:
                     line = p.stdout.readline()
                     if line:
-                        #if "downloading" in line:
-                        #if line.startswith("downloading"):
-                        if re.search(pattern_progress, line):
-                            percentage = int(re.search(r'\d+', line).group())
+                        if re.search(pattern_success, line):
                             # 2024-01-10: 99% (a bit arbitrary) is explained here...
                             # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
+                            self.progress = 0.99
+                            break
+                        elif re.search(pattern_progress, line):
+                            percentage = int(re.search(r'\d+', line).group())
                             if percentage < 100:
                                 self.message = f"Downloading {self.media_url}..."
-                                self.progress = percentage / 100
-                            else:
-                                self.message = f"Almost done..."
-                                self.progress = 0.99
+                                self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
+                            if percentage == 100:
+                                complete_progress_cycle += 1
+                                if complete_progress_cycle == 4:
+                                    break
 
+                    sleep(0.1)
+                
                 p.wait()
-                self.progress = 1.0
-                self.message = f"Successfuly downloaded {self.media_url}"
-
 
                 # Database operations
-                requested_files = []
                 with sqlite3.connect(XKLB_DB_FILE) as conn:
-                    shelf_title = None
                     try:
-                        # Get the requested files from the database
-                        requested_files = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if not row[0].startswith("http")]))
+                        requested_file = conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (self.media_url,)).fetchone()[0]
 
-                        # Abort if there are no requested files
-                        if not requested_files:
-                            log.info("No requested files found in the database")
+                        # Abort if there is not a path
+                        if not requested_file:
+                            log.info("No path found in the database")
                             error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
                             if error:
                                 log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
-                                self.progress = 0
                                 self.message = f"{error[1]} failed to download: {error[0]}"
                             return
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url} failed to download: {db_error}"
 
-                    # get the shelf title
-                    try:
-                        shelf_title = conn.execute("SELECT title FROM playlists").fetchone()[0]                                
-                    except sqlite3.Error as db_error:
-                        if "no such table: playlists" in str(db_error):
-                            log.info("No playlists table found in the database")
-                        else:
-                            log.error("An error occurred while trying to connect to the database: %s", db_error)
-                            self.message = f"{self.media_url} failed to download: {db_error}"
-                            self.progress = 0
-                    finally:
-                        log.info("Shelf title: %s", shelf_title)
-
                 conn.close()
 
-                response = requests.get(self.original_url, params={"requested_files": requested_files, "current_user_name": self.current_user_name, "shelf_title": shelf_title})
+                self.message = self.message + "\n" + f"Almost done..."
+                response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
                 if response.status_code == 200:
-                    log.info("Successfully sent the list of requested files to %s", self.original_url)
-                    self.message = f"Successfuly downloaded {self.media_url}"
+                    log.info("Successfully sent the requested file to %s", self.original_url)
+                    file_downloaded = response.json()["file_downloaded"]
+                    self.message = f"Successfully downloaded {self.media_url} to {file_downloaded}"
+                    self.progress = 1.0
                 else:
-                    log.error("Failed to send the list of requested files to %s", self.original_url)
+                    log.error("Failed to send the requested file to %s", self.original_url)
                     self.message = f"{self.media_url} failed to download: {response.status_code} {response.reason}"
 
             except Exception as e:
@@ -115,7 +106,7 @@ class TaskDownload(CalibreTask):
                 self.message = f"{self.media_url} failed to download: {e}"
 
             finally:
-                if p.returncode == 0 and self.progress == 1.0:
+                if p.returncode == 0 or self.progress == 1.0:
                     self.stat = STAT_FINISH_SUCCESS
                 else:
                     self.stat = STAT_FAIL
@@ -132,4 +123,4 @@ class TaskDownload(CalibreTask):
 
     @property
     def is_cancellable(self):
-        return True  # Change to True if the download task should be cancellable
+        return True
