@@ -89,19 +89,21 @@ class TaskDownload(CalibreTask):
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url_link} failed to download: {db_error}"
 
+                    self.message = self.message + "\n" + f"Almost done..."
+                    response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
+                    if response.status_code == 200:
+                        log.info("Successfully sent the requested file to %s", self.original_url)
+                        file_downloaded = response.json()["file_downloaded"]
+                        self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
+                        new_video_path = response.json()["new_book_path"]
+                        new_video_path = next((os.path.join(new_video_path, file) for file in os.listdir(new_video_path) if file.endswith((".webm", ".mp4"))), None)
+                        conn.execute("REPLACE INTO media (webpath, path) VALUES (?, ?)", (self.media_url, new_video_path))
+                        self.progress = 1.0
+                    else:
+                        log.error("Failed to send the requested file to %s", self.original_url)
+                        self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
+                
                 conn.close()
-
-                self.message = self.message + "\n" + f"Almost done..."
-                response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
-                if response.status_code == 200:
-                    log.info("Successfully sent the requested file to %s", self.original_url)
-                    file_downloaded = response.json()["file_downloaded"]
-                    self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
-
-                    self.progress = 1.0
-                else:
-                    log.error("Failed to send the requested file to %s", self.original_url)
-                    self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)

@@ -441,6 +441,8 @@ def meta():
             if shelf_id is not None:
                 shelf.add_to_shelf_as_guest(shelf_id, book_id)
 
+            book_path = db_book.path
+
         except (OperationalError, IntegrityError, StaleDataError) as e:
             calibre_db.session.rollback()
             log.error_or_exception("Database error: {}".format(e))
@@ -452,7 +454,8 @@ def meta():
                 category="error",
             )
 
-        resp = {"file_downloaded": link, "shelf_id": shelf_id}
+        new_book_path = os.path.join(config.config_calibre_dir, book_path)
+        resp = {"file_downloaded": link, "shelf_id": shelf_id, "new_book_path": new_book_path}
         return resp
 
     if request.method == "GET" and "requested_file" in request.args:
