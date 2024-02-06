@@ -22,7 +22,7 @@ from werkzeug.local import LocalProxy
 from flask_login import current_user
 from sqlalchemy.sql.expression import or_
 
-from . import config, constants, logger, ub
+from . import config, constants, logger, ub, db, calibre_db
 from .ub import User
 
 
@@ -106,6 +106,13 @@ def get_sidebar_config(kwargs=None):
 
     return sidebar, simple
 
+def get_category(categoryId=0):
+    categories = calibre_db.session.query(db.Tags)\
+        .order_by(db.Tags.name)
+    for category in categories:
+        if category.id == categoryId:
+            return category
+    return { 'name': '' }
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
@@ -113,6 +120,7 @@ def render_title_template(*args, **kwargs):
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
                                accept=constants.EXTENSIONS_UPLOAD,
+                               get_category=get_category,
                                *args, **kwargs)
     except PermissionError:
         log.error("No permission to access {} file.".format(args[0]))
