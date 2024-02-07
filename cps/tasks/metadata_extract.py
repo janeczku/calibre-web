@@ -53,7 +53,7 @@ class TaskMetadataExtract(CalibreTask):
                 with sqlite3.connect(XKLB_DB_FILE) as conn:
                     try:
                         # Get the urls from the database
-                        requested_urls = list(set([row[0] for row in conn.execute("SELECT path FROM media").fetchall() if row[0].startswith("http")]))
+                        requested_urls = [row[0] for row in conn.execute("SELECT path FROM media WHERE error IS NULL").fetchall() if row[0].startswith("http")]
 
                         # Abort if there are no urls
                         if not requested_urls:
