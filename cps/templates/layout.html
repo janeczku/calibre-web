@@ -34,7 +34,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
+          <a class="navbar-brand" href="{{url_for('web.index')}}" style="display:flex;">
+            {% if use_logo %}
+              <img src="{{ url_for('static', filename='logo.png') }}" alt="{{instance}}"/>
+            {% else %}
+              {{instance}}
+            {% endif %}
+          </a>
         </div>
         {% if g.current_theme == 1 %}
             <div class="home-btn"><a class="home-btn-tooltip" href="{{url_for("web.index",page=1)}}" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Home"></a></div>

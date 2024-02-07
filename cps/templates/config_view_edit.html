@@ -20,7 +20,11 @@
     </div>
     <div id="collapsefour" class="panel-collapse collapse">
       <div class="panel-body">
-                <div class="form-group">
+        <div class="form-group">
+          <input type="checkbox" id="config_use_logo" name="config_use_logo" {% if conf.config_use_logo %}checked{% endif %}>
+          <label for="config_use_logo">{{_('Use Logo')}}</label>
+        </div>
+        <div class="form-group">
           <label for="config_calibre_web_title">{{_('Title')}}</label>
           <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if conf.config_calibre_web_title != None %}{{ conf.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
         </div>

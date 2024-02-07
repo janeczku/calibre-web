@@ -21,6 +21,7 @@ from flask_babel import gettext as _
 from werkzeug.local import LocalProxy
 from flask_login import current_user
 from sqlalchemy.sql.expression import or_
+from pathlib import Path
 
 from . import config, constants, logger, ub
 from .ub import User
@@ -106,12 +107,18 @@ def get_sidebar_config(kwargs=None):
 
     return sidebar, simple
 
+def logo_file():
+    dir_static_path = Path(constants.STATIC_DIR)
+    file_name = Path('logo.png')
+    file_path = dir_static_path / file_name
+    return file_path.is_file()
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar, simple = get_sidebar_config(kwargs)
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
+                               use_logo=config.config_use_logo and logo_file(),
                                accept=constants.EXTENSIONS_UPLOAD,
                                *args, **kwargs)
     except PermissionError:

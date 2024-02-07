@@ -563,6 +563,7 @@ def update_view_configuration():
     to_save = request.form.to_dict()
 
     _config_string(to_save, "config_calibre_web_title")
+    _config_checkbox(to_save, "config_use_logo")
     _config_string(to_save, "config_columns_to_ignore")
     if _config_string(to_save, "config_title_regex"):
         calibre_db.update_title_sort(config)
