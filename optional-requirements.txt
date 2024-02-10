@@ -1,7 +1,7 @@
 # GDrive Integration
 google-api-python-client>=1.7.11,<2.108.0
 gevent>20.6.0,<24.0.0
-greenlet>=0.4.17,<2.1.0
+greenlet>=0.4.17,<3.1.0
 httplib2>=0.9.2,<0.23.0
 oauth2client>=4.0.0,<4.1.4
 uritemplate>=3.0.0,<4.2.0
@@ -38,8 +38,8 @@ faust-cchardet>=2.1.18,<2.1.20
 py7zr>=0.15.0,<0.21.0
 
 # Comics
-natsort>=2.2.0,<8.4.0
+natsort>=2.2.0,<8.5.0
 comicapi>=2.2.0,<3.3.0
 
 # Kobo integration
-jsonschema>=3.2.0,<4.20.0
+jsonschema>=3.2.0,<4.22.0
