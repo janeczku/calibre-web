@@ -34,6 +34,7 @@ except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, logger
+from .subproc_wrapper import process_wait
 
 
 log = logger.create()
@@ -69,6 +70,8 @@ class _Settings(_Base):
 
     config_calibre_dir = Column(String)
     config_calibre_uuid = Column(String)
+    config_calibre_split = Column(Boolean, default=False)
+    config_calibre_split_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
@@ -138,10 +141,12 @@ class _Settings(_Base):
 
     config_kepubifypath = Column(String, default=None)
     config_converterpath = Column(String, default=None)
+    config_binariesdir = Column(String, default=None)
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
+    config_embed_metadata = Column(Boolean, default=True)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
@@ -184,9 +189,11 @@ class ConfigSQL(object):
         self.load()
 
         change = False
-        if self.config_converterpath == None:  # pylint: disable=access-member-before-definition
+
+        if self.config_binariesdir == None: # pylint: disable=access-member-before-definition
             change = True
-            self.config_converterpath = autodetect_calibre_binary()
+            self.config_binariesdir = autodetect_calibre_binaries()
+            self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
 
         if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
             change = True
@@ -389,6 +396,9 @@ class ConfigSQL(object):
         self.db_configured = False
         self.save()
 
+    def get_book_path(self):
+        return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
+
     def store_calibre_uuid(self, calibre_db, Library_table):
         try:
             calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
@@ -469,17 +479,32 @@ def _migrate_table(session, orm_class, secret_key=None):
             session.rollback()
 
 
-def autodetect_calibre_binary():
+def autodetect_calibre_binaries():
     if sys.platform == "win32":
-        calibre_path = ["C:\\program files\\calibre\\ebook-convert.exe",
-                        "C:\\program files(x86)\\calibre\\ebook-convert.exe",
-                        "C:\\program files(x86)\\calibre2\\ebook-convert.exe",
-                        "C:\\program files\\calibre2\\ebook-convert.exe"]
+        calibre_path = ["C:\\program files\\calibre\\",
+                        "C:\\program files(x86)\\calibre\\",
+                        "C:\\program files(x86)\\calibre2\\",
+                        "C:\\program files\\calibre2\\"]
     else:
-        calibre_path = ["/opt/calibre/ebook-convert"]
+        calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        if os.path.isfile(element) and os.access(element, os.X_OK):
-            return element
+        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
+            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            if all(values):
+                version = values[0].group(1)
+                log.debug("calibre version %s", version)
+                return element 
+    return ""
+
+
+def autodetect_converter_binary(calibre_path):
+    if sys.platform == "win32":
+        converter_path = os.path.join(calibre_path, "ebook-convert.exe")
+    else:
+        converter_path = os.path.join(calibre_path, "ebook-convert")
+    if calibre_path and os.path.isfile(converter_path) and os.access(converter_path, os.X_OK):
+        return converter_path
     return ""
 
 
@@ -519,6 +544,7 @@ def load_configuration(session, secret_key):
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
+
 
 
 def get_flask_session_key(_session):
