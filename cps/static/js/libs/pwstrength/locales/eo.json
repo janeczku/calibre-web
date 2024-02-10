@@ -1,0 +1,17 @@
+{
+    "wordMinLength": "Via pasvorto estas tro mallonga",
+    "wordMaxLength": "Via pasvorto estas tro longa",
+    "wordInvalidChar": "Via pasvorto enhavas nevalidan karaktero",
+    "wordNotEmail": "Ne uzu vian retpoŝtadreson kiel la pasvorton",
+    "wordSimilarToUsername": "Via pasvorto enhavas vian uzanto-nomon",
+    "wordTwoCharacterClasses": "Uzu signojn de diversaj tipoj (ekz., literoj kaj ciferoj)",
+    "wordRepetitions": "Tro multaj ripetiĝantaj signoj",
+    "wordSequences": "Via pasvorto enhavas simplan sinsekvon de signoj",
+    "errorList": "Eraroj:",
+    "veryWeak": "Trosimpla",
+    "weak": "Malforta",
+    "normal": "Mezforta",
+    "medium": "Akceptebla",
+    "strong": "Forta",
+    "veryStrong": "Elstare Forta"
+}

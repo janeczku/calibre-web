@@ -177,6 +177,9 @@
 
         whileplaying: function () {
 
+          // get csrf_token
+          let csrf_token = $("input[name='csrf_token']").val();
+
 
           //This sends a bookmark update to calibreweb every 30 seconds.
           if (this.progressBuffer == undefined) {
@@ -187,7 +190,10 @@
 
             $.ajax(calibre.bookmarkUrl, {
               method: "post",
-              data: { bookmark: this.position }
+              data: {
+                csrf_token: csrf_token,
+                bookmark: this.position
+              }
             }).fail(function (xhr, status, error) {
               console.error(error);
             });
@@ -313,14 +319,14 @@
         },
 
         onstop: function () {
-          
+
           $.ajax(calibre.bookmarkUrl, {
             method: "post",
             data: { bookmark: this.position }
           }).fail(function (xhr, status, error) {
             console.error(error);
           });
-        
+
           utils.css.remove(dom.o, 'playing');
 
         },

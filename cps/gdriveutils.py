@@ -33,7 +33,7 @@ try:
 except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
-from sqlalchemy.sql.expression import text
+from sqlalchemy.orm.exc import StaleDataError
 
 try:
     from httplib2 import __version__ as httplib2_version
@@ -146,7 +146,7 @@ engine = create_engine('sqlite:///{0}'.format(cli_param.gd_path), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
-Session = sessionmaker()
+Session = sessionmaker(autoflush=False)
 Session.configure(bind=engine)
 session = scoped_session(Session)
 
@@ -173,30 +173,12 @@ class PermissionAdded(Base):
         return str(self.gdrive_id)
 
 
-def migrate():
-    if not engine.dialect.has_table(engine.connect(), "permissions_added"):
-        PermissionAdded.__table__.create(bind = engine)
-    for sql in session.execute(text("select sql from sqlite_master where type='table'")):
-        if 'CREATE TABLE gdrive_ids' in sql[0]:
-            currUniqueConstraint = 'UNIQUE (gdrive_id)'
-            if currUniqueConstraint in sql[0]:
-                sql=sql[0].replace(currUniqueConstraint, 'UNIQUE (gdrive_id, path)')
-                sql=sql.replace(GdriveId.__tablename__, GdriveId.__tablename__ + '2')
-                session.execute(sql)
-                session.execute("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
-                                "gdrive_id, path FROM gdrive_ids;")
-                session.commit()
-                session.execute('DROP TABLE %s' % 'gdrive_ids')
-                session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
-            break
-
 if not os.path.exists(cli_param.gd_path):
     try:
         Base.metadata.create_all(engine)
     except Exception as ex:
         log.error("Error connect to database: {} - {}".format(cli_param.gd_path, ex))
         raise
-migrate()
 
 
 def getDrive(drive=None, gauth=None):
@@ -318,7 +300,7 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except (OperationalError, IntegrityError) as ex:
+    except (OperationalError, IntegrityError, StaleDataError) as ex:
         log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
@@ -343,7 +325,7 @@ def getFileFromEbooksFolder(path, fileName):
 
 
 def moveGdriveFileRemote(origin_file_id, new_title):
-    origin_file_id['title']= new_title
+    origin_file_id['title'] = new_title
     origin_file_id.Upload()
 
 
@@ -421,7 +403,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
             driveFile.Upload()
 
 
-def uploadFileToEbooksFolder(destFile, f):
+def uploadFileToEbooksFolder(destFile, f, string=False):
     drive = getDrive(Gdrive.Instance().drive)
     parent = getEbooksFolder(drive)
     splitDir = destFile.split('/')
@@ -434,7 +416,10 @@ def uploadFileToEbooksFolder(destFile, f):
             else:
                 driveFile = drive.CreateFile({'title': x,
                                               'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
-            driveFile.SetContentFile(f)
+            if not string:
+                driveFile.SetContentFile(f)
+            else:
+                driveFile.SetContentString(f)
             driveFile.Upload()
         else:
             existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
@@ -555,7 +540,7 @@ def updateGdriveCalibreFromLocal():
 
 # update gdrive.db on edit of books title
 def updateDatabaseOnEdit(ID,newPath):
-    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + u'/'
+    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
         storedPathName.path = sqlCheckPath
@@ -577,6 +562,7 @@ def deleteDatabaseEntry(ID):
 
 
 # Gets cover file from gdrive
+# ToDo: Check is this right everyone get read permissions on cover files?
 def get_cover_via_gdrive(cover_path):
     df = getFileFromEbooksFolder(cover_path, 'cover.jpg')
     if df:
@@ -586,6 +572,29 @@ def get_cover_via_gdrive(cover_path):
                             'type': 'anyone',
                             'value': 'anyone',
                             'role': 'reader',
+                            'withLink': True})
+            permissionAdded = PermissionAdded()
+            permissionAdded.gdrive_id = df['id']
+            session.add(permissionAdded)
+            try:
+                session.commit()
+            except OperationalError as ex:
+                log.error_or_exception('Database error: {}'.format(ex))
+                session.rollback()
+        return df.metadata.get('webContentLink')
+    else:
+        return None
+
+# Gets cover file from gdrive
+def get_metadata_backup_via_gdrive(metadata_path):
+    df = getFileFromEbooksFolder(metadata_path, 'metadata.opf')
+    if df:
+        if not session.query(PermissionAdded).filter(PermissionAdded.gdrive_id == df['id']).first():
+            df.GetPermissions()
+            df.InsertPermission({
+                            'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'writer',       # ToDo needs write access
                             'withLink': True})
             permissionAdded = PermissionAdded()
             permissionAdded.gdrive_id = df['id']

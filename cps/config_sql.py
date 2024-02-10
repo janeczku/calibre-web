@@ -23,6 +23,10 @@ import json
 from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql.expression import text
+from sqlalchemy import exists
+from cryptography.fernet import Fernet
+import cryptography.exceptions
+from base64 import urlsafe_b64decode
 try:
     # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
@@ -35,6 +39,7 @@ from .subproc_wrapper import process_wait
 
 log = logger.create()
 _Base = declarative_base()
+
 
 class _Flask_Settings(_Base):
     __tablename__ = 'flask_settings'
@@ -56,7 +61,8 @@ class _Settings(_Base):
     mail_port = Column(Integer, default=25)
     mail_use_ssl = Column(SmallInteger, default=0)
     mail_login = Column(String, default='mail@example.com')
-    mail_password = Column(String, default='mypassword')
+    mail_password_e = Column(String)
+    mail_password = Column(String)
     mail_from = Column(String, default='automailer <mail@example.com>')
     mail_size = Column(Integer, default=25*1024*1024)
     mail_server_type = Column(SmallInteger, default=0)
@@ -64,24 +70,25 @@ class _Settings(_Base):
 
     config_calibre_dir = Column(String)
     config_calibre_uuid = Column(String)
+    config_calibre_split = Column(Boolean, default=False)
+    config_calibre_split_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
-    config_trustedhosts = Column(String,default='')
-    config_calibre_web_title = Column(String, default=u'Calibre-Web')
+    config_trustedhosts = Column(String, default='')
+    config_calibre_web_title = Column(String, default='Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
-    config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_mature_content_tags = Column(String, default='')
+    config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines|Le|La|Les|L\'|Un|Une)\s+')    
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
-    config_logfile = Column(String)
+    config_logfile = Column(String, default=logger.DEFAULT_LOG_FILE)
     config_access_log = Column(SmallInteger, default=0)
-    config_access_logfile = Column(String)
+    config_access_logfile = Column(String, default=logger.DEFAULT_ACCESS_LOG)
 
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
@@ -107,6 +114,7 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
+    config_goodreads_api_secret_e = Column(String)
     config_goodreads_api_secret = Column(String)
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
@@ -117,14 +125,15 @@ class _Settings(_Base):
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_authentication = Column(SmallInteger, default=constants.LDAP_AUTH_SIMPLE)
     config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
-    config_ldap_serv_password = Column(String, default="")
+    config_ldap_serv_password_e = Column(String)
+    config_ldap_serv_password = Column(String)
     config_ldap_encryption = Column(SmallInteger, default=0)
     config_ldap_cacert_path = Column(String, default="")
     config_ldap_cert_path = Column(String, default="")
     config_ldap_key_path = Column(String, default="")
     config_ldap_dn = Column(String, default='dc=example,dc=org')
     config_ldap_user_object = Column(String, default='uid=%s')
-    config_ldap_member_user_object = Column(String, default='') #
+    config_ldap_member_user_object = Column(String, default='')
     config_ldap_openldap = Column(Boolean, default=True)
     config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
     config_ldap_group_members_field = Column(String, default='memberUid')
@@ -137,6 +146,7 @@ class _Settings(_Base):
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
+    config_embed_metadata = Column(Boolean, default=True)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
@@ -148,24 +158,35 @@ class _Settings(_Base):
     schedule_generate_book_covers = Column(Boolean, default=False)
     schedule_generate_series_covers = Column(Boolean, default=False)
     schedule_reconnect = Column(Boolean, default=False)
+    schedule_metadata_backup = Column(Boolean, default=False)
+
+    config_password_policy = Column(Boolean, default=True)
+    config_password_min_length = Column(Integer, default=8)
+    config_password_number = Column(Boolean, default=True)
+    config_password_lower = Column(Boolean, default=True)
+    config_password_upper = Column(Boolean, default=True)
+    config_password_special = Column(Boolean, default=True)
+    config_session = Column(Integer, default=1)
+    config_ratelimiter = Column(Boolean, default=True)
 
     def __repr__(self):
         return self.__class__.__name__
 
 
 # Class holds all application specific settings in calibre-web
-class _ConfigSQL(object):
+class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
-        pass
+        self.__dict__["dirty"] = list()
 
-    def init_config(self, session, cli):
+    def init_config(self, session, secret_key, cli):
         self._session = session
         self._settings = None
         self.db_configured = None
         self.config_calibre_dir = None
-        self.load()
+        self._fernet = Fernet(secret_key)
         self.cli = cli
+        self.load()
 
         change = False
 
@@ -260,14 +281,14 @@ class _ConfigSQL(object):
         return logger.get_level_name(self.config_log_level)
 
     def get_mail_settings(self):
-        return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
+        return {k: v for k, v in self.__dict__.items() if k.startswith('mail_')}
 
     def get_mail_server_configured(self):
         return bool((self.mail_server != constants.DEFAULT_MAIL_SERVER and self.mail_server_type == 0)
                     or (self.mail_gmail_token != {} and self.mail_server_type == 1))
 
     def get_scheduled_task_settings(self):
-        return {k:v for k, v in self.__dict__.items() if k.startswith('schedule_')}
+        return {k: v for k, v in self.__dict__.items() if k.startswith('schedule_')}
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         """Possibly updates a field of this object.
@@ -296,15 +317,15 @@ class _ConfigSQL(object):
         setattr(self, field, new_value)
         return True
 
-    def toDict(self):
+    def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("password") and not k.endswith("secret") and not k == "cli":
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli":
                 storage[k] = v
         return storage
 
     def load(self):
-        '''Load all configuration values from the underlying storage.'''
+        """Load all configuration values from the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
         for k, v in s.__dict__.items():
             if k[0] != '_':
@@ -313,7 +334,13 @@ class _ConfigSQL(object):
                     column = s.__class__.__dict__.get(k)
                     if column.default is not None:
                         v = column.default.arg
-                setattr(self, k, v)
+                if k.endswith("_e") and v is not None:
+                    try:
+                        setattr(self, k, self._fernet.decrypt(v).decode())
+                    except cryptography.fernet.InvalidToken:
+                        setattr(self, k, "")
+                else:
+                    setattr(self, k, v)
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:
@@ -321,30 +348,37 @@ class _ConfigSQL(object):
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
         else:
             # pylint: disable=access-member-before-definition
-            logfile = logger.setup(self.config_logfile, self.config_log_level)
-        if logfile != self.config_logfile:
-            log.warning("Log path %s not valid, falling back to default", self.config_logfile)
+            logfile = logger.setup(cli_param.logpath or self.config_logfile, self.config_log_level)
+        if logfile != os.path.abspath(self.config_logfile):
+            if logfile != os.path.abspath(cli_param.logpath):
+                log.warning("Log path %s not valid, falling back to default", self.config_logfile)
             self.config_logfile = logfile
+            s.config_logfile = logfile
             self._session.merge(s)
             try:
                 self._session.commit()
             except OperationalError as e:
                 log.error('Database error: %s', e)
                 self._session.rollback()
+        self.__dict__["dirty"] = list()
 
     def save(self):
-        '''Apply all configuration values to the underlying storage.'''
+        """Apply all configuration values to the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
 
-        for k, v in self.__dict__.items():
+        for k in self.dirty:
             if k[0] == '_':
                 continue
             if hasattr(s, k):
-                setattr(s, k, v)
+                if k.endswith("_e"):
+                    setattr(s, k, self._fernet.encrypt(self.__dict__[k].encode()))
+                else:
+                    setattr(s, k, self.__dict__[k])
 
         log.debug("_ConfigSQL updating storage")
         self._session.merge(s)
@@ -360,8 +394,10 @@ class _ConfigSQL(object):
             log.error(error)
         log.warning("invalidating configuration")
         self.db_configured = False
-        # self.config_calibre_dir = None
         self.save()
+
+    def get_book_path(self):
+        return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
 
     def store_calibre_uuid(self, calibre_db, Library_table):
         try:
@@ -372,7 +408,40 @@ class _ConfigSQL(object):
         except AttributeError:
             pass
 
-def _migrate_table(session, orm_class):
+    def __setattr__(self, attr_name, attr_value):
+        super().__setattr__(attr_name, attr_value)
+        self.__dict__["dirty"].append(attr_name)
+
+
+def _encrypt_fields(session, secret_key):
+    try:
+        session.query(exists().where(_Settings.mail_password_e)).scalar()
+    except OperationalError:
+        with session.bind.connect() as conn:
+            conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
+            conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
+        session.commit()
+        crypter = Fernet(secret_key)
+        settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
+                                 _Settings.config_ldap_serv_password).first()
+        if settings.mail_password:
+            session.query(_Settings).update(
+                {_Settings.mail_password_e: crypter.encrypt(settings.mail_password.encode())})
+        if settings.config_goodreads_api_secret:
+            session.query(_Settings).update(
+                {_Settings.config_goodreads_api_secret_e:
+                     crypter.encrypt(settings.config_goodreads_api_secret.encode())})
+        if settings.config_ldap_serv_password:
+            session.query(_Settings).update(
+                {_Settings.config_ldap_serv_password_e:
+                     crypter.encrypt(settings.config_ldap_serv_password.encode())})
+        session.commit()
+
+
+def _migrate_table(session, orm_class, secret_key=None):
+    if secret_key:
+        _encrypt_fields(session, secret_key)
     changed = False
 
     for column_name, column in orm_class.__dict__.items():
@@ -393,9 +462,9 @@ def _migrate_table(session, orm_class):
                 else:
                     column_type = column.type
                 alter_table = text("ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
-                                                                        column_name,
-                                                                        column_type,
-                                                                        column_default))
+                                                                             column_name,
+                                                                             column_type,
+                                                                             column_default))
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
@@ -463,22 +532,20 @@ def autodetect_kepubify_binary():
     return ""
 
 
-def _migrate_database(session):
+def _migrate_database(session, secret_key):
     # make sure the table is created, if it does not exist
     _Base.metadata.create_all(session.bind)
-    _migrate_table(session, _Settings)
+    _migrate_table(session, _Settings, secret_key)
     _migrate_table(session, _Flask_Settings)
 
 
-def load_configuration(conf, session, cli):
-    _migrate_database(session)
-
+def load_configuration(session, secret_key):
+    _migrate_database(session, secret_key)
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-    # conf = _ConfigSQL()
-    conf.init_config(session, cli)
-    # return conf
+
+
 
 
 def get_flask_session_key(_session):
@@ -488,3 +555,25 @@ def get_flask_session_key(_session):
         _session.add(flask_settings)
         _session.commit()
     return flask_settings.flask_session_key
+
+
+def get_encryption_key(key_path):
+    key_file = os.path.join(key_path, ".key")
+    generate = True
+    error = ""
+    if os.path.exists(key_file) and os.path.getsize(key_file) > 32:
+        with open(key_file, "rb") as f:
+            key = f.read()
+        try:
+            urlsafe_b64decode(key)
+            generate = False
+        except ValueError:
+            pass
+    if generate:
+        key = Fernet.generate_key()
+        try:
+            with open(key_file, "wb") as f:
+                f.write(key)
+        except PermissionError as e:
+            error = e
+    return key, error

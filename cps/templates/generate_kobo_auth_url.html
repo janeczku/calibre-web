@@ -3,7 +3,7 @@
 <div class="well">
 <p>
   {% if not warning %}
-      {{_('Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):')}}
+      {{_('Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):')}}
     </p><p>
       api_endpoint={{url_for("kobo.TopLevelEndpoint", auth_token=auth_token, _external=True)}}
   {% else %}

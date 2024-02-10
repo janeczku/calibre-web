@@ -7,11 +7,11 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
       <label for="username">{{_('Username')}}</label>
-      <input type="text" class="form-control" id="username" name="username" autocapitalize="off" placeholder="{{_('Username')}}">
+      <input type="text" class="form-control" id="username" name="username" autocapitalize="off" placeholder="{{_('Username')}}" value="{{ username }}">
     </div>
     <div class="form-group">
       <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}">
+      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
     </div>
     <div class="checkbox">
       <label>
@@ -22,6 +22,14 @@
     {% if config.config_login_type == 0 and mail%}
     <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot Password?')}}</button>
     {% endif %}
+    {% if g.current_theme == 1 %}
+      {% if g.allow_registration %}
+      <a class="btn btn-default" id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a>
+      {% endif %}
+      {% if g.allow_anonymous %}
+      <a class="btn btn-default" href="{{url_for('web.index')}}">{{ _('Home') }}</a>
+      {% endif %}
+    {%endif%}
     {% if config.config_remote_login %}
     <a href="{{url_for('remotelogin.remote_login')}}" id="remote_login" class="pull-right">{{_('Log in with Magic Link')}}</a>
     {% endif %}

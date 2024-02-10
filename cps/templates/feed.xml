@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/terms/" xmlns:dcterms="http://purl.org/dc/terms/">
+  <icon>{{ url_for('static', filename='favicon.ico') }}</icon>
   <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
   <updated>{{ current_time }}</updated>
   <link rel="self"
@@ -30,7 +31,7 @@
     <link rel="search"
       href="{{url_for('opds.feed_osd')}}"
       type="application/opensearchdescription+xml"/>
-  <link type="application/atom+xml" rel="search" title="{{_('Search')}}" href="{{url_for('opds.feed_cc_search')}}/{searchTerms}" />
+  <link type="application/atom+xml" rel="search" title="{{_('Search')}}" href="{{url_for('opds.feed_normal_search')}}/{searchTerms}" />
   <title>{{instance}}</title>
   <author>
     <name>{{instance}}</name>
@@ -43,16 +44,17 @@
     <title>{{entry.Books.title}}</title>
     <id>urn:uuid:{{entry.Books.uuid}}</id>
     <updated>{{entry.Books.atom_timestamp}}</updated>
-    {% if entry.Books.authors.__len__() > 0 %}
+    {% for author in entry.Books.authors %}
       <author>
-        <name>{{entry.Books.authors[0].name}}</name>
+        <name>{{author.name}}</name>
       </author>
-    {% endif %}
+    {% endfor %}
     {% if entry.Books.publishers.__len__() > 0 %}
       <publisher>
         <name>{{entry.Books.publishers[0].name}}</name>
       </publisher>
     {% endif %}
+    <published>{{entry.Books.pubdate.strftime("%Y-%m-%dT%H:%M:%S+00:00")}}</published>
     {% for lang in entry.Books.languages %}
       <dcterms:language>{{lang.lang_code}}</dcterms:language>
     {% endfor %}

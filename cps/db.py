@@ -19,7 +19,6 @@
 
 import os
 import re
-import ast
 import json
 from datetime import datetime
 from urllib.parse import quote
@@ -112,66 +111,73 @@ class Identifiers(Base):
     def format_type(self):
         format_type = self.type.lower()
         if format_type == 'amazon':
-            return u"Amazon"
+            return "Amazon"
         elif format_type.startswith("amazon_"):
-            return u"Amazon.{0}".format(format_type[7:])
+            return "Amazon.{0}".format(format_type[7:])
         elif format_type == "isbn":
-            return u"ISBN"
+            return "ISBN"
         elif format_type == "doi":
-            return u"DOI"
+            return "DOI"
         elif format_type == "douban":
-            return u"Douban"
+            return "Douban"
         elif format_type == "goodreads":
-            return u"Goodreads"
+            return "Goodreads"
         elif format_type == "babelio":
-            return u"Babelio"
+            return "Babelio"
         elif format_type == "google":
-            return u"Google Books"
+            return "Google Books"
         elif format_type == "kobo":
-            return u"Kobo"
+            return "Kobo"
         elif format_type == "litres":
-            return u"ЛитРес"
+            return "ЛитРес"
         elif format_type == "issn":
-            return u"ISSN"
+            return "ISSN"
         elif format_type == "isfdb":
-            return u"ISFDB"
+            return "ISFDB"
         if format_type == "lubimyczytac":
-            return u"Lubimyczytac"
+            return "Lubimyczytac"
+        if format_type == "databazeknih":
+            return "Databáze knih"
         else:
             return self.type
 
     def __repr__(self):
         format_type = self.type.lower()
         if format_type == "amazon" or format_type == "asin":
-            return u"https://amazon.com/dp/{0}".format(self.val)
+            return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return u"https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
+            return "https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
         elif format_type == "isbn":
-            return u"https://www.worldcat.org/isbn/{0}".format(self.val)
+            return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
-            return u"https://dx.doi.org/{0}".format(self.val)
+            return "https://dx.doi.org/{0}".format(self.val)
         elif format_type == "goodreads":
-            return u"https://www.goodreads.com/book/show/{0}".format(self.val)
+            return "https://www.goodreads.com/book/show/{0}".format(self.val)
         elif format_type == "babelio":
-            return u"https://www.babelio.com/livres/titre/{0}".format(self.val)
+            return "https://www.babelio.com/livres/titre/{0}".format(self.val)
         elif format_type == "douban":
-            return u"https://book.douban.com/subject/{0}".format(self.val)
+            return "https://book.douban.com/subject/{0}".format(self.val)
         elif format_type == "google":
-            return u"https://books.google.com/books?id={0}".format(self.val)
+            return "https://books.google.com/books?id={0}".format(self.val)
         elif format_type == "kobo":
-            return u"https://www.kobo.com/ebook/{0}".format(self.val)
+            return "https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
-            return u"https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
+            return "https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
-            return u"https://www.litres.ru/{0}".format(self.val)
+            return "https://www.litres.ru/{0}".format(self.val)
         elif format_type == "issn":
-            return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
+            return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+        elif format_type == "databazeknih":
+            return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
+        elif self.val.lower().startswith("data:"):
+            link , __, __ = str.partition(self.val, ",")
+            return link
         else:
-            return u"{0}".format(self.val)
+            return "{0}".format(self.val)
 
 
 class Comments(Base):
@@ -189,7 +195,7 @@ class Comments(Base):
         return self.text
 
     def __repr__(self):
-        return u"<Comments({0})>".format(self.text)
+        return "<Comments({0})>".format(self.text)
 
 
 class Tags(Base):
@@ -204,8 +210,11 @@ class Tags(Base):
     def get(self):
         return self.name
 
+    def __eq__(self, other):
+        return self.name == other
+
     def __repr__(self):
-        return u"<Tags('{0})>".format(self.name)
+        return "<Tags('{0})>".format(self.name)
 
 
 class Authors(Base):
@@ -216,7 +225,7 @@ class Authors(Base):
     sort = Column(String(collation='NOCASE'))
     link = Column(String, nullable=False, default="")
 
-    def __init__(self, name, sort, link):
+    def __init__(self, name, sort, link=""):
         self.name = name
         self.sort = sort
         self.link = link
@@ -224,8 +233,11 @@ class Authors(Base):
     def get(self):
         return self.name
 
+    def __eq__(self, other):
+        return self.name == other
+
     def __repr__(self):
-        return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
+        return "<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
 
 class Series(Base):
@@ -242,8 +254,11 @@ class Series(Base):
     def get(self):
         return self.name
 
+    def __eq__(self, other):
+        return self.name == other
+
     def __repr__(self):
-        return u"<Series('{0},{1}')>".format(self.name, self.sort)
+        return "<Series('{0},{1}')>".format(self.name, self.sort)
 
 
 class Ratings(Base):
@@ -258,8 +273,11 @@ class Ratings(Base):
     def get(self):
         return self.rating
 
+    def __eq__(self, other):
+        return self.rating == other
+
     def __repr__(self):
-        return u"<Ratings('{0}')>".format(self.rating)
+        return "<Ratings('{0}')>".format(self.rating)
 
 
 class Languages(Base):
@@ -272,13 +290,16 @@ class Languages(Base):
         self.lang_code = lang_code
 
     def get(self):
-        if self.language_name:
+        if hasattr(self, "language_name"):
             return self.language_name
         else:
             return self.lang_code
 
+    def __eq__(self, other):
+        return self.lang_code == other
+
     def __repr__(self):
-        return u"<Languages('{0}')>".format(self.lang_code)
+        return "<Languages('{0}')>".format(self.lang_code)
 
 
 class Publishers(Base):
@@ -295,8 +316,11 @@ class Publishers(Base):
     def get(self):
         return self.name
 
+    def __eq__(self, other):
+        return self.name == other
+
     def __repr__(self):
-        return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
+        return "<Publishers('{0},{1}')>".format(self.name, self.sort)
 
 
 class Data(Base):
@@ -320,7 +344,16 @@ class Data(Base):
         return self.name
 
     def __repr__(self):
-        return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+        return "<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+
+
+class Metadata_Dirtied(Base):
+    __tablename__ = 'metadata_dirtied'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
+
+    def __init__(self, book):
+        self.book = book
 
 
 class Books(Base):
@@ -365,7 +398,7 @@ class Books(Base):
         self.has_cover = (has_cover != None)
 
     def __repr__(self):
-        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+        return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 
@@ -388,8 +421,35 @@ class CustomColumns(Base):
     normalized = Column(Boolean)
 
     def get_display_dict(self):
-        display_dict = ast.literal_eval(self.display)
+        display_dict = json.loads(self.display)
         return display_dict
+
+    def to_json(self, value, extra, sequence):
+        content = dict()
+        content['table'] = "custom_column_" + str(self.id)
+        content['column'] = "value"
+        content['datatype'] = self.datatype
+        content['is_multiple'] = None if not self.is_multiple else "|"
+        content['kind'] = "field"
+        content['name'] = self.name
+        content['search_terms'] = ['#' + self.label]
+        content['label'] = self.label
+        content['colnum'] = self.id
+        content['display'] = self.get_display_dict()
+        content['is_custom'] = True
+        content['is_category'] = self.datatype in ['text', 'rating', 'enumeration', 'series']
+        content['link_column'] = "value"
+        content['category_sort'] = "value"
+        content['is_csp'] = False
+        content['is_editable'] = self.editable
+        content['rec_index'] = sequence + 22     # toDo why ??
+        if isinstance(value, datetime):
+            content['#value#'] = {"__class__": "datetime.datetime", "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
+        else:
+            content['#value#'] = value
+        content['#extra#'] = extra
+        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",", "list_to_ui": ", "}
+        return json.dumps(content, ensure_ascii=False)
 
 
 class AlchemyEncoder(json.JSONEncoder):
@@ -568,12 +628,12 @@ class CalibreDB:
 
         if not config_calibre_dir:
             cls.config.invalidate()
-            return False
+            return None
 
         dbpath = os.path.join(config_calibre_dir, "metadata.db")
         if not os.path.exists(dbpath):
             cls.config.invalidate()
-            return False
+            return None
 
         try:
             cls.engine = create_engine('sqlite://',
@@ -589,7 +649,7 @@ class CalibreDB:
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
-            return False
+            return None
 
         cls.config.db_configured = True
 
@@ -599,16 +659,15 @@ class CalibreDB:
                 cls.setup_db_cc_classes(cc)
             except OperationalError as e:
                 log.error_or_exception(e)
-                return False
+                return None
 
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
-                                                          bind=cls.engine))
+                                                          bind=cls.engine, future=True))
         for inst in cls.instances:
             inst.init_session()
 
         cls._init = True
-        return True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -629,7 +688,7 @@ class CalibreDB:
                       .join(read_column, read_column.book == book_id,
                       isouter=True))
             except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(read_column))
+                log.error("Custom Column No.{} does not exist in calibre database".format(read_column))
                 # Skip linking read column and return None instead of read status
                 bd = self.session.query(Books, None, ub.ArchivedBook.is_archived)
         return (bd.filter(Books.id == book_id)
@@ -642,6 +701,18 @@ class CalibreDB:
 
     def get_book_format(self, book_id, file_format):
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
+
+    def set_metadata_dirty(self, book_id):
+        if not self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).one_or_none():
+            self.session.add(Metadata_Dirtied(book_id))
+
+    def delete_dirty_metadata(self, book_id):
+        try:
+            self.session.query(Metadata_Dirtied).filter(Metadata_Dirtied.book == book_id).delete()
+            self.session.commit()
+        except (OperationalError) as e:
+            self.session.rollback()
+            log.error("Database error: {}".format(e))
 
     # Language and content filters for displaying in the UI
     def common_filters(self, allow_show_archived=False, return_all_languages=False):
@@ -676,9 +747,9 @@ class CalibreDB:
             except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
-                log.error("Custom Column No.{} is not existing in calibre database".format(
+                log.error("Custom Column No.{} does not exist in calibre database".format(
                     self.config.config_restricted_column))
-                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                flash(_("Custom Column No.%(column)d does not exist in calibre database",
                         column=self.config.config_restricted_column),
                       category="error")
 
@@ -701,7 +772,7 @@ class CalibreDB:
                          .select_from(Books)
                          .outerjoin(read_column, read_column.book == Books.id))
             except (KeyError, AttributeError, IndexError):
-                log.error("Custom Column No.{} is not existing in calibre database".format(config_read_column))
+                log.error("Custom Column No.{} does not exist in calibre database".format(config_read_column))
                 # Skip linking read column and return None instead of read status
                 query = self.session.query(database, None, ub.ArchivedBook.is_archived)
         return query.outerjoin(ub.ArchivedBook, and_(Books.id == ub.ArchivedBook.book_id,
@@ -779,8 +850,6 @@ class CalibreDB:
 
     # Orders all Authors in the list according to authors sort
     def order_authors(self, entries, list_return=False, combined=False):
-        # entries_copy = copy.deepcopy(entries)
-        # entries_copy =[]
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
@@ -945,7 +1014,12 @@ class CalibreDB:
                 title = title[len(prep):] + ', ' + prep
             return title.strip()
 
-        conn = conn or self.session.connection().connection.connection
+        try:
+            # sqlalchemy <1.4.24
+            conn = conn or self.session.connection().connection.driver_connection
+        except AttributeError:
+            # sqlalchemy >1.4.24 and sqlalchemy 2.0
+            conn = conn or self.session.connection().connection.connection
         try:
             conn.create_function("title_sort", 1, _title_sort)
         except sqliteOperationalError:

@@ -102,7 +102,7 @@ class LubimyCzytac(Metadata):
     PUBLISH_DATE = "//dt[contains(@title,'Data pierwszego wydania"
     FIRST_PUBLISH_DATE = f"{DETAILS}{PUBLISH_DATE} oryginalnego')]{SIBLINGS}[1]/text()"
     FIRST_PUBLISH_DATE_PL = f"{DETAILS}{PUBLISH_DATE} polskiego')]{SIBLINGS}[1]/text()"
-    TAGS = "//nav[@aria-label='breadcrumb']//a[contains(@href,'/ksiazki/k/')]/text()"
+    TAGS = "//nav[@aria-label='breadcrumbs']//a[contains(@href,'/ksiazki/k/')]/span/text()"
 
     RATING = "//meta[@property='books:rating:value']/@content"
     COVER = "//meta[@property='og:image']/@content"

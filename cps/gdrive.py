@@ -23,7 +23,6 @@
 import os
 import hashlib
 import json
-import tempfile
 from uuid import uuid4
 from time import time
 from shutil import move, copyfile
@@ -34,6 +33,7 @@ from flask_login import login_required
 
 from . import logger, gdriveutils, config, ub, calibre_db, csrf
 from .admin import admin_required
+from .file_helper import get_temp_dir
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
 log = logger.create()
@@ -55,7 +55,7 @@ def authenticate_google_drive():
     try:
         authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
     except gdriveutils.InvalidConfigError:
-        flash(_(u'Google Drive setup not completed, try to deactivate and activate Google Drive again'),
+        flash(_('Google Drive setup not completed, try to deactivate and activate Google Drive again'),
               category="error")
         return redirect(url_for('web.index'))
     return redirect(authUrl)
@@ -91,9 +91,9 @@ def watch_gdrive():
             config.save()
         except HttpError as e:
             reason=json.loads(e.content)['error']['errors'][0]
-            if reason['reason'] == u'push.webhookUrlUnauthorized':
-                flash(_(u'Callback domain is not verified, '
-                        u'please follow steps to verify domain in google developer console'), category="error")
+            if reason['reason'] == 'push.webhookUrlUnauthorized':
+                flash(_('Callback domain is not verified, '
+                        'please follow steps to verify domain in google developer console'), category="error")
             else:
                 flash(reason['message'], category="error")
 
@@ -139,9 +139,7 @@ try:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                 if not response['deleted'] and response['file']['title'] == 'metadata.db' \
                     and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
-                    tmp_dir = os.path.join(tempfile.gettempdir(), 'calibre_web')
-                    if not os.path.isdir(tmp_dir):
-                        os.mkdir(tmp_dir)
+                    tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')
                     copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))

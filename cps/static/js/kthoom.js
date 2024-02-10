@@ -62,6 +62,7 @@ var currentImage = 0;
 var imageFiles = [];
 var imageFilenames = [];
 var totalImages = 0;
+var prevScrollPosition = 0;
 
 var settings = {
     hflip: false,
@@ -70,8 +71,9 @@ var settings = {
     fitMode: kthoom.Key.B,
     theme: "light",
     direction: 0, // 0 = Left to Right, 1 = Right to Left
-	nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
-	scrollbar: 1 // 0 = Hide Scrollbar, 1 = Show Scrollbar
+    nextPage: 0, // 0 = Reset to Top, 1 = Remember Position
+	scrollbar: 1, // 0 = Hide Scrollbar, 1 = Show Scrollbar	
+    pageDisplay: 0 // 0 = Single Page, 1 = Long Strip
 };
 
 kthoom.saveSettings = function() {
@@ -130,8 +132,8 @@ var createURLFromArray = function(array, mimeType) {
     }
 
     if ((typeof URL !== "function" && typeof URL !== "object") ||
-      typeof URL.createObjectURL !== "function") {
-        throw "Browser support for Object URLs is missing";
+        typeof URL.createObjectURL !== "function") {
+            throw "Browser support for Object URLs is missing";
     }
 
     return URL.createObjectURL(blob);
@@ -163,23 +165,52 @@ kthoom.ImageFile = function(file) {
             this.mimeType = undefined;
             break;
     }
+
+    // Reset mime type for special files originating from Apple devices
+    // This folder may contain files having image extensions (for example .jpg) but those files are not actual images
+    // Trying to view these files cause corrupted/empty pages in the comic reader and files should be ignored
+    if (this.filename.indexOf("__MACOSX") !== -1) {
+        this.mimeType = undefined;
+    }
+
     if ( this.mimeType !== undefined) {
         this.dataURI = createURLFromArray(file.fileData, this.mimeType);
     }
 };
 
+function updateDirectionButtons(){
+    var left = 1;
+    var right = 1;
+    if (currentImage <= 0 ) {
+        if (settings.direction === 0) {
+            left = 0;
+        } else {
+            right = 0;
+        }
+    }
+    if ((currentImage + 1) >= Math.max(totalImages, imageFiles.length)) {
+        if (settings.direction === 0) {
+            right = 0;
+        } else {
+            left = 0;
+       }
+    }
+    left === 1 ? $("#left").show() : $("#left").hide();
+    right === 1 ? $("#right").show() : $("#right").hide();
+}
 function initProgressClick() {
     $("#progress").click(function(e) {
         var offset = $(this).offset();
         var x = e.pageX - offset.left;
         var rate = settings.direction === 0 ? x / $(this).width() : 1 - x / $(this).width();
         currentImage = Math.max(1, Math.ceil(rate * totalImages)) - 1;
+        updateDirectionButtons();
+        setBookmark();
         updatePage();
     });
 }
 
 function loadFromArrayBuffer(ab) {
-    var lastCompletion = 0;
     const collator = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
     loadArchiveFormats(['rar', 'zip', 'tar'], function() {
         // Open the file as an archive
@@ -208,9 +239,14 @@ function loadFromArrayBuffer(ab) {
                                         "</a>" +
                                         "</li>"
                                     );
+                                    
+                                    drawCanvas();
+                                    setImage(test.dataURI, null);
+                                    
                                     // display first page if we haven't yet
                                     if (imageFiles.length === currentImage + 1) {
-                                        updatePage(lastCompletion);
+                                        updateDirectionButtons();
+                                        updatePage();
                                     }
                                 } else {
                                     totalImages--;
@@ -225,6 +261,17 @@ function loadFromArrayBuffer(ab) {
 }
 
 function scrollTocToActive() {
+    $(".page").text((currentImage + 1 ) + "/" + totalImages);
+
+    // Mark the current page in the TOC
+    $("#tocView a[data-page]")
+        // Remove the currently active thumbnail
+        .removeClass("active")
+        // Find the new one
+        .filter("[data-page=" + (currentImage + 1) + "]")
+        // Set it to active
+        .addClass("active");
+
     // Scroll to the thumbnail in the TOC on page change
     $("#tocView").stop().animate({
         scrollTop: $("#tocView a.active").position().top
@@ -232,31 +279,31 @@ function scrollTocToActive() {
 }
 
 function updatePage() {
-    $(".page").text((currentImage + 1 ) + "/" + totalImages);
-
-    // Mark the current page in the TOC
-    $("#tocView a[data-page]")
-    // Remove the currently active thumbnail
-        .removeClass("active")
-        // Find the new one
-        .filter("[data-page=" + (currentImage + 1) + "]")
-        // Set it to active
-        .addClass("active");
-
     scrollTocToActive();
+    scrollCurrentImageIntoView();
     updateProgress();
-
-    if (imageFiles[currentImage]) {
-        setImage(imageFiles[currentImage].dataURI);
-    } else {
-        setImage("loading");
-    }
-
-    $("body").toggleClass("dark-theme", settings.theme === "dark");
-	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+    pageDisplayUpdate();
+    setTheme();
 
     kthoom.setSettings();
     kthoom.saveSettings();
+}
+
+function setTheme() {
+    $("body").toggleClass("dark-theme", settings.theme === "dark");
+	$("#mainContent").toggleClass("disabled-scrollbar", settings.scrollbar === 0);
+}
+
+function pageDisplayUpdate() {
+    if(settings.pageDisplay === 0) {
+        $(".mainImage").addClass("hide");
+        $(".mainImage").eq(currentImage).removeClass("hide");
+        $("#mainContent").removeClass("long-strip");
+    } else {
+        $(".mainImage").removeClass("hide");
+        $("#mainContent").addClass("long-strip");
+        scrollCurrentImageIntoView();
+    }
 }
 
 function updateProgress(loadPercentage) {
@@ -290,100 +337,93 @@ function updateProgress(loadPercentage) {
     $("#progress .bar-read").css({ width: totalImages === 0 ? 0 : Math.round((currentImage + 1) / totalImages * 100) + "%"});
 }
 
-function setImage(url) {
-    var canvas = $("#mainImage")[0];
-    var x = $("#mainImage")[0].getContext("2d");
+function setImage(url, _canvas) {
+    var canvas = _canvas || $(".mainImage").slice(-1)[0]; // Select the last item on the array if _canvas is null
+    var x = canvas.getContext("2d");
+
     $("#mainText").hide();
-    if (url === "loading") {
-        updateScale(true);
-        canvas.width = innerWidth - 100;
-        canvas.height = 200;
+    if (url === "error") {
         x.fillStyle = "black";
         x.textAlign = "center";
         x.font = "24px sans-serif";
-        x.strokeStyle = "black";
-        x.fillText("Loading Page #" + (currentImage + 1), innerWidth / 2, 100);
+        x.strokeStyle = (settings.theme === "dark") ? "white" : "black";
+        x.fillText("Unable to decompress image #" + (currentImage + 1), innerWidth / 2, 100);
+
+        $(".mainImage").slice(-1).addClass("error");
     } else {
-        if (url === "error") {
-            updateScale(true);
-            canvas.width = innerWidth - 100;
-            canvas.height = 200;
-            x.fillStyle = "black";
-            x.textAlign = "center";
-            x.font = "24px sans-serif";
-            x.strokeStyle = "black";
-            x.fillText("Unable to decompress image #" + (currentImage + 1), innerWidth / 2, 100);
-        } else {
-            if ($("body").css("scrollHeight") / innerHeight > 1) {
-                $("body").css("overflowY", "scroll");
-            }
-
-            var img = new Image();
-            img.onerror = function() {
-                canvas.width = innerWidth - 100;
-                canvas.height = 300;
-                updateScale(true);
-                x.fillStyle = "black";
-                x.font = "50px sans-serif";
-                x.strokeStyle = "black";
-                x.fillText("Page #" + (currentImage + 1) + " (" +
-                  imageFiles[currentImage].filename + ")", innerWidth / 2, 100);
-                x.fillStyle = "black";
-                x.fillText("Is corrupt or not an image", innerWidth / 2, 200);
-
-                var xhr = new XMLHttpRequest();
-                if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
-                    xhr.open("GET", url, true);
-                    xhr.onload = function() {
-                        $("#mainText").css("display", "");
-                        $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
-                    };
-                    xhr.send(null);
-                } else if (!/(jpg|jpeg|png|gif|webp)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
-                    xhr.open("GET", url, true);
-                    xhr.onload = function() {
-                        $("#mainText").css("display", "");
-                        $("#mainText").innerText(xhr.responseText);
-                    };
-                    xhr.send(null);
-                }
-            };
-            img.onload = function() {
-                var h = img.height,
-                    w = img.width,
-                    sw = w,
-                    sh = h;
-                settings.rotateTimes =  (4 + settings.rotateTimes) % 4;
-                x.save();
-                if (settings.rotateTimes % 2 === 1) {
-                    sh = w;
-                    sw = h;
-                }
-                canvas.height = sh;
-                canvas.width = sw;
-                x.translate(sw / 2, sh / 2);
-                x.rotate(Math.PI / 2 * settings.rotateTimes);
-                x.translate(-w / 2, -h / 2);
-                if (settings.vflip) {
-                    x.scale(1, -1);
-                    x.translate(0, -h);
-                }
-                if (settings.hflip) {
-                    x.scale(-1, 1);
-                    x.translate(-w, 0);
-                }
-                canvas.style.display = "none";
-                scrollTo(0, 0);
-                x.drawImage(img, 0, 0);
-
-                updateScale(false);
-
-                canvas.style.display = "";
-                $("body").css("overflowY", "");
-                x.restore();
-            };
-            img.src = url;
+        if ($("body").css("scrollHeight") / innerHeight > 1) {
+            $("body").css("overflowY", "scroll");
         }
+
+        var img = new Image();
+        img.onerror = function() {
+            canvas.width = innerWidth - 100;
+            canvas.height = 300;
+            x.fillStyle = "black";
+            x.font = "50px sans-serif";
+            x.strokeStyle = "black";
+            x.fillText("Page #" + (currentImage + 1) + " (" +
+                imageFiles[currentImage].filename + ")", innerWidth / 2, 100);
+            x.fillStyle = "black";
+            x.fillText("Is corrupt or not an image", innerWidth / 2, 200);
+
+            var xhr = new XMLHttpRequest();
+            if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
+                xhr.open("GET", url, true);
+                xhr.onload = function() {
+                    $("#mainText").css("display", "");
+                    $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
+                };
+                xhr.send(null);
+            } else if (!/(jpg|jpeg|png|gif|webp)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
+                xhr.open("GET", url, true);
+                xhr.onload = function() {
+                    $("#mainText").css("display", "");
+                    $("#mainText").innerText(xhr.responseText);
+                };
+                xhr.send(null);
+            }
+        };
+        img.onload = function() {
+            var h = img.height,
+                w = img.width,
+                sw = w,
+                sh = h;
+            settings.rotateTimes =  (4 + settings.rotateTimes) % 4;
+            x.save();
+            if (settings.rotateTimes % 2 === 1) {
+                sh = w;
+                sw = h;
+            }
+            canvas.height = sh;
+            canvas.width = sw;
+            x.translate(sw / 2, sh / 2);
+            x.rotate(Math.PI / 2 * settings.rotateTimes);
+            x.translate(-w / 2, -h / 2);
+            if (settings.vflip) {
+                x.scale(1, -1);
+                x.translate(0, -h);
+            }
+            if (settings.hflip) {
+                x.scale(-1, 1);
+                x.translate(-w, 0);
+            }
+            canvas.style.display = "none";
+            scrollTo(0, 0);
+            x.drawImage(img, 0, 0);
+
+            canvas.style.display = "";
+            $("body").css("overflowY", "");
+            x.restore();
+        };
+        img.src = url;
+    }
+}
+
+// reloadImages is a slow process when multiple images are involved. Only used when rotating/mirroring
+function reloadImages() {
+    for(i=0; i < imageFiles.length; i++) {
+        setImage(imageFiles[i].dataURI, $(".mainImage")[i]);
     }
 }
 
@@ -393,6 +433,7 @@ function showLeftPage() {
     } else {
         showNextPage();
     }
+    setBookmark();
 }
 
 function showRightPage() {
@@ -401,6 +442,7 @@ function showRightPage() {
     } else {
         showPrevPage();
     }
+    setBookmark();
 }
 
 function showPrevPage() {
@@ -410,10 +452,8 @@ function showPrevPage() {
         currentImage++;
     } else {
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
     }
+    updateDirectionButtons();
 }
 
 function showNextPage() {
@@ -423,36 +463,54 @@ function showNextPage() {
         currentImage--;
     } else {
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
+    }
+    updateDirectionButtons();
+}
+
+function scrollCurrentImageIntoView() {
+    if(settings.pageDisplay == 0) {
+        // This will scroll all the way up when Single Page is selected
+		$("#mainContent").scrollTop(0);
+    } else {
+        // This will scroll to the image when Long Strip is selected
+        $("#mainContent").stop().animate({
+            scrollTop: $(".mainImage").eq(currentImage).offset().top + $("#mainContent").scrollTop() - $("#mainContent").offset().top
+        }, 200);
     }
 }
 
-function updateScale(clear) {
-    var mainImageStyle = getElem("mainImage").style;
-    mainImageStyle.width = "";
-    mainImageStyle.height = "";
-    mainImageStyle.maxWidth = "";
-    mainImageStyle.maxHeight = "";
+function updateScale() {
+    var canvasArray = $("#mainContent > canvas");
     var maxheight = innerHeight - 50;
+    
+    canvasArray.css("width", "");
+    canvasArray.css("height", "");
+    canvasArray.css("maxWidth", "");
+    canvasArray.css("maxHeight", "");
 
-    if (!clear) {
-        switch (settings.fitMode) {
-            case kthoom.Key.B:
-                mainImageStyle.maxWidth = "100%";
-                mainImageStyle.maxHeight = maxheight + "px";
-                break;
-            case kthoom.Key.H:
-                mainImageStyle.height = maxheight + "px";
-                break;
-            case kthoom.Key.W:
-                mainImageStyle.width = "100%";
-                break;
-            default:
-                break;
-        }
+    if(settings.pageDisplay === 0) {
+        canvasArray.addClass("hide");
+        pageDisplayUpdate();
     }
+
+    switch (settings.fitMode) {
+        case kthoom.Key.B:
+            canvasArray.css("maxWidth", "100%");
+            canvasArray.css("maxHeight", maxheight + "px");
+            break;
+        case kthoom.Key.H:
+            canvasArray.css("maxHeight", maxheight + "px");
+            break;
+        case kthoom.Key.W:
+            canvasArray.css("width", "100%");
+            break;
+        default:
+            break;
+    }
+
+    $("#mainContent > canvas.error").css("width", innerWidth - 100);
+    $("#mainContent > canvas.error").css("height", 200);
+
     $("#mainContent").css({maxHeight: maxheight + 5});
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -469,6 +527,20 @@ function keyHandler(evt) {
             if (hasModifier) break;
             showRightPage();
             break;
+        case kthoom.Key.S:
+            if (hasModifier) break;
+            settings.pageDisplay = 0;
+            pageDisplayUpdate();
+            kthoom.setSettings();
+            kthoom.saveSettings();
+            break;
+        case kthoom.Key.O:
+            if (hasModifier) break;
+            settings.pageDisplay = 1;
+            pageDisplayUpdate();
+            kthoom.setSettings();
+            kthoom.saveSettings();
+            break;
         case kthoom.Key.L:
             if (hasModifier) break;
             settings.rotateTimes--;
@@ -476,6 +548,7 @@ function keyHandler(evt) {
                 settings.rotateTimes = 3;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.R:
             if (hasModifier) break;
@@ -484,6 +557,7 @@ function keyHandler(evt) {
                 settings.rotateTimes = 0;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.F:
             if (hasModifier) break;
@@ -499,26 +573,27 @@ function keyHandler(evt) {
                 settings.hflip = true;
             }
             updatePage();
+			reloadImages();
             break;
         case kthoom.Key.W:
             if (hasModifier) break;
             settings.fitMode = kthoom.Key.W;
-            updateScale(false);
+            updateScale();
             break;
         case kthoom.Key.H:
             if (hasModifier) break;
             settings.fitMode = kthoom.Key.H;
-            updateScale(false);
+            updateScale();
             break;
         case kthoom.Key.B:
             if (hasModifier) break;
             settings.fitMode = kthoom.Key.B;
-            updateScale(false);
+            updateScale();
             break;
         case kthoom.Key.N:
             if (hasModifier) break;
             settings.fitMode = kthoom.Key.N;
-            updateScale(false);
+            updateScale();
             break;
         case kthoom.Key.SPACE:
             if (evt.shiftKey) {
@@ -537,37 +612,85 @@ function keyHandler(evt) {
     }
 }
 
+function drawCanvas() {
+    var maxheight = innerHeight - 50;
+    var canvasElement = $("<canvas></canvas>");
+    var x = canvasElement[0].getContext("2d");
+    canvasElement.addClass("mainImage");
+
+    switch (settings.fitMode) {
+        case kthoom.Key.B:
+            canvasElement.css("maxWidth", "100%");
+            canvasElement.css("maxHeight", maxheight + "px");
+            break;
+        case kthoom.Key.H:
+            canvasElement.css("maxHeight", maxheight + "px");
+            break;
+        case kthoom.Key.W:
+            canvasElement.css("width", "100%");
+            break;
+        default:
+            break;
+    }
+
+    if(settings.pageDisplay === 0) {
+        canvasElement.addClass("hide");
+    }
+
+    //Fill with Placeholder text. setImage will override this
+    canvasElement.width = innerWidth - 100;
+    canvasElement.height = 200;
+    x.fillStyle = "black";
+    x.textAlign = "center";
+    x.font = "24px sans-serif";
+    x.strokeStyle = (settings.theme === "dark") ? "white" : "black";
+    x.fillText("Loading Page #" + (currentImage + 1), innerWidth / 2, 100);
+
+    $("#mainContent").append(canvasElement);
+}
+
+function updateArrows() {
+    if ($('input[name="direction"]:checked').val() === "0") {
+        $("#prev_page_key").html("&larr;");
+        $("#next_page_key").html("&rarr;");
+    } else {
+        $("#prev_page_key").html("&rarr;");
+        $("#next_page_key").html("&larr;");
+    }
+};
+
 function init(filename) {
     var request = new XMLHttpRequest();
     request.open("GET", filename);
     request.responseType = "arraybuffer";
-    request.addEventListener("load", function() {
+    request.addEventListener("load", function () {
         if (request.status >= 200 && request.status < 300) {
             loadFromArrayBuffer(request.response);
         } else {
             console.warn(request.statusText, request.responseText);
         }
     });
+    kthoom.loadSettings();
+    setTheme();
+    updateScale();
     request.send();
     initProgressClick();
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
-    kthoom.loadSettings();
-    updateScale(true);
 
     $(document).keydown(keyHandler);
 
-    $(window).resize(function() {
-        updateScale(false);
+    $(window).resize(function () {
+        updateScale();
     });
 
     // Open TOC menu
-    $("#slider").click(function() {
+    $("#slider").click(function () {
         $("#sidebar").toggleClass("open");
         $("#main").toggleClass("closed");
         $(this).toggleClass("icon-menu icon-right");
 
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
-        setTimeout(function() {
+        setTimeout(function () {
             // Focus on the TOC or the main content area, depending on which is open
             $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
             scrollTocToActive();
@@ -575,12 +698,12 @@ function init(filename) {
     });
 
     // Open Settings modal
-    $("#setting").click(function() {
+    $("#setting").click(function () {
         $("#settings-modal").toggleClass("md-show");
     });
 
     // On Settings input change
-    $("#settings input").on("change", function() {
+    $("#settings input").on("change", function () {
         // Get either the checked boolean or the assigned value
         var value = this.type === "checkbox" ? this.checked : this.value;
 
@@ -588,33 +711,41 @@ function init(filename) {
         value = /^\d+$/.test(value) ? parseInt(value) : value;
 
         settings[this.name] = value;
+
+        if (["hflip", "vflip", "rotateTimes"].includes(this.name)) {
+            reloadImages();
+        } else if (this.name === "direction") {
+            updateDirectionButtons();
+            return updateProgress();
+        }
+
         updatePage();
-        updateScale(false);
+        updateScale();
     });
 
     // Close modal
-    $(".closer, .overlay").click(function() {
+    $(".closer, .overlay").click(function () {
         $(".md-show").removeClass("md-show");
+        $("#mainContent").focus(); // focus back on the main container so you use up/down keys without having to click on it
     });
 
     // TOC thumbnail pagination
-    $("#thumbnails").on("click", "a", function() {
+    $("#thumbnails").on("click", "a", function () {
         currentImage = $(this).data("page") - 1;
         updatePage();
-		if (settings.nextPage === 0) {
-			$("#mainContent").scrollTop(0);
-		}
     });
 
     // Fullscreen mode
     if (typeof screenfull !== "undefined") {
-        $("#fullscreen").click(function() {
+        $("#fullscreen").click(function () {
             screenfull.toggle($("#container")[0]);
+            // Focus on main container so you can use up/down keys immediately after fullscreen
+            $("#mainContent").focus();
         });
 
         if (screenfull.raw) {
             var $button = $("#fullscreen");
-            document.addEventListener(screenfull.raw.fullscreenchange, function() {
+            document.addEventListener(screenfull.raw.fullscreenchange, function () {
                 screenfull.isFullscreen
                     ? $button.addClass("icon-resize-small").removeClass("icon-resize-full")
                     : $button.addClass("icon-resize-full").removeClass("icon-resize-small");
@@ -625,16 +756,16 @@ function init(filename) {
     // Focus the scrollable area so that keyboard scrolling work as expected
     $("#mainContent").focus();
 
-    $("#mainContent").swipe( {
-        swipeRight:function() {
+    $("#mainContent").swipe({
+        swipeRight: function () {
             showLeftPage();
         },
-        swipeLeft:function() {
+        swipeLeft: function () {
             showRightPage();
         },
     });
-    $("#mainImage").click(function(evt) {
-        // Firefox does not support offsetX/Y so we have to manually calculate
+    $(".mainImage").click(function (evt) {
+        // Firefox does not support offsetX/Y, so we have to manually calculate
         // where the user clicked in the image.
         var mainContentWidth = $("#mainContent").width();
         var mainContentHeight = $("#mainContent").height();
@@ -668,5 +799,73 @@ function init(filename) {
             showRightPage();
         }
     });
+
+    // Scrolling up/down will update current image if a new image is into view (for Long Strip Display)
+    $("#mainContent").scroll(function (){
+        var scroll = $("#mainContent").scrollTop();
+        var viewLength = 0;
+        $(".mainImage").each(function(){
+            viewLength += $(this).height();
+        });
+        if (settings.pageDisplay === 0) {
+            // Don't trigger the scroll for Single Page
+        } else if (scroll > prevScrollPosition) {
+            //Scroll Down
+            if (currentImage + 1 < imageFiles.length) {
+                if (currentImageOffset(currentImage + 1) <= 1) {
+                    currentImage = Math.floor((imageFiles.length) / (viewLength-viewLength/(imageFiles.length)) * scroll, 0);
+                    if ( currentImage >= imageFiles.length) {
+                        currentImage = imageFiles.length - 1;
+                    }
+                    console.log(currentImage);
+                    scrollTocToActive();
+                    updateProgress();
+                }
+            }
+        } else {
+            //Scroll Up
+            if (currentImage - 1 > -1) {
+                if (currentImageOffset(currentImage - 1) >= 0) {
+                    currentImage = Math.floor((imageFiles.length) / (viewLength-viewLength/(imageFiles.length)) * scroll, 0);
+                    console.log(currentImage);
+                    scrollTocToActive();
+                    updateProgress();
+                }
+            }
+        }
+        // Update scroll position
+        prevScrollPosition = scroll;
+    });
 }
 
+function currentImageOffset(imageIndex) {
+    return $(".mainImage").eq(imageIndex).offset().top - $("#mainContent").position().top
+}
+
+function setBookmark() {
+  // get csrf_token
+    let csrf_token = $("input[name='csrf_token']").val();
+    //This sends a bookmark update to calibreweb.
+    $.ajax(calibre.bookmarkUrl, {
+        method: "post",
+        data: {
+            csrf_token: csrf_token,
+            bookmark: currentImage
+        }
+    }).fail(function (xhr, status, error) {
+        console.error(error);
+    });
+}
+
+$(function() {
+    $('input[name="direction"]').change(function () {
+        updateArrows();
+    });
+
+    $('#left').click(function () {
+        showLeftPage();
+    });
+    $('#right').click(function () {
+        showRightPage();
+    });
+});

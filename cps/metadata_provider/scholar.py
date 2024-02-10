@@ -49,10 +49,12 @@ class scholar(Metadata):
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = " ".join(tokens)
             try:
+                scholarly.set_timeout(20)
+                scholarly.set_retries(2)
                 scholar_gen = itertools.islice(scholarly.search_pubs(query), 10)
             except Exception as e:
                 log.warning(e)
-                return None
+                return list()
             for result in scholar_gen:
                 match = self._parse_search_result(
                     result=result, generic_cover="", locale=locale

@@ -7,786 +7,817 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-04-18 20:01+0200\n"
+"POT-Creation-Date: 2023-12-21 13:31+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.9.1\n"
+"Generated-By: Babel 2.13.1\n"
 
-#: cps/about.py:86
+#: cps/about.py:84
 msgid "Statistics"
 msgstr "统计"
 
-#: cps/admin.py:141
-msgid "Server restarted, please reload page"
+#: cps/admin.py:149
+msgid "Server restarted, please reload page."
 msgstr "服务器已重启，请刷新页面"
 
-#: cps/admin.py:143
-msgid "Performing shutdown of server, please close window"
+#: cps/admin.py:151
+msgid "Performing Server shutdown, please close window."
 msgstr "正在关闭服务器，请关闭窗口"
 
-#: cps/admin.py:151
-msgid "Reconnect successful"
-msgstr "重新连接成功"
+#: cps/admin.py:159
+msgid "Success! Database Reconnected"
+msgstr "数据库重新连接成功"
 
-#: cps/admin.py:154
+#: cps/admin.py:162
 msgid "Unknown command"
 msgstr "未知命令"
 
-#: cps/admin.py:176 cps/editbooks.py:713 cps/editbooks.py:892
-#: cps/editbooks.py:894 cps/editbooks.py:930 cps/editbooks.py:947
-#: cps/updater.py:608 cps/uploader.py:93 cps/uploader.py:103
+#: cps/admin.py:173
+msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
+msgstr "成功！书籍已排队进行元数据备份，请检查任务列表以获取结果"
+
+#: cps/admin.py:206 cps/editbooks.py:587 cps/editbooks.py:589
+#: cps/editbooks.py:627 cps/editbooks.py:644 cps/editbooks.py:1256
+#: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "未知"
 
-#: cps/admin.py:197
+#: cps/admin.py:231
 msgid "Admin page"
 msgstr "管理页"
 
-#: cps/admin.py:217
+#: cps/admin.py:251
 msgid "Basic Configuration"
 msgstr "基本配置"
 
-#: cps/admin.py:255
+#: cps/admin.py:289
 msgid "UI Configuration"
 msgstr "界面配置"
 
-#: cps/admin.py:289 cps/templates/admin.html:51
+#: cps/admin.py:323 cps/templates/admin.html:51
 msgid "Edit Users"
 msgstr "管理用户"
 
-#: cps/admin.py:333 cps/opds.py:529 cps/templates/grid.html:13
+#: cps/admin.py:367 cps/opds.py:506 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "全部"
 
-#: cps/admin.py:360 cps/admin.py:1648
+#: cps/admin.py:394 cps/admin.py:1405
 msgid "User not found"
 msgstr "找不到用户"
 
-#: cps/admin.py:374
+#: cps/admin.py:408
 msgid "{} users deleted successfully"
 msgstr "成功删除 {} 个用户"
 
-#: cps/admin.py:397 cps/templates/config_view_edit.html:133
+#: cps/admin.py:431 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "显示全部"
 
-#: cps/admin.py:418 cps/admin.py:424
+#: cps/admin.py:452 cps/admin.py:458
 msgid "Malformed request"
 msgstr "格式错误的请求"
 
-#: cps/admin.py:436 cps/admin.py:1526
+#: cps/admin.py:470 cps/admin.py:2023
 msgid "Guest Name can't be changed"
 msgstr "访客名称无法更改"
 
-#: cps/admin.py:448
+#: cps/admin.py:482
 msgid "Guest can't have this role"
 msgstr "游客无法拥有此角色"
 
-#: cps/admin.py:460 cps/admin.py:1484
+#: cps/admin.py:494 cps/admin.py:1977
 msgid "No admin user remaining, can't remove admin role"
-msgstr "理员账户不存在，无法删除管理员角色"
+msgstr "没有其余管理员账户，无法删除管理员角色"
 
-#: cps/admin.py:464 cps/admin.py:478
+#: cps/admin.py:498 cps/admin.py:512
 msgid "Value has to be true or false"
-msgstr "值必须是 true 或 false"
+msgstr "值必须为 true 或 false"
 
-#: cps/admin.py:466
+#: cps/admin.py:500
 msgid "Invalid role"
 msgstr "无效角色"
 
-#: cps/admin.py:470
+#: cps/admin.py:504
 msgid "Guest can't have this view"
-msgstr "游客无法拥有此视图"
+msgstr "游客无法查看此页面"
 
-#: cps/admin.py:480
+#: cps/admin.py:514
 msgid "Invalid view"
-msgstr "无效视图"
+msgstr "无效页面"
 
-#: cps/admin.py:483
+#: cps/admin.py:517
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr "游客的本地化是自动侦测而无法设置的"
+msgstr "无法设置游客的本地化，该项设置的值将自动检测"
 
-#: cps/admin.py:487
+#: cps/admin.py:521
 msgid "No Valid Locale Given"
 msgstr "无可用本地化"
 
-#: cps/admin.py:498
+#: cps/admin.py:532
 msgid "No Valid Book Language Given"
 msgstr "无有效书籍语言"
 
-#: cps/admin.py:500 cps/editbooks.py:1267
+#: cps/admin.py:534 cps/editbooks.py:453
 msgid "Parameter not found"
 msgstr "参数未找到"
 
-#: cps/admin.py:553
+#: cps/admin.py:571
 msgid "Invalid Read Column"
-msgstr "无效的阅读列"
+msgstr "无效的阅读栏目"
 
-#: cps/admin.py:559
+#: cps/admin.py:577
 msgid "Invalid Restricted Column"
-msgstr "无效的限制列"
+msgstr "无效的限制栏目"
 
-#: cps/admin.py:579 cps/admin.py:1355
+#: cps/admin.py:597 cps/admin.py:1848
 msgid "Calibre-Web configuration updated"
-msgstr "Calibre-Web配置已更新"
+msgstr "Calibre-Web 配置已更新"
 
-#: cps/admin.py:591
+#: cps/admin.py:609
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "您确定删除Kobo Token吗？"
+msgstr "您确定删除 Kobo 令牌吗？"
 
-#: cps/admin.py:593
+#: cps/admin.py:611
 msgid "Do you really want to delete this domain?"
 msgstr "您确定要删除此域吗？"
 
-#: cps/admin.py:595
+#: cps/admin.py:613
 msgid "Do you really want to delete this user?"
 msgstr "您确定要删除此用户吗？"
 
-#: cps/admin.py:597
+#: cps/admin.py:615
 msgid "Are you sure you want to delete this shelf?"
 msgstr "您确定要删除此书架吗？"
 
-#: cps/admin.py:599
+#: cps/admin.py:617
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "您确定要修改选定用户的本地化设置吗？"
 
-#: cps/admin.py:601
+#: cps/admin.py:619
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr "您确定要修改选定用户的可见书籍语言吗？"
 
-#: cps/admin.py:603
+#: cps/admin.py:621
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "您确定要修改选定用户的选定角色吗？"
 
-#: cps/admin.py:605
+#: cps/admin.py:623
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
 msgstr "您确定要修改选定用户的选定限制吗？"
 
-#: cps/admin.py:607
+#: cps/admin.py:625
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr "您确定要修改选定用户的选定可视化限制吗？"
 
-#: cps/admin.py:610
+#: cps/admin.py:628
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "您确定要更改所选用户的书架同步行为吗？"
 
-#: cps/admin.py:612
+#: cps/admin.py:630
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "您确定要更改 Calibre 库位置吗？"
 
-#: cps/admin.py:614
+#: cps/admin.py:632
+msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgstr "Calibre-Web 将搜索更新封面，并更新缩略图，这可能需要一段时间"
+
+#: cps/admin.py:635
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
 msgstr "您确定要删除 Calibre-Web 的同步数据库以强制与您的 Kobo Reader 进行完全同步吗"
 
-#: cps/admin.py:764
-msgid "Tag not found"
-msgstr "标签未找到"
-
-#: cps/admin.py:776
-msgid "Invalid Action"
-msgstr "无效的动作"
-
-#: cps/admin.py:893 cps/admin.py:899 cps/admin.py:909 cps/admin.py:919
+#: cps/admin.py:878 cps/admin.py:884 cps/admin.py:894 cps/admin.py:904
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr "拒绝"
 
-#: cps/admin.py:895 cps/admin.py:901 cps/admin.py:911 cps/admin.py:921
+#: cps/admin.py:880 cps/admin.py:886 cps/admin.py:896 cps/admin.py:906
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr "允许"
 
-#: cps/admin.py:936
+#: cps/admin.py:921
 msgid "{} sync entries deleted"
 msgstr "{} 同步项目被删除"
 
-#: cps/admin.py:1059
+#: cps/admin.py:969
+msgid "Tag not found"
+msgstr "标签未找到"
+
+#: cps/admin.py:981
+msgid "Invalid Action"
+msgstr "无效的动作"
+
+#: cps/admin.py:1111
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr "client_secrets.json 未为 Web 应用程序配置"
 
-#: cps/admin.py:1104
+#: cps/admin.py:1156
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "日志文件路径无效，请输入正确的路径"
 
-#: cps/admin.py:1110
+#: cps/admin.py:1162
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "访问日志路径无效，请输入正确的路径"
 
-#: cps/admin.py:1140
+#: cps/admin.py:1196
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr "请输入LDAP主机、端口、DN和用户对象标识符"
+msgstr "请输入 LDAP 主机、端口、DN 和用户对象标识符"
 
-#: cps/admin.py:1146
+#: cps/admin.py:1202
 msgid "Please Enter a LDAP Service Account and Password"
-msgstr "请输入一个LDAP服务账号和密码 "
+msgstr "请输入一个 LDAP 服务账号和密码 "
 
-#: cps/admin.py:1149
+#: cps/admin.py:1205
 msgid "Please Enter a LDAP Service Account"
-msgstr "请输入一个LDAP服务账号"
+msgstr "请输入一个 LDAP 服务账号"
 
-#: cps/admin.py:1154
+#: cps/admin.py:1210
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP组对象过滤器需要一个具有“%s”格式标识符"
+msgstr "LDAP 组对象过滤器需要一个具有“%s”格式标识符"
 
-#: cps/admin.py:1156
+#: cps/admin.py:1212
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP组对象过滤器的括号不匹配"
+msgstr "LDAP 组对象过滤器的括号不匹配"
 
-#: cps/admin.py:1160
+#: cps/admin.py:1216
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP用户对象过滤器需要一个具有“%s”格式标识符"
+msgstr "LDAP 用户对象过滤器需要一个具有“%s”格式标识符"
 
-#: cps/admin.py:1162
+#: cps/admin.py:1218
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP用户对象过滤器的括号不匹配"
+msgstr "LDAP 用户对象过滤器的括号不匹配"
 
-#: cps/admin.py:1169
+#: cps/admin.py:1225
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
-msgstr "LDAP成员用户过滤器需要有一个“%s”格式标识符"
+msgstr "LDAP 成员用户过滤器需要有一个“%s”格式标识符"
 
-#: cps/admin.py:1171
+#: cps/admin.py:1227
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
-msgstr "LDAP成员用户过滤器中有不匹配的括号"
+msgstr "LDAP 成员用户过滤器中有不匹配的括号"
 
-#: cps/admin.py:1178
+#: cps/admin.py:1234
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP CA证书、证书或密钥位置无效，请输入正确的路径"
 
-#: cps/admin.py:1223 cps/admin.py:1339 cps/admin.py:1437 cps/admin.py:1554
-#: cps/admin.py:1623 cps/editbooks.py:678 cps/editbooks.py:882
-#: cps/editbooks.py:1130 cps/shelf.py:100 cps/shelf.py:160 cps/shelf.py:203
-#: cps/shelf.py:278 cps/shelf.py:343 cps/shelf.py:380 cps/shelf.py:456
-#: cps/web.py:1742
-#, python-format
-msgid "Database error: %(error)s."
-msgstr "数据库错误：%(error)s。"
-
-#: cps/admin.py:1235
-msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr "数据库路径无效，请输入正确的路径"
-
-#: cps/admin.py:1253
-msgid "DB is not Writeable"
-msgstr "数据库不可写入"
-
-#: cps/admin.py:1266
-msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr "密钥文件路径无效，请输入正确的路径"
-
-#: cps/admin.py:1270
-msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "证书文件路径无效，请输入正确的路径"
-
-#: cps/admin.py:1378
-msgid "Database Settings updated"
-msgstr "数据库设置已更新"
-
-#: cps/admin.py:1386
-msgid "Database Configuration"
-msgstr "数据库配置"
-
-#: cps/admin.py:1402 cps/web.py:1557
-msgid "Please fill out all fields!"
-msgstr "请填写所有字段！"
-
-#: cps/admin.py:1410
-msgid "E-mail is not from valid domain"
-msgstr "邮箱不在有效域中"
-
-#: cps/admin.py:1416 cps/admin.py:1576
-msgid "Add new user"
+#: cps/admin.py:1265 cps/templates/admin.html:53
+msgid "Add New User"
 msgstr "添加新用户"
 
-#: cps/admin.py:1427
-#, python-format
-msgid "User '%(user)s' created"
-msgstr "用户“%(user)s”已创建"
-
-#: cps/admin.py:1433
-msgid "Found an existing account for this e-mail address or name."
-msgstr "使用此邮箱或用户名的账号已经存在。"
-
-#: cps/admin.py:1463
-#, python-format
-msgid "User '%(nick)s' deleted"
-msgstr "用户“%(nick)s”已删除"
-
-#: cps/admin.py:1465 cps/admin.py:1466
-msgid "Can't delete Guest User"
-msgstr "无法删除游客用户"
-
-#: cps/admin.py:1469
-msgid "No admin user remaining, can't delete user"
-msgstr "管理员账户不存在，无法删除用户"
-
-#: cps/admin.py:1542 cps/admin.py:1667
-#, python-format
-msgid "Edit User %(nick)s"
-msgstr "编辑用户 %(nick)s"
-
-#: cps/admin.py:1546
-#, python-format
-msgid "User '%(nick)s' updated"
-msgstr "用户“%(nick)s”已更新"
-
-#: cps/admin.py:1550 cps/admin.py:1682 cps/web.py:1582 cps/web.py:1642
-msgid "An unknown error occurred. Please try again later."
-msgstr "发生一个未知错误，请稍后再试。"
-
-#: cps/admin.py:1585 cps/templates/admin.html:100
-msgid "Edit E-mail Server Settings"
+#: cps/admin.py:1274 cps/templates/admin.html:100
+msgid "Edit Email Server Settings"
 msgstr "编辑邮件服务器设置"
 
-#: cps/admin.py:1604
-msgid "Gmail Account Verification Successful"
-msgstr "G-Mail账号校验成功"
+#: cps/admin.py:1293
+msgid "Success! Gmail Account Verified."
+msgstr "Gmail 账户验证成功"
 
-#: cps/admin.py:1630
+#: cps/admin.py:1313 cps/admin.py:1316 cps/admin.py:1698 cps/admin.py:1832
+#: cps/admin.py:1930 cps/admin.py:2051 cps/editbooks.py:239
+#: cps/editbooks.py:315 cps/editbooks.py:1218 cps/shelf.py:82 cps/shelf.py:142
+#: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
+#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1496
+#, python-format
+msgid "Oops! Database Error: %(error)s."
+msgstr "数据库错误：%(error)s"
+
+#: cps/admin.py:1323
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "发送给%(email)s的测试邮件已进入队列。请检查任务结果"
+msgstr "发送给 %(email)s 的测试邮件已加入队列。请检查任务结果"
 
-#: cps/admin.py:1633
+#: cps/admin.py:1326
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "发送测试邮件时出错：%(res)s"
 
-#: cps/admin.py:1635
+#: cps/admin.py:1328
 msgid "Please configure your e-mail address first..."
 msgstr "请先配置您的邮箱地址..."
 
-#: cps/admin.py:1637
-msgid "E-mail server settings updated"
+#: cps/admin.py:1330
+msgid "Email Server Settings updated"
 msgstr "邮件服务器设置已更新"
 
-#: cps/admin.py:1679
+#: cps/admin.py:1353 cps/templates/admin.html:195
+msgid "Edit Scheduled Tasks Settings"
+msgstr "编辑计划任务设置"
+
+#: cps/admin.py:1365
+msgid "Invalid start time for task specified"
+msgstr "指定任务的开始时间无效"
+
+#: cps/admin.py:1370
+msgid "Invalid duration for task specified"
+msgstr "指定任务的持续时间无效"
+
+#: cps/admin.py:1380
+msgid "Scheduled tasks settings updated"
+msgstr "已更新计划任务设置"
+
+#: cps/admin.py:1390 cps/admin.py:1439 cps/admin.py:2047 cps/web.py:1296
+msgid "Oops! An unknown error occurred. Please try again later."
+msgstr "发生一个未知错误，请稍后再试"
+
+#: cps/admin.py:1394
+msgid "Settings DB is not Writeable"
+msgstr "设置数据库不可写"
+
+#: cps/admin.py:1424 cps/admin.py:2039
 #, python-format
-msgid "Password for user %(user)s reset"
+msgid "Edit User %(nick)s"
+msgstr "编辑用户 %(nick)s"
+
+#: cps/admin.py:1436
+#, python-format
+msgid "Success! Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
-#: cps/admin.py:1685 cps/web.py:1522
-msgid "Please configure the SMTP mail settings first..."
-msgstr "请先配置SMTP邮箱设置..."
+#: cps/admin.py:1442
+msgid "Oops! Please configure the SMTP mail settings."
+msgstr "请先配置 SMTP 邮箱设置..."
 
-#: cps/admin.py:1696
+#: cps/admin.py:1453
 msgid "Logfile viewer"
 msgstr "日志文件查看器"
 
-#: cps/admin.py:1762
+#: cps/admin.py:1519
 msgid "Requesting update package"
 msgstr "正在请求更新包"
 
-#: cps/admin.py:1763
+#: cps/admin.py:1520
 msgid "Downloading update package"
 msgstr "正在下载更新包"
 
-#: cps/admin.py:1764
+#: cps/admin.py:1521
 msgid "Unzipping update package"
 msgstr "正在解压更新包"
 
-#: cps/admin.py:1765
+#: cps/admin.py:1522
 msgid "Replacing files"
 msgstr "正在替换文件"
 
-#: cps/admin.py:1766
+#: cps/admin.py:1523
 msgid "Database connections are closed"
 msgstr "数据库连接已关闭"
 
-#: cps/admin.py:1767
+#: cps/admin.py:1524
 msgid "Stopping server"
 msgstr "正在停止服务器"
 
-#: cps/admin.py:1768
+#: cps/admin.py:1525
 msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，请点击确定并刷新页面"
 
-#: cps/admin.py:1769 cps/admin.py:1770 cps/admin.py:1771 cps/admin.py:1772
-#: cps/admin.py:1773 cps/admin.py:1774
+#: cps/admin.py:1526 cps/admin.py:1527 cps/admin.py:1528 cps/admin.py:1529
+#: cps/admin.py:1530 cps/admin.py:1531
 msgid "Update failed:"
 msgstr "更新失败："
 
-#: cps/admin.py:1769 cps/updater.py:384 cps/updater.py:619 cps/updater.py:621
+#: cps/admin.py:1526 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
-msgstr "HTTP错误"
+msgstr "HTTP 错误"
 
-#: cps/admin.py:1770 cps/updater.py:386 cps/updater.py:623
+#: cps/admin.py:1527 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
 msgstr "连接错误"
 
-#: cps/admin.py:1771 cps/updater.py:388 cps/updater.py:625
+#: cps/admin.py:1528 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
 msgstr "建立连接超时"
 
-#: cps/admin.py:1772 cps/updater.py:390 cps/updater.py:627
+#: cps/admin.py:1529 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
 msgstr "一般错误"
 
-#: cps/admin.py:1773
+#: cps/admin.py:1530
 msgid "Update file could not be saved in temp dir"
 msgstr "更新文件无法保存在临时目录中"
 
-#: cps/admin.py:1774
+#: cps/admin.py:1531
 msgid "Files could not be replaced during update"
 msgstr "更新期间无法替换文件"
 
-#: cps/admin.py:1798
+#: cps/admin.py:1555
 msgid "Failed to extract at least One LDAP User"
-msgstr "未能提取至少一个LDAP用户"
+msgstr "未能获得任何 LDAP 用户"
 
-#: cps/admin.py:1843
+#: cps/admin.py:1600
 msgid "Failed to Create at Least One LDAP User"
-msgstr "未能创建至少一个LDAP用户"
+msgstr "未能创建任何 LDAP 用户"
 
-#: cps/admin.py:1856
+#: cps/admin.py:1613
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "错误：%(ldaperror)s"
 
-#: cps/admin.py:1860
+#: cps/admin.py:1617
 msgid "Error: No user returned in response of LDAP server"
-msgstr "错误：在LDAP服务器的响应中没有返回用户"
+msgstr "错误：在 LDAP 服务器的响应中没有返回用户"
 
-#: cps/admin.py:1893
+#: cps/admin.py:1650
 msgid "At Least One LDAP User Not Found in Database"
-msgstr "数据库中没有找到至少一个LDAP用户"
+msgstr "数据库中没有找到任何 LDAP 用户"
 
-#: cps/admin.py:1895
+#: cps/admin.py:1652
 msgid "{} User Successfully Imported"
 msgstr "{} 用户被成功导入"
 
-#: cps/converter.py:30
+#: cps/admin.py:1710
+msgid "DB Location is not Valid, Please Enter Correct Path"
+msgstr "数据库路径无效，请输入正确的路径"
+
+#: cps/admin.py:1730
+msgid "DB is not Writeable"
+msgstr "数据库不可写入"
+
+#: cps/admin.py:1743
+msgid "Keyfile Location is not Valid, Please Enter Correct Path"
+msgstr "密钥文件路径无效，请输入正确的路径"
+
+#: cps/admin.py:1747
+msgid "Certfile Location is not Valid, Please Enter Correct Path"
+msgstr "证书文件路径无效，请输入正确的路径"
+
+#: cps/admin.py:1819
+msgid "Password length has to be between 1 and 40"
+msgstr "密码长度必须在1到40之间"
+
+#: cps/admin.py:1871
+msgid "Database Settings updated"
+msgstr "数据库设置已更新"
+
+#: cps/admin.py:1879
+msgid "Database Configuration"
+msgstr "数据库配置"
+
+#: cps/admin.py:1894 cps/web.py:1270
+msgid "Oops! Please complete all fields."
+msgstr "请填写所有字段！"
+
+#: cps/admin.py:1903
+msgid "E-mail is not from valid domain"
+msgstr "邮箱不在有效域中"
+
+#: cps/admin.py:1909
+msgid "Add new user"
+msgstr "添加新用户"
+
+#: cps/admin.py:1920
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "用户“%(user)s”已创建"
+
+#: cps/admin.py:1926
+msgid "Oops! An account already exists for this Email. or name."
+msgstr "使用此邮箱或用户名的账号已经存在"
+
+#: cps/admin.py:1956
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "用户“%(nick)s”已删除"
+
+#: cps/admin.py:1959
+msgid "Can't delete Guest User"
+msgstr "无法删除游客用户"
+
+#: cps/admin.py:1962
+msgid "No admin user remaining, can't delete user"
+msgstr "管理员账户不存在，无法删除用户"
+
+#: cps/admin.py:2017 cps/web.py:1445
+msgid "Email can't be empty and has to be a valid Email"
+msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
+
+#: cps/admin.py:2043
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "用户“%(nick)s”已更新"
+
+#: cps/converter.py:31
 msgid "not installed"
 msgstr "未安装"
 
-#: cps/converter.py:31
+#: cps/converter.py:32
 msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
-#: cps/db.py:674 cps/web.py:710 cps/web.py:1222
+#: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, python-format
-msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr "自定义列号：%(column)d在Calibre数据库中不存在"
+msgid "Custom Column No.%(column)d does not exist in calibre database"
+msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 
-#: cps/db.py:917 cps/templates/config_edit.html:204
+#: cps/db.py:993 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:551 cps/web.py:585 cps/web.py:646 cps/web.py:671 cps/web.py:1003
-#: cps/web.py:1032 cps/web.py:1066 cps/web.py:1093 cps/web.py:1132
+#: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
+#: cps/web.py:1003 cps/web.py:1048 cps/web.py:1076 cps/web.py:1115
 msgid "None"
 msgstr "无"
 
-#: cps/editbooks.py:295 cps/editbooks.py:297
-msgid "Book Format Successfully Deleted"
-msgstr "书籍格式已成功删除"
-
-#: cps/editbooks.py:304 cps/editbooks.py:306
-msgid "Book Successfully Deleted"
-msgstr "书籍已成功删除"
-
-#: cps/editbooks.py:358
-msgid "You are missing permissions to delete books"
-msgstr "您没有删除书籍的权限"
-
-#: cps/editbooks.py:373 cps/editbooks.py:765 cps/web.py:518 cps/web.py:1783
-#: cps/web.py:1825 cps/web.py:1870
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+#: cps/editbooks.py:120 cps/editbooks.py:908 cps/web.py:525 cps/web.py:1537
+#: cps/web.py:1581 cps/web.py:1626
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
-#: cps/editbooks.py:408
-msgid "edit metadata"
-msgstr "编辑元数据"
-
-#: cps/editbooks.py:457
-#, python-format
-msgid "%(seriesindex)s is not a valid number, skipping"
-msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
-
-#: cps/editbooks.py:493 cps/editbooks.py:1001
-#, python-format
-msgid "'%(langname)s' is not a valid language"
-msgstr "'%(langname)s' 不是一种有效语言"
-
-#: cps/editbooks.py:634
-msgid "User has no rights to upload additional file formats"
-msgstr "用户没有权限上传其他文件格式"
-
-#: cps/editbooks.py:639 cps/editbooks.py:1029
-#, python-format
-msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "不能上传文件扩展名为“%(ext)s”的文件到此服务器"
-
-#: cps/editbooks.py:643 cps/editbooks.py:1033
-msgid "File to be uploaded must have an extension"
-msgstr "要上传的文件必须具有扩展名"
-
-#: cps/editbooks.py:655
-#, python-format
-msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "创建路径 %(path)s 失败(权限拒绝)。"
-
-#: cps/editbooks.py:660
-#, python-format
-msgid "Failed to store file %(file)s."
-msgstr "保存文件 %(file)s 失败。"
-
-#: cps/editbooks.py:683
-#, python-format
-msgid "File format %(ext)s added to %(book)s"
-msgstr "已添加 %(ext)s 格式到 %(book)s"
-
-#: cps/editbooks.py:697 cps/editbooks.py:809
+#: cps/editbooks.py:164 cps/editbooks.py:1239
 msgid "User has no rights to upload cover"
 msgstr "用户没有权限上传封面"
 
-#: cps/editbooks.py:828
+#: cps/editbooks.py:184 cps/editbooks.py:729
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "标识符不区分大小写，覆盖旧标识符"
 
-#: cps/editbooks.py:869
+#: cps/editbooks.py:226
 msgid "Metadata successfully updated"
 msgstr "已成功更新元数据"
 
-#: cps/editbooks.py:887
+#: cps/editbooks.py:244
 msgid "Error editing book: {}"
 msgstr "编辑书籍时出错: {}"
 
-#: cps/editbooks.py:951
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "上传的书籍可能已经存在，建议修改后重新上传： "
-
-#: cps/editbooks.py:1041
-#, python-format
-msgid "File %(filename)s could not saved to temp dir"
-msgstr "文件 %(filename)s 无法保存到临时目录"
-
-#: cps/editbooks.py:1061
-#, python-format
-msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr "移动封面文件失败 %(file)s：%(error)s"
-
-#: cps/editbooks.py:1117
+#: cps/editbooks.py:301
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "文件 %(file)s 已上传"
 
-#: cps/editbooks.py:1143
+#: cps/editbooks.py:329
 msgid "Source or destination format for conversion missing"
-msgstr "转换的源或目的格式缺失"
+msgstr "转换的源格式或目的格式缺失"
 
-#: cps/editbooks.py:1151
+#: cps/editbooks.py:337
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "书籍已经被成功加入到 %(book_format)s 格式转换队列"
+msgstr "书籍已经被成功加入 %(book_format)s 格式转换队列"
 
-#: cps/editbooks.py:1155
+#: cps/editbooks.py:341
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书籍时出现错误： %(res)s"
 
+#: cps/editbooks.py:648
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr "上传的书籍可能已经存在，建议修改后重新上传： "
+
+#: cps/editbooks.py:703 cps/editbooks.py:1031
+#, python-format
+msgid "'%(langname)s' is not a valid language"
+msgstr "'%(langname)s' 不是一种有效语言"
+
+#: cps/editbooks.py:741 cps/editbooks.py:1179
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "不能上传文件扩展名为“%(ext)s”的文件到此服务器"
+
+#: cps/editbooks.py:745 cps/editbooks.py:1183
+msgid "File to be uploaded must have an extension"
+msgstr "要上传的文件必须具有扩展名"
+
+#: cps/editbooks.py:753
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr "文件 %(filename)s 无法保存到临时目录"
+
+#: cps/editbooks.py:773
+#, python-format
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr "移动封面文件失败 %(file)s：%(error)s"
+
+#: cps/editbooks.py:830 cps/editbooks.py:832
+msgid "Book Format Successfully Deleted"
+msgstr "书籍的此格式副本已成功删除"
+
+#: cps/editbooks.py:839 cps/editbooks.py:841
+msgid "Book Successfully Deleted"
+msgstr "书籍已成功删除"
+
+#: cps/editbooks.py:893
+msgid "You are missing permissions to delete books"
+msgstr "您没有删除书籍的权限"
+
+#: cps/editbooks.py:943
+msgid "edit metadata"
+msgstr "编辑元数据"
+
+#: cps/editbooks.py:992
+#, python-format
+msgid "%(seriesindex)s is not a valid number, skipping"
+msgstr "%(seriesindex)s 不是一个有效的数值，忽略"
+
+#: cps/editbooks.py:1174
+msgid "User has no rights to upload additional file formats"
+msgstr "用户没有权限上传其他文件格式"
+
+#: cps/editbooks.py:1195
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "创建路径 %(path)s 失败 (权限不足)"
+
+#: cps/editbooks.py:1200
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "保存文件 %(file)s 失败"
+
+#: cps/editbooks.py:1224
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "已添加 %(ext)s 格式到 %(book)s"
+
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Google Drive 设置未完成，请尝试停用并再次激活Google云端硬盘"
+msgstr "Google Drive 设置未完成，请尝试停用并再次激活 Google 云端硬盘"
 
 #: cps/gdrive.py:95
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "回调域名尚未被校验，请在google开发者控制台按步骤校验域名"
+msgstr "回调域名尚未被校验，请在 Google 开发者控制台按步骤校验域名"
 
 #: cps/helper.py:81
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "找不到id为 %(book)d 的书籍的 %(format)s 格式"
+msgstr "找不到 ID 为 %(book)d 的书籍的 %(format)s 格式"
 
-#: cps/helper.py:87 cps/tasks/convert.py:75
+#: cps/helper.py:88 cps/tasks/convert.py:75
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Google Drive %(fn)s 上找不到 %(format)s"
 
-#: cps/helper.py:92
+#: cps/helper.py:93
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "找不到 %(format)s：%(fn)s"
 
-#: cps/helper.py:97 cps/helper.py:221 cps/templates/detail.html:41
-#: cps/templates/detail.html:45
-msgid "Send to Kindle"
-msgstr "发送到Kindle"
+#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
+msgid "Send to eReader"
+msgstr "发送到电子阅读器"
 
-#: cps/helper.py:98 cps/helper.py:115 cps/helper.py:223
-msgid "This e-mail has been sent via Calibre-Web."
-msgstr "此邮件已经通过Calibre-Web发送。"
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:225
+msgid "This Email has been sent via Calibre-Web."
+msgstr "此邮件已经通过 Calibre-Web 发送"
 
-#: cps/helper.py:113
-msgid "Calibre-Web test e-mail"
-msgstr "Calibre-Web测试邮件"
+#: cps/helper.py:115
+msgid "Calibre-Web Test Email"
+msgstr "Calibre-Web 测试邮件"
 
-#: cps/helper.py:114
-msgid "Test e-mail"
+#: cps/helper.py:116
+msgid "Test Email"
 msgstr "测试邮件"
 
-#: cps/helper.py:131
+#: cps/helper.py:133
 msgid "Get Started with Calibre-Web"
-msgstr "开启Calibre-Web之旅"
+msgstr "开启 Calibre-Web 之旅"
 
-#: cps/helper.py:136
+#: cps/helper.py:138
 #, python-format
-msgid "Registration e-mail for user: %(name)s"
+msgid "Registration Email for user: %(name)s"
 msgstr "用户注册电子邮件：%(name)s"
 
-#: cps/helper.py:147 cps/helper.py:153
+#: cps/helper.py:149 cps/helper.py:155
 #, python-format
-msgid "Convert %(orig)s to %(format)s and send to Kindle"
-msgstr "转换 %(orig)s 到 %(format)s 并发送到Kindle"
+msgid "Convert %(orig)s to %(format)s and send to eReader"
+msgstr "转换 %(orig)s 到 %(format)s 并发送到电子阅读器"
 
-#: cps/helper.py:172 cps/helper.py:176 cps/helper.py:180
+#: cps/helper.py:174 cps/helper.py:178 cps/helper.py:182
 #, python-format
-msgid "Send %(format)s to Kindle"
-msgstr "发送 %(format)s 到Kindle"
+msgid "Send %(format)s to eReader"
+msgstr "发送 %(format)s 到电子阅读器"
 
-#: cps/helper.py:220 cps/tasks/convert.py:92
+#: cps/helper.py:222
 #, python-format
-msgid "%(book)s send to Kindle"
-msgstr "%(book)s发送到Kindle"
+msgid "%(book)s send to eReader"
+msgstr "%(book)s 发送到电子阅读器"
 
-#: cps/helper.py:225
+#: cps/helper.py:227
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "无法读取请求的文件。可能有错误的权限设置？"
 
-#: cps/helper.py:353
+#: cps/helper.py:342
 msgid "Read status could not set: {}"
 msgstr "阅读状态无法设置: {}"
 
-#: cps/helper.py:376
+#: cps/helper.py:365
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "删除书的文件夹%(id)s失败，路径有子文件夹：%(path)s"
+msgstr "删除书的文件夹 %(id)s 失败，路径有子文件夹：%(path)s"
 
-#: cps/helper.py:382
+#: cps/helper.py:371
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr "删除书籍 %(id)s失败：%(message)s"
+msgstr "删除书籍 %(id)s 失败：%(message)s"
 
-#: cps/helper.py:393
+#: cps/helper.py:382
 #, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无效： %(path)s"
 
-#: cps/helper.py:458
+#: cps/helper.py:447
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将作者从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:529 cps/helper.py:538
+#: cps/helper.py:519 cps/helper.py:528
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Google Drive上找不到文件 %(file)s"
+msgstr "Google Drive 上找不到文件 %(file)s"
 
-#: cps/helper.py:572
+#: cps/helper.py:562
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将标题从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:592
+#: cps/helper.py:582
 msgid "Error in rename file in path: {}"
 msgstr "重命名此路径: {}文件时出错"
 
-#: cps/helper.py:610
+#: cps/helper.py:600
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Google Drive上找不到书籍路径 %(path)s"
+msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:651 cps/web.py:1737
-msgid "Found an existing account for this e-mail address"
-msgstr "使用此邮箱的账号已经存在。"
+#: cps/helper.py:665
+msgid "Found an existing account for this Email address"
+msgstr "已存在使用此邮箱的账户"
 
-#: cps/helper.py:659
+#: cps/helper.py:673
 msgid "This username is already taken"
 msgstr "此用户名已被使用"
 
-#: cps/helper.py:669
-msgid "Invalid e-mail address format"
-msgstr "无效的邮件地址格式"
+#: cps/helper.py:685
+msgid "Invalid Email address format"
+msgstr "无效的邮箱格式"
 
-#: cps/helper.py:754
-msgid "Python modul 'advocate' is not installed but is needed for cover downloads"
-msgstr "下载封面必须的 Python 模块'advocate' 未安装"
+#: cps/helper.py:703
+msgid "Password doesn't comply with password validation rules"
+msgstr "密码不符合密码验证规则"
 
-#: cps/helper.py:767
+#: cps/helper.py:852
+msgid "Python module 'advocate' is not installed but is needed for cover uploads"
+msgstr "上传封面所需的 Python 模块 'advocate' 未安装"
+
+#: cps/helper.py:862
 msgid "Error Downloading Cover"
 msgstr "下载封面时出错"
 
-#: cps/helper.py:770
+#: cps/helper.py:865
 msgid "Cover Format Error"
 msgstr "封面格式出错"
 
-#: cps/helper.py:773
+#: cps/helper.py:868
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "您没有访问本地主机或本地网络进行封面上传"
 
-#: cps/helper.py:783
+#: cps/helper.py:878
 msgid "Failed to create path for cover"
 msgstr "创建封面路径失败"
 
-#: cps/helper.py:799
+#: cps/helper.py:894
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "封面文件不是有效的图片文件，或者无法存储"
+msgstr "封面文件不是有效的图片文件，或者无法存储它"
 
-#: cps/helper.py:810
+#: cps/helper.py:905
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "封面文件只支持jpg/jpeg/png/webp/bmp文件"
+msgstr "封面文件只支持 jpg、jpeg、png、webp、bmp 文件"
 
-#: cps/helper.py:822
+#: cps/helper.py:917
 msgid "Invalid cover file content"
 msgstr "封面文件内容无效"
 
-#: cps/helper.py:826
+#: cps/helper.py:921
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr "仅将jpg、jpeg文件作为封面文件"
+msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:878
+#: cps/helper.py:973
 msgid "Unrar binary file not found"
-msgstr "找不到Unrar执行文件"
+msgstr "找不到 Unrar 执行文件"
 
-#: cps/helper.py:889
-msgid "Error excecuting UnRar"
-msgstr "执行UnRar时出错"
+#: cps/helper.py:984
+msgid "Error executing UnRar"
+msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:937
-msgid "Waiting"
-msgstr "等待中"
+#: cps/helper.py:1077
+msgid "Cover"
+msgstr "封面"
 
-#: cps/helper.py:939
-msgid "Failed"
-msgstr "失败"
+#: cps/helper.py:1079 cps/templates/admin.html:216
+msgid "Queue all books for metadata backup"
+msgstr "将所有书籍加入元数据备份队列"
 
-#: cps/helper.py:941
-msgid "Started"
-msgstr "已开始"
-
-#: cps/helper.py:943
-msgid "Finished"
-msgstr "已完成"
-
-#: cps/helper.py:945
-msgid "Unknown Status"
-msgstr "未知状态"
-
-#: cps/kobo_auth.py:128
+#: cps/kobo_auth.py:90
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "请不要使用localhost访问Calibre-Web，以便Kobo设备能获取有效的api_endpoint"
+msgstr "请不要从 localhost 访问 Calibre-Web，以便 Kobo 设备能获取有效的 api_endpoint"
 
-#: cps/kobo_auth.py:154
+#: cps/kobo_auth.py:116
 msgid "Kobo Setup"
 msgstr "Kobo 设置"
 
@@ -795,54 +826,54 @@ msgstr "Kobo 设置"
 msgid "Register with %(provider)s"
 msgstr "使用 %(provider)s 注册"
 
-#: cps/oauth_bb.py:138 cps/remotelogin.py:130 cps/web.py:1613
+#: cps/oauth_bb.py:138 cps/remotelogin.py:130
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
+msgid "Success! You are now logged in as: %(nickname)s"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
 #: cps/oauth_bb.py:148
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr "链接到%(oauth)s成功"
+msgstr "链接到 %(oauth)s 成功"
 
 #: cps/oauth_bb.py:155
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "登录失败，没有用户与OAuth帐户关联"
+msgstr "登录失败，没有用户与 OAuth 帐户关联"
 
 #: cps/oauth_bb.py:197
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr "取消链接到%(oauth)s成功"
+msgstr "取消链接到 %(oauth)s 成功"
 
 #: cps/oauth_bb.py:202
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr "取消链接到%(oauth)s失败"
+msgstr "取消链接到 %(oauth)s 失败"
 
 #: cps/oauth_bb.py:205
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr "为连接到%(oauth)s"
+msgstr "未连接到 %(oauth)s"
 
 #: cps/oauth_bb.py:261
 msgid "Failed to log in with GitHub."
-msgstr "使用Github登录失败。"
+msgstr "使用 Github 登录失败"
 
 #: cps/oauth_bb.py:267
 msgid "Failed to fetch user info from GitHub."
-msgstr "从Github获取用户信息失败。"
+msgstr "从 Github 获取用户信息失败"
 
 #: cps/oauth_bb.py:279
 msgid "Failed to log in with Google."
-msgstr "使用Google登录失败。"
+msgstr "使用 Google 登录失败"
 
 #: cps/oauth_bb.py:285
 msgid "Failed to fetch user info from Google."
-msgstr "从Google获取用户信息失败。"
+msgstr "从 Google 获取用户信息失败"
 
 #: cps/oauth_bb.py:332
 msgid "GitHub Oauth error, please retry later."
-msgstr "GitHub Oauth 错误，请重试。"
+msgstr "GitHub Oauth 错误，请重试"
 
 #: cps/oauth_bb.py:335
 msgid "GitHub Oauth error: {}"
@@ -850,520 +881,624 @@ msgstr "GitHub Oauth 错误: {}"
 
 #: cps/oauth_bb.py:356
 msgid "Google Oauth error, please retry later."
-msgstr "Google Oauth 错误，请重试。"
+msgstr "Google Oauth 错误，请重试"
 
 #: cps/oauth_bb.py:359
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth 错误: {}"
 
-#: cps/opds.py:298
+#: cps/opds.py:274
 msgid "{} Stars"
 msgstr "{} 星"
 
-#: cps/remotelogin.py:62 cps/templates/layout.html:84
-#: cps/templates/login.html:4 cps/templates/login.html:21 cps/web.py:1662
+#: cps/remotelogin.py:62 cps/templates/layout.html:67
+#: cps/templates/layout.html:101 cps/templates/login.html:4
+#: cps/templates/login.html:21 cps/web.py:1333
 msgid "Login"
 msgstr "登录"
 
 #: cps/remotelogin.py:74 cps/remotelogin.py:108
 msgid "Token not found"
-msgstr "找不到Token"
+msgstr "找不到令牌"
 
 #: cps/remotelogin.py:83 cps/remotelogin.py:116
 msgid "Token has expired"
-msgstr "Token已过期"
+msgstr "令牌已过期"
 
 #: cps/remotelogin.py:92
 msgid "Success! Please return to your device"
 msgstr "成功！请返回您的设备"
 
-#: cps/render_template.py:41 cps/web.py:407
+#: cps/render_template.py:42 cps/web.py:414
 msgid "Books"
 msgstr "书籍"
 
-#: cps/render_template.py:43
+#: cps/render_template.py:44
 msgid "Show recent books"
-msgstr "显示最近书籍"
+msgstr "显示最近查看的书籍"
 
-#: cps/render_template.py:44 cps/templates/index.xml:25
+#: cps/render_template.py:45 cps/templates/index.xml:26
 msgid "Hot Books"
 msgstr "热门书籍"
 
-#: cps/render_template.py:46
+#: cps/render_template.py:47
 msgid "Show Hot Books"
 msgstr "显示热门书籍"
 
-#: cps/render_template.py:48 cps/render_template.py:53
+#: cps/render_template.py:49 cps/render_template.py:54
 msgid "Downloaded Books"
-msgstr "下载历史"
+msgstr "已下载书籍"
 
-#: cps/render_template.py:50 cps/render_template.py:55
+#: cps/render_template.py:51 cps/render_template.py:56
 #: cps/templates/user_table.html:167
 msgid "Show Downloaded Books"
 msgstr "显示下载过的书籍"
 
-#: cps/render_template.py:58 cps/templates/index.xml:32 cps/web.py:422
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
 msgid "Top Rated Books"
 msgstr "最高评分书籍"
 
-#: cps/render_template.py:60 cps/templates/user_table.html:161
+#: cps/render_template.py:61 cps/templates/user_table.html:161
 msgid "Show Top Rated Books"
 msgstr "显示最高评分书籍"
 
-#: cps/render_template.py:61 cps/templates/index.xml:54
-#: cps/templates/index.xml:58 cps/web.py:729
+#: cps/render_template.py:62 cps/templates/index.xml:55
+#: cps/templates/index.xml:59 cps/web.py:750
 msgid "Read Books"
 msgstr "已读书籍"
 
-#: cps/render_template.py:63
-msgid "Show read and unread"
-msgstr "显示阅读状态"
+#: cps/render_template.py:64
+msgid "Show Read and Unread"
+msgstr "显示已读或未读状态"
 
-#: cps/render_template.py:65 cps/templates/index.xml:61
-#: cps/templates/index.xml:65 cps/web.py:732
+#: cps/render_template.py:66 cps/templates/index.xml:62
+#: cps/templates/index.xml:66 cps/web.py:753
 msgid "Unread Books"
 msgstr "未读书籍"
 
-#: cps/render_template.py:67
+#: cps/render_template.py:68
 msgid "Show unread"
 msgstr "显示未读"
 
-#: cps/render_template.py:68
+#: cps/render_template.py:69
 msgid "Discover"
 msgstr "发现"
 
-#: cps/render_template.py:70 cps/templates/index.xml:50
-#: cps/templates/user_table.html:162
+#: cps/render_template.py:71 cps/templates/index.xml:51
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
 msgstr "显示随机书籍"
 
-#: cps/render_template.py:71 cps/templates/book_table.html:67
-#: cps/templates/index.xml:83 cps/web.py:1135
+#: cps/render_template.py:72 cps/templates/book_table.html:67
+#: cps/templates/index.xml:84 cps/web.py:1119
 msgid "Categories"
 msgstr "分类"
 
-#: cps/render_template.py:73 cps/templates/user_table.html:158
-msgid "Show category selection"
-msgstr "显示分类选择"
+#: cps/render_template.py:74 cps/templates/user_table.html:158
+msgid "Show Category Section"
+msgstr "显示分类栏目"
 
-#: cps/render_template.py:74 cps/templates/book_edit.html:90
-#: cps/templates/book_table.html:68 cps/templates/index.xml:90
-#: cps/templates/search_form.html:69 cps/web.py:1034 cps/web.py:1041
+#: cps/render_template.py:75 cps/templates/book_edit.html:91
+#: cps/templates/book_table.html:68 cps/templates/index.xml:91
+#: cps/templates/search_form.html:70 cps/web.py:1009 cps/web.py:1021
 msgid "Series"
 msgstr "丛书"
 
-#: cps/render_template.py:76 cps/templates/user_table.html:157
-msgid "Show series selection"
-msgstr "显示丛书选择"
+#: cps/render_template.py:77 cps/templates/user_table.html:157
+msgid "Show Series Section"
+msgstr "显示丛书栏目"
 
-#: cps/render_template.py:77 cps/templates/book_table.html:66
-#: cps/templates/index.xml:69
+#: cps/render_template.py:78 cps/templates/book_table.html:66
+#: cps/templates/index.xml:70
 msgid "Authors"
 msgstr "作者"
 
-#: cps/render_template.py:79 cps/templates/user_table.html:160
-msgid "Show author selection"
-msgstr "显示作者选择"
+#: cps/render_template.py:80 cps/templates/user_table.html:160
+msgid "Show Author Section"
+msgstr "显示作者栏目"
 
-#: cps/render_template.py:81 cps/templates/book_table.html:72
-#: cps/templates/index.xml:76 cps/web.py:1006
+#: cps/render_template.py:82 cps/templates/book_table.html:72
+#: cps/templates/index.xml:77 cps/web.py:977
 msgid "Publishers"
 msgstr "出版社"
 
-#: cps/render_template.py:83 cps/templates/user_table.html:163
-msgid "Show publisher selection"
-msgstr "显示出版社选择"
+#: cps/render_template.py:84 cps/templates/user_table.html:163
+msgid "Show Publisher Section"
+msgstr "显示出版社栏目"
 
-#: cps/render_template.py:84 cps/templates/book_table.html:70
-#: cps/templates/index.xml:97 cps/templates/search_form.html:107
-#: cps/web.py:1108
+#: cps/render_template.py:85 cps/templates/book_table.html:70
+#: cps/templates/index.xml:98 cps/templates/search_form.html:108
+#: cps/web.py:1091
 msgid "Languages"
 msgstr "语言"
 
-#: cps/render_template.py:87 cps/templates/user_table.html:155
-msgid "Show language selection"
-msgstr "显示语言选择"
+#: cps/render_template.py:88 cps/templates/user_table.html:155
+msgid "Show Language Section"
+msgstr "显示语言栏目"
 
-#: cps/render_template.py:88 cps/templates/index.xml:104
+#: cps/render_template.py:89 cps/templates/index.xml:105
 msgid "Ratings"
 msgstr "评分"
 
-#: cps/render_template.py:90 cps/templates/user_table.html:164
-msgid "Show ratings selection"
-msgstr "显示评分选择"
+#: cps/render_template.py:91 cps/templates/user_table.html:164
+msgid "Show Ratings Section"
+msgstr "显示评分栏目"
 
-#: cps/render_template.py:91 cps/templates/index.xml:112
+#: cps/render_template.py:92 cps/templates/index.xml:113
 msgid "File formats"
 msgstr "文件格式"
 
-#: cps/render_template.py:93 cps/templates/user_table.html:165
-msgid "Show file formats selection"
-msgstr "显示文件格式选择"
+#: cps/render_template.py:94 cps/templates/user_table.html:165
+msgid "Show File Formats Section"
+msgstr "显示文件格式栏目"
 
-#: cps/render_template.py:95 cps/web.py:755
+#: cps/render_template.py:96 cps/web.py:776
 msgid "Archived Books"
 msgstr "归档书籍"
 
-#: cps/render_template.py:97 cps/templates/user_table.html:166
-msgid "Show archived books"
+#: cps/render_template.py:98 cps/templates/user_table.html:166
+msgid "Show Archived Books"
 msgstr "显示归档书籍"
 
-#: cps/render_template.py:100 cps/web.py:837
+#: cps/render_template.py:101 cps/web.py:807
 msgid "Books List"
 msgstr "书籍列表"
 
-#: cps/render_template.py:102 cps/templates/user_table.html:168
+#: cps/render_template.py:103 cps/templates/user_table.html:168
 msgid "Show Books List"
 msgstr "显示书籍列表"
 
-#: cps/shelf.py:67 cps/shelf.py:121
-msgid "Invalid shelf specified"
-msgstr "指定的书架无效"
-
-#: cps/shelf.py:73
-msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "对不起，您没有添加书籍到这个书架的权限"
-
-#: cps/shelf.py:82
-#, python-format
-msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "此书籍已经是书架 %(shelfname)s 的一部分"
-
-#: cps/shelf.py:107
-#, python-format
-msgid "Book has been added to shelf: %(sname)s"
-msgstr "此书籍已被添加到书架：%(sname)s"
-
-#: cps/shelf.py:126
-msgid "You are not allowed to add a book to the shelf"
-msgstr "您没有向书架添加书籍的权限"
-
-#: cps/shelf.py:144
-#, python-format
-msgid "Books are already part of the shelf: %(name)s"
-msgstr "书籍已经在书架 %(name)s 中了"
-
-#: cps/shelf.py:156
-#, python-format
-msgid "Books have been added to shelf: %(sname)s"
-msgstr "书籍已经被添加到书架 %(sname)s 中"
-
-#: cps/shelf.py:163
-#, python-format
-msgid "Could not add books to shelf: %(sname)s"
-msgstr "无法添加书籍到书架：%(sname)s"
-
-#: cps/shelf.py:209
-#, python-format
-msgid "Book has been removed from shelf: %(sname)s"
-msgstr "此书已从书架 %(sname)s 中删除"
-
-#: cps/shelf.py:218
-msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr "抱歉，您没有从这个书架删除书籍的权限"
-
-#: cps/shelf.py:228 cps/templates/layout.html:140
-msgid "Create a Shelf"
-msgstr "创建书架"
-
-#: cps/shelf.py:236
-msgid "Sorry you are not allowed to edit this shelf"
-msgstr "对不起，您没有编辑这个书架的权限"
-
-#: cps/shelf.py:238
-msgid "Edit a shelf"
-msgstr "编辑书架"
-
-#: cps/shelf.py:248
-msgid "Sorry you are not allowed to create a public shelf"
-msgstr "抱歉，您没有创建公开书架的权限"
-
-#: cps/shelf.py:265
-#, python-format
-msgid "Shelf %(title)s created"
-msgstr "书架 %(title)s 已创建"
-
-#: cps/shelf.py:268
-#, python-format
-msgid "Shelf %(title)s changed"
-msgstr "书架 %(title)s 已修改"
-
-#: cps/shelf.py:282
-msgid "There was an error"
-msgstr "发生错误"
-
-#: cps/shelf.py:304
-#, python-format
-msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "公共书架：%(title)s已经存在已经存在。"
-
-#: cps/shelf.py:315
-#, python-format
-msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "私有书架：%(title)s已经存在已经存在。"
-
-#: cps/shelf.py:337
-msgid "Error deleting Shelf"
-msgstr "删除书架时出错"
-
-#: cps/shelf.py:339
-msgid "Shelf successfully deleted"
-msgstr "书架已成功删除"
-
-#: cps/shelf.py:389
-#, python-format
-msgid "Change order of Shelf: '%(name)s'"
-msgstr "修改书架 %(name)s 顺序"
-
-#: cps/shelf.py:461
-#, python-format
-msgid "Shelf: '%(name)s'"
-msgstr "书架：%(name)s"
-
-#: cps/shelf.py:465
-msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "打开书架出错。书架不存在或不可访问"
-
-#: cps/updater.py:426 cps/updater.py:437 cps/updater.py:538 cps/updater.py:553
-msgid "Unexpected data while reading update information"
-msgstr "读取更新信息时出现意外数据"
-
-#: cps/updater.py:433 cps/updater.py:545
-msgid "No update available. You already have the latest version installed"
-msgstr "无可用更新。您已经安装了最新版本"
-
-#: cps/updater.py:451
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "有新的更新。单击下面的按钮以更新到最新版本。"
-
-#: cps/updater.py:469
-msgid "Could not fetch update information"
-msgstr "无法获取更新信息"
-
-#: cps/updater.py:479
-msgid "Click on the button below to update to the latest stable version."
-msgstr "点击下面按钮更新到最新稳定版本。"
-
-#: cps/updater.py:488 cps/updater.py:502 cps/updater.py:513
-#, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "有新的更新。单击下面的按钮以更新到版本: %(version)s"
-
-#: cps/updater.py:531
-msgid "No release information available"
-msgstr "无可用发布信息"
-
-#: cps/templates/index.html:5 cps/web.py:434
-msgid "Discover (Random Books)"
-msgstr "发现(随机书籍)"
-
-#: cps/web.py:470
-msgid "Hot Books (Most Downloaded)"
-msgstr "热门书籍（最多下载）"
-
-#: cps/web.py:501
-#, python-format
-msgid "Downloaded books by %(user)s"
-msgstr "%(user)s 下载过的书籍"
-
-#: cps/web.py:534
-#, python-format
-msgid "Author: %(name)s"
-msgstr "作者：%(name)s"
-
-#: cps/web.py:570
-#, python-format
-msgid "Publisher: %(name)s"
-msgstr "出版社：%(name)s"
-
-#: cps/web.py:598
-#, python-format
-msgid "Series: %(serie)s"
-msgstr "丛书：%(serie)s"
-
-#: cps/web.py:610
-#, python-format
-msgid "Rating: %(rating)s stars"
-msgstr "评分：%(rating)s 星"
-
-#: cps/web.py:626
-#, python-format
-msgid "File format: %(format)s"
-msgstr "文件格式：%(format)s"
-
-#: cps/web.py:663
-#, python-format
-msgid "Category: %(name)s"
-msgstr "分类：%(name)s"
-
-#: cps/web.py:690
-#, python-format
-msgid "Language: %(name)s"
-msgstr "语言：%(name)s"
-
-#: cps/templates/layout.html:56 cps/web.py:789 cps/web.py:1444
-msgid "Advanced Search"
-msgstr "高级搜索"
-
-#: cps/templates/book_edit.html:235 cps/templates/feed.xml:33
-#: cps/templates/index.xml:11 cps/templates/layout.html:45
-#: cps/templates/layout.html:48 cps/templates/search_form.html:226
-#: cps/web.py:807 cps/web.py:1164
+#: cps/search.py:48 cps/search.py:399 cps/templates/book_edit.html:236
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
+#: cps/templates/search_form.html:227
 msgid "Search"
 msgstr "搜索"
 
-#: cps/templates/admin.html:16 cps/web.py:979
-msgid "Downloads"
-msgstr "下载次数"
-
-#: cps/web.py:1068
-msgid "Ratings list"
-msgstr "评分列表"
-
-#: cps/web.py:1095
-msgid "File formats list"
-msgstr "文件格式列表"
-
-#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:1149
-msgid "Tasks"
-msgstr "任务列表"
-
-#: cps/web.py:1286
+#: cps/search.py:188
 msgid "Published after "
 msgstr "出版时间晚于 "
 
-#: cps/web.py:1293
+#: cps/search.py:195
 msgid "Published before "
 msgstr "出版时间早于 "
 
-#: cps/web.py:1315
+#: cps/search.py:217
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "评分 <= %(rating)s"
 
-#: cps/web.py:1317
+#: cps/search.py:219
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "评分 >= %(rating)s"
 
-#: cps/web.py:1319
-#, python-format
-msgid "Read Status = %(status)s"
+#: cps/search.py:221
+#, fuzzy, python-format
+msgid "Read Status = '%(status)s'"
 msgstr "阅读状态 = %(status)s"
 
-#: cps/web.py:1425
+#: cps/search.py:324
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "搜索自定义列时出错，请重启 Calibre-Web"
+msgstr "搜索自定义栏目时出错，请重启 Calibre-Web"
 
-#: cps/web.py:1527
-#, python-format
-msgid "Book successfully queued for sending to %(kindlemail)s"
-msgstr "书籍已经成功加入 %(kindlemail)s 的发送队列"
+#: cps/search.py:343 cps/search.py:375 cps/templates/layout.html:57
+msgid "Advanced Search"
+msgstr "高级搜索"
 
-#: cps/web.py:1531
+#: cps/shelf.py:49 cps/shelf.py:103
+msgid "Invalid shelf specified"
+msgstr "指定的书架无效"
+
+#: cps/shelf.py:55
+msgid "Sorry you are not allowed to add a book to that shelf"
+msgstr "对不起，您没有添加书籍到这个书架的权限"
+
+#: cps/shelf.py:64
 #, python-format
-msgid "Oops! There was an error sending this book: %(res)s"
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "此书籍已经是书架 %(shelfname)s 的一部分"
+
+#: cps/shelf.py:89
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "此书籍已被添加到书架：%(sname)s"
+
+#: cps/shelf.py:108
+msgid "You are not allowed to add a book to the shelf"
+msgstr "您没有向书架添加书籍的权限"
+
+#: cps/shelf.py:126
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "书籍已经在书架 %(name)s 中了"
+
+#: cps/shelf.py:138
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "书籍已经被添加到书架 %(sname)s 中"
+
+#: cps/shelf.py:145
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "无法添加书籍到书架：%(sname)s"
+
+#: cps/shelf.py:191
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "此书已从书架 %(sname)s 中删除"
+
+#: cps/shelf.py:200
+msgid "Sorry you are not allowed to remove a book from this shelf"
+msgstr "抱歉，您没有从这个书架删除书籍的权限"
+
+#: cps/shelf.py:210 cps/templates/layout.html:157
+msgid "Create a Shelf"
+msgstr "创建书架"
+
+#: cps/shelf.py:218
+msgid "Sorry you are not allowed to edit this shelf"
+msgstr "对不起，您没有编辑这个书架的权限"
+
+#: cps/shelf.py:220
+msgid "Edit a shelf"
+msgstr "编辑书架"
+
+#: cps/shelf.py:229
+msgid "Error deleting Shelf"
+msgstr "删除书架时出错"
+
+#: cps/shelf.py:231
+msgid "Shelf successfully deleted"
+msgstr "书架已成功删除"
+
+#: cps/shelf.py:281
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "修改书架 %(name)s 顺序"
+
+#: cps/shelf.py:316
+msgid "Sorry you are not allowed to create a public shelf"
+msgstr "抱歉，您没有创建公开书架的权限"
+
+#: cps/shelf.py:333
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "书架 %(title)s 已创建"
+
+#: cps/shelf.py:336
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "书架 %(title)s 已修改"
+
+#: cps/shelf.py:350
+msgid "There was an error"
+msgstr "发生错误"
+
+#: cps/shelf.py:372
+#, python-format
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr "公共书架：%(title)s 已经存在已经存在"
+
+#: cps/shelf.py:383
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr "私有书架：%(title)s 已经存在已经存在"
+
+#: cps/shelf.py:465
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "书架：%(name)s"
+
+#: cps/shelf.py:469
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "打开书架出错。书架不存在或不可访问"
+
+#: cps/tasks_status.py:46 cps/templates/layout.html:88
+#: cps/templates/tasks.html:7
+msgid "Tasks"
+msgstr "任务列表"
+
+#: cps/tasks_status.py:62
+msgid "Waiting"
+msgstr "等待中"
+
+#: cps/tasks_status.py:64
+msgid "Failed"
+msgstr "失败"
+
+#: cps/tasks_status.py:66
+msgid "Started"
+msgstr "已开始"
+
+#: cps/tasks_status.py:68
+msgid "Finished"
+msgstr "已完成"
+
+#: cps/tasks_status.py:70
+msgid "Ended"
+msgstr "已结束"
+
+#: cps/tasks_status.py:72
+msgid "Cancelled"
+msgstr "已取消"
+
+#: cps/tasks_status.py:74
+msgid "Unknown Status"
+msgstr "未知状态"
+
+#: cps/updater.py:431 cps/updater.py:442 cps/updater.py:543 cps/updater.py:558
+msgid "Unexpected data while reading update information"
+msgstr "读取更新信息时出现异常数据"
+
+#: cps/updater.py:438 cps/updater.py:550
+msgid "No update available. You already have the latest version installed"
+msgstr "无可用更新。您已经安装了最新版本"
+
+#: cps/updater.py:456
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "有新的更新。单击下面的按钮以更新到最新版本"
+
+#: cps/updater.py:474
+msgid "Could not fetch update information"
+msgstr "无法获取更新信息"
+
+#: cps/updater.py:484
+msgid "Click on the button below to update to the latest stable version."
+msgstr "点击下面按钮更新到最新稳定版本"
+
+#: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "有新的更新。单击下面的按钮以更新到版本: %(version)s"
+
+#: cps/updater.py:536
+msgid "No release information available"
+msgstr "无可用发布信息"
+
+#: cps/templates/index.html:6 cps/web.py:441
+msgid "Discover (Random Books)"
+msgstr "发现 (随机书籍)"
+
+#: cps/web.py:477
+msgid "Hot Books (Most Downloaded)"
+msgstr "热门书籍（最多下载）"
+
+#: cps/web.py:508
+#, python-format
+msgid "Downloaded books by %(user)s"
+msgstr "%(user)s 下载过的书籍"
+
+#: cps/web.py:541
+#, python-format
+msgid "Author: %(name)s"
+msgstr "作者：%(name)s"
+
+#: cps/web.py:577
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "出版社：%(name)s"
+
+#: cps/web.py:605
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "丛书：%(serie)s"
+
+#: cps/web.py:620
+msgid "Rating: None"
+msgstr "评分：无"
+
+#: cps/web.py:629
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr "评分：%(rating)s 星"
+
+#: cps/web.py:645
+#, python-format
+msgid "File format: %(format)s"
+msgstr "文件格式：%(format)s"
+
+#: cps/web.py:682
+#, python-format
+msgid "Category: %(name)s"
+msgstr "分类：%(name)s"
+
+#: cps/web.py:711
+#, python-format
+msgid "Language: %(name)s"
+msgstr "语言：%(name)s"
+
+#: cps/templates/admin.html:16 cps/web.py:949
+msgid "Downloads"
+msgstr "下载次数"
+
+#: cps/web.py:1051
+msgid "Ratings list"
+msgstr "评分列表"
+
+#: cps/web.py:1078
+msgid "File formats list"
+msgstr "文件格式列表"
+
+#: cps/web.py:1233
+msgid "Please configure the SMTP mail settings first..."
+msgstr "请先配置 SMTP 邮箱设置..."
+
+#: cps/web.py:1240
+#, python-format
+msgid "Success! Book queued for sending to %(eReadermail)s"
+msgstr "书籍已经成功加入 %(eReadermail)s 的发送队列"
+
+#: cps/web.py:1243
+#, python-format
+msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
-#: cps/web.py:1533
-msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "请先配置您的kindle邮箱。"
+#: cps/web.py:1245
+msgid "Oops! Please update your profile with a valid eReader Email."
+msgstr "请先配置您的 Kindle 邮箱"
 
-#: cps/web.py:1550
-msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr "邮件服务未配置，请联系网站管理员！"
+#: cps/web.py:1261
+msgid "Please wait one minute to register next user"
+msgstr "请等待一分钟注册下一个用户"
 
-#: cps/templates/layout.html:85 cps/templates/register.html:17 cps/web.py:1551
-#: cps/web.py:1558 cps/web.py:1564 cps/web.py:1583 cps/web.py:1587
-#: cps/web.py:1593
+#: cps/templates/layout.html:68 cps/templates/layout.html:102
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1262
+#: cps/web.py:1267 cps/web.py:1271 cps/web.py:1277 cps/web.py:1297
+#: cps/web.py:1301 cps/web.py:1314 cps/web.py:1317
 msgid "Register"
 msgstr "注册"
 
-#: cps/web.py:1585
-msgid "Your e-mail is not allowed to register"
+#: cps/web.py:1266 cps/web.py:1313
+msgid "Oops! Email server is not configured, please contact your administrator."
+msgstr "邮件服务未配置，请联系网站管理员！"
+
+#: cps/web.py:1299
+msgid "Oops! Your Email is not allowed."
 msgstr "您的电子邮件不允许注册"
 
-#: cps/web.py:1588
-msgid "Confirmation e-mail was send to your e-mail account."
-msgstr "确认邮件已经发送到您的邮箱。"
+#: cps/web.py:1302
+msgid "Success! Confirmation Email has been sent."
+msgstr "确认邮件已经发送到您的邮箱"
 
-#: cps/web.py:1602
+#: cps/web.py:1348 cps/web.py:1366
 msgid "Cannot activate LDAP authentication"
-msgstr "无法激活LDAP认证"
+msgstr "无法激活 LDAP 认证"
 
-#: cps/web.py:1621
+#: cps/web.py:1360
+msgid "Please wait one minute before next login"
+msgstr "下次登录前请等待一分钟"
+
+#: cps/web.py:1376
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "您现在已以“%(nickname)s”身份登录"
+
+#: cps/web.py:1383
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "后备登录“%(nickname)s”：无法访问LDAP服务器，或用户未知"
+msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
-#: cps/web.py:1627
+#: cps/web.py:1388
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "无法登录：%(message)s"
 
-#: cps/web.py:1631 cps/web.py:1656
+#: cps/web.py:1392 cps/web.py:1417
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:1638
+#: cps/web.py:1399
 msgid "New Password was send to your email address"
 msgstr "新密码已发送到您的邮箱"
 
-#: cps/web.py:1644
+#: cps/web.py:1403
+msgid "An unknown error occurred. Please try again later."
+msgstr "发生一个未知错误，请稍后再试"
+
+#: cps/web.py:1405
 msgid "Please enter valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
-#: cps/web.py:1651
+#: cps/web.py:1413
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "您现在已以“%(nickname)s”登录"
+msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1717 cps/web.py:1766
+#: cps/web.py:1471 cps/web.py:1521
 #, python-format
-msgid "%(name)s's profile"
+msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
-#: cps/web.py:1733
-msgid "Profile updated"
+#: cps/web.py:1487
+msgid "Success! Profile Updated"
 msgstr "资料已更新"
+
+#: cps/web.py:1491
+msgid "Oops! An account already exists for this Email."
+msgstr "使用此邮箱的账号已经存在"
 
 #: cps/services/gmail.py:58
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "找不到包含 OAuth 信息的有效 gmail.json 文件"
 
-#: cps/tasks/convert.py:154
+#: cps/tasks/convert.py:92
+#, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s 发送到电子阅读器"
+
+#: cps/tasks/convert.py:153
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr "Calibre 电子书转换器%(tool)s没有发现"
+msgstr "Calibre 电子书转换器 %(tool)s 没有发现"
 
-#: cps/tasks/convert.py:187
+#: cps/tasks/convert.py:186
 #, python-format
 msgid "%(format)s format not found on disk"
 msgstr "硬盘上找不到 %(format)s 格式"
 
-#: cps/tasks/convert.py:191
+#: cps/tasks/convert.py:190
 msgid "Ebook converter failed with unknown error"
 msgstr "发生未知错误，书籍转换失败"
 
-#: cps/tasks/convert.py:201
+#: cps/tasks/convert.py:202
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify 转换失败：%(error)s"
 
-#: cps/tasks/convert.py:223
+#: cps/tasks/convert.py:224
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "找不到转换后的文件或文件夹%(folder)s中有多个文件"
+msgstr "找不到转换后的文件或文件夹 %(folder)s 中有多个文件"
 
-#: cps/tasks/convert.py:246
+#: cps/tasks/convert.py:247
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "电子书转换器失败： %(error)s"
 
-#: cps/tasks/convert.py:269
+#: cps/tasks/convert.py:270
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Calibre 运行失败，错误信息：%(error)s"
+
+#: cps/tasks/convert.py:275
+msgid "Convert"
+msgstr "转换"
+
+#: cps/tasks/database.py:28
+msgid "Reconnecting Calibre database"
+msgstr "正在重新连接到 Calibre 数据库"
+
+#: cps/tasks/mail.py:269
+msgid "E-mail"
+msgstr "电子邮件"
+
+#: cps/tasks/metadata_backup.py:46
+msgid "Backing up Metadata"
+msgstr "正在备份元数据"
+
+#: cps/tasks/thumbnail.py:96
+#, python-format
+msgid "Generated %(count)s cover thumbnails"
+msgstr "生成了 %(count)s 个封面缩略图"
+
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
+msgid "Cover Thumbnails"
+msgstr "封面缩略图"
+
+#: cps/tasks/thumbnail.py:289
+msgid "Generated {0} series thumbnails"
+msgstr "生成了 %(count)s 个丛书缩略图"
+
+#: cps/tasks/thumbnail.py:454
+msgid "Clearing cover thumbnail cache"
+msgstr "正在清理封面缩略图缓存"
+
+#: cps/tasks/upload.py:38 cps/templates/admin.html:20
+#: cps/templates/layout.html:81 cps/templates/user_table.html:145
+msgid "Upload"
+msgstr "上传书籍"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1377,14 +1512,14 @@ msgstr "用户名"
 
 #: cps/templates/admin.html:14 cps/templates/register.html:14
 #: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "E-mail Address"
+msgid "Email"
 msgstr "邮箱地址"
 
 #: cps/templates/admin.html:15 cps/templates/user_edit.html:28
-msgid "Send to Kindle E-mail Address"
-msgstr "接收书籍的Kindle邮箱地址"
+msgid "Send to eReader Email"
+msgstr "接收书籍的电子阅读器邮箱地址"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:76
+#: cps/templates/admin.html:17 cps/templates/layout.html:91
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "管理权限"
@@ -1394,13 +1529,8 @@ msgstr "管理权限"
 msgid "Password"
 msgstr "密码"
 
-#: cps/templates/admin.html:20 cps/templates/layout.html:66
-#: cps/templates/user_table.html:145
-msgid "Upload"
-msgstr "上传书籍"
-
-#: cps/templates/admin.html:22 cps/templates/detail.html:18
-#: cps/templates/detail.html:27 cps/templates/shelf.html:7
+#: cps/templates/admin.html:22 cps/templates/detail.html:20
+#: cps/templates/detail.html:33 cps/templates/shelf.html:8
 #: cps/templates/user_table.html:146
 msgid "Download"
 msgstr "下载书籍"
@@ -1414,7 +1544,7 @@ msgstr "查看书籍"
 msgid "Edit"
 msgstr "编辑书籍"
 
-#: cps/templates/admin.html:25 cps/templates/book_edit.html:16
+#: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:100 cps/templates/modal_dialogs.html:63
 #: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
 #: cps/templates/user_table.html:149
@@ -1425,25 +1555,21 @@ msgstr "删除数据"
 msgid "Public Shelf"
 msgstr "公共书架"
 
-#: cps/templates/admin.html:53
-msgid "Add New User"
-msgstr "添加新用户"
-
 #: cps/templates/admin.html:55
 msgid "Import LDAP Users"
-msgstr "导入LDAP用户"
+msgstr "导入 LDAP 用户"
 
 #: cps/templates/admin.html:62
-msgid "E-mail Server Settings"
-msgstr "SMTP邮件服务器设置"
+msgid "Email Server Settings"
+msgstr "SMTP 邮件服务器设置"
 
 #: cps/templates/admin.html:67 cps/templates/email_edit.html:31
 msgid "SMTP Hostname"
-msgstr "SMTP主机名"
+msgstr "SMTP 主机名"
 
 #: cps/templates/admin.html:71 cps/templates/email_edit.html:35
 msgid "SMTP Port"
-msgstr "SMTP端口"
+msgstr "SMTP 端口"
 
 #: cps/templates/admin.html:75 cps/templates/email_edit.html:39
 msgid "Encryption"
@@ -1451,20 +1577,20 @@ msgstr "加密"
 
 #: cps/templates/admin.html:79 cps/templates/email_edit.html:47
 msgid "SMTP Login"
-msgstr "SMTP用户名"
+msgstr "SMTP 用户名"
 
 #: cps/templates/admin.html:83 cps/templates/admin.html:94
 #: cps/templates/email_edit.html:55
-msgid "From E-mail"
+msgid "From Email"
 msgstr "发件人邮箱"
 
 #: cps/templates/admin.html:90
-msgid "E-Mail Service"
+msgid "Email Service"
 msgstr "电子邮件服务"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
-msgstr "通过Oauth2的Gmail"
+msgstr "使用 Oauth2 的 Gmail"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
@@ -1516,7 +1642,7 @@ msgstr "反向代理头部名称"
 
 #: cps/templates/admin.html:159
 msgid "Edit Calibre Database Configuration"
-msgstr "编辑Calibre数据库配置"
+msgstr "编辑 Calibre 数据库配置"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
@@ -1526,78 +1652,109 @@ msgstr "编辑基本配置"
 msgid "Edit UI Configuration"
 msgstr "编辑界面配置"
 
-#: cps/templates/admin.html:166
+#: cps/templates/admin.html:167
+msgid "Scheduled Tasks"
+msgstr "计划任务"
+
+#: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
+msgid "Start Time"
+msgstr "任务开始运行的时间"
+
+#: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
+msgid "Maximum Duration"
+msgstr "最长任务持续时间"
+
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
+msgid "Generate Thumbnails"
+msgstr "生成书籍封面缩略图"
+
+#: cps/templates/admin.html:182
+msgid "Generate series cover thumbnails"
+msgstr "生成丛书封面缩略图"
+
+#: cps/templates/admin.html:186 cps/templates/admin.html:208
+#: cps/templates/schedule_edit.html:37
+msgid "Reconnect Calibre Database"
+msgstr "重新连接到 Calibre 库"
+
+#: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
+msgid "Generate Metadata Backup Files"
+msgstr "生成元数据备份文件"
+
+#: cps/templates/admin.html:197
+msgid "Refresh Thumbnail Cache"
+msgstr "刷新封面缩略图缓存"
+
+#: cps/templates/admin.html:203
 msgid "Administration"
 msgstr "管理"
 
-#: cps/templates/admin.html:167
+#: cps/templates/admin.html:204
 msgid "Download Debug Package"
-msgstr "下载Debug包"
+msgstr "下载 Debug 包"
 
-#: cps/templates/admin.html:168
+#: cps/templates/admin.html:205
 msgid "View Logs"
 msgstr "查看日志文件"
 
-#: cps/templates/admin.html:171
-msgid "Reconnect Calibre Database"
-msgstr "重新连接到Calibre数据库"
-
-#: cps/templates/admin.html:172
+#: cps/templates/admin.html:211
 msgid "Restart"
 msgstr "重启"
 
-#: cps/templates/admin.html:173
+#: cps/templates/admin.html:212
 msgid "Shutdown"
 msgstr "停止"
 
-#: cps/templates/admin.html:178
-msgid "Update"
-msgstr "更新"
+#: cps/templates/admin.html:221
+msgid "Version Information"
+msgstr "版本信息"
 
-#: cps/templates/admin.html:182
+#: cps/templates/admin.html:225
 msgid "Version"
 msgstr "版本"
 
-#: cps/templates/admin.html:183
+#: cps/templates/admin.html:226
 msgid "Details"
 msgstr "详情"
 
-#: cps/templates/admin.html:189
-msgid "Current version"
+#: cps/templates/admin.html:232
+msgid "Current Version"
 msgstr "当前版本"
 
-#: cps/templates/admin.html:196
+#: cps/templates/admin.html:239
 msgid "Check for Update"
 msgstr "检查更新"
 
-#: cps/templates/admin.html:197
+#: cps/templates/admin.html:240
 msgid "Perform Update"
 msgstr "执行更新"
 
-#: cps/templates/admin.html:210
+#: cps/templates/admin.html:253
 msgid "Are you sure you want to restart?"
 msgstr "您确定要重启吗？"
 
-#: cps/templates/admin.html:215 cps/templates/admin.html:229
-#: cps/templates/admin.html:249 cps/templates/config_db.html:70
+#: cps/templates/admin.html:258 cps/templates/admin.html:272
+#: cps/templates/admin.html:292 cps/templates/config_db.html:70
 msgid "OK"
 msgstr "确定"
 
-#: cps/templates/admin.html:216 cps/templates/admin.html:230
-#: cps/templates/book_edit.html:213 cps/templates/book_table.html:127
-#: cps/templates/config_db.html:54 cps/templates/config_edit.html:359
+#: cps/templates/admin.html:259 cps/templates/admin.html:273
+#: cps/templates/book_edit.html:214 cps/templates/book_table.html:127
+#: cps/templates/config_db.html:54 cps/templates/config_edit.html:410
 #: cps/templates/config_view_edit.html:175 cps/templates/modal_dialogs.html:64
 #: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
-#: cps/templates/modal_dialogs.html:135 cps/templates/shelf_edit.html:27
+#: cps/templates/modal_dialogs.html:135 cps/templates/schedule_edit.html:45
+#: cps/templates/shelf_edit.html:27 cps/templates/tasks.html:46
 #: cps/templates/user_edit.html:144
 msgid "Cancel"
 msgstr "取消"
 
-#: cps/templates/admin.html:228
+#: cps/templates/admin.html:271
 msgid "Are you sure you want to shutdown?"
 msgstr "您确定要关闭吗？"
 
-#: cps/templates/admin.html:240
+#: cps/templates/admin.html:283
 msgid "Updating, please do not reload this page"
 msgstr "正在更新，请不要刷新页面"
 
@@ -1609,39 +1766,39 @@ msgstr "通过"
 msgid "In Library"
 msgstr "在书库"
 
-#: cps/templates/author.html:26 cps/templates/index.html:73
-#: cps/templates/search.html:30 cps/templates/shelf.html:19
+#: cps/templates/author.html:26 cps/templates/index.html:74
+#: cps/templates/search.html:31 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
 msgstr "按图书日期排序，最新优先"
 
-#: cps/templates/author.html:27 cps/templates/index.html:74
-#: cps/templates/search.html:31 cps/templates/shelf.html:20
+#: cps/templates/author.html:27 cps/templates/index.html:75
+#: cps/templates/search.html:32 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
 msgstr "按图书日期排序，最旧优先"
 
-#: cps/templates/author.html:28 cps/templates/index.html:75
-#: cps/templates/search.html:32 cps/templates/shelf.html:21
+#: cps/templates/author.html:28 cps/templates/index.html:76
+#: cps/templates/search.html:33 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
 msgstr "按标题按字母顺序排序"
 
-#: cps/templates/author.html:29 cps/templates/index.html:76
-#: cps/templates/search.html:33 cps/templates/shelf.html:22
+#: cps/templates/author.html:29 cps/templates/index.html:77
+#: cps/templates/search.html:34 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
 msgstr "按标题逆字母顺序排序"
 
-#: cps/templates/author.html:30 cps/templates/index.html:79
-#: cps/templates/search.html:36 cps/templates/shelf.html:25
+#: cps/templates/author.html:30 cps/templates/index.html:80
+#: cps/templates/search.html:37 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
 msgstr "按出版日期排序，最新优先"
 
-#: cps/templates/author.html:31 cps/templates/index.html:80
-#: cps/templates/search.html:37 cps/templates/shelf.html:26
+#: cps/templates/author.html:31 cps/templates/index.html:81
+#: cps/templates/search.html:38 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
 msgstr "按出版日期排序，最旧优先"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
-#: cps/templates/index.html:29 cps/templates/index.html:112
-#: cps/templates/search.html:66 cps/templates/shelf.html:54
+#: cps/templates/index.html:30 cps/templates/index.html:113
+#: cps/templates/search.html:67 cps/templates/shelf.html:55
 msgid "reduce"
 msgstr "减少"
 
@@ -1649,166 +1806,167 @@ msgstr "减少"
 msgid "More by"
 msgstr "更多"
 
-#: cps/templates/book_edit.html:10
+#: cps/templates/book_edit.html:11
 msgid "Delete Book"
 msgstr "删除书籍"
 
-#: cps/templates/book_edit.html:13
+#: cps/templates/book_edit.html:14
 msgid "Delete formats:"
 msgstr "删除格式:"
 
-#: cps/templates/book_edit.html:24
+#: cps/templates/book_edit.html:25
 msgid "Convert book format:"
-msgstr "转换书籍格式:"
+msgstr "书籍格式转换:"
 
-#: cps/templates/book_edit.html:29
+#: cps/templates/book_edit.html:30
 msgid "Convert from:"
 msgstr "转换从："
 
-#: cps/templates/book_edit.html:31 cps/templates/book_edit.html:38
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
 msgid "select an option"
 msgstr "选择一个选项"
 
-#: cps/templates/book_edit.html:36
+#: cps/templates/book_edit.html:37
 msgid "Convert to:"
 msgstr "转换到："
 
-#: cps/templates/book_edit.html:45
+#: cps/templates/book_edit.html:46
 msgid "Convert book"
 msgstr "转换书籍"
 
-#: cps/templates/book_edit.html:55 cps/templates/search_form.html:8
+#: cps/templates/book_edit.html:56 cps/templates/search_form.html:8
 msgid "Book Title"
 msgstr "书名"
 
-#: cps/templates/book_edit.html:62 cps/templates/book_edit.html:270
-#: cps/templates/book_edit.html:288 cps/templates/search_form.html:12
+#: cps/templates/book_edit.html:63 cps/templates/book_edit.html:271
+#: cps/templates/book_edit.html:289 cps/templates/search_form.html:12
 msgid "Author"
 msgstr "作者"
 
-#: cps/templates/book_edit.html:67 cps/templates/book_edit.html:275
-#: cps/templates/book_edit.html:290 cps/templates/search_form.html:153
+#: cps/templates/book_edit.html:68 cps/templates/book_edit.html:276
+#: cps/templates/book_edit.html:291 cps/templates/search_form.html:154
 msgid "Description"
 msgstr "简介"
 
-#: cps/templates/book_edit.html:72
+#: cps/templates/book_edit.html:73
 msgid "Identifiers"
 msgstr "书号"
 
-#: cps/templates/book_edit.html:76 cps/templates/book_edit.html:299
+#: cps/templates/book_edit.html:77 cps/templates/book_edit.html:300
 msgid "Identifier Type"
 msgstr "书号类型"
 
-#: cps/templates/book_edit.html:77 cps/templates/book_edit.html:300
+#: cps/templates/book_edit.html:78 cps/templates/book_edit.html:301
 msgid "Identifier Value"
 msgstr "书号编号"
 
-#: cps/templates/book_edit.html:78 cps/templates/book_edit.html:301
+#: cps/templates/book_edit.html:79 cps/templates/book_edit.html:302
 #: cps/templates/user_table.html:24
 msgid "Remove"
 msgstr "移除"
 
-#: cps/templates/book_edit.html:82
+#: cps/templates/book_edit.html:83
 msgid "Add Identifier"
 msgstr "添加书号"
 
-#: cps/templates/book_edit.html:86 cps/templates/search_form.html:51
+#: cps/templates/book_edit.html:87 cps/templates/search_form.html:52
 msgid "Tags"
 msgstr "标签"
 
-#: cps/templates/book_edit.html:94
+#: cps/templates/book_edit.html:95
 msgid "Series ID"
 msgstr "丛书编号"
 
-#: cps/templates/book_edit.html:98
+#: cps/templates/book_edit.html:99
 msgid "Rating"
 msgstr "评分"
 
-#: cps/templates/book_edit.html:103
+#: cps/templates/book_edit.html:104
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "从URL获取封面（JPEG - 图片将下载并存储在数据库中）"
+msgstr "从 URL 获取封面（JPEG - 图片将下载并存储在数据库中）"
 
-#: cps/templates/book_edit.html:107
+#: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
 msgstr "从本地磁盘上传封面"
 
-#: cps/templates/book_edit.html:112
+#: cps/templates/book_edit.html:113
 msgid "Published Date"
 msgstr "出版日期"
 
-#: cps/templates/book_edit.html:121 cps/templates/book_edit.html:272
-#: cps/templates/book_edit.html:289 cps/templates/detail.html:164
-#: cps/templates/search_form.html:16
+#: cps/templates/book_edit.html:122 cps/templates/book_edit.html:273
+#: cps/templates/book_edit.html:290 cps/templates/detail.html:192
+#: cps/templates/listenmp3.html:102 cps/templates/search_form.html:16
 msgid "Publisher"
 msgstr "出版社"
 
-#: cps/templates/book_edit.html:125 cps/templates/detail.html:131
-#: cps/templates/user_edit.html:33
+#: cps/templates/book_edit.html:126 cps/templates/detail.html:157
+#: cps/templates/listenmp3.html:69 cps/templates/user_edit.html:33
 msgid "Language"
 msgstr "语言"
 
-#: cps/templates/book_edit.html:135 cps/templates/search_form.html:45
-#: cps/templates/search_form.html:164
+#: cps/templates/book_edit.html:136 cps/templates/search_form.html:46
+#: cps/templates/search_form.html:165
 msgid "Yes"
 msgstr "确认"
 
-#: cps/templates/book_edit.html:136 cps/templates/search_form.html:46
-#: cps/templates/search_form.html:165
+#: cps/templates/book_edit.html:137 cps/templates/search_form.html:47
+#: cps/templates/search_form.html:166
 msgid "No"
 msgstr "没有"
 
-#: cps/templates/book_edit.html:200
+#: cps/templates/book_edit.html:201
 msgid "Upload Format"
 msgstr "上传格式"
 
-#: cps/templates/book_edit.html:208
+#: cps/templates/book_edit.html:209
 msgid "View Book on Save"
 msgstr "查看保存书籍"
 
-#: cps/templates/book_edit.html:211 cps/templates/book_edit.html:229
+#: cps/templates/book_edit.html:212 cps/templates/book_edit.html:230
 msgid "Fetch Metadata"
 msgstr "获取元数据"
 
-#: cps/templates/book_edit.html:212 cps/templates/config_db.html:53
-#: cps/templates/config_edit.html:358 cps/templates/config_view_edit.html:174
-#: cps/templates/email_edit.html:65 cps/templates/shelf_edit.html:25
-#: cps/templates/shelf_order.html:41 cps/templates/user_edit.html:142
+#: cps/templates/book_edit.html:213 cps/templates/config_db.html:53
+#: cps/templates/config_edit.html:409 cps/templates/config_view_edit.html:174
+#: cps/templates/email_edit.html:65 cps/templates/schedule_edit.html:44
+#: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
+#: cps/templates/user_edit.html:142
 msgid "Save"
 msgstr "保存"
 
-#: cps/templates/book_edit.html:232
+#: cps/templates/book_edit.html:233
 msgid "Keyword"
 msgstr "关键字"
 
-#: cps/templates/book_edit.html:233
+#: cps/templates/book_edit.html:234
 msgid "Search keyword"
 msgstr " 搜索关键字 "
 
-#: cps/templates/book_edit.html:239
+#: cps/templates/book_edit.html:240
 msgid "Click the cover to load metadata to the form"
 msgstr "单击封面将元数据加载到表单"
 
-#: cps/templates/book_edit.html:246 cps/templates/book_edit.html:285
+#: cps/templates/book_edit.html:247 cps/templates/book_edit.html:286
 msgid "Loading..."
 msgstr "加载中..."
 
-#: cps/templates/book_edit.html:250 cps/templates/layout.html:63
-#: cps/templates/layout.html:186 cps/templates/modal_dialogs.html:34
+#: cps/templates/book_edit.html:251 cps/templates/layout.html:78
+#: cps/templates/layout.html:203 cps/templates/modal_dialogs.html:34
 #: cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "关闭"
 
-#: cps/templates/book_edit.html:277 cps/templates/book_edit.html:291
+#: cps/templates/book_edit.html:278 cps/templates/book_edit.html:292
 msgid "Source"
 msgstr "源"
 
-#: cps/templates/book_edit.html:286
+#: cps/templates/book_edit.html:287
 msgid "Search error!"
 msgstr "搜索错误！"
 
-#: cps/templates/book_edit.html:287
+#: cps/templates/book_edit.html:288
 msgid "No Result(s) found! Please try another keyword."
-msgstr "无搜索结果！请尝试另一个关键字。"
+msgstr "无搜索结果！请尝试另一个关键字"
 
 #: cps/templates/book_table.html:12 cps/templates/book_table.html:69
 #: cps/templates/user_table.html:14 cps/templates/user_table.html:77
@@ -1898,7 +2056,7 @@ msgid "Comments"
 msgstr "简介"
 
 #: cps/templates/book_table.html:75
-msgid "Archiv Status"
+msgid "Archive Status"
 msgstr "存档状态"
 
 #: cps/templates/book_table.html:77 cps/templates/search_form.html:42
@@ -1913,6 +2071,7 @@ msgid "Enter "
 msgstr "输入"
 
 #: cps/templates/book_table.html:113 cps/templates/modal_dialogs.html:46
+#: cps/templates/tasks.html:36
 msgid "Are you really sure?"
 msgstr "您真的确认？"
 
@@ -1934,7 +2093,7 @@ msgstr "Calibre 数据库路径"
 
 #: cps/templates/config_db.html:22
 msgid "Use Google Drive?"
-msgstr "是否使用Google Drive?"
+msgstr "是否使用 Google Drive?"
 
 #: cps/templates/config_db.html:27
 msgid "Authenticate Google Drive"
@@ -1946,7 +2105,7 @@ msgstr "Google Drive Calibre 路径"
 
 #: cps/templates/config_db.html:40
 msgid "Metadata Watch Channel ID"
-msgstr "元数据监视通道ID"
+msgstr "元数据监视通道 ID"
 
 #: cps/templates/config_db.html:43
 msgid "Revoke"
@@ -1966,11 +2125,11 @@ msgstr "服务器端口"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL 证书文件路径(非SSL服务器请留空)"
+msgstr "SSL 证书文件路径 (非 SSL 服务器请留空)"
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "SSL 密钥文件路径(非SSL服务器请留空)"
+msgstr "SSL 密钥文件路径 (非 SSL 服务器请留空)"
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
@@ -1994,7 +2153,7 @@ msgstr "日志文件配置"
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "日志文件路径和名称(默认为calibre-web.log)"
+msgstr "日志文件路径和名称 (默认为 calibre-web.log)"
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
@@ -2002,7 +2161,7 @@ msgstr "启用访问日志"
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "访问日志路径和名称(默认为access.log)"
+msgstr "访问日志路径和名称 (默认为 access.log)"
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
@@ -2010,14 +2169,14 @@ msgstr "功能配置"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr "保存到磁盘事转换标题和作者中的非英文字符"
+msgstr "保存到磁盘时转换标题和作者中的非英文字符"
 
 #: cps/templates/config_edit.html:108
 msgid "Enable Uploads"
 msgstr "启用上传"
 
 #: cps/templates/config_edit.html:108
-msgid "(Please ensure users having also upload rights)"
+msgid "(Please ensure that users also have upload permissions)"
 msgstr "（请确保用户也有上传权限）"
 
 #: cps/templates/config_edit.html:112
@@ -2033,7 +2192,7 @@ msgid "Enable Public Registration"
 msgstr "启用注册"
 
 #: cps/templates/config_edit.html:127
-msgid "Use E-Mail as Username"
+msgid "Use Email as Username"
 msgstr "使用邮箱或用户名"
 
 #: cps/templates/config_edit.html:132
@@ -2042,23 +2201,23 @@ msgstr "启用魔法链接远程登录"
 
 #: cps/templates/config_edit.html:137
 msgid "Enable Kobo sync"
-msgstr "启用Kobo同步"
+msgstr "启用 Kobo 同步"
 
 #: cps/templates/config_edit.html:142
 msgid "Proxy unknown requests to Kobo Store"
-msgstr "代理未知请求到Kobo商店"
+msgstr "代理未知请求到 Kobo 商店"
 
 #: cps/templates/config_edit.html:145
 msgid "Server External Port (for port forwarded API calls)"
-msgstr "服务器扩展端口(用于转发的API调用的端口)"
+msgstr "服务器扩展端口 (用于转发的 API 调用的端口)"
 
 #: cps/templates/config_edit.html:153
 msgid "Use Goodreads"
-msgstr "使用Goodreads"
+msgstr "使用 Goodreads"
 
 #: cps/templates/config_edit.html:154
 msgid "Create an API Key"
-msgstr "创建API Key"
+msgstr "创建 API Key"
 
 #: cps/templates/config_edit.html:158
 msgid "Goodreads API Key"
@@ -2082,19 +2241,19 @@ msgstr "使用标准认证"
 
 #: cps/templates/config_edit.html:184
 msgid "Use LDAP Authentication"
-msgstr "使用LDAP认证"
+msgstr "使用 LDAP 认证"
 
 #: cps/templates/config_edit.html:187
 msgid "Use OAuth"
-msgstr "使用OAuth认证"
+msgstr "使用 OAuth 认证"
 
 #: cps/templates/config_edit.html:194
 msgid "LDAP Server Host Name or IP Address"
-msgstr "LDAP服务器主机名或IP地址"
+msgstr "LDAP 服务器主机名或 IP 地址"
 
 #: cps/templates/config_edit.html:198
 msgid "LDAP Server Port"
-msgstr "LDAP服务器端口"
+msgstr "LDAP 服务器端口"
 
 #: cps/templates/config_edit.html:202
 msgid "LDAP Encryption"
@@ -2102,23 +2261,23 @@ msgstr "LDAP 加密"
 
 #: cps/templates/config_edit.html:205
 msgid "TLS"
-msgstr "TLS协议"
+msgstr "TLS 协议"
 
 #: cps/templates/config_edit.html:206
 msgid "SSL"
-msgstr "SSL协议"
+msgstr "SSL 协议"
 
 #: cps/templates/config_edit.html:210
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP CA证书路径(仅用于客户端证书认证)"
+msgstr "LDAP CA证书路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP 证书路径(仅用于客户端证书认证)"
+msgstr "LDAP 证书路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:224
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "LDAP密钥文件路径(仅用于客户端证书认证)"
+msgstr "LDAP 密钥文件路径 (仅用于客户端证书认证)"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Authentication"
@@ -2138,23 +2297,23 @@ msgstr "简单"
 
 #: cps/templates/config_edit.html:242
 msgid "LDAP Administrator Username"
-msgstr "LDAP管理员用户名"
+msgstr "LDAP 管理员用户名"
 
 #: cps/templates/config_edit.html:248
 msgid "LDAP Administrator Password"
-msgstr "LDAP管理员密码"
+msgstr "LDAP 管理员密码"
 
 #: cps/templates/config_edit.html:253
 msgid "LDAP Distinguished Name (DN)"
-msgstr "LDAP专有名称（DN）"
+msgstr "LDAP 专有名称（DN）"
 
 #: cps/templates/config_edit.html:257
 msgid "LDAP User Object Filter"
-msgstr "LDAP用户对象过滤器"
+msgstr "LDAP 用户对象过滤器"
 
 #: cps/templates/config_edit.html:262
 msgid "LDAP Server is OpenLDAP?"
-msgstr "LDAP服务器是 OpenLDAP？"
+msgstr "LDAP 服务器为 OpenLDAP？"
 
 #: cps/templates/config_edit.html:264
 msgid "Following Settings are Needed For User Import"
@@ -2162,19 +2321,19 @@ msgstr "用户导入需要以下设置"
 
 #: cps/templates/config_edit.html:266
 msgid "LDAP Group Object Filter"
-msgstr "LDAP组对象过滤器"
+msgstr "LDAP 组对象过滤器"
 
 #: cps/templates/config_edit.html:270
 msgid "LDAP Group Name"
-msgstr "LDAP组名"
+msgstr "LDAP 组名"
 
 #: cps/templates/config_edit.html:274
 msgid "LDAP Group Members Field"
-msgstr "LDAP组成员字段"
+msgstr "LDAP 组成员字段"
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Member User Filter Detection"
-msgstr "LDAP成员用户过滤器探测"
+msgstr "LDAP 成员用户过滤器探测"
 
 #: cps/templates/config_edit.html:280
 msgid "Autodetect"
@@ -2186,17 +2345,17 @@ msgstr "自定义过滤器"
 
 #: cps/templates/config_edit.html:286
 msgid "LDAP Member User Filter"
-msgstr "LDAP成员用户过滤器"
+msgstr "LDAP 成员用户过滤器"
 
 #: cps/templates/config_edit.html:297
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr "获取 %(provider)s OAuth凭证"
+msgstr "获取 %(provider)s OAuth 凭证"
 
 #: cps/templates/config_edit.html:300
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth 客户端 Secret"
+msgstr "%(provider)s OAuth 客户端 Id"
 
 #: cps/templates/config_edit.html:304
 #, python-format
@@ -2221,7 +2380,51 @@ msgstr "KEpubify 电子书转换器路径"
 
 #: cps/templates/config_edit.html:345
 msgid "Location of Unrar binary"
-msgstr "Unrar程序路径"
+msgstr "Unrar 程序路径"
+
+#: cps/templates/config_edit.html:361
+msgid "Security Settings"
+msgstr "安全设置"
+
+#: cps/templates/config_edit.html:369
+msgid "Limit failed login attempts"
+msgstr "限制失败的登录尝试"
+
+#: cps/templates/config_edit.html:372
+msgid "Session protection"
+msgstr "会话保护"
+
+#: cps/templates/config_edit.html:374
+msgid "Basic"
+msgstr "基本"
+
+#: cps/templates/config_edit.html:375
+msgid "Strong"
+msgstr "强"
+
+#: cps/templates/config_edit.html:380
+msgid "User Password policy"
+msgstr "用户密码策略"
+
+#: cps/templates/config_edit.html:384
+msgid "Minimum password length"
+msgstr "最小密码长度"
+
+#: cps/templates/config_edit.html:389
+msgid "Enforce number"
+msgstr "必须使用数字"
+
+#: cps/templates/config_edit.html:393
+msgid "Enforce lowercase characters"
+msgstr "必须使用小写字符"
+
+#: cps/templates/config_edit.html:397
+msgid "Enforce uppercase characters"
+msgstr "必须使用大写字符"
+
+#: cps/templates/config_edit.html:401
+msgid "Enforce special characters"
+msgstr "必须使用特殊字符"
 
 #: cps/templates/config_view_edit.html:17
 msgid "View Configuration"
@@ -2235,7 +2438,7 @@ msgstr "随机书籍显示数量"
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
 msgstr "主页中书籍作者的最大显示数量（0=不隐藏）"
 
-#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:113
+#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
 msgid "Theme"
 msgstr "主题"
 
@@ -2324,80 +2527,82 @@ msgstr "添加显示或隐藏书籍的标签值"
 msgid "Add Allowed/Denied custom column values"
 msgstr "添加显示或隐藏书籍的自定义栏目值"
 
-#: cps/templates/detail.html:60 cps/templates/detail.html:69
+#: cps/templates/detail.html:77 cps/templates/detail.html:91
 msgid "Read in Browser"
 msgstr "在线阅读"
 
-#: cps/templates/detail.html:77 cps/templates/detail.html:94
+#: cps/templates/detail.html:100 cps/templates/detail.html:120
 msgid "Listen in Browser"
 msgstr "在线听书"
 
-#: cps/templates/detail.html:124
+#: cps/templates/detail.html:150 cps/templates/listenmp3.html:62
 #, python-format
 msgid "Book %(index)s of %(range)s"
-msgstr "%(range)s 第%(index)s册"
+msgstr "%(range)s 第 %(index)s 册"
 
-#: cps/templates/detail.html:173
+#: cps/templates/detail.html:201 cps/templates/listenmp3.html:111
 msgid "Published"
 msgstr "出版日期"
 
-#: cps/templates/detail.html:221
+#: cps/templates/detail.html:250 cps/templates/listenmp3.html:158
 msgid "Mark As Unread"
 msgstr "标为未读"
 
-#: cps/templates/detail.html:221
+#: cps/templates/detail.html:251 cps/templates/listenmp3.html:158
 msgid "Mark As Read"
 msgstr "标为已读"
 
-#: cps/templates/detail.html:222
+#: cps/templates/detail.html:253 cps/templates/listenmp3.html:159
 msgid "Read"
 msgstr "已读"
 
-#: cps/templates/detail.html:231
+#: cps/templates/detail.html:263 cps/templates/listenmp3.html:166
 msgid "Restore from archive"
 msgstr "从档案还原"
 
-#: cps/templates/detail.html:231
+#: cps/templates/detail.html:264 cps/templates/listenmp3.html:166
 msgid "Add to archive"
 msgstr "添加到归档"
 
-#: cps/templates/detail.html:232
+#: cps/templates/detail.html:266 cps/templates/listenmp3.html:167
 msgid "Archived"
 msgstr "归档"
 
-#: cps/templates/detail.html:243
+#: cps/templates/detail.html:277 cps/templates/listenmp3.html:177
 msgid "Description:"
 msgstr "简介:"
 
-#: cps/templates/detail.html:256 cps/templates/search.html:15
+#: cps/templates/detail.html:292 cps/templates/listenmp3.html:190
+#: cps/templates/search.html:16
 msgid "Add to shelf"
 msgstr "添加到书架"
 
-#: cps/templates/detail.html:267 cps/templates/detail.html:284
-#: cps/templates/feed.xml:79 cps/templates/layout.html:137
-#: cps/templates/search.html:21
+#: cps/templates/detail.html:304 cps/templates/detail.html:323
+#: cps/templates/feed.xml:81 cps/templates/layout.html:154
+#: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
+#: cps/templates/search.html:22
 msgid "(Public)"
 msgstr "(公共)"
 
-#: cps/templates/detail.html:298
+#: cps/templates/detail.html:339
 msgid "Edit Metadata"
 msgstr "编辑元数据"
 
 #: cps/templates/email_edit.html:13
-msgid "Choose Server Type"
+msgid "Email Account Type"
 msgstr "选择服务器类型"
 
 #: cps/templates/email_edit.html:15
-msgid "Use Standard E-Mail Account"
-msgstr "使用标准电子邮件账号"
+msgid "Standard Email Account"
+msgstr "标准电子邮件"
 
 #: cps/templates/email_edit.html:16
-msgid "Gmail Account with OAuth2 Verification"
-msgstr "使用Gmail账号"
+msgid "Gmail Account"
+msgstr "Gmail 账户"
 
 #: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account as E-Mail Server"
-msgstr "设置Gmail账号作为电子邮件服务"
+msgid "Setup Gmail Account"
+msgstr "设置 Gmail 账户"
 
 #: cps/templates/email_edit.html:24
 msgid "Revoke Gmail Access"
@@ -2405,25 +2610,25 @@ msgstr "撤消 Gmail 访问权限"
 
 #: cps/templates/email_edit.html:42
 msgid "STARTTLS"
-msgstr "STARTTLS协议"
+msgstr "STARTTLS 协议"
 
 #: cps/templates/email_edit.html:43
 msgid "SSL/TLS"
-msgstr "SSL/TLS协议"
+msgstr "SSL/TLS 协议"
 
 #: cps/templates/email_edit.html:51
 msgid "SMTP Password"
-msgstr "SMTP密码"
+msgstr "SMTP 密码"
 
 #: cps/templates/email_edit.html:58
 msgid "Attachment Size Limit"
 msgstr "附件大小限制"
 
 #: cps/templates/email_edit.html:66
-msgid "Save and Send Test E-mail"
+msgid "Save and Send Test Email"
 msgstr "保存设置并发送测试邮件"
 
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:29
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
 msgid "Back"
 msgstr "后退"
@@ -2449,185 +2654,193 @@ msgstr "输入域名"
 msgid "Denied Domains (Blacklist)"
 msgstr "禁止注册的域名（黑名单）"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:170
+#: cps/templates/feed.xml:22 cps/templates/layout.html:187
 msgid "Next"
 msgstr "下一个"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "在文本编辑器中打开.kobo/Kobo eReader.conf，添加（或编辑）:"
+msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgstr "在文本编辑器中打开 .kobo/Kobo/Kobo eReader.conf，添加（或编辑）:"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
 msgstr "Kobo Token:"
 
-#: cps/templates/http_error.html:31
+#: cps/templates/grid.html:21
+msgid "List"
+msgstr "列表"
+
+#: cps/templates/http_error.html:34
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
 msgstr "Calibre-Web 实例未配置，请联系您的管理员！"
 
-#: cps/templates/http_error.html:41
+#: cps/templates/http_error.html:44
 msgid "Create Issue"
 msgstr "创建问题"
 
-#: cps/templates/http_error.html:48
+#: cps/templates/http_error.html:51
 msgid "Return to Home"
 msgstr "回到首页"
 
-#: cps/templates/http_error.html:50
+#: cps/templates/http_error.html:53
 msgid "Logout User"
 msgstr "登出账号"
 
-#: cps/templates/index.html:70
+#: cps/templates/index.html:71
 msgid "Sort ascending according to download count"
 msgstr "按下载数排序"
 
-#: cps/templates/index.html:71
+#: cps/templates/index.html:72
 msgid "Sort descending according to download count"
 msgstr "按下载数逆序排序"
 
-#: cps/templates/index.html:77 cps/templates/search.html:34
-#: cps/templates/shelf.html:23
+#: cps/templates/index.html:78 cps/templates/search.html:35
+#: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
 msgstr "按作者字母顺序排序"
 
-#: cps/templates/index.html:78 cps/templates/search.html:35
-#: cps/templates/shelf.html:24
+#: cps/templates/index.html:79 cps/templates/search.html:36
+#: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
 msgstr "按作者逆字母顺序排序"
 
-#: cps/templates/index.html:82
+#: cps/templates/index.html:83
 msgid "Sort ascending according to series index"
 msgstr "按丛书编号排序"
 
-#: cps/templates/index.html:83
+#: cps/templates/index.html:84
 msgid "Sort descending according to series index"
 msgstr "按丛书编号逆排序"
 
-#: cps/templates/index.xml:6
+#: cps/templates/index.xml:7
 msgid "Start"
 msgstr "开始"
 
-#: cps/templates/index.xml:18
+#: cps/templates/index.xml:19
 msgid "Alphabetical Books"
 msgstr "字母排序书籍"
 
-#: cps/templates/index.xml:22
+#: cps/templates/index.xml:23
 msgid "Books sorted alphabetically"
 msgstr "按字母排序的书籍"
 
-#: cps/templates/index.xml:29
+#: cps/templates/index.xml:30
 msgid "Popular publications from this catalog based on Downloads."
-msgstr "基于下载数的热门书籍。"
+msgstr "基于下载数的热门书籍"
 
-#: cps/templates/index.xml:36
+#: cps/templates/index.xml:37
 msgid "Popular publications from this catalog based on Rating."
-msgstr "基于评分的热门书籍。"
+msgstr "基于评分的热门书籍"
 
-#: cps/templates/index.xml:39
+#: cps/templates/index.xml:40
 msgid "Recently added Books"
 msgstr "最近添加的书籍"
 
-#: cps/templates/index.xml:43
+#: cps/templates/index.xml:44
 msgid "The latest Books"
 msgstr "最新书籍"
 
-#: cps/templates/index.xml:46
+#: cps/templates/index.xml:47
 msgid "Random Books"
 msgstr "随机书籍"
 
-#: cps/templates/index.xml:73
+#: cps/templates/index.xml:74
 msgid "Books ordered by Author"
 msgstr "书籍按作者排序"
 
-#: cps/templates/index.xml:80
+#: cps/templates/index.xml:81
 msgid "Books ordered by publisher"
 msgstr "书籍按出版社排序"
 
-#: cps/templates/index.xml:87
+#: cps/templates/index.xml:88
 msgid "Books ordered by category"
 msgstr "书籍按分类排序"
 
-#: cps/templates/index.xml:94
+#: cps/templates/index.xml:95
 msgid "Books ordered by series"
 msgstr "书籍按丛书排序"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:102
 msgid "Books ordered by Languages"
 msgstr "书籍按语言排序"
 
-#: cps/templates/index.xml:108
+#: cps/templates/index.xml:109
 msgid "Books ordered by Rating"
 msgstr "书籍按评分排序"
 
-#: cps/templates/index.xml:116
+#: cps/templates/index.xml:117
 msgid "Books ordered by file formats"
 msgstr "书籍按文件格式排序"
 
-#: cps/templates/index.xml:119 cps/templates/layout.html:135
-#: cps/templates/search_form.html:87
+#: cps/templates/index.xml:120 cps/templates/layout.html:152
+#: cps/templates/search_form.html:88
 msgid "Shelves"
 msgstr "书架列表"
 
-#: cps/templates/index.xml:123
+#: cps/templates/index.xml:124
 msgid "Books organized in shelves"
 msgstr "书架上的书"
 
-#: cps/templates/layout.html:29
+#: cps/templates/layout.html:26 cps/templates/login.html:30
 msgid "Home"
 msgstr "首页"
 
-#: cps/templates/layout.html:35
+#: cps/templates/layout.html:32
 msgid "Toggle Navigation"
 msgstr "切换导航"
 
-#: cps/templates/layout.html:46
+#: cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "搜索书库"
 
-#: cps/templates/layout.html:63 cps/templates/layout.html:117
-msgid "Uploading..."
-msgstr "正在上传..."
-
-#: cps/templates/layout.html:63
-msgid "Error"
-msgstr "错误"
-
-#: cps/templates/layout.html:63
-msgid "Upload done, processing, please wait..."
-msgstr "上传完成，正在处理，请稍候..."
-
-#: cps/templates/layout.html:76 cps/templates/read.html:72
-#: cps/templates/readcbr.html:84 cps/templates/readcbr.html:108
-msgid "Settings"
-msgstr "设置"
-
-#: cps/templates/layout.html:78
+#: cps/templates/layout.html:65 cps/templates/layout.html:94
 msgid "Account"
 msgstr "账号"
 
-#: cps/templates/layout.html:80
+#: cps/templates/layout.html:71 cps/templates/layout.html:96
 msgid "Logout"
 msgstr "注销"
 
-#: cps/templates/layout.html:118
+#: cps/templates/layout.html:78 cps/templates/layout.html:134
+msgid "Uploading..."
+msgstr "正在上传..."
+
+#: cps/templates/layout.html:78
+msgid "Error"
+msgstr "错误"
+
+#: cps/templates/layout.html:78
+msgid "Upload done, processing, please wait..."
+msgstr "上传完成，正在处理，请稍候..."
+
+#: cps/templates/layout.html:91 cps/templates/read.html:76
+#: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
+msgid "Settings"
+msgstr "设置"
+
+#: cps/templates/layout.html:135
 msgid "Please do not refresh the page"
 msgstr "请不要刷新页面"
 
-#: cps/templates/layout.html:128
+#: cps/templates/layout.html:145
 msgid "Browse"
 msgstr "按条件浏览"
 
-#: cps/templates/layout.html:141 cps/templates/stats.html:3
+#: cps/templates/layout.html:158 cps/templates/stats.html:3
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:155
+#: cps/templates/layout.html:172
 msgid "Previous"
 msgstr "上一个"
 
-#: cps/templates/layout.html:182
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "书籍详情"
+
+#: cps/templates/list.html:22
+msgid "Grid"
+msgstr "网格"
 
 #: cps/templates/login.html:18
 msgid "Remember Me"
@@ -2637,13 +2850,13 @@ msgstr "记住我"
 msgid "Forgot Password?"
 msgstr "忘记密码？"
 
-#: cps/templates/login.html:26
+#: cps/templates/login.html:34
 msgid "Log in with Magic Link"
 msgstr "通过魔法链接登录"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr "显示Calibre-Web日志： "
+msgstr "显示 Calibre-Web 日志： "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
@@ -2659,7 +2872,7 @@ msgstr "显示访问日志： "
 
 #: cps/templates/logviewer.html:18
 msgid "Download Calibre-Web Log"
-msgstr "下载Calibre-Web日志"
+msgstr "下载 Calibre-Web 日志"
 
 #: cps/templates/logviewer.html:21
 msgid "Download Access Log"
@@ -2667,19 +2880,19 @@ msgstr "下载访问日志"
 
 #: cps/templates/modal_dialogs.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "选择显示的与隐藏的标签"
 
 #: cps/templates/modal_dialogs.html:7
 msgid "Select Allowed/Denied Custom Column Values"
-msgstr "选择自定义栏目值显示或隐藏本用户书籍"
+msgstr "选择显示的自定义栏目值与隐藏的自定义栏目值"
 
 #: cps/templates/modal_dialogs.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "选择标签值显示或隐藏书籍"
+msgstr "选择此用户显示的标签与隐藏的标签"
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "选择自定义栏目值显示或隐藏本用户书籍"
+msgstr "选择此用户显示的自定义栏目值与隐藏的自定义栏目值"
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
@@ -2691,7 +2904,7 @@ msgstr "添加显示或隐藏书籍的值"
 
 #: cps/templates/modal_dialogs.html:50
 msgid "This book format will be permanently erased from database"
-msgstr "此书籍格式将从数据库中永久删除"
+msgstr "书籍的此格式副本将从数据库中永久删除"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
@@ -2703,11 +2916,11 @@ msgstr "，包括从硬盘中"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Kobo 重要说明：被删除的书籍将保留在任何配对的 Kobo 设备上。"
+msgstr "Kobo 重要提示：被删除的书籍将保留在任何配对的 Kobo 设备上"
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "必须先将书籍存档并同步设备，然后才能安全地删除书籍。"
+msgstr "在安全删除图书之前，必须先将图书归档并与设备同步"
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -2733,153 +2946,185 @@ msgstr "父目录"
 msgid "Select"
 msgstr "选择"
 
-#: cps/templates/modal_dialogs.html:134
+#: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:45
 msgid "Ok"
 msgstr "完成"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
-msgstr "Caliebre-Web电子书路径"
+msgstr "Caliebre-Web 电子书路径"
 
 #: cps/templates/read.html:6
 msgid "epub Reader"
-msgstr "epub阅读器"
+msgstr "epub 阅读器"
 
-#: cps/templates/read.html:75
-msgid "Reflow text when sidebars are open."
-msgstr "打开侧栏时重排文本。"
-
-#: cps/templates/readcbr.html:7
-msgid "Comic Reader"
-msgstr "Comic阅读器"
-
-#: cps/templates/readcbr.html:89
-msgid "Keyboard Shortcuts"
-msgstr "快捷键"
-
-#: cps/templates/readcbr.html:92
-msgid "Previous Page"
-msgstr "上一页"
-
-#: cps/templates/readcbr.html:93 cps/templates/readcbr.html:162
-msgid "Next Page"
-msgstr "下一页"
-
-#: cps/templates/readcbr.html:94
-msgid "Scale to Best"
-msgstr "缩放到最佳"
-
-#: cps/templates/readcbr.html:95
-msgid "Scale to Width"
-msgstr "按宽度缩放"
-
-#: cps/templates/readcbr.html:96
-msgid "Scale to Height"
-msgstr "按高度缩放"
-
-#: cps/templates/readcbr.html:97
-msgid "Scale to Native"
-msgstr "缩放到原始大小"
-
-#: cps/templates/readcbr.html:98
-msgid "Rotate Right"
-msgstr "向右旋转"
-
-#: cps/templates/readcbr.html:99
-msgid "Rotate Left"
-msgstr "向左旋转"
-
-#: cps/templates/readcbr.html:100
-msgid "Flip Image"
-msgstr "翻转图片"
-
-#: cps/templates/readcbr.html:116
+#: cps/templates/read.html:81 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "浅色"
 
-#: cps/templates/readcbr.html:117
+#: cps/templates/read.html:82 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "深色"
 
-#: cps/templates/readcbr.html:122
+#: cps/templates/read.html:83
+msgid "Sepia"
+msgstr "棕色"
+
+#: cps/templates/read.html:84
+msgid "Black"
+msgstr "黑色"
+
+#: cps/templates/read.html:88
+msgid "Reflow text when sidebars are open."
+msgstr "打开侧栏时重排文本"
+
+#: cps/templates/read.html:93
+msgid "Font Sizes"
+msgstr "字体大小"
+
+#: cps/templates/readcbr.html:8
+msgid "Comic Reader"
+msgstr "Comic 阅读器"
+
+#: cps/templates/readcbr.html:75
+msgid "Keyboard Shortcuts"
+msgstr "快捷键"
+
+#: cps/templates/readcbr.html:78
+msgid "Previous Page"
+msgstr "上一页"
+
+#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:159
+msgid "Next Page"
+msgstr "下一页"
+
+#: cps/templates/readcbr.html:80
+msgid "Single Page Display"
+msgstr "单页显示"
+
+#: cps/templates/readcbr.html:81
+msgid "Long Strip Display"
+msgstr "长条显示"
+
+#: cps/templates/readcbr.html:82
+msgid "Scale to Best"
+msgstr "缩放到最佳"
+
+#: cps/templates/readcbr.html:83
+msgid "Scale to Width"
+msgstr "按宽度缩放"
+
+#: cps/templates/readcbr.html:84
+msgid "Scale to Height"
+msgstr "按高度缩放"
+
+#: cps/templates/readcbr.html:85
+msgid "Scale to Native"
+msgstr "缩放到原始大小"
+
+#: cps/templates/readcbr.html:86
+msgid "Rotate Right"
+msgstr "向右旋转"
+
+#: cps/templates/readcbr.html:87
+msgid "Rotate Left"
+msgstr "向左旋转"
+
+#: cps/templates/readcbr.html:88
+msgid "Flip Image"
+msgstr "翻转图片"
+
+#: cps/templates/readcbr.html:110
+msgid "Display"
+msgstr "显示"
+
+#: cps/templates/readcbr.html:113
+msgid "Single Page"
+msgstr "单页"
+
+#: cps/templates/readcbr.html:114
+msgid "Long Strip"
+msgstr "长条"
+
+#: cps/templates/readcbr.html:119
 msgid "Scale"
 msgstr "缩放"
 
-#: cps/templates/readcbr.html:125
+#: cps/templates/readcbr.html:122
 msgid "Best"
 msgstr "最佳"
 
-#: cps/templates/readcbr.html:126
+#: cps/templates/readcbr.html:123
 msgid "Width"
 msgstr "宽度"
 
-#: cps/templates/readcbr.html:127
+#: cps/templates/readcbr.html:124
 msgid "Height"
 msgstr "高度"
 
-#: cps/templates/readcbr.html:128
+#: cps/templates/readcbr.html:125
 msgid "Native"
 msgstr "原始"
 
-#: cps/templates/readcbr.html:133
+#: cps/templates/readcbr.html:130
 msgid "Rotate"
 msgstr "旋转"
 
-#: cps/templates/readcbr.html:144
+#: cps/templates/readcbr.html:141
 msgid "Flip"
 msgstr "翻转"
 
-#: cps/templates/readcbr.html:147
+#: cps/templates/readcbr.html:144
 msgid "Horizontal"
 msgstr "水平"
 
-#: cps/templates/readcbr.html:148
+#: cps/templates/readcbr.html:145
 msgid "Vertical"
 msgstr "垂直"
 
-#: cps/templates/readcbr.html:153
+#: cps/templates/readcbr.html:150
 msgid "Direction"
 msgstr "方向"
 
-#: cps/templates/readcbr.html:156
+#: cps/templates/readcbr.html:153
 msgid "Left to Right"
 msgstr "从左到右"
 
-#: cps/templates/readcbr.html:157
+#: cps/templates/readcbr.html:154
 msgid "Right to Left"
 msgstr "从右到左"
 
-#: cps/templates/readcbr.html:165
+#: cps/templates/readcbr.html:162
 msgid "Reset to Top"
-msgstr "重置为顶部"
+msgstr ""
 
-#: cps/templates/readcbr.html:166
+#: cps/templates/readcbr.html:163
 msgid "Remember Position"
-msgstr "记住位置"
+msgstr ""
 
-#: cps/templates/readcbr.html:171
+#: cps/templates/readcbr.html:168
 msgid "Scrollbar"
 msgstr "工具栏"
 
-#: cps/templates/readcbr.html:174
+#: cps/templates/readcbr.html:171
 msgid "Show"
 msgstr "显示"
 
-#: cps/templates/readcbr.html:175
+#: cps/templates/readcbr.html:172
 msgid "Hide"
 msgstr "隐藏"
 
 #: cps/templates/readdjvu.html:5
 msgid "DJVU Reader"
-msgstr "DJVU阅读器"
+msgstr "DJVU 阅读器"
 
-#: cps/templates/readpdf.html:29
+#: cps/templates/readpdf.html:32
 msgid "PDF Reader"
-msgstr "PDF阅读器"
+msgstr "PDF 阅读器"
 
 #: cps/templates/readtxt.html:6
 msgid "txt Reader"
-msgstr "txt阅读器"
+msgstr "txt 阅读器"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -2890,7 +3135,7 @@ msgid "Choose a username"
 msgstr "选择一个用户名"
 
 #: cps/templates/register.html:15
-msgid "Your email address"
+msgid "Your Email"
 msgstr "您的邮箱地址"
 
 #: cps/templates/remote_login.html:5
@@ -2903,21 +3148,25 @@ msgstr "在另一个设备上，登录并访问："
 
 #: cps/templates/remote_login.html:11
 msgid "Once verified, you will automatically be logged in on this device."
-msgstr "验证后，您将自动在新设备上登录。"
+msgstr "验证后，您将自动在新设备上登录"
 
 #: cps/templates/remote_login.html:14
 msgid "This verification link will expire in 10 minutes."
-msgstr "此验证链接将在10分钟后失效。"
+msgstr "此验证链接将在10分钟后失效"
 
-#: cps/templates/search.html:5
+#: cps/templates/schedule_edit.html:33
+msgid "Generate Series Cover Thumbnails"
+msgstr "生成丛书封面缩略图"
+
+#: cps/templates/search.html:6
 msgid "No Results Found"
 msgstr "无搜索结果"
 
-#: cps/templates/search.html:6
+#: cps/templates/search.html:7
 msgid "Search Term:"
 msgstr "搜索项："
 
-#: cps/templates/search.html:8
+#: cps/templates/search.html:9
 msgid "Results for:"
 msgstr "结果："
 
@@ -2929,63 +3178,71 @@ msgstr "出版日期从"
 msgid "Published Date To"
 msgstr "出版日期到"
 
-#: cps/templates/search_form.html:59
+#: cps/templates/search_form.html:44
+msgid "Any"
+msgstr ""
+
+#: cps/templates/search_form.html:45
+msgid "Empty"
+msgstr ""
+
+#: cps/templates/search_form.html:60
 msgid "Exclude Tags"
 msgstr "排除标签"
 
-#: cps/templates/search_form.html:77
+#: cps/templates/search_form.html:78
 msgid "Exclude Series"
 msgstr "排除丛书"
 
-#: cps/templates/search_form.html:95
+#: cps/templates/search_form.html:96
 msgid "Exclude Shelves"
 msgstr "排除书架"
 
-#: cps/templates/search_form.html:115
+#: cps/templates/search_form.html:116
 msgid "Exclude Languages"
 msgstr "排除语言"
 
-#: cps/templates/search_form.html:126
+#: cps/templates/search_form.html:127
 msgid "Extensions"
 msgstr "扩展名"
 
-#: cps/templates/search_form.html:134
+#: cps/templates/search_form.html:135
 msgid "Exclude Extensions"
 msgstr "排除扩展名"
 
-#: cps/templates/search_form.html:144
+#: cps/templates/search_form.html:145
 msgid "Rating Above"
 msgstr "评分大于"
 
-#: cps/templates/search_form.html:148
+#: cps/templates/search_form.html:149
 msgid "Rating Below"
 msgstr "评分小于"
 
-#: cps/templates/search_form.html:180
+#: cps/templates/search_form.html:181
 msgid "From:"
 msgstr "从："
 
-#: cps/templates/search_form.html:190
+#: cps/templates/search_form.html:191
 msgid "To:"
 msgstr "到："
 
-#: cps/templates/shelf.html:12
+#: cps/templates/shelf.html:13
 msgid "Delete this Shelf"
 msgstr "删除此书架"
 
-#: cps/templates/shelf.html:13
+#: cps/templates/shelf.html:14
 msgid "Edit Shelf Properties"
 msgstr "编辑书架属性"
 
-#: cps/templates/shelf.html:16
+#: cps/templates/shelf.html:17
 msgid "Arrange books manually"
 msgstr "手动排列书籍排列顺序"
 
-#: cps/templates/shelf.html:17
+#: cps/templates/shelf.html:18
 msgid "Disable Change order"
 msgstr "禁止改变顺序"
 
-#: cps/templates/shelf.html:17
+#: cps/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "允许改变顺序"
 
@@ -3030,8 +3287,8 @@ msgid "System Statistics"
 msgstr "系统统计"
 
 #: cps/templates/stats.html:33
-msgid "Program Library"
-msgstr "程序名称"
+msgid "Program"
+msgstr "程序"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3057,9 +3314,17 @@ msgstr "任务进度"
 msgid "Run Time"
 msgstr "运行时间"
 
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr "开始时间"
+#: cps/templates/tasks.html:20
+msgid "Actions"
+msgstr "活动"
+
+#: cps/templates/tasks.html:40
+msgid "This task will be cancelled. Any progress made by this task will be saved."
+msgstr "这个任务将被取消。此任务所有的更改都将被保存"
+
+#: cps/templates/tasks.html:41
+msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgstr "如果这是计划任务，则将在下一个计划的时间内重新运行"
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
@@ -3071,7 +3336,7 @@ msgstr "按语言显示书籍"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr "OAuth设置"
+msgstr "OAuth 设置"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
@@ -3091,7 +3356,7 @@ msgstr "新建或查看"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr "强制与kobo完全同步"
+msgstr "强制与 Kobo 完全同步"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
@@ -3107,7 +3372,7 @@ msgstr "删除此用户"
 
 #: cps/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
-msgstr "生成Kobo Auth 地址"
+msgstr "生成 Kobo Auth 地址"
 
 #: cps/templates/user_table.html:80 cps/templates/user_table.html:103
 msgid "Select..."
@@ -3122,16 +3387,16 @@ msgid "Enter Username"
 msgstr "输入用户名"
 
 #: cps/templates/user_table.html:135
-msgid "Enter E-mail Address"
-msgstr "输入邮箱地址"
+msgid "Enter Email"
+msgstr "输入邮箱"
 
 #: cps/templates/user_table.html:136
-msgid "Enter Kindle E-mail Address"
-msgstr "输入Kindle邮箱地址"
+msgid "Enter eReader Email"
+msgstr "接收书籍的电子阅读器邮箱"
 
 #: cps/templates/user_table.html:136
-msgid "Kindle E-mail"
-msgstr "Kindle邮箱"
+msgid "eReader Email"
+msgstr "电子阅读器邮箱"
 
 #: cps/templates/user_table.html:137
 msgid "Locale"
@@ -3139,7 +3404,7 @@ msgstr "本地化"
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
-msgstr "可见数据语言"
+msgstr "可见书籍语言"
 
 #: cps/templates/user_table.html:139
 msgid "Edit Allowed Tags"
@@ -3151,11 +3416,11 @@ msgstr "允许标签"
 
 #: cps/templates/user_table.html:140
 msgid "Edit Denied Tags"
-msgstr "编辑拒绝标签"
+msgstr "编辑被拒绝标签"
 
 #: cps/templates/user_table.html:140
 msgid "Denied Tags"
-msgstr "拒绝标签"
+msgstr "被拒绝标签"
 
 #: cps/templates/user_table.html:141
 msgid "Edit Allowed Column Values"
@@ -3190,10 +3455,6 @@ msgid "Sync selected Shelves with Kobo"
 msgstr "同步所选书架到 Kobo"
 
 #: cps/templates/user_table.html:156
-msgid "Show read/unread selection"
-msgstr "显示已读/未读选择"
-
-#: cps/templates/user_table.html:159
-msgid "Show random books"
-msgstr "显示随机书籍"
+msgid "Show Read/Unread Section"
+msgstr "显示已读、未读栏目"
 

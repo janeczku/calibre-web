@@ -19,10 +19,8 @@
 
 import sys
 from base64 import b64decode, b64encode
-from jsonschema import validate, exceptions, __version__
+from jsonschema import validate, exceptions
 from datetime import datetime
-
-from urllib.parse import unquote
 
 from flask import json
 from .. import logger

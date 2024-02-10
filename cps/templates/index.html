@@ -1,7 +1,7 @@
 {% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
-{% if g.user.show_detail_random() and page != "discover" %}
+{% if current_user.show_detail_random() and page != "discover" %}
 <div class="discover random-books">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="row display-flex">

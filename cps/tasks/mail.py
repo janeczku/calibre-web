@@ -18,6 +18,7 @@
 
 import os
 import smtplib
+import ssl
 import threading
 import socket
 import mimetypes
@@ -152,7 +153,7 @@ class TaskEmail(CalibreTask):
                 main_type, sub_type = content_type.split('/', 1)
                 message.add_attachment(data, maintype=main_type, subtype=sub_type, filename=self.attachment)
             else:
-                self._handleError(u"Attachment not found")
+                self._handleError("Attachment not found")
                 return
         return message
 
@@ -166,7 +167,7 @@ class TaskEmail(CalibreTask):
                 self.send_gmail_email(msg)
         except MemoryError as e:
             log.error_or_exception(e, stacklevel=3)
-            self._handleError(u'MemoryError sending e-mail: {}'.format(str(e)))
+            self._handleError('MemoryError sending e-mail: {}'.format(str(e)))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             log.error_or_exception(e, stacklevel=3)
             if hasattr(e, "smtp_error"):
@@ -177,13 +178,13 @@ class TaskEmail(CalibreTask):
                 text = '\n'.join(e.args)
             else:
                 text = ''
-            self._handleError(u'Smtplib Error sending e-mail: {}'.format(text))
+            self._handleError('Smtplib Error sending e-mail: {}'.format(text))
         except (socket.error) as e:
             log.error_or_exception(e, stacklevel=3)
-            self._handleError(u'Socket Error sending e-mail: {}'.format(e.strerror))
+            self._handleError('Socket Error sending e-mail: {}'.format(e.strerror))
         except Exception as ex:
             log.error_or_exception(ex, stacklevel=3)
-            self._handleError(u'Error sending e-mail: {}'.format(ex))
+            self._handleError('Error sending e-mail: {}'.format(ex))
 
     def send_standard_email(self, msg):
         use_ssl = int(self.settings.get('mail_use_ssl', 0))
@@ -192,8 +193,9 @@ class TaskEmail(CalibreTask):
         # on python3 debugoutput is caught with overwritten _print_debug function
         log.debug("Start sending e-mail")
         if use_ssl == 2:
+            context = ssl.create_default_context()
             self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
-                                       timeout=timeout)
+                                       timeout=timeout, context=context)
         else:
             self.asyncSMTP = Email(self.settings["mail_server"], self.settings["mail_port"], timeout=timeout)
 
@@ -201,9 +203,10 @@ class TaskEmail(CalibreTask):
         if logger.is_debug_enabled():
             self.asyncSMTP.set_debuglevel(1)
         if use_ssl == 1:
-            self.asyncSMTP.starttls()
-        if self.settings["mail_password"]:
-            self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password"]))
+            context = ssl.create_default_context()
+            self.asyncSMTP.starttls(context=context)
+        if self.settings["mail_password_e"]:
+            self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password_e"]))
 
         # Convert message to something to send
         fp = StringIO()
@@ -216,7 +219,8 @@ class TaskEmail(CalibreTask):
         log.debug("E-mail send successfully")
 
     def send_gmail_email(self, message):
-        return gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
+        gmail.send_messsage(self.settings.get('mail_gmail_token', None), message)
+        self._handleSuccess()
 
     @property
     def progress(self):
@@ -235,7 +239,7 @@ class TaskEmail(CalibreTask):
     @classmethod
     def _get_attachment(cls, book_path, filename):
         """Get file as MIMEBase message"""
-        calibre_path = config.config_calibre_dir
+        calibre_path = config.get_book_path()
         if config.config_use_google_drive:
             df = gdriveutils.getFileFromEbooksFolder(book_path, filename)
             if df:
@@ -256,7 +260,7 @@ class TaskEmail(CalibreTask):
                 file_.close()
             except IOError as e:
                 log.error_or_exception(e, stacklevel=3)
-                log.error(u'The requested file could not be read. Maybe wrong permissions?')
+                log.error('The requested file could not be read. Maybe wrong permissions?')
                 return None
         return data
 
