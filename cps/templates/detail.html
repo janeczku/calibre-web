@@ -205,8 +205,8 @@
 
 
                 {% for c in cc %}
-                    <div class="real_custom_columns">
-                        {% if entry['custom_column_' ~ c.id]|length > 0 %}
+                    {% if entry['custom_column_' ~ c.id]|length > 0 %}
+                        <div class="real_custom_columns">
                             {{ c.name }}:
                             {% for column in entry['custom_column_' ~ c.id] %}
                                 {% if c.datatype == 'rating' %}
@@ -235,8 +235,9 @@
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
-                        {% endif %}
-                    </div>
+
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
             {% if not current_user.is_anonymous %}
