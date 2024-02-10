@@ -49,7 +49,7 @@ $(function() {
             method: "post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/canceltask",
+            url: getPath() + "/ajax/canceltask",
             data: JSON.stringify({"task_id": taskId}),
         });
     });
@@ -548,12 +548,6 @@ $(function() {
         },
     });
 
-    $("#user-table").on("click-cell.bs.table", function (field, value, row, $element) {
-        if (value === "denied_column_value") {
-            confirmDialog("btndeluser", "GeneralDeleteModal", $element.id, user_handle);
-        }
-    });
-
     $("#user-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
     function (e, rowsAfter, rowsBefore) {
         var rows = rowsAfter;
@@ -640,7 +634,7 @@ function UserActions (value, row) {
 
 /* Function for cancelling tasks */
 function TaskActions (value, row) {
-    var cancellableStats = [0, 1, 2];
+    var cancellableStats = [0, 2];
     if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
         return [
             "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",

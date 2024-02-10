@@ -1,0 +1,21 @@
+{
+    "wordMinLength": "Das Passwort ist zu kurz",
+    "wordMaxLength": "Das Passwort ist zu lang",
+    "wordInvalidChar": "Das Passwort enthält ein ungültiges Zeichen",
+    "wordNotEmail": "Das Passwort darf die E-Mail Adresse nicht enthalten",
+    "wordSimilarToUsername": "Das Passwort darf den Benutzernamen nicht enthalten",
+    "wordTwoCharacterClasses": "Bitte Buchstaben und Ziffern verwenden",
+    "wordRepetitions": "Zu viele Wiederholungen",
+    "wordSequences": "Das Passwort enthält Buchstabensequenzen",
+    "wordLowercase": "Bitte mindestens einen Kleinbuchstaben verwenden",
+    "wordUppercase": "Bitte mindestens einen Großbuchstaben verwenden",
+    "wordOneNumber": "Bitte mindestens eine Ziffern verwenden",
+    "wordOneSpecialChar": "Bitte mindestens ein Sonderzeichen verwenden",
+    "errorList": "Fehler:",
+    "veryWeak": "Sehr schwach",
+    "weak": "Schwach",
+    "normal": "Normal",
+    "medium": "Mittel",
+    "strong": "Stark",
+    "veryStrong": "Sehr stark"
+}

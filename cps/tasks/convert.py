@@ -21,8 +21,8 @@ import re
 from glob import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
-from tempfile import gettempdir
 from time import time
+from uuid import uuid4
 
 from sqlalchemy.exc import SQLAlchemyError
 from flask_babel import lazy_gettext as N_
@@ -34,9 +34,10 @@ from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 from cps.kobo_sync_status import remove_synced_book
 from cps.ub import init_db_thread
+from cps.file_helper import get_temp_dir
 
 from cps.tasks.mail import TaskEmail
-from cps import gdriveutils
+from cps import gdriveutils, helper
 from cps.constants import SUPPORTED_CALIBRE_BINARIES
 
 log = logger.create()
@@ -44,13 +45,13 @@ log = logger.create()
 current_milli_time = lambda: int(round(time() * 1000))
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, book_id, task_message, settings, kindle_mail, user=None):
+    def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
         super(TaskConvert, self).__init__(task_message)
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
         self.settings = settings
-        self.kindle_mail = kindle_mail
+        self.ereader_mail = ereader_mail
         self.user = user
 
         self.results = dict()
@@ -65,45 +66,48 @@ class TaskConvert(CalibreTask):
             df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
                                                      data.name + "." + self.settings['old_book_format'].lower())
             df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
-            if df and df_cover:
-                datafile = os.path.join(config.config_calibre_dir,
+            if df:
+                datafile = os.path.join(config.get_book_path(),
                                         cur_book.path,
-                                        data.name + u"." + self.settings['old_book_format'].lower())
-                datafile_cover = os.path.join(config.config_calibre_dir,
-                                        cur_book.path, "cover.jpg")
-                if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
-                    os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
+                                        data.name + "." + self.settings['old_book_format'].lower())
+                if df_cover:
+                    datafile_cover = os.path.join(config.get_book_path(),
+                                            cur_book.path, "cover.jpg")
+                if not os.path.exists(os.path.join(config.get_book_path(), cur_book.path)):
+                    os.makedirs(os.path.join(config.get_book_path(), cur_book.path))
                 df.GetContentFile(datafile)
-                df_cover.GetContentFile(datafile_cover)
+                if df_cover:
+                    df_cover.GetContentFile(datafile_cover)
                 worker_db.session.close()
             else:
-                # ToDo Include cover in error handling 
-                error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+                # ToDo Include cover in error handling
+                error_message = _("%(format)s not found on Google Drive: %(fn)s",
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
                 worker_db.session.close()
-                return error_message
+                return self._handleError(self, error_message)
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
-            os.remove(self.file_path + u'.' + self.settings['old_book_format'].lower())
-            os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
+            os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
+            if df_cover:
+                os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
 
         if filename:
             if config.config_use_google_drive:
                 # Upload files to gdrive
                 gdriveutils.updateGdriveCalibreFromLocal()
                 self._handleSuccess()
-            if self.kindle_mail:
-                # if we're sending to kindle after converting, create a one-off task and run it immediately
+            if self.ereader_mail:
+                # if we're sending to E-Reader after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = N_(u"%(book)s send to Kindle", book=escape(self.title))
+                    EmailText = N_("%(book)s send to E-Reader", book=escape(self.title))
                     worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                            self.results["path"],
                                                            filename,
                                                            self.settings,
-                                                           self.kindle_mail,
+                                                           self.ereader_mail,
                                                            EmailText,
                                                            self.settings['body'],
                                                            internal=True)
@@ -116,12 +120,12 @@ class TaskConvert(CalibreTask):
         local_db = db.CalibreDB(expire_on_commit=False, init=True)
         file_path = self.file_path
         book_id = self.book_id
-        format_old_ext = u'.' + self.settings['old_book_format'].lower()
-        format_new_ext = u'.' + self.settings['new_book_format'].lower()
+        format_old_ext = '.' + self.settings['old_book_format'].lower()
+        format_new_ext = '.' + self.settings['new_book_format'].lower()
 
         # check to see if destination format already exists - or if book is in database
         # if it does - mark the conversion task as complete and return a success
-        # this will allow send to kindle workflow to continue to work
+        # this will allow to send to E-Reader workflow to continue to work
         if os.path.isfile(file_path + format_new_ext) or\
                 local_db.get_book_format(self.book_id, self.settings['new_book_format']):
             log.info("Book id %d already converted to %s", book_id, format_new_ext)
@@ -142,7 +146,7 @@ class TaskConvert(CalibreTask):
                     local_db.session.rollback()
                     log.error("Database error: %s", e)
                     local_db.session.close()
-                    self._handleError(N_("Database error: %(error)s.", error=e))
+                    self._handleError(N_("Oops! Database Error: %(error)s.", error=e))
                     return
                 self._handleSuccess()
                 local_db.session.close()
@@ -159,9 +163,10 @@ class TaskConvert(CalibreTask):
         else:
             # check if calibre converter-executable is existing
             if not os.path.exists(config.config_converterpath):
-                self._handleError(N_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
+                self._handleError(N_("Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
                 return
-            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext)
+            has_cover = local_db.get_book(book_id).has_cover
+            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, has_cover)
 
         if check == 0:
             cur_book = local_db.get_book(book_id)
@@ -197,16 +202,25 @@ class TaskConvert(CalibreTask):
         log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = N_('Ebook converter failed with unknown error')
+        else:
+            log.error(error_message)
         self._handleError(error_message)
         return
 
     def _convert_kepubify(self, file_path, format_old_ext, format_new_ext):
+        if config.config_embed_metadata and config.config_binariesdir:
+            tmp_dir, temp_file_name = helper.do_calibre_export(self.book_id, format_old_ext[1:])
+            filename = os.path.join(tmp_dir, temp_file_name + format_old_ext)
+            temp_file_path = tmp_dir
+        else:
+            filename = file_path + format_old_ext
+            temp_file_path = os.path.dirname(file_path)
         quotes = [1, 3]
-        command = [config.config_kepubifypath, (file_path + format_old_ext), '-o', os.path.dirname(file_path)]
+        command = [config.config_kepubifypath, filename, '-o', temp_file_path, '-i']
         try:
             p = process_open(command, quotes)
         except OSError as e:
-            return 1, N_(u"Kepubify-converter failed: %(error)s", error=e)
+            return 1, N_("Kepubify-converter failed: %(error)s", error=e)
         self.progress = 0.01
         while True:
             nextline = p.stdout.readlines()
@@ -216,46 +230,42 @@ class TaskConvert(CalibreTask):
             if p.poll() is not None:
                 break
 
-        # ToD Handle
         # process returncode
         check = p.returncode
 
         # move file
         if check == 0:
-            converted_file = glob(os.path.join(os.path.dirname(file_path), "*.kepub.epub"))
+            converted_file = glob(os.path.splitext(filename)[0] + "*.kepub.epub")
             if len(converted_file) == 1:
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
             else:
-                return 1, N_(u"Converted file not found or more than one file in folder %(folder)s",
+                return 1, N_("Converted file not found or more than one file in folder %(folder)s",
                             folder=os.path.dirname(file_path))
         return check, None
 
-    def _convert_calibre(self, file_path, format_old_ext, format_new_ext):
-        book_id = self.book_id
+    def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
         try:
-            # Linux py2.7 encode as list without quotes no empty element for parameters
-            # linux py3.x no encode and as list without quotes no empty element for parameters
-            # windows py2.7 encode as string with quotes empty element for parameters is okay
-            # windows py 3.x no encode and as string with quotes empty element for parameters is okay
-            # separate handling for windows and linux
-
-            quotes = [3, 5]
-            tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-            if not os.path.isdir(tmp_dir):
-                os.mkdir(tmp_dir)
-            calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
-            opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(book_id), '--with-library', config.config_calibre_dir]
-            p = process_open(opf_command, quotes)
-            p.wait()
-            path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(current_milli_time()) + ".opf")
-            with open(path_tmp_opf, 'w') as fd:
-                copyfileobj(p.stdout, fd)
+            # path_tmp_opf = self._embed_metadata()
+            if config.config_embed_metadata:
+                quotes = [3, 5]
+                tmp_dir = get_temp_dir()
+                calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+                opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
+                               '--with-library', config.config_calibre_dir]
+                p = process_open(opf_command, quotes)
+                p.wait()
+                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
+                with open(path_tmp_opf, 'w') as fd:
+                    copyfileobj(p.stdout, fd)
 
             quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext), '--from-opf', path_tmp_opf,
-                       '--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')]
+                       (file_path + format_new_ext)]
+            if config.config_embed_metadata:
+                command.extend(['--from-opf', path_tmp_opf])
+            if has_cover:
+                command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
             quotes_index = 3
             if config.config_calibre:
                 parameters = config.config_calibre.split(" ")
@@ -266,7 +276,7 @@ class TaskConvert(CalibreTask):
 
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
-            return 1, N_(u"Ebook-converter failed: %(error)s", error=e)
+            return 1, N_("Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()
@@ -297,7 +307,10 @@ class TaskConvert(CalibreTask):
         return N_("Convert")
 
     def __str__(self):
-        return "Convert {} {}".format(self.book_id, self.kindle_mail)
+        if self.ereader_mail:
+            return "Convert {} {}".format(self.book_id, self.ereader_mail)
+        else:
+            return "Convert {}".format(self.book_id)
 
     @property
     def is_cancellable(self):

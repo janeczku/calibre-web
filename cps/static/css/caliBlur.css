@@ -3290,10 +3290,13 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropd
     -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
-    left: 0 !important;
     overflow-y: auto;
 }
+.dropdown-menu:not(.datepicker-dropdown):not(.profileDropli) {
+    left: 0 !important;
+}
 #add-to-shelves {
+  min-height: 48px;
   max-height: calc(100% - 120px);
   overflow-y: auto;
 }
@@ -4423,38 +4426,6 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
         left: 49px;
         margin-top: 5px
     }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after, body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        color: hsla(0, 0%, 100%, .7);
-        cursor: pointer;
-        display: block;
-        font-family: plex-icons-new, serif;
-        font-size: 20px;
-        font-stretch: 100%;
-        font-style: normal;
-        font-variant-caps: normal;
-        font-variant-east-asian: normal;
-        font-variant-numeric: normal;
-        font-weight: 400;
-        height: 60px;
-        letter-spacing: normal;
-        line-height: 60px;
-        position: absolute
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:before {
-        content: "\EA30";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 20px
-    }
-
-    body:not(.blur) > .navbar > .container-fluid > .navbar-header:after {
-        content: "\EA2F";
-        -webkit-font-variant-ligatures: normal;
-        font-variant-ligatures: normal;
-        left: 60px
-    }
 }
 
 body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
@@ -4842,8 +4813,14 @@ body.advsearch:not(.blur) > div.container-fluid > div.row-fluid > div.col-sm-10 
     z-index: 999999999999999999999999999999999999
 }
 
-.search #shelf-actions, body.login .home-btn {
-    display: none
+body.search #shelf-actions button#add-to-shelf {
+  height: 40px;
+}
+@media screen and (max-width: 767px) {
+  body.search .discover, body.advsearch .discover {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 body.read:not(.blur) a[href*=readbooks] {
@@ -5164,7 +5141,7 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     right: 5px
 }
 
-#shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
+body:not(.search) #shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
     pointer-events: none
 }
 
@@ -5181,7 +5158,7 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     color: var(--color-primary)
 }
 
-#shelf-actions, #shelf-actions > .btn-group, #shelf-actions > .btn-group > .empty-ul {
+body:not(.search) #shelf-actions, body:not(.search) #shelf-actions > .btn-group, body:not(.search) #shelf-actions > .btn-group > .empty-ul {
     pointer-events: none
 }
 
@@ -7307,6 +7284,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin: 17.5px 0 0;
         min-height: auto;
         float: right
+    }
+
+    body.blur #main-nav + #scnd-nav .create-shelf, body.blur #main-nav + .col-sm-2 #scnd-nav .create-shelf {
+      float: none;
+      margin: 5px 0 10px -10px;
     }
 
     #main-nav + #scnd-nav .nav-head.hidden-xs {

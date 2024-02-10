@@ -1,5 +1,5 @@
 /* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
- *    Copyright (C) 2018 jkrehm
+ *    Copyright (C) 2018-2023 jkrehm, OzzieIsaacs
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,6 +16,36 @@
  */
 
 /* global _ */
+
+function handleResponse (data) {
+    $(".row-fluid.text-center").remove();
+    $("#flash_danger").remove();
+    $("#flash_success").remove();
+    if (!jQuery.isEmptyObject(data)) {
+        if($("#bookDetailsModal").is(":visible")) {
+            data.forEach(function (item) {
+                $(".modal-header").after('<div id="flash_' + item.type +
+                    '" class="text-center alert alert-' + item.type + '">' + item.message + '</div>');
+            });
+        } else {
+            data.forEach(function (item) {
+                $(".navbar").after('<div class="row-fluid text-center">' +
+                    '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
+                    '</div>');
+            });
+        }
+    }
+}
+$(".sendbtn-form").click(function() {
+    $.ajax({
+        method: 'post',
+        url: $(this).data('href'),
+        data: {csrf_token: $("input[name='csrf_token']").val()},
+        success: function (data) {
+            handleResponse(data)
+        }
+    })
+});
 
 $(function() {
     $("#have_read_form").ajaxForm();

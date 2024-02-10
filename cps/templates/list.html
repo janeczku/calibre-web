@@ -19,7 +19,7 @@
       </div>
 
       {% if data == "series" %}
-      <button class="update-view btn btn-primary" data-target="series_view" id="grid-button" data-view="grid">Grid</button>
+      <button class="update-view btn btn-primary" data-target="series_view" id="grid-button" data-view="grid">{{_('Grid')}}</button>
       {% endif %}
     </div>
   <div class="container">
@@ -34,7 +34,7 @@
         <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{% if entry.format %}{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry.format )}}{% else %}{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].id )}}{% endif %}">
           {% if entry.name %}
           <div class="rating">
-          {% for number in range(entry.name) %}
+          {% for number in range(entry.name|int) %}
             <span class="glyphicon glyphicon-star good"></span>
             {% if loop.last and loop.index < 5 %}
               {% for numer in range(5 - loop.index) %}
