@@ -546,7 +546,6 @@ def load_configuration(session, secret_key):
         session.commit()
 
 
-
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()
     if flask_settings == None:
