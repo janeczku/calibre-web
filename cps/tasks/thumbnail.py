@@ -209,7 +209,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                     if stream is not None:
                         stream.close()
             else:
-                book_cover_filepath = os.path.join(config.config_calibre_dir, book.path, 'cover.jpg')
+                book_cover_filepath = os.path.join(config.get_book_path(), book.path, 'cover.jpg')
                 if not os.path.isfile(book_cover_filepath):
                     raise Exception('Book cover file not found')
 
@@ -404,7 +404,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                         if stream is not None:
                             stream.close()
 
-                book_cover_filepath = os.path.join(config.config_calibre_dir, book.path, 'cover.jpg')
+                book_cover_filepath = os.path.join(config.get_book_path(), book.path, 'cover.jpg')
                 if not os.path.isfile(book_cover_filepath):
                     raise Exception('Book cover file not found')
 

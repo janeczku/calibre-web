@@ -1192,7 +1192,7 @@ def serve_book(book_id, book_format, anyname):
         if book_format.upper() == 'TXT':
             log.info('Serving book: %s', data.name)
             try:
-                rawdata = open(os.path.join(config.config_calibre_dir, book.path, data.name + "." + book_format),
+                rawdata = open(os.path.join(config.get_book_path(), book.path, data.name + "." + book_format),
                                "rb").read()
                 result = chardet.detect(rawdata)
                 try:
@@ -1209,7 +1209,7 @@ def serve_book(book_id, book_format, anyname):
                 return "File Not Found"
         # enable byte range read of pdf
         response = make_response(
-            send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+            send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
         if not range_header:
             log.info('Serving book: %s', data.name)
             response.headers['Accept-Ranges'] = 'bytes'
@@ -1233,7 +1233,7 @@ def send_to_ereader(book_id, book_format, convert):
         response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
         return Response(json.dumps(response), mimetype='application/json')
     elif current_user.kindle_mail:
-        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
+        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
                            current_user.name)
         if result is None:
             ub.update_download(book_id, int(current_user.id))
@@ -1354,7 +1354,7 @@ def login():
 @limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
 def login_post():
     form = request.form.to_dict()
-    username = form.get('username', "").strip().lower().replace("\n","\\n").replace("\r","")
+    username = form.get('username', "").strip().lower().replace("\n","").replace("\r","")
     try:
         limiter.check()
     except RateLimitExceeded:

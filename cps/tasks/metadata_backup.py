@@ -17,26 +17,13 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from urllib.request import urlopen
 from lxml import etree
-
 
 from cps import config, db, gdriveutils, logger
 from cps.services.worker import CalibreTask
 from flask_babel import lazy_gettext as N_
 
-OPF_NAMESPACE = "http://www.idpf.org/2007/opf"
-PURL_NAMESPACE = "http://purl.org/dc/elements/1.1/"
-
-OPF = "{%s}" % OPF_NAMESPACE
-PURL = "{%s}" % PURL_NAMESPACE
-
-etree.register_namespace("opf", OPF_NAMESPACE)
-etree.register_namespace("dc", PURL_NAMESPACE)
-
-OPF_NS = {None: OPF_NAMESPACE}  # the default namespace (no prefix)
-NSMAP = {'dc': PURL_NAMESPACE, 'opf': OPF_NAMESPACE}
-
+from ..epub_helper import create_new_metadata_backup
 
 class TaskBackupMetadata(CalibreTask):
 
@@ -101,7 +88,8 @@ class TaskBackupMetadata(CalibreTask):
             self.calibre_db.session.close()
 
     def open_metadata(self, book, custom_columns):
-        package = self.create_new_metadata_backup(book, custom_columns)
+        # package = self.create_new_metadata_backup(book, custom_columns)
+        package = create_new_metadata_backup(book, custom_columns, self.export_language, self.translated_title)
         if config.config_use_google_drive:
             if not gdriveutils.is_gdrive_ready():
                 raise Exception('Google Drive is configured but not ready')
@@ -114,7 +102,7 @@ class TaskBackupMetadata(CalibreTask):
                                                  True)
         else:
             # ToDo: Handle book folder not found or not readable
-            book_metadata_filepath = os.path.join(config.config_calibre_dir, book.path, 'metadata.opf')
+            book_metadata_filepath = os.path.join(config.get_book_path(), book.path, 'metadata.opf')
             # prepare finalize everything and output
             doc = etree.ElementTree(package)
             try:
@@ -123,7 +111,7 @@ class TaskBackupMetadata(CalibreTask):
             except Exception as ex:
                 raise Exception('Writing Metadata failed with error: {} '.format(ex))
 
-    def create_new_metadata_backup(self, book,  custom_columns):
+    '''def create_new_metadata_backup(self, book,  custom_columns):
         # generate root package element
         package = etree.Element(OPF + "package", nsmap=OPF_NS)
         package.set("unique-identifier", "uuid_id")
@@ -208,7 +196,7 @@ class TaskBackupMetadata(CalibreTask):
         guide = etree.SubElement(package, "guide")
         etree.SubElement(guide, "reference", type="cover", title=self.translated_title, href="cover.jpg")
 
-        return package
+        return package'''
 
     @property
     def name(self):
