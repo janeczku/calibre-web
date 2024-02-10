@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -1422,7 +1422,7 @@ msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
 #: cps/web.py:1399
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "新密码已发送到您的邮箱"
 
 #: cps/web.py:1403

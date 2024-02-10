@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: 2023-10-21 15:45+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -1422,7 +1422,7 @@ msgid "Wrong Username or Password"
 msgstr "Falscher Benutzername oder Passwort"
 
 #: cps/web.py:1399
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Das neue Passwort wurde an die E-Mail Adresse verschickt"
 
 #: cps/web.py:1403
