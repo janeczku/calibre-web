@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: 2020-06-09 21:11+0100\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -1460,7 +1460,7 @@ msgstr "Špatné uživatelské jméno nebo heslo"
 
 #: cps/web.py:1399
 #, fuzzy
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Nové heslo bylo zasláno na vaši emailovou adresu"
 
 #: cps/web.py:1403

@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: 2020-06-07 06:47+0200\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language: fr\n"
@@ -1477,7 +1477,7 @@ msgstr "Mauvais nom d'utilisateur ou mot de passe"
 
 #: cps/web.py:1399
 #, fuzzy
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Le nouveau mot de passe a été envoyé vers votre adresse de courriel"
 
 #: cps/web.py:1403

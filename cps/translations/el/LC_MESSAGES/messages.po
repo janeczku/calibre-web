@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Depountis Georgios\n"
 "Language: el\n"
@@ -1460,7 +1460,7 @@ msgstr "Λανθασμένο Όνομα Χρήστη ή Κωδικός"
 
 #: cps/web.py:1399
 #, fuzzy
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Ο Νέος Κωδικός έχει σταλεί στη διεύθυνση email σου"
 
 #: cps/web.py:1403

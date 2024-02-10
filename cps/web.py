@@ -1396,7 +1396,7 @@ def login_post():
             if user is not None and user.name != "Guest":
                 ret, __ = reset_password(user.id)
                 if ret == 1:
-                    flash(_(u"New Password was send to your email address"), category="info")
+                    flash(_(u"New Password was sent to your email address"), category="info")
                     log.info('Password reset for user "%s" IP-address: %s', username, ip_address)
                 else:
                     log.error(u"An unknown error occurred. Please try again later")

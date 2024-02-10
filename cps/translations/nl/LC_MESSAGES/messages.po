@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-02-10 10:02+0100\n"
+"POT-Creation-Date: 2024-02-10 10:06+0100\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -1462,7 +1462,7 @@ msgstr "Verkeerde gebruikersnaam of wachtwoord"
 
 #: cps/web.py:1399
 #, fuzzy
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Een nieuw wachtwoord is verzonden naar je e-mailadres"
 
 #: cps/web.py:1403
