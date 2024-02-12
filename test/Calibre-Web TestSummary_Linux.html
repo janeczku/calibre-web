@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-02-10 19:51:08</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-02-11 21:14:02</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-02-11 02:37:31</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-02-12 04:05:52</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 36 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 42 min</p>
         </div>
       </div>
       </div>
@@ -234,12 +234,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">16</td>
+        <td class="text-center">20</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c2', 21)">Detail</a>
@@ -383,233 +383,76 @@
     
     
     
-        <tr id='pt2.16' class='hiddenRow bg-success'>
+        <tr id="ft2.16" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_date</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 501, in test_backup_change_custom_date
+    self.assertEqual(custom[&#34;#value#&#34;], None)
+AssertionError: {&#39;__class__&#39;: &#39;datetime.datetime&#39;, &#39;__value__&#39;: &#39;2023-08-03T00:00:00+00:00&#39;} != None</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_float</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.17" class="none bg-info">
-            <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_float</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 359, in test_backup_change_custom_float
-    self.queue_metadata_backup()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1630, in queue_metadata_backup
-    self.check_element_on_page((By.ID, &#34;metadata_backup&#34;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id="et2.18" class="none bg-info">
+        <tr id='pt2.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_int</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.18')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 392, in test_backup_change_custom_int
-    self.queue_metadata_backup()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1630, in queue_metadata_backup
-    self.check_element_on_page((By.ID, &#34;metadata_backup&#34;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.19" class="none bg-info">
+        <tr id='pt2.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.19')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.19" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.19').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 425, in test_backup_change_custom_rating
-    self.queue_metadata_backup()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1630, in queue_metadata_backup
-    self.check_element_on_page((By.ID, &#34;metadata_backup&#34;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.20" class="none bg-info">
+        <tr id='pt2.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_text</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.20')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.20" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.20').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 452, in test_backup_change_custom_text
-    self.queue_metadata_backup()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1630, in queue_metadata_backup
-    self.check_element_on_page((By.ID, &#34;metadata_backup&#34;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et2.21" class="none bg-info">
+        <tr id='pt2.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_upload_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et2.21')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et2.21" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et2.21').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 595, in test_upload_book
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 399, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:191:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:509:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c3', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="et3.1" class="none bg-info">
-            <td>
-                <div class='testcase'>tearDownClass (test_backup_metadata)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et3.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et3.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et3.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 39, in tearDownClass
-    cls.driver.get(&#34;http://127.0.0.1:&#34; + PORTS[0])
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 449, in get
-    self.execute(Command.GET, {&#34;url&#34;: url})
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.WebDriverException: Message: Reached error page: about:neterror?e=connectionFailure&amp;u=http%3A//127.0.0.1%3A8083/&amp;c=UTF-8&amp;d=Firefox%20can%E2%80%99t%20establish%20a%20connection%20to%20the%20server%20at%20127.0.0.1%3A8083.
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:191:5
-UnknownError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:800:5
-checkReadyState@chrome://remote/content/marionette/navigate.sys.mjs:58:24
-onNavigation@chrome://remote/content/marionette/navigate.sys.mjs:324:39
-emit@resource://gre/modules/EventEmitter.sys.mjs:154:20
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.sys.mjs:33:25</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -623,13 +466,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c4', 1)">Detail</a>
+            <a onclick="showClassDetail('c3', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt4.1' class='hiddenRow bg-success'>
+        <tr id='pt3.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadataGdrive - test_backup_gdrive</div>
             </td>
@@ -647,13 +490,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c5', 13)">Detail</a>
+            <a onclick="showClassDetail('c4', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt5.1' class='hiddenRow bg-success'>
+        <tr id='pt4.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_already_started</div>
             </td>
@@ -662,7 +505,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.2' class='hiddenRow bg-success'>
+        <tr id='pt4.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_bind_to_single_interface</div>
             </td>
@@ -671,7 +514,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.3' class='hiddenRow bg-success'>
+        <tr id='pt4.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_change_password</div>
             </td>
@@ -680,7 +523,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.4' class='hiddenRow bg-success'>
+        <tr id='pt4.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_cli_SSL_files</div>
             </td>
@@ -689,7 +532,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.5' class='hiddenRow bg-success'>
+        <tr id='pt4.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_cli_different_folder</div>
             </td>
@@ -698,7 +541,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.6' class='hiddenRow bg-success'>
+        <tr id='pt4.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_cli_different_settings_database</div>
             </td>
@@ -707,7 +550,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.7' class='hiddenRow bg-success'>
+        <tr id='pt4.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_dryrun_update</div>
             </td>
@@ -716,7 +559,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.8' class='hiddenRow bg-success'>
+        <tr id='pt4.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_enable_reconnect</div>
             </td>
@@ -725,7 +568,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.9' class='hiddenRow bg-success'>
+        <tr id='pt4.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_environ_port_setting</div>
             </td>
@@ -734,7 +577,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.10' class='hiddenRow bg-success'>
+        <tr id='pt4.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_logfile</div>
             </td>
@@ -743,7 +586,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.11' class='hiddenRow bg-success'>
+        <tr id='pt4.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_no_database</div>
             </td>
@@ -752,7 +595,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.12' class='hiddenRow bg-success'>
+        <tr id='pt4.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
             </td>
@@ -761,7 +604,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt5.13' class='hiddenRow bg-success'>
+        <tr id='pt4.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_writeonly_static_files</div>
             </td>
@@ -779,13 +622,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c6', 4)">Detail</a>
+            <a onclick="showClassDetail('c5', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt6.1' class='hiddenRow bg-success'>
+        <tr id='pt5.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_cli_gdrive_folder</div>
             </td>
@@ -794,7 +637,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt6.2' class='hiddenRow bg-success'>
+        <tr id='pt5.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_cli_gdrive_location</div>
             </td>
@@ -803,7 +646,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt6.3' class='hiddenRow bg-success'>
+        <tr id='pt5.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_gdrive_db_nonwrite</div>
             </td>
@@ -812,7 +655,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt6.4' class='hiddenRow bg-success'>
+        <tr id='pt5.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_no_database</div>
             </td>
@@ -830,13 +673,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c7', 2)">Detail</a>
+            <a onclick="showClassDetail('c6', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt7.1' class='hiddenRow bg-success'>
+        <tr id='pt6.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCoverEditBooks - test_invalid_jpg_hdd</div>
             </td>
@@ -845,7 +688,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt7.2' class='hiddenRow bg-success'>
+        <tr id='pt6.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCoverEditBooks - test_upload_jpg</div>
             </td>
@@ -863,13 +706,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c8', 1)">Detail</a>
+            <a onclick="showClassDetail('c7', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt8.1' class='hiddenRow bg-success'>
+        <tr id='pt7.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestDeleteDatabase - test_delete_books_in_database</div>
             </td>
@@ -887,13 +730,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c9', 15)">Detail</a>
+            <a onclick="showClassDetail('c8', 15)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt9.1' class='hiddenRow bg-success'>
+        <tr id='pt8.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_calibre_log</div>
             </td>
@@ -902,7 +745,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.2' class='hiddenRow bg-success'>
+        <tr id='pt8.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_deactivate</div>
             </td>
@@ -911,7 +754,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.3' class='hiddenRow bg-success'>
+        <tr id='pt8.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_email</div>
             </td>
@@ -920,7 +763,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.4' class='hiddenRow bg-success'>
+        <tr id='pt8.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_failed_and_email</div>
             </td>
@@ -929,7 +772,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.5' class='hiddenRow bg-success'>
+        <tr id='pt8.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_only</div>
             </td>
@@ -938,7 +781,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.6' class='hiddenRow bg-success'>
+        <tr id='pt8.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_options</div>
             </td>
@@ -947,7 +790,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.7' class='hiddenRow bg-success'>
+        <tr id='pt8.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_parameter</div>
             </td>
@@ -956,7 +799,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.8' class='hiddenRow bg-success'>
+        <tr id='pt8.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_wrong_excecutable</div>
             </td>
@@ -965,7 +808,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.9' class='hiddenRow bg-success'>
+        <tr id='pt8.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_xss</div>
             </td>
@@ -974,7 +817,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.10' class='hiddenRow bg-success'>
+        <tr id='pt8.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_email_failed</div>
             </td>
@@ -983,7 +826,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.11' class='hiddenRow bg-success'>
+        <tr id='pt8.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_email_only</div>
             </td>
@@ -992,7 +835,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.12' class='hiddenRow bg-success'>
+        <tr id='pt8.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_kindle_send_not_configured</div>
             </td>
@@ -1001,7 +844,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.13' class='hiddenRow bg-success'>
+        <tr id='pt8.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_ssl_smtp_setup_error</div>
             </td>
@@ -1010,7 +853,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.14' class='hiddenRow bg-success'>
+        <tr id='pt8.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_starttls_smtp_setup_error</div>
             </td>
@@ -1019,7 +862,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt9.15' class='hiddenRow bg-success'>
+        <tr id='pt8.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_user_convert_xss</div>
             </td>
@@ -1037,13 +880,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 6)">Detail</a>
+            <a onclick="showClassDetail('c9', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt10.1' class='hiddenRow bg-success'>
+        <tr id='pt9.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
             </td>
@@ -1052,7 +895,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt10.2' class='hiddenRow bg-success'>
+        <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_failed_and_email</div>
             </td>
@@ -1061,7 +904,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt10.3' class='hiddenRow bg-success'>
+        <tr id='pt9.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
             </td>
@@ -1070,7 +913,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt10.4' class='hiddenRow bg-success'>
+        <tr id='pt9.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_parameter</div>
             </td>
@@ -1079,7 +922,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt10.5' class='hiddenRow bg-success'>
+        <tr id='pt9.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_failed</div>
             </td>
@@ -1088,7 +931,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt10.6' class='hiddenRow bg-success'>
+        <tr id='pt9.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
             </td>
@@ -1106,13 +949,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c11', 3)">Detail</a>
+            <a onclick="showClassDetail('c10', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt11.1' class='hiddenRow bg-success'>
+        <tr id='pt10.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_deactivate</div>
             </td>
@@ -1121,7 +964,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt11.2' class='hiddenRow bg-success'>
+        <tr id='pt10.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
             </td>
@@ -1130,7 +973,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt11.3' class='hiddenRow bg-success'>
+        <tr id='pt10.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_wrong_excecutable</div>
             </td>
@@ -1148,13 +991,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 3)">Detail</a>
+            <a onclick="showClassDetail('c11', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt12.1' class='hiddenRow bg-success'>
+        <tr id='pt11.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_deactivate</div>
             </td>
@@ -1163,7 +1006,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt12.2' class='hiddenRow bg-success'>
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
@@ -1172,7 +1015,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt12.3' class='hiddenRow bg-success'>
+        <tr id='pt11.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_wrong_excecutable</div>
             </td>
@@ -1190,13 +1033,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 20)">Detail</a>
+            <a onclick="showClassDetail('c12', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_cbz_comicinfo</div>
             </td>
@@ -1205,7 +1048,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id='pt12.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_change_upload_formats</div>
             </td>
@@ -1214,7 +1057,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id='pt12.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_book</div>
             </td>
@@ -1223,7 +1066,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.4' class='hiddenRow bg-success'>
+        <tr id='pt12.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
@@ -1232,7 +1075,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.5' class='hiddenRow bg-success'>
+        <tr id='pt12.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
             </td>
@@ -1241,7 +1084,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.6' class='hiddenRow bg-success'>
+        <tr id='pt12.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
@@ -1250,7 +1093,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.7' class='hiddenRow bg-success'>
+        <tr id='pt12.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
@@ -1259,7 +1102,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.8' class='hiddenRow bg-success'>
+        <tr id='pt12.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
@@ -1268,7 +1111,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.9' class='hiddenRow bg-success'>
+        <tr id='pt12.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
             </td>
@@ -1277,7 +1120,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.10' class='hiddenRow bg-success'>
+        <tr id='pt12.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
@@ -1286,7 +1129,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.11' class='hiddenRow bg-success'>
+        <tr id='pt12.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
             </td>
@@ -1295,7 +1138,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.12' class='hiddenRow bg-success'>
+        <tr id='pt12.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
@@ -1304,7 +1147,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.13' class='hiddenRow bg-success'>
+        <tr id='pt12.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
@@ -1313,7 +1156,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.14' class='hiddenRow bg-success'>
+        <tr id='pt12.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
@@ -1322,7 +1165,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.15' class='hiddenRow bg-success'>
+        <tr id='pt12.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
@@ -1331,19 +1174,19 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id="st13.16" class="none bg-warning">
+        <tr id="st12.16" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.16')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.16')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st13.16" class="popup_window test_output" style="display:none;">
+                <div id="div_st12.16" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st13.16').style.display='none'"><span
+                                onclick="document.getElementById('div_st12.16').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1357,7 +1200,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.17' class='hiddenRow bg-success'>
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
@@ -1366,7 +1209,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='st13.18' class='none bg-warning'>
+        <tr id='st12.18' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
@@ -1375,7 +1218,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.19' class='hiddenRow bg-success'>
+        <tr id='pt12.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
@@ -1384,7 +1227,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt13.20' class='hiddenRow bg-success'>
+        <tr id='pt12.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
@@ -1402,13 +1245,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 38)">Detail</a>
+            <a onclick="showClassDetail('c13', 38)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt14.1' class='hiddenRow bg-success'>
+        <tr id='pt13.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_download_book</div>
             </td>
@@ -1417,7 +1260,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.2' class='hiddenRow bg-success'>
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_author</div>
             </td>
@@ -1426,7 +1269,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id='pt13.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_category</div>
             </td>
@@ -1435,7 +1278,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.4' class='hiddenRow bg-success'>
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_comments</div>
             </td>
@@ -1444,7 +1287,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.5' class='hiddenRow bg-success'>
+        <tr id='pt13.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_bool</div>
             </td>
@@ -1453,7 +1296,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.6' class='hiddenRow bg-success'>
+        <tr id='pt13.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_categories</div>
             </td>
@@ -1462,7 +1305,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.7' class='hiddenRow bg-success'>
+        <tr id='pt13.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_comment</div>
             </td>
@@ -1471,7 +1314,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.8' class='hiddenRow bg-success'>
+        <tr id='pt13.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_date</div>
             </td>
@@ -1480,7 +1323,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.9' class='hiddenRow bg-success'>
+        <tr id='pt13.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
             </td>
@@ -1489,7 +1332,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.10' class='hiddenRow bg-success'>
+        <tr id='pt13.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
             </td>
@@ -1498,7 +1341,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.11' class='hiddenRow bg-success'>
+        <tr id='pt13.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
             </td>
@@ -1507,7 +1350,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.12' class='hiddenRow bg-success'>
+        <tr id='pt13.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
             </td>
@@ -1516,7 +1359,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.13' class='hiddenRow bg-success'>
+        <tr id='pt13.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
             </td>
@@ -1525,7 +1368,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.14' class='hiddenRow bg-success'>
+        <tr id='pt13.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_language</div>
             </td>
@@ -1534,7 +1377,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.15' class='hiddenRow bg-success'>
+        <tr id='pt13.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publisher</div>
             </td>
@@ -1543,7 +1386,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.16' class='hiddenRow bg-success'>
+        <tr id='pt13.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_publishing_date</div>
             </td>
@@ -1552,7 +1395,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.17' class='hiddenRow bg-success'>
+        <tr id='pt13.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_rating</div>
             </td>
@@ -1561,7 +1404,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.18' class='hiddenRow bg-success'>
+        <tr id='pt13.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_series</div>
             </td>
@@ -1570,7 +1413,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.19' class='hiddenRow bg-success'>
+        <tr id='pt13.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_title</div>
             </td>
@@ -1579,19 +1422,19 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id="st14.20" class="none bg-warning">
+        <tr id="st13.20" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditBooks - test_rename_upper_lowercase</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.20')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.20')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st14.20" class="popup_window test_output" style="display:none;">
+                <div id="div_st13.20" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st14.20').style.display='none'"><span
+                                onclick="document.getElementById('div_st13.20').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1605,19 +1448,19 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id="st14.21" class="none bg-warning">
+        <tr id="st13.21" class="none bg-warning">
             <td>
                 <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.21')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.21')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st14.21" class="popup_window test_output" style="display:none;">
+                <div id="div_st13.21" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st14.21').style.display='none'"><span
+                                onclick="document.getElementById('div_st13.21').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1631,7 +1474,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.22' class='hiddenRow bg-success'>
+        <tr id='pt13.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_author</div>
             </td>
@@ -1640,7 +1483,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.23' class='hiddenRow bg-success'>
+        <tr id='pt13.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
             </td>
@@ -1649,7 +1492,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.24' class='hiddenRow bg-success'>
+        <tr id='pt13.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_language</div>
             </td>
@@ -1658,7 +1501,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.25' class='hiddenRow bg-success'>
+        <tr id='pt13.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
             </td>
@@ -1667,7 +1510,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.26' class='hiddenRow bg-success'>
+        <tr id='pt13.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_series</div>
             </td>
@@ -1676,7 +1519,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.27' class='hiddenRow bg-success'>
+        <tr id='pt13.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
             </td>
@@ -1685,7 +1528,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.28' class='hiddenRow bg-success'>
+        <tr id='pt13.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cb7</div>
             </td>
@@ -1694,7 +1537,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.29' class='hiddenRow bg-success'>
+        <tr id='pt13.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
@@ -1703,7 +1546,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.30' class='hiddenRow bg-success'>
+        <tr id='pt13.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1712,7 +1555,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.31' class='hiddenRow bg-success'>
+        <tr id='pt13.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1721,7 +1564,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.32' class='hiddenRow bg-success'>
+        <tr id='pt13.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1730,7 +1573,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.33' class='hiddenRow bg-success'>
+        <tr id='pt13.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1739,7 +1582,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.34' class='hiddenRow bg-success'>
+        <tr id='pt13.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1748,7 +1591,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.35' class='hiddenRow bg-success'>
+        <tr id='pt13.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1757,7 +1600,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.36' class='hiddenRow bg-success'>
+        <tr id='pt13.36' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1766,7 +1609,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.37' class='hiddenRow bg-success'>
+        <tr id='pt13.37' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cbz_coverformats</div>
             </td>
@@ -1775,7 +1618,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt14.38' class='hiddenRow bg-success'>
+        <tr id='pt13.38' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
@@ -1793,13 +1636,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 6)">Detail</a>
+            <a onclick="showClassDetail('c14', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_co_author</div>
             </td>
@@ -1808,7 +1651,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt15.2' class='hiddenRow bg-success'>
+        <tr id='pt14.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_one_author_one_book</div>
             </td>
@@ -1817,7 +1660,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt15.3' class='hiddenRow bg-success'>
+        <tr id='pt14.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_one_author_two_books</div>
             </td>
@@ -1826,7 +1669,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt15.4' class='hiddenRow bg-success'>
+        <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_rename_co_author</div>
             </td>
@@ -1835,7 +1678,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt15.5' class='hiddenRow bg-success'>
+        <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_rename_two_co_authors</div>
             </td>
@@ -1844,7 +1687,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt15.6' class='hiddenRow bg-success'>
+        <tr id='pt14.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_rename_capital_on_upload</div>
             </td>
@@ -1862,13 +1705,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 6)">Detail</a>
+            <a onclick="showClassDetail('c15', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_co_author</div>
             </td>
@@ -1877,7 +1720,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_one_author_one_book</div>
             </td>
@@ -1886,7 +1729,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt15.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_one_author_two_books</div>
             </td>
@@ -1895,7 +1738,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt16.4' class='hiddenRow bg-success'>
+        <tr id='pt15.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_co_author</div>
             </td>
@@ -1904,7 +1747,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt16.5' class='hiddenRow bg-success'>
+        <tr id='pt15.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_two_co_authors</div>
             </td>
@@ -1913,7 +1756,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt16.6' class='hiddenRow bg-success'>
+        <tr id='pt15.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
             </td>
@@ -1931,13 +1774,13 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 18)">Detail</a>
+            <a onclick="showClassDetail('c16', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
             </td>
@@ -1946,7 +1789,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
             </td>
@@ -1955,7 +1798,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
             </td>
@@ -1964,7 +1807,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
             </td>
@@ -1973,7 +1816,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
             </td>
@@ -1982,7 +1825,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
             </td>
@@ -1991,7 +1834,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt16.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
             </td>
@@ -2000,7 +1843,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt16.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
             </td>
@@ -2009,7 +1852,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt16.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
             </td>
@@ -2018,7 +1861,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.10' class='hiddenRow bg-success'>
+        <tr id='pt16.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
             </td>
@@ -2027,7 +1870,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.11' class='hiddenRow bg-success'>
+        <tr id='pt16.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
             </td>
@@ -2036,7 +1879,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.12' class='hiddenRow bg-success'>
+        <tr id='pt16.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
             </td>
@@ -2045,7 +1888,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.13' class='hiddenRow bg-success'>
+        <tr id='pt16.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
             </td>
@@ -2054,7 +1897,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.14' class='hiddenRow bg-success'>
+        <tr id='pt16.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
             </td>
@@ -2063,7 +1906,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.15' class='hiddenRow bg-success'>
+        <tr id='pt16.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
             </td>
@@ -2072,7 +1915,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.16' class='hiddenRow bg-success'>
+        <tr id='pt16.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
@@ -2081,7 +1924,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.17' class='hiddenRow bg-success'>
+        <tr id='pt16.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
             </td>
@@ -2090,7 +1933,7 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
     
     
     
-        <tr id='pt17.18' class='hiddenRow bg-success'>
+        <tr id='pt16.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
@@ -2108,25 +1951,25 @@ receiveMessage@chrome://remote/content/marionette/actors/MarionetteEventsParent.
         <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 1)">Detail</a>
+            <a onclick="showClassDetail('c17', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id="et17.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2152,13 +1995,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 18)">Detail</a>
+            <a onclick="showClassDetail('c18', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
             </td>
@@ -2167,7 +2010,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
@@ -2176,7 +2019,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
             </td>
@@ -2185,7 +2028,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.4' class='hiddenRow bg-success'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
             </td>
@@ -2194,7 +2037,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
             </td>
@@ -2203,7 +2046,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
             </td>
@@ -2212,7 +2055,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
@@ -2221,7 +2064,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.8' class='hiddenRow bg-success'>
+        <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
@@ -2230,7 +2073,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.9' class='hiddenRow bg-success'>
+        <tr id='pt18.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
@@ -2239,7 +2082,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.10' class='hiddenRow bg-success'>
+        <tr id='pt18.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
@@ -2248,7 +2091,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.11' class='hiddenRow bg-success'>
+        <tr id='pt18.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
@@ -2257,7 +2100,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.12' class='hiddenRow bg-success'>
+        <tr id='pt18.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
@@ -2266,7 +2109,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.13' class='hiddenRow bg-success'>
+        <tr id='pt18.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
             </td>
@@ -2275,7 +2118,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.14' class='hiddenRow bg-success'>
+        <tr id='pt18.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
@@ -2284,7 +2127,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.15' class='hiddenRow bg-success'>
+        <tr id='pt18.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
@@ -2293,7 +2136,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.16' class='hiddenRow bg-success'>
+        <tr id='pt18.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
@@ -2302,7 +2145,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.17' class='hiddenRow bg-success'>
+        <tr id='pt18.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
@@ -2311,7 +2154,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
@@ -2329,13 +2172,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 1)">Detail</a>
+            <a onclick="showClassDetail('c19', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
@@ -2353,13 +2196,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 3)">Detail</a>
+            <a onclick="showClassDetail('c20', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
@@ -2368,7 +2211,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
             </td>
@@ -2377,7 +2220,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.3' class='hiddenRow bg-success'>
+        <tr id='pt20.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
@@ -2395,13 +2238,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 7)">Detail</a>
+            <a onclick="showClassDetail('c21', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -2410,7 +2253,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -2419,7 +2262,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
@@ -2428,7 +2271,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
@@ -2437,7 +2280,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
@@ -2446,7 +2289,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt21.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
@@ -2455,7 +2298,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.7' class='hiddenRow bg-success'>
+        <tr id='pt21.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
@@ -2473,13 +2316,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 5)">Detail</a>
+            <a onclick="showClassDetail('c22', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_file_embed_metadata</div>
             </td>
@@ -2488,7 +2331,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2497,7 +2340,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_check_metadata</div>
             </td>
@@ -2506,7 +2349,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_kepub_embed_metadata</div>
             </td>
@@ -2515,7 +2358,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_permissions_missing_file</div>
             </td>
@@ -2533,13 +2376,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 4)">Detail</a>
+            <a onclick="showClassDetail('c23', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_file_embed_metadata</div>
             </td>
@@ -2548,7 +2391,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2557,7 +2400,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_check_metadata</div>
             </td>
@@ -2566,7 +2409,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_kepub_embed_metadata</div>
             </td>
@@ -2584,13 +2427,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 1)">Detail</a>
+            <a onclick="showClassDetail('c24', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBookDatabase - test_invalid_book_path</div>
             </td>
@@ -2608,13 +2451,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 2)">Detail</a>
+            <a onclick="showClassDetail('c25', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
             </td>
@@ -2623,7 +2466,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.2' class='hiddenRow bg-success'>
+        <tr id='pt25.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_read_column</div>
             </td>
@@ -2641,13 +2484,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 3)">Detail</a>
+            <a onclick="showClassDetail('c26', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
@@ -2656,19 +2499,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st27.2" class="none bg-warning">
+        <tr id="st26.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st27.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st26.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st27.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st26.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2682,7 +2525,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id='pt26.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
@@ -2700,13 +2543,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 1)">Detail</a>
+            <a onclick="showClassDetail('c27', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -2724,13 +2567,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 3)">Detail</a>
+            <a onclick="showClassDetail('c28', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -2739,7 +2582,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt28.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -2748,7 +2591,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt28.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -2766,13 +2609,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 12)">Detail</a>
+            <a onclick="showClassDetail('c29', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -2781,7 +2624,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -2790,7 +2633,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_limit</div>
             </td>
@@ -2799,7 +2642,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt29.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_no_download</div>
             </td>
@@ -2808,7 +2651,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id='pt29.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
@@ -2817,7 +2660,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt29.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -2826,7 +2669,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.7' class='hiddenRow bg-success'>
+        <tr id='pt29.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -2835,7 +2678,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.8' class='hiddenRow bg-success'>
+        <tr id='pt29.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -2844,7 +2687,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.9' class='hiddenRow bg-success'>
+        <tr id='pt29.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -2853,7 +2696,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id='pt29.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -2862,7 +2705,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.11' class='hiddenRow bg-success'>
+        <tr id='pt29.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -2871,7 +2714,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.12' class='hiddenRow bg-success'>
+        <tr id='pt29.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -2889,13 +2732,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 6)">Detail</a>
+            <a onclick="showClassDetail('c30', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
@@ -2904,7 +2747,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
@@ -2913,7 +2756,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
@@ -2922,7 +2765,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
@@ -2931,7 +2774,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
@@ -2940,7 +2783,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -2958,13 +2801,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 13)">Detail</a>
+            <a onclick="showClassDetail('c31', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -2973,7 +2816,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -2982,7 +2825,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -2991,7 +2834,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -3000,7 +2843,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -3009,7 +2852,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -3018,7 +2861,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.7' class='hiddenRow bg-success'>
+        <tr id='pt31.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -3027,7 +2870,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.8' class='hiddenRow bg-success'>
+        <tr id='pt31.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -3036,7 +2879,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.9' class='hiddenRow bg-success'>
+        <tr id='pt31.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -3045,7 +2888,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.10' class='hiddenRow bg-success'>
+        <tr id='pt31.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -3054,7 +2897,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.11' class='hiddenRow bg-success'>
+        <tr id='pt31.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -3063,7 +2906,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.12' class='hiddenRow bg-success'>
+        <tr id='pt31.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -3072,7 +2915,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.13' class='hiddenRow bg-success'>
+        <tr id='pt31.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -3090,13 +2933,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 4)">Detail</a>
+            <a onclick="showClassDetail('c32', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_login_limit</div>
             </td>
@@ -3105,7 +2948,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_opds_limit</div>
             </td>
@@ -3114,7 +2957,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.3' class='hiddenRow bg-success'>
+        <tr id='pt32.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_password_strength</div>
             </td>
@@ -3123,7 +2966,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id='pt32.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_register_limit</div>
             </td>
@@ -3141,13 +2984,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 10)">Detail</a>
+            <a onclick="showClassDetail('c33', 10)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt33.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_author_sort</div>
             </td>
@@ -3156,7 +2999,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_download_sort</div>
             </td>
@@ -3165,7 +3008,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt33.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_format_sort</div>
             </td>
@@ -3174,7 +3017,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_lang_sort</div>
             </td>
@@ -3183,7 +3026,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.5' class='hiddenRow bg-success'>
+        <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
@@ -3192,7 +3035,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.6' class='hiddenRow bg-success'>
+        <tr id='pt33.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
@@ -3201,7 +3044,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id='pt33.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_sort</div>
             </td>
@@ -3210,7 +3053,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id='pt33.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_sort</div>
             </td>
@@ -3219,7 +3062,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id='pt33.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_sort</div>
             </td>
@@ -3228,7 +3071,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.10' class='hiddenRow bg-success'>
+        <tr id='pt33.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_sort</div>
             </td>
@@ -3246,13 +3089,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 9)">Detail</a>
+            <a onclick="showClassDetail('c34', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt34.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -3261,7 +3104,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.2' class='hiddenRow bg-success'>
+        <tr id='pt34.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -3270,7 +3113,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id='pt34.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
@@ -3279,7 +3122,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.4' class='hiddenRow bg-success'>
+        <tr id='pt34.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -3288,19 +3131,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st35.5" class="none bg-warning">
+        <tr id="st34.5" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st35.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st34.5')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st35.5" class="popup_window test_output" style="display:none;">
+                <div id="div_st34.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st35.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st34.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3314,7 +3157,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.6' class='hiddenRow bg-success'>
+        <tr id='pt34.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logbook_download</div>
             </td>
@@ -3323,7 +3166,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.7' class='hiddenRow bg-success'>
+        <tr id='pt34.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -3332,7 +3175,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.8' class='hiddenRow bg-success'>
+        <tr id='pt34.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -3341,7 +3184,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.9' class='hiddenRow bg-success'>
+        <tr id='pt34.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -3359,13 +3202,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 19)">Detail</a>
+            <a onclick="showClassDetail('c35', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt36.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -3374,7 +3217,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.2' class='hiddenRow bg-success'>
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -3383,7 +3226,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.3' class='hiddenRow bg-success'>
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
@@ -3392,7 +3235,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.4' class='hiddenRow bg-success'>
+        <tr id='pt35.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -3401,7 +3244,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.5' class='hiddenRow bg-success'>
+        <tr id='pt35.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -3410,7 +3253,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.6' class='hiddenRow bg-success'>
+        <tr id='pt35.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -3419,7 +3262,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.7' class='hiddenRow bg-success'>
+        <tr id='pt35.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_log_hack</div>
             </td>
@@ -3428,7 +3271,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.8' class='hiddenRow bg-success'>
+        <tr id='pt35.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -3437,7 +3280,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.9' class='hiddenRow bg-success'>
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -3446,7 +3289,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.10' class='hiddenRow bg-success'>
+        <tr id='pt35.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -3455,7 +3298,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.11' class='hiddenRow bg-success'>
+        <tr id='pt35.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -3464,7 +3307,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.12' class='hiddenRow bg-success'>
+        <tr id='pt35.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -3473,7 +3316,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.13' class='hiddenRow bg-success'>
+        <tr id='pt35.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -3482,7 +3325,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.14' class='hiddenRow bg-success'>
+        <tr id='pt35.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -3491,7 +3334,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.15' class='hiddenRow bg-success'>
+        <tr id='pt35.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_password_policy</div>
             </td>
@@ -3500,7 +3343,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.16' class='hiddenRow bg-success'>
+        <tr id='pt35.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
@@ -3509,19 +3352,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft36.17" class="none bg-danger">
+        <tr id="ft35.17" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft36.17')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.17')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft36.17" class="popup_window test_output" style="display:block;">
+                <div id="div_ft35.17" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft36.17').style.display='none'"><span
+                                onclick="document.getElementById('div_ft35.17').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3538,7 +3381,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt36.18' class='hiddenRow bg-success'>
+        <tr id='pt35.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_opds</div>
             </td>
@@ -3547,7 +3390,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt36.19' class='hiddenRow bg-success'>
+        <tr id='pt35.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -3565,13 +3408,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 2)">Detail</a>
+            <a onclick="showClassDetail('c36', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
@@ -3580,7 +3423,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -3598,13 +3441,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 2)">Detail</a>
+            <a onclick="showClassDetail('c37', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -3613,7 +3456,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id='pt37.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -3631,13 +3474,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 24)">Detail</a>
+            <a onclick="showClassDetail('c38', 24)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt39.1' class='hiddenRow bg-success'>
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -3646,7 +3489,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -3655,7 +3498,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.3' class='hiddenRow bg-success'>
+        <tr id='pt38.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -3664,7 +3507,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.4' class='hiddenRow bg-success'>
+        <tr id='pt38.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -3673,7 +3516,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.5' class='hiddenRow bg-success'>
+        <tr id='pt38.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -3682,7 +3525,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.6' class='hiddenRow bg-success'>
+        <tr id='pt38.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -3691,7 +3534,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.7' class='hiddenRow bg-success'>
+        <tr id='pt38.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -3700,7 +3543,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.8' class='hiddenRow bg-success'>
+        <tr id='pt38.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -3709,7 +3552,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.9' class='hiddenRow bg-success'>
+        <tr id='pt38.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -3718,7 +3561,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.10' class='hiddenRow bg-success'>
+        <tr id='pt38.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -3727,7 +3570,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.11' class='hiddenRow bg-success'>
+        <tr id='pt38.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -3736,7 +3579,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.12' class='hiddenRow bg-success'>
+        <tr id='pt38.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -3745,7 +3588,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.13' class='hiddenRow bg-success'>
+        <tr id='pt38.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -3754,7 +3597,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.14' class='hiddenRow bg-success'>
+        <tr id='pt38.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -3763,7 +3606,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.15' class='hiddenRow bg-success'>
+        <tr id='pt38.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -3772,7 +3615,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.16' class='hiddenRow bg-success'>
+        <tr id='pt38.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -3781,7 +3624,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.17' class='hiddenRow bg-success'>
+        <tr id='pt38.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -3790,7 +3633,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.18' class='hiddenRow bg-success'>
+        <tr id='pt38.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -3799,7 +3642,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.19' class='hiddenRow bg-success'>
+        <tr id='pt38.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -3808,7 +3651,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.20' class='hiddenRow bg-success'>
+        <tr id='pt38.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
@@ -3817,7 +3660,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.21' class='hiddenRow bg-success'>
+        <tr id='pt38.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -3826,7 +3669,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.22' class='hiddenRow bg-success'>
+        <tr id='pt38.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -3835,7 +3678,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.23' class='hiddenRow bg-success'>
+        <tr id='pt38.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -3844,7 +3687,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt39.24' class='hiddenRow bg-success'>
+        <tr id='pt38.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -3862,13 +3705,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 1)">Detail</a>
+            <a onclick="showClassDetail('c39', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt40.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
@@ -3886,13 +3729,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 3)">Detail</a>
+            <a onclick="showClassDetail('c40', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt41.1' class='hiddenRow bg-success'>
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
@@ -3901,7 +3744,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt41.2' class='hiddenRow bg-success'>
+        <tr id='pt40.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
@@ -3910,7 +3753,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt41.3' class='hiddenRow bg-success'>
+        <tr id='pt40.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_module_start</div>
             </td>
@@ -3928,13 +3771,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 8)">Detail</a>
+            <a onclick="showClassDetail('c41', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='st42.1' class='none bg-warning'>
+        <tr id='st41.1' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestReader - test_cb7_reader</div>
             </td>
@@ -3943,7 +3786,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.2' class='hiddenRow bg-success'>
+        <tr id='pt41.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
@@ -3952,7 +3795,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.3' class='hiddenRow bg-success'>
+        <tr id='pt41.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -3961,7 +3804,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.4' class='hiddenRow bg-success'>
+        <tr id='pt41.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -3970,7 +3813,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.5' class='hiddenRow bg-success'>
+        <tr id='pt41.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -3979,7 +3822,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.6' class='hiddenRow bg-success'>
+        <tr id='pt41.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
@@ -3988,7 +3831,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.7' class='hiddenRow bg-success'>
+        <tr id='pt41.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -3997,7 +3840,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt42.8' class='hiddenRow bg-success'>
+        <tr id='pt41.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -4015,13 +3858,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 1)">Detail</a>
+            <a onclick="showClassDetail('c42', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt43.1' class='hiddenRow bg-success'>
+        <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
@@ -4039,13 +3882,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 8)">Detail</a>
+            <a onclick="showClassDetail('c43', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id='pt43.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -4054,7 +3897,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.2' class='hiddenRow bg-success'>
+        <tr id='pt43.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -4063,7 +3906,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.3' class='hiddenRow bg-success'>
+        <tr id='pt43.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -4072,7 +3915,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.4' class='hiddenRow bg-success'>
+        <tr id='pt43.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -4081,7 +3924,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.5' class='hiddenRow bg-success'>
+        <tr id='pt43.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -4090,7 +3933,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.6' class='hiddenRow bg-success'>
+        <tr id='pt43.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -4099,7 +3942,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.7' class='hiddenRow bg-success'>
+        <tr id='pt43.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -4108,7 +3951,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt44.8' class='hiddenRow bg-success'>
+        <tr id='pt43.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -4126,13 +3969,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 3)">Detail</a>
+            <a onclick="showClassDetail('c44', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_logout</div>
             </td>
@@ -4141,7 +3984,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt44.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_move_page</div>
             </td>
@@ -4150,7 +3993,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt44.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -4168,13 +4011,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 16)">Detail</a>
+            <a onclick="showClassDetail('c45', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt45.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_access_shelf</div>
             </td>
@@ -4183,7 +4026,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -4192,7 +4035,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -4201,7 +4044,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -4210,7 +4053,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt45.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
@@ -4219,7 +4062,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt45.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
@@ -4228,7 +4071,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.7' class='hiddenRow bg-success'>
+        <tr id='pt45.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -4237,7 +4080,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt45.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -4246,7 +4089,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt45.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -4255,7 +4098,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.10' class='hiddenRow bg-success'>
+        <tr id='pt45.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -4264,7 +4107,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.11' class='hiddenRow bg-success'>
+        <tr id='pt45.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -4273,7 +4116,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.12' class='hiddenRow bg-success'>
+        <tr id='pt45.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -4282,7 +4125,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.13' class='hiddenRow bg-success'>
+        <tr id='pt45.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -4291,19 +4134,19 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="st46.14" class="none bg-warning">
+        <tr id="st45.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st46.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st45.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st46.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st45.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st46.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st45.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4317,7 +4160,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.15' class='hiddenRow bg-success'>
+        <tr id='pt45.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -4326,7 +4169,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt46.16' class='hiddenRow bg-success'>
+        <tr id='pt45.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4344,13 +4187,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 1)">Detail</a>
+            <a onclick="showClassDetail('c46', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSocket - test_socket_communication</div>
             </td>
@@ -4368,13 +4211,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 1)">Detail</a>
+            <a onclick="showClassDetail('c47', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSystemdActivation - test_systemd_activation</div>
             </td>
@@ -4392,13 +4235,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 1)">Detail</a>
+            <a onclick="showClassDetail('c48', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
@@ -4416,13 +4259,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 8)">Detail</a>
+            <a onclick="showClassDetail('c49', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt50.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -4431,7 +4274,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.2' class='hiddenRow bg-success'>
+        <tr id='pt49.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
@@ -4440,7 +4283,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.3' class='hiddenRow bg-success'>
+        <tr id='pt49.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
@@ -4449,7 +4292,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.4' class='hiddenRow bg-success'>
+        <tr id='pt49.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
@@ -4458,7 +4301,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='st50.5' class='none bg-warning'>
+        <tr id='st49.5' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_for_series</div>
             </td>
@@ -4467,7 +4310,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.6' class='hiddenRow bg-success'>
+        <tr id='pt49.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
@@ -4476,7 +4319,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.7' class='hiddenRow bg-success'>
+        <tr id='pt49.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
@@ -4485,7 +4328,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id='pt49.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
@@ -4503,13 +4346,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c51', 9)">Detail</a>
+            <a onclick="showClassDetail('c50', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt51.1' class='hiddenRow bg-success'>
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -4518,7 +4361,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.2' class='hiddenRow bg-success'>
+        <tr id='pt50.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -4527,7 +4370,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.3' class='hiddenRow bg-success'>
+        <tr id='pt50.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -4536,7 +4379,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.4' class='hiddenRow bg-success'>
+        <tr id='pt50.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -4545,7 +4388,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.5' class='hiddenRow bg-success'>
+        <tr id='pt50.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -4554,7 +4397,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.6' class='hiddenRow bg-success'>
+        <tr id='pt50.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -4563,19 +4406,19 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="st51.7" class="none bg-warning">
+        <tr id="st50.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st51.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st50.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st51.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st50.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st51.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st50.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4589,7 +4432,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.8' class='hiddenRow bg-success'>
+        <tr id='pt50.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -4598,7 +4441,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt51.9' class='hiddenRow bg-success'>
+        <tr id='pt50.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
@@ -4616,13 +4459,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 6)">Detail</a>
+            <a onclick="showClassDetail('c51', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -4631,7 +4474,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt51.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4640,7 +4483,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id='pt51.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -4649,7 +4492,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt51.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4658,7 +4501,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id='pt51.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -4667,7 +4510,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt51.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4685,13 +4528,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 18)">Detail</a>
+            <a onclick="showClassDetail('c52', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt52.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4700,7 +4543,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id='pt52.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4709,7 +4552,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt52.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4718,7 +4561,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id='pt52.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -4727,7 +4570,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt52.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -4736,7 +4579,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt52.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -4745,7 +4588,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.7' class='hiddenRow bg-success'>
+        <tr id='pt52.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -4754,7 +4597,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.8' class='hiddenRow bg-success'>
+        <tr id='pt52.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -4763,7 +4606,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.9' class='hiddenRow bg-success'>
+        <tr id='pt52.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -4772,7 +4615,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.10' class='hiddenRow bg-success'>
+        <tr id='pt52.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -4781,7 +4624,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.11' class='hiddenRow bg-success'>
+        <tr id='pt52.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -4790,7 +4633,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.12' class='hiddenRow bg-success'>
+        <tr id='pt52.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -4799,7 +4642,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.13' class='hiddenRow bg-success'>
+        <tr id='pt52.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -4808,7 +4651,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.14' class='hiddenRow bg-success'>
+        <tr id='pt52.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -4817,7 +4660,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.15' class='hiddenRow bg-success'>
+        <tr id='pt52.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -4826,7 +4669,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.16' class='hiddenRow bg-success'>
+        <tr id='pt52.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -4835,7 +4678,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.17' class='hiddenRow bg-success'>
+        <tr id='pt52.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -4844,7 +4687,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.18' class='hiddenRow bg-success'>
+        <tr id='pt52.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -4862,13 +4705,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 1)">Detail</a>
+            <a onclick="showClassDetail('c53', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -4886,13 +4729,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 21)">Detail</a>
+            <a onclick="showClassDetail('c54', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -4901,7 +4744,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -4910,7 +4753,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -4919,7 +4762,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -4928,7 +4771,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -4937,7 +4780,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -4946,7 +4789,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.7' class='hiddenRow bg-success'>
+        <tr id='pt54.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -4955,7 +4798,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -4964,7 +4807,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -4973,7 +4816,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -4982,7 +4825,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -4991,7 +4834,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5000,7 +4843,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.13' class='hiddenRow bg-success'>
+        <tr id='pt54.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5009,7 +4852,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.14' class='hiddenRow bg-success'>
+        <tr id='pt54.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5018,7 +4861,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.15' class='hiddenRow bg-success'>
+        <tr id='pt54.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5027,7 +4870,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.16' class='hiddenRow bg-success'>
+        <tr id='pt54.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5036,7 +4879,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.17' class='hiddenRow bg-success'>
+        <tr id='pt54.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5045,7 +4888,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.18' class='hiddenRow bg-success'>
+        <tr id='pt54.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5054,7 +4897,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.19' class='hiddenRow bg-success'>
+        <tr id='pt54.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5063,7 +4906,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.20' class='hiddenRow bg-success'>
+        <tr id='pt54.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5072,7 +4915,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.21' class='hiddenRow bg-success'>
+        <tr id='pt54.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5090,13 +4933,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 35)">Detail</a>
+            <a onclick="showClassDetail('c55', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5105,7 +4948,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.2' class='hiddenRow bg-success'>
+        <tr id='pt55.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5114,7 +4957,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.3' class='hiddenRow bg-success'>
+        <tr id='pt55.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -5123,7 +4966,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.4' class='hiddenRow bg-success'>
+        <tr id='pt55.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -5132,7 +4975,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.5' class='hiddenRow bg-success'>
+        <tr id='pt55.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -5141,7 +4984,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.6' class='hiddenRow bg-success'>
+        <tr id='pt55.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -5150,7 +4993,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.7' class='hiddenRow bg-success'>
+        <tr id='pt55.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -5159,7 +5002,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.8' class='hiddenRow bg-success'>
+        <tr id='pt55.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -5168,7 +5011,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.9' class='hiddenRow bg-success'>
+        <tr id='pt55.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -5177,7 +5020,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.10' class='hiddenRow bg-success'>
+        <tr id='pt55.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -5186,7 +5029,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.11' class='hiddenRow bg-success'>
+        <tr id='pt55.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -5195,7 +5038,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.12' class='hiddenRow bg-success'>
+        <tr id='pt55.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -5204,7 +5047,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.13' class='hiddenRow bg-success'>
+        <tr id='pt55.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -5213,7 +5056,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.14' class='hiddenRow bg-success'>
+        <tr id='pt55.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -5222,7 +5065,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.15' class='hiddenRow bg-success'>
+        <tr id='pt55.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -5231,7 +5074,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.16' class='hiddenRow bg-success'>
+        <tr id='pt55.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -5240,7 +5083,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.17' class='hiddenRow bg-success'>
+        <tr id='pt55.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -5249,7 +5092,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.18' class='hiddenRow bg-success'>
+        <tr id='pt55.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -5258,7 +5101,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.19' class='hiddenRow bg-success'>
+        <tr id='pt55.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -5267,7 +5110,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.20' class='hiddenRow bg-success'>
+        <tr id='pt55.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5276,7 +5119,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.21' class='hiddenRow bg-success'>
+        <tr id='pt55.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5285,7 +5128,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.22' class='hiddenRow bg-success'>
+        <tr id='pt55.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5294,7 +5137,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.23' class='hiddenRow bg-success'>
+        <tr id='pt55.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5303,7 +5146,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.24' class='hiddenRow bg-success'>
+        <tr id='pt55.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5312,7 +5155,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.25' class='hiddenRow bg-success'>
+        <tr id='pt55.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5321,7 +5164,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.26' class='hiddenRow bg-success'>
+        <tr id='pt55.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5330,7 +5173,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.27' class='hiddenRow bg-success'>
+        <tr id='pt55.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5339,7 +5182,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.28' class='hiddenRow bg-success'>
+        <tr id='pt55.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5348,7 +5191,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.29' class='hiddenRow bg-success'>
+        <tr id='pt55.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5357,7 +5200,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.30' class='hiddenRow bg-success'>
+        <tr id='pt55.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5366,7 +5209,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.31' class='hiddenRow bg-success'>
+        <tr id='pt55.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5375,7 +5218,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.32' class='hiddenRow bg-success'>
+        <tr id='pt55.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -5384,7 +5227,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.33' class='hiddenRow bg-success'>
+        <tr id='pt55.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5393,7 +5236,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.34' class='hiddenRow bg-success'>
+        <tr id='pt55.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5402,7 +5245,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.35' class='hiddenRow bg-success'>
+        <tr id='pt55.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5420,13 +5263,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 16)">Detail</a>
+            <a onclick="showClassDetail('c56', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5435,7 +5278,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt56.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5444,7 +5287,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.3' class='hiddenRow bg-success'>
+        <tr id='pt56.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5453,7 +5296,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
+        <tr id='pt56.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5462,7 +5305,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.5' class='hiddenRow bg-success'>
+        <tr id='pt56.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5471,7 +5314,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.6' class='hiddenRow bg-success'>
+        <tr id='pt56.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5480,7 +5323,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.7' class='hiddenRow bg-success'>
+        <tr id='pt56.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5489,7 +5332,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.8' class='hiddenRow bg-success'>
+        <tr id='pt56.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5498,7 +5341,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.9' class='hiddenRow bg-success'>
+        <tr id='pt56.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5507,7 +5350,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.10' class='hiddenRow bg-success'>
+        <tr id='pt56.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5516,7 +5359,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.11' class='hiddenRow bg-success'>
+        <tr id='pt56.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5525,7 +5368,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.12' class='hiddenRow bg-success'>
+        <tr id='pt56.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5534,7 +5377,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.13' class='hiddenRow bg-success'>
+        <tr id='pt56.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5543,7 +5386,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.14' class='hiddenRow bg-success'>
+        <tr id='pt56.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5552,7 +5395,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.15' class='hiddenRow bg-success'>
+        <tr id='pt56.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5561,7 +5404,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.16' class='hiddenRow bg-success'>
+        <tr id='pt56.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5572,10 +5415,10 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>478</td>
-        <td>460</td>
+        <td>477</td>
+        <td>464</td>
+        <td>2</td>
         <td>1</td>
-        <td>7</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -5724,7 +5567,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.25</td>
+              <td>2.0.26</td>
               <td>Basic</td>
             </tr>
           
@@ -6042,7 +5885,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.24.0</td>
+              <td>0.25.0</td>
               <td>TestGoodreads</td>
             </tr>
           
@@ -6096,7 +5939,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(460, 1, 7, 10);
+    drawCircle(464, 2, 1, 10);
     showCase(5);
 </script>
 
