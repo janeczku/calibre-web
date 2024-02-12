@@ -1322,7 +1322,7 @@ def handle_login_user(user, remember, message, category):
     ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-    return redirect_back(url_for("web.index"))
+    return redirect_back("web.index")
 
 
 def render_login(username="", password=""):
