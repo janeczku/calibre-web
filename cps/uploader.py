@@ -20,6 +20,9 @@
 import datetime
 import os
 import hashlib
+import shutil
+import sqlite3
+from subprocess import run
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
