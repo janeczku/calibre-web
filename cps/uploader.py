@@ -20,15 +20,12 @@
 import datetime
 import os
 import hashlib
-import shutil
-import sqlite3
-from subprocess import run
-from tempfile import gettempdir
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
 from .constants import BookMeta, XKLB_DB_FILE
 from .helper import split_authors
+from .file_helper import get_temp_dir
 
 log = logger.create()
 
@@ -359,10 +356,7 @@ def get_magick_version():
 
 
 def upload(uploadfile, rar_excecutable):
-    tmp_dir = os.path.join(gettempdir(), 'calibre_web')
-
-    if not os.path.isdir(tmp_dir):
-        os.mkdir(tmp_dir)
+    tmp_dir = get_temp_dir()
 
     filename = uploadfile.filename
     filename_root, file_extension = os.path.splitext(filename)
