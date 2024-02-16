@@ -23,9 +23,11 @@ from lxml import etree
 from . import isoLanguages, cover
 from . import config, logger
 from .helper import split_authors
+from .epub_helper import get_content_opf, default_ns
 from .constants import BookMeta
 
 log = logger.create()
+
 
 def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     if cover_file is None:
@@ -44,23 +46,14 @@ def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
     return cover.cover_processing(tmp_file_name, cf, extension)
 
 def get_epub_layout(book, book_data):
-    ns = {
-        'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
-        'pkg': 'http://www.idpf.org/2007/opf',
-    }
-    file_path = os.path.normpath(os.path.join(config.config_calibre_dir, book.path, book_data.name + "." + book_data.format.lower()))
+    file_path = os.path.normpath(os.path.join(config.get_book_path(),
+                                              book.path, book_data.name + "." + book_data.format.lower()))
 
     try:
-        epubZip = zipfile.ZipFile(file_path)
-        txt = epubZip.read('META-INF/container.xml')
-        tree = etree.fromstring(txt)
-        cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
-        cf = epubZip.read(cfname)
+        tree, __ = get_content_opf(file_path, default_ns)
+        p = tree.xpath('/pkg:package/pkg:metadata', namespaces=default_ns)[0]
 
-        tree = etree.fromstring(cf)
-        p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
-
-        layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=ns)
+        layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=default_ns)
     except (etree.XMLSyntaxError, KeyError, IndexError) as e:
         log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
         layout = []
@@ -78,13 +71,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         'dc': 'http://purl.org/dc/elements/1.1/'
     }
 
-    epub_zip = zipfile.ZipFile(tmp_file_path)
-
-    txt = epub_zip.read('META-INF/container.xml')
-    tree = etree.fromstring(txt)
-    cf_name = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
-    cf = epub_zip.read(cf_name)
-    tree = etree.fromstring(cf)
+    tree, cf_name = get_content_opf(tmp_file_path, ns)
 
     cover_path = os.path.dirname(cf_name)
 
@@ -127,6 +114,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
 
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
+    epub_zip = zipfile.ZipFile(tmp_file_path)
     cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
 
     identifiers = []
