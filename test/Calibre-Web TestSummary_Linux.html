@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-02-11 21:14:02</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-02-12 21:01:14</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-02-12 04:05:52</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-02-13 03:55:47</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 42 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 44 min</p>
         </div>
       </div>
       </div>
@@ -237,8 +237,8 @@
     <tr id="su" class="failClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">20</td>
-        <td class="text-center">1</td>
+        <td class="text-center">19</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -365,49 +365,69 @@
     
     
     
-        <tr id='pt2.14' class='hiddenRow bg-success'>
+        <tr id="ft2.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_bool</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt2.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_categories</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id="ft2.16" class="none bg-danger">
-            <td>
-                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_date</div>
-            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.16')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.14')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft2.16" class="popup_window test_output" style="display:block;">
+                <div id="div_ft2.14" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.16').style.display='none'"><span
+                                onclick="document.getElementById('div_ft2.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 501, in test_backup_change_custom_date
-    self.assertEqual(custom[&#34;#value#&#34;], None)
-AssertionError: {&#39;__class__&#39;: &#39;datetime.datetime&#39;, &#39;__value__&#39;: &#39;2023-08-03T00:00:00+00:00&#39;} != None</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 347, in test_backup_change_custom_bool
+    self.assertEqual(custom[&#34;#value#&#34;], False)
+AssertionError: True != False</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
+        </tr>
+    
+    
+    
+        <tr id="ft2.15" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_categories</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.15')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.15" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 561, in test_backup_change_custom_categories
+    self.assertEqual(custom[&#34;#value#&#34;], None)
+AssertionError: [&#39;Kulo&#39;, &#39;Smudo&#39;] != None</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestBackupMetadata - test_backup_change_custom_date</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3369,7 +3389,7 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 531, in test_proxy_login_multi_user
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 532, in test_proxy_login_multi_user
     self.assertTrue(&#39;&lt;input type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;name&#34; id=&#34;name&#34; value=&#34;new_user1&#34; autocomplete=&#34;off&#34;&gt;&#39; in resp.text)
 AssertionError: False is not true</pre>
                     </div>
@@ -3963,13 +3983,13 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="passClass">
         <td>TestReverseProxy</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+        <td class="text-center">4</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 3)">Detail</a>
+            <a onclick="showClassDetail('c44', 4)">Detail</a>
         </td>
     </tr>
 
@@ -3994,6 +4014,15 @@ AssertionError: False is not true</pre>
     
     
         <tr id='pt44.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReverseProxy - test_next</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -5415,9 +5444,9 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>477</td>
+        <td>478</td>
         <td>464</td>
-        <td>2</td>
+        <td>3</td>
         <td>1</td>
         <td>10</td>
         <td>&nbsp;</td>
@@ -5495,7 +5524,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Flask-Limiter</th>
-              <td>3.5.0</td>
+              <td>3.5.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5939,7 +5968,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(464, 2, 1, 10);
+    drawCircle(464, 3, 1, 10);
     showCase(5);
 </script>
 
