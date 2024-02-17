@@ -256,7 +256,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             conn = sqlite3.connect(XKLB_DB_FILE)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute("SELECT * FROM media WHERE extractor_id=?", (video_id,))
+            c.execute("SELECT * FROM media WHERE extractor_id=? AND path LIKE ?", (video_id, f'%{original_file_name}%'))
             row = c.fetchone()
             if row is not None:
                 title = row['title']
