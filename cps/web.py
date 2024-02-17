@@ -634,19 +634,32 @@ def render_ratings_books(page, book_id, order):
 
 
 def render_formats_books(page, book_id, order):
-    name = calibre_db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
-    if name:
+    if book_id == '-1':
+        name = _("None")
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.data.any(db.Data.format == book_id.upper()),
+                                                                db.Data.format == None,
                                                                 [order[0][0]],
-                                                                True, config.config_read_column)
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_("File format: %(format)s", format=name.format),
-                                     page="formats",
-                                     order=order[1])
+                                                                True, config.config_read_column,
+                                                                db.Data)
+
     else:
-        abort(404)
+        name = calibre_db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
+        if name:
+            name = name.format
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    db.Books.data.any(
+                                                                        db.Data.format == book_id.upper()),
+                                                                    [order[0][0]],
+                                                                    True, config.config_read_column)
+        else:
+            abort(404)
+
+    return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
+                                 title=_("File format: %(format)s", format=name),
+                                 page="formats",
+                                 order=order[1])
 
 
 def render_category_books(page, book_id, order):
@@ -1057,7 +1070,7 @@ def ratings_list():
 @login_required_if_no_ano
 def formats_list():
     if current_user.check_visibility(constants.SIDEBAR_FORMAT):
-        if current_user.get_view_property('ratings', 'dir') == 'desc':
+        if current_user.get_view_property('formats', 'dir') == 'desc':
             order = db.Data.format.desc()
             order_no = 0
         else:
