@@ -18,6 +18,7 @@ class TaskMetadataExtract(CalibreTask):
         super(TaskMetadataExtract, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
+        self.media_url_link = f'<a href="{media_url}" target="_blank">{media_url}</a>'
         self.original_url = original_url
         self.current_user_name = current_user_name
         self.start_time = self.end_time = datetime.now()
@@ -46,7 +47,7 @@ class TaskMetadataExtract(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 p.wait()
-                self.message = f"Successfuly fetched metadata for {self.media_url}"
+                self.message = f"Successfuly fetched metadata for {self.media_url_link}"
 
                 # Database operations
                 requested_urls = []
@@ -70,7 +71,7 @@ class TaskMetadataExtract(CalibreTask):
                             return
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
-                        self.message = f"{self.media_url} failed: {db_error}"
+                        self.message = f"{self.media_url_link} failed: {db_error}"
 
                     # get the shelf title
                     try:
@@ -84,7 +85,7 @@ class TaskMetadataExtract(CalibreTask):
                             self.playlist_id = None
                         else:
                             log.error("An error occurred while trying to connect to the database: %s", db_error)
-                            self.message = f"{self.media_url} failed to download: {db_error}"
+                            self.message = f"{self.media_url_link} failed to download: {db_error}"
                             self.progress = 0
                     finally:
                         log.info("Shelf title: %s", self.shelf_title)
@@ -114,7 +115,7 @@ class TaskMetadataExtract(CalibreTask):
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
-                self.message = f"{self.media_url} failed: {e}"
+                self.message = f"{self.media_url_link} failed: {e}"
 
             finally:
                 if p.returncode == 0 or self.progress == 1.0:

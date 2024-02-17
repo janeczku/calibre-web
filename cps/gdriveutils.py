@@ -34,7 +34,6 @@ except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, InvalidRequestError, IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
-from sqlalchemy.sql.expression import text
 
 try:
     from httplib2 import __version__ as httplib2_version
