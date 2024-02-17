@@ -97,7 +97,9 @@ class TaskDownload(CalibreTask):
                         self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
                         new_video_path = response.json()["new_book_path"]
                         new_video_path = next((os.path.join(new_video_path, file) for file in os.listdir(new_video_path) if file.endswith((".webm", ".mp4"))), None)
-                        conn.execute("REPLACE INTO media (webpath, path) VALUES (?, ?)", (self.media_url, new_video_path))
+                        # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
+                        conn.execute("UPDATE media SET path = ? WHERE webpath = ?", (new_video_path, self.media_url))
+                        conn.execute("UPDATE media SET webpath = ? WHERE path = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", new_video_path))
                         self.progress = 1.0
                     else:
                         log.error("Failed to send the requested file to %s", self.original_url)
