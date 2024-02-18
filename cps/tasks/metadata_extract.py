@@ -24,9 +24,11 @@ class TaskMetadataExtract(CalibreTask):
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
+        self.columns = None
         self.shelf_title = None
         self.shelf_id = None
         self.playlist_id = None
+        self.main_message = None
 
     def run(self, worker_thread):
         """Run the metadata fetching task"""
@@ -47,28 +49,39 @@ class TaskMetadataExtract(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 p.wait()
-                self.message = f"Successfuly fetched metadata for {self.media_url_link}"
+                self_main_message = f"Successfully fetched metadata for {self.media_url_link}"
+                self.message = self_main_message
 
                 # Database operations
-                requested_urls = []
+                requested_urls = {}
                 with sqlite3.connect(XKLB_DB_FILE) as conn:
                     try:
                         cursor = conn.execute("PRAGMA table_info(media)")
-                        columns = [column[1] for column in cursor.fetchall()]
-                        if "error" in columns:
-                            requested_urls = [row[0] for row in conn.execute("SELECT path FROM media WHERE error IS NULL AND path LIKE 'http%'").fetchall()]
+                        self.columns = [column[1] for column in cursor.fetchall()]
+                        if "error" in self.columns:
+                            rows = conn.execute("SELECT path, duration FROM media WHERE error IS NULL AND path LIKE 'http%'").fetchall()
                         else:
-                            requested_urls = [row[0] for row in conn.execute("SELECT path FROM media WHERE path LIKE 'http%'").fetchall()]
+                            rows = conn.execute("SELECT path, duration FROM media WHERE path LIKE 'http%'").fetchall()
 
                         # Abort if there are no urls
-                        if not requested_urls:
+                        if not rows:
                             log.info("No urls found in the database")
-                            error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
+                            error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL AND webpath = ?", (self.media_url,)).fetchone()
                             if error:
                                 log.error("[xklb] An error occurred while trying to retrieve the data for %s: %s", error[1], error[0])
                                 self.progress = 0
                                 self.message = f"{error[1]} gave no data : {error[0]}"
                             return
+
+                        for row in rows:
+                            path = row[0]
+                            duration = row[1]
+                            is_playlist_video = "playlist_id" in self.columns and row[2]
+                            requested_urls[path] = {
+                                "duration": duration,
+                                "is_playlist_video": is_playlist_video
+                            }
+
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url_link} failed: {db_error}"
@@ -99,19 +112,19 @@ class TaskMetadataExtract(CalibreTask):
                     else:
                         log.error("An error occurred while trying to send the shelf title to %s", self.original_url)
 
-                num_requested_urls = len(requested_urls)
+                num_requested_urls = len(requested_urls.keys())
+                total_duration = 0
 
-                # Add tasks for each requested URL
-                for requested_url in requested_urls:
+                for index, requested_url in enumerate(requested_urls.keys()):
                     task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
                                                  requested_url, self.original_url,
                                                  self.current_user_name, self.shelf_id
                                                     )
-                    # Add the task to the worker thread
                     WorkerThread.add(self.current_user_name, task_download)
 
-                    # Update progress incrementally after all tasks have been added
-                    self.progress += 1 / num_requested_urls
+                    self.progress = (index + 1) / num_requested_urls
+                    total_duration += requested_urls[requested_url]["duration"]
+                    self.message = self_main_message + f"<br><br>Video {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
