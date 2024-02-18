@@ -613,10 +613,9 @@ def render_ratings_books(page, book_id, order):
                                                                 db_filter,
                                                                 [order[0][0]],
                                                                 True, config.config_read_column,
-                                                                db.books_series_link,
-                                                                db.Books.id == db.books_series_link.c.book,
-                                                                db.Series,
-                                                                db.books_ratings_link, db.Ratings)
+                                                                db.books_ratings_link,
+                                                                db.Books.id == db.books_ratings_link.c.book,
+                                                                db.Ratings)
         title = _("Rating: None")
     else:
         name = calibre_db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
