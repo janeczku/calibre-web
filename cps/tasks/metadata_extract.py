@@ -123,7 +123,8 @@ class TaskMetadataExtract(CalibreTask):
                     WorkerThread.add(self.current_user_name, task_download)
 
                     self.progress = (index + 1) / num_requested_urls
-                    total_duration += requested_urls[requested_url]["duration"]
+                    if requested_urls[requested_url]["duration"] is not None:
+                        total_duration += requested_urls[requested_url]["duration"]
                     self.message = self_main_message + f"<br><br>Video {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
 
             except Exception as e:
