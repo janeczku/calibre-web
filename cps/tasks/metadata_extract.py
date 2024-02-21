@@ -19,7 +19,7 @@ class TaskMetadataExtract(CalibreTask):
         self.message = task_message
         self.media_url = media_url
         self.media_url_link = f'<a href="{media_url}" target="_blank">{media_url}</a>'
-        self.original_url = original_url.split("?")[0].replace("media", "meta")
+        self.original_url = original_url.split("?")[0].replace("/media", "/meta")
         self.current_user_name = current_user_name
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
