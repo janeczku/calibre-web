@@ -92,6 +92,7 @@ class TaskMetadataExtract(CalibreTask):
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
                         self.message = f"{self.media_url_link} failed: {db_error}"
 
+                    # get the shelf title
                     if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                         try:
                             self.playlist_id = self.media_url.split("/")[-1]
