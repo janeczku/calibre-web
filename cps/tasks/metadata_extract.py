@@ -49,7 +49,7 @@ class TaskMetadataExtract(CalibreTask):
                 p = process_open(subprocess_args, newlines=True)
 
                 p.wait()
-                self_main_message = f"Successfully fetched metadata for {self.media_url_link}"
+                self_main_message = f"{self.media_url_link}"
                 self.message = self_main_message
 
                 # Database operations
@@ -125,7 +125,7 @@ class TaskMetadataExtract(CalibreTask):
                     self.progress = (index + 1) / num_requested_urls
                     if requested_urls[requested_url]["duration"] is not None:
                         total_duration += requested_urls[requested_url]["duration"]
-                    self.message = self_main_message + f"<br><br>Video {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+                    self.message = self_main_message + f"<br><br>Number of Videos: {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
