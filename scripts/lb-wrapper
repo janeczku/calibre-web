@@ -49,7 +49,7 @@ fi
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
     xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} --force ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
-    xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
+    xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL} ${FORMAT_OPTIONS} --write-thumbnail --retries='1' ${VERBOSITY}"
 else
     log "Error" "Invalid xklb command. Please choose 'tubeadd' or 'dl'."
     exit 1
