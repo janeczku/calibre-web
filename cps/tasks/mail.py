@@ -21,7 +21,6 @@ import smtplib
 import ssl
 import threading
 import socket
-from shutil import copy
 import mimetypes
 
 from io import StringIO
@@ -29,14 +28,11 @@ from email.message import EmailMessage
 from email.utils import formatdate, parseaddr
 from email.generator import Generator
 from flask_babel import lazy_gettext as N_
-from email.utils import formatdate
 
 from cps.services.worker import CalibreTask
 from cps.services import gmail
+from cps.embed_helper import do_calibre_export
 from cps import logger, config
-from cps.subproc_wrapper import process_open
-from cps.constants import SUPPORTED_CALIBRE_BINARIES
-
 from cps import gdriveutils
 import uuid
 
@@ -113,7 +109,7 @@ class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
 
 class TaskEmail(CalibreTask):
-    def __init__(self, subject, filepath, attachment, settings, recipient, task_message, text, internal=False):
+    def __init__(self, subject, filepath, attachment, settings, recipient, task_message, text, id=0, internal=False):
         super(TaskEmail, self).__init__(task_message)
         self.subject = subject
         self.attachment = attachment
@@ -122,6 +118,7 @@ class TaskEmail(CalibreTask):
         self.recipient = recipient
         self.text = text
         self.asyncSMTP = None
+        self.book_id = id
         self.results = dict()
 
     # from calibre code:
@@ -144,7 +141,7 @@ class TaskEmail(CalibreTask):
         message['To'] = self.recipient
         message['Subject'] = self.subject
         message['Date'] = formatdate(localtime=True)
-        message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain()) # f"<{uuid.uuid4()}@{get_msgid_domain(from_)}>" # make_msgid('calibre-web')
+        message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain())
         message.set_content(self.text.encode('UTF-8'), "text", "plain")
         if self.attachment:
             data = self._get_attachment(self.filepath, self.attachment)
@@ -164,6 +161,8 @@ class TaskEmail(CalibreTask):
         try:
             # create MIME message
             msg = self.prepare_message()
+            if not msg:
+                return
             if self.settings['mail_server_type'] == 0:
                 self.send_standard_email(msg)
             else:
@@ -239,10 +238,10 @@ class TaskEmail(CalibreTask):
             self.asyncSMTP = None
             self._progress = x
 
-    @classmethod
-    def _get_attachment(cls, book_path, filename):
+    def _get_attachment(self, book_path, filename):
         """Get file as MIMEBase message"""
         calibre_path = config.get_book_path()
+        extension = os.path.splitext(filename)[1][1:]
         if config.config_use_google_drive:
             df = gdriveutils.getFileFromEbooksFolder(book_path, filename)
             if df:
@@ -252,22 +251,21 @@ class TaskEmail(CalibreTask):
                 df.GetContentFile(datafile)
             else:
                 return None
-            if config.config_binariesdir:
-                datafile = cls._embed_metadata(calibre_path, book_path, filename, datafile)
-                os.remove(os.path.join(calibre_path, book_path, filename))
-            file_ = open(datafile, 'rb')
-            data = file_.read()
-            file_.close()
+            if config.config_binariesdir and config.config_embed_metadata:
+                data_path, data_file = do_calibre_export(self.book_id, extension)
+                datafile = os.path.join(data_path, data_file + "." + extension)
+            with open(datafile, 'rb') as file_:
+                data = file_.read()
             os.remove(datafile)
         else:
             datafile = os.path.join(calibre_path, book_path, filename)
             try:
-                if config.config_binariesdir:
-                    datafile = cls._embed_metadata(calibre_path, book_path, filename, datafile)
-                file_ = open(datafile, 'rb')
-                data = file_.read()
-                file_.close()
-                if config.config_binariesdir:
+                if config.config_binariesdir and config.config_embed_metadata:
+                    data_path, data_file = do_calibre_export(self.book_id, extension)
+                    datafile = os.path.join(data_path, data_file + "." + extension)
+                with open(datafile, 'rb') as file_:
+                    data = file_.read()
+                if config.config_binariesdir and config.config_embed_metadata:
                     os.remove(datafile)
             except IOError as e:
                 log.error_or_exception(e, stacklevel=3)
@@ -285,17 +283,3 @@ class TaskEmail(CalibreTask):
 
     def __str__(self):
         return "E-mail {}, {}".format(self.name, self.subject)
-
-    def _embed_metadata(self, calibre_path, book_path, filename, datafile):
-        datafile_tmp = os.path.join(calibre_path, book_path, "tmp_" + filename)
-        path_opf = os.path.join(calibre_path, book_path, "metadata.opf")
-        copy(datafile, datafile_tmp)
-
-        calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["ebook-meta"])
-        opf_command = [calibredb_binarypath, datafile_tmp, "--from-opf", path_opf]
-        p = process_open(opf_command)
-        _, err = p.communicate()
-        if err:
-            # ToDo: Improve error handling
-            log.error('Metadata embedder encountered an error: %s', err)
-        return datafile_tmp
