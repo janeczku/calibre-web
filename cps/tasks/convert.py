@@ -110,6 +110,7 @@ class TaskConvert(CalibreTask):
                                                            self.ereader_mail,
                                                            EmailText,
                                                            self.settings['body'],
+                                                           id=self.book_id,
                                                            internal=True)
                                       )
                 except Exception as ex:

@@ -28,7 +28,6 @@ from datetime import datetime, timedelta
 import requests
 import unidecode
 from uuid import uuid4
-from lxml import etree
 
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
@@ -56,13 +55,14 @@ from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
-from .subproc_wrapper import process_wait, process_open
+from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
 from .file_helper import get_temp_dir
 from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub, replace_metadata
+from .embed_helper import do_calibre_export
 
 log = logger.create()
 
@@ -225,7 +225,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             email_text = N_("%(book)s send to eReader", book=link)
             WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                              config.get_mail_settings(), ereader_mail,
-                             email_text, _('This Email has been sent via Calibre-Web.')))
+                             email_text, _('This Email has been sent via Calibre-Web.'),book.id))
             return
     return _("The requested file could not be read. Maybe wrong permissions?")
 
@@ -1001,26 +1001,6 @@ def do_kepubify_metadata_replace(book, file_path):
     return tmp_dir, temp_file_name
 
 
-def do_calibre_export(book_id, book_format, ):
-    try:
-        quotes = [3, 5, 7, 9]
-        tmp_dir = get_temp_dir()
-        calibredb_binarypath = get_calibre_binarypath("calibredb")
-        temp_file_name = str(uuid4())
-        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', config.config_calibre_dir,
-                       '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
-                       str(book_id)]
-        p = process_open(opf_command, quotes)
-        _, err = p.communicate()
-        if err:
-            log.error('Metadata embedder encountered an error: %s', err)
-        return tmp_dir, temp_file_name
-    except OSError as ex:
-        # ToDo real error handling
-        log.error_or_exception(ex)
-        return None, None
-
-
 ##################################
 
 
@@ -1140,17 +1120,6 @@ def get_download_link(book_id, book_format, client):
     else:
         log.error("Book id {} not found for downloading".format(book_id))
     abort(404)
-
-
-def get_calibre_binarypath(binary):
-        binariesdir = config.config_binariesdir
-        if binariesdir:
-            try:
-                return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
-            except KeyError as ex:
-                log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
-                pass
-        return ""
 
 
 def clear_cover_thumbnail_cache(book_id):
