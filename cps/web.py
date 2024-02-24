@@ -613,10 +613,9 @@ def render_ratings_books(page, book_id, order):
                                                                 db_filter,
                                                                 [order[0][0]],
                                                                 True, config.config_read_column,
-                                                                db.books_series_link,
-                                                                db.Books.id == db.books_series_link.c.book,
-                                                                db.Series,
-                                                                db.books_ratings_link, db.Ratings)
+                                                                db.books_ratings_link,
+                                                                db.Books.id == db.books_ratings_link.c.book,
+                                                                db.Ratings)
         title = _("Rating: None")
     else:
         name = calibre_db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
@@ -634,19 +633,32 @@ def render_ratings_books(page, book_id, order):
 
 
 def render_formats_books(page, book_id, order):
-    name = calibre_db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
-    if name:
+    if book_id == '-1':
+        name = _("None")
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
-                                                                db.Books.data.any(db.Data.format == book_id.upper()),
+                                                                db.Data.format == None,
                                                                 [order[0][0]],
-                                                                True, config.config_read_column)
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                     title=_("File format: %(format)s", format=name.format),
-                                     page="formats",
-                                     order=order[1])
+                                                                True, config.config_read_column,
+                                                                db.Data)
+
     else:
-        abort(404)
+        name = calibre_db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
+        if name:
+            name = name.format
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    db.Books.data.any(
+                                                                        db.Data.format == book_id.upper()),
+                                                                    [order[0][0]],
+                                                                    True, config.config_read_column)
+        else:
+            abort(404)
+
+    return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
+                                 title=_("File format: %(format)s", format=name),
+                                 page="formats",
+                                 order=order[1])
 
 
 def render_category_books(page, book_id, order):
@@ -1057,7 +1069,7 @@ def ratings_list():
 @login_required_if_no_ano
 def formats_list():
     if current_user.check_visibility(constants.SIDEBAR_FORMAT):
-        if current_user.get_view_property('ratings', 'dir') == 'desc':
+        if current_user.get_view_property('formats', 'dir') == 'desc':
             order = db.Data.format.desc()
             order_no = 0
         else:
@@ -1322,7 +1334,7 @@ def handle_login_user(user, remember, message, category):
     ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-    return redirect_back(url_for("web.index"))
+    return redirect_back("web.index")
 
 
 def render_login(username="", password=""):
@@ -1396,7 +1408,7 @@ def login_post():
             if user is not None and user.name != "Guest":
                 ret, __ = reset_password(user.id)
                 if ret == 1:
-                    flash(_(u"New Password was send to your email address"), category="info")
+                    flash(_(u"New Password was sent to your email address"), category="info")
                     log.info('Password reset for user "%s" IP-address: %s', username, ip_address)
                 else:
                     log.error(u"An unknown error occurred. Please try again later")

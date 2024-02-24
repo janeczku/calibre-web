@@ -7,7 +7,14 @@ assignees: ''
 
 ---
 
-<!-- Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md) -->
+# Short Notice from the maintainer 
+
+After 6 years of more or less intensive programming on Calibre-Web, I need a break. 
+The last few months, maintaining Calibre-Web has felt more like work than a hobby. I felt pressured and teased by people to solve "their" problems and merge PRs for "their" Calibre-Web. 
+I have turned off all notifications from Github/Discord and will now concentrate undisturbed on the development of “my” Calibre-Web over the next few weeks/months.  
+I will look into the issues and maybe also the PRs from time to time, but don't expect a quick response from me.
+
+Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md)
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
