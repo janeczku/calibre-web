@@ -20,6 +20,7 @@ class TaskMetadataExtract(CalibreTask):
         self.message = task_message
         self.media_url = media_url
         self.media_url_link = f'<a href="{media_url}" target="_blank">{media_url}</a>'
+        # (?=...) is a "lookahead assertion" https://docs.python.org/3/library/re.html#regular-expression-syntax
         self.original_url = re.sub(r"(/media)(?=\?|$)", r"/meta", original_url)
         self.current_user_name = current_user_name
         self.start_time = self.end_time = datetime.now()
