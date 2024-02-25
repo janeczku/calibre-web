@@ -916,11 +916,15 @@ def list_restriction(res_type, user_id):
 
 @admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
-def ajax_fullsync():
-    count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
-    message = _("{} sync entries deleted").format(count)
-    ub.session_commit(message)
-    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
+def ajax_self_fullsync():
+    return do_full_kobo_sync(current_user.id)
+
+
+@admi.route("/ajax/fullsync/<int:userid>", methods=["POST"])
+@login_required
+@admin_required
+def ajax_fullsync(userid):
+    return do_full_kobo_sync(userid)
 
 
 @admi.route("/ajax/pathchooser/")
@@ -928,6 +932,13 @@ def ajax_fullsync():
 @admin_required
 def ajax_pathchooser():
     return pathchooser()
+
+
+def do_full_kobo_sync(userid):
+    count = ub.session.query(ub.KoboSyncedBooks).filter(userid == ub.KoboSyncedBooks.user_id).delete()
+    message = _("{} sync entries deleted").format(count)
+    ub.session_commit(message)
+    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
 
 
 def check_valid_read_column(column):
