@@ -198,7 +198,7 @@ def create_app():
     # Configure rate limiter
     # https://limits.readthedocs.io/en/stable/storage.html
     app.config.update(RATELIMIT_ENABLED=config.config_ratelimiter)
-    if config.config_limiter_uri != "":
+    if config.config_limiter_uri != "" and not cli_param.memory_backend:
         app.config.update(RATELIMIT_STORAGE_URI=config.config_limiter_uri)
         if config.config_limiter_options != "":
             app.config.update(RATELIMIT_STORAGE_OPTIONS=config.config_limiter_options)
