@@ -1272,6 +1272,10 @@ def register_post():
     except RateLimitExceeded:
         flash(_(u"Please wait one minute to register next user"), category="error")
         return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    except (ConnectionError, Exception) as e:
+        log.error("Connection error to limiter backend: %s", e)
+        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
+        return render_title_template('register.html', config=config, title=_("Register"), page="register")
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if not config.get_mail_server_configured():
@@ -1370,7 +1374,11 @@ def login_post():
     try:
         limiter.check()
     except RateLimitExceeded:
-        flash(_(u"Please wait one minute before next login"), category="error")
+        flash(_("Please wait one minute before next login"), category="error")
+        return render_login(username, form.get("password", ""))
+    except (ConnectionError, Exception) as e:
+        log.error("Connection error to limiter backend: %s", e)
+        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
         return render_login(username, form.get("password", ""))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
