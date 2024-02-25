@@ -86,9 +86,13 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    csp = "default-src 'self'"
-    csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
-    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self'"
+    default_src = ([host.strip() for host in config.config_trustedhosts.split(',') if host] +
+                   ["'self'", "'unsafe-inline'", "'unsafe-eval'"])
+    csp = "default-src " + ' '.join(default_src) + "; "
+    csp += "font-src 'self' data:"
+    if request.endpoint == "web.read_book":
+        csp += " blob:"
+    csp += "; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
         csp += " images.gr-assets.com i.gr-assets.com s.gr-assets.com"
     csp += " data:"
