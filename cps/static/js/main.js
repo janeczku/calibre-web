@@ -621,8 +621,12 @@ $(function() {
            "btnfullsync",
             "GeneralDeleteModal",
             $(this).data('value'),
-            function(value){
-                path = getPath() + "/ajax/fullsync"
+            function(userid) {
+                if (userid) {
+                    path = getPath() + "/ajax/fullsync/" + userid
+                } else {
+                    path = getPath() + "/ajax/fullsync"
+                }
                 $.ajax({
                     method:"post",
                     url: path,
