@@ -1706,7 +1706,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-       or config.config_calibre_dir != to_save["config_calibre_dir"]:
+        or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1830,6 +1830,8 @@ def _configuration_update_helper():
             return _configuration_result(_('Password length has to be between 1 and 40'))
         reboot_required |= _config_int(to_save, "config_session")
         reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
+        reboot_required |= _config_string(to_save, "config_limiter_uri")
+        reboot_required |= _config_string(to_save, "config_limiter_options")
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")

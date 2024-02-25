@@ -156,6 +156,9 @@ def requires_kobo_auth(f):
                 limiter.check()
             except RateLimitExceeded:
                 return abort(429)
+            except (ConnectionError, Exception) as e:
+                log.error("Connection error to limiter backend: %s", e)
+                return abort(429)
             user = (
                 ub.session.query(ub.User)
                 .join(ub.RemoteAuthToken)
