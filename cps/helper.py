@@ -692,15 +692,15 @@ def valid_password(check_password):
     if config.config_password_policy:
         verify = ""
         if config.config_password_min_length > 0:
-            verify += "^(?=.{" + str(config.config_password_min_length) + ",}$)"
+            verify += r"^(?=.{" + str(config.config_password_min_length) + ",}$)"
         if config.config_password_number:
-            verify += "(?=.*?\d)"
+            verify += r"(?=.*?\d)"
         if config.config_password_lower:
-            verify += "(?=.*?[a-z])"
+            verify += r"(?=.*?[a-z])"
         if config.config_password_upper:
-            verify += "(?=.*?[A-Z])"
+            verify += r"(?=.*?[A-Z])"
         if config.config_password_special:
-            verify += "(?=.*?[^A-Za-z\s0-9])"
+            verify += r"(?=.*?[^A-Za-z\s0-9])"
         match = re.match(verify, check_password)
         if not match:
             raise Exception(_("Password doesn't comply with password validation rules"))
@@ -1039,7 +1039,7 @@ def check_calibre(calibre_location):
         binaries_available = [os.path.isfile(binary_path) for binary_path in supported_binary_paths]
         binaries_executable = [os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
         if all(binaries_available) and all(binaries_executable):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)')
+            values = [process_wait([binary_path, "--version"], pattern=r'\(calibre (.*)\)')
                       for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)

@@ -50,7 +50,7 @@ from .helper import check_valid_domain, check_email, check_username, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status, valid_password
 from .pagination import Pagination
-from .redirect import redirect_back
+from .redirect import get_redirect_location
 from .babel import get_available_locale
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
@@ -1334,7 +1334,7 @@ def handle_login_user(user, remember, message, category):
     ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-    return redirect_back("web.index")
+    return redirect(get_redirect_location(request.form.get('next', None), "web.index"))
 
 
 def render_login(username="", password=""):
