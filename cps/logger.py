@@ -61,19 +61,6 @@ class _Logger(logging.Logger):
         else:
             self.debug(message, *args, **kwargs)
 
-    def warning(self, message, *args, **kwargs):
-        message = message.replace("\r", "").replace("\n", "")
-        list_args = list(args)
-        for index, arg in enumerate(list_args):
-            list_args[index] = arg.replace("\r", "").replace("\n", "")
-        args = tuple(list_args)
-        super().warning(message, *args, **kwargs)
-
-    def debug(self, message, *args, **kwargs):
-        message = message.replace("\r", "").replace("\n", "")
-        super().debug(message, *args, **kwargs)
-
-
 
 def get(name=None):
     return logging.getLogger(name)
