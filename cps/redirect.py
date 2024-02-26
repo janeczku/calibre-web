@@ -44,9 +44,9 @@ def remove_prefix(text, prefix):
     return ""
 
 
-def redirect_back(endpoint, **values):
-    target = request.form.get('next', None) or url_for(endpoint, **values)
+def get_redirect_location(next, endpoint, **values):
+    target = next or url_for(endpoint, **values)
     adapter = current_app.url_map.bind(urlparse(request.host_url).netloc)
     if not len(adapter.allowed_methods(remove_prefix(target, request.environ.get('HTTP_X_SCRIPT_NAME',"")))):
         target = url_for(endpoint, **values)
-    return redirect(target)
+    return target

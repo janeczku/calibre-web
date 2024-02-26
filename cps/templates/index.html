@@ -6,7 +6,7 @@
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="row display-flex">
    {% for entry in random %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session" id="books_rand">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
               <span class="img" title="{{ entry.Books.title }}">
@@ -89,7 +89,7 @@
   <div class="row display-flex">
     {% if entries[0] %}
     {% for entry in entries %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session" id="books">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img" title="{{ entry.Books.title }}">
