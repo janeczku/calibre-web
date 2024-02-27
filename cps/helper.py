@@ -701,7 +701,7 @@ def valid_password(check_password):
             verify += r"(?=.*?[A-Z])"
         if config.config_password_special:
             verify += r"(?=.*?[^A-Za-z\s0-9])"
-        match = re.match(verify, check_password)
+        match = re.match(verify, unidecode.unidecode(check_password))
         if not match:
             raise Exception(_("Password doesn't comply with password validation rules"))
     return check_password
