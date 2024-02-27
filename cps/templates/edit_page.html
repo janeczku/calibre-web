@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <div><a class="session" href="{{url_for('listpages.show_list')}}">{{_('Back')}}</a></div>
+  <h2>{{_('Edit page')}}</h2>
+  <form role="form" class="col-md-10 col-lg-6" method="POST" action="{{ url_for('editpage.edit_page', file=file) }}"
+    autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label for="title">{{_('Title')}}</label>
+      <input type="text" class="form-control" name="title" id="title" value="{{ title }}" required>
+    </div>
+    <div class="form-group">
+      <label for="name">{{_('Name')}}</label>
+      <input type="text" class="form-control" name="name" id="name" value="{{ name }}" required>
+    </div>
+    <div class="form-group">
+      <label for="icon">{{_('Icon')}}</label>
+      <input type="text" class="form-control" name="icon" id="icon" value="{{ icon }}" required>
+      <a href="https://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp" target="_blank" rel="noopener">{{_('Icons list')}}</a>
+    </div>
+    <div class="form-group">
+      <label for="content">{{_('Content')}}</label>
+      <textarea class="form-control" name="content" id="content" rows="15">{{ content }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="position">{{_('Position')}}</label>
+      <select name="position" id="position" class="form-control">
+        <option value="0" {% if position=="0" %}selected{% endif %}>{{ _("Sidebar Bottom") }}</option>
+        <option value="1" {% if position=="1" %}selected{% endif %}>{{ _("Sidebar Top") }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="is_enabled" name="is_enabled" {% if is_enabled %}checked{% endif %}>
+      <label for="is_enabled">{{_('Enabled')}}</label>
+    </div>
+    <div class="form-group">
+      <label for="order">{{_('Order')}}</label>
+      <input type="number" class="form-control" name="order" id="order" value="{{ order }}" required>
+    </div>
+    <button type="submit" name="submit" id="page_submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>
+  </form>
+</div>
+{% endblock %}
