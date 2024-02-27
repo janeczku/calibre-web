@@ -47,7 +47,8 @@ from . import constants, logger, helper, services, cli_param
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
-    valid_email, check_username, get_calibre_binarypath
+    valid_email, check_username
+from .embed_helper import get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
@@ -1716,7 +1717,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-       or config.config_calibre_dir != to_save["config_calibre_dir"]:
+        or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1840,6 +1841,8 @@ def _configuration_update_helper():
             return _configuration_result(_('Password length has to be between 1 and 40'))
         reboot_required |= _config_int(to_save, "config_session")
         reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
+        reboot_required |= _config_string(to_save, "config_limiter_uri")
+        reboot_required |= _config_string(to_save, "config_limiter_options")
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")

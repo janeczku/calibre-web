@@ -110,6 +110,7 @@ class TaskConvert(CalibreTask):
                                                            self.ereader_mail,
                                                            EmailText,
                                                            self.settings['body'],
+                                                           id=self.book_id,
                                                            internal=True)
                                       )
                 except Exception as ex:
@@ -315,9 +316,9 @@ class TaskConvert(CalibreTask):
 
     def __str__(self):
         if self.ereader_mail:
-            return "Convert {} {}".format(self.book_id, self.ereader_mail)
+            return "Convert Book {} and mail it to {}".format(self.book_id, self.ereader_mail)
         else:
-            return "Convert {}".format(self.book_id)
+            return "Convert Book {}".format(self.book_id)
 
     @property
     def is_cancellable(self):
