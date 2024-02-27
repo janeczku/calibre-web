@@ -103,7 +103,7 @@ web_server = WebServer()
 updater_thread = Updater()
 
 if limiter_present:
-    limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=True)
+    limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=False)
 else:
     limiter = None
 
@@ -196,8 +196,18 @@ def create_app():
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     # Configure rate limiter
+    # https://limits.readthedocs.io/en/stable/storage.html
     app.config.update(RATELIMIT_ENABLED=config.config_ratelimiter)
-    limiter.init_app(app)
+    if config.config_limiter_uri != "" and not cli_param.memory_backend:
+        app.config.update(RATELIMIT_STORAGE_URI=config.config_limiter_uri)
+        if config.config_limiter_options != "":
+            app.config.update(RATELIMIT_STORAGE_OPTIONS=config.config_limiter_options)
+    try:
+        limiter.init_app(app)
+    except Exception as e:
+        log.error('Wrong Flask Limiter configuration, falling back to default: {}'.format(e))
+        app.config.update(RATELIMIT_STORAGE_URI=None)
+        limiter.init_app(app)
 
     # Register scheduled tasks
     from .schedule import register_scheduled_tasks, register_startup_tasks

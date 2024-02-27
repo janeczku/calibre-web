@@ -266,3 +266,6 @@ class CalibreTask:
     def _handleSuccess(self):
         self.stat = STAT_FINISH_SUCCESS
         self.progress = 1
+
+    def __str__(self):
+        return self.name

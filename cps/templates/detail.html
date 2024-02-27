@@ -333,15 +333,15 @@
 
                 {% endif %}
                 {% if current_user.role_edit() %}
-                    <div class="btn-toolbar" role="toolbar">
+                    <div class="col-sm-12">
                         <div class="btn-group" role="group" aria-label="Edit/Delete book">
                             <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}"
                                class="btn btn-sm btn-primary" id="edit_book" role="button"><span
                                     class="glyphicon glyphicon-edit"></span> {{ _('Edit Metadata') }}</a>
                         </div>
-                    </div>
+                        <div class="btn btn-default" data-back="{{ url_for('web.index') }}" id="back">{{_('Cancel')}}</div>
+                   </div>
                 {% endif %}
-            </div>
         </div>
     </div>
 </div>
@@ -367,4 +367,3 @@
 </script>
 
 {% endblock %}
-

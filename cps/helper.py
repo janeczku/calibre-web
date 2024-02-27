@@ -28,7 +28,6 @@ from datetime import datetime, timedelta
 import requests
 import unidecode
 from uuid import uuid4
-from lxml import etree
 
 from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
@@ -56,13 +55,14 @@ from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
-from .subproc_wrapper import process_wait, process_open
+from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
 from .file_helper import get_temp_dir
 from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub, replace_metadata
+from .embed_helper import do_calibre_export
 
 log = logger.create()
 
@@ -225,7 +225,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             email_text = N_("%(book)s send to eReader", book=link)
             WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                              config.get_mail_settings(), ereader_mail,
-                             email_text, _('This Email has been sent via Calibre-Web.')))
+                             email_text, _('This Email has been sent via Calibre-Web.'),book.id))
             return
     return _("The requested file could not be read. Maybe wrong permissions?")
 
@@ -692,15 +692,15 @@ def valid_password(check_password):
     if config.config_password_policy:
         verify = ""
         if config.config_password_min_length > 0:
-            verify += "^(?=.{" + str(config.config_password_min_length) + ",}$)"
+            verify += r"^(?=.{" + str(config.config_password_min_length) + ",}$)"
         if config.config_password_number:
-            verify += "(?=.*?\d)"
+            verify += r"(?=.*?\d)"
         if config.config_password_lower:
-            verify += "(?=.*?[a-z])"
+            verify += r"(?=.*?[a-z])"
         if config.config_password_upper:
-            verify += "(?=.*?[A-Z])"
+            verify += r"(?=.*?[A-Z])"
         if config.config_password_special:
-            verify += "(?=.*?[^A-Za-z\s0-9])"
+            verify += r"(?=.*?[^A-Za-z\s0-9])"
         match = re.match(verify, check_password)
         if not match:
             raise Exception(_("Password doesn't comply with password validation rules"))
@@ -1001,33 +1001,6 @@ def do_kepubify_metadata_replace(book, file_path):
     return tmp_dir, temp_file_name
 
 
-def do_calibre_export(book_id, book_format, ):
-    try:
-        quotes = [3, 5, 7, 9]
-        tmp_dir = get_temp_dir()
-        calibredb_binarypath = get_calibre_binarypath("calibredb")
-        temp_file_name = str(uuid4())
-        my_env = os.environ.copy()
-        if config.config_calibre_split:
-            my_env['CALIBRE_OVERRIDE_DATABASE_PATH'] = os.path.join(config.config_calibre_dir, "metadata.db")
-            library_path = config.config_calibre_split_dir
-        else:
-            library_path = config.config_calibre_dir
-        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', library_path,
-                       '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
-                       str(book_id)]
-        # CALIBRE_OVERRIDE_DATABASE_PATH
-        p = process_open(opf_command, quotes, my_env)
-        _, err = p.communicate()
-        if err:
-            log.error('Metadata embedder encountered an error: %s', err)
-        return tmp_dir, temp_file_name
-    except OSError as ex:
-        # ToDo real error handling
-        log.error_or_exception(ex)
-        return None, None
-
-
 ##################################
 
 
@@ -1066,7 +1039,7 @@ def check_calibre(calibre_location):
         binaries_available = [os.path.isfile(binary_path) for binary_path in supported_binary_paths]
         binaries_executable = [os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths]
         if all(binaries_available) and all(binaries_executable):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)')
+            values = [process_wait([binary_path, "--version"], pattern=r'\(calibre (.*)\)')
                       for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
@@ -1147,17 +1120,6 @@ def get_download_link(book_id, book_format, client):
     else:
         log.error("Book id {} not found for downloading".format(book_id))
     abort(404)
-
-
-def get_calibre_binarypath(binary):
-        binariesdir = config.config_binariesdir
-        if binariesdir:
-            try:
-                return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
-            except KeyError as ex:
-                log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
-                pass
-        return ""
 
 
 def clear_cover_thumbnail_cache(book_id):

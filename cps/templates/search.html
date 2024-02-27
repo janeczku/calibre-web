@@ -41,7 +41,7 @@
 
   <div class="row display-flex">
     {% for entry in entries %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session">
       <div class="cover">
         {% if entry.Books.has_cover is defined %}
            <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
