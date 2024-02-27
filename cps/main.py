@@ -36,6 +36,9 @@ def main():
     from .gdrive import gdrive
     from .editbooks import editbook
     from .about import about
+    from .page import page
+    from .listpages import listpages
+    from .editpage import editpage
     from .search import search
     from .search_metadata import meta
     from .shelf import shelf
@@ -65,6 +68,9 @@ def main():
     limiter.limit("3/minute",key_func=request_username)(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
+    app.register_blueprint(page)
+    app.register_blueprint(listpages)
+    app.register_blueprint(editpage)
     app.register_blueprint(shelf)
     app.register_blueprint(admi)
     app.register_blueprint(remotelogin)
