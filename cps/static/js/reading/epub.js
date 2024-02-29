@@ -13,10 +13,9 @@ var reader;
         bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });
 
-    reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
-    reader.rendition.themes.register("darkTheme", "/static/css/epub_themes.css");
-    reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
-    reader.rendition.themes.register("blackTheme", "/static/css/epub_themes.css");
+    Object.keys(themes).forEach(function (theme) {
+        reader.rendition.themes.register(theme, themes[theme].css_path);
+    });
 
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
@@ -78,6 +77,10 @@ var reader;
             alert(error);
         });
     }
+    
+    // Default settings load
+    const theme = localStorage.getItem("calibre.reader.theme") ?? Object.keys(themes)[0];
+    selectTheme(theme);
 })();
 
 
