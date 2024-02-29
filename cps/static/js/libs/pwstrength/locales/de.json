@@ -9,6 +9,7 @@
     "wordSequences": "Das Passwort enthält Buchstabensequenzen",
     "wordLowercase": "Bitte mindestens einen Kleinbuchstaben verwenden",
     "wordUppercase": "Bitte mindestens einen Großbuchstaben verwenden",
+    "word": "Bitte mindestens einen Buchstaben verwenden",
     "wordOneNumber": "Bitte mindestens eine Ziffern verwenden",
     "wordOneSpecialChar": "Bitte mindestens ein Sonderzeichen verwenden",
     "errorList": "Fehler:",
