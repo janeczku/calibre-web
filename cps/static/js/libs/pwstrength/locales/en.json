@@ -8,6 +8,7 @@
     "wordRepetitions": "Too many repetitions",
     "wordSequences": "Your password contains sequences",
     "wordLowercase": "Use at least one lowercase character",
+    "word": "Use at least one character",
     "wordUppercase": "Use at least one uppercase character",
     "wordOneNumber": "Use at least one number",
     "wordOneSpecialChar": "Use at least one special character",
