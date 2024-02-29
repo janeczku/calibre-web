@@ -125,13 +125,6 @@ def create_app():
 
     ub.password_change(cli_param.user_credentials)
 
-    if not limiter:
-        log.info('*** "flask-limiter" is needed for calibre-web to run. '
-                 'Please install it using pip: "pip install flask-limiter" ***')
-        print('*** "flask-limiter" is needed for calibre-web to run. '
-              'Please install it using pip: "pip install flask-limiter" ***')
-        web_server.stop(True)
-        sys.exit(8)
     if sys.version_info < (3, 0):
         log.info(
             '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
@@ -141,13 +134,6 @@ def create_app():
             'please update your installation to Python3 ***')
         web_server.stop(True)
         sys.exit(5)
-    if not wtf_present:
-        log.info('*** "flask-WTF" is needed for calibre-web to run. '
-                 'Please install it using pip: "pip install flask-WTF" ***')
-        print('*** "flask-WTF" is needed for calibre-web to run. '
-              'Please install it using pip: "pip install flask-WTF" ***')
-        web_server.stop(True)
-        sys.exit(7)
 
     lm.login_view = 'web.login'
     lm.anonymous_user = ub.Anonymous
@@ -158,13 +144,21 @@ def create_app():
     calibre_db.init_db()
 
     updater_thread.init_updater(config, web_server)
-    # Perform dry run of updater and exit afterwards
+    # Perform dry run of updater and exit afterward
     if cli_param.dry_run:
         updater_thread.dry_run()
         sys.exit(0)
     updater_thread.start()
-
-    for res in dependency_check() + dependency_check(True):
+    requirements = dependency_check()
+    for res in requirements:
+        if res['found'] == "not installed":
+            message = ('Cannot import {name} module, it is needed to run calibre-web, '
+                       'please install it using "pip install {name}"').format(name=res["name"])
+            log.info(message)
+            print("*** " + message + " ***")
+            web_server.stop(True)
+            sys.exit(8)
+    for res in requirements + dependency_check(True):
         log.info('*** "{}" version does not meet the requirements. '
                  'Should: {}, Found: {}, please consider installing required version ***'
                  .format(res['name'],

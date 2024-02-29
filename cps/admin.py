@@ -1834,6 +1834,7 @@ def _configuration_update_helper():
         _config_checkbox(to_save, "config_password_number")
         _config_checkbox(to_save, "config_password_lower")
         _config_checkbox(to_save, "config_password_upper")
+        _config_checkbox(to_save, "config_password_character")
         _config_checkbox(to_save, "config_password_special")
         if 0 < int(to_save.get("config_password_min_length", "0")) < 41:
             _config_int(to_save, "config_password_min_length")
