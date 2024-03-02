@@ -50,7 +50,7 @@ from .helper import check_valid_domain, check_email, check_username, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status, valid_password
 from .pagination import Pagination
-from .redirect import redirect_back
+from .redirect import get_redirect_location
 from .babel import get_available_locale
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
@@ -86,9 +86,13 @@ except ImportError:
 
 @app.after_request
 def add_security_headers(resp):
-    csp = "default-src 'self'"
-    csp += ''.join([' ' + host for host in config.config_trustedhosts.strip().split(',')])
-    csp += " 'unsafe-inline' 'unsafe-eval'; font-src 'self' data:; img-src 'self'"
+    default_src = ([host.strip() for host in config.config_trustedhosts.split(',') if host] +
+                   ["'self'", "'unsafe-inline'", "'unsafe-eval'"])
+    csp = "default-src " + ' '.join(default_src) + "; "
+    csp += "font-src 'self' data:"
+    if request.endpoint == "web.read_book":
+        csp += " blob:"
+    csp += "; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
         csp += " images.gr-assets.com i.gr-assets.com s.gr-assets.com"
     csp += " data:"
@@ -1272,6 +1276,10 @@ def register_post():
     except RateLimitExceeded:
         flash(_(u"Please wait one minute to register next user"), category="error")
         return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    except (ConnectionError, Exception) as e:
+        log.error("Connection error to limiter backend: %s", e)
+        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
+        return render_title_template('register.html', config=config, title=_("Register"), page="register")
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if not config.get_mail_server_configured():
@@ -1334,7 +1342,7 @@ def handle_login_user(user, remember, message, category):
     ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-    return redirect_back("web.index")
+    return redirect(get_redirect_location(request.form.get('next', None), "web.index"))
 
 
 def render_login(username="", password=""):
@@ -1370,7 +1378,11 @@ def login_post():
     try:
         limiter.check()
     except RateLimitExceeded:
-        flash(_(u"Please wait one minute before next login"), category="error")
+        flash(_("Please wait one minute before next login"), category="error")
+        return render_login(username, form.get("password", ""))
+    except (ConnectionError, Exception) as e:
+        log.error("Connection error to limiter backend: %s", e)
+        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
         return render_login(username, form.get("password", ""))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
