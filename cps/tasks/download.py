@@ -148,9 +148,9 @@ class TaskDownload(CalibreTask):
             columns = [column[1] for column in cursor.fetchall()]
             if "error" not in columns:
                 conn.execute("ALTER TABLE media ADD COLUMN error TEXT")
-                conn.execute("ALTER TABLE media MODIFY COLUMN error TEXT AFTER {}".format(columns[-1]))
             conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
-            conn.close()
+            conn.commit()
+        conn.close()
 
     @property
     def name(self):
