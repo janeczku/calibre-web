@@ -142,18 +142,15 @@ class TaskDownload(CalibreTask):
     def record_error_in_database(self, error_message):
         """Record the error in the database"""
         with sqlite3.connect(XKLB_DB_FILE) as conn:
-            # Check if the error column exists, if not, create it
+            # Check if the error column exists, if not, create it at the rightmost position
             cursor = conn.cursor()
             cursor.execute("PRAGMA table_info(media)")
             columns = [column[1] for column in cursor.fetchall()]
             if "error" not in columns:
                 conn.execute("ALTER TABLE media ADD COLUMN error TEXT")
-                conn.execute("CREATE TABLE temp_media AS SELECT * FROM media")
-                conn.execute("DROP TABLE media")
-                conn.execute("ALTER TABLE temp_media RENAME TO media")
-            # Update the error column with the error message
+                conn.execute("ALTER TABLE media MODIFY COLUMN error TEXT AFTER {}".format(columns[-1]))
             conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
-        conn.close()
+            conn.close()
 
     @property
     def name(self):
