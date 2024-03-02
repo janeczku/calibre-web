@@ -88,7 +88,41 @@ class TaskDownload(CalibreTask):
                 p.wait()
 
                 # Database operations
-                self.update_database_on_success()
+                with sqlite3.connect(XKLB_DB_FILE) as conn:
+                    try:
+                        requested_file = conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (self.media_url,)).fetchone()[0]
+
+                        # Abort if there is not a path
+                        if not requested_file:
+                            log.info("No path found in the database")
+                            error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
+                            if error:
+                                log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
+                                self.message = f"{error[1]} failed to download: {error[0]}"
+                            return
+                    except sqlite3.Error as db_error:
+                        log.error("An error occurred while trying to connect to the database: %s", db_error)
+                        self.message = f"{self.media_url_link} failed to download: {db_error}"
+
+                    self.message = self.message + "\n" + f"Almost done..."
+                    response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
+                    if response.status_code == 200:
+                        log.info("Successfully sent the requested file to %s", self.original_url)
+                        file_downloaded = response.json()["file_downloaded"]
+                        self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
+                        new_video_path = response.json()["new_book_path"]
+                        new_video_path = next((os.path.join(new_video_path, file) for file in os.listdir(new_video_path) if file.endswith((".webm", ".mp4"))), None)
+                        # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
+                        conn.execute("UPDATE media SET path = ? WHERE webpath = ?", (new_video_path, self.media_url))
+                        conn.execute("UPDATE media SET webpath = ? WHERE path = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", new_video_path))
+                        self.progress = 1.0
+                    else:
+                        log.error("Failed to send the requested file to %s", self.original_url)
+                        self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
+                
+                conn.close()
+
+                self.end_time = datetime.now()
                 self.stat = STAT_FINISH_SUCCESS
                 log.info("Download task for %s completed successfully", self.media_url)
 
@@ -105,39 +139,7 @@ class TaskDownload(CalibreTask):
 
     def update_database_on_success(self):
         """Update the database on successful download"""
-        with sqlite3.connect(XKLB_DB_FILE) as conn:
-            try:
-                requested_file = conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (self.media_url,)).fetchone()[0]
-
-                # Abort if there is not a path
-                if not requested_file:
-                    log.info("No path found in the database")
-                    error = conn.execute("SELECT error, webpath FROM media WHERE error IS NOT NULL").fetchone()
-                    if error:
-                        log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
-                        self.message = f"{error[1]} failed to download: {error[0]}"
-                    return
-            except sqlite3.Error as db_error:
-                log.error("An error occurred while trying to connect to the database: %s", db_error)
-                self.message = f"{self.media_url_link} failed to download: {db_error}"
-
-            self.message = self.message + "\n" + f"Almost done..."
-            response = requests.get(self.original_url, params={"requested_file": requested_file, "current_user_name": self.current_user_name, "shelf_id": self.shelf_id})
-            if response.status_code == 200:
-                log.info("Successfully sent the requested file to %s", self.original_url)
-                file_downloaded = response.json()["file_downloaded"]
-                self.message = f"Successfully downloaded {self.media_url_link} to <br><br>{file_downloaded}"
-                new_video_path = response.json()["new_book_path"]
-                new_video_path = next((os.path.join(new_video_path, file) for file in os.listdir(new_video_path) if file.endswith((".webm", ".mp4"))), None)
-                # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
-                conn.execute("UPDATE media SET path = ? WHERE webpath = ?", (new_video_path, self.media_url))
-                conn.execute("UPDATE media SET webpath = ? WHERE path = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", new_video_path))
-                self.progress = 1.0
-            else:
-                log.error("Failed to send the requested file to %s", self.original_url)
-                self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
         
-        conn.close()
 
     def record_error_in_database(self, error_message):
         """Record the error in the database"""
