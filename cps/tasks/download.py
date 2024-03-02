@@ -122,24 +122,22 @@ class TaskDownload(CalibreTask):
                 
                 conn.close()
 
-                self.end_time = datetime.now()
-                self.stat = STAT_FINISH_SUCCESS
-                log.info("Download task for %s completed successfully", self.media_url)
-
-
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
                 self.message = f"{self.media_url_link} failed to download: {e}"
-                self.stat = STAT_FAIL
-                # Record the error in the database
                 self.record_error_in_database(str(e))
+
+            finally:
+                if p.returncode == 0 or self.progress == 1.0:
+                    self.end_time = datetime.now()
+                    self.stat = STAT_FINISH_SUCCESS
+                    log.info("Download task for %s completed successfully", self.media_url)
+                else:
+                    self.end_time = datetime.now()                    
+                    self.stat = STAT_FAIL
 
         else:
             log.info("No media URL provided - skipping download task")
-
-    def update_database_on_success(self):
-        """Update the database on successful download"""
-        
 
     def record_error_in_database(self, error_message):
         """Record the error in the database"""
