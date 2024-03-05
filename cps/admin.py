@@ -47,7 +47,8 @@ from . import constants, logger, helper, services, cli_param
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
-    valid_email, check_username, get_calibre_binarypath
+    valid_email, check_username
+from .embed_helper import get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
@@ -916,11 +917,15 @@ def list_restriction(res_type, user_id):
 
 @admi.route("/ajax/fullsync", methods=["POST"])
 @login_required
-def ajax_fullsync():
-    count = ub.session.query(ub.KoboSyncedBooks).filter(current_user.id == ub.KoboSyncedBooks.user_id).delete()
-    message = _("{} sync entries deleted").format(count)
-    ub.session_commit(message)
-    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
+def ajax_self_fullsync():
+    return do_full_kobo_sync(current_user.id)
+
+
+@admi.route("/ajax/fullsync/<int:userid>", methods=["POST"])
+@login_required
+@admin_required
+def ajax_fullsync(userid):
+    return do_full_kobo_sync(userid)
 
 
 @admi.route("/ajax/pathchooser/")
@@ -928,6 +933,13 @@ def ajax_fullsync():
 @admin_required
 def ajax_pathchooser():
     return pathchooser()
+
+
+def do_full_kobo_sync(userid):
+    count = ub.session.query(ub.KoboSyncedBooks).filter(userid == ub.KoboSyncedBooks.user_id).delete()
+    message = _("{} sync entries deleted").format(count)
+    ub.session_commit(message)
+    return Response(json.dumps([{"type": "success", "message": message}]), mimetype='application/json')
 
 
 def check_valid_read_column(column):
@@ -1705,7 +1717,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-       or config.config_calibre_dir != to_save["config_calibre_dir"]:
+        or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1822,6 +1834,7 @@ def _configuration_update_helper():
         _config_checkbox(to_save, "config_password_number")
         _config_checkbox(to_save, "config_password_lower")
         _config_checkbox(to_save, "config_password_upper")
+        _config_checkbox(to_save, "config_password_character")
         _config_checkbox(to_save, "config_password_special")
         if 0 < int(to_save.get("config_password_min_length", "0")) < 41:
             _config_int(to_save, "config_password_min_length")
@@ -1829,6 +1842,8 @@ def _configuration_update_helper():
             return _configuration_result(_('Password length has to be between 1 and 40'))
         reboot_required |= _config_int(to_save, "config_session")
         reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
+        reboot_required |= _config_string(to_save, "config_limiter_uri")
+        reboot_required |= _config_string(to_save, "config_limiter_options")
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")

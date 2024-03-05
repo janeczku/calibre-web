@@ -165,9 +165,12 @@ class _Settings(_Base):
     config_password_number = Column(Boolean, default=True)
     config_password_lower = Column(Boolean, default=True)
     config_password_upper = Column(Boolean, default=True)
+    config_password_character = Column(Boolean, default=True)
     config_password_special = Column(Boolean, default=True)
     config_session = Column(Integer, default=1)
     config_ratelimiter = Column(Boolean, default=True)
+    config_limiter_uri = Column(String, default="")
+    config_limiter_options = Column(String, default="")
 
     def __repr__(self):
         return self.__class__.__name__
