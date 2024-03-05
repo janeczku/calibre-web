@@ -1818,6 +1818,8 @@ def _configuration_update_helper():
         # Reverse proxy login configuration
         _config_checkbox(to_save, "config_allow_reverse_proxy_header_login")
         _config_string(to_save, "config_reverse_proxy_login_header_name")
+        _config_checkbox(to_save, "config_reverse_proxy_create_users")
+        _config_string(to_save, "config_reverse_proxy_email_header_name")
 
         # OAuth configuration
         if config.config_login_type == constants.LOGIN_OAUTH:
