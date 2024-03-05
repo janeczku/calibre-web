@@ -43,6 +43,8 @@ class TaskMetadataExtract(CalibreTask):
         lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
 
         if self.media_url:
+            if "&" in self.media_url:
+                self.media_url = self.media_url.split("&")[0]
             subprocess_args = [lb_executable, "tubeadd", self.media_url]
             log.info("Subprocess args: %s", subprocess_args)
 
@@ -78,7 +80,11 @@ class TaskMetadataExtract(CalibreTask):
                         for row in rows:
                             path = row[0]
                             duration = row[1]
-                            is_playlist_video = "playlist_id" in self.columns and row[2]
+                            is_playlist_video = False
+                            if "playlists_id" in self.columns:
+                                playlist_id = conn.execute("SELECT playlists_id FROM media WHERE path = ?", (path,)).fetchone()
+                                if playlist_id:
+                                    is_playlist_video = True
                             requested_urls[path] = {
                                 "duration": duration,
                                 "is_playlist_video": is_playlist_video
@@ -89,21 +95,26 @@ class TaskMetadataExtract(CalibreTask):
                         self.message = f"{self.media_url_link} failed: {db_error}"
 
                     # get the shelf title
-                    try:
-                        self.playlist_id = self.media_url.split("/")[-1]
-                        if "list=" in self.playlist_id:
-                            self.playlist_id = self.playlist_id.split("list=")[-1]
-                            self.shelf_title = conn.execute("SELECT title FROM playlists WHERE extractor_playlist_id = ?", (self.playlist_id,)).fetchone()[0]                
-                    except sqlite3.Error as db_error:
-                        if "no such table: playlists" in str(db_error):
-                            log.info("No playlists table found in the database")
-                            self.playlist_id = None
-                        else:
-                            log.error("An error occurred while trying to connect to the database: %s", db_error)
-                            self.message = f"{self.media_url_link} failed to download: {db_error}"
-                            self.progress = 0
-                    finally:
-                        log.info("Shelf title: %s", self.shelf_title)
+                    if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
+                        try:
+                            self.playlist_id = self.media_url.split("/")[-1]
+                            if "list=" in self.playlist_id:
+                                self.playlist_id = self.playlist_id.split("list=")[-1]
+                                self.shelf_title = conn.execute("SELECT title FROM playlists WHERE extractor_playlist_id = ?", (self.playlist_id,)).fetchone()[0]
+                            elif "@" in self.playlist_id:
+                                self.shelf_title = self.playlist_id.split("@")[-1]
+                            else:
+                                self.shelf_title = "Unnamed Bookshelf"
+                        except sqlite3.Error as db_error:
+                            if "no such table: playlists" in str(db_error):
+                                log.info("No playlists table found in the database")
+                                self.playlist_id = None
+                            else:
+                                log.error("An error occurred while trying to connect to the database: %s", db_error)
+                                self.message = f"{self.media_url_link} failed to download: {db_error}"
+                                self.progress = 0
+                        finally:
+                            log.info("Shelf title: %s", self.shelf_title)
 
                 conn.close()
 
