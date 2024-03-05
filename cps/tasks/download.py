@@ -1,6 +1,7 @@
 import os
 import re
 import requests
+import select
 import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
@@ -50,23 +51,37 @@ class TaskDownload(CalibreTask):
                 pattern_success = r"\[{}\]:".format(self.media_url)
 
                 complete_progress_cycle = 0
+
+                fragment_stuck_timeout = 10  # seconds
+                fragment_stuck_time = 0
+
                 while p.poll() is None:
-                    line = p.stdout.readline()
-                    if line:
-                        if re.search(pattern_success, line):
-                            # 2024-01-10: 99% (a bit arbitrary) is explained here...
-                            # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
-                            self.progress = 0.99
-                            break
-                        elif re.search(pattern_progress, line):
-                            percentage = int(re.search(r'\d+', line).group())
-                            if percentage < 100:
-                                self.message = f"Downloading {self.media_url_link}..."
-                                self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
-                            if percentage == 100:
-                                complete_progress_cycle += 1
-                                if complete_progress_cycle == 4:
-                                    break
+                    # Check if there's data available to read
+                    rlist, _, _ = select.select([p.stdout], [], [], 0.1)
+                    if rlist:
+                        line = p.stdout.readline()
+                        if line:
+                            if re.search(pattern_success, line):
+                                # 2024-01-10: 99% (a bit arbitrary) is explained here...
+                                # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
+                                self.progress = 0.99
+                                break
+                            elif re.search(pattern_progress, line):
+                                percentage = int(re.search(r'\d+', line).group())
+                                if percentage < 100:
+                                    self.message = f"Downloading {self.media_url_link}..."
+                                    self.end_time = datetime.now()
+                                    self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
+                                if percentage == 100:
+                                    complete_progress_cycle += 1
+                                    if complete_progress_cycle == 4:
+                                        break
+                    else:
+                        fragment_stuck_time += 0.1
+                        if fragment_stuck_time >= fragment_stuck_timeout:
+                            log.error("Download appears to be stuck.")
+                            self.record_error_in_database("Download appears to be stuck.")
+                            raise ValueError("Download appears to be stuck.")
 
                     sleep(0.1)
                 
@@ -110,15 +125,32 @@ class TaskDownload(CalibreTask):
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
                 self.message = f"{self.media_url_link} failed to download: {e}"
+                self.record_error_in_database(str(e))
 
             finally:
                 if p.returncode == 0 or self.progress == 1.0:
+                    self.end_time = datetime.now()
                     self.stat = STAT_FINISH_SUCCESS
+                    log.info("Download task for %s completed successfully", self.media_url)
                 else:
+                    self.end_time = datetime.now()                    
                     self.stat = STAT_FAIL
 
         else:
             log.info("No media URL provided - skipping download task")
+
+    def record_error_in_database(self, error_message):
+        """Record the error in the database"""
+        with sqlite3.connect(XKLB_DB_FILE) as conn:
+            # Check if the error column exists, if not, create it at the rightmost position
+            cursor = conn.cursor()
+            cursor.execute("PRAGMA table_info(media)")
+            columns = [column[1] for column in cursor.fetchall()]
+            if "error" not in columns:
+                conn.execute("ALTER TABLE media ADD COLUMN error TEXT")
+            conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
+            conn.commit()
+        conn.close()
 
     @property
     def name(self):
