@@ -110,6 +110,7 @@ class TaskConvert(CalibreTask):
                                                            self.ereader_mail,
                                                            EmailText,
                                                            self.settings['body'],
+                                                           id=self.book_id,
                                                            internal=True)
                                       )
                 except Exception as ex:
@@ -251,9 +252,16 @@ class TaskConvert(CalibreTask):
                 quotes = [3, 5]
                 tmp_dir = get_temp_dir()
                 calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
+                my_env = os.environ.copy()
+                if config.config_calibre_split:
+                    my_env['CALIBRE_OVERRIDE_DATABASE_PATH'] = os.path.join(config.config_calibre_dir, "metadata.db")
+                    library_path = config.config_calibre_split_dir
+                else:
+                    library_path = config.config_calibre_dir
+
                 opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
-                               '--with-library', config.config_calibre_dir]
-                p = process_open(opf_command, quotes)
+                               '--with-library', library_path]
+                p = process_open(opf_command, quotes, my_env)
                 p.wait()
                 path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
                 with open(path_tmp_opf, 'w') as fd:
@@ -308,9 +316,9 @@ class TaskConvert(CalibreTask):
 
     def __str__(self):
         if self.ereader_mail:
-            return "Convert {} {}".format(self.book_id, self.ereader_mail)
+            return "Convert Book {} and mail it to {}".format(self.book_id, self.ereader_mail)
         else:
-            return "Convert {}".format(self.book_id)
+            return "Convert Book {}".format(self.book_id)
 
     @property
     def is_cancellable(self):

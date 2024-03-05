@@ -20,7 +20,7 @@ function getPath() {
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
 }
 
-function postButton(event, action){
+function postButton(event, action, location=""){
     event.preventDefault();
     var newForm = jQuery('<form>', {
         "action": action,
@@ -30,7 +30,14 @@ function postButton(event, action){
         'name': 'csrf_token',
         'value': $("input[name=\'csrf_token\']").val(),
         'type': 'hidden'
-    })).appendTo('body');
+    })).appendTo('body')
+    if(location !== "") {
+        newForm.append(jQuery('<input>', {
+            'name': 'location',
+            'value': location,
+            'type': 'hidden'
+        })).appendTo('body');
+    }
     newForm.submit();
 }
 
@@ -324,17 +331,20 @@ $("#delete_confirm").click(function(event) {
                             $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
-
                         }
                     });
                     $("#books-table").bootstrapTable("refresh");
                 }
             });
         } else {
-            postButton(event, getPath() + "/delete/" + deleteId);
+            var loc = sessionStorage.getItem("back");
+            if (!loc) {
+                loc = $(this).data("back");
+            }
+            sessionStorage.removeItem("back");
+            postButton(event, getPath() + "/delete/" + deleteId, location=loc);
         }
     }
-
 });
 
 //triggered when modal is about to be shown
@@ -654,6 +664,7 @@ $(function() {
             $.get(e.relatedTarget.href).done(function(content) {
                 $modalBody.html(content);
                 preFilters.remove(useCache);
+                $("#back").remove();
             });
         })
         .on("hidden.bs.modal", function() {
@@ -734,8 +745,12 @@ $(function() {
            "btnfullsync",
             "GeneralDeleteModal",
             $(this).data('value'),
-            function(value){
-                path = getPath() + "/ajax/fullsync"
+            function(userid) {
+                if (userid) {
+                    path = getPath() + "/ajax/fullsync/" + userid
+                } else {
+                    path = getPath() + "/ajax/fullsync"
+                }
                 $.ajax({
                     method:"post",
                     url: path,
