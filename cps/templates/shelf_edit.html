@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
+{% endblock %}
+
 {% block body %}
 <div class="discover">
   <h1>{{title}}</h1>
@@ -14,6 +18,24 @@
           <input type="checkbox" name="is_public" {% if shelf.is_public == 1 %}checked{% endif %}> {{_('Share with Everyone')}}
         </label>
       </div>
+      <div class="form-group">
+        <label for="type">Shelf type:</label>
+        <select id="type" name="type" class="selectpicker">
+          <option value="0"{% if shelf.type == 0 %} selected{% endif %}>Calibre web</option>
+          <option value="1"{% if shelf.type == 1 %} selected{% endif %}>Category shorcut</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category" class="selectpicker">
+          <option value="0">None</option>
+          {% if shelf.type == 1 %}
+            {% for category in categories %}
+              <option value="{{ category.id }}"{% if category.id == shelf.category %} selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+      </div>
     {% endif %}
     {% if kobo_sync_enabled and sync_only_selected_shelves %}
       <div class="checkbox">
@@ -28,4 +50,11 @@
     {% endif %}
   </form>
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
+{% if not current_user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
 {% endblock %}

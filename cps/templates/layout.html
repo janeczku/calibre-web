@@ -151,7 +151,17 @@
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% if shelf.type == 0 %}
+                    <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% else %}
+                    <li><a href="{{url_for('web.books_list', data='category', sort_param='stored', book_id=shelf.category )}}"><span class="glyphicon glyphicon-list shelf"></span>
+                      {{get_category(shelf.category).name|shortentitle(40)}}
+                      {% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a>
+                      {% if not current_user.is_anonymous %}
+                        <a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-edit shelf"></span> (Shelf)</a>
+                      {% endif %}
+                    </li>
+                  {% endif %}
                 {% endfor %}
               {% if not current_user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>

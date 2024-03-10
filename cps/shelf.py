@@ -324,6 +324,8 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
             flash(_("Sorry you are not allowed to create a public shelf"), category="error")
             return redirect(url_for('web.index'))
         is_public = 1 if to_save.get("is_public") == "on" else 0
+        type = to_save.get("type", "")
+        category = to_save.get("category", "")
         if config.config_kobo_sync:
             shelf.kobo_sync = True if to_save.get("kobo_sync") else False
             if shelf.kobo_sync:
@@ -334,6 +336,8 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
         if check_shelf_is_unique(shelf_title, is_public, shelf_id):
             shelf.name = shelf_title
             shelf.is_public = is_public
+            shelf.type = type
+            shelf.category = category
             if not shelf_id:
                 shelf.user_id = int(current_user.id)
                 ub.session.add(shelf)
@@ -356,8 +360,11 @@ def create_edit_shelf(shelf, page_title, page, shelf_id=False):
                 ub.session.rollback()
                 log.error_or_exception(ex)
                 flash(_("There was an error"), category="error")
+    categories = calibre_db.session.query(db.Tags)\
+        .order_by(db.Tags.name)
     return render_title_template('shelf_edit.html',
                                  shelf=shelf,
+                                 categories=categories,
                                  title=page_title,
                                  page=page,
                                  kobo_sync_enabled=config.config_kobo_sync,
