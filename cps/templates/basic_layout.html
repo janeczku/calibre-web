@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ current_user.locale }}">
+  <head>
+    <title>{{instance}} | {{title}}</title>
+    <meta charset="utf-8">
+    <meta name='viewport' content='initial-scale=1,maximum-scale=5,user-scalable=no' />
+  </head>
+  <body>
+    <div>
+      <div>
+        {% if current_user.is_authenticated or g.allow_anonymous %}
+          <form role="search" action="{{url_for('basic.index')}}" method="GET">
+            <div>
+              <input type="text" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
+              <span>
+                <button type="submit" id="query_submit">{{_('Search')}}</button>
+              </span>
+            </div>
+          </form>
+          {% if not current_user.is_anonymous %}
+            <a id="logout" href="{{url_for('web.logout')}}">
+              <span>{{_('Logout')}}</span>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    {% block body %}{% endblock %}
+  </body>
+</html>
