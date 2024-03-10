@@ -403,6 +403,15 @@ class Bookmark(Base):
     bookmark_key = Column(String)
 
 
+class LastCFI(Base):
+    __tablename__ = 'lastcfi'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    format = Column(String(collation='NOCASE'))
+    cfi = Column(String)
+
 # Baseclass representing books that are archived on the user's Kobo device.
 class ArchivedBook(Base):
     __tablename__ = 'archived_book'
@@ -542,6 +551,8 @@ def add_missing_tables(engine, _session):
         ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "lastcfi"):
+        LastCFI.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "kobo_reading_state"):
         KoboReadingState.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "kobo_bookmark"):
