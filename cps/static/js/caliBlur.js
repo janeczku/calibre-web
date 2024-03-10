@@ -81,56 +81,6 @@ if ($("body.book").length > 0) {
     $(".rating").insertBefore(".hr");
     $("#remove-from-shelves").insertAfter(".hr");
     $(description).appendTo(".bookinfo")
-    /* if book description is not in html format, Remove extra line breaks
-    Remove blank lines/unnecessary spaces, split by line break to array
-    Push array into .description div. If there is still a wall of text,
-    find sentences and split wall into groups of three sentence paragraphs.
-    If the book format is in html format, Keep html, but strip away inline
-    styles and empty elements */
-
-    // If text is sitting in div as text node
-    if ($(".comments:has(p)").length === 0) {
-        newdesc = description.text()
-            .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "").split(/\n/);
-        $(".comments").empty();
-        $.each(newdesc, function (i, val) {
-            $("div.comments").append("<p>" + newdesc[i] + "</p>");
-        });
-        $(".comments").fadeIn(100);
-    }    //If still a wall of text create 3 sentence paragraphs.
-    if ($(".comments p").length === 1) {
-        if (description.context != undefined) {
-            newdesc = description.text()
-                .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "").split(/\n/);
-        } else {
-            newdesc = description.text();
-        }
-        doc = nlp(newdesc.toString());
-        sentences = doc.map((m) => m.out("text"));
-        sentences[0] = sentences[0].replace(",", "");
-        $(".comments p").remove();
-        let size = 3;
-        let sentenceChunks = [];
-        for (var i = 0; i < sentences.length; i += size) {
-            sentenceChunks.push(sentences.slice(i, i + size));
-        }
-        let output = '';
-        $.each(sentenceChunks, function (i, val) {
-            let preOutput = '';
-            $.each(val, function (i, val) {
-                preOutput += val;
-            });
-            output += "<p>" + preOutput + "</p>";
-        });
-        $("div.comments").append(output);
-    } else {
-        $.each(description, function (i, val) {
-//      $( description[i].outerHTML ).appendTo( ".comments" );
-            $("div.comments :empty").remove();
-            $("div.comments ").attr("style", "");
-        });
-        $("div.comments").fadeIn(100);
-    }
 
     // Sexy blurred backgrounds
     cover = $(".cover img").attr("src");
