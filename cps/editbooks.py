@@ -305,6 +305,24 @@ def upload():
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
                 helper.add_book_to_thumbnail_cache(book_id)
 
+                book_format_from = meta.extension.upper()[1:]
+                if (
+                    config.config_auto_convert_to_format and
+                    config.config_auto_convert_to_format.upper() != meta.extension.lower()
+                   ):
+                    book_format_to = config.config_auto_convert_to_format.upper()
+                    rtn = helper.convert_book_format(book_id,
+                                                     config.get_book_path(),
+                                                     book_format_from,
+                                                     book_format_to,
+                                                     current_user.name)
+                    if rtn is None:
+                        flash(_("Book successfully queued for converting to %(book_format)s",
+                                book_format=book_format_to),
+                              category="success")
+                    else:
+                        flash(_("There was an error converting this book: %(res)s", res=rtn), category="error")
+
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
                         resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
