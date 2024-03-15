@@ -114,6 +114,7 @@
     <div class="form-group">
       <label for="config_auto_convert_to_format">{{_('Automatically convert ebooks to format (leave blank to disable)')}}</label>
       <select name="config_auto_convert_to_format" id="config_auto_convert_to_format" class="form-control">
+          <option value="" >Disable</option>
         {% for format in config.config_upload_formats.split(",") %}
           <option value="{{ format }}"{% if config.config_auto_convert_to_format.lower() == format.lower() %} selected{% endif %}>{{ format }}</option>
         {% endfor %}
