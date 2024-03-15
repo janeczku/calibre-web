@@ -308,7 +308,7 @@ def upload():
                 book_format_from = meta.extension.upper()[1:]
                 if (
                     config.config_auto_convert_to_format and
-                    config.config_auto_convert_to_format.upper() != meta.extension.lower()
+                    config.config_auto_convert_to_format.upper() != book_format_from
                    ):
                     book_format_to = config.config_auto_convert_to_format.upper()
                     rtn = helper.convert_book_format(book_id,
