@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2023-10-16 19:38:22</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2023-11-08 21:04:56</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-10-17 02:18:49</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2023-11-09 03:52:12</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 37 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 45 min</p>
         </div>
       </div>
       </div>
@@ -1976,12 +1976,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 18)">Detail</a>
@@ -2125,31 +2125,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="et18.16" class="none bg-info">
+        <tr id='pt18.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 173, in test_edit_title
-    self.assertEqual(&#39;Unknown&#39;, values[&#39;title&#39;])
-KeyError: &#39;title&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3092,15 +3072,15 @@ KeyError: &#39;title&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLogin</td>
+        <td class="text-center">18</td>
         <td class="text-center">17</td>
-        <td class="text-center">17</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 17)">Detail</a>
+            <a onclick="showClassDetail('c33', 18)">Detail</a>
         </td>
     </tr>
 
@@ -3241,7 +3221,36 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id='pt33.16' class='hiddenRow bg-success'>
+        <tr id="ft33.16" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft33.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft33.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft33.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 525, in test_proxy_login_multi_user
+    self.assertTrue(&#39;&lt;input type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;name&#34; id=&#34;name&#34; value=&#34;new_user1&#34; autocomplete=&#34;off&#34;&gt;&#39; in resp.text)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt33.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_opds</div>
             </td>
@@ -3250,7 +3259,7 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id='pt33.17' class='hiddenRow bg-success'>
+        <tr id='pt33.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -3623,21 +3632,30 @@ KeyError: &#39;title&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestReader</td>
-        <td class="text-center">6</td>
-        <td class="text-center">5</td>
+        <td class="text-center">8</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 6)">Detail</a>
+            <a onclick="showClassDetail('c39', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt39.1' class='hiddenRow bg-success'>
+        <tr id='st39.1' class='none bg-warning'>
+            <td>
+                <div class='testcase'>TestReader - test_cb7_reader</div>
+            </td>
+            <td colspan='6' align='center'>SKIP</td>
+        </tr>
+    
+    
+    
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
@@ -3646,7 +3664,7 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id='pt39.2' class='hiddenRow bg-success'>
+        <tr id='pt39.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -3655,7 +3673,7 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id='pt39.3' class='hiddenRow bg-success'>
+        <tr id='pt39.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -3664,7 +3682,7 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id='pt39.4' class='hiddenRow bg-success'>
+        <tr id='pt39.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -3673,42 +3691,25 @@ KeyError: &#39;title&#39;</pre>
     
     
     
-        <tr id="ft39.5" class="none bg-danger">
+        <tr id='pt39.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReader - test_sound_listener</div>
+                <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft39.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft39.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft39.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 331, in test_sound_listener
-    self.sound_test(&#39;music.flac&#39;, &#39;Unknown - music&#39;, &#39;0:02&#39;)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_reader.py&#34;, line 320, in sound_test
-    self.assertEqual(duration, duration_item.text)
-AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
-- 0:02
-?    ^
-+ 0:01
-?    ^</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt39.6' class='hiddenRow bg-success'>
+        <tr id='pt39.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_sound_listener</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt39.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -4048,7 +4049,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
 
 
     <tr id="su" class="passClass">
-        <td>TestThumbnailsEnv</td>
+        <td>TestSocket</td>
         <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
@@ -4063,6 +4064,54 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
         <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestSocket - test_socket_communication</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestSystemdActivation</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c45', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt45.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSystemdActivation - test_systemd_activation</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestThumbnailsEnv</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c46', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt46.1' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -4071,21 +4120,21 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 8)">Detail</a>
+            <a onclick="showClassDetail('c47', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -4094,7 +4143,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt47.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
@@ -4103,7 +4152,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt47.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
@@ -4112,7 +4161,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id='pt47.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
@@ -4121,7 +4170,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='st45.5' class='none bg-warning'>
+        <tr id='st47.5' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_for_series</div>
             </td>
@@ -4130,7 +4179,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='pt45.6' class='hiddenRow bg-success'>
+        <tr id='pt47.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
@@ -4139,7 +4188,7 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id='pt45.7' class='hiddenRow bg-success'>
+        <tr id='pt47.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
@@ -4148,31 +4197,11 @@ AssertionError: &#39;0:02&#39; != &#39;0:01&#39;
     
     
     
-        <tr id="ft45.8" class="none bg-danger">
+        <tr id='pt47.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft45.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft45.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft45.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 321, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4186,13 +4215,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 9)">Detail</a>
+            <a onclick="showClassDetail('c48', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -4201,7 +4230,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt48.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -4210,7 +4239,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt48.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -4219,7 +4248,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt48.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -4228,7 +4257,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt48.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -4237,7 +4266,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt48.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -4246,19 +4275,19 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id="st46.7" class="none bg-warning">
+        <tr id="st48.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st46.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st48.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st46.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st48.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st46.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st48.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4272,7 +4301,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt48.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -4281,7 +4310,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt48.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
@@ -4299,13 +4328,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 5)">Detail</a>
+            <a onclick="showClassDetail('c49', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4314,7 +4343,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt47.2' class='hiddenRow bg-success'>
+        <tr id='pt49.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -4323,7 +4352,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt47.3' class='hiddenRow bg-success'>
+        <tr id='pt49.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4332,7 +4361,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt47.4' class='hiddenRow bg-success'>
+        <tr id='pt49.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -4341,7 +4370,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt47.5' class='hiddenRow bg-success'>
+        <tr id='pt49.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4359,13 +4388,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 18)">Detail</a>
+            <a onclick="showClassDetail('c50', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4374,7 +4403,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.2' class='hiddenRow bg-success'>
+        <tr id='pt50.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4383,7 +4412,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.3' class='hiddenRow bg-success'>
+        <tr id='pt50.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4392,7 +4421,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id='pt50.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -4401,7 +4430,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.5' class='hiddenRow bg-success'>
+        <tr id='pt50.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -4410,7 +4439,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.6' class='hiddenRow bg-success'>
+        <tr id='pt50.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -4419,7 +4448,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.7' class='hiddenRow bg-success'>
+        <tr id='pt50.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -4428,7 +4457,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.8' class='hiddenRow bg-success'>
+        <tr id='pt50.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -4437,7 +4466,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.9' class='hiddenRow bg-success'>
+        <tr id='pt50.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -4446,7 +4475,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.10' class='hiddenRow bg-success'>
+        <tr id='pt50.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -4455,7 +4484,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.11' class='hiddenRow bg-success'>
+        <tr id='pt50.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -4464,7 +4493,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.12' class='hiddenRow bg-success'>
+        <tr id='pt50.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -4473,7 +4502,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.13' class='hiddenRow bg-success'>
+        <tr id='pt50.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -4482,7 +4511,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.14' class='hiddenRow bg-success'>
+        <tr id='pt50.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -4491,7 +4520,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.15' class='hiddenRow bg-success'>
+        <tr id='pt50.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -4500,7 +4529,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.16' class='hiddenRow bg-success'>
+        <tr id='pt50.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -4509,7 +4538,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.17' class='hiddenRow bg-success'>
+        <tr id='pt50.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -4518,7 +4547,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt48.18' class='hiddenRow bg-success'>
+        <tr id='pt50.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -4536,13 +4565,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 1)">Detail</a>
+            <a onclick="showClassDetail('c51', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -4560,13 +4589,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 21)">Detail</a>
+            <a onclick="showClassDetail('c52', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt50.1' class='hiddenRow bg-success'>
+        <tr id='pt52.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -4575,7 +4604,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.2' class='hiddenRow bg-success'>
+        <tr id='pt52.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -4584,7 +4613,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.3' class='hiddenRow bg-success'>
+        <tr id='pt52.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -4593,7 +4622,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.4' class='hiddenRow bg-success'>
+        <tr id='pt52.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -4602,7 +4631,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.5' class='hiddenRow bg-success'>
+        <tr id='pt52.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -4611,7 +4640,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.6' class='hiddenRow bg-success'>
+        <tr id='pt52.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -4620,7 +4649,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.7' class='hiddenRow bg-success'>
+        <tr id='pt52.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -4629,7 +4658,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id='pt52.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -4638,7 +4667,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.9' class='hiddenRow bg-success'>
+        <tr id='pt52.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -4647,7 +4676,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.10' class='hiddenRow bg-success'>
+        <tr id='pt52.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -4656,7 +4685,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.11' class='hiddenRow bg-success'>
+        <tr id='pt52.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -4665,7 +4694,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.12' class='hiddenRow bg-success'>
+        <tr id='pt52.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -4674,7 +4703,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.13' class='hiddenRow bg-success'>
+        <tr id='pt52.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -4683,7 +4712,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.14' class='hiddenRow bg-success'>
+        <tr id='pt52.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -4692,7 +4721,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.15' class='hiddenRow bg-success'>
+        <tr id='pt52.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -4701,7 +4730,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.16' class='hiddenRow bg-success'>
+        <tr id='pt52.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -4710,7 +4739,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.17' class='hiddenRow bg-success'>
+        <tr id='pt52.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -4719,7 +4748,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.18' class='hiddenRow bg-success'>
+        <tr id='pt52.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -4728,7 +4757,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.19' class='hiddenRow bg-success'>
+        <tr id='pt52.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -4737,7 +4766,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.20' class='hiddenRow bg-success'>
+        <tr id='pt52.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -4746,7 +4775,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt50.21' class='hiddenRow bg-success'>
+        <tr id='pt52.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -4756,21 +4785,21 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">35</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
+        <td class="text-center">34</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c51', 35)">Detail</a>
+            <a onclick="showClassDetail('c53', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt51.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -4779,7 +4808,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.2' class='hiddenRow bg-success'>
+        <tr id='pt53.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -4788,7 +4817,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.3' class='hiddenRow bg-success'>
+        <tr id='pt53.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -4797,7 +4826,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.4' class='hiddenRow bg-success'>
+        <tr id='pt53.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -4806,7 +4835,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.5' class='hiddenRow bg-success'>
+        <tr id='pt53.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -4815,7 +4844,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.6' class='hiddenRow bg-success'>
+        <tr id='pt53.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -4824,7 +4853,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.7' class='hiddenRow bg-success'>
+        <tr id='pt53.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -4833,7 +4862,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.8' class='hiddenRow bg-success'>
+        <tr id='pt53.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -4842,7 +4871,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.9' class='hiddenRow bg-success'>
+        <tr id='pt53.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -4851,7 +4880,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.10' class='hiddenRow bg-success'>
+        <tr id='pt53.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -4860,7 +4889,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.11' class='hiddenRow bg-success'>
+        <tr id='pt53.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -4869,7 +4898,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.12' class='hiddenRow bg-success'>
+        <tr id='pt53.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -4878,7 +4907,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.13' class='hiddenRow bg-success'>
+        <tr id='pt53.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -4887,7 +4916,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.14' class='hiddenRow bg-success'>
+        <tr id='pt53.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -4896,7 +4925,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.15' class='hiddenRow bg-success'>
+        <tr id='pt53.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -4905,7 +4934,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.16' class='hiddenRow bg-success'>
+        <tr id='pt53.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -4914,7 +4943,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.17' class='hiddenRow bg-success'>
+        <tr id='pt53.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -4923,7 +4952,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.18' class='hiddenRow bg-success'>
+        <tr id='pt53.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -4932,7 +4961,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.19' class='hiddenRow bg-success'>
+        <tr id='pt53.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -4941,7 +4970,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.20' class='hiddenRow bg-success'>
+        <tr id='pt53.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -4950,7 +4979,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.21' class='hiddenRow bg-success'>
+        <tr id='pt53.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -4959,7 +4988,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.22' class='hiddenRow bg-success'>
+        <tr id='pt53.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -4968,7 +4997,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.23' class='hiddenRow bg-success'>
+        <tr id='pt53.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -4977,7 +5006,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.24' class='hiddenRow bg-success'>
+        <tr id='pt53.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -4986,7 +5015,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.25' class='hiddenRow bg-success'>
+        <tr id='pt53.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -4995,7 +5024,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.26' class='hiddenRow bg-success'>
+        <tr id='pt53.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5004,7 +5033,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.27' class='hiddenRow bg-success'>
+        <tr id='pt53.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5013,7 +5042,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.28' class='hiddenRow bg-success'>
+        <tr id='pt53.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5022,7 +5051,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.29' class='hiddenRow bg-success'>
+        <tr id='pt53.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5031,7 +5060,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.30' class='hiddenRow bg-success'>
+        <tr id='pt53.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5040,7 +5069,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.31' class='hiddenRow bg-success'>
+        <tr id='pt53.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5049,16 +5078,38 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.32' class='hiddenRow bg-success'>
+        <tr id="ft53.32" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft53.32')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft53.32" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft53.32').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 502, in test_search_order
+    self.verify_order(&#34;search&#34;, order=order)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1400, in verify_order
+    self.assertEqual(book_id, expected_result, &#34;Key sorting order wrong: &#34; + key)
+AssertionError: 9 != 8 : Key sorting order wrong: pub_new</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt51.33' class='hiddenRow bg-success'>
+        <tr id='pt53.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5067,7 +5118,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.34' class='hiddenRow bg-success'>
+        <tr id='pt53.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5076,7 +5127,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt51.35' class='hiddenRow bg-success'>
+        <tr id='pt53.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5094,13 +5145,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 16)">Detail</a>
+            <a onclick="showClassDetail('c54', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5109,7 +5160,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5118,7 +5169,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5127,7 +5178,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5136,7 +5187,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5145,7 +5196,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5154,7 +5205,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.7' class='hiddenRow bg-success'>
+        <tr id='pt54.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5163,7 +5214,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5172,7 +5223,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5181,7 +5232,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5190,7 +5241,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5199,7 +5250,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5208,7 +5259,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.13' class='hiddenRow bg-success'>
+        <tr id='pt54.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5217,7 +5268,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.14' class='hiddenRow bg-success'>
+        <tr id='pt54.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5226,7 +5277,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.15' class='hiddenRow bg-success'>
+        <tr id='pt54.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5235,7 +5286,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
     
     
     
-        <tr id='pt52.16' class='hiddenRow bg-success'>
+        <tr id='pt54.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5246,11 +5297,11 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>462</td>
-        <td>449</td>
+        <td>467</td>
+        <td>454</td>
         <td>2</td>
-        <td>2</td>
-        <td>9</td>
+        <td>1</td>
+        <td>10</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5278,7 +5329,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.2.0-34-generic #34~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  7 13:12:03 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.2.0-36-generic #37~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  9 15:34:04 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5302,7 +5353,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>Babel</th>
-              <td>2.13.0</td>
+              <td>2.13.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5320,13 +5371,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>flask-babel</th>
-              <td>3.1.0</td>
+              <td>4.0.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Flask-Limiter</th>
-              <td>3.4.1</td>
+              <td>3.5.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5344,13 +5395,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>Flask-WTF</th>
-              <td>1.1.2</td>
+              <td>1.2.1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>greenlet</th>
-              <td>3.0.0</td>
+              <td>3.0.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5398,7 +5449,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.4.49</td>
+              <td>2.0.23</td>
               <td>Basic</td>
             </tr>
           
@@ -5416,19 +5467,19 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>Wand</th>
-              <td>0.6.11</td>
+              <td>0.6.13</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Werkzeug</th>
-              <td>2.3.7</td>
+              <td>2.3.8</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5458,7 +5509,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5488,7 +5539,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5518,7 +5569,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5554,7 +5605,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>py7zr</th>
-              <td>0.20.6</td>
+              <td>0.20.7</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
@@ -5566,13 +5617,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>py7zr</th>
-              <td>0.20.6</td>
+              <td>0.20.7</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5608,7 +5659,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5650,7 +5701,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.103.0</td>
+              <td>2.107.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -5692,13 +5743,13 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.1</td>
+              <td>4.19.2</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.1</td>
+              <td>4.19.2</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -5710,7 +5761,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.19.1</td>
+              <td>4.19.2</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -5740,7 +5791,7 @@ AssertionError: 0.029247650171179584 not greater than or equal to 0.04</pre>
 </div>
 
 <script>
-    drawCircle(449, 2, 2, 9);
+    drawCircle(454, 2, 1, 10);
     showCase(5);
 </script>
 

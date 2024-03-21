@@ -114,7 +114,7 @@ class TaskBackupMetadata(CalibreTask):
                                                  True)
         else:
             # ToDo: Handle book folder not found or not readable
-            book_metadata_filepath = os.path.join(config.config_calibre_dir, book.path, 'metadata.opf')
+            book_metadata_filepath = os.path.join(config.get_book_path(), book.path, 'metadata.opf')
             # prepare finalize everything and output
             doc = etree.ElementTree(package)
             try:

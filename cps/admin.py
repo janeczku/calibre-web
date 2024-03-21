@@ -1705,7 +1705,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-        or config.config_calibre_dir != to_save["config_calibre_dir"]:
+       or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1728,6 +1728,9 @@ def _db_configuration_update_helper():
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_("DB is not Writeable"), category="warning")
+    _config_string(to_save, "config_calibre_split_dir")
+    config.config_calibre_split = to_save.get('config_calibre_split', 0) == "on"
+    calibre_db.update_config(config)
     config.save()
     return _db_configuration_result(None, gdrive_error)
 
