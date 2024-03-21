@@ -29,6 +29,7 @@ cps/cache
 *.bak
 *.log.*
 .key
+.venv
 
 settings.yaml
 gdrive_credentials

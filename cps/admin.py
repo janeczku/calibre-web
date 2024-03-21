@@ -1981,7 +1981,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
             return redirect(url_for('admin.admin'))
 
         val = [int(k[5:]) for k in to_save if k.startswith('show_')]
-        sidebar, __ = get_sidebar_config()
+        sidebar, __, __, __ = get_sidebar_config()
         for element in sidebar:
             value = element['visibility']
             if value in val and not content.check_visibility(value):

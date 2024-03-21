@@ -101,6 +101,10 @@
       <label for="download_role">{{_('Allow Downloads')}}</label>
     </div>
     <div class="form-group">
+      <input type="checkbox" name="send_to_ereader" id="send_to_ereader" {% if content.role_send_to_ereader() %}checked{% endif %}>
+      <label for="send_to_ereader">{{_('Allow Send to eReader')}}</label>
+    </div>
+    <div class="form-group">
       <input type="checkbox" name="viewer_role" id="viewer_role" {% if content.role_viewer() %}checked{% endif %}>
       <label for="viewer_role">{{_('Allow eBook Viewer')}}</label>
     </div>

@@ -7944,3 +7944,27 @@ div.comments[data-readmore] {
     transition: height 300ms;
     overflow: hidden
 }
+
+div.col-sm-10 > h2.book_table, div.col-sm-10 > a.session {
+    padding-left: 40px;
+    padding-right: 10px;
+}
+
+div.col-sm-10 > h2.book_table {
+    color: white;
+}
+
+div.col-sm-10 > table.table {
+    margin-left: 40px;
+    width: calc(100% - 50px);
+}
+
+div.col-sm-10 > div.custom_page {
+    padding-left: 40px;
+    padding-right: 10px;
+    color: white;
+}
+
+div.col-sm-10 > div.custom_page > h2 {
+    color: white;
+}

@@ -233,7 +233,7 @@ class User(UserBase, Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
-    role = Column(SmallInteger, default=constants.ROLE_USER)
+    role = Column(Integer, default=constants.ROLE_USER)
     password = Column(String)
     kindle_mail = Column(String(120), default="")
     shelf = relationship('Shelf', backref='user', lazy='dynamic', order_by='Shelf.name')
@@ -745,7 +745,7 @@ def migrate_Database(_session):
             conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                      "name VARCHAR(64),"
                      "email VARCHAR(120),"
-                     "role SMALLINT,"
+                     "role INTEGER,"
                      "password VARCHAR,"
                      "kindle_mail VARCHAR(120),"
                      "locale VARCHAR(2),"
