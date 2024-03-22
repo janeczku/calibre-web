@@ -15,9 +15,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import os
+import re
 from datetime import datetime
 
-from flask import Blueprint, request, redirect, url_for, flash
+from flask import Blueprint, request, redirect, url_for, flash, jsonify
 from flask import session as flask_session
 from flask_login import current_user
 from flask_babel import format_date
@@ -26,6 +28,8 @@ from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
 from . import logger, db, calibre_db, config, ub
+from .constants import XKLB_DB_FILE
+from .subproc_wrapper import process_open
 from .usermanagement import login_required_if_no_ano
 from .render_template import render_title_template
 from .pagination import Pagination
@@ -38,15 +42,52 @@ log = logger.create()
 @search.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def simple_search():
-    term = request.args.get("query")
-    if term:
-        return redirect(url_for('web.books_list', data="search", sort_param='stored', query=term.strip()))
-    else:
+    try:
+        term = request.args.get("query")
+        
+        if not term:
+            return render_title_template('search.html',
+                                         searchterm="",
+                                         result_count=0,
+                                         title=_("Search"),
+                                         page="search")
+
+        # Perform CLI search against xklb-metadata.db
+        video_titles = lb_search(term)
+        log.debug(f"CLI search results: {video_titles}")
+        
+        # Fetch additional results from the Calibre database using the video titles
+        primary_results = []
+        for title in video_titles:
+            results = calibre_db.get_search_results(title, config, offset=None, order=[db.Books.sort.desc() if hasattr(db.Books, 'sort') else db.Books.id], limit=None)[0]
+            primary_results.extend(results)
+            log.debug(f"CLI search results for '{title}': {len(results)}")
+
+        # Fetch results from Calibre database using the search term
+        join = (db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series)
+        offset = request.args.get("offset", 0, type=int)
+        order = [db.Books.sort] if not request.args.get("sort_param") else request.args.get("sort_param")
+        entries, result_count, pagination = calibre_db.get_search_results(term, config, offset, *join, order=order)
+
+        # Combine the two sets of results
+        entries.extend(primary_results)
+        result_count += len(primary_results)
+
         return render_title_template('search.html',
-                                     searchterm="",
-                                     result_count=0,
+                                     searchterm=term,
+                                     pagination=pagination,
+                                     query=term,
+                                     adv_searchterm=term,
+                                     entries=entries,
+                                     result_count=result_count,
                                      title=_("Search"),
                                      page="search")
+
+    except Exception as e:
+        log.error(f"Error in simple_search: {e}")
+        # log the traceback
+        log.exception(e)
+        return jsonify({"error": "An error occurred while processing your request."}), 500
 
 
 @search.route("/advsearch", methods=['POST'])
@@ -401,3 +442,28 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                  order=order[1])
 
 
+def lb_search(term):
+    # perform CLI search against xklb-metadata.db
+    video_titles = []
+    lb_executable = os.getenv("LB_WRAPPER", "lb-wrapper")
+
+    if term:
+        subprocess_args = [lb_executable, "search", term]
+        log.debug("Executing: %s", subprocess_args)
+
+        try:
+            p = process_open(subprocess_args, newlines=True)
+            stdout, stderr = p.communicate()
+
+            if p.returncode != 0:
+                log.error("Error executing lb-wrapper: %s", stderr)
+                return video_titles
+
+            # regex pattern to extract video titles
+            pattern = r"^[^\d\n].*?(?= - )"
+            matches = re.findall(pattern, stdout, re.MULTILINE)
+            video_titles.extend(matches)
+        except Exception as ex:
+            log.error("Error executing lb-wrapper: %s", ex)
+
+    return video_titles
