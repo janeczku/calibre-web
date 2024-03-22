@@ -1,7 +1,7 @@
 #!/bin/bash
 
 XKLB_INTERNAL_CMD="$1"    # e.g. "tubeadd" or "dl"
-URL="$2"
+URL_OR_SEARCH_TERM="$2"
 
 LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
@@ -24,7 +24,7 @@ log() {
 }
 
 if [ $# -ne 2 ]; then
-    log "Error" "Two arguments are required. Please provide a command (tubeadd/dl) and a URL."
+    log "Error" "Two arguments are required. Please provide a command (tubeadd/dl/search) and a URL or search term."
     exit 1
 fi
 
@@ -47,9 +47,11 @@ fi
 # fetching metadata. This will prevent hanging for playlist URLs or short URLs.
 # "...to be able to list videos that are not downloaded yet"
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
-    xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL} --force ${VERBOSITY}"
+    xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM} --force --extra ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
-    xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
+    xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL_OR_SEARCH_TERM} ${FORMAT_OPTIONS} --write-thumbnail --subs ${VERBOSITY}"
+elif [[ $XKLB_INTERNAL_CMD == "search" ]]; then
+    xklb_full_cmd="${XKLB_EXECUTABLE} search ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM}"
 else
     log "Error" "Invalid xklb command. Please choose 'tubeadd' or 'dl'."
     exit 1
@@ -60,8 +62,11 @@ log "Info" "Running xklb command: ${xklb_full_cmd}"
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
 # 1>&2 redirect back-to-STDERR to avoid nested (repeat) logging, explained at https://stackoverflow.com/a/15936384
 eval "${xklb_full_cmd}" \
-    > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
-    2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
+    # > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
+    # 2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
+    # adjust above line to also reroute the return code of the underlying command as a line saying "return code: 0" or "return code: 1" or "return code: 2" etc.
+    > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]] || [[ $line == "yt_dlp_rc: "* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
+    2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done; echo "yt_dlp_rc: $?" 1>&2) &
 # 2024-01-11: HOW THIS WORKS...
 # 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
 # 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
@@ -77,9 +82,17 @@ wait $pid
 rc=$?
 
 # Check return code (exit status)
-if [ $rc -eq 0 ]; then
-    log "Info" "lb-wrapper's xklb command (${XKLB_INTERNAL_CMD}) completed successfully."
-else
-    log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
-    exit 1
-fi
+case $rc in
+    0)
+        log "Info" "lb-wrapper's xklb command (${XKLB_INTERNAL_CMD}) completed successfully."
+        exit 0
+        ;;
+    1)
+        log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
+        exit 1
+        ;;
+    *)
+        log "Error" "Unknown error occurred while running lb-wrapper's xklb commands. Return code: $rc"
+        exit $rc
+        ;;
+esac
