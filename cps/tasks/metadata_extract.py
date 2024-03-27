@@ -5,7 +5,7 @@ import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
 
-from cps.constants import XKLB_DB_FILE
+from cps.constants import XKLB_DB_FILE, MAX_VIDEOS_PER_DOWNLOAD
 from cps.services.worker import WorkerThread
 from cps.tasks.download import TaskDownload
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
@@ -129,6 +129,9 @@ class TaskMetadataExtract(CalibreTask):
                 log.error("An error occurred during the calculation of views per day for %s: %s", requested_url, e)
                 self.message = f"{requested_url} failed: {e}"
 
+    def _sort_and_limit_requested_urls(self, requested_urls):
+        return dict(sorted(requested_urls.items(), key=lambda item: item[1]["views_per_day"], reverse=True)[:min(MAX_VIDEOS_PER_DOWNLOAD, len(requested_urls))])
+
     def _add_download_tasks_to_worker(self, requested_urls):
         for index, requested_url in enumerate(requested_urls.keys()):
             task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
@@ -165,6 +168,7 @@ class TaskMetadataExtract(CalibreTask):
                     self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
+                requested_urls = self._sort_and_limit_requested_urls(requested_urls)
 
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
