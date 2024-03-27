@@ -117,6 +117,8 @@ class TaskMetadataExtract(CalibreTask):
                 self.message = f"{subprocess_args[2]} failed: {e}"
                 failed_urls.append(subprocess_args[2])
 
+        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if "shorts" not in url and url not in failed_urls}
+
     def _calculate_views_per_day(self, requested_urls, conn):
         now = datetime.now()
         for requested_url in requested_urls.keys():
