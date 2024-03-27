@@ -117,6 +117,18 @@ class TaskMetadataExtract(CalibreTask):
                 self.message = f"{subprocess_args[2]} failed: {e}"
                 failed_urls.append(subprocess_args[2])
 
+    def _calculate_views_per_day(self, requested_urls, conn):
+        now = datetime.now()
+        for requested_url in requested_urls.keys():
+            try:
+                view_count = conn.execute("SELECT view_count FROM media WHERE path = ?", (requested_url,)).fetchone()[0]
+                time_uploaded = datetime.utcfromtimestamp(conn.execute("SELECT time_uploaded FROM media WHERE path = ?", (requested_url,)).fetchone()[0])
+                days_since_publish = (now - time_uploaded).days or 1
+                requested_urls[requested_url]["views_per_day"] = view_count / days_since_publish
+            except Exception as e:
+                log.error("An error occurred during the calculation of views per day for %s: %s", requested_url, e)
+                self.message = f"{requested_url} failed: {e}"
+
     def _add_download_tasks_to_worker(self, requested_urls):
         for index, requested_url in enumerate(requested_urls.keys()):
             task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
@@ -151,7 +163,8 @@ class TaskMetadataExtract(CalibreTask):
                 self._get_shelf_title(conn)
                 if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                     self._send_shelf_title()
-                    self._update_metadata(requested_urls)
+                self._update_metadata(requested_urls)
+                self._calculate_views_per_day(requested_urls, conn)
 
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
