@@ -62,7 +62,7 @@ class TaskMetadataExtract(CalibreTask):
             self.columns = [column[1] for column in cursor.fetchall()]
             query = ("SELECT path, duration FROM media WHERE error IS NULL AND path LIKE 'http%'"
                      if "error" in self.columns
-                        else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
+                     else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
             return {row[0]: {"duration": row[1], "is_playlist_video": self._is_playlist_video(row[0], conn)} for row in rows}
         except sqlite3.Error as db_error:
@@ -100,6 +100,23 @@ class TaskMetadataExtract(CalibreTask):
         except Exception as e:
             log.error("An error occurred during the shelf title sending: %s", e)
 
+    def _update_metadata(self, requested_urls):
+        failed_urls = []
+        subprocess_args_list = [[os.getenv("LB_WRAPPER", "lb-wrapper"), "tubeadd", requested_url] for requested_url in requested_urls.keys()]
+        
+        for index, subprocess_args in enumerate(subprocess_args_list):
+            try:
+                p = self._execute_subprocess(subprocess_args)
+                if p is not None:
+                    self.progress = (index + 1) / len(subprocess_args_list)
+                else:
+                    failed_urls.append(subprocess_args[2])
+                p.wait()    
+            except Exception as e:
+                log.error("An error occurred during updating the metadata of %s: %s", subprocess_args[2], e)
+                self.message = f"{subprocess_args[2]} failed: {e}"
+                failed_urls.append(subprocess_args[2])
+
     def _add_download_tasks_to_worker(self, requested_urls):
         for index, requested_url in enumerate(requested_urls.keys()):
             task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
@@ -134,6 +151,7 @@ class TaskMetadataExtract(CalibreTask):
                 self._get_shelf_title(conn)
                 if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                     self._send_shelf_title()
+                    self._update_metadata(requested_urls)
 
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
