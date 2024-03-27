@@ -151,7 +151,7 @@ class TaskMetadataExtract(CalibreTask):
                 self._get_shelf_title(conn)
                 if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                     self._send_shelf_title()
-                self._update_metadata(requested_urls)
+                    self._update_metadata(requested_urls)
 
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
