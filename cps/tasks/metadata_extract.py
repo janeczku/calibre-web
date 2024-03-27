@@ -18,7 +18,7 @@ class TaskMetadataExtract(CalibreTask):
     def __init__(self, task_message, media_url, original_url, current_user_name):
         super(TaskMetadataExtract, self).__init__(task_message)
         self.message = task_message
-        self.media_url = media_url
+        self.media_url = self._format_media_url(media_url)
         self.media_url_link = f'<a href="{self.media_url}" target="_blank">{self.media_url}</a>'
         self.original_url = self._format_original_url(original_url)
         self.type_of_url = self._get_type_of_url(self.media_url)
@@ -29,6 +29,9 @@ class TaskMetadataExtract(CalibreTask):
         self.columns = None
         self.shelf_title = None
         self.shelf_id = None
+
+    def _format_media_url(self, media_url):
+        return media_url.split("&")[0] if "&" in media_url else media_url
 
     def _format_original_url(self, original_url):
         # (?=...) is a "lookahead assertion" https://docs.python.org/3/library/re.html#regular-expression-syntax
