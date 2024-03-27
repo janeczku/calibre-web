@@ -30,7 +30,6 @@ class TaskDownload(CalibreTask):
     def run(self, worker_thread):
         """Run the download task"""
         self.worker_thread = worker_thread
-        log.info("Starting download task for URL: %s", self.media_url)
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_STARTED
         self.progress = 0
@@ -157,7 +156,7 @@ class TaskDownload(CalibreTask):
         return N_("Download")
 
     def __str__(self):
-        return f"Download task for {self.media_url_link}"
+        return f"Download task for {self.media_url}"
 
     @property
     def is_cancellable(self):
