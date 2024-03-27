@@ -51,7 +51,7 @@ XKLB_DB_FILE      = "/library/calibre-web/xklb-metadata.db"
 # Maximum number of videos to download when adding a new video playlist
 MAX_VIDEOS_PER_DOWNLOAD = 100
 
-# Maximum number of gigabytes to download when adding a new video playlist
+# Maximum number of gigabytes to download, from a playlist or channel (not yet implemented!)
 MAX_GB_PER_DOWNLOAD = 10
 
 if HOME_CONFIG:
