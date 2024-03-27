@@ -171,6 +171,14 @@ class TaskMetadataExtract(CalibreTask):
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
                 requested_urls = self._sort_and_limit_requested_urls(requested_urls)
+            else:
+                try:
+                    extractor_id = conn.execute("SELECT extractor_id FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]
+                    requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if extractor_id in url}
+                except Exception as e:
+                    log.error("An error occurred during the selection of the extractor ID: %s", e)
+                    self.message = f"{self.media_url_link} failed: {e}"
+                    return
 
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
