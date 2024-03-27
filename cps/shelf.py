@@ -403,7 +403,6 @@ def check_shelf_is_unique(title, is_public, shelf_id=False):
                                    .first() is None
 
         if not is_shelf_name_unique:
-            log.error("A public shelf with the name '{}' already exists.".format(title))
             flash(_("A public shelf with the name '%(title)s' already exists.", title=title),
                   category="error")
     else:
