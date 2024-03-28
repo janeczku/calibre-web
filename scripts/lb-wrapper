@@ -47,7 +47,7 @@ fi
 # fetching metadata. This will prevent hanging for playlist URLs or short URLs.
 # "...to be able to list videos that are not downloaded yet"
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
-    xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM} --force --extra ${VERBOSITY}"
+    xklb_full_cmd="${XKLB_EXECUTABLE} tubeadd ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM} --force ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
     xklb_full_cmd="${XKLB_EXECUTABLE} dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL_OR_SEARCH_TERM} ${FORMAT_OPTIONS} --write-thumbnail --subs ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "search" ]]; then
