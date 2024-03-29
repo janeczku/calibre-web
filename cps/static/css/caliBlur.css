@@ -229,6 +229,10 @@
     }
 }
 
+body h2 {
+    color: hsla(0, 0%, 100%, .45);
+}
+
 body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a[href*=advanced_search] {
     display: none
 }
@@ -411,7 +415,7 @@ body.blur .row-fluid .col-sm-10 {
     font-family: plex-icons-new, serif;
     margin-right: 30px;
     margin-left: 15px;
-    vertical-align: bottom;
+    vertical-align: top;
     display: inline-block;
     font-weight: 400;
     font-size: 18px;
@@ -447,9 +451,9 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     font-style: normal;
     font-weight: 400;
     line-height: 1;
-    font-size: 6vw;
+    font-size: 3vw;
     position: fixed;
-    left: 240px;
+    left: 160px;
     top: 180px;
     width: calc(20% - 55px);
     text-align: center
@@ -2447,7 +2451,7 @@ label {
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 {
-    margin-left: calc(20%);
+    margin-left: calc(10%);
     width: calc(80% - 30px);
     padding: 60px 0
 }
@@ -7967,4 +7971,13 @@ div.col-sm-10 > div.custom_page {
 
 div.col-sm-10 > div.custom_page > h2 {
     color: white;
+}
+
+div.list-group-item > div.row {
+    margin-left: 50px;
+    margin-top: -50px;
+}
+
+div.list-group-item > div.row > div.col-lg-2 {
+    width: 100px;
 }
