@@ -19,6 +19,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+from cps.pagination import Pagination
 from flask import Blueprint
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -45,14 +46,16 @@ log = logger.create()
 @login_required_if_no_ano
 def index():
     term = request.args.get("query", "")  # default to showing all books
-    offset = 0
+    limit = 15
+    page = int(request.args.get("page") or 1)
+    off = (page - 1) * limit
     order = get_sort_function("stored", "search")
     join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
     entries, result_count, pagination = calibre_db.get_search_results(term,
                                                                       config,
-                                                                      offset,
+                                                                      off,
                                                                       order,
-                                                                      None,
+                                                                      limit,
                                                                       *join)
     return render_title_template('basic_index.html',
                                  searchterm=term,
