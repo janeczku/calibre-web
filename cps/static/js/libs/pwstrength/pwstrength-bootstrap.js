@@ -144,13 +144,13 @@ try {
 
     validation.wordTwoCharacterClasses = function(options, word, score) {
         var specialCharRE = new RegExp(
-            '(.' + options.rules.specialCharClass + ')'
+            '(.' + options.rules.specialCharClass + ')', 'u'
         );
 
         if (
-            word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) ||
-            (word.match(/([a-zA-Z])/) && word.match(/([0-9])/)) ||
-            (word.match(specialCharRE) && word.match(/[a-zA-Z0-9_]/))
+            word.match(/(\p{Ll}.*\p{Lu})|(\p{Lu}.*\p{Ll})/u) ||
+            (word.match(/(\p{Letter})/u) && word.match(/([0-9])/)) ||
+            (word.match(specialCharRE) && word.match(/[\p{Letter}0-9_]/u))
         ) {
             return score;
         }
@@ -202,11 +202,15 @@ try {
     };
 
     validation.wordLowercase = function(options, word, score) {
-        return word.match(/[a-z]/) && score;
+        return word.match(/\p{Ll}/u) && score;
     };
 
     validation.wordUppercase = function(options, word, score) {
-        return word.match(/[A-Z]/) && score;
+        return word.match(/\p{Lu}/u) && score;
+    };
+
+    validation.word = function(options, word, score) {
+        return word.match(/\p{Letter}/u) && score;
     };
 
     validation.wordOneNumber = function(options, word, score) {
@@ -218,7 +222,7 @@ try {
     };
 
     validation.wordOneSpecialChar = function(options, word, score) {
-        var specialCharRE = new RegExp(options.rules.specialCharClass);
+        var specialCharRE = new RegExp(options.rules.specialCharClass, 'u');
         return word.match(specialCharRE) && score;
     };
 
@@ -228,27 +232,27 @@ try {
                 options.rules.specialCharClass +
                 '.*' +
                 options.rules.specialCharClass +
-                ')'
+                ')', 'u'
         );
 
         return word.match(twoSpecialCharRE) && score;
     };
 
     validation.wordUpperLowerCombo = function(options, word, score) {
-        return word.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) && score;
+        return word.match(/(\p{Ll}.*\p{Lu})|(\p{Lu}.*\p{Ll})/u) && score;
     };
 
     validation.wordLetterNumberCombo = function(options, word, score) {
-        return word.match(/([a-zA-Z])/) && word.match(/([0-9])/) && score;
+        return word.match(/([\p{Letter}])/u) && word.match(/([0-9])/) && score;
     };
 
     validation.wordLetterNumberCharCombo = function(options, word, score) {
         var letterNumberCharComboRE = new RegExp(
-            '([a-zA-Z0-9].*' +
+            '([\p{Letter}0-9].*' +
                 options.rules.specialCharClass +
                 ')|(' +
                 options.rules.specialCharClass +
-                '.*[a-zA-Z0-9])'
+                '.*[\p{Letter}0-9])', 'u'
         );
 
         return word.match(letterNumberCharComboRE) && score;
@@ -341,6 +345,7 @@ defaultOptions.rules.scores = {
     wordTwoCharacterClasses: 2,
     wordRepetitions: -25,
     wordLowercase: 1,
+    word: 1,
     wordUppercase: 3,
     wordOneNumber: 3,
     wordThreeNumbers: 5,
@@ -361,6 +366,7 @@ defaultOptions.rules.activated = {
     wordTwoCharacterClasses: true,
     wordRepetitions: true,
     wordLowercase: true,
+    word: true,
     wordUppercase: true,
     wordOneNumber: true,
     wordThreeNumbers: true,
@@ -372,7 +378,7 @@ defaultOptions.rules.activated = {
     wordIsACommonPassword: true
 };
 defaultOptions.rules.raisePower = 1.4;
-defaultOptions.rules.specialCharClass = "(?=.*?[^A-Za-z\s0-9])"; //'[!,@,#,$,%,^,&,*,?,_,~]';
+defaultOptions.rules.specialCharClass = "(?=.*?[^\\p{Letter}\\s0-9])"; //'[!,@,#,$,%,^,&,*,?,_,~]';
 // List taken from https://github.com/danielmiessler/SecLists (MIT License)
 defaultOptions.rules.commonPasswords = [
     '123456',

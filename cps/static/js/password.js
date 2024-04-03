@@ -24,7 +24,7 @@ $(document).ready(function() {
           },
 
         }, function () {
-        if ($('#password').data("verify")) {
+        if ($('#password').data("verify") === "True") {
             // Initialized and ready to go
             var options = {};
             options.common = {
@@ -38,22 +38,20 @@ $(document).ready(function() {
                 showVerdicts: false,
             }
             options.rules= {
-                specialCharClass: "(?=.*?[^A-Za-z\\s0-9])",
+                specialCharClass: "(?=.*?[^\\p{Letter}\\s0-9])",
                 activated: {
                     wordNotEmail: false,
                     wordMinLength: $('#password').data("min"),
-                    // wordMaxLength: false,
-                    // wordInvalidChar: true,
                     wordSimilarToUsername: false,
                     wordSequences: false,
                     wordTwoCharacterClasses: false,
                     wordRepetitions: false,
                     wordLowercase: $('#password').data("lower") === "True" ? true : false,
                     wordUppercase: $('#password').data("upper") === "True" ? true : false,
+                    word: $('#password').data("word") === "True" ? true : false,
                     wordOneNumber: $('#password').data("number") === "True" ? true : false,
                     wordThreeNumbers: false,
                     wordOneSpecialChar: $('#password').data("special") === "True" ? true : false,
-                    // wordTwoSpecialChar: true,
                     wordUpperLowerCombo: false,
                     wordLetterNumberCombo: false,
                     wordLetterNumberCharCombo: false

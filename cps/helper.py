@@ -22,6 +22,7 @@ import random
 import io
 import mimetypes
 import re
+import regex
 import shutil
 import socket
 from datetime import datetime, timedelta
@@ -54,7 +55,8 @@ from . import calibre_db, cli_param
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
-from .constants import STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES, SUPPORTED_CALIBRE_BINARIES
+from .constants import (STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES,
+                        SUPPORTED_CALIBRE_BINARIES)
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
@@ -696,12 +698,14 @@ def valid_password(check_password):
         if config.config_password_number:
             verify += r"(?=.*?\d)"
         if config.config_password_lower:
-            verify += r"(?=.*?[a-z])"
+            verify += r"(?=.*?[\p{Ll}])"
         if config.config_password_upper:
-            verify += r"(?=.*?[A-Z])"
+            verify += r"(?=.*?[\p{Lu}])"
+        if config.config_password_character:
+            verify += r"(?=.*?[\p{Letter}])"
         if config.config_password_special:
-            verify += r"(?=.*?[^A-Za-z\s0-9])"
-        match = re.match(verify, check_password)
+            verify += r"(?=.*?[^\p{Letter}\s0-9])"
+        match = regex.match(verify, check_password)
         if not match:
             raise Exception(_("Password doesn't comply with password validation rules"))
     return check_password
