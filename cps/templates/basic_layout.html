@@ -20,21 +20,22 @@ nav {
 
 nav > a {
   color: black;
-  margin-right: 20px;
+  margin: 0 20px;
 }
 
 .search {
-  margin: 20px auto;
+  margin: auto auto;
   width: 50%;
   display: flex;
   flex: 1;
+  justify-content: center;
 }
 
-.search > input {
+form > input {
   padding-left: 4px;
 }
 
-.search > * {
+form > * {
   height: 32px;
   background-color: white;
   border-radius: 0;
@@ -45,11 +46,11 @@ nav > a {
   vertical-align: top;
 }
 
-.search > span {
+form > span {
   margin-left: -5px;
 }
 
-.search button {
+button {
   border: none;
   padding: 0;
   margin: 0;
@@ -62,11 +63,11 @@ nav > a {
   padding: 0 20px;
 }
 
-.body a {
+a {
   color: black;
 }
 
-.body img {
+img {
   width: 150px;
   height: 250px;
   object-fit: cover;
@@ -93,16 +94,19 @@ nav > a {
     <div>
       {% if current_user.is_authenticated or g.allow_anonymous %}
         <nav>
-          <form role="search" action="{{url_for('basic.index')}}" method="GET">
-            <div class="search">
+          <a href="/basic">
+            <span>{{_('Home')}}</span>
+          </a>
+          <div class="search">
+            <form role="search" action="{{url_for('basic.index')}}" method="GET">
               <input type="text" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
               <span>
                 <button type="submit" id="query_submit">{{_('Search')}}</button>
               </span>
-            </div>
-          </form>
+            </form>
+          </div>
           {% if not current_user.is_anonymous %}
-            <a id="logout" href="{{url_for('web.logout')}}">
+            <a href="{{url_for('web.logout')}}">
               <span>{{_('Logout')}}</span>
             </a>
           {% endif %}
