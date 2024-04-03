@@ -1,16 +1,86 @@
 <!DOCTYPE html>
 <html lang="{{ current_user.locale }}">
-  <head>
-    <title>{{instance}} | {{title}}</title>
-    <meta charset="utf-8">
-    <meta name='viewport' content='initial-scale=1,maximum-scale=5,user-scalable=no' />
-  </head>
-  <body>
+
+<head>
+<title>{{instance}} | {{title}}</title>
+<meta charset="utf-8">
+<meta name='viewport' content='initial-scale=1,maximum-scale=5,user-scalable=no' />
+<style>
+body {
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  height: 50px;
+}
+
+nav > a {
+  color: black;
+  margin-right: 20px;
+}
+
+.search {
+  margin: 20px auto;
+  width: 50%;
+  display: flex;
+  flex: 1;
+}
+
+.search > input {
+  padding-left: 4px;
+}
+
+.search > * {
+  height: 32px;
+  background-color: white;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.search > span {
+  margin-left: -5px;
+}
+
+.search button {
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 80px;
+  height: 100%;
+  background-color: white;
+}
+
+.body {
+  padding: 0 20px;
+}
+
+.body a {
+  color: black;
+}
+
+.body img {
+  width: 150px;
+  height: 250px;
+  object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+  <div>
     <div>
-      <div>
-        {% if current_user.is_authenticated or g.allow_anonymous %}
+      {% if current_user.is_authenticated or g.allow_anonymous %}
+        <nav>
           <form role="search" action="{{url_for('basic.index')}}" method="GET">
-            <div>
+            <div class="search">
               <input type="text" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
               <span>
                 <button type="submit" id="query_submit">{{_('Search')}}</button>
@@ -22,9 +92,14 @@
               <span>{{_('Logout')}}</span>
             </a>
           {% endif %}
-        {% endif %}
-      </div>
+        </nav>
+      {% endif %}
     </div>
-    {% block body %}{% endblock %}
-  </body>
+  </div>
+  <div class="body">
+    {% block body %}
+    {% endblock %}
+  </div>
+</body>
+
 </html>

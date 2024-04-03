@@ -10,6 +10,10 @@
   {% endfor %}
 </div>
 
+<div class="cover">
+    <img title="{{ entry.title }}" src="{{ url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified) }}"/>
+</div>
+
 {% if current_user.role_download() %}
   {% if entry.data|length %}
     <div>
