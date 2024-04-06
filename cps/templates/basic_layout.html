@@ -11,7 +11,7 @@ body {
 }
 
 nav {
-  height: 50px;
+  height: 75px;
   padding: 5px 20px;
   width: 100%;
   display: table;
@@ -53,7 +53,7 @@ form > input {
 }
 
 form > * {
-  height: 32px;
+  height: 50px;
   background-color: white;
   border-radius: 0;
   border: 1px solid #ccc;
@@ -71,7 +71,7 @@ button {
   border: none;
   padding: 0 10px;
   margin: 0;
-  width: 80px;
+  width: 160px;
   height: 100%;
   background-color: white;
 }
@@ -100,6 +100,7 @@ img {
 .pagination {
   padding: 10px 0;
   height: 20px;
+  font-weight: 700;
 }
 
 .pagination > div {
@@ -118,7 +119,7 @@ img {
       {% if current_user.is_authenticated or g.allow_anonymous %}
         <nav>
           <a href="/basic">
-            <span>{{_('Home')}}</span>
+            <span><h1>{{_('Home')}}</h1></span>
           </a>
           <div class="search">
             <form role="search" action="{{url_for('basic.index')}}" method="GET">
