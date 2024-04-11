@@ -839,8 +839,7 @@ class CalibreDB:
         entries = list()
         pagination = list()
         try:
-            pagination = Pagination(page, pagesize,
-                                    len(query.all()))
+            pagination = Pagination(page, pagesize, query.count())
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
             log.error_or_exception(ex)
