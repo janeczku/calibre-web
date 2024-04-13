@@ -988,8 +988,8 @@ class CalibreDB:
 
         if with_count:
             if not languages:
-                languages = self.session.query(Languages, func.count('books_languages_link.book')) \
-                    .join(books_languages_link).join(Books) \
+                languages = self.session.query(Languages, func.count('books_languages_link.book'))\
+                    .join(books_languages_link).join(Books)\
                     .filter(self.common_filters(return_all_languages=return_all_languages)) \
                     .group_by(text('books_languages_link.lang_code')).all()
             tags = list()
