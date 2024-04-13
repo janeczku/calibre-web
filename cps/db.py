@@ -20,7 +20,6 @@
 import os
 import re
 import json
-import traceback
 from datetime import datetime
 from urllib.parse import quote
 import unidecode
@@ -33,7 +32,6 @@ from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import OperationalError
-
 try:
     # Compatibility with sqlalchemy 2.0
     from sqlalchemy.orm import declarative_base
@@ -42,7 +40,6 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy import desc
 from flask_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -52,7 +49,7 @@ from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
 from weakref import WeakSet
-from thefuzz.fuzz import partial_ratio, partial_token_set_ratio, partial_token_sort_ratio, ratio
+from thefuzz.fuzz import partial_token_sort_ratio, ratio
 
 # %-level, 100 means exact match, 75 allows exactly 1 wrong character in a 4 letter word
 FUZZY_SEARCH_ACCURACY = 75
@@ -384,8 +381,8 @@ class Books(Base):
 
     def __repr__(self):
         return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
-                                                                self.timestamp, self.pubdate, self.series_index,
-                                                                self.last_modified, self.path, self.has_cover)
+                                                                 self.timestamp, self.pubdate, self.series_index,
+                                                                 self.last_modified, self.path, self.has_cover)
 
     def __str__(self):
         return "{0} {1} {2} {3} {4}".format(self.title, " ".join([tag.name for tag in self.tags]),
@@ -439,15 +436,13 @@ class CustomColumns(Base):
         content['category_sort'] = "value"
         content['is_csp'] = False
         content['is_editable'] = self.editable
-        content['rec_index'] = sequence + 22  # toDo why ??
+        content['rec_index'] = sequence + 22     # toDo why ??
         if isinstance(value, datetime):
-            content['#value#'] = {"__class__": "datetime.datetime",
-                                  "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
+            content['#value#'] = {"__class__": "datetime.datetime", "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
         else:
             content['#value#'] = value
         content['#extra#'] = extra
-        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",",
-                                                                   "list_to_ui": ", "}
+        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",", "list_to_ui": ", "}
         return json.dumps(content, ensure_ascii=False)
 
 
@@ -468,7 +463,7 @@ class AlchemyEncoder(json.JSONEncoder):
                         el = list()
                         # ele = None
                         for ele in data:
-                            if hasattr(ele, 'value'):  # converter for custom_column values
+                            if hasattr(ele, 'value'):       # converter for custom_column values
                                 el.append(str(ele.value))
                             elif ele.get:
                                 el.append(ele.get())
@@ -506,6 +501,7 @@ class CalibreDB:
         self.session = None
         if init:
             self.init_db(expire_on_commit)
+
 
     def init_db(self, expire_on_commit=True):
         if self._init:
@@ -678,13 +674,13 @@ class CalibreDB:
         if not read_column:
             bd = (self.session.query(Books, ub.ReadBook.read_status, ub.ArchivedBook.is_archived).select_from(Books)
                   .join(ub.ReadBook, and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id),
-                        isouter=True))
+                  isouter=True))
         else:
             try:
                 read_column = cc_classes[read_column]
                 bd = (self.session.query(Books, read_column.value, ub.ArchivedBook.is_archived).select_from(Books)
                       .join(read_column, read_column.book == book_id,
-                            isouter=True))
+                      isouter=True))
             except (KeyError, AttributeError, IndexError):
                 log.error("Custom Column No.{} does not exist in calibre database".format(read_column))
                 # Skip linking read column and return None instead of read status
@@ -737,11 +733,11 @@ class CalibreDB:
                 pos_cc_list = current_user.allowed_column_value.split(',')
                 pos_content_cc_filter = true() if pos_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
                 neg_cc_list = current_user.denied_column_value.split(',')
                 neg_content_cc_filter = false() if neg_cc_list == [''] else \
                     getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
-                        any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
             except (KeyError, AttributeError, IndexError):
                 pos_content_cc_filter = false()
                 neg_content_cc_filter = true()
@@ -821,18 +817,18 @@ class CalibreDB:
         element = 0
         while indx:
             if indx >= 3:
-                query = query.outerjoin(join[element], join[element + 1]).outerjoin(join[element + 2])
+                query = query.outerjoin(join[element], join[element+1]).outerjoin(join[element+2])
                 indx -= 3
                 element += 3
             elif indx == 2:
-                query = query.outerjoin(join[element], join[element + 1])
+                query = query.outerjoin(join[element], join[element+1])
                 indx -= 2
                 element += 2
             elif indx == 1:
                 query = query.outerjoin(join[element])
                 indx -= 1
                 element += 1
-        query = query.filter(db_filter) \
+        query = query.filter(db_filter)\
             .filter(self.common_filters(allow_show_archived))
         entries = list()
         pagination = list()
@@ -1103,7 +1099,6 @@ class Category:
         self.id = cat_id
         self.rating = rating
         self.count = 1
-
 
 '''class Count:
     count = None
