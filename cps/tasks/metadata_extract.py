@@ -172,7 +172,6 @@ class TaskMetadataExtract(CalibreTask):
                 self._calculate_views_per_day(requested_urls, conn)
                 requested_urls = self._sort_and_limit_requested_urls(requested_urls)
                 conn.execute("UPDATE playlists SET path = ? WHERE path = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", self.media_url))
-
             else:
                 try:
                     extractor_id = conn.execute("SELECT extractor_id FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]
