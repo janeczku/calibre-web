@@ -56,6 +56,10 @@ class TaskMetadataExtract(CalibreTask):
             self.message = f"{self.media_url_link} failed: {e}"
             return None
 
+    def _remove_shorts_from_db(self, conn):
+        conn.execute("DELETE FROM media WHERE path LIKE '%shorts%'")
+        conn.commit()
+
     def _fetch_requested_urls(self, conn):
         try:
             cursor = conn.execute("PRAGMA table_info(media)")
@@ -100,6 +104,9 @@ class TaskMetadataExtract(CalibreTask):
         except Exception as e:
             log.error("An error occurred during the shelf title sending: %s", e)
 
+    def _ignore_shorts(self, requested_urls):
+        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if requested_urls[url]["duration"] > 60}
+    
     def _update_metadata(self, requested_urls):
         failed_urls = []
         subprocess_args_list = [[os.getenv("LB_WRAPPER", "lb-wrapper"), "tubeadd", requested_url] for requested_url in requested_urls.keys()]
@@ -117,7 +124,7 @@ class TaskMetadataExtract(CalibreTask):
                 self.message = f"{subprocess_args[2]} failed: {e}"
                 failed_urls.append(subprocess_args[2])
 
-        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if "shorts" not in url and url not in failed_urls}
+        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if url not in failed_urls}
 
     def _calculate_views_per_day(self, requested_urls, conn):
         now = datetime.now()
@@ -160,6 +167,7 @@ class TaskMetadataExtract(CalibreTask):
             return
 
         with sqlite3.connect(XKLB_DB_FILE) as conn:
+            self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
                 return
@@ -168,6 +176,7 @@ class TaskMetadataExtract(CalibreTask):
                 self._get_shelf_title(conn)
                 if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                     self._send_shelf_title()
+                self._ignore_shorts(requested_urls)
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
                 requested_urls = self._sort_and_limit_requested_urls(requested_urls)
