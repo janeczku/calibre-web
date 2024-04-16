@@ -103,9 +103,6 @@ class TaskMetadataExtract(CalibreTask):
                 log.error("Received unexpected status code %s while sending the shelf title to %s", response.status_code, self.original_url)
         except Exception as e:
             log.error("An error occurred during the shelf title sending: %s", e)
-
-    def _ignore_shorts(self, requested_urls):
-        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if requested_urls[url]["duration"] > 60}
     
     def _update_metadata(self, requested_urls):
         failed_urls = []
@@ -124,7 +121,7 @@ class TaskMetadataExtract(CalibreTask):
                 self.message = f"{subprocess_args[2]} failed: {e}"
                 failed_urls.append(subprocess_args[2])
 
-        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if url not in failed_urls}
+        requested_urls = {url: requested_urls[url] for url in requested_urls.keys() if "shorts" not in url and url not in failed_urls}
 
     def _calculate_views_per_day(self, requested_urls, conn):
         now = datetime.now()
@@ -176,7 +173,6 @@ class TaskMetadataExtract(CalibreTask):
                 self._get_shelf_title(conn)
                 if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
                     self._send_shelf_title()
-                self._ignore_shorts(requested_urls)
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
                 requested_urls = self._sort_and_limit_requested_urls(requested_urls)
