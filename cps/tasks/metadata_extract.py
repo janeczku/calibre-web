@@ -103,7 +103,7 @@ class TaskMetadataExtract(CalibreTask):
                 log.error("Received unexpected status code %s while sending the shelf title to %s", response.status_code, self.original_url)
         except Exception as e:
             log.error("An error occurred during the shelf title sending: %s", e)
-    
+
     def _update_metadata(self, requested_urls):
         failed_urls = []
         subprocess_args_list = [[os.getenv("LB_WRAPPER", "lb-wrapper"), "tubeadd", requested_url] for requested_url in requested_urls.keys()]
