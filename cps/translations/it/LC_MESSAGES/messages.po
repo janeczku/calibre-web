@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2024-02-10 10:06+0100\n"
-"PO-Revision-Date: 2024-01-25 07:44+0100\n"
+"PO-Revision-Date: 2024-04-17 06:19+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -39,8 +40,11 @@ msgid "Unknown command"
 msgstr "Comando sconosciuto"
 
 #: cps/admin.py:173
-msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "Tutto OK! Libri in coda per il backup dei metadati, controlla le attività per il risultato"
+msgid ""
+"Success! Books queued for Metadata Backup, please check Tasks for result"
+msgstr ""
+"Tutto OK! Libri in coda per il backup dei metadati, controlla le attività per"
+" il risultato"
 
 #: cps/admin.py:206 cps/editbooks.py:589 cps/editbooks.py:591
 #: cps/editbooks.py:629 cps/editbooks.py:646 cps/editbooks.py:1262
@@ -96,7 +100,9 @@ msgstr "L'utente Guest (ospite) non può avere questo ruolo"
 
 #: cps/admin.py:494 cps/admin.py:1987
 msgid "No admin user remaining, can't remove admin role"
-msgstr "Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruolo di amministratore"
+msgstr ""
+"Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruolo di"
+" amministratore"
 
 #: cps/admin.py:498 cps/admin.py:512
 msgid "Value has to be true or false"
@@ -116,7 +122,9 @@ msgstr "Visualizzazione non valida"
 
 #: cps/admin.py:517
 msgid "Guest's Locale is determined automatically and can't be set"
-msgstr "Le impostazioni locali dell'utente Guest (ospite) sono determinate automaticamente e non possono essere configurate"
+msgstr ""
+"Le impostazioni locali dell'utente Guest (ospite) sono determinate"
+" automaticamente e non possono essere configurate"
 
 #: cps/admin.py:521
 msgid "No Valid Locale Given"
@@ -156,43 +164,70 @@ msgstr "Vuoi veramente eliminare questo utente?"
 
 #: cps/admin.py:615
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Vuoi veramente eliminare questo scaffale?"
+msgstr "Sei sicuro di voler eliminare questo scaffale?"
 
 #: cps/admin.py:617
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni locali del/degli utente/i selezionato/i?"
+msgstr ""
+"Sei sicuro di voler modificare le impostazioni locali del/degli utente/i"
+" selezionato/i?"
 
 #: cps/admin.py:619
-msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Sei sicuro di voler modificare le impostazioni delle lingue visualizzabili dall'/dagli utente/i selezionato/i?"
+msgid ""
+"Are you sure you want to change visible book languages for selected user(s)?"
+msgstr ""
+"Sei sicuro di voler modificare le impostazioni delle lingue visualizzabili"
+" dall'/dagli utente/i selezionato/i?"
 
 #: cps/admin.py:621
-msgid "Are you sure you want to change the selected role for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare il ruolo evidenziato del/degli utente/i selezionato/i?"
+msgid ""
+"Are you sure you want to change the selected role for the selected user(s)?"
+msgstr ""
+"Sei sicuro di voler modificare il ruolo evidenziato del/degli utente/i"
+" selezionato/i?"
 
 #: cps/admin.py:623
-msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le restrizioni selezionate del/degli utente/i selezionato/i?"
+msgid ""
+"Are you sure you want to change the selected restrictions for the selected"
+" user(s)?"
+msgstr ""
+"Sei sicuro di voler modificare le restrizioni selezionate del/degli utente/i"
+" selezionato/i?"
 
 #: cps/admin.py:625
-msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare le restrizioni di visibilità selezionate per l'utente(i) selezionato(i)?"
+msgid ""
+"Are you sure you want to change the selected visibility restrictions for the"
+" selected user(s)?"
+msgstr ""
+"Sei sicuro di voler modificare le restrizioni di visibilità selezionate per"
+" l'utente(i) selezionato(i)?"
 
 #: cps/admin.py:628
-msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Sei sicuro di voler modificare il comportamento di sincronizzazione dello scaffale per l'/gli utente/i selezionato/i?"
+msgid ""
+"Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgstr ""
+"Sei sicuro di voler modificare il comportamento di sincronizzazione dello"
+" scaffale per l'/gli utente/i selezionato/i?"
 
 #: cps/admin.py:630
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Sei sicuro di voler modificare la posizione della libreria di Calibre?"
 
 #: cps/admin.py:632
-msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
-msgstr "Calibre-Web cercherà le copertine aggiornate e aggiornerà le miniature delle copertine, questo richiederà un po' di tempo."
+msgid ""
+"Calibre-Web will search for updated Covers and update Cover Thumbnails, this"
+" may take a while?"
+msgstr ""
+"Calibre-Web cercherà le copertine aggiornate e aggiornerà le miniature delle"
+" copertine, questo richiederà un po' di tempo."
 
 #: cps/admin.py:635
-msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
-msgstr "Sei sicuro di voler eliminare il database sincronizzato di Calibre-Web e forzare una sincronizzazione completa con il tuo lettore Kobo?"
+msgid ""
+"Are you sure you want delete Calibre-Web's sync database to force a full sync"
+" with your Kobo Reader?"
+msgstr ""
+"Sei sicuro di voler eliminare il database sincronizzato di Calibre-Web e"
+" forzare una sincronizzazione completa con il tuo lettore Kobo?"
 
 #: cps/admin.py:878 cps/admin.py:884 cps/admin.py:894 cps/admin.py:904
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
@@ -224,11 +259,15 @@ msgstr "client_secrets.json non è configurato per Web Application"
 
 #: cps/admin.py:1156
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "La posizione del file di log non è valida, per favore indica il percorso corretto"
+msgstr ""
+"La posizione del file di log non è valida, per favore indica il percorso"
+" corretto"
 
 #: cps/admin.py:1162
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr "La posizione del file di log di accesso non è valida, per favore indica il percorso corretto"
+msgstr ""
+"La posizione del file di log di accesso non è valida, per favore indica il"
+" percorso corretto"
 
 #: cps/admin.py:1196
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
@@ -249,7 +288,8 @@ msgstr "LDAP Group Object Filter deve avere un \"%s\" Format Identifier"
 
 #: cps/admin.py:1212
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr "LDAP Group Object Filter contiene una parentesi senza la corrispondenza"
+msgstr ""
+"LDAP Group Object Filter contiene una parentesi senza la corrispondenza"
 
 #: cps/admin.py:1216
 #, python-format
@@ -270,8 +310,12 @@ msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "LDAP Member User Filter contiene una parentesi senza la corrispondenza"
 
 #: cps/admin.py:1234
-msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
-msgstr "LDAP CACertificate, il certificato o la posizione della chiave non sono corretti, per favore indica il percorso corretto"
+msgid ""
+"LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter"
+" Correct Path"
+msgstr ""
+"LDAP CACertificate, il certificato o la posizione della chiave non sono"
+" corretti, per favore indica il percorso corretto"
 
 #: cps/admin.py:1265 cps/templates/admin.html:53
 msgid "Add New User"
@@ -296,8 +340,11 @@ msgstr "Errore nel database: %(error)s."
 
 #: cps/admin.py:1323
 #, python-format
-msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
-msgstr "L'e-mail di test è stato accodata con successo per essere spedita a %(email)s, per favore controlla le attività per il risultato"
+msgid ""
+"Test e-mail queued for sending to %(email)s, please check Tasks for result"
+msgstr ""
+"L'e-mail di test è stato accodata con successo per essere spedita a "
+"%(email)s, per favore controlla le attività per il risultato"
 
 #: cps/admin.py:1326
 #, python-format
@@ -405,7 +452,8 @@ msgstr "Errore generale"
 
 #: cps/admin.py:1530
 msgid "Update file could not be saved in temp dir"
-msgstr "Il file di aggiornamento non può essere salvato nella cartella temporanea"
+msgstr ""
+"Il file di aggiornamento non può essere salvato nella cartella temporanea"
 
 #: cps/admin.py:1531
 msgid "Files could not be replaced during update"
@@ -438,7 +486,8 @@ msgstr "{} utente importato con successo"
 
 #: cps/admin.py:1710
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr "La posizione del DB non è valida, per favore indica il percorso corretto"
+msgstr ""
+"La posizione del DB non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:1730
 msgid "DB is not Writeable"
@@ -446,11 +495,13 @@ msgstr "Il DB non è scrivibile"
 
 #: cps/admin.py:1746
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr "La posizione del Keyfile non è valida, per favore indica il percorso corretto"
+msgstr ""
+"La posizione del Keyfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:1750
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr "La posizione del Certfile non è valida, per favore indica il percorso corretto"
+msgstr ""
+"La posizione del Certfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:1829
 msgid "Password length has to be between 1 and 40"
@@ -496,11 +547,13 @@ msgstr "Non posso eliminare l'utente Guest (ospite)"
 
 #: cps/admin.py:1972
 msgid "No admin user remaining, can't delete user"
-msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare l'utente"
+msgstr ""
+"Non rimarrebbe nessun utente amministratore, non posso eliminare l'utente"
 
 #: cps/admin.py:2027 cps/web.py:1445
 msgid "Email can't be empty and has to be a valid Email"
-msgstr "L'indirizzo e-mail non può essere vuoto e deve essere un recapito valido"
+msgstr ""
+"L'indirizzo e-mail non può essere vuoto e deve essere un recapito valido"
 
 #: cps/admin.py:2053
 #, python-format
@@ -518,7 +571,8 @@ msgstr "Mancano i permessi di esecuzione"
 #: cps/db.py:752 cps/search.py:137 cps/web.py:731
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
-msgstr "La colonna personalizzata no.%(column)d non esiste nel database di Calibre"
+msgstr ""
+"La colonna personalizzata no.%(column)d non esiste nel database di Calibre"
 
 #: cps/db.py:993 cps/templates/config_edit.html:208
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
@@ -529,8 +583,10 @@ msgstr "Nessuna"
 
 #: cps/editbooks.py:122 cps/editbooks.py:910 cps/web.py:525 cps/web.py:1537
 #: cps/web.py:1581 cps/web.py:1626
-msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
-msgstr "Il libro selezionato non è disponibile. Il file non esiste o non è accessibile"
+msgid ""
+"Oops! Selected book is unavailable. File does not exist or is not accessible"
+msgstr ""
+"Il libro selezionato non è disponibile. Il file non esiste o non è accessibile"
 
 #: cps/editbooks.py:166 cps/editbooks.py:1245
 msgid "User has no rights to upload cover"
@@ -538,7 +594,9 @@ msgstr "L'utente non ha i permessi per caricare le copertine"
 
 #: cps/editbooks.py:186 cps/editbooks.py:731
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr "Gli identificatori non fanno distinzione tra maiuscole e minuscole, sovrascrivendo il vecchio identificatore"
+msgstr ""
+"Gli identificatori non fanno distinzione tra maiuscole e minuscole,"
+" sovrascrivendo il vecchio identificatore"
 
 #: cps/editbooks.py:228
 msgid "Metadata successfully updated"
@@ -555,7 +613,9 @@ msgstr "Il file %(file)s è stato caricato"
 
 #: cps/editbooks.py:331
 msgid "Source or destination format for conversion missing"
-msgstr "Mancano o il formato sorgente o quello di destinazione, entrambi necessari alla conversione"
+msgstr ""
+"Mancano o il formato sorgente o quello di destinazione, entrambi necessari"
+" alla conversione"
 
 #: cps/editbooks.py:339
 #, python-format
@@ -568,8 +628,12 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "Si è verificato un errore durante la conversione del libro: %(res)s"
 
 #: cps/editbooks.py:650
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Probabilmente il libro caricato esiste già nella libreria, cambialo prima di caricarlo nuovamente:"
+msgid ""
+"Uploaded book probably exists in the library, consider to change before"
+" upload new: "
+msgstr ""
+"Probabilmente il libro caricato esiste già nella libreria, cambialo prima di"
+" caricarlo nuovamente:"
 
 #: cps/editbooks.py:705 cps/editbooks.py:1037
 #, python-format
@@ -579,7 +643,8 @@ msgstr "%(langname)s non è una lingua valida"
 #: cps/editbooks.py:743 cps/editbooks.py:1185
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "Non è consentito caricare file con l'estensione '%(ext)s' su questo server"
+msgstr ""
+"Non è consentito caricare file con l'estensione '%(ext)s' su questo server"
 
 #: cps/editbooks.py:747 cps/editbooks.py:1189
 msgid "File to be uploaded must have an extension"
@@ -636,12 +701,20 @@ msgid "File format %(ext)s added to %(book)s"
 msgstr "Ho aggiunto il formato %(ext)s al libro %(book)s"
 
 #: cps/gdrive.py:58
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "La configurazione di Google Drive non è stata completata correttamente. Prova a disattivare e riattivare nuovamente Google Drive"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google Drive"
+" again"
+msgstr ""
+"La configurazione di Google Drive non è stata completata correttamente. Prova"
+" a disattivare e riattivare nuovamente Google Drive"
 
 #: cps/gdrive.py:95
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Il dominio di callback non è stato verificato. Per favore segui i passaggi per verificare il dominio nella console per sviluppatori di Google"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in"
+" google developer console"
+msgstr ""
+"Il dominio di callback non è stato verificato. Per favore segui i passaggi"
+" per verificare il dominio nella console per sviluppatori di Google"
 
 #: cps/helper.py:84
 #, python-format
@@ -708,8 +781,11 @@ msgstr "Impossibile impostare lo stato di lettura: {}"
 
 #: cps/helper.py:368
 #, python-format
-msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr "L'eliminazione della cartella del libro %(id)s non è riuscita, il percorso ha delle sottocartelle: %(path)s"
+msgid ""
+"Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
+msgstr ""
+"L'eliminazione della cartella del libro %(id)s non è riuscita, il percorso ha"
+" delle sottocartelle: %(path)s"
 
 #: cps/helper.py:374
 #, python-format
@@ -718,13 +794,20 @@ msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 
 #: cps/helper.py:385
 #, python-format
-msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
-msgstr "Eliminazione del libro %(id)s unicamente dal database. Il percorso del libro nel database non è valido: %(path)s"
+msgid ""
+"Deleting book %(id)s from database only, book path in database not valid: "
+"%(path)s"
+msgstr ""
+"Eliminazione del libro %(id)s unicamente dal database. Il percorso del libro"
+" nel database non è valido: %(path)s"
 
 #: cps/helper.py:450
 #, python-format
-msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
+msgid ""
+"Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+"La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: "
+"%(error)s"
 
 #: cps/helper.py:522 cps/helper.py:531
 #, python-format
@@ -734,7 +817,9 @@ msgstr "File %(file)s non trovato su Google Drive"
 #: cps/helper.py:565
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
+msgstr ""
+"La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: "
+"%(error)s"
 
 #: cps/helper.py:585
 msgid "Error in rename file in path: {}"
@@ -762,8 +847,11 @@ msgid "Password doesn't comply with password validation rules"
 msgstr "La password non è conforme alle regole di convalida della password"
 
 #: cps/helper.py:855
-msgid "Python module 'advocate' is not installed but is needed for cover uploads"
-msgstr "Il modulo Python 'advocate' non è installato, ma è necessario per caricare le copertine"
+msgid ""
+"Python module 'advocate' is not installed but is needed for cover uploads"
+msgstr ""
+"Il modulo Python 'advocate' non è installato, ma è necessario per caricare le"
+" copertine"
 
 #: cps/helper.py:865
 msgid "Error Downloading Cover"
@@ -774,8 +862,11 @@ msgid "Cover Format Error"
 msgstr "Errore nel formato della copertina"
 
 #: cps/helper.py:871
-msgid "You are not allowed to access localhost or the local network for cover uploads"
-msgstr "Non sei autorizzato ad accedere a localhost o alla rete locale per caricare le copertine"
+msgid ""
+"You are not allowed to access localhost or the local network for cover uploads"
+msgstr ""
+"Non sei autorizzato ad accedere a localhost o alla rete locale per caricare"
+" le copertine"
 
 #: cps/helper.py:881
 msgid "Failed to create path for cover"
@@ -783,11 +874,15 @@ msgstr "Errore nel creare il percorso per la copertina"
 
 #: cps/helper.py:897
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
+msgstr ""
+"Il file della copertina non è in un formato immagine valido o non può essere"
+" salvato"
 
 #: cps/helper.py:908
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
-msgstr "Solamente i file nei formati jpg/jpeg/png/webp/bmp sono supportati per le copertine"
+msgstr ""
+"Solamente i file nei formati jpg/jpeg/png/webp/bmp sono supportati per le"
+" copertine"
 
 #: cps/helper.py:920
 msgid "Invalid cover file content"
@@ -811,39 +906,41 @@ msgstr "Errore nell'eseguire UnRar"
 
 #: cps/helper.py:1051
 msgid "Could not find the specified directory"
-msgstr ""
+msgstr "Impossibile trovare la cartella specificata"
 
 #: cps/helper.py:1054
 msgid "Please specify a directory, not a file"
-msgstr ""
+msgstr "Specifica una cartella, non un file"
 
 #: cps/helper.py:1068
-#, fuzzy
 msgid "Calibre binaries not viable"
-msgstr "Il DB non è scrivibile"
+msgstr "Eseguibili di Calibre non validi"
 
 #: cps/helper.py:1077
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
-msgstr ""
+msgstr "File eseguibili di Calibre mancanti: %(missing)s"
 
 #: cps/helper.py:1079
-#, fuzzy, python-format
+#, python-format
 msgid "Missing executable permissions: %(missing)s"
-msgstr "Mancano i permessi di esecuzione"
+msgstr "Permessi di esecuzione mancanti: %(missing)s"
 
 #: cps/helper.py:1084
-#, fuzzy
 msgid "Error excecuting Calibre"
-msgstr "Errore nell'eseguire UnRar"
+msgstr "Errore durante l'esecuzione di Calibre"
 
 #: cps/helper.py:1185 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Metti in coda tutti i libri per il backup dei metadati"
 
 #: cps/kobo_auth.py:90
-msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Per favore accedi a Calibe-Web non da localhost per ottenere un api_endpoint valido per il lettore kobo"
+msgid ""
+"Please access Calibre-Web from non localhost to get valid api_endpoint for"
+" kobo device"
+msgstr ""
+"Per favore accedi a Calibe-Web non da localhost per ottenere un api_endpoint"
+" valido per il lettore kobo"
 
 #: cps/kobo_auth.py:116
 msgid "Kobo Setup"
@@ -866,7 +963,8 @@ msgstr "Collegamento a %(oauth)s avvenuto con successo"
 
 #: cps/oauth_bb.py:155
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "Accesso non riuscito, non c'è nessun utente collegato all'account OAuth"
+msgstr ""
+"Accesso non riuscito, non c'è nessun utente collegato all'account OAuth"
 
 #: cps/oauth_bb.py:197
 #, python-format
@@ -1108,7 +1206,8 @@ msgstr "Stato di lettura = '%(status)s'"
 
 #: cps/search.py:324
 msgid "Error on search for custom columns, please restart Calibre-Web"
-msgstr "Errore di ricerca nelle colonne personalizzate. Per favore riavvia Calibre-Web"
+msgstr ""
+"Errore di ricerca nelle colonne personalizzate. Per favore riavvia Calibre-Web"
 
 #: cps/search.py:343 cps/search.py:375 cps/templates/layout.html:57
 msgid "Advanced Search"
@@ -1120,7 +1219,8 @@ msgstr "Lo scaffale specificato non è valido"
 
 #: cps/shelf.py:55
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Mi spiace, ma non sei autorizzato ad aggiungere libri a questo scaffale"
+msgstr ""
+"Mi spiace, ma non sei autorizzato ad aggiungere libri a questo scaffale"
 
 #: cps/shelf.py:64
 #, python-format
@@ -1131,6 +1231,7 @@ msgstr "Il libro è gia presente nello scaffale: %(shelfname)s"
 #, python-format
 msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
 msgstr ""
+"%(book_id)s è un ID libro non valido. Impossibile aggiungerlo allo scaffale"
 
 #: cps/shelf.py:97
 #, python-format
@@ -1225,7 +1326,9 @@ msgstr "Scaffale: '%(name)s'"
 
 #: cps/shelf.py:477
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non è accessibile"
+msgstr ""
+"Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non è"
+" accessibile"
 
 #: cps/tasks_status.py:46 cps/templates/layout.html:88
 #: cps/templates/tasks.html:7
@@ -1269,8 +1372,12 @@ msgid "No update available. You already have the latest version installed"
 msgstr "Nessun aggiornamento disponibile. Hai già l'ultima versione installata"
 
 #: cps/updater.py:456
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "È disponibile un nuovo aggiornamento. Fai clic sul pulsante in basso per aggiornare all'ultima versione"
+msgid ""
+"A new update is available. Click on the button below to update to the latest"
+" version."
+msgstr ""
+"È disponibile un nuovo aggiornamento. Fai clic sul pulsante in basso per"
+" aggiornare all'ultima versione"
 
 #: cps/updater.py:474
 msgid "Could not fetch update information"
@@ -1278,12 +1385,18 @@ msgstr "Impossibile recuperare le informazioni sull'aggiornamento"
 
 #: cps/updater.py:484
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Fai clic sul pulsante in basso per eseguire l'aggiornamento all'ultima versione stabile."
+msgstr ""
+"Fai clic sul pulsante in basso per eseguire l'aggiornamento all'ultima"
+" versione stabile."
 
 #: cps/updater.py:493 cps/updater.py:507 cps/updater.py:518
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "È disponibile un nuovo aggiornamento. Fai clic sul pulsante in basso per aggiornare alla versione:%(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to version: "
+"%(version)s"
+msgstr ""
+"È disponibile un nuovo aggiornamento. Fai clic sul pulsante in basso per"
+" aggiornare alla versione:%(version)s"
 
 #: cps/updater.py:536
 msgid "No release information available"
@@ -1383,8 +1496,10 @@ msgid "Register"
 msgstr "Registrati"
 
 #: cps/web.py:1266 cps/web.py:1313
-msgid "Oops! Email server is not configured, please contact your administrator."
-msgstr "Il server e-mail non è configurato, per favore contatta l'amministratore"
+msgid ""
+"Oops! Email server is not configured, please contact your administrator."
+msgstr ""
+"Il server e-mail non è configurato, per favore contatta l'amministratore"
 
 #: cps/web.py:1299
 msgid "Oops! Your Email is not allowed."
@@ -1409,8 +1524,12 @@ msgstr "ora sei connesso come: '%(nickname)s'"
 
 #: cps/web.py:1383
 #, python-format
-msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr "Accesso di riserva come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
+msgid ""
+"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not"
+" known"
+msgstr ""
+"Accesso di riserva come: '%(nickname)s', il server LDAP non è raggiungibile o"
+" l'utente è sconosciuto"
 
 #: cps/web.py:1388
 #, python-format
@@ -1482,7 +1601,9 @@ msgstr "Si è verificato un errore con il convertitore Kepubify: %(error)s"
 #: cps/tasks/convert.py:244
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr "Non ho trovato il file convertito o c'è più di un file nella cartella %(folder)s"
+msgstr ""
+"Non ho trovato il file convertito o c'è più di un file nella cartella "
+"%(folder)s"
 
 #: cps/tasks/convert.py:279
 #, python-format
@@ -1512,7 +1633,7 @@ msgstr "Backup dei metadati"
 
 #: cps/tasks/tempFolder.py:28
 msgid "Delete temp folder contents"
-msgstr ""
+msgstr "Elimina il contenuto della cartella temporanea"
 
 #: cps/tasks/thumbnail.py:96
 #, python-format
@@ -1769,7 +1890,7 @@ msgstr "Esegui l'aggiornamento"
 
 #: cps/templates/admin.html:253
 msgid "Are you sure you want to restart?"
-msgstr "Vuoi veramente riavviare Calibre-Web?"
+msgstr "Sei sicuro di voler riavviare Calibre-Web?"
 
 #: cps/templates/admin.html:258 cps/templates/admin.html:272
 #: cps/templates/admin.html:292 cps/templates/config_db.html:82
@@ -1789,7 +1910,7 @@ msgstr "Annulla"
 
 #: cps/templates/admin.html:271
 msgid "Are you sure you want to shutdown?"
-msgstr "Vuoi veramente arrestare Calibre-Web?"
+msgstr "Sei sicuro di voler fermare Calibre-Web?"
 
 #: cps/templates/admin.html:283
 msgid "Updating, please do not reload this page"
@@ -1919,8 +2040,11 @@ msgid "Rating"
 msgstr "Valutazione"
 
 #: cps/templates/book_edit.html:104
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Carica la copertina da URL (jpeg - l'immagine della copertina viene scaricata e salvata nel database)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgstr ""
+"Carica la copertina da URL (jpeg - l'immagine della copertina viene scaricata"
+" e salvata nel database)"
 
 #: cps/templates/book_edit.html:108
 msgid "Upload Cover from Local Disk"
@@ -2129,8 +2253,11 @@ msgid "Location of Calibre Database"
 msgstr "Posizione del database di Calibre"
 
 #: cps/templates/config_db.html:21
-msgid "Separate Book files from Library (Highly experimental, might not work at all)"
+msgid ""
+"Separate Book files from Library (Highly experimental, might not work at all)"
 msgstr ""
+"Separa i file dei libri dalla libreria (altamente sperimentale, potrebbe non"
+" funzionare)"
 
 #: cps/templates/config_db.html:34
 msgid "Use Google Drive?"
@@ -2154,7 +2281,8 @@ msgstr "Revoca"
 
 #: cps/templates/config_db.html:80
 msgid "New db location is invalid, please enter valid path"
-msgstr "La nuova posizione del database non è valida, inserisci un percorso valido"
+msgstr ""
+"La nuova posizione del database non è valida, inserisci un percorso valido"
 
 #: cps/templates/config_edit.html:18
 msgid "Server Configuration"
@@ -2166,11 +2294,15 @@ msgstr "Porta del server"
 
 #: cps/templates/config_edit.html:28
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Posizione del file del certificato SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr ""
+"Posizione del file del certificato SSL (lascia vuoto per una configurazione"
+" del server senza SSL)"
 
 #: cps/templates/config_edit.html:35
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr "Posizione del file della chiave SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr ""
+"Posizione del file della chiave SSL (lascia vuoto per una configurazione del"
+" server senza SSL)"
 
 #: cps/templates/config_edit.html:43
 msgid "Update Channel"
@@ -2194,7 +2326,8 @@ msgstr "Configurazione del file di log"
 
 #: cps/templates/config_edit.html:77
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "Posizione e nome del file di log (se non specificato sarà calibre-web.log)"
+msgstr ""
+"Posizione e nome del file di log (se non specificato sarà calibre-web.log)"
 
 #: cps/templates/config_edit.html:82
 msgid "Enable Access Log"
@@ -2202,7 +2335,9 @@ msgstr "Abilita il log degli accessi"
 
 #: cps/templates/config_edit.html:85
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "Posizione e nome del file di log degli accessi (se non specificato sarà access.log)"
+msgstr ""
+"Posizione e nome del file di log degli accessi (se non specificato sarà"
+" access.log)"
 
 #: cps/templates/config_edit.html:96
 msgid "Feature Configuration"
@@ -2210,11 +2345,17 @@ msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:104
 msgid "Convert non-English characters in title and author while saving to disk"
-msgstr "Converti caratteri non inglesi del titolo e dell'autore durante il salvataggio su disco"
+msgstr ""
+"Converti caratteri non inglesi del titolo e dell'autore durante il"
+" salvataggio su disco"
 
 #: cps/templates/config_edit.html:108
-msgid "Embed Metadata to Ebook File on Download and Conversion (needs Calibre/Kepubify binaries)"
+msgid ""
+"Embed Metadata to Ebook File on Download and Conversion (needs"
+" Calibre/Kepubify binaries)"
 msgstr ""
+"Incorpora metadati nel file ebook al momento del download e della conversione"
+" (sono necessari gli eseguibili Calibre/Kepubify)"
 
 #: cps/templates/config_edit.html:112
 msgid "Enable Uploads"
@@ -2222,7 +2363,9 @@ msgstr "Abilita il caricamento"
 
 #: cps/templates/config_edit.html:112
 msgid "(Please ensure that users also have upload permissions)"
-msgstr "(per favore assicurati che gli utenti abbiano anche i permessi per caricare i file)"
+msgstr ""
+"(per favore assicurati che gli utenti abbiano anche i permessi per caricare i"
+" file)"
 
 #: cps/templates/config_edit.html:116
 msgid "Allowed Upload Fileformats"
@@ -2313,16 +2456,24 @@ msgid "SSL"
 msgstr "SSL"
 
 #: cps/templates/config_edit.html:214
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr "Percorso del CACertificate LDAP (necessario unicamente in caso di Client Certificate Authentication)"
+msgid ""
+"LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+"Percorso del CACertificate LDAP (necessario unicamente in caso di Client"
+" Certificate Authentication)"
 
 #: cps/templates/config_edit.html:221
-msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr "Percorso del certificato LDAP (necessario unicamente in caso di Client Certificate Authentication)"
+msgid ""
+"LDAP Certificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+"Percorso del certificato LDAP (necessario unicamente in caso di Client"
+" Certificate Authentication)"
 
 #: cps/templates/config_edit.html:228
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr "Percorso della chiave LDAP (necessario unicamente in caso di Client Certificate Authentication)"
+msgstr ""
+"Percorso della chiave LDAP (necessario unicamente in caso di Client"
+" Certificate Authentication)"
 
 #: cps/templates/config_edit.html:237
 msgid "LDAP Authentication"
@@ -2362,7 +2513,8 @@ msgstr "Il server LDAP è OpenLDAP?"
 
 #: cps/templates/config_edit.html:268
 msgid "Following Settings are Needed For User Import"
-msgstr "Le seguenti impostazioni sono necessarie per l'importazione degli utenti"
+msgstr ""
+"Le seguenti impostazioni sono necessarie per l'importazione degli utenti"
 
 #: cps/templates/config_edit.html:270
 msgid "LDAP Group Object Filter"
@@ -2409,12 +2561,11 @@ msgstr "Secret client OAuth %(provider)s"
 
 #: cps/templates/config_edit.html:324
 msgid "External binaries"
-msgstr "File binari esterni"
+msgstr "File eseguibili esterni"
 
 #: cps/templates/config_edit.html:330
-#, fuzzy
 msgid "Path to Calibre Binaries"
-msgstr "Percorso del convertitore di libri di Calibre"
+msgstr "Percorso dei file eseguibili di Calibre"
 
 #: cps/templates/config_edit.html:338
 msgid "Calibre E-Book Converter Settings"
@@ -2482,7 +2633,8 @@ msgstr "Numero di libri casuali da mostrare"
 
 #: cps/templates/config_view_edit.html:36
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr "Numero di autori da mostrare prima di nascondere (0=disabilita nascondere)"
+msgstr ""
+"Numero di autori da mostrare prima di nascondere (0=disabilita nascondere)"
 
 #: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
 msgid "Theme"
@@ -2705,8 +2857,11 @@ msgid "Next"
 msgstr "Prossimo"
 
 #: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr "Apri il file .kobo/Kobo/Kobo eReader.conf in un editor di testo e aggiungi (o modifica):"
+msgid ""
+"Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgstr ""
+"Apri il file .kobo/Kobo/Kobo eReader.conf in un editor di testo e aggiungi (o"
+" modifica):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Kobo Token:"
@@ -2718,7 +2873,8 @@ msgstr "Elenco"
 
 #: cps/templates/http_error.html:34
 msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr "L'istanza Calibre-Web non è configurata, per favore contatta l'amministratore"
+msgstr ""
+"L'istanza Calibre-Web non è configurata, per favore contatta l'amministratore"
 
 #: cps/templates/http_error.html:44
 msgid "Create Issue"
@@ -2938,7 +3094,8 @@ msgstr "Seleziona le categorie consentite/negate per l'utente"
 
 #: cps/templates/modal_dialogs.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Seleziona i valori personali consentiti/negati per le colonne dell'utente"
+msgstr ""
+"Seleziona i valori personali consentiti/negati per le colonne dell'utente"
 
 #: cps/templates/modal_dialogs.html:15
 msgid "Enter Tag"
@@ -2961,12 +3118,19 @@ msgid "and hard disk"
 msgstr "e dal disco rigido"
 
 #: cps/templates/modal_dialogs.html:56
-msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Osservazione importante riguardo Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
+msgid ""
+"Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr ""
+"Osservazione importante riguardo Kobo: i libri eliminati, rimarranno in ogni"
+" lettore Kobo accoppiato."
 
 #: cps/templates/modal_dialogs.html:57
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Prima di poter eliminare in sicurezza un libro, occorre che il libro venga archiviato e che l'apparecchio venga sincronizzato."
+msgid ""
+"Books must first be archived and the device synced before a book can safely"
+" be deleted."
+msgstr ""
+"Prima di poter eliminare in sicurezza un libro, occorre che il libro venga"
+" archiviato e che l'apparecchio venga sincronizzato."
 
 #: cps/templates/modal_dialogs.html:76
 msgid "Choose File Location"
@@ -3365,12 +3529,18 @@ msgid "Actions"
 msgstr "Azioni"
 
 #: cps/templates/tasks.html:40
-msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr "Questa attività verrà annullata. Tutti i progressi compiuti da questa attività verranno salvati."
+msgid ""
+"This task will be cancelled. Any progress made by this task will be saved."
+msgstr ""
+"Questa attività verrà annullata. Tutti i progressi compiuti da questa"
+" attività verranno salvati."
 
 #: cps/templates/tasks.html:41
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr "Se si tratta di un'attività pianificata, verrà eseguita nuovamente durante il prossimo orario pianificato."
+msgid ""
+"If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgstr ""
+"Se si tratta di un'attività pianificata, verrà eseguita nuovamente durante il"
+" prossimo orario pianificato."
 
 #: cps/templates/user_edit.html:20
 msgid "Reset user Password"
@@ -3503,4 +3673,5 @@ msgstr "Sincronizza gli scaffali selezionati con Kobo"
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
 msgstr "Mostra la sezione letto/da leggere"
+
 
