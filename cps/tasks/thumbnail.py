@@ -218,7 +218,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                     filename = self.cache.get_cache_file_path(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
                     if img.height > height:
                         width = get_resize_width(thumbnail.resolution, img.width, img.height)
-                        img.resize(width=width, height=height, filter='lanczos')
+                        img.resize(width=width, height=height)#, filter='lanczos')
                         img.format = thumbnail.format
                         img.save(filename=filename)
                     else:
