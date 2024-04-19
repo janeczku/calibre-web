@@ -116,7 +116,7 @@
       <select name="config_auto_convert_to_format" id="config_auto_convert_to_format" class="form-control">
         <option value="" {% if not config.config_auto_convert_to_format %} selected{% endif %}>Disable</option>
         {% for format in config.config_upload_formats.split(",") %}
-          <option value="{{ format }}"{% if config.config_auto_convert_to_format.lower() == format.lower() %} selected{% endif %}>{{ format }}</option>
+          <option value="{{ format }}"{% if config.config_auto_convert_to_format and config.config_auto_convert_to_format.lower() == format.lower() %} selected{% endif %}>{{ format }}</option>
         {% endfor %}
       </select>
     </div>
