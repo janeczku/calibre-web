@@ -4,7 +4,6 @@ XKLB_INTERNAL_CMD="$1"    # e.g. "tubeadd" or "dl"
 URL_OR_SEARCH_TERM="$2"
 
 LOG_FILE="/var/log/xklb.log"
-XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 VERBOSITY="-vv"
@@ -37,10 +36,17 @@ fi
 #     exit 1
 # fi
 
-if ! command -v "${XKLB_EXECUTABLE}"; then
+if ! command -v "lb"; then
     log "Error" "xklb could not be found. Please install xklb and try again."
     exit 1
 fi
+
+if ! command -v "yt-dlp"; then
+    log "Error" "yt-dlp could not be found. Please install yt-dlp and try again."
+    exit 1
+fi
+
+log "Info" "Using yt-dlp $(yt-dlp --version)"
 
 # 2024-01-25 Question: "Why separate execution of 'tubeadd' and 'dl' ?"
 # @deldesir Responded: "For listing requested files after tubeadd is done
