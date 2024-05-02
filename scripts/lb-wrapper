@@ -82,17 +82,9 @@ wait $pid
 rc=$?
 
 # Check return code (exit status)
-case $rc in
-    0)
-        log "Info" "lb-wrapper's xklb command (${XKLB_INTERNAL_CMD}) completed successfully."
-        exit 0
-        ;;
-    1)
-        log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
-        exit 1
-        ;;
-    *)
-        log "Error" "Unknown error occurred while running lb-wrapper's xklb commands. Return code: $rc"
-        exit $rc
-        ;;
-esac
+if [ $rc -eq 0 ]; then
+    log "Info" "lb-wrapper's xklb command (${XKLB_INTERNAL_CMD}) completed successfully."
+else
+    log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
+    exit $rc
+fi
