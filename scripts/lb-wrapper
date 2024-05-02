@@ -42,7 +42,7 @@ if ! command -v "lb"; then
 fi
 
 if ! command -v "yt-dlp"; then
-    log "Error: "yt-dlp could not be found. Please install yt-dlp and try again."
+    log "Error" "yt-dlp could not be found. Please install yt-dlp and try again."
     exit 1
 fi
 
