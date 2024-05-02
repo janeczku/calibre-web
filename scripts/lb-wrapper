@@ -5,7 +5,7 @@ URL="$2"
 
 LOG_FILE="/var/log/xklb.log"
 XKLB_EXECUTABLE="${XKLB_EXECUTABLE:-lb}"
-YT-DLP_EXECUTABLE=${YT_DLP_EXECUTABLE:-yt-dlp}"
+YT_DLP_EXECUTABLE=${YT_DLP_EXECUTABLE:-yt-dlp}"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 VERBOSITY="-vv"
@@ -43,7 +43,7 @@ if ! command -v "${XKLB_EXECUTABLE}"; then
     exit 1
 fi
 
-log "Info" "Using yt-dlp $(${YT-DLP_EXECUTABLE} --version)"
+log "Info" "Using yt-dlp $(${YT_DLP_EXECUTABLE} --version)"
 
 # 2024-01-25 Question: "Why separate execution of 'tubeadd' and 'dl' ?"
 # @deldesir Responded: "For listing requested files after tubeadd is done
