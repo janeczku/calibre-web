@@ -68,11 +68,8 @@ log "Info" "Running xklb command: ${xklb_full_cmd}"
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
 # 1>&2 redirect back-to-STDERR to avoid nested (repeat) logging, explained at https://stackoverflow.com/a/15936384
 eval "${xklb_full_cmd}" \
-    # > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
-    # 2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
-    # adjust above line to also reroute the return code of the underlying command as a line saying "return code: 0" or "return code: 1" or "return code: 2" etc.
-    > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]] || [[ $line == "yt_dlp_rc: "* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
-    2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done; echo "yt_dlp_rc: $?" 1>&2) &
+    > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
+    2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
 # 2024-01-11: HOW THIS WORKS...
 # 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
 # 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
