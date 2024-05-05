@@ -35,12 +35,12 @@ try:
     BLEACH = True
 except ImportError:
     try:
-        from nh3 import clean as clean_html
         BLEACH = False
+        from nh3 import clean as clean_html
     except ImportError:
         try:
-            from lxml.html.clean import clean_html
             BLEACH = False
+            from lxml.html.clean import clean_html
         except ImportError:
             clean_html = None
 
@@ -1012,6 +1012,9 @@ def edit_book_comments(comments, book):
         except ParserError as e:
             log.error("Comments of book {} are corrupted: {}".format(book.id, e))
             comments = ""
+        except TypeError as e:
+            log.error("Comments can't be parsed, maybe 'lxml' is too new, try installing 'bleach': {}".format(e))
+            comments = ""
     if len(book.comments):
         if book.comments[0].text != comments:
             book.comments[0].text = comments
@@ -1069,7 +1072,18 @@ def edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string):
     elif c.datatype == 'comments':
         to_save[cc_string] = Markup(to_save[cc_string]).unescape()
         if to_save[cc_string]:
-            to_save[cc_string] = clean_html(to_save[cc_string])
+            try:
+                if BLEACH:
+                    to_save[cc_string] = clean_html(to_save[cc_string], tags=set(), attributes=set())
+                else:
+                    to_save[cc_string] = clean_html(to_save[cc_string])
+            except ParserError as e:
+                log.error("Customs Comments of book {} are corrupted: {}".format(book_id, e))
+                to_save[cc_string] = ""
+            except TypeError as e:
+                to_save[cc_string] = ""
+                log.error("Customs Comments can't be parsed, maybe 'lxml' is too new, "
+                          "try installing 'bleach': {}".format(e))
     elif c.datatype == 'datetime':
         try:
             to_save[cc_string] = datetime.strptime(to_save[cc_string], "%Y-%m-%d")
