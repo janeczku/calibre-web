@@ -24,7 +24,7 @@ import datetime
 import json
 from urllib.parse import unquote_plus
 
-from flask import Blueprint, request, render_template, make_response, abort, Response
+from flask import Blueprint, request, render_template, make_response, abort, Response, g
 from flask_login import current_user
 from flask_babel import get_locale
 from flask_babel import gettext as _
@@ -117,7 +117,7 @@ def feed_discover():
 @opds.route("/opds/rated")
 @requires_basic_auth_if_no_ano
 def feed_best_rated():
-    if not current_user.check_visibility(constants.SIDEBAR_RATED):
+    if not current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
         abort(404)
     off = request.args.get("offset") or 0
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
@@ -384,6 +384,7 @@ def feed_shelfindex():
 def feed_shelf(book_id):
     if not (current_user.is_authenticated or g.allow_anonymous):
         abort(404)
+    off = request.args.get("offset") or 0
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1,
                                                   ub.Shelf.id == book_id).first()
