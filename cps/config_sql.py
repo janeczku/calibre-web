@@ -493,7 +493,8 @@ def autodetect_calibre_binaries():
     for element in calibre_path:
         supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
         if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+            values = [process_wait([binary_path, "--version"],
+                                   pattern=r'\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
                 log.debug("calibre version %s", version)
