@@ -1631,7 +1631,10 @@ def import_ldap_users():
 
     imported = 0
     for username in new_users:
-        user = username.decode('utf-8')
+        if isinstance(username, bytes):
+            user = username.decode('utf-8')
+        else:
+            user = username
         if '=' in user:
             # if member object field is empty take user object as filter
             if config.config_ldap_member_user_object:
