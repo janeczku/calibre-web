@@ -21,7 +21,7 @@ python-Levenshtein>=0.12.0,<0.26.0
 
 # ldap login
 python-ldap>=3.0.0,<3.5.0
-Flask-SimpleLDAP>=1.4.0,<1.5.0
+Flask-SimpleLDAP>=1.4.0,<2.1.0
 
 # oauth
 Flask-Dance>=2.0.0,<7.1.0
