@@ -102,7 +102,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
                 extension = ext[1].lower()
                 if extension in cover.COVER_EXTENSIONS:
                     try:
-                        cover_data = cf.read(name)[name].read()
+                        cover_data = cf.read([name])[name].read()
                     except (py7zr.Bad7zFile, OSError) as ex:
                         log.error('7Zip file failed with error: {}'.format(ex))
                     break

@@ -1809,11 +1809,8 @@ def _configuration_update_helper():
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
         _config_string(to_save, "config_goodreads_api_key")
-        if to_save.get("config_goodreads_api_secret_e", ""):
-            _config_string(to_save, "config_goodreads_api_secret_e")
         if services.goodreads_support:
             services.goodreads_support.connect(config.config_goodreads_api_key,
-                                               config.config_goodreads_api_secret_e,
                                                config.config_use_goodreads)
 
         _config_int(to_save, "config_updatechannel")
