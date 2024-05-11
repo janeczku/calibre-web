@@ -22,7 +22,7 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books sorted alphabetically')}}</content>
   </entry>
-  {% if current_user.check_visibility(g.constants.SIDEBAR_DOWNLOAD) and (not current_user.is_anonymous) %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_HOT) %}
   <entry>
     <title>{{_('Hot Books')}}</title>
     <link href="{{url_for('opds.feed_hot')}}" type="application/atom+xml;profile=opds-catalog"/>
