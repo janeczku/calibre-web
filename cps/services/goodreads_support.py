@@ -30,7 +30,7 @@ except ImportError:
     Levenshtein = False
 
 from .. import logger
-
+from ..clean_html import clean_string
 
 class my_GoodreadsClient(GoodreadsClient):
 
@@ -52,7 +52,7 @@ class my_GoodreadsRequest(GoodreadsRequest):
 
     def request(self):
         resp = requests.get(self.host+self.path, params=self.params,
-                            headers={"User-agent":"Mozilla/5.0 (X11; Linux x86_64; rv:125.0) "
+                            headers={"User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:125.0) "
                                                   "Gecko/20100101 Firefox/125.0"})
         if resp.status_code != 200:
             raise GoodreadsRequestException(resp.reason, self.path)
@@ -84,7 +84,7 @@ def connect(key=None, enabled=True):
             _client = None
 
     if not _client:
-        _client = GoodreadsClient(key, None)
+        _client = my_GoodreadsClient(key, None)
 
 
 def get_author_info(author_name):
@@ -109,6 +109,7 @@ def get_author_info(author_name):
 
     if author_info:
         author_info._timestamp = now
+        author_info.safe_about = clean_string(author_info.about)
         _AUTHORS_CACHE[author_name] = author_info
     return author_info
 

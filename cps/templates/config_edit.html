@@ -9,7 +9,7 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="panel-group col-md-10 col-lg-8">
+<div class="panel-group col-md-11 col-lg-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -155,7 +155,6 @@
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
       <label for="config_use_goodreads">{{_('Use Goodreads')}}</label>
-      <a href="https://www.goodreads.com/api/keys" target="_blank" style="margin-left: 5px">{{_('Create an API Key')}}</a>
     </div>
     <div data-related="goodreads-settings">
       <div class="form-group">
