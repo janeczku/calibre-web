@@ -186,7 +186,6 @@ def create_app():
         services.ldap.init_app(app, config)
     if services.goodreads_support:
         services.goodreads_support.connect(config.config_goodreads_api_key,
-                                           config.config_goodreads_api_secret_e,
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     # Configure rate limiter
