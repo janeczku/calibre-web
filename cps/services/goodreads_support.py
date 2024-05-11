@@ -19,10 +19,10 @@
 import time
 from functools import reduce
 import requests
-import xmltodict
 
 from goodreads.client import GoodreadsClient
 from goodreads.request import GoodreadsRequest
+import xmltodict
 
 try:
     import Levenshtein
