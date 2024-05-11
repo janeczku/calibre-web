@@ -130,7 +130,7 @@ def feed_best_rated():
 @opds.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
-    if not current_user.check_visibility(constants.SIDEBAR_DOWNLOAD):
+    if not current_user.check_visibility(constants.SIDEBAR_HOT):
         abort(404)
     off = request.args.get("offset") or 0
     all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
