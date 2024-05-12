@@ -128,6 +128,8 @@ class Identifiers(Base):
             return "Google Books"
         elif format_type == "kobo":
             return "Kobo"
+        elif format_type == "barnesnoble":
+            return "Barnes & Noble"
         elif format_type == "litres":
             return "ЛитРес"
         elif format_type == "issn":
@@ -161,6 +163,8 @@ class Identifiers(Base):
             return "https://books.google.com/books?id={0}".format(self.val)
         elif format_type == "kobo":
             return "https://www.kobo.com/ebook/{0}".format(self.val)
+        elif format_type == "barnesnoble":
+            return "https://www.barnesandnoble.com/w/{0}".format(self.val)
         elif format_type == "lubimyczytac":
             return "https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
