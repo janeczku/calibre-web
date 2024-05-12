@@ -30,7 +30,7 @@ log = logger.create()
 
 
 def b64encode_json(json_data):
-    return b64encode(json.dumps(json_data).encode())
+    return b64encode(json.dumps(json_data).encode()).decode("utf-8")
 
 
 # Python3 has a timestamp() method we could be calling, however it's not available in python2.
