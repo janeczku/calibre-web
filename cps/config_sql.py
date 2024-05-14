@@ -114,8 +114,6 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
-    config_goodreads_api_secret_e = Column(String)
-    config_goodreads_api_secret = Column(String)
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
 
@@ -422,19 +420,13 @@ def _encrypt_fields(session, secret_key):
     except OperationalError:
         with session.bind.connect() as conn:
             conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
-            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
             conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
         session.commit()
         crypter = Fernet(secret_key)
-        settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
-                                 _Settings.config_ldap_serv_password).first()
+        settings = session.query(_Settings.mail_password, _Settings.config_ldap_serv_password).first()
         if settings.mail_password:
             session.query(_Settings).update(
                 {_Settings.mail_password_e: crypter.encrypt(settings.mail_password.encode())})
-        if settings.config_goodreads_api_secret:
-            session.query(_Settings).update(
-                {_Settings.config_goodreads_api_secret_e:
-                     crypter.encrypt(settings.config_goodreads_api_secret.encode())})
         if settings.config_ldap_serv_password:
             session.query(_Settings).update(
                 {_Settings.config_ldap_serv_password_e:
@@ -491,8 +483,10 @@ def autodetect_calibre_binaries():
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
-        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
+        supported_binary_paths = [os.path.join(element, binary)
+                                  for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK)
+               for binary_path in supported_binary_paths):
             values = [process_wait([binary_path, "--version"],
                                    pattern=r'\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):

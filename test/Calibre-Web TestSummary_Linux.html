@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-02-26 20:07:24</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-05-11 18:39:24</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-02-27 03:19:17</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-05-12 01:48:22</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 0 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 59 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">20</td>
-        <td class="text-center">1</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -329,34 +329,11 @@
     
     
     
-        <tr id="ft2.10" class="none bg-danger">
+        <tr id='pt2.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_tags</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.10')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 243, in test_backup_change_book_tags
-    self.assertCountEqual(metadata[&#39;tags&#39;], [&#39;Ku&#39;,&#39;kOl&#39;])
-AssertionError: Element counts were not equal:
-First has 1, Second has 0:  &#39;Lo执|1u&#39;
-First has 0, Second has 1:  &#39;Ku&#39;
-First has 0, Second has 1:  &#39;kOl&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1028,11 +1005,11 @@ First has 0, Second has 1:  &#39;kOl&#39;</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">20</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -1150,11 +1127,33 @@ First has 0, Second has 1:  &#39;kOl&#39;</pre>
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id="ft12.13" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.13')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft12.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft12.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 246, in test_upload_metadata_cb7
+    self.assertEqual(&#39;Test 执 to&#39;, details[&#39;title&#39;])
+AssertionError: &#39;Test 执 to&#39; != &#39;book&#39;
+- Test 执 to
++ book</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3435,7 +3434,7 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 532, in test_proxy_login_multi_user
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 575, in test_proxy_login_multi_user
     self.assertTrue(&#39;&lt;input type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;name&#34; id=&#34;name&#34; value=&#34;new_user1&#34; autocomplete=&#34;off&#34;&gt;&#39; in resp.text)
 AssertionError: False is not true</pre>
                     </div>
@@ -3534,13 +3533,13 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
-        <td class="text-center">24</td>
-        <td class="text-center">24</td>
+        <td class="text-center">26</td>
+        <td class="text-center">26</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 24)">Detail</a>
+            <a onclick="showClassDetail('c38', 26)">Detail</a>
         </td>
     </tr>
 
@@ -3548,7 +3547,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds</div>
+                <div class='testcase'>TestOPDSFeed - test_access_right_guest</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3557,7 +3556,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_author</div>
+                <div class='testcase'>TestOPDSFeed - test_access_right_user</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3566,7 +3565,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_books</div>
+                <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3575,7 +3574,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3584,7 +3583,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3593,7 +3592,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3602,7 +3601,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3611,7 +3610,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3620,7 +3619,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3629,7 +3628,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3638,7 +3637,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_language</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3647,7 +3646,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.12' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3656,7 +3655,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.13' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3665,7 +3664,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.14' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_random</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3674,7 +3673,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.15' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3683,7 +3682,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.16' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3692,7 +3691,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.17' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_search</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3701,7 +3700,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.18' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_series</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3710,7 +3709,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.19' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3719,7 +3718,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.20' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3728,7 +3727,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.21' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3737,7 +3736,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.22' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3746,7 +3745,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt38.23' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3754,6 +3753,24 @@ AssertionError: False is not true</pre>
     
     
         <tr id='pt38.24' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.25' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4404,11 +4421,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4481,11 +4498,31 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id="ft50.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 326, in test_sideloaded_book
+    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
+AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5568,9 +5605,9 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>492</td>
-        <td>479</td>
-        <td>2</td>
+        <td>494</td>
+        <td>480</td>
+        <td>3</td>
         <td>1</td>
         <td>10</td>
         <td>&nbsp;</td>
@@ -5600,7 +5637,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-21-generic #21~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb  9 13:32:52 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.5.0-28-generic #29~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr  4 14:39:20 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5624,7 +5661,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Babel</th>
-              <td>2.14.0</td>
+              <td>2.15.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5684,19 +5721,19 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Jinja2</th>
-              <td>3.1.3</td>
+              <td>3.1.4</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>lxml</th>
-              <td>5.1.0</td>
+              <td>5.1.1</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pyasn1</th>
-              <td>0.5.1</td>
+              <td>0.6.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5713,6 +5750,12 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
+              <th>regex</th>
+              <td>2023.12.25</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>requests</th>
               <td>2.31.0</td>
               <td>Basic</td>
@@ -5720,7 +5763,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.27</td>
+              <td>2.0.30</td>
               <td>Basic</td>
             </tr>
           
@@ -5750,7 +5793,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5780,7 +5823,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5810,7 +5853,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5840,7 +5883,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5876,25 +5919,25 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>py7zr</th>
-              <td>0.20.8</td>
+              <td>0.21.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>rarfile</th>
-              <td>4.1</td>
+              <td>4.2</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>py7zr</th>
-              <td>0.20.8</td>
+              <td>0.21.0</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5930,7 +5973,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -5972,7 +6015,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6002,7 +6045,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.119.0</td>
+              <td>2.129.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6038,31 +6081,31 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.25.0</td>
+              <td>0.25.1</td>
               <td>TestGoodreads</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.21.1</td>
+              <td>4.22.0</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.21.1</td>
+              <td>4.22.0</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
             <tr>
               <th>Flask-SimpleLDAP</th>
-              <td>1.4.0</td>
+              <td>2.0.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.21.1</td>
+              <td>4.22.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -6074,13 +6117,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Flask-Dance</th>
-              <td>7.0.1</td>
+              <td>7.1.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.41.1</td>
+              <td>0.41.2</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -6092,7 +6135,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(479, 2, 1, 10);
+    drawCircle(480, 3, 1, 10);
     showCase(5);
 </script>
 

@@ -27,22 +27,22 @@ from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
-from lxml.etree import ParserError
+# from lxml.etree import ParserError
 
-try:
-    # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
-    from bleach import clean_text as clean_html
-    BLEACH = True
-except ImportError:
-    try:
-        BLEACH = False
-        from nh3 import clean as clean_html
-    except ImportError:
-        try:
-            BLEACH = False
-            from lxml.html.clean import clean_html
-        except ImportError:
-            clean_html = None
+#try:
+#    # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
+#    from bleach import clean_text as clean_html
+#    BLEACH = True
+#except ImportError:
+#    try:
+#        BLEACH = False
+#        from nh3 import clean as clean_html
+#    except ImportError:
+#        try:
+#            BLEACH = False
+#            from lxml.html.clean import clean_html
+#        except ImportError:
+#            clean_html = None
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Response, jsonify
 from flask_babel import gettext as _
@@ -54,6 +54,7 @@ from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import func
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper, kobo_sync_status, shelf
+from .clean_html import clean_string
 from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
@@ -1165,17 +1166,18 @@ def edit_book_series_index(series_index, book):
 def edit_book_comments(comments, book):
     modify_date = False
     if comments:
-        try:
-            if BLEACH:
-                comments = clean_html(comments, tags=set(), attributes=set())
-            else:
-                comments = clean_html(comments)
-        except ParserError as e:
-            log.error("Comments of book {} are corrupted: {}".format(book.id, e))
-            comments = ""
-        except TypeError as e:
-            log.error("Comments can't be parsed, maybe 'lxml' is too new, try installing 'bleach': {}".format(e))
-            comments = ""
+        comments = clean_string(comments, book.id)
+        #try:
+        #    if BLEACH:
+        #        comments = clean_html(comments, tags=set(), attributes=set())
+        #    else:
+        #        comments = clean_html(comments)
+        #except ParserError as e:
+        #    log.error("Comments of book {} are corrupted: {}".format(book.id, e))
+         #   comments = ""
+        #except TypeError as e:
+        #    log.error("Comments can't be parsed, maybe 'lxml' is too new, try installing 'bleach': {}".format(e))
+        #    comments = ""
     if len(book.comments):
         if book.comments[0].text != comments:
             book.comments[0].text = comments
@@ -1233,18 +1235,19 @@ def edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string):
     elif c.datatype == 'comments':
         to_save[cc_string] = Markup(to_save[cc_string]).unescape()
         if to_save[cc_string]:
-            try:
-                if BLEACH:
-                    to_save[cc_string] = clean_html(to_save[cc_string], tags=set(), attributes=set())
-                else:
-                    to_save[cc_string] = clean_html(to_save[cc_string])
-            except ParserError as e:
-                log.error("Customs Comments of book {} are corrupted: {}".format(book_id, e))
-                to_save[cc_string] = ""
-            except TypeError as e:
-                to_save[cc_string] = ""
-                log.error("Customs Comments can't be parsed, maybe 'lxml' is too new, "
-                          "try installing 'bleach': {}".format(e))
+            to_save[cc_string] = clean_string(to_save[cc_string], book_id)
+            #try:
+            #    if BLEACH:
+            #        to_save[cc_string] = clean_html(to_save[cc_string], tags=set(), attributes=set())
+            #    else:
+             #       to_save[cc_string] = clean_html(to_save[cc_string])
+            #except ParserError as e:
+            #    log.error("Customs Comments of book {} are corrupted: {}".format(book_id, e))
+            #    to_save[cc_string] = ""
+            #except TypeError as e:
+            #    to_save[cc_string] = ""
+            #    log.error("Customs Comments can't be parsed, maybe 'lxml' is too new, "
+            #              "try installing 'bleach': {}".format(e))
     elif c.datatype == 'datetime':
         try:
             to_save[cc_string] = datetime.strptime(to_save[cc_string], "%Y-%m-%d")
