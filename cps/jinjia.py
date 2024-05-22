@@ -124,7 +124,7 @@ def formatseriesindex_filter(series_index):
                 return int(series_index)
             else:
                 return series_index
-        except ValueError:
+        except (ValueError, TypeError):
             return series_index
     return 0
 

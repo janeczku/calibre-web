@@ -21,6 +21,7 @@ import datetime
 from . import config, constants
 from .services.background_scheduler import BackgroundScheduler, CronTrigger, use_APScheduler
 from .tasks.database import TaskReconnectDatabase
+from .tasks.tempFolder import TaskDeleteTempFolder
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
 from .tasks.metadata_backup import TaskBackupMetadata
@@ -30,6 +31,9 @@ def get_scheduled_tasks(reconnect=True):
     # Reconnect Calibre database (metadata.db) based on config.schedule_reconnect
     if reconnect:
         tasks.append([lambda: TaskReconnectDatabase(), 'reconnect', False])
+
+    # Delete temp folder
+    tasks.append([lambda: TaskDeleteTempFolder(), 'delete temp', True])
 
     # Generate metadata.opf file for each changed book
     if config.schedule_metadata_backup:
@@ -65,9 +69,12 @@ def register_scheduled_tasks(reconnect=True):
         duration = config.schedule_duration
 
         # Register scheduled tasks
-        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger=CronTrigger(hour=start))
+        timezone_info = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger=CronTrigger(hour=start,
+                                                                                           timezone=timezone_info))
         end_time = calclulate_end_time(start, duration)
-        scheduler.schedule(func=end_scheduled_tasks, trigger=CronTrigger(hour=end_time.hour, minute=end_time.minute),
+        scheduler.schedule(func=end_scheduled_tasks, trigger=CronTrigger(hour=end_time.hour, minute=end_time.minute,
+                                                                         timezone=timezone_info),
                            name="end scheduled task")
 
         # Kick-off tasks, if they should currently be running
@@ -86,6 +93,8 @@ def register_startup_tasks():
         # Ignore tasks that should currently be running, as these will be added when registering scheduled tasks
         if constants.APP_MODE in ['development', 'test'] and not should_task_be_running(start, duration):
             scheduler.schedule_tasks_immediately(tasks=get_scheduled_tasks(False))
+        else:
+            scheduler.schedule_tasks_immediately(tasks=[[lambda: TaskDeleteTempFolder(), 'delete temp', True]])
 
 
 def should_task_be_running(start, duration):

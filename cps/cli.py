@@ -29,8 +29,8 @@ from .constants import DEFAULT_SETTINGS_FILE, DEFAULT_GDRIVE_FILE
 
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
-        return "Calibre-Web version: %s - unknown git-clone" % _STABLE_VERSION['version']
-    return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'], _NIGHTLY_VERSION[1])
+        return "Calibre-Web version: %s - unknown git-clone" % _STABLE_VERSION['version'].replace("b", " Beta")
+    return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'].replace("b", " Beta"), _NIGHTLY_VERSION[1])
 
 
 class CliParameter(object):
@@ -52,6 +52,7 @@ class CliParameter(object):
         parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-Web',
                             version=version_info())
         parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
+        parser.add_argument('-m', action='store_true', help='Use Memory-backend as limiter backend, use this parameter in case of miss configured backend')
         parser.add_argument('-s', metavar='user:pass',
                             help='Sets specific username to new password and exits Calibre-Web')
         parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
@@ -98,6 +99,8 @@ class CliParameter(object):
         if args.k == "":
             self.keyfilepath = ""
 
+        # overwrite limiter backend
+        self.memory_backend = args.m or None
         # dry run updater
         self.dry_run = args.d or None
         # enable reconnect endpoint for docker database reconnect
