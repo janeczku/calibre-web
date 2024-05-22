@@ -8,8 +8,8 @@
   <img title="{{author.name}}" src="{{author.image_url}}" alt="{{author.name}}" class="author-photo pull-left">
   {% endif %}
 
-  {%if author.about is not none %}
-  <p>{{author.about}}</p>
+  {%if author.safe_about is not none %}
+  <p>{{author.safe_about|safe}}</p>
   {% endif %}
 
   - {{_("via")}} <a href="{{author.link}}" class="author-link" target="_blank" rel="noopener">Goodreads</a>
@@ -32,7 +32,7 @@
     </div>
   <div class="row display-flex">
     {% for entry in entries %}
-    <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book session">
       <div class="cover">
         <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img" title="{{entry.Books.title}}">
@@ -99,7 +99,7 @@
   <h3>{{_("More by")}} {{ author.name.replace('|',',') }}</h3>
   <div class="row">
     {% for entry in other_books %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session">
       <div class="cover">
         <a href="https://www.goodreads.com/book/show/{{ entry.gid['#text'] }}" target="_blank" rel="noopener">
           <img title="{{entry.title}}" src="{{ entry.image_url }}" />

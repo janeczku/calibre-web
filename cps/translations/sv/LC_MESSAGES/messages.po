@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2023-12-21 13:31+0100\n"
+"POT-Creation-Date: 2024-04-27 07:20+0200\n"
 "PO-Revision-Date: 2021-05-13 11:00+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -22,499 +22,499 @@ msgstr ""
 msgid "Statistics"
 msgstr "Statistik"
 
-#: cps/admin.py:149
+#: cps/admin.py:150
 #, fuzzy
 msgid "Server restarted, please reload page."
 msgstr "Server startas om, vänligen uppdatera sidan"
 
-#: cps/admin.py:151
+#: cps/admin.py:152
 #, fuzzy
 msgid "Performing Server shutdown, please close window."
 msgstr "Stänger servern, vänligen stäng fönstret"
 
-#: cps/admin.py:159
+#: cps/admin.py:160
 msgid "Success! Database Reconnected"
 msgstr ""
 
-#: cps/admin.py:162
+#: cps/admin.py:163
 msgid "Unknown command"
 msgstr "Okänt kommando"
 
-#: cps/admin.py:173
+#: cps/admin.py:174
 #, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera Uppgifter för resultat"
 
-#: cps/admin.py:206 cps/editbooks.py:587 cps/editbooks.py:589
-#: cps/editbooks.py:627 cps/editbooks.py:644 cps/editbooks.py:1256
+#: cps/admin.py:207 cps/editbooks.py:590 cps/editbooks.py:592
+#: cps/editbooks.py:630 cps/editbooks.py:647 cps/editbooks.py:1263
 #: cps/updater.py:613 cps/uploader.py:93 cps/uploader.py:102
 msgid "Unknown"
 msgstr "Okänd"
 
-#: cps/admin.py:231
+#: cps/admin.py:232
 msgid "Admin page"
 msgstr "Administrationssida"
 
-#: cps/admin.py:251
+#: cps/admin.py:252
 msgid "Basic Configuration"
 msgstr "Grundläggande konfiguration"
 
-#: cps/admin.py:289
+#: cps/admin.py:290
 msgid "UI Configuration"
 msgstr "Användargränssnitt konfiguration"
 
-#: cps/admin.py:323 cps/templates/admin.html:51
+#: cps/admin.py:324 cps/templates/admin.html:51
 msgid "Edit Users"
 msgstr "Redigera användare"
 
-#: cps/admin.py:367 cps/opds.py:506 cps/templates/grid.html:14
+#: cps/admin.py:368 cps/opds.py:506 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Alla"
 
-#: cps/admin.py:394 cps/admin.py:1405
+#: cps/admin.py:395 cps/admin.py:1417
 msgid "User not found"
 msgstr "Användaren hittades inte"
 
-#: cps/admin.py:408
+#: cps/admin.py:409
 msgid "{} users deleted successfully"
 msgstr "{} användare har tagits bort"
 
-#: cps/admin.py:431 cps/templates/config_view_edit.html:133
+#: cps/admin.py:432 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "Visa alla"
 
-#: cps/admin.py:452 cps/admin.py:458
+#: cps/admin.py:453 cps/admin.py:459
 msgid "Malformed request"
 msgstr "Felaktig begäran"
 
-#: cps/admin.py:470 cps/admin.py:2023
+#: cps/admin.py:471 cps/admin.py:2048
 msgid "Guest Name can't be changed"
 msgstr "Gästnamn kan inte ändras"
 
-#: cps/admin.py:482
+#: cps/admin.py:483
 msgid "Guest can't have this role"
 msgstr "Gäst kan inte ha den här rollen"
 
-#: cps/admin.py:494 cps/admin.py:1977
+#: cps/admin.py:495 cps/admin.py:2002
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Ingen administratörsanvändare kvar, kan inte ta bort administratörsrollen"
 
-#: cps/admin.py:498 cps/admin.py:512
+#: cps/admin.py:499 cps/admin.py:513
 msgid "Value has to be true or false"
 msgstr "Värdet måste vara sant eller falskt"
 
-#: cps/admin.py:500
+#: cps/admin.py:501
 msgid "Invalid role"
 msgstr "Ogiltig roll"
 
-#: cps/admin.py:504
+#: cps/admin.py:505
 msgid "Guest can't have this view"
 msgstr "Gästen kan inte ha den här vyn"
 
-#: cps/admin.py:514
+#: cps/admin.py:515
 msgid "Invalid view"
 msgstr "Ogiltig vy"
 
-#: cps/admin.py:517
+#: cps/admin.py:518
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr "Gästens språk bestäms automatiskt och kan inte ställas in"
 
-#: cps/admin.py:521
+#: cps/admin.py:522
 msgid "No Valid Locale Given"
 msgstr "Inget giltigt språk anges"
 
-#: cps/admin.py:532
+#: cps/admin.py:533
 msgid "No Valid Book Language Given"
 msgstr "Inget giltigt bokspråk anges"
 
-#: cps/admin.py:534 cps/editbooks.py:453
+#: cps/admin.py:535 cps/editbooks.py:456
 msgid "Parameter not found"
 msgstr "Parameter hittades inte"
 
-#: cps/admin.py:571
+#: cps/admin.py:572
 #, fuzzy
 msgid "Invalid Read Column"
 msgstr "Ogiltig roll"
 
-#: cps/admin.py:577
+#: cps/admin.py:578
 msgid "Invalid Restricted Column"
 msgstr ""
 
-#: cps/admin.py:597 cps/admin.py:1848
+#: cps/admin.py:598 cps/admin.py:1873
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web konfiguration uppdaterad"
 
-#: cps/admin.py:609
+#: cps/admin.py:610
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Vill du verkligen ta bort Kobo-token?"
 
-#: cps/admin.py:611
+#: cps/admin.py:612
 msgid "Do you really want to delete this domain?"
 msgstr "Vill du verkligen ta bort den här domänen?"
 
-#: cps/admin.py:613
+#: cps/admin.py:614
 msgid "Do you really want to delete this user?"
 msgstr "Vill du verkligen ta bort den här användaren?"
 
-#: cps/admin.py:615
+#: cps/admin.py:616
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Är du säker på att du vill ta bort hyllan?"
 
-#: cps/admin.py:617
+#: cps/admin.py:618
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Är du säker på att du vill ändra språk för valda användare?"
 
-#: cps/admin.py:619
+#: cps/admin.py:620
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr "Är du säker på att du vill ändra synliga bokspråk för valda användare?"
 
-#: cps/admin.py:621
+#: cps/admin.py:622
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "Är du säker på att du vill ändra den valda rollen för de valda användarna?"
 
-#: cps/admin.py:623
+#: cps/admin.py:624
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
 msgstr "Är du säker på att du vill ändra de valda begränsningarna för de valda användarna?"
 
-#: cps/admin.py:625
+#: cps/admin.py:626
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr "Är du säker på att du vill ändra de valda synlighetsbegränsningarna för de valda användarna?"
 
-#: cps/admin.py:628
+#: cps/admin.py:629
 #, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "Är du säker på att du vill ändra den valda rollen för de valda användarna?"
 
-#: cps/admin.py:630
+#: cps/admin.py:631
 #, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Är du säker på att du vill stoppa Calibre-Web?"
 
-#: cps/admin.py:632
+#: cps/admin.py:633
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
 msgstr ""
 
-#: cps/admin.py:635
+#: cps/admin.py:636
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
 msgstr ""
 
-#: cps/admin.py:878 cps/admin.py:884 cps/admin.py:894 cps/admin.py:904
+#: cps/admin.py:879 cps/admin.py:885 cps/admin.py:895 cps/admin.py:905
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr "Förneka"
 
-#: cps/admin.py:880 cps/admin.py:886 cps/admin.py:896 cps/admin.py:906
+#: cps/admin.py:881 cps/admin.py:887 cps/admin.py:897 cps/admin.py:907
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr "Tillåt"
 
-#: cps/admin.py:921
+#: cps/admin.py:940
 msgid "{} sync entries deleted"
 msgstr ""
 
-#: cps/admin.py:969
+#: cps/admin.py:981
 msgid "Tag not found"
 msgstr "Taggen hittades inte"
 
-#: cps/admin.py:981
+#: cps/admin.py:993
 msgid "Invalid Action"
 msgstr "Ogiltig åtgärd"
 
-#: cps/admin.py:1111
+#: cps/admin.py:1123
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr "client_secrets.json är inte konfigurerad för webbapplikation"
 
-#: cps/admin.py:1156
+#: cps/admin.py:1168
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Loggfilens plats är inte giltig, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1162
+#: cps/admin.py:1174
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Åtkomstloggplatsens plats är inte giltig, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1196
+#: cps/admin.py:1208
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr "Vänligen ange en LDAP-leverantör, port, DN och användarobjektidentifierare"
 
-#: cps/admin.py:1202
+#: cps/admin.py:1214
 #, fuzzy
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr "Ange giltigt användarnamn för att återställa lösenordet"
 
-#: cps/admin.py:1205
+#: cps/admin.py:1217
 msgid "Please Enter a LDAP Service Account"
 msgstr ""
 
-#: cps/admin.py:1210
+#: cps/admin.py:1222
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP-gruppobjektfilter måste ha en \"%s\"-formatidentifierare"
 
-#: cps/admin.py:1212
+#: cps/admin.py:1224
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP-gruppobjektfilter har omatchande parentes"
 
-#: cps/admin.py:1216
+#: cps/admin.py:1228
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr "LDAP-användarobjektfilter måste ha en \"%s\"-formatidentifierare"
 
-#: cps/admin.py:1218
+#: cps/admin.py:1230
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr "LDAP-användarobjektfilter har omatchad parentes"
 
-#: cps/admin.py:1225
+#: cps/admin.py:1237
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr "Användarfilter för LDAP-medlemmar måste ha en \"%s\"-formatidentifierare"
 
-#: cps/admin.py:1227
+#: cps/admin.py:1239
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr "Användarfilter för LDAP-medlemmar har omatchad parentes"
 
-#: cps/admin.py:1234
+#: cps/admin.py:1246
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr "LDAP-certifikat, certifikat eller nyckelplats är inte giltigt, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1265 cps/templates/admin.html:53
+#: cps/admin.py:1277 cps/templates/admin.html:53
 msgid "Add New User"
 msgstr "Lägg till ny användare"
 
-#: cps/admin.py:1274 cps/templates/admin.html:100
+#: cps/admin.py:1286 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "Ändra SMTP-inställningar"
 
-#: cps/admin.py:1293
+#: cps/admin.py:1305
 msgid "Success! Gmail Account Verified."
 msgstr ""
 
-#: cps/admin.py:1313 cps/admin.py:1316 cps/admin.py:1698 cps/admin.py:1832
-#: cps/admin.py:1930 cps/admin.py:2051 cps/editbooks.py:239
-#: cps/editbooks.py:315 cps/editbooks.py:1218 cps/shelf.py:82 cps/shelf.py:142
-#: cps/shelf.py:185 cps/shelf.py:235 cps/shelf.py:272 cps/shelf.py:346
-#: cps/shelf.py:460 cps/tasks/convert.py:136 cps/web.py:1496
+#: cps/admin.py:1325 cps/admin.py:1328 cps/admin.py:1710 cps/admin.py:1857
+#: cps/admin.py:1955 cps/admin.py:2076 cps/editbooks.py:242
+#: cps/editbooks.py:318 cps/editbooks.py:1225 cps/shelf.py:90 cps/shelf.py:150
+#: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
+#: cps/shelf.py:468 cps/tasks/convert.py:150 cps/web.py:1520
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Databasfel: %(error)s."
 
-#: cps/admin.py:1323
+#: cps/admin.py:1335
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr "Testa e-post i kö för att skicka till %(email)s, vänligen kontrollera Uppgifter för resultat"
 
-#: cps/admin.py:1326
+#: cps/admin.py:1338
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
 
-#: cps/admin.py:1328
+#: cps/admin.py:1340
 msgid "Please configure your e-mail address first..."
 msgstr "Vänligen konfigurera din e-postadress först..."
 
-#: cps/admin.py:1330
+#: cps/admin.py:1342
 msgid "Email Server Settings updated"
 msgstr "E-postserverinställningar uppdaterade"
 
-#: cps/admin.py:1353 cps/templates/admin.html:195
+#: cps/admin.py:1365 cps/templates/admin.html:195
 msgid "Edit Scheduled Tasks Settings"
 msgstr ""
 
-#: cps/admin.py:1365
+#: cps/admin.py:1377
 msgid "Invalid start time for task specified"
 msgstr ""
 
-#: cps/admin.py:1370
+#: cps/admin.py:1382
 msgid "Invalid duration for task specified"
 msgstr ""
 
-#: cps/admin.py:1380
+#: cps/admin.py:1392
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1390 cps/admin.py:1439 cps/admin.py:2047 cps/web.py:1296
+#: cps/admin.py:1402 cps/admin.py:1451 cps/admin.py:2072 cps/web.py:1316
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
-#: cps/admin.py:1394
+#: cps/admin.py:1406
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1424 cps/admin.py:2039
+#: cps/admin.py:1436 cps/admin.py:2064
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Redigera användaren %(nick)s"
 
-#: cps/admin.py:1436
+#: cps/admin.py:1448
 #, fuzzy, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr "Lösenord för användaren %(user)s återställd"
 
-#: cps/admin.py:1442
+#: cps/admin.py:1454
 #, fuzzy
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/admin.py:1453
+#: cps/admin.py:1465
 msgid "Logfile viewer"
 msgstr "Visaren för loggfil"
 
-#: cps/admin.py:1519
+#: cps/admin.py:1531
 msgid "Requesting update package"
 msgstr "Begär uppdateringspaketet"
 
-#: cps/admin.py:1520
+#: cps/admin.py:1532
 msgid "Downloading update package"
 msgstr "Hämtar uppdateringspaketet"
 
-#: cps/admin.py:1521
+#: cps/admin.py:1533
 msgid "Unzipping update package"
 msgstr "Packar upp uppdateringspaketet"
 
-#: cps/admin.py:1522
+#: cps/admin.py:1534
 msgid "Replacing files"
 msgstr "Ersätta filer"
 
-#: cps/admin.py:1523
+#: cps/admin.py:1535
 msgid "Database connections are closed"
 msgstr "Databasanslutningarna är stängda"
 
-#: cps/admin.py:1524
+#: cps/admin.py:1536
 msgid "Stopping server"
 msgstr "Stoppar server"
 
-#: cps/admin.py:1525
+#: cps/admin.py:1537
 msgid "Update finished, please press okay and reload page"
 msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
-#: cps/admin.py:1526 cps/admin.py:1527 cps/admin.py:1528 cps/admin.py:1529
-#: cps/admin.py:1530 cps/admin.py:1531
+#: cps/admin.py:1538 cps/admin.py:1539 cps/admin.py:1540 cps/admin.py:1541
+#: cps/admin.py:1542 cps/admin.py:1543
 msgid "Update failed:"
 msgstr "Uppdateringen misslyckades:"
 
-#: cps/admin.py:1526 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
+#: cps/admin.py:1538 cps/updater.py:389 cps/updater.py:624 cps/updater.py:626
 msgid "HTTP Error"
 msgstr "HTTP-fel"
 
-#: cps/admin.py:1527 cps/updater.py:391 cps/updater.py:628
+#: cps/admin.py:1539 cps/updater.py:391 cps/updater.py:628
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: cps/admin.py:1528 cps/updater.py:393 cps/updater.py:630
+#: cps/admin.py:1540 cps/updater.py:393 cps/updater.py:630
 msgid "Timeout while establishing connection"
 msgstr "Tiden ute när du etablerade anslutning"
 
-#: cps/admin.py:1529 cps/updater.py:395 cps/updater.py:632
+#: cps/admin.py:1541 cps/updater.py:395 cps/updater.py:632
 msgid "General error"
 msgstr "Allmänt fel"
 
-#: cps/admin.py:1530
+#: cps/admin.py:1542
 #, fuzzy
 msgid "Update file could not be saved in temp dir"
 msgstr "Uppdateringsfilen kunde inte sparas i Temp Dir"
 
-#: cps/admin.py:1531
+#: cps/admin.py:1543
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1555
+#: cps/admin.py:1567
 #, fuzzy
 msgid "Failed to extract at least One LDAP User"
 msgstr "Det gick inte att skapa minst en LDAP-användare"
 
-#: cps/admin.py:1600
+#: cps/admin.py:1612
 msgid "Failed to Create at Least One LDAP User"
 msgstr "Det gick inte att skapa minst en LDAP-användare"
 
-#: cps/admin.py:1613
+#: cps/admin.py:1625
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr "Fel: %(ldaperror)s"
 
-#: cps/admin.py:1617
+#: cps/admin.py:1629
 msgid "Error: No user returned in response of LDAP server"
 msgstr "Fel: Ingen användare återges som svar på LDAP-servern"
 
-#: cps/admin.py:1650
+#: cps/admin.py:1662
 msgid "At Least One LDAP User Not Found in Database"
 msgstr "Minst en LDAP-användare hittades inte i databasen"
 
-#: cps/admin.py:1652
+#: cps/admin.py:1664
 msgid "{} User Successfully Imported"
 msgstr "{} användare har importerats"
 
-#: cps/admin.py:1710
+#: cps/admin.py:1722
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "DB-plats är inte giltig, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1730
+#: cps/admin.py:1742
 msgid "DB is not Writeable"
 msgstr "DB är inte skrivbar"
 
-#: cps/admin.py:1743
+#: cps/admin.py:1758
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr "Keyfile-platsen är inte giltig, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1747
+#: cps/admin.py:1762
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Certfile-platsen är inte giltig, vänligen ange rätt sökväg"
 
-#: cps/admin.py:1819
+#: cps/admin.py:1842
 msgid "Password length has to be between 1 and 40"
 msgstr ""
 
-#: cps/admin.py:1871
+#: cps/admin.py:1896
 #, fuzzy
 msgid "Database Settings updated"
 msgstr "E-postserverinställningar uppdaterade"
 
-#: cps/admin.py:1879
+#: cps/admin.py:1904
 #, fuzzy
 msgid "Database Configuration"
 msgstr "Funktion konfiguration"
 
-#: cps/admin.py:1894 cps/web.py:1270
+#: cps/admin.py:1919 cps/web.py:1290
 msgid "Oops! Please complete all fields."
 msgstr "Fyll i alla fält!"
 
-#: cps/admin.py:1903
+#: cps/admin.py:1928
 msgid "E-mail is not from valid domain"
 msgstr "E-posten är inte från giltig domän"
 
-#: cps/admin.py:1909
+#: cps/admin.py:1934
 msgid "Add new user"
 msgstr "Lägg till ny användare"
 
-#: cps/admin.py:1920
+#: cps/admin.py:1945
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Användaren '%(user)s' skapad"
 
-#: cps/admin.py:1926
+#: cps/admin.py:1951
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Hittade ett befintligt konto för den här e-postadressen eller namnet."
 
-#: cps/admin.py:1956
+#: cps/admin.py:1981
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Användaren '%(nick)s' borttagen"
 
-#: cps/admin.py:1959
+#: cps/admin.py:1984
 msgid "Can't delete Guest User"
 msgstr "Det går inte att ta bort gästanvändaren"
 
-#: cps/admin.py:1962
+#: cps/admin.py:1987
 msgid "No admin user remaining, can't delete user"
 msgstr "Ingen adminstratörsanvändare kvar, kan inte ta bort användaren"
 
-#: cps/admin.py:2017 cps/web.py:1445
+#: cps/admin.py:2042 cps/web.py:1469
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
-#: cps/admin.py:2043
+#: cps/admin.py:2068
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Användaren '%(nick)s' uppdaterad"
@@ -527,122 +527,123 @@ msgstr "inte installerad"
 msgid "Execution permissions missing"
 msgstr "Körningstillstånd saknas"
 
-#: cps/db.py:752 cps/search.py:137 cps/web.py:731
+#: cps/db.py:752 cps/search.py:137 cps/web.py:747
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "Anpassad kolumn n.%(column)d finns inte i calibre-databasen"
 
-#: cps/db.py:993 cps/templates/config_edit.html:204
+#: cps/db.py:992 cps/templates/config_edit.html:208
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:558 cps/web.py:592 cps/web.py:665 cps/web.py:692 cps/web.py:973
-#: cps/web.py:1003 cps/web.py:1048 cps/web.py:1076 cps/web.py:1115
+#: cps/web.py:562 cps/web.py:596 cps/web.py:641 cps/web.py:681 cps/web.py:708
+#: cps/web.py:989 cps/web.py:1019 cps/web.py:1064 cps/web.py:1092
+#: cps/web.py:1131
 msgid "None"
 msgstr "Ingen"
 
-#: cps/editbooks.py:120 cps/editbooks.py:908 cps/web.py:525 cps/web.py:1537
-#: cps/web.py:1581 cps/web.py:1626
+#: cps/editbooks.py:123 cps/editbooks.py:911 cps/web.py:529 cps/web.py:1561
+#: cps/web.py:1605 cps/web.py:1650
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Hoppsan! Vald boktitel är inte tillgänglig. Filen finns inte eller är inte tillgänglig"
 
-#: cps/editbooks.py:164 cps/editbooks.py:1239
+#: cps/editbooks.py:167 cps/editbooks.py:1246
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:184 cps/editbooks.py:729
+#: cps/editbooks.py:187 cps/editbooks.py:732
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Identifierare är inte skiftlägeskänsliga, skriver över gammal identifierare"
 
-#: cps/editbooks.py:226
+#: cps/editbooks.py:229
 msgid "Metadata successfully updated"
 msgstr "Metadata uppdaterades"
 
-#: cps/editbooks.py:244
+#: cps/editbooks.py:247
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:301
+#: cps/editbooks.py:304
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Filen %(file)s uppladdad"
 
-#: cps/editbooks.py:329
+#: cps/editbooks.py:332
 msgid "Source or destination format for conversion missing"
 msgstr "Källa eller målformat för konvertering saknas"
 
-#: cps/editbooks.py:337
+#: cps/editbooks.py:340
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Boken är i kö för konvertering till %(book_format)s"
 
-#: cps/editbooks.py:341
+#: cps/editbooks.py:344
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Det gick inte att konvertera den här boken: %(res)s"
 
-#: cps/editbooks.py:648
+#: cps/editbooks.py:651
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Uppladdad bok finns förmodligen i biblioteket, överväg att ändra innan du laddar upp nya: "
 
-#: cps/editbooks.py:703 cps/editbooks.py:1031
+#: cps/editbooks.py:706 cps/editbooks.py:1038
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s är inte ett giltigt språk"
 
-#: cps/editbooks.py:741 cps/editbooks.py:1179
+#: cps/editbooks.py:744 cps/editbooks.py:1186
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Filändelsen '%(ext)s' får inte laddas upp till den här servern"
 
-#: cps/editbooks.py:745 cps/editbooks.py:1183
+#: cps/editbooks.py:748 cps/editbooks.py:1190
 msgid "File to be uploaded must have an extension"
 msgstr "Filen som ska laddas upp måste ha en ändelse"
 
-#: cps/editbooks.py:753
+#: cps/editbooks.py:756
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Filen %(filename)s kunde inte sparas i temp dir"
 
-#: cps/editbooks.py:773
+#: cps/editbooks.py:776
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Det gick inte att flytta omslagsfil %(file)s: %(error)s"
 
-#: cps/editbooks.py:830 cps/editbooks.py:832
+#: cps/editbooks.py:833 cps/editbooks.py:835
 msgid "Book Format Successfully Deleted"
 msgstr "Bokformat har tagits bort"
 
-#: cps/editbooks.py:839 cps/editbooks.py:841
+#: cps/editbooks.py:842 cps/editbooks.py:844
 msgid "Book Successfully Deleted"
 msgstr "Boken har tagits bort"
 
-#: cps/editbooks.py:893
+#: cps/editbooks.py:896
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:943
+#: cps/editbooks.py:946
 msgid "edit metadata"
 msgstr "redigera metadata"
 
-#: cps/editbooks.py:992
+#: cps/editbooks.py:995
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1174
+#: cps/editbooks.py:1181
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1195
+#: cps/editbooks.py:1202
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Det gick inte att skapa sökväg %(path)s (behörighet nekad)."
 
-#: cps/editbooks.py:1200
+#: cps/editbooks.py:1207
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Det gick inte att lagra filen %(file)s."
 
-#: cps/editbooks.py:1224
+#: cps/editbooks.py:1231
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Filformatet %(ext)s lades till %(book)s"
@@ -655,180 +656,208 @@ msgstr "Installationen av Google Drive är inte klar, försök att inaktivera oc
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Återuppringningsdomänen är inte verifierad, följ stegen för att verifiera domänen i Google utvecklarkonsol"
 
-#: cps/helper.py:81
+#: cps/helper.py:86
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s formatet hittades inte för bok-id: %(book)d"
 
-#: cps/helper.py:88 cps/tasks/convert.py:75
+#: cps/helper.py:93 cps/tasks/convert.py:86
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s hittades inte på Google Drive: %(fn)s"
 
-#: cps/helper.py:93
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s hittades inte: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:223 cps/templates/detail.html:58
+#: cps/helper.py:103 cps/helper.py:228 cps/templates/detail.html:58
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Skicka till Kindle"
 
-#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:225
+#: cps/helper.py:104 cps/helper.py:122 cps/helper.py:230
 #, fuzzy
 msgid "This Email has been sent via Calibre-Web."
 msgstr "Detta e-postmeddelande har skickats via Calibre-Web."
 
-#: cps/helper.py:115
+#: cps/helper.py:120
 #, fuzzy
 msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web test e-post"
 
-#: cps/helper.py:116
+#: cps/helper.py:121
 #, fuzzy
 msgid "Test Email"
 msgstr "Test e-post"
 
-#: cps/helper.py:133
+#: cps/helper.py:138
 msgid "Get Started with Calibre-Web"
 msgstr "Kom igång med Calibre-Web"
 
-#: cps/helper.py:138
+#: cps/helper.py:143
 #, fuzzy, python-format
 msgid "Registration Email for user: %(name)s"
 msgstr "Registrera e-post för användare: %(name)s"
 
-#: cps/helper.py:149 cps/helper.py:155
+#: cps/helper.py:154 cps/helper.py:160
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Konvertera %(orig)s till %(format)s och skicka till Kindle"
 
-#: cps/helper.py:174 cps/helper.py:178 cps/helper.py:182
+#: cps/helper.py:179 cps/helper.py:183 cps/helper.py:187
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Skicka %(format)s till Kindle"
 
-#: cps/helper.py:222
+#: cps/helper.py:227
 #, fuzzy, python-format
 msgid "%(book)s send to eReader"
 msgstr "Skicka till Kindle"
 
-#: cps/helper.py:227
+#: cps/helper.py:232
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Den begärda filen kunde inte läsas. Kanske fel behörigheter?"
 
-#: cps/helper.py:342
+#: cps/helper.py:347
 msgid "Read status could not set: {}"
 msgstr ""
 
-#: cps/helper.py:365
+#: cps/helper.py:370
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
 msgstr "Borttagning av bokmapp för boken %(id)s misslyckades, sökvägen har undermappar: %(path)s"
 
-#: cps/helper.py:371
+#: cps/helper.py:376
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr "Borttagning av boken %(id)s misslyckades: %(message)s"
 
-#: cps/helper.py:382
+#: cps/helper.py:387
 #, fuzzy, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Borttagning av boken %(id)s, boksökväg inte giltig: %(path)s"
 
-#: cps/helper.py:447
+#: cps/helper.py:452
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
 
-#: cps/helper.py:519 cps/helper.py:528
+#: cps/helper.py:524 cps/helper.py:533
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Filen %(file)s hittades inte på Google Drive"
 
-#: cps/helper.py:562
+#: cps/helper.py:567
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
 
-#: cps/helper.py:582
+#: cps/helper.py:587
 msgid "Error in rename file in path: {}"
 msgstr ""
 
-#: cps/helper.py:600
+#: cps/helper.py:605
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Boksökvägen %(path)s hittades inte på Google Drive"
 
-#: cps/helper.py:665
+#: cps/helper.py:670
 msgid "Found an existing account for this Email address"
 msgstr ""
 
-#: cps/helper.py:673
+#: cps/helper.py:678
 msgid "This username is already taken"
 msgstr "Detta användarnamn är redan taget"
 
-#: cps/helper.py:685
+#: cps/helper.py:690
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "Ogiltigt e-postadressformat"
 
-#: cps/helper.py:703
+#: cps/helper.py:710
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:852
+#: cps/helper.py:859
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:862
+#: cps/helper.py:869
 msgid "Error Downloading Cover"
 msgstr "Fel vid hämtning av omslaget"
 
-#: cps/helper.py:865
+#: cps/helper.py:872
 msgid "Cover Format Error"
 msgstr "Fel på omslagsformat"
 
-#: cps/helper.py:868
+#: cps/helper.py:875
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr ""
 
-#: cps/helper.py:878
+#: cps/helper.py:885
 msgid "Failed to create path for cover"
 msgstr "Det gick inte att skapa sökväg för omslag"
 
-#: cps/helper.py:894
+#: cps/helper.py:901
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Omslagsfilen är inte en giltig bildfil eller kunde inte lagras"
 
-#: cps/helper.py:905
+#: cps/helper.py:912
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Endast jpg/jpeg/png/webp/bmp-filer stöds som omslagsfil"
 
-#: cps/helper.py:917
+#: cps/helper.py:924
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:921
+#: cps/helper.py:928
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Endast jpg/jpeg-filer stöds som omslagsfil"
 
-#: cps/helper.py:973
-msgid "Unrar binary file not found"
-msgstr "Unrar binär fil hittades inte"
-
-#: cps/helper.py:984
-#, fuzzy
-msgid "Error executing UnRar"
-msgstr "Fel vid körning av UnRar"
-
-#: cps/helper.py:1077
+#: cps/helper.py:999 cps/helper.py:1156
 #, fuzzy
 msgid "Cover"
 msgstr "Upptäck"
 
-#: cps/helper.py:1079 cps/templates/admin.html:216
+#: cps/helper.py:1016
+msgid "Unrar binary file not found"
+msgstr "Unrar binär fil hittades inte"
+
+#: cps/helper.py:1027
+#, fuzzy
+msgid "Error executing UnRar"
+msgstr "Fel vid körning av UnRar"
+
+#: cps/helper.py:1035
+msgid "Could not find the specified directory"
+msgstr ""
+
+#: cps/helper.py:1038
+msgid "Please specify a directory, not a file"
+msgstr ""
+
+#: cps/helper.py:1052
+#, fuzzy
+msgid "Calibre binaries not viable"
+msgstr "DB är inte skrivbar"
+
+#: cps/helper.py:1061
+#, python-format
+msgid "Missing calibre binaries: %(missing)s"
+msgstr ""
+
+#: cps/helper.py:1063
+#, fuzzy, python-format
+msgid "Missing executable permissions: %(missing)s"
+msgstr "Körningstillstånd saknas"
+
+#: cps/helper.py:1068
+#, fuzzy
+msgid "Error excecuting Calibre"
+msgstr "Fel vid körning av UnRar"
+
+#: cps/helper.py:1158 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -913,7 +942,7 @@ msgstr "{} stjärnor"
 
 #: cps/remotelogin.py:62 cps/templates/layout.html:67
 #: cps/templates/layout.html:101 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1333
+#: cps/templates/login.html:21 cps/web.py:1353
 msgid "Login"
 msgstr "Logga in"
 
@@ -929,7 +958,7 @@ msgstr "Token har löpt ut"
 msgid "Success! Please return to your device"
 msgstr "Lyckades! Vänligen återvänd till din enhet"
 
-#: cps/render_template.py:42 cps/web.py:414
+#: cps/render_template.py:42 cps/web.py:418
 msgid "Books"
 msgstr "Böcker"
 
@@ -954,7 +983,7 @@ msgstr "Hämtade böcker"
 msgid "Show Downloaded Books"
 msgstr "Visa hämtade böcker"
 
-#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:429
+#: cps/render_template.py:59 cps/templates/index.xml:33 cps/web.py:433
 msgid "Top Rated Books"
 msgstr "Bäst rankade böcker"
 
@@ -963,7 +992,7 @@ msgid "Show Top Rated Books"
 msgstr "Visa böcker med bästa betyg"
 
 #: cps/render_template.py:62 cps/templates/index.xml:55
-#: cps/templates/index.xml:59 cps/web.py:750
+#: cps/templates/index.xml:59 cps/web.py:766
 msgid "Read Books"
 msgstr "Lästa böcker"
 
@@ -973,7 +1002,7 @@ msgid "Show Read and Unread"
 msgstr "Visa lästa och olästa"
 
 #: cps/render_template.py:66 cps/templates/index.xml:62
-#: cps/templates/index.xml:66 cps/web.py:753
+#: cps/templates/index.xml:66 cps/web.py:769
 msgid "Unread Books"
 msgstr "Olästa böcker"
 
@@ -991,7 +1020,7 @@ msgid "Show Random Books"
 msgstr "Visa slumpmässiga böcker"
 
 #: cps/render_template.py:72 cps/templates/book_table.html:67
-#: cps/templates/index.xml:84 cps/web.py:1119
+#: cps/templates/index.xml:84 cps/web.py:1135
 msgid "Categories"
 msgstr "Kategorier"
 
@@ -1002,7 +1031,7 @@ msgstr "Visa kategorival"
 
 #: cps/render_template.py:75 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:91
-#: cps/templates/search_form.html:70 cps/web.py:1009 cps/web.py:1021
+#: cps/templates/search_form.html:70 cps/web.py:1025 cps/web.py:1037
 msgid "Series"
 msgstr "Serier"
 
@@ -1022,7 +1051,7 @@ msgid "Show Author Section"
 msgstr "Visa författarval"
 
 #: cps/render_template.py:82 cps/templates/book_table.html:72
-#: cps/templates/index.xml:77 cps/web.py:977
+#: cps/templates/index.xml:77 cps/web.py:993
 msgid "Publishers"
 msgstr "Förlag"
 
@@ -1033,7 +1062,7 @@ msgstr "Visa urval av förlag"
 
 #: cps/render_template.py:85 cps/templates/book_table.html:70
 #: cps/templates/index.xml:98 cps/templates/search_form.html:108
-#: cps/web.py:1091
+#: cps/web.py:1107
 msgid "Languages"
 msgstr "Språk"
 
@@ -1060,7 +1089,7 @@ msgstr "Filformat"
 msgid "Show File Formats Section"
 msgstr "Visa val av filformat"
 
-#: cps/render_template.py:96 cps/web.py:776
+#: cps/render_template.py:96 cps/web.py:792
 msgid "Archived Books"
 msgstr "Arkiverade böcker"
 
@@ -1069,7 +1098,7 @@ msgstr "Arkiverade böcker"
 msgid "Show Archived Books"
 msgstr "Visa arkiverade böcker"
 
-#: cps/render_template.py:101 cps/web.py:807
+#: cps/render_template.py:101 cps/web.py:823
 msgid "Books List"
 msgstr "Boklista"
 
@@ -1115,7 +1144,7 @@ msgstr ""
 msgid "Advanced Search"
 msgstr "Avancerad sökning"
 
-#: cps/shelf.py:49 cps/shelf.py:103
+#: cps/shelf.py:49 cps/shelf.py:111
 msgid "Invalid shelf specified"
 msgstr "Ogiltig hylla specificerad"
 
@@ -1129,100 +1158,105 @@ msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "Boken är redan en del av hyllan: %(shelfname)s"
 
-#: cps/shelf.py:89
+#: cps/shelf.py:77
+#, python-format
+msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
+msgstr ""
+
+#: cps/shelf.py:97
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Boken har lagts till i hyllan: %(sname)s"
 
-#: cps/shelf.py:108
+#: cps/shelf.py:116
 msgid "You are not allowed to add a book to the shelf"
 msgstr ""
 
-#: cps/shelf.py:126
+#: cps/shelf.py:134
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Böcker är redan en del av hyllan: %(name)s"
 
-#: cps/shelf.py:138
+#: cps/shelf.py:146
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Böcker har lagts till hyllan: %(sname)s"
 
-#: cps/shelf.py:145
+#: cps/shelf.py:153
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Kunde inte lägga till böcker till hyllan: %(sname)s"
 
-#: cps/shelf.py:191
+#: cps/shelf.py:199
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Boken har tagits bort från hyllan: %(sname)s"
 
-#: cps/shelf.py:200
+#: cps/shelf.py:208
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr ""
 
-#: cps/shelf.py:210 cps/templates/layout.html:157
+#: cps/shelf.py:218 cps/templates/layout.html:157
 msgid "Create a Shelf"
 msgstr "Skapa en hylla"
 
-#: cps/shelf.py:218
+#: cps/shelf.py:226
 #, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
 msgstr "Tyvärr har du inte rätt att ta bort en bok från den här hyllan: %(sname)s"
 
-#: cps/shelf.py:220
+#: cps/shelf.py:228
 msgid "Edit a shelf"
 msgstr "Redigera en hylla"
 
-#: cps/shelf.py:229
+#: cps/shelf.py:237
 msgid "Error deleting Shelf"
 msgstr ""
 
-#: cps/shelf.py:231
+#: cps/shelf.py:239
 #, fuzzy
 msgid "Shelf successfully deleted"
 msgstr "Boken har tagits bort"
 
-#: cps/shelf.py:281
+#: cps/shelf.py:289
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Ändra ordning på hyllan: '%(name)s'"
 
-#: cps/shelf.py:316
+#: cps/shelf.py:324
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr ""
 
-#: cps/shelf.py:333
+#: cps/shelf.py:341
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Hyllan %(title)s skapad"
 
-#: cps/shelf.py:336
+#: cps/shelf.py:344
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Hyllan %(title)s ändrad"
 
-#: cps/shelf.py:350
+#: cps/shelf.py:358
 msgid "There was an error"
 msgstr "Det fanns ett fel"
 
-#: cps/shelf.py:372
+#: cps/shelf.py:380
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr "En offentlig hylla med namnet \"%(title)s\" finns redan."
 
-#: cps/shelf.py:383
+#: cps/shelf.py:391
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "En privat hylla med namnet \"%(title)s\" finns redan."
 
-#: cps/shelf.py:465
+#: cps/shelf.py:473
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Hylla: '%(name)s'"
 
-#: cps/shelf.py:469
+#: cps/shelf.py:477
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig"
 
@@ -1288,173 +1322,178 @@ msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att up
 msgid "No release information available"
 msgstr "Ingen versionsinformation tillgänglig"
 
-#: cps/templates/index.html:6 cps/web.py:441
+#: cps/templates/index.html:6 cps/web.py:445
 msgid "Discover (Random Books)"
 msgstr "Upptäck (slumpmässiga böcker)"
 
-#: cps/web.py:477
+#: cps/web.py:481
 msgid "Hot Books (Most Downloaded)"
 msgstr "Heta böcker (mest hämtade)"
 
-#: cps/web.py:508
+#: cps/web.py:512
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr "Hämtade böcker av %(user)s"
 
-#: cps/web.py:541
+#: cps/web.py:545
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Författare: %(name)s"
 
-#: cps/web.py:577
+#: cps/web.py:581
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Förlag: %(name)s"
 
-#: cps/web.py:605
+#: cps/web.py:609
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Serier: %(serie)s"
 
-#: cps/web.py:620
+#: cps/web.py:623
 msgid "Rating: None"
 msgstr ""
 
-#: cps/web.py:629
+#: cps/web.py:632
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Betyg: %(rating)s stars"
 
-#: cps/web.py:645
+#: cps/web.py:663
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Filformat: %(format)s"
 
-#: cps/web.py:682
+#: cps/web.py:698
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategori: %(name)s"
 
-#: cps/web.py:711
+#: cps/web.py:727
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Språk: %(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:949
+#: cps/templates/admin.html:16 cps/web.py:965
 msgid "Downloads"
 msgstr "Hämtningar"
 
-#: cps/web.py:1051
+#: cps/web.py:1067
 msgid "Ratings list"
 msgstr "Betygslista"
 
-#: cps/web.py:1078
+#: cps/web.py:1094
 msgid "File formats list"
 msgstr "Lista över filformat"
 
-#: cps/web.py:1233
+#: cps/web.py:1249
 #, fuzzy
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/web.py:1240
+#: cps/web.py:1256
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Boken är i kö för att skicka till %(eReadermail)s"
 
-#: cps/web.py:1243
+#: cps/web.py:1259
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Det gick inte att skicka den här boken: %(res)s"
 
-#: cps/web.py:1245
+#: cps/web.py:1261
 #, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Konfigurera din kindle-e-postadress först..."
 
-#: cps/web.py:1261
+#: cps/web.py:1277
 msgid "Please wait one minute to register next user"
 msgstr ""
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1262
-#: cps/web.py:1267 cps/web.py:1271 cps/web.py:1277 cps/web.py:1297
-#: cps/web.py:1301 cps/web.py:1314 cps/web.py:1317
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1278
+#: cps/web.py:1282 cps/web.py:1287 cps/web.py:1291 cps/web.py:1297
+#: cps/web.py:1317 cps/web.py:1321 cps/web.py:1334 cps/web.py:1337
 msgid "Register"
 msgstr "Registrera"
 
-#: cps/web.py:1266 cps/web.py:1313
+#: cps/web.py:1281 cps/web.py:1385
+#, fuzzy
+msgid "Connection error to limiter backend, please contact your administrator"
+msgstr "E-postservern är inte konfigurerad, kontakta din administratör!"
+
+#: cps/web.py:1286 cps/web.py:1333
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "E-postservern är inte konfigurerad, kontakta din administratör!"
 
-#: cps/web.py:1299
+#: cps/web.py:1319
 msgid "Oops! Your Email is not allowed."
 msgstr "Din e-post är inte tillåten att registrera"
 
-#: cps/web.py:1302
+#: cps/web.py:1322
 msgid "Success! Confirmation Email has been sent."
 msgstr "Bekräftelsemail skickades till ditt e-postkonto."
 
-#: cps/web.py:1348 cps/web.py:1366
+#: cps/web.py:1368 cps/web.py:1391
 #, fuzzy
 msgid "Cannot activate LDAP authentication"
 msgstr "Det går inte att aktivera LDAP-autentisering"
 
-#: cps/web.py:1360
+#: cps/web.py:1381
 msgid "Please wait one minute before next login"
 msgstr ""
 
-#: cps/web.py:1376
+#: cps/web.py:1400
 #, fuzzy, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "du är nu inloggad som: \"%(nickname)s\""
 
-#: cps/web.py:1383
+#: cps/web.py:1407
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1388
+#: cps/web.py:1412
 #, fuzzy, python-format
 msgid "Could not login: %(message)s"
 msgstr "Det gick inte att logga in: %(message)s"
 
-#: cps/web.py:1392 cps/web.py:1417
+#: cps/web.py:1416 cps/web.py:1441
 #, fuzzy
 msgid "Wrong Username or Password"
 msgstr "Fel användarnamn eller lösenord"
 
-#: cps/web.py:1399
+#: cps/web.py:1423
 #, fuzzy
-msgid "New Password was send to your email address"
+msgid "New Password was sent to your email address"
 msgstr "Nytt lösenord skickades till din e-postadress"
 
-#: cps/web.py:1403
+#: cps/web.py:1427
 #, fuzzy
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
-#: cps/web.py:1405
+#: cps/web.py:1429
 #, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "Ange giltigt användarnamn för att återställa lösenordet"
 
-#: cps/web.py:1413
+#: cps/web.py:1437
 #, fuzzy, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "du är nu inloggad som: \"%(nickname)s\""
 
-#: cps/web.py:1471 cps/web.py:1521
+#: cps/web.py:1495 cps/web.py:1545
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)ss profil"
 
-#: cps/web.py:1487
+#: cps/web.py:1511
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "Profilen uppdaterad"
 
-#: cps/web.py:1491
+#: cps/web.py:1515
 msgid "Oops! An account already exists for this Email."
 msgstr "Hittade ett befintligt konto för den här e-postadressen"
 
@@ -1462,46 +1501,46 @@ msgstr "Hittade ett befintligt konto för den här e-postadressen"
 msgid "Found no valid gmail.json file with OAuth information"
 msgstr "Hittade ingen giltig gmail.json-fil med OAuth-information"
 
-#: cps/tasks/convert.py:92
+#: cps/tasks/convert.py:105
 #, fuzzy, python-format
 msgid "%(book)s send to E-Reader"
 msgstr "Skicka till Kindle"
 
-#: cps/tasks/convert.py:153
+#: cps/tasks/convert.py:167
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
 msgstr "calibre e-bokkonverterings %(tool)s hittades inte"
 
-#: cps/tasks/convert.py:186
+#: cps/tasks/convert.py:201
 #, python-format
 msgid "%(format)s format not found on disk"
 msgstr "%(format)s-format hittades inte på disken"
 
-#: cps/tasks/convert.py:190
+#: cps/tasks/convert.py:205
 msgid "Ebook converter failed with unknown error"
 msgstr "E-bokkonverteraren misslyckades med okänt fel"
 
-#: cps/tasks/convert.py:202
+#: cps/tasks/convert.py:224
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-konverteraren misslyckades: %(error)s"
 
-#: cps/tasks/convert.py:224
+#: cps/tasks/convert.py:245
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Konverterad fil hittades inte eller mer än en fil i mappen %(folder)s"
 
-#: cps/tasks/convert.py:247
+#: cps/tasks/convert.py:287
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "E-bokkonverteraren misslyckades: %(error)s"
 
-#: cps/tasks/convert.py:270
+#: cps/tasks/convert.py:310
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "calibre misslyckades med fel: %(error)s"
 
-#: cps/tasks/convert.py:275
+#: cps/tasks/convert.py:315
 msgid "Convert"
 msgstr ""
 
@@ -1509,14 +1548,18 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:269
+#: cps/tasks/mail.py:278
 msgid "E-mail"
 msgstr ""
 
-#: cps/tasks/metadata_backup.py:46
+#: cps/tasks/metadata_backup.py:33
 #, fuzzy
 msgid "Backing up Metadata"
 msgstr "redigera metadata"
+
+#: cps/tasks/tempFolder.py:28
+msgid "Delete temp folder contents"
+msgstr ""
 
 #: cps/tasks/thumbnail.py:96
 #, python-format
@@ -1679,7 +1722,7 @@ msgstr "Fjärrinloggning"
 msgid "Reverse Proxy Login"
 msgstr "Omvänd proxy inloggning"
 
-#: cps/templates/admin.html:154 cps/templates/config_edit.html:173
+#: cps/templates/admin.html:154 cps/templates/config_edit.html:177
 msgid "Reverse Proxy Header Name"
 msgstr "Omvänt proxy rubriknamn"
 
@@ -1779,18 +1822,18 @@ msgid "Are you sure you want to restart?"
 msgstr "Är du säker på att du vill starta om Calibre-Web?"
 
 #: cps/templates/admin.html:258 cps/templates/admin.html:272
-#: cps/templates/admin.html:292 cps/templates/config_db.html:70
+#: cps/templates/admin.html:292 cps/templates/config_db.html:82
 msgid "OK"
 msgstr "Ok"
 
 #: cps/templates/admin.html:259 cps/templates/admin.html:273
 #: cps/templates/book_edit.html:214 cps/templates/book_table.html:127
-#: cps/templates/config_db.html:54 cps/templates/config_edit.html:410
-#: cps/templates/config_view_edit.html:175 cps/templates/modal_dialogs.html:64
-#: cps/templates/modal_dialogs.html:99 cps/templates/modal_dialogs.html:117
-#: cps/templates/modal_dialogs.html:135 cps/templates/schedule_edit.html:45
-#: cps/templates/shelf_edit.html:27 cps/templates/tasks.html:46
-#: cps/templates/user_edit.html:144
+#: cps/templates/config_db.html:66 cps/templates/config_edit.html:428
+#: cps/templates/config_view_edit.html:175 cps/templates/detail.html:342
+#: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
+#: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
+#: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
+#: cps/templates/tasks.html:46 cps/templates/user_edit.html:144
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -1970,8 +2013,8 @@ msgstr "Visa bok vid Spara"
 msgid "Fetch Metadata"
 msgstr "Hämta metadata"
 
-#: cps/templates/book_edit.html:213 cps/templates/config_db.html:53
-#: cps/templates/config_edit.html:409 cps/templates/config_view_edit.html:174
+#: cps/templates/book_edit.html:213 cps/templates/config_db.html:65
+#: cps/templates/config_edit.html:427 cps/templates/config_view_edit.html:174
 #: cps/templates/email_edit.html:65 cps/templates/schedule_edit.html:44
 #: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
 #: cps/templates/user_edit.html:142
@@ -2138,27 +2181,31 @@ msgstr "Slå samman"
 msgid "Location of Calibre Database"
 msgstr "Plats för Calibre-databasen"
 
-#: cps/templates/config_db.html:22
+#: cps/templates/config_db.html:21
+msgid "Separate Book Files from Library"
+msgstr ""
+
+#: cps/templates/config_db.html:34
 msgid "Use Google Drive?"
 msgstr "Använda Google Drive?"
 
-#: cps/templates/config_db.html:27
+#: cps/templates/config_db.html:39
 msgid "Authenticate Google Drive"
 msgstr "Autentisera Google Drive"
 
-#: cps/templates/config_db.html:32
+#: cps/templates/config_db.html:44
 msgid "Google Drive Calibre folder"
 msgstr "Google Drive Calibre-mapp"
 
-#: cps/templates/config_db.html:40
+#: cps/templates/config_db.html:52
 msgid "Metadata Watch Channel ID"
 msgstr "Metadata Titta på kanal ID"
 
-#: cps/templates/config_db.html:43
+#: cps/templates/config_db.html:55
 msgid "Revoke"
 msgstr "Återkalla"
 
-#: cps/templates/config_db.html:68
+#: cps/templates/config_db.html:80
 #, fuzzy
 msgid "New db location is invalid, please enter valid path"
 msgstr "DB-plats är inte giltig, vänligen ange rätt sökväg"
@@ -2220,259 +2267,276 @@ msgid "Convert non-English characters in title and author while saving to disk"
 msgstr ""
 
 #: cps/templates/config_edit.html:108
-msgid "Enable Uploads"
-msgstr "Aktivera uppladdning"
-
-#: cps/templates/config_edit.html:108
-msgid "(Please ensure that users also have upload permissions)"
+msgid "Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)"
 msgstr ""
 
 #: cps/templates/config_edit.html:112
+msgid "Enable Uploads"
+msgstr "Aktivera uppladdning"
+
+#: cps/templates/config_edit.html:112
+msgid "(Please ensure that users also have upload permissions)"
+msgstr ""
+
+#: cps/templates/config_edit.html:116
 msgid "Allowed Upload Fileformats"
 msgstr "Tillåtna filformat för uppladdning"
 
-#: cps/templates/config_edit.html:118
+#: cps/templates/config_edit.html:122
 msgid "Enable Anonymous Browsing"
 msgstr "Aktivera anonym surfning"
 
-#: cps/templates/config_edit.html:122
+#: cps/templates/config_edit.html:126
 msgid "Enable Public Registration"
 msgstr "Aktivera offentlig registrering"
 
-#: cps/templates/config_edit.html:127
+#: cps/templates/config_edit.html:131
 msgid "Use Email as Username"
 msgstr "Använd e-post som användarnamn"
 
-#: cps/templates/config_edit.html:132
+#: cps/templates/config_edit.html:136
 msgid "Enable Magic Link Remote Login"
 msgstr "Aktivera fjärrinloggning (\"magisk länk\")"
 
-#: cps/templates/config_edit.html:137
+#: cps/templates/config_edit.html:141
 msgid "Enable Kobo sync"
 msgstr "Aktivera Kobo sync"
 
-#: cps/templates/config_edit.html:142
+#: cps/templates/config_edit.html:146
 msgid "Proxy unknown requests to Kobo Store"
 msgstr "Proxy okänd begäran till Kobo Store"
 
-#: cps/templates/config_edit.html:145
+#: cps/templates/config_edit.html:149
 msgid "Server External Port (for port forwarded API calls)"
 msgstr "Extern port för server (för port vidarebefordrade API-anrop)"
 
-#: cps/templates/config_edit.html:153
+#: cps/templates/config_edit.html:157
 msgid "Use Goodreads"
 msgstr "Använd Goodreads"
 
-#: cps/templates/config_edit.html:154
+#: cps/templates/config_edit.html:158
 msgid "Create an API Key"
 msgstr "Hämta en API-nyckel"
 
-#: cps/templates/config_edit.html:158
+#: cps/templates/config_edit.html:162
 msgid "Goodreads API Key"
 msgstr "Goodreads API-nyckel"
 
-#: cps/templates/config_edit.html:162
+#: cps/templates/config_edit.html:166
 msgid "Goodreads API Secret"
 msgstr "Goodreads API-hemlighet"
 
-#: cps/templates/config_edit.html:169
+#: cps/templates/config_edit.html:173
 msgid "Allow Reverse Proxy Authentication"
 msgstr "Tillåt omvänd proxyautentisering"
 
-#: cps/templates/config_edit.html:180
+#: cps/templates/config_edit.html:184
 msgid "Login type"
 msgstr "Inloggningstyp"
 
-#: cps/templates/config_edit.html:182
+#: cps/templates/config_edit.html:186
 msgid "Use Standard Authentication"
 msgstr "Använd standardautentisering"
 
-#: cps/templates/config_edit.html:184
+#: cps/templates/config_edit.html:188
 msgid "Use LDAP Authentication"
 msgstr "Använd LDAP-autentisering"
 
-#: cps/templates/config_edit.html:187
+#: cps/templates/config_edit.html:191
 msgid "Use OAuth"
 msgstr "Använd OAuth"
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:198
 msgid "LDAP Server Host Name or IP Address"
 msgstr "LDAP-serverns värdnamn eller IP-adress"
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:202
 msgid "LDAP Server Port"
 msgstr "LDAP-serverport"
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:206
 msgid "LDAP Encryption"
 msgstr "LDAP-kryptering"
 
-#: cps/templates/config_edit.html:205
+#: cps/templates/config_edit.html:209
 msgid "TLS"
 msgstr "TLS"
 
-#: cps/templates/config_edit.html:206
+#: cps/templates/config_edit.html:210
 msgid "SSL"
 msgstr "SSL"
 
-#: cps/templates/config_edit.html:210
+#: cps/templates/config_edit.html:214
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP CACertificate-sökväg (behövs endast för autentisering av klientcertifikat)"
 
-#: cps/templates/config_edit.html:217
+#: cps/templates/config_edit.html:221
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP-certifikatsökväg (behövs endast för autentisering av klientcertifikat)"
 
-#: cps/templates/config_edit.html:224
+#: cps/templates/config_edit.html:228
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
 msgstr "LDAP-nyckelfilsökväg (behövs endast för autentisering av klientcertifikat)"
 
-#: cps/templates/config_edit.html:233
+#: cps/templates/config_edit.html:237
 msgid "LDAP Authentication"
 msgstr "LDAP-autentisering"
 
-#: cps/templates/config_edit.html:235
+#: cps/templates/config_edit.html:239
 msgid "Anonymous"
 msgstr "Anonym"
 
-#: cps/templates/config_edit.html:236
+#: cps/templates/config_edit.html:240
 msgid "Unauthenticated"
 msgstr "Oautentiserad"
 
-#: cps/templates/config_edit.html:237
+#: cps/templates/config_edit.html:241
 msgid "Simple"
 msgstr "Enkel"
 
-#: cps/templates/config_edit.html:242
+#: cps/templates/config_edit.html:246
 msgid "LDAP Administrator Username"
 msgstr "LDAP-adminstratörsanvändarnamn"
 
-#: cps/templates/config_edit.html:248
+#: cps/templates/config_edit.html:252
 msgid "LDAP Administrator Password"
 msgstr "LDAP-adminstratörslösenord"
 
-#: cps/templates/config_edit.html:253
+#: cps/templates/config_edit.html:257
 msgid "LDAP Distinguished Name (DN)"
 msgstr "LDAP Distinguished Name (DN)"
 
-#: cps/templates/config_edit.html:257
+#: cps/templates/config_edit.html:261
 msgid "LDAP User Object Filter"
 msgstr "LDAP-användarobjektfilter"
 
-#: cps/templates/config_edit.html:262
+#: cps/templates/config_edit.html:266
 msgid "LDAP Server is OpenLDAP?"
 msgstr "LDAP-server är OpenLDAP?"
 
-#: cps/templates/config_edit.html:264
+#: cps/templates/config_edit.html:268
 msgid "Following Settings are Needed For User Import"
 msgstr "Följande inställningar behövs för användarimport"
 
-#: cps/templates/config_edit.html:266
+#: cps/templates/config_edit.html:270
 msgid "LDAP Group Object Filter"
 msgstr "LDAP-gruppobjektfilter"
 
-#: cps/templates/config_edit.html:270
+#: cps/templates/config_edit.html:274
 msgid "LDAP Group Name"
 msgstr "LDAP-gruppnamn"
 
-#: cps/templates/config_edit.html:274
+#: cps/templates/config_edit.html:278
 msgid "LDAP Group Members Field"
 msgstr "Fält för LDAP-gruppmedlemmar"
 
-#: cps/templates/config_edit.html:278
+#: cps/templates/config_edit.html:282
 msgid "LDAP Member User Filter Detection"
 msgstr "LDAP-användarfilterdetektering för medlemmar"
 
-#: cps/templates/config_edit.html:280
+#: cps/templates/config_edit.html:284
 msgid "Autodetect"
 msgstr "Upptäck automatiskt"
 
-#: cps/templates/config_edit.html:281
+#: cps/templates/config_edit.html:285
 msgid "Custom Filter"
 msgstr "Anpassat filter"
 
-#: cps/templates/config_edit.html:286
+#: cps/templates/config_edit.html:290
 msgid "LDAP Member User Filter"
 msgstr "LDAP-användarfilter för medlemmar"
 
-#: cps/templates/config_edit.html:297
+#: cps/templates/config_edit.html:301
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Skaffa %(provider)s OAuth-certifikat"
 
-#: cps/templates/config_edit.html:300
+#: cps/templates/config_edit.html:304
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "%(provider)s OAuth-klient-id"
 
-#: cps/templates/config_edit.html:304
+#: cps/templates/config_edit.html:308
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s OAuth-klient-hemlighet"
 
-#: cps/templates/config_edit.html:320
+#: cps/templates/config_edit.html:324
 msgid "External binaries"
 msgstr "Externa binärer"
 
-#: cps/templates/config_edit.html:326
-msgid "Path to Calibre E-Book Converter"
+#: cps/templates/config_edit.html:330
+#, fuzzy
+msgid "Path to Calibre Binaries"
 msgstr "Sökväg till calibre e-bokkonverterare"
 
-#: cps/templates/config_edit.html:334
+#: cps/templates/config_edit.html:338
 msgid "Calibre E-Book Converter Settings"
 msgstr "Inställningar för calibre e-bokkonverterare"
 
-#: cps/templates/config_edit.html:337
+#: cps/templates/config_edit.html:341
 msgid "Path to Kepubify E-Book Converter"
 msgstr "Sökväg till Kepubify calibre e-bokkonverterare"
 
-#: cps/templates/config_edit.html:345
+#: cps/templates/config_edit.html:349
 msgid "Location of Unrar binary"
 msgstr "Plats för Unrar-binär"
 
-#: cps/templates/config_edit.html:361
+#: cps/templates/config_edit.html:365
 #, fuzzy
 msgid "Security Settings"
 msgstr "OAuth-inställningar"
 
-#: cps/templates/config_edit.html:369
+#: cps/templates/config_edit.html:373
 msgid "Limit failed login attempts"
 msgstr ""
 
-#: cps/templates/config_edit.html:372
+#: cps/templates/config_edit.html:377
+msgid "Configure Backend for Limiter"
+msgstr ""
+
+#: cps/templates/config_edit.html:381
+msgid "Options for Limiter"
+msgstr ""
+
+#: cps/templates/config_edit.html:386
 msgid "Session protection"
 msgstr ""
 
-#: cps/templates/config_edit.html:374
+#: cps/templates/config_edit.html:388
 msgid "Basic"
 msgstr ""
 
-#: cps/templates/config_edit.html:375
+#: cps/templates/config_edit.html:389
 msgid "Strong"
 msgstr ""
 
-#: cps/templates/config_edit.html:380
+#: cps/templates/config_edit.html:394
 #, fuzzy
 msgid "User Password policy"
 msgstr "Återställ användarlösenordet"
 
-#: cps/templates/config_edit.html:384
+#: cps/templates/config_edit.html:398
 msgid "Minimum password length"
 msgstr ""
 
-#: cps/templates/config_edit.html:389
+#: cps/templates/config_edit.html:403
 msgid "Enforce number"
 msgstr ""
 
-#: cps/templates/config_edit.html:393
+#: cps/templates/config_edit.html:407
 msgid "Enforce lowercase characters"
 msgstr ""
 
-#: cps/templates/config_edit.html:397
+#: cps/templates/config_edit.html:411
 msgid "Enforce uppercase characters"
 msgstr ""
 
-#: cps/templates/config_edit.html:401
+#: cps/templates/config_edit.html:415
+msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
+msgstr ""
+
+#: cps/templates/config_edit.html:419
 msgid "Enforce special characters"
 msgstr ""
 
@@ -2596,47 +2660,47 @@ msgstr ""
 msgid "Published"
 msgstr "Publicerad"
 
-#: cps/templates/detail.html:250 cps/templates/listenmp3.html:158
+#: cps/templates/detail.html:251 cps/templates/listenmp3.html:158
 msgid "Mark As Unread"
 msgstr "Markera som oläst"
 
-#: cps/templates/detail.html:251 cps/templates/listenmp3.html:158
+#: cps/templates/detail.html:252 cps/templates/listenmp3.html:158
 msgid "Mark As Read"
 msgstr "Markera som läst"
 
-#: cps/templates/detail.html:253 cps/templates/listenmp3.html:159
+#: cps/templates/detail.html:254 cps/templates/listenmp3.html:159
 msgid "Read"
 msgstr "Läst"
 
-#: cps/templates/detail.html:263 cps/templates/listenmp3.html:166
+#: cps/templates/detail.html:264 cps/templates/listenmp3.html:166
 msgid "Restore from archive"
 msgstr "Återställ från arkivet"
 
-#: cps/templates/detail.html:264 cps/templates/listenmp3.html:166
+#: cps/templates/detail.html:265 cps/templates/listenmp3.html:166
 msgid "Add to archive"
 msgstr "Lägg till i arkivet"
 
-#: cps/templates/detail.html:266 cps/templates/listenmp3.html:167
+#: cps/templates/detail.html:267 cps/templates/listenmp3.html:167
 msgid "Archived"
 msgstr "Arkiverad"
 
-#: cps/templates/detail.html:277 cps/templates/listenmp3.html:177
+#: cps/templates/detail.html:278 cps/templates/listenmp3.html:177
 msgid "Description:"
 msgstr "Beskrivning:"
 
-#: cps/templates/detail.html:292 cps/templates/listenmp3.html:190
+#: cps/templates/detail.html:293 cps/templates/listenmp3.html:190
 #: cps/templates/search.html:16
 msgid "Add to shelf"
 msgstr "Lägg till hyllan"
 
-#: cps/templates/detail.html:304 cps/templates/detail.html:323
+#: cps/templates/detail.html:305 cps/templates/detail.html:324
 #: cps/templates/feed.xml:81 cps/templates/layout.html:154
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
 msgstr "(Publik)"
 
-#: cps/templates/detail.html:339
+#: cps/templates/detail.html:340
 msgid "Edit Metadata"
 msgstr "Redigera metadata"
 
