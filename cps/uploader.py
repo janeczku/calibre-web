@@ -267,8 +267,12 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 pubdate = row['time_uploaded']
                 pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
                 # find cover file
-                cover_file_path = os.path.join(os.path.dirname(os.path.dirname(row['path'])), f'{video_id}.webp')
-                if not os.path.isfile(cover_file_path):
+                if os.path.isdir(os.path.dirname(row['path'])):
+                    for file in os.listdir(os.path.dirname(row['path'])):
+                        if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == video_id:
+                            cover_file_path = os.path.join(os.path.dirname(row['path']), file)
+                            break
+                else:
                     log.warning('Cannot find thumbnail file, using default cover')
                     cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
                 c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
