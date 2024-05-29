@@ -1,7 +1,7 @@
 #!/bin/bash
 
 XKLB_INTERNAL_CMD="$1"    # e.g. "tubeadd" or "dl"
-URL="$2"
+URL_OR_SEARCH_TERM="$2"
 
 LOG_FILE="/var/log/xklb.log"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
@@ -23,7 +23,7 @@ log() {
 }
 
 if [ $# -ne 2 ]; then
-    log "Error" "Two arguments are required. Please provide a command (tubeadd/dl) and a URL."
+    log "Error" "Two arguments are required. Please provide a command (tubeadd/dl/search) and a URL or search term."
     exit 1
 fi
 
@@ -53,9 +53,11 @@ log "Info" "Using yt-dlp $(yt-dlp --version)"
 # fetching metadata. This will prevent hanging for playlist URLs or short URLs.
 # "...to be able to list videos that are not downloaded yet"
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
-    xklb_full_cmd="lb tubeadd ${XKLB_DB_FILE} ${URL} --force ${VERBOSITY}"
+    xklb_full_cmd="lb tubeadd ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM} --force ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
-    xklb_full_cmd="lb dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL} ${FORMAT_OPTIONS} --write-thumbnail ${VERBOSITY}"
+    xklb_full_cmd="lb dl ${XKLB_DB_FILE} --prefix ${TMP_DOWNLOADS_DIR} --video --search ${URL_OR_SEARCH_TERM} ${FORMAT_OPTIONS} --write-thumbnail --subs ${VERBOSITY}"
+elif [[ $XKLB_INTERNAL_CMD == "search" ]]; then
+    xklb_full_cmd="lb search ${XKLB_DB_FILE} ${URL_OR_SEARCH_TERM}"
 else
     log "Error" "Invalid xklb command. Please choose 'tubeadd' or 'dl'."
     exit 1
@@ -87,5 +89,5 @@ if [ $rc -eq 0 ]; then
     log "Info" "lb-wrapper's xklb command (${XKLB_INTERNAL_CMD}) completed successfully."
 else
     log "Error" "Error $rc occurred while running lb-wrapper's xklb commands."
-    exit 1
+    exit $rc
 fi
