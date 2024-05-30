@@ -269,6 +269,11 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                 # find cover file
                 if os.path.isdir(os.path.dirname(row['path'])):
                     for file in os.listdir(os.path.dirname(row['path'])):
+                        # 2024-05-30: YouTube (via yt_dlp and xklb) delivers WebP thumbnails by default, and occasionally also JPG thumbnails.
+                        # Vimeo seems to deliver JPG thumbnails every time.
+                        # FYI yt_dlp uses YouTube and Vimeo "extractors" -- among ~1810 websites it can scrape:
+                        # https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md
+                        # https://github.com/yt-dlp/yt-dlp/tree/master/yt_dlp/extractor
                         if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == video_id:
                             cover_file_path = os.path.join(os.path.dirname(row['path']), file)
                             break
