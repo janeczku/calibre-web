@@ -23,6 +23,7 @@
 import os
 from datetime import datetime
 import json
+import magic
 from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
@@ -755,6 +756,10 @@ def file_handling_on_upload(requested_file):
     except (IOError, OSError):
         log.error("File %s could not saved to temp dir", requested_file.filename)
         flash(_("File %(filename)s could not saved to temp dir",
+                filename=requested_file.filename), category="error")
+        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    except (Exception):
+        flash(_("File is not allowed to be uploaded to this server",
                 filename=requested_file.filename), category="error")
         return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
     return meta, None

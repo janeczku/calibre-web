@@ -23,7 +23,7 @@ from flask_babel import gettext as _
 from . import logger, comic, isoLanguages
 from .constants import BookMeta
 from .helper import split_authors
-from .file_helper import get_temp_dir
+from .file_helper import get_temp_dir, validate_mime_type
 
 log = logger.create()
 
@@ -91,7 +91,8 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
         meta = meta._replace(title=original_file_name)
     if not meta.author.strip() or meta.author.lower() == 'unknown':
         meta = meta._replace(author=_('Unknown'))
-    return meta
+    if validate_mime_type(tmp_file_path):
+        return meta
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):

@@ -19,6 +19,9 @@
 from tempfile import gettempdir
 import os
 import shutil
+import magic
+import zipfile
+from . import constants
 
 def get_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
@@ -30,3 +33,19 @@ def get_temp_dir():
 def del_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
     shutil.rmtree(tmp_dir)
+
+def validate_mime_type(tmp_file_path):
+    mime = magic.Magic(mime=True)
+    tmp_mime_type = mime.from_file(tmp_file_path)
+    if any(mime_type in tmp_mime_type for mime_type in constants.EXTENSIONS_UPLOAD):
+        return True
+    # Some epubs show up as zip mimetypes
+    elif "zip" in tmp_mime_type:
+        try:
+            with zipfile.ZipFile(tmp_file_path, 'r') as epub:
+                if "mimetype" in epub.namelist():
+                    return True
+        except:
+            pass
+    
+    raise Exception("Forbidden MIME type to upload")
