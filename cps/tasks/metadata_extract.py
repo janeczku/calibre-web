@@ -56,6 +56,10 @@ class TaskMetadataExtract(CalibreTask):
             self.message = f"{self.media_url_link} failed: {e}"
             return None
 
+    def _remove_shorts_from_db(self, conn):
+        conn.execute("DELETE FROM media WHERE path LIKE '%shorts%'")
+        conn.commit()
+
     def _fetch_requested_urls(self, conn):
         try:
             cursor = conn.execute("PRAGMA table_info(media)")
@@ -160,6 +164,7 @@ class TaskMetadataExtract(CalibreTask):
             return
 
         with sqlite3.connect(XKLB_DB_FILE) as conn:
+            self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
                 return
