@@ -1,6 +1,6 @@
 #!/bin/bash
 
-XKLB_INTERNAL_CMD="$1"    # e.g. "tubeadd" or "dl"
+XKLB_INTERNAL_CMD="$1"    # e.g. "tubeadd" or "dl" or "search"
 URL_OR_SEARCH_TERM="$2"
 
 LOG_FILE="/var/log/xklb.log"
