@@ -6,9 +6,9 @@ import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
 
-from cps.constants import XKLB_DB_FILE
-from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
-from cps.subproc_wrapper import process_open
+from ..constants import XKLB_DB_FILE
+from ..services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
+from ..subproc_wrapper import process_open
 from .. import logger
 from time import sleep
 
@@ -53,7 +53,6 @@ class TaskDownload(CalibreTask):
 
                 last_progress_time = datetime.now()
                 fragment_stuck_timeout = 30  # seconds
-                progress_stuck_timeout = 300  # seconds
 
                 while p.poll() is None:
                     # Check if there's data available to read
@@ -61,7 +60,7 @@ class TaskDownload(CalibreTask):
                     if rlist:
                         line = p.stdout.readline()
                         if line:
-                            if re.search(pattern_success, line):
+                            if re.search(pattern_success, line) or complete_progress_cycle == 4:
                                 # 2024-01-10: 99% (a bit arbitrary) is explained here...
                                 # https://github.com/iiab/calibre-web/pull/88#issuecomment-1885916421
                                 self.progress = 0.99
@@ -75,14 +74,9 @@ class TaskDownload(CalibreTask):
                                 if percentage == 100:
                                     complete_progress_cycle += 1
                                     last_progress_time = datetime.now()
-                                    if complete_progress_cycle == 4:
-                                        break
                     else:
                         elapsed_time = (datetime.now() - last_progress_time).total_seconds()
-                        if (self.progress < 0.99 and elapsed_time >= fragment_stuck_timeout) \
-                                or (self.progress == 0.99 and elapsed_time >= progress_stuck_timeout):
-                            if not self._is_video_file_downloaded(self.media_url):
-                                self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
+                        if elapsed_time >= fragment_stuck_timeout:
                             self.message = f"Downloading {self.media_url_link}... (This is taking longer than expected)"
 
                     sleep(0.1)
@@ -153,12 +147,6 @@ class TaskDownload(CalibreTask):
             conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
             conn.commit()
         conn.close()
-        raise ValueError(error_message)
-
-    def _is_video_file_downloaded(self, media_url):
-        """Check if the video file is downloaded"""
-        with sqlite3.connect(XKLB_DB_FILE) as conn:
-            return bool(conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (media_url,)).fetchone()[0])
 
     @property
     def name(self):
