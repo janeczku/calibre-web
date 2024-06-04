@@ -51,8 +51,9 @@ class TaskDownload(CalibreTask):
 
                 complete_progress_cycle = 0
 
+                last_progress_time = datetime.now()
                 fragment_stuck_timeout = 30  # seconds
-                fragment_stuck_time = 0
+                progress_stuck_timeout = 300  # seconds
 
                 while p.poll() is None:
                     # Check if there's data available to read
@@ -71,16 +72,22 @@ class TaskDownload(CalibreTask):
                                     self.message = f"Downloading {self.media_url_link}..."
                                     self.end_time = datetime.now()
                                     self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
+                                    last_progress_time = datetime.now()
                                 if percentage == 100:
                                     complete_progress_cycle += 1
+                                    last_progress_time = datetime.now()
                                     if complete_progress_cycle == 4:
                                         break
                     else:
-                        fragment_stuck_time += 0.1
-                        if fragment_stuck_time >= fragment_stuck_timeout:
-                            log.error("Download appears to be stuck.")
-                            self.record_error_in_database("Download appears to be stuck.")
-                            raise ValueError("Download appears to be stuck.")
+                        elapsed_time = (datetime.now() - last_progress_time).total_seconds()
+                        if elapsed_time >= fragment_stuck_timeout:
+                            log.error("Download appears to be stuck at unavailable fragment.")
+                            self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
+                            raise ValueError("Download appears to be stuck at unavailable fragment.")
+                        if self.progress == 0.99 and elapsed_time >= progress_stuck_timeout:
+                            log.error("Download appears to be stuck at 100%.")
+                            self.record_error_in_database("Download appears to be stuck at 100%.")
+                            raise ValueError("Download appears to be stuck at 100%.")
 
                     sleep(0.1)
                 
