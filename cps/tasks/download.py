@@ -55,6 +55,7 @@ class TaskDownload(CalibreTask):
                 fragment_stuck_timeout = 30  # seconds
 
                 while p.poll() is None:
+                    self.end_time = datetime.now()
                     # Check if there's data available to read
                     rlist, _, _ = select.select([p.stdout], [], [], 0.1)
                     if rlist:
@@ -69,7 +70,6 @@ class TaskDownload(CalibreTask):
                                 percentage = int(re.search(r'\d+', line).group())
                                 if percentage < 100:
                                     self.message = f"Downloading {self.media_url_link}..."
-                                    self.end_time = datetime.now()
                                     self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
                                 if percentage == 100:
                                     complete_progress_cycle += 1
@@ -124,12 +124,11 @@ class TaskDownload(CalibreTask):
                 self.record_error_in_database(str(e))
 
             finally:
+                self.end_time = datetime.now()
                 if p.returncode == 0 or self.progress == 1.0:
-                    self.end_time = datetime.now()
                     self.stat = STAT_FINISH_SUCCESS
                     log.info("Download task for %s completed successfully", self.media_url)
                 else:
-                    self.end_time = datetime.now()
                     self.stat = STAT_FAIL
 
         else:
