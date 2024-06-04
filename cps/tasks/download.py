@@ -6,9 +6,9 @@ import sqlite3
 from datetime import datetime
 from flask_babel import lazy_gettext as N_, gettext as _
 
-from calibreweb.cps.constants import XKLB_DB_FILE
-from calibreweb.cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
-from calibreweb.cps.subproc_wrapper import process_open
+from cps.constants import XKLB_DB_FILE
+from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS, STAT_FAIL, STAT_STARTED, STAT_WAITING
+from cps.subproc_wrapper import process_open
 from .. import logger
 from time import sleep
 
