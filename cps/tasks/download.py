@@ -81,11 +81,9 @@ class TaskDownload(CalibreTask):
                     else:
                         elapsed_time = (datetime.now() - last_progress_time).total_seconds()
                         if elapsed_time >= fragment_stuck_timeout:
-                            log.error("Download appears to be stuck at unavailable fragment.")
                             self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
                             raise ValueError("Download appears to be stuck at unavailable fragment.")
                         if self.progress == 0.99 and elapsed_time >= progress_stuck_timeout:
-                            log.error("Download appears to be stuck at 100%.")
                             self.record_error_in_database("Download appears to be stuck at 100%.")
                             raise ValueError("Download appears to be stuck at 100%.")
 
