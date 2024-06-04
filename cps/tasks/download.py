@@ -51,7 +51,7 @@ class TaskDownload(CalibreTask):
 
                 complete_progress_cycle = 0
 
-                fragment_stuck_timeout = 10  # seconds
+                fragment_stuck_timeout = 30  # seconds
                 fragment_stuck_time = 0
 
                 while p.poll() is None:
