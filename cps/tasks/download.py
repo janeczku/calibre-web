@@ -52,7 +52,7 @@ class TaskDownload(CalibreTask):
                 complete_progress_cycle = 0
 
                 last_progress_time = datetime.now()
-                fragment_stuck_timeout = 30  # seconds
+                fragment_stuck_timeout = 60  # seconds
                 progress_stuck_timeout = 300  # seconds
 
                 while p.poll() is None:
@@ -80,12 +80,18 @@ class TaskDownload(CalibreTask):
                                         break
                     else:
                         elapsed_time = (datetime.now() - last_progress_time).total_seconds()
-                        if elapsed_time >= fragment_stuck_timeout:
-                            self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
-                            raise ValueError("Download appears to be stuck at unavailable fragment.")
+                        if elapsed_time == 30:
+                            self.message = f"Downloading {self.media_url_link}... (This is taking longer than expected)"
+                        if self.progress < 0.99 and elapsed_time >= fragment_stuck_timeout:
+                            if self._is_video_file_downloaded(self.media_url):
+                                break
+                            else:
+                                self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
                         if self.progress == 0.99 and elapsed_time >= progress_stuck_timeout:
-                            self.record_error_in_database("Download appears to be stuck at 100%.")
-                            raise ValueError("Download appears to be stuck at 100%.")
+                            if self._is_video_file_downloaded(self.media_url):
+                                break
+                            else:
+                                self.record_error_in_database("Download completed but file not found.")
 
                     sleep(0.1)
                 
@@ -155,6 +161,12 @@ class TaskDownload(CalibreTask):
             conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
             conn.commit()
         conn.close()
+        raise ValueError(error_message)
+
+    def _is_video_file_downloaded(self, media_url):
+        """Check if the video file is downloaded"""
+        with sqlite3.connect(XKLB_DB_FILE) as conn:
+            return bool(conn.execute("SELECT path FROM media WHERE webpath = ? AND path NOT LIKE 'http%'", (media_url,)).fetchone()[0])
 
     @property
     def name(self):
