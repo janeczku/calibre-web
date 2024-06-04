@@ -52,7 +52,7 @@ class TaskDownload(CalibreTask):
                 complete_progress_cycle = 0
 
                 last_progress_time = datetime.now()
-                fragment_stuck_timeout = 60  # seconds
+                fragment_stuck_timeout = 30  # seconds
                 progress_stuck_timeout = 300  # seconds
 
                 while p.poll() is None:
@@ -72,7 +72,6 @@ class TaskDownload(CalibreTask):
                                     self.message = f"Downloading {self.media_url_link}..."
                                     self.end_time = datetime.now()
                                     self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
-                                    last_progress_time = datetime.now()
                                 if percentage == 100:
                                     complete_progress_cycle += 1
                                     last_progress_time = datetime.now()
@@ -80,21 +79,14 @@ class TaskDownload(CalibreTask):
                                         break
                     else:
                         elapsed_time = (datetime.now() - last_progress_time).total_seconds()
-                        if elapsed_time == 30:
-                            self.message = f"Downloading {self.media_url_link}... (This is taking longer than expected)"
-                        if self.progress < 0.99 and elapsed_time >= fragment_stuck_timeout:
-                            if self._is_video_file_downloaded(self.media_url):
-                                break
-                            else:
+                        if (self.progress < 0.99 and elapsed_time >= fragment_stuck_timeout) \
+                                or (self.progress == 0.99 and elapsed_time >= progress_stuck_timeout):
+                            if not self._is_video_file_downloaded(self.media_url):
                                 self.record_error_in_database("Download appears to be stuck at unavailable fragment.")
-                        if self.progress == 0.99 and elapsed_time >= progress_stuck_timeout:
-                            if self._is_video_file_downloaded(self.media_url):
-                                break
-                            else:
-                                self.record_error_in_database("Download completed but file not found.")
+                            self.message = f"Downloading {self.media_url_link}... (This is taking longer than expected)"
 
                     sleep(0.1)
-                
+
                 p.wait()
 
                 # Database operations
@@ -129,7 +121,7 @@ class TaskDownload(CalibreTask):
                     else:
                         log.error("Failed to send the requested file to %s", self.original_url)
                         self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
-                
+
                 conn.close()
 
             except Exception as e:
@@ -143,7 +135,7 @@ class TaskDownload(CalibreTask):
                     self.stat = STAT_FINISH_SUCCESS
                     log.info("Download task for %s completed successfully", self.media_url)
                 else:
-                    self.end_time = datetime.now()                    
+                    self.end_time = datetime.now()
                     self.stat = STAT_FAIL
 
         else:
