@@ -71,7 +71,7 @@ class TaskMetadataExtract(CalibreTask):
             return {row[0]: {"duration": row[1], "is_playlist_video": self._is_playlist_video(row[0], conn)} for row in rows}
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
-            self.message = f"{self.media_url_link} failed: An error occurred while trying to connect to the database."
+            self.message = f"{self.media_url_link} failed: An error occurred ({db_error}) while trying to connect to the database."
             return {}
 
     def _is_playlist_video(self, path, conn):
