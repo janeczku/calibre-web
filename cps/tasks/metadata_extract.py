@@ -68,18 +68,11 @@ class TaskMetadataExtract(CalibreTask):
                      if "error" in self.columns
                      else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
-            return {row[0]: {"duration": row[1], "is_playlist_video": self._is_playlist_video(row[0], conn)} for row in rows}
+            return {row[0]: {"duration": row[1]} for row in rows}
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
             self.message = f"{self.media_url_link} failed: {db_error}"
             return {}
-
-    def _is_playlist_video(self, path, conn):
-        try:
-            return bool(conn.execute("SELECT playlists_id FROM media WHERE path = ?", (path,)).fetchone())
-        except sqlite3.Error as db_error:
-            log.error("An error occurred while trying to connect to the database: %s", db_error)
-            return False
 
     def _get_shelf_title(self, conn):
         url_part = self.media_url.split("/")[-1]
@@ -171,8 +164,7 @@ class TaskMetadataExtract(CalibreTask):
 
             if self.type_of_url != "video":
                 self._get_shelf_title(conn)
-                if any([requested_urls[url]["is_playlist_video"] for url in requested_urls.keys()]):
-                    self._send_shelf_title()
+                self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
                 requested_urls = self._sort_and_limit_requested_urls(requested_urls)
