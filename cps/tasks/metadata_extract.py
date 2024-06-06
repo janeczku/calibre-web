@@ -38,10 +38,11 @@ class TaskMetadataExtract(CalibreTask):
         return re.sub(r"/media(?=\?|$)", r"/meta", original_url)
 
     def _get_type_of_url(self, media_url):
-        if "list=" in media_url:
-            return "playlist"
-        elif "@" in media_url:
-            return "channel"
+        if "youtube.com" or "youtu.be" in media_url:
+            if "list=" in media_url:
+                return "playlist"
+            elif "@" in media_url:
+                return "channel"
         else:
             return "video"
 
