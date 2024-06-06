@@ -71,14 +71,14 @@ class TaskMetadataExtract(CalibreTask):
             return {row[0]: {"duration": row[1], "is_playlist_video": self._is_playlist_video(row[0], conn)} for row in rows}
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
-            self.message = f"{self.media_url_link} failed: {db_error}"
+            self.message = f"{self.media_url_link} failed: An error occurred while trying to connect to the database."
             return {}
 
     def _is_playlist_video(self, path, conn):
         try:
             return bool(conn.execute("SELECT playlists_id FROM media WHERE path = ?", (path,)).fetchone())
         except sqlite3.Error as db_error:
-            log.error("An error occurred while trying to connect to the database: %s", db_error)
+            log.warning("Path %s is not a playlist video: %s", path, db_error)
             return False
 
     def _get_shelf_title(self, conn):
