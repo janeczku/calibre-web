@@ -40,7 +40,6 @@ class TaskMetadataExtract(CalibreTask):
     def _execute_subprocess(self, subprocess_args):
         try:
             p = process_open(subprocess_args, newlines=True)
-            self._get_type_of_url(self.media_url)
             while p.poll() is None:
                 line = p.stdout.readline()
                 if "[download] Downloading playlist:" in line:
