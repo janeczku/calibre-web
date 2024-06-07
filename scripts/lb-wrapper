@@ -8,6 +8,22 @@ XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 VERBOSITY="-vv"
 
+PATTERNS=(
+    "downloading*"
+    "\[https://.*\]:*"
+    "\[download\] Downloading playlist:*"
+)
+
+match_pattern() {
+    local line=$1
+    for pattern in "${PATTERNS[@]}"; do
+        if [[ $line == $pattern ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
 # Or download largest possible HD-style / UltraHD videos, to try to force
 # out-of-memory "502 Bad Gateway" for testing of issues like #37 and #79
 # FORMAT_OPTIONS="--format-sort size"
@@ -68,8 +84,8 @@ log "Info" "Running xklb command: ${xklb_full_cmd}"
 # >(...) "process substitution" explained at https://unix.stackexchange.com/a/324170
 # 1>&2 redirect back-to-STDERR to avoid nested (repeat) logging, explained at https://stackoverflow.com/a/15936384
 eval "${xklb_full_cmd}" \
-    > >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Info" "$line"; fi; done) \
-    2> >(while read -r line; do if [[ $line == downloading* || $line =~ \[https://.*\]:* ]]; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
+    > >(while read -r line; do if match_pattern "$line"; then echo "$line"; else log "Info" "$line"; fi; done) \
+    2> >(while read -r line; do if match_pattern "$line"; then echo "$line"; else log "Debug" "$line" 1>&2; fi; done) &
 # 2024-01-11: HOW THIS WORKS...
 # 0) xklb sends a flood of yt-dlp status message lines like "downloading  59.8%    2.29MiB/s" to STDERR.
 # 1) Then, "2> >(...)" reroutes (only those raw lines!) to STDIN, instead of logging them (as "Debug" lines).
