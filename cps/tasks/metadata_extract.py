@@ -21,7 +21,7 @@ class TaskMetadataExtract(CalibreTask):
         self.media_url = self._format_media_url(media_url)
         self.media_url_link = f'<a href="{self.media_url}" target="_blank">{self.media_url}</a>'
         self.original_url = self._format_original_url(original_url)
-        self.type_of_url = None
+        self.is_playlist = None
         self.current_user_name = current_user_name
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
@@ -43,11 +43,8 @@ class TaskMetadataExtract(CalibreTask):
             self._get_type_of_url(self.media_url)
             while p.poll() is None:
                 line = p.stdout.readline()
-                if "Importing playlist-less media" in line:
-                    self.type_of_url = "video"
-                    break
-                elif "[download] Downloading playlist:" in line:
-                    self.type_of_url = "playlist"
+                if "[download] Downloading playlist:" in line:
+                    self.is_playlist = True
                     self.shelf_title = line.split("Downloading playlist: ")[1].strip()
                     log.info("***Playlist title***: %s", self.shelf_title)
                     break
@@ -152,7 +149,7 @@ class TaskMetadataExtract(CalibreTask):
             if not requested_urls:
                 return
 
-            if self.type_of_url != "video":
+            if self.is_playlist:
                 self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
