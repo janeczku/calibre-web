@@ -12,7 +12,7 @@ PATTERNS=(
     "downloading*"
     "\[https://.*\]:*"
     "Importing playlist-less media*"
-    "[download] Downloading playlist:*"
+    "\[download\] Downloading playlist:*"
 )
 
 match_pattern() {
