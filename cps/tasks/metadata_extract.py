@@ -69,7 +69,7 @@ class TaskMetadataExtract(CalibreTask):
             return {row[0]: {"duration": row[1]} for row in rows}
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
-            self.message = f"{self.media_url_link} failed: {db_error}"
+            self.message = f"{self.media_url_link} failed: An error occurred ({db_error}) while trying to connect to the database."
             return {}
 
     def _send_shelf_title(self):
