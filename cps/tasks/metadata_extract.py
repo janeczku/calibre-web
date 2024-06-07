@@ -45,7 +45,6 @@ class TaskMetadataExtract(CalibreTask):
                 if "[download] Downloading playlist:" in line:
                     self.is_playlist = True
                     self.shelf_title = line.split("Downloading playlist: ")[1].strip()
-                    log.info("***Playlist title***: %s", self.shelf_title)
                     break
             p.wait()
             self.message = self.media_url_link + "..."
