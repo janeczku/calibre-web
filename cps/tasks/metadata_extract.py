@@ -21,7 +21,7 @@ class TaskMetadataExtract(CalibreTask):
         self.media_url = self._format_media_url(media_url)
         self.media_url_link = f'<a href="{self.media_url}" target="_blank">{self.media_url}</a>'
         self.original_url = self._format_original_url(original_url)
-        self.type_of_url = self._get_type_of_url(self.media_url)
+        self.type_of_url = None
         self.current_user_name = current_user_name
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
@@ -37,18 +37,20 @@ class TaskMetadataExtract(CalibreTask):
         # (?=...) is a "lookahead assertion" https://docs.python.org/3/library/re.html#regular-expression-syntax
         return re.sub(r"/media(?=\?|$)", r"/meta", original_url)
 
-    def _get_type_of_url(self, media_url):
-        if "youtube.com" or "youtu.be" in media_url:
-            if "list=" in media_url:
-                return "playlist"
-            elif "@" in media_url:
-                return "channel"
-        else:
-            return "video"
-
     def _execute_subprocess(self, subprocess_args):
         try:
             p = process_open(subprocess_args, newlines=True)
+            self._get_type_of_url(self.media_url)
+            while p.poll() is None:
+                line = p.stdout.readline()
+                if "Importing playlist-less media" in line:
+                    self.type_of_url = "video"
+                    break
+                elif "[download] Downloading playlist:" in line:
+                    self.type_of_url = "playlist"
+                    self.shelf_title = line.split("Downloading playlist: ")[1].strip()
+                    log.info("***Playlist title***: %s", self.shelf_title)
+                    break
             p.wait()
             self.message = self.media_url_link + "..."
             return p
@@ -74,19 +76,6 @@ class TaskMetadataExtract(CalibreTask):
             log.error("An error occurred while trying to connect to the database: %s", db_error)
             self.message = f"{self.media_url_link} failed: {db_error}"
             return {}
-
-    def _get_shelf_title(self, conn):
-        url_part = self.media_url.split("/")[-1]
-        if "list=" in url_part:
-            url_part = url_part.split("list=")[-1]
-            try:
-                self.shelf_title = conn.execute("SELECT title FROM playlists WHERE extractor_playlist_id = ?", (url_part,)).fetchone()[0]
-            except sqlite3.Error as db_error:
-                log.error("An error occurred while trying to connect to the database: %s", db_error)
-        elif "@" in url_part:
-            self.shelf_title = url_part.split("@")[-1]
-        else:
-            self.shelf_title = "Unnamed Bookshelf"
 
     def _send_shelf_title(self):
         try:
@@ -164,7 +153,6 @@ class TaskMetadataExtract(CalibreTask):
                 return
 
             if self.type_of_url != "video":
-                self._get_shelf_title(conn)
                 self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
