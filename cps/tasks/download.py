@@ -120,8 +120,7 @@ class TaskDownload(CalibreTask):
 
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
-                self.message = f"{self.media_url_link} failed to download: {e}"
-                self.record_error_in_database(str(e))
+                self.message = f"{self.media_url_link} failed to download: {self.read_error_from_database()}"
 
             finally:
                 self.end_time = datetime.now()
@@ -134,18 +133,12 @@ class TaskDownload(CalibreTask):
         else:
             log.info("No media URL provided - skipping download task")
 
-    def record_error_in_database(self, error_message):
-        """Record the error in the database"""
+    def read_error_from_database(self):
+        """Read the error from the database"""
         with sqlite3.connect(XKLB_DB_FILE) as conn:
-            # Check if the error column exists, if not, create it at the rightmost position
-            cursor = conn.cursor()
-            cursor.execute("PRAGMA table_info(media)")
-            columns = [column[1] for column in cursor.fetchall()]
-            if "error" not in columns:
-                conn.execute("ALTER TABLE media ADD COLUMN error TEXT")
-            conn.execute("UPDATE media SET error = ? WHERE webpath = ?", (error_message, self.media_url))
-            conn.commit()
+            error = conn.execute("SELECT error FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
         conn.close()
+        return error
 
     @property
     def name(self):
