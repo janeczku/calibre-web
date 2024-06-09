@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -812,8 +812,8 @@ msgid "Cover"
 msgstr "발견"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
-msgstr "Unrar 바이너리 파일을 찾을 수 없습니다"
+msgid "UnRar binary file not found"
+msgstr "UnRar 바이너리 파일을 찾을 수 없습니다"
 
 #: cps/helper.py:1027
 #, fuzzy
@@ -845,7 +845,7 @@ msgstr "실행 권한 누락"
 
 #: cps/helper.py:1068
 #, fuzzy
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr "UnRar 실행 오류"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -2455,8 +2455,9 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "Kepubify 전자책 변환기 경로"
 
 #: cps/templates/config_edit.html:344
+#, fuzzy
 msgid "Location of Unrar binary"
-msgstr "Unrar 바이너리의 위치"
+msgstr "UnRar 바이너리의 위치"
 
 #: cps/templates/config_edit.html:360
 #, fuzzy
@@ -3214,7 +3215,7 @@ msgstr "숨기기"
 msgid "DJVU Reader"
 msgstr "DJVU 리더"
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr "PDF 리더"
 
