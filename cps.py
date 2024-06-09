@@ -27,7 +27,27 @@ sys.path.insert(0, path)
 
 from cps.main import main
 
+
+def hide_console_windows():
+    import ctypes
+    import os
+
+    hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+    if hwnd != 0:
+        try:
+            import win32process
+        except ImportError:
+            print("To hide console window install 'pywin32' using 'pip install pywin32'")
+            return
+        ctypes.windll.user32.ShowWindow(hwnd, 0)
+        ctypes.windll.kernel32.CloseHandle(hwnd)
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
+        os.system('taskkill /PID ' + str(pid) + ' /f')
+
+
 if __name__ == '__main__':
+    if os.name == "nt":
+        hide_console_windows()
     main()
 
 
