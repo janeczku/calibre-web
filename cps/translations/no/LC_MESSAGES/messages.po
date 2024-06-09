@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -820,8 +820,8 @@ msgid "Cover"
 msgstr "Dekke"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
-msgstr "Unrar binær fil ikke funnet"
+msgid "UnRar binary file not found"
+msgstr "UnRar binær fil ikke funnet"
 
 #: cps/helper.py:1027
 msgid "Error executing UnRar"
@@ -852,7 +852,7 @@ msgstr "Utførelsestillatelser mangler"
 
 #: cps/helper.py:1068
 #, fuzzy
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr "Feil ved kjøring av UnRar"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -3260,7 +3260,7 @@ msgstr ""
 msgid "DJVU Reader"
 msgstr ""
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr ""
 

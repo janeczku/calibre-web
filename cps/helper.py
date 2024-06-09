@@ -884,7 +884,7 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
             log.error("Failed to create path for cover")
             return False, _("Failed to create path for cover")
     try:
-        # upload of jgp file without wand
+        # upload of jpg file without wand
         if isinstance(img, requests.Response):
             with open(os.path.join(filepath, saved_filename), 'wb') as f:
                 f.write(img.content)
@@ -1013,14 +1013,14 @@ def check_unrar(unrar_location):
         return
 
     if not os.path.exists(unrar_location):
-        return _('Unrar binary file not found')
+        return _('UnRar binary file not found')
 
     try:
         unrar_location = [unrar_location]
         value = process_wait(unrar_location, pattern='UNRAR (.*) freeware')
         if value:
             version = value.group(1)
-            log.debug("unrar version %s", version)
+            log.debug("UnRar version %s", version)
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
@@ -1065,7 +1065,7 @@ def check_calibre(calibre_location):
 
     except (OSError, UnicodeDecodeError) as err:
         log.error_or_exception(err)
-        return _('Error excecuting Calibre')
+        return _('Error executing Calibre')
 
 
 def json_serial(obj):
