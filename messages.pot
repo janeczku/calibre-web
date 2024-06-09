@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -802,7 +802,7 @@ msgid "Cover"
 msgstr ""
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
+msgid "UnRar binary file not found"
 msgstr ""
 
 #: cps/helper.py:1027
@@ -832,7 +832,7 @@ msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
 #: cps/helper.py:1068
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr ""
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -3169,7 +3169,7 @@ msgstr ""
 msgid "DJVU Reader"
 msgstr ""
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr ""
 
