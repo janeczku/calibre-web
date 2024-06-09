@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -803,8 +803,8 @@ msgid "Cover"
 msgstr "封面"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
-msgstr "找不到 Unrar 执行文件"
+msgid "UnRar binary file not found"
+msgstr "找不到 UnRar 执行文件"
 
 #: cps/helper.py:1027
 msgid "Error executing UnRar"
@@ -835,7 +835,7 @@ msgstr "缺少执行权限"
 
 #: cps/helper.py:1068
 #, fuzzy
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr "执行 UnRar 时出错"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -2423,8 +2423,9 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "KEpubify 电子书转换器路径"
 
 #: cps/templates/config_edit.html:344
+#, fuzzy
 msgid "Location of Unrar binary"
-msgstr "Unrar 程序路径"
+msgstr "UnRar 程序路径"
 
 #: cps/templates/config_edit.html:360
 msgid "Security Settings"
@@ -3174,7 +3175,7 @@ msgstr "隐藏"
 msgid "DJVU Reader"
 msgstr "DJVU 阅读器"
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr "PDF 阅读器"
 

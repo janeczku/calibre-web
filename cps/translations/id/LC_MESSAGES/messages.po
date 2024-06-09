@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: 2023-01-21 10:00+0700\n"
 "Last-Translator: Arief Hidayat<arihid95@gmail.com>\n"
 "Language: id\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -812,7 +812,7 @@ msgid "Cover"
 msgstr "Sampul"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
+msgid "UnRar binary file not found"
 msgstr "Berkas biner unrar tidak ditemukan"
 
 #: cps/helper.py:1027
@@ -845,7 +845,7 @@ msgstr "Izin eksekusi hilang"
 
 #: cps/helper.py:1068
 #, fuzzy
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr "Kesalahan saat menjalankan UnRar"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -2452,8 +2452,9 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "Jalur ke Konverter E-Book Kepubify"
 
 #: cps/templates/config_edit.html:344
+#, fuzzy
 msgid "Location of Unrar binary"
-msgstr "Lokasi binari Unrar"
+msgstr "Lokasi binari UnRar"
 
 #: cps/templates/config_edit.html:360
 #, fuzzy
@@ -3209,7 +3210,7 @@ msgstr "Sembunyikan"
 msgid "DJVU Reader"
 msgstr "Pembaca DJVU"
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr "Pembaca PDF"
 
