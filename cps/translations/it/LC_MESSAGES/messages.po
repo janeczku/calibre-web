@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: 2024-06-01 05:51+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -803,8 +803,8 @@ msgid "Cover"
 msgstr "Copertina"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
-msgstr "File binario Unrar non trovato"
+msgid "UnRar binary file not found"
+msgstr "File binario UnRar non trovato"
 
 #: cps/helper.py:1027
 msgid "Error executing UnRar"
@@ -833,7 +833,8 @@ msgid "Missing executable permissions: %(missing)s"
 msgstr "Permessi di esecuzione mancanti: %(missing)s"
 
 #: cps/helper.py:1068
-msgid "Error excecuting Calibre"
+#, fuzzy
+msgid "Error executing Calibre"
 msgstr "Errore nell'esecuzione di Calibre"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -2419,6 +2420,7 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "Percorso del convertitore di libri Kepubify"
 
 #: cps/templates/config_edit.html:344
+#, fuzzy
 msgid "Location of Unrar binary"
 msgstr "Posizione del file binario di UnRar"
 
@@ -3170,7 +3172,7 @@ msgstr "Nascondi"
 msgid "DJVU Reader"
 msgstr "Lettore DJVU"
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr "Lettore PDF"
 

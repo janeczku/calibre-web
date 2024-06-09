@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-03 20:41+0200\n"
+"POT-Creation-Date: 2024-06-09 12:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -13,7 +13,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: cps/about.py:84
 msgid "Statistics"
@@ -809,8 +809,8 @@ msgid "Cover"
 msgstr "Capa"
 
 #: cps/helper.py:1016
-msgid "Unrar binary file not found"
-msgstr "Binário Unrar não encontrado"
+msgid "UnRar binary file not found"
+msgstr "Binário UnRar não encontrado"
 
 #: cps/helper.py:1027
 #, fuzzy
@@ -842,7 +842,7 @@ msgstr "Faltam as permissões de execução"
 
 #: cps/helper.py:1068
 #, fuzzy
-msgid "Error excecuting Calibre"
+msgid "Error executing Calibre"
 msgstr "Erro excecutando UnRar"
 
 #: cps/helper.py:1158 cps/templates/admin.html:216
@@ -2449,8 +2449,9 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "Caminho para Kepubify E-Book Converter"
 
 #: cps/templates/config_edit.html:344
+#, fuzzy
 msgid "Location of Unrar binary"
-msgstr "Caminho para o binário Unrar"
+msgstr "Caminho para o binário UnRar"
 
 #: cps/templates/config_edit.html:360
 #, fuzzy
@@ -3206,7 +3207,7 @@ msgstr "Esconder"
 msgid "DJVU Reader"
 msgstr "leitor de DJVU"
 
-#: cps/templates/readpdf.html:32
+#: cps/templates/readpdf.html:31
 msgid "PDF Reader"
 msgstr "Leitor de PDF"
 
