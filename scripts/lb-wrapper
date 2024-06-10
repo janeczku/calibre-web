@@ -6,6 +6,9 @@ URL_OR_SEARCH_TERM="$2"
 LOG_FILE="/var/log/xklb.log"
 XKLB_DB_FILE="/library/calibre-web/xklb-metadata.db"
 TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
+# outtmpl explanation:
+# https://github.com/yt-dlp/yt-dlp#output-template
+# https://github.com/chapmanjacobd/library/blob/e682ac20f5dcc4fa94238b57931f4705b9515059/xklb/createdb/tube_backend.py#L508-L523
 OUTTMPL="'${TMP_DOWNLOADS_DIR}/%(extractor_key,extractor)s/%(uploader,uploader_id)s/%(title).170B_%(view_count)3.2D_[%(id).64B].%(ext)s'"
 VERBOSITY="-vv"
 
