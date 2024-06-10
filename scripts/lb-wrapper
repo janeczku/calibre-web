@@ -10,6 +10,11 @@ TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 # https://github.com/yt-dlp/yt-dlp#output-template
 # https://github.com/chapmanjacobd/library/blob/e682ac20f5dcc4fa94238b57931f4705b9515059/xklb/createdb/tube_backend.py#L385-L388
 # https://github.com/chapmanjacobd/library/blob/e682ac20f5dcc4fa94238b57931f4705b9515059/xklb/createdb/tube_backend.py#L508-L523
+# /library/downloads/calibre-web/                                                                         (TMP_DOWNLOADS_DIR)
+# └── Youtube                                                                                             (extractor)
+#     └── TED-Ed                                                                                          (uploader_id)
+#         ├── How does an air conditioner actually work？ - Anna Rothschild_224.59k_[6sSDXurPX-s].mp4     ([video file] title + view_count + video_id + extension)
+#         └── How does an air conditioner actually work？ - Anna Rothschild_224.59k_[6sSDXurPX-s].webp    ([thumbnail] title + view_count + video_id + extension)
 OUTTMPL="'${TMP_DOWNLOADS_DIR}/%(extractor_key,extractor)s/%(uploader,uploader_id)s/%(title).170B_%(view_count)3.2D_[%(id).64B].%(ext)s'"
 VERBOSITY="-vv"
 
