@@ -274,7 +274,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                         # FYI yt_dlp uses YouTube and Vimeo "extractors" -- among ~1810 websites it can scrape:
                         # https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md
                         # https://github.com/yt-dlp/yt-dlp/tree/master/yt_dlp/extractor
-                        if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == video_id:
+                        if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == os.path.splitext(os.path.basename(row['path']))[0]:
                             cover_file_path = os.path.join(os.path.dirname(row['path']), file)
                             break
                 else:
