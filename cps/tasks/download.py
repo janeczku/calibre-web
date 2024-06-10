@@ -138,7 +138,6 @@ class TaskDownload(CalibreTask):
         with sqlite3.connect(XKLB_DB_FILE) as conn:
             error = conn.execute("SELECT error FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
         conn.close()
-        conn.execute("UPDATE media SET webpath = ? WHERE webpath = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", self.media_url))
         return error
 
     @property
