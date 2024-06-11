@@ -89,7 +89,7 @@ class TaskMetadataExtract(CalibreTask):
     def _update_metadata(self, requested_urls):
         failed_urls = []
         subprocess_args_list = [[os.getenv("LB_WRAPPER", "lb-wrapper"), "tubeadd", requested_url] for requested_url in requested_urls.keys()]
-        
+
         for index, subprocess_args in enumerate(subprocess_args_list):
             try:
                 p = self._execute_subprocess(subprocess_args)
@@ -97,7 +97,7 @@ class TaskMetadataExtract(CalibreTask):
                     self.progress = (index + 1) / len(subprocess_args_list)
                 else:
                     failed_urls.append(subprocess_args[2])
-                p.wait() 
+                p.wait()
             except Exception as e:
                 log.error("An error occurred during updating the metadata of %s: %s", subprocess_args[2], e)
                 self.message = f"{subprocess_args[2]} failed: {e}"
