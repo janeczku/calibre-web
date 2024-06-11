@@ -128,7 +128,11 @@ class TaskMetadataExtract(CalibreTask):
             WorkerThread.add(self.current_user_name, task_download)
             num_requested_urls = len(requested_urls)
             total_duration = sum(url_data["duration"] for url_data in requested_urls.values())
-            self.message = self.media_url_link + f"<br><br>Number of Videos: {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+            self.message = self.media_url_link + f"<br><br>" \
+                           f"Number of Videos: {index + 1}/{num_requested_urls}<br>" \
+                           f"Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+            if self.unavailable:
+                self.message += f"<br><br>Unavailable Video(s):<br>{'<br>'.join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)}"
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
