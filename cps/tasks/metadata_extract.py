@@ -29,6 +29,7 @@ class TaskMetadataExtract(CalibreTask):
         self.columns = None
         self.shelf_title = None
         self.shelf_id = None
+        self.unavailable = []
 
     def _format_media_url(self, media_url):
         return media_url.split("&")[0] if "&" in media_url else media_url
@@ -66,7 +67,8 @@ class TaskMetadataExtract(CalibreTask):
                      if "error" in self.columns
                      else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
-            return {row[0]: {"duration": row[1]} for row in rows}
+            requested_urls = {row[0]: {"duration": row[1]} if row[1] is not None and row[1] > 0 else self.unavailable.append(row[0]) for row in rows}
+            return requested_urls
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
             self.message = f"{self.media_url_link} failed: An error occurred ({db_error}) while trying to connect to the database."
