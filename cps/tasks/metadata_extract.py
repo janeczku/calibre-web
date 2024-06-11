@@ -70,7 +70,7 @@ class TaskMetadataExtract(CalibreTask):
             requested_urls = {}
             for path, duration in rows:
                 if duration is not None and duration > 0:
-                    requested_urls[path] = {"duration": duration};
+                    requested_urls[path] = {"duration": duration}
                 else:
                     self.unavailable.append(path)
             return requested_urls
