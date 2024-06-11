@@ -45,4 +45,4 @@ comicapi>=2.2.0,<3.3.0
 jsonschema>=3.2.0,<4.23.0
 
 # Hide console Window on Windows
-pywin32>=220,<310
+pywin32>=220,<310 ; sys_platform == 'win32'
