@@ -73,7 +73,7 @@ class TaskMetadataExtract(CalibreTask):
                   requested_urls[path] = {"duration": duration};
                else:
                   self.unavailable.append(path)
-   return requested_urls
+            return requested_urls
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
             self.message = f"{self.media_url_link} failed: An error occurred ({db_error}) while trying to connect to the database."
