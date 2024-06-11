@@ -29,6 +29,7 @@ class TaskMetadataExtract(CalibreTask):
         self.columns = None
         self.shelf_title = None
         self.shelf_id = None
+        self.unavailable = []
 
     def _format_media_url(self, media_url):
         return media_url.split("&")[0] if "&" in media_url else media_url
@@ -66,7 +67,10 @@ class TaskMetadataExtract(CalibreTask):
                      if "error" in self.columns
                      else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
-            return {row[0]: {"duration": row[1]} for row in rows}
+            requested_urls = {row[0]: {"duration": row[1]} if row[1] is not None and row[1] > 0 else self.unavailable.append(row[0]) for row in rows}
+            for url in self.unavailable:
+                requested_urls.pop(url)
+            return requested_urls
         except sqlite3.Error as db_error:
             log.error("An error occurred while trying to connect to the database: %s", db_error)
             self.message = f"{self.media_url_link} failed: An error occurred ({db_error}) while trying to connect to the database."
@@ -85,7 +89,7 @@ class TaskMetadataExtract(CalibreTask):
     def _update_metadata(self, requested_urls):
         failed_urls = []
         subprocess_args_list = [[os.getenv("LB_WRAPPER", "lb-wrapper"), "tubeadd", requested_url] for requested_url in requested_urls.keys()]
-        
+
         for index, subprocess_args in enumerate(subprocess_args_list):
             try:
                 p = self._execute_subprocess(subprocess_args)
@@ -93,7 +97,7 @@ class TaskMetadataExtract(CalibreTask):
                     self.progress = (index + 1) / len(subprocess_args_list)
                 else:
                     failed_urls.append(subprocess_args[2])
-                p.wait()    
+                p.wait()
             except Exception as e:
                 log.error("An error occurred during updating the metadata of %s: %s", subprocess_args[2], e)
                 self.message = f"{subprocess_args[2]} failed: {e}"
@@ -124,7 +128,11 @@ class TaskMetadataExtract(CalibreTask):
             WorkerThread.add(self.current_user_name, task_download)
             num_requested_urls = len(requested_urls)
             total_duration = sum(url_data["duration"] for url_data in requested_urls.values())
-            self.message = self.media_url_link + f"<br><br>Number of Videos: {index + 1}/{num_requested_urls}<br>Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+            self.message = self.media_url_link + f"<br><br>" \
+                           f"Number of Videos: {index + 1}/{num_requested_urls}<br>" \
+                           f"Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+            if self.unavailable:
+                self.message += f"<br><br>Unavailable Video(s):<br>{'<br>'.join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)}"
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
@@ -145,9 +153,11 @@ class TaskMetadataExtract(CalibreTask):
             self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
-                return
+                self.message = f"{self.media_url_link} failed: Video not available."
+                conn.execute("DELETE FROM media WHERE path = ?", (self.media_url,))
+                self.stat = STAT_FAIL
 
-            if self.is_playlist:
+            elif self.is_playlist:
                 self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
