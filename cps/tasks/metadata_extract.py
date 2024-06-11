@@ -97,7 +97,7 @@ class TaskMetadataExtract(CalibreTask):
                     self.progress = (index + 1) / len(subprocess_args_list)
                 else:
                     failed_urls.append(subprocess_args[2])
-                p.wait()    
+                p.wait() 
             except Exception as e:
                 log.error("An error occurred during updating the metadata of %s: %s", subprocess_args[2], e)
                 self.message = f"{subprocess_args[2]} failed: {e}"
@@ -153,9 +153,11 @@ class TaskMetadataExtract(CalibreTask):
             self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
-                return
+                self.message = f"{self.media_url_link} failed: Video not available. To force fetch metadata, please submit the URL again."
+                conn.execute("DELETE FROM media WHERE path = ?", (self.media_url,))
+                self.stat = STAT_FAIL
 
-            if self.is_playlist:
+            elif self.is_playlist:
                 self._send_shelf_title()
                 self._update_metadata(requested_urls)
                 self._calculate_views_per_day(requested_urls, conn)
