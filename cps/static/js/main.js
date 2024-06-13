@@ -258,6 +258,11 @@ $(document).ready(function() {
         }
     });
 
+    // Clear the input field when the modal is shown
+    $("#mediaDownloadModal").on('shown.bs.modal', function() {
+        $("#mediaURL").val("");
+    });
+
     /*
     // Function to validate URL
     function isValidURL(url) {
