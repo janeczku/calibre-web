@@ -134,6 +134,9 @@ class TaskMetadataExtract(CalibreTask):
             self.message = self.media_url_link + f"<br><br>" \
                            f"Number of Videos: {index + 1}/{num_requested_urls}<br>" \
                            f"Total Duration: {datetime.utcfromtimestamp(total_duration).strftime('%H:%M:%S')}"
+            if self.shelf_title:
+                shelf_url = re.sub(r"/meta(?=\?|$)", r"/shelf", self.original_url) + f"/{self.shelf_id}"
+                self.message += f"<br><br>Shelf Title: <a href='{shelf_url}' target='_blank'>{self.shelf_title}</a>"
             if self.unavailable:
                 self.message += f"<br><br>Unavailable Video(s):<br>{'<br>'.join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)}"
 
