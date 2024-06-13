@@ -284,7 +284,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                     cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
                 c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
                 row = c.fetchone()
-                description = f"Source: <a href='{video_url}' target='_blank'>{video_url}</a>\n\n{row['text']}" if row is not None else ''
+                description = f"Source: <a href='{video_url}' target='_blank'>{video_url}</a><br>{row['text']}" if row is not None else ''
                 meta = BookMeta(
                     file_path=tmp_file_path,
                     extension=original_file_extension,
