@@ -252,6 +252,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
     if ']' in original_file_name:
         video_id = original_file_name.split('[')[1].split(']')[0]
+        video_url = None
         if os.path.isfile(XKLB_DB_FILE):
             conn = sqlite3.connect(XKLB_DB_FILE)
             conn.row_factory = sqlite3.Row
@@ -260,6 +261,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             c.execute("SELECT * FROM media WHERE extractor_id=? AND path LIKE ?", (video_id, f'%{original_file_name}%'))
             row = c.fetchone()
             if row is not None:
+                video_url = row['webpath']
                 title = row['title']
                 author = row['path'].split('/calibre-web/')[1].split('/')[1].replace('_', ' ')
                 publisher = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
@@ -282,7 +284,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
                     cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
                 c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
                 row = c.fetchone()
-                description = row['text'] if row is not None else ''
+                description = f"Source: <a href='{video_url}' target='_blank'>{video_url}</a><br>{row['text']}" if row is not None else ''
                 meta = BookMeta(
                     file_path=tmp_file_path,
                     extension=original_file_extension,
