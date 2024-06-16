@@ -27,22 +27,6 @@ from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
-# from lxml.etree import ParserError
-
-#try:
-#    # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
-#    from bleach import clean_text as clean_html
-#    BLEACH = True
-#except ImportError:
-#    try:
-#        BLEACH = False
-#        from nh3 import clean as clean_html
-#    except ImportError:
-#        try:
-#            BLEACH = False
-#            from lxml.html.clean import clean_html
-#        except ImportError:
-#            clean_html = None
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Response, jsonify
 from flask_babel import gettext as _
