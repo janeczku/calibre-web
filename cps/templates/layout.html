@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html lang="{{ current_user.locale }}">
   <head>
-    <title>{{instance}} | {{title}}</title>
+    <!-- <title>{{instance}} | {{title}}</title> -->
+    <title>Minerva Lib | {{title}}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,8 +13,10 @@
       <meta name="google-site-verification" content="{{g.google_site_verification}}">
     {% endif %}
     <!-- Bootstrap -->
-    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='icon.svg') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icon.svg') }}">
     <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     {% block header %}{% endblock %}
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
@@ -34,7 +37,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
+          <!-- <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a> -->
+          <a class="navbar-brand" href="{{url_for('web.index')}}" style="padding: 2px;">
+            <img src="{{ url_for('static', filename='icon.svg') }}" alt="Minerva Logo" class="logo" style="width: 50px; height: 50px;">
+          </a>
         </div>
         {% if g.current_theme == 1 %}
             <div class="home-btn"><a class="home-btn-tooltip" href="{{url_for("web.index",page=1)}}" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Home"></a></div>

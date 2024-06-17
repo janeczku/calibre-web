@@ -1,3 +1,19 @@
+:root {
+  --minerva-primary: #2E2E2E;
+  --minerva-secondary: #EEEDEC;
+  --minerva-accent: #4F9DBf;
+  --minerva-error: #E34234;
+  --minerva-warning: #FFD700;
+  --minerva-success: #638B84;
+
+  
+  --minerva-primary-light: #4F4F4F;
+  --minerva-accent-light: #6AB7D1;
+  --minerva-success-light: #8AB9B4;
+
+  --minerva-error-dark: #B22222;
+  --minerva-accent-dark: #1C5484;
+}
 
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
@@ -29,8 +45,9 @@ html.http-error {
 }
 
 body {
-  background: #f2f2f2;
+  background: var(--minerva-secondary);
   margin-bottom: 40px;
+  color: var(--minerva-primary);
 }
 
 .http-error body {
@@ -48,7 +65,8 @@ body {
 
 body h2 {
   font-weight: normal;
-  color: #444;
+  /* color: #444; */
+  color: var(--minerva-primary-light);
 }
 
 a,
@@ -58,23 +76,26 @@ a,
 .editable-empty:hover { color: #45b29d; }
 .book-remove:hover { color: #23527c; }
 .user-remove:hover { color: #23527c; }
-.btn-default a { color: #444; }
+.btn-default a { /* color: #444;  */ color: var(--minerva-primary-light); }
 .panel-title > a { text-decoration: none; }
 
 .navigation li a {
-  color: #444;
+  /* color: #444; */
+  color: var(--minerva-primary-light);
   text-decoration: none;
   display: block;
   padding: 10px;
 }
 
 .btn-default a:hover {
-  color: #45b29d;
+  /* color: #45b29d; */
+  color: var(--minerva-accent);
   text-decoration: None;
 }
 
 .btn-default:hover {
-  color: #45b29d;
+  /* color: #45b29d; */
+  color: var(--minerva-accent);
 }
 
 .editable-click,
@@ -99,10 +120,14 @@ table .bg-dark-danger a { color: #fff; }
 
 .navigation .create-shelf a {
   color: #fff;
-  background: #45b29d;
+  /* background: #45b29d; */
+  background: var(--minerva-success);
   padding: 10px 20px;
   border-radius: 5px;
   text-decoration: none;
+}
+.navigation .create-shelf a:hover {
+  background: var(--minerva-success-light);
 }
 
 .navigation li a:hover {
@@ -194,13 +219,15 @@ table .bg-dark-danger a { color: #fff; }
 .container-fluid .book .meta .title {
   font-weight: bold;
   font-size: 15px;
-  color: #444;
+  /* color: #444; */
+  color: var(--minerva-primary-light);
 }
 
 .container-fluid .book .meta .series {
   font-weight: 400;
   font-size: 12px;
-  color: #444;
+  /* color: #444; */
+  color: var(--minerva-primary-light);
 }
 
 .container-fluid .book .meta .author {
@@ -209,8 +236,14 @@ table .bg-dark-danger a { color: #fff; }
 }
 
 .container-fluid .book .meta .rating { margin-top: 5px; }
-.rating .glyphicon-star-empty { color: #444; }
-.rating .glyphicon-star.good { color: #444; }
+.rating .glyphicon-star-empty { 
+  /* color: #444;  */
+  color: var(--minerva-primary-light);
+}
+.rating .glyphicon-star.good { 
+  /* color: #444;  */
+  color: var(--minerva-primary-light);
+}
 .rating-clear .glyphicon-remove { color: #333; }
 
 .container-fluid .author .author-hidden,
@@ -293,11 +326,21 @@ span.glyphicon.glyphicon-tags {
 .discover .btn { margin-bottom: 5px; }
 .button-link { color: #fff; }
 
+
+.btn-primary {
+  /* background-color: #1c5484;  */
+  background-color: var(--minerva-accent);
+  border: none;
+}
+
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
 .btn-primary.active,
-.open .dropdown-toggle.btn-primary { background-color: #1c5484; }
+.open .dropdown-toggle.btn-primary { 
+  /* background-color: #1c5484;  */
+  background-color: var(--minerva-accent-dark);
+}
 
 .btn-primary.disabled,
 .btn-primary[disabled],
@@ -326,11 +369,18 @@ fieldset[disabled] .btn-primary.active { background-color: #89b9e2; }
 .intend-form { margin-left: 20px; }
 
 table .bg-dark-danger {
-  background-color: #d9534f;
+  /* background-color: #d9534f; */
+  background-color: var(--minerva-error);
   color: #fff;
 }
-table .bg-dark-danger:hover { background-color: #c9302c; }
-table .bg-primary:hover { background-color: #1c5484; }
+table .bg-dark-danger:hover { 
+  /* background-color: #c9302c;  */
+  background-color: var(--minerva-error-dark);
+}
+table .bg-primary:hover { 
+  /* background-color: #1c5484;  */
+  background-color: var(--minerva-accent);
+}
 .block-label { display: block; }
 
 .form-control.fake-input {
