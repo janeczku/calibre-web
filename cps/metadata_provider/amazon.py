@@ -25,14 +25,12 @@ try:
     import cchardet #optional for better speed
 except ImportError:
     pass
-from cps import logger
+
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 import cps.logger as logger
 
 #from time import time
 from operator import itemgetter
-log = logger.create()
-
 log = logger.create()
 
 

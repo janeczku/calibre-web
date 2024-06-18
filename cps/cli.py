@@ -35,6 +35,19 @@ def version_info():
 
 class CliParameter(object):
 
+    def __init__(self):
+        self.user_credentials = None
+        self.ip_address = None
+        self.allow_localhost = None
+        self.reconnect_enable = None
+        self.memory_backend = None
+        self.dry_run = None
+        self.certfilepath = None
+        self.keyfilepath = None
+        self.gd_path = None
+        self.settings_path = None
+        self.logpath = None
+
     def init(self):
         self.arg_parser()
 
@@ -44,22 +57,25 @@ class CliParameter(object):
                                          prog='cps.py')
         parser.add_argument('-p', metavar='path', help='path and name to settings db, e.g. /opt/cw.db')
         parser.add_argument('-g', metavar='path', help='path and name to gdrive db, e.g. /opt/gd.db')
-        parser.add_argument('-c', metavar='path', help='path and name to SSL certfile, e.g. /opt/test.cert, '
-                                                       'works only in combination with keyfile')
+        parser.add_argument('-c', metavar='path', help='path and name to SSL certfile, '
+                                                       'e.g. /opt/test.cert, works only in combination with keyfile')
         parser.add_argument('-k', metavar='path', help='path and name to SSL keyfile, e.g. /opt/test.key, '
                                                        'works only in combination with certfile')
         parser.add_argument('-o', metavar='path', help='path and name Calibre-Web logfile')
-        parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-Web',
+        parser.add_argument('-v', '--version', action='version', help='Shows version number '
+                                                                      'and exits Calibre-Web',
                             version=version_info())
         parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
-        parser.add_argument('-m', action='store_true', help='Use Memory-backend as limiter backend, use this parameter in case of miss configured backend')
+        parser.add_argument('-m', action='store_true',
+                            help='Use Memory-backend as limiter backend, use this parameter '
+                                 'in case of miss configured backend')
         parser.add_argument('-s', metavar='user:pass',
                             help='Sets specific username to new password and exits Calibre-Web')
-        parser.add_argument('-f', action='store_true', help='Flag is depreciated and will be removed in next version')
         parser.add_argument('-l', action='store_true', help='Allow loading covers from localhost')
-        parser.add_argument('-d', action='store_true', help='Dry run of updater to check file permissions in advance '
-                                                            'and exits Calibre-Web')
-        parser.add_argument('-r', action='store_true', help='Enable public database reconnect route under /reconnect')
+        parser.add_argument('-d', action='store_true', help='Dry run of updater to check file permissions '
+                                                            'in advance and exits Calibre-Web')
+        parser.add_argument('-r', action='store_true', help='Enable public database reconnect '
+                                                            'route under /reconnect')
         args = parser.parse_args()
 
         self.logpath = args.o or ""
@@ -130,6 +146,3 @@ class CliParameter(object):
         if self.user_credentials and ":" not in self.user_credentials:
             print("No valid 'username:password' format")
             sys.exit(3)
-
-        if args.f:
-            print("Warning: -f flag is depreciated and will be removed in next version")
