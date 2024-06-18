@@ -362,8 +362,8 @@ def meta():
         except Exception as ex:
             ub.session.rollback()
             log.error("Error occurred: %s", ex)
-        
-        resp = {"shelf_id": shelf_id}
+
+        resp = {"shelf_id": shelf_id, "shelf_title": shelf_title}
         return resp
 
     log.info("Received metadata request: %s", request.args)

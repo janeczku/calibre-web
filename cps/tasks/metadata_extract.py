@@ -84,6 +84,7 @@ class TaskMetadataExtract(CalibreTask):
             response = requests.get(self.original_url, params={"current_user_name": self.current_user_name, "shelf_title": self.shelf_title})
             if response.status_code == 200:
                 self.shelf_id = response.json()["shelf_id"]
+                self.shelf_title = response.json()["shelf_title"]
             else:
                 log.error("Received unexpected status code %s while sending the shelf title to %s", response.status_code, self.original_url)
         except Exception as e:
