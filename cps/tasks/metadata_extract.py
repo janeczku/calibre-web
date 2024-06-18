@@ -162,7 +162,7 @@ class TaskMetadataExtract(CalibreTask):
             if not requested_urls:
                 if self.unavailable:
                     self.message = f"{self.media_url_link} failed: Video not available."
-                if error_message := conn.execute("SELECT error FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]:
+                elif error_message := conn.execute("SELECT error FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]:
                     self.message = f"{self.media_url_link} failed previously with this error: {error_message}<br><br>To force a retry, submit the URL again."
                     media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
                     conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
