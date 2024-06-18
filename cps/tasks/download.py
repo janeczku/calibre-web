@@ -98,8 +98,9 @@ class TaskDownload(CalibreTask):
                             else:
                                 log.error("No error found in the database, likely the video failed due to unavailable fragments.")
                                 self.message = f"{self.media_url_link} failed to download: No path found in the database"
+                            media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
                             conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
-                            conn.execute("DELETE FROM captions WHERE media_id = ?", (self.media_url,))
+                            conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
                             conn.commit()
                             return
                     except sqlite3.Error as db_error:
