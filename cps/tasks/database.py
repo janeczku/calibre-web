@@ -31,7 +31,6 @@ class TaskReconnectDatabase(CalibreTask):
         self.listen_address = config.get_config_ipaddress()
         self.listen_port = config.config_port
 
-
     def run(self, worker_thread):
         address = self.listen_address if self.listen_address else 'localhost'
         port = self.listen_port if self.listen_port else 8083

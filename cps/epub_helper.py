@@ -43,7 +43,7 @@ def updateEpub(src, dest, filename, data, ):
     # create a temp copy of the archive without filename
     with zipfile.ZipFile(src, 'r') as zin:
         with zipfile.ZipFile(dest, 'w') as zout:
-            zout.comment = zin.comment # preserve the comment
+            zout.comment = zin.comment  # preserve the comment
             for item in zin.infolist():
                 if item.filename != filename:
                     zout.writestr(item, zin.read(item.filename))
@@ -53,7 +53,9 @@ def updateEpub(src, dest, filename, data, ):
         zf.writestr(filename, data)
 
 
-def get_content_opf(file_path, ns=default_ns):
+def get_content_opf(file_path, ns=None):
+    if ns is None:
+        ns = default_ns
     epubZip = zipfile.ZipFile(file_path)
     txt = epubZip.read('META-INF/container.xml')
     tree = etree.fromstring(txt)
@@ -154,13 +156,14 @@ def create_new_metadata_backup(book,  custom_columns, export_language, translate
 
     return package
 
+
 def replace_metadata(tree, package):
     rep_element = tree.xpath('/pkg:package/pkg:metadata', namespaces=default_ns)[0]
     new_element = package.xpath('//metadata', namespaces=default_ns)[0]
     tree.replace(rep_element, new_element)
     return etree.tostring(tree,
-                   xml_declaration=True,
-                   encoding='utf-8',
-                   pretty_print=True).decode('utf-8')
+                          xml_declaration=True,
+                          encoding='utf-8',
+                          pretty_print=True).decode('utf-8')
 
 
