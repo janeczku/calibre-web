@@ -160,7 +160,7 @@ class TaskMetadataExtract(CalibreTask):
             self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
-                self.message = f"{self.media_url_link} failed: Video not available."
+                self.message = f"Failed to download {self.media_url_link} last time. Please submit the URL again to force a retry."
                 conn.execute("DELETE FROM media WHERE path = ?", (self.media_url,))
                 self.stat = STAT_FAIL
 
