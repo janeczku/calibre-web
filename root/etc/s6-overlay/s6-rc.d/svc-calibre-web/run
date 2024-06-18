@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+export CALIBRE_DBPATH=/config
+
+exec \
+    s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 8083" \
+        cd /app/calibre-web s6-setuidgid abc python3 /app/calibre-web/cps.py
