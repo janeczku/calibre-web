@@ -160,8 +160,15 @@ class TaskMetadataExtract(CalibreTask):
             self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
-                self.message = f"{self.media_url_link} failed: Video not available."
-                conn.execute("DELETE FROM media WHERE path = ?", (self.media_url,))
+                if self.unavailable:
+                    self.message = f"{self.media_url_link} failed: Video not available."
+                elif error_message := conn.execute("SELECT error FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]:
+                    self.message = f"{self.media_url_link} failed previously with this error: {error_message}<br><br>To force a retry, submit the URL again."
+                    media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
+                    conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
+                    conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
+                else:
+                    self.message = f"{self.media_url_link} failed: An error occurred while trying to fetch the requested URLs."
                 self.stat = STAT_FAIL
 
             elif self.is_playlist:
