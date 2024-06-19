@@ -167,6 +167,8 @@ class TaskMetadataExtract(CalibreTask):
                     media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
                     conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
                     conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
+                else:
+                    self.message = f"{self.media_url_link} failed: An error occurred while trying to fetch the requested URLs."
                 self.stat = STAT_FAIL
 
             elif self.is_playlist:
