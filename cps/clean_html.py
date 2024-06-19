@@ -24,13 +24,21 @@ log = logger.create()
 try:
     # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
     from bleach import clean as clean_html
+    from bleach import ALLOWED_TAGS
+
+    tags = set(ALLOWED_TAGS) | {'p'}
+
+    kwargs = {
+        "tags": tags
+    }
 except ImportError:
     from nh3 import clean as clean_html
+    kwargs = {}
 
 
 def clean_string(unsafe_text, book_id=0):
     try:
-        safe_text = clean_html(unsafe_text)
+        safe_text = clean_html(unsafe_text, **kwargs)
     except ParserError as e:
         log.error("Comments of book {} are corrupted: {}".format(book_id, e))
         safe_text = ""
