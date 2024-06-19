@@ -101,7 +101,6 @@ class TaskDownload(CalibreTask):
                                 media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
                                 conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
                                 conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
-                                conn.commit()
                             return
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
