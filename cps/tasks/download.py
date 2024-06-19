@@ -124,8 +124,6 @@ class TaskDownload(CalibreTask):
                         log.error("Failed to send the requested file to %s", self.original_url)
                         self.message = f"{self.media_url_link} failed to download: {response.status_code} {response.reason}"
 
-                conn.close()
-
             except Exception as e:
                 log.error("An error occurred during the subprocess execution: %s", e)
                 self.message = f"{self.media_url_link} failed to download: {self.read_error_from_database()}"
