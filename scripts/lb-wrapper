@@ -15,8 +15,13 @@ TMP_DOWNLOADS_DIR="/library/downloads/calibre-web"
 #     └── TED-Ed                                                                                          (uploader_id)
 #         ├── How does an air conditioner actually work？ - Anna Rothschild_224.59k_[6sSDXurPX-s].mp4     ([video file] title + view_count + video_id + extension)
 #         └── How does an air conditioner actually work？ - Anna Rothschild_224.59k_[6sSDXurPX-s].webp    ([thumbnail] title + view_count + video_id + extension)
-OUTTMPL="'${TMP_DOWNLOADS_DIR}/%(extractor_key,extractor)s/%(uploader,uploader_id)s/%(title).170B_%(view_count)3.2D_[%(id).64B].%(ext)s'"
+OUTTMPL="${TMP_DOWNLOADS_DIR}/%(extractor_key,extractor)s/%(uploader,uploader_id)s/%(title).170B_%(view_count)3.2D_[%(id).64B].%(ext)s"
 VERBOSITY="-vv"
+
+# Or download largest possible HD-style / UltraHD videos, to try to force
+# out-of-memory "502 Bad Gateway" for testing of issues like #37 and #79
+# FORMAT_OPTIONS="--format-sort size"
+FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
 
 PATTERNS=(
     "downloading*"
@@ -33,11 +38,6 @@ match_pattern() {
     done
     return 1
 }
-
-# Or download largest possible HD-style / UltraHD videos, to try to force
-# out-of-memory "502 Bad Gateway" for testing of issues like #37 and #79
-# FORMAT_OPTIONS="--format-sort size"
-FORMAT_OPTIONS="--format best --format-sort 'tbr~1000'"
 
 mkdir -p ${TMP_DOWNLOADS_DIR}
 
@@ -79,9 +79,9 @@ log "Info" "Using yt-dlp $(yt-dlp --version)"
 # fetching metadata. This will prevent hanging for playlist URLs or short URLs.
 # "...to be able to list videos that are not downloaded yet"
 if [[ $XKLB_INTERNAL_CMD == "tubeadd" ]]; then
-    xklb_full_cmd="lb tubeadd '${XKLB_DB_FILE}' '${URL_OR_SEARCH_TERM}' --force '${VERBOSITY}'"
+    xklb_full_cmd="lb tubeadd '${XKLB_DB_FILE}' '${URL_OR_SEARCH_TERM}' --force ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "dl" ]]; then
-    xklb_full_cmd="lb dl '${XKLB_DB_FILE}' --video --search '${URL_OR_SEARCH_TERM}' '${FORMAT_OPTIONS}' --write-thumbnail --subs -o '${OUTTMPL}' '${VERBOSITY}'"
+    xklb_full_cmd="lb dl '${XKLB_DB_FILE}' --video --search '${URL_OR_SEARCH_TERM}' ${FORMAT_OPTIONS} --write-thumbnail --subs -o '${OUTTMPL}' ${VERBOSITY}"
 elif [[ $XKLB_INTERNAL_CMD == "search" ]]; then
     xklb_full_cmd="lb search '${XKLB_DB_FILE}' '${URL_OR_SEARCH_TERM}'"
 else
