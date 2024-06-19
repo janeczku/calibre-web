@@ -95,6 +95,12 @@ class TaskDownload(CalibreTask):
                             if error:
                                 log.error("[xklb] An error occurred while trying to download %s: %s", error[1], error[0])
                                 self.message = f"{error[1]} failed to download: {error[0]}"
+                            else:
+                                log.error("%s failed to download: No path or error found in the database (likely the video failed due to unavailable fragments?)", self.media_url)
+                                self.message = f"{self.media_url_link} failed to download: No path or error found in the database (likely the video failed due to unavailable fragments?)"
+                                media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
+                                conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
+                                conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
                             return
                     except sqlite3.Error as db_error:
                         log.error("An error occurred while trying to connect to the database: %s", db_error)
