@@ -117,7 +117,6 @@ class TaskDownload(CalibreTask):
                         # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
                         conn.execute("UPDATE media SET path = ? WHERE webpath = ?", (new_video_path, self.media_url))
                         conn.execute("UPDATE media SET webpath = ? WHERE path = ?", (f"{self.media_url}&timestamp={int(datetime.now().timestamp())}", new_video_path))
-                        conn.commit()
                         self.progress = 1.0
                     else:
                         log.error("Failed to send the requested file to %s", self.original_url)
