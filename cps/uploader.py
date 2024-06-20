@@ -327,8 +327,11 @@ def generate_video_cover(tmp_file_path):
     ffmpeg_args = [
         ffmpeg_executable,
         '-i', tmp_file_path,
-        '-vframes', '1',
-        '-y', ffmpeg_output_file
+        '-vf', 'fps=1,thumbnail,select=gt(scene\,0.1),scale=-1:720',
+        '-frames:v', '1',
+        '-vsync', 'vfr',
+        '-y',
+        ffmpeg_output_file
     ]
 
     try:
