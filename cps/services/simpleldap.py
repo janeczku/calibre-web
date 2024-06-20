@@ -30,9 +30,11 @@ except ImportError:
 
 log = logger.create()
 
+
 class LDAPLogger(object):
 
-    def write(self, message):
+    @staticmethod
+    def write(message):
         try:
             log.debug(message.strip("\n").replace("\n", ""))
         except Exception:
@@ -70,6 +72,7 @@ class mySimpleLDap(LDAP):
 
 
 _ldap = mySimpleLDap()
+
 
 def init_app(app, config):
     if config.config_login_type != constants.LOGIN_LDAP:
@@ -124,7 +127,7 @@ def init_app(app, config):
         log.error(e)
 
 
-def get_object_details(user=None,query_filter=None):
+def get_object_details(user=None, query_filter=None):
     return _ldap.get_object_details(user, query_filter=query_filter)
 
 

@@ -19,6 +19,7 @@
 
 from gevent.pywsgi import WSGIHandler
 
+
 class MyWSGIHandler(WSGIHandler):
     def get_environ(self):
         env = super().get_environ()

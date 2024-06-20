@@ -20,6 +20,7 @@ from tempfile import gettempdir
 import os
 import shutil
 
+
 def get_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
     if not os.path.isdir(tmp_dir):

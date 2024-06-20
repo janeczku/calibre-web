@@ -32,12 +32,14 @@ except ImportError:
 from .. import logger
 from ..clean_html import clean_string
 
+
 class my_GoodreadsClient(GoodreadsClient):
 
     def request(self, *args, **kwargs):
         """Create a GoodreadsRequest object and make that request"""
         req = my_GoodreadsRequest(self, *args, **kwargs)
         return req.request()
+
 
 class GoodreadsRequestException(Exception):
     def __init__(self, error_msg, url):
@@ -52,8 +54,8 @@ class my_GoodreadsRequest(GoodreadsRequest):
 
     def request(self):
         resp = requests.get(self.host+self.path, params=self.params,
-                            headers={"User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:125.0) "
-                                                  "Gecko/20100101 Firefox/125.0"})
+                            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:125.0) "
+                                                   "Gecko/20100101 Firefox/125.0"})
         if resp.status_code != 200:
             raise GoodreadsRequestException(resp.reason, self.path)
         if self.req_format == 'xml':
@@ -125,7 +127,8 @@ def get_other_books(author_info, library_books=None):
     identifiers = []
     library_titles = []
     if library_books:
-        identifiers = list(reduce(lambda acc, book: acc + [i.val for i in book.identifiers if i.val], library_books, []))
+        identifiers = list(
+            reduce(lambda acc, book: acc + [i.val for i in book.identifiers if i.val], library_books, []))
         library_titles = [book.title for book in library_books]
 
     for book in author_info.books:

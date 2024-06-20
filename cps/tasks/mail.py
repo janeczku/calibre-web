@@ -59,7 +59,7 @@ class EmailBase:
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
-                    lock=threading.Lock()
+                    lock = threading.Lock()
                     lock.acquire()
                     self.transferSize = len(strg)
                     lock.release()
