@@ -351,7 +351,7 @@ def generate_video_cover(tmp_file_path):
         log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
 
     except Exception as e:
-        log.warning(f"ffmpeg failed: {e}")
+        log.error(f"ffmpeg failed: {e}")
         return None
 
 def image_metadata(tmp_file_path, original_file_name, original_file_extension):
