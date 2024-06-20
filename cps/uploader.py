@@ -304,6 +304,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
         else:
             log.warning('Cannot find the xklb database, using default metadata')
     else:
+        generate_video_cover(tmp_file_path)
         meta = BookMeta(
             file_path=tmp_file_path,
             extension=original_file_extension,
