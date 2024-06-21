@@ -322,6 +322,8 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             identifiers=[])
         return meta
 
+# Yes shlex.quote() can help! But flags/options/switchs can still be dangerous:
+# https://stackoverflow.com/questions/49573852/is-python3-shlex-quote-safe
 def sanitize_path(path):
     """Sanitize the file path to prevent command injection."""
     return shlex.quote(path)
