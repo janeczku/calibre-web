@@ -333,10 +333,10 @@ def generate_video_cover(tmp_file_path):
     ffmpeg_args = [
         ffmpeg_executable,
         '-i', tmp_file_path,
-        '-vf', 'fps=1,thumbnail,select=gt(scene\,0.1),scale=-1:720',
-        '-frames:v', '1',
-        '-vsync', 'vfr',
-        '-y',
+        '-vf', 'fps=1,thumbnail,select=gt(scene\,0.1),scale=-1:720',  # apply filters to avoid black frames and scale
+        '-frames:v', '1',  # extract only one frame
+        '-vsync', 'vfr',  # variable frame rate
+        '-y',  # overwrite output file if it exists
         ffmpeg_output_file
     ]
 
