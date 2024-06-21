@@ -20,6 +20,7 @@
 import datetime
 import os
 import hashlib
+# import shlex
 import shutil
 import sqlite3
 from subprocess import run
@@ -324,8 +325,8 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
 # Yes shlex.quote() can help! But flags/options/switchs can still be dangerous:
 # https://stackoverflow.com/questions/49573852/is-python3-shlex-quote-safe
 # def sanitize_path(path):
-#    """Sanitize the file path to prevent command injection."""
-#    return shlex.quote(path)
+#     """Sanitize the file path to prevent command injection."""
+#     return shlex.quote(path)
 
 def generate_video_cover(tmp_file_path):
     ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
