@@ -328,22 +328,16 @@ def sanitize_path(path):
 
 def generate_video_cover(tmp_file_path):
     ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
-    if not ffmpeg_executable:
-        log.error('FFMPEG_PATH environment variable is not set.')
-        return None
-
-    sanitized_input_path = sanitize_path(tmp_file_path)
-    output_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-    sanitized_output_path = sanitize_path(output_file_path)
+    ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
 
     ffmpeg_args = [
         ffmpeg_executable,
-        '-i', sanitized_input_path,
+        '-i', tmp_file_path,
         '-vf', 'fps=1,thumbnail,select=gt(scene\,0.1),scale=-1:720',
         '-frames:v', '1',
         '-vsync', 'vfr',
         '-y',
-        sanitized_output_path
+        ffmpeg_output_file
     ]
 
     try:
