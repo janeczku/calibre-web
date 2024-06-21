@@ -343,7 +343,7 @@ def generate_video_cover(tmp_file_path):
     ]
 
     try:
-        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        ffmpeg_result = subprocess.run(ffmpeg_args, capture_output=True, check=True)
         log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
 
     except Exception as e:
