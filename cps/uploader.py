@@ -20,9 +20,10 @@
 import datetime
 import os
 import hashlib
+import subprocess
+# import shlex
 import shutil
 import sqlite3
-from subprocess import run
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
@@ -304,6 +305,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
         else:
             log.warning('Cannot find the xklb database, using default metadata')
     else:
+        generate_video_cover(tmp_file_path)
         meta = BookMeta(
             file_path=tmp_file_path,
             extension=original_file_extension,
@@ -320,22 +322,32 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             identifiers=[])
         return meta
 
+# Yes shlex.quote() can help! But flags/options/switchs can still be dangerous:
+# https://stackoverflow.com/questions/49573852/is-python3-shlex-quote-safe
+# def sanitize_path(path):
+#     """Sanitize the file path to prevent command injection."""
+#     return shlex.quote(path)
+
 def generate_video_cover(tmp_file_path):
     ffmpeg_executable = os.getenv('FFMPEG_PATH', 'ffmpeg')
     ffmpeg_output_file = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+
     ffmpeg_args = [
         ffmpeg_executable,
         '-i', tmp_file_path,
-        '-vframes', '1',
-        '-y', ffmpeg_output_file
+        '-vf', 'fps=1,thumbnail,select=gt(scene\,0.1),scale=-1:720',  # apply filters to avoid black frames and scale
+        '-frames:v', '1',  # extract only one frame
+        '-vsync', 'vfr',  # variable frame rate
+        '-y',  # overwrite output file if it exists
+        ffmpeg_output_file
     ]
 
     try:
-        ffmpeg_result = run(ffmpeg_args, capture_output=True, check=True)
+        ffmpeg_result = subprocess.run(ffmpeg_args, capture_output=True, check=True)
         log.debug(f"ffmpeg output: {ffmpeg_result.stdout}")
 
     except Exception as e:
-        log.warning(f"ffmpeg failed: {e}")
+        log.error(f"ffmpeg failed: {e}")
         return None
 
 def image_metadata(tmp_file_path, original_file_name, original_file_extension):
