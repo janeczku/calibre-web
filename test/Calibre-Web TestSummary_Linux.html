@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-05-11 18:39:24</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-06-19 18:47:42</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-05-12 01:48:22</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-06-20 01:41:47</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 59 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 43 min</p>
         </div>
       </div>
       </div>
@@ -1945,12 +1945,12 @@ AssertionError: &#39;Test 执 to&#39; != &#39;book&#39;
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c17', 1)">Detail</a>
@@ -1959,26 +1959,26 @@ AssertionError: &#39;Test 执 to&#39; != &#39;book&#39;
 
     
     
-        <tr id="et17.1" class="none bg-info">
+        <tr id="ft17.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 173, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3804,43 +3804,50 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestPipInstall</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 3)">Detail</a>
+            <a onclick="showClassDetail('c40', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt40.1' class='hiddenRow bg-success'>
+        <tr id="et40.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestPipInstall - test_command_start</div>
+                <div class='testcase'>_FailedTest - test_pip_install</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt40.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et40.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et40.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
+    from build_release import make_release
+ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt40.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestPipInstall - test_module_start</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4421,11 +4428,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4498,31 +4505,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft50.8" class="none bg-danger">
+        <tr id='pt50.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft50.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft50.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 326, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5605,8 +5592,8 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>494</td>
-        <td>480</td>
+        <td>492</td>
+        <td>478</td>
         <td>3</td>
         <td>1</td>
         <td>10</td>
@@ -5637,7 +5624,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-28-generic #29~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Apr  4 14:39:20 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.5.0-41-generic #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5662,6 +5649,12 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
             <tr>
               <th>Babel</th>
               <td>2.15.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>bleach</th>
+              <td>6.1.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5763,13 +5756,13 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.30</td>
+              <td>2.0.31</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>tornado</th>
-              <td>6.4</td>
+              <td>6.4.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5793,7 +5786,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5823,7 +5816,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5853,7 +5846,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5883,7 +5876,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5937,7 +5930,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -5973,7 +5966,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6015,7 +6008,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6045,7 +6038,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.129.0</td>
+              <td>2.134.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6135,7 +6128,7 @@ AssertionError: 0.03372577030812325 not greater than or equal to 0.04</pre>
 </div>
 
 <script>
-    drawCircle(480, 3, 1, 10);
+    drawCircle(478, 3, 1, 10);
     showCase(5);
 </script>
 

@@ -25,6 +25,7 @@ from flask_babel import lazy_gettext as N_
 
 from ..epub_helper import create_new_metadata_backup
 
+
 class TaskBackupMetadata(CalibreTask):
 
     def __init__(self, export_language="en",
