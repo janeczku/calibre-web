@@ -140,7 +140,7 @@ class WebServer(object):
             return ((self.listen_address, self.listen_port),
                     _readable_listen_address(self.listen_address, self.listen_port))
 
-            address = ('::', self.listen_port)
+        address = ('::', self.listen_port)
         try:
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
         except socket.error as ex:

@@ -49,7 +49,7 @@ def main():
         kobo_available = get_kobo_activated()
     except (ImportError, AttributeError):  # Catch also error for not installed flask-WTF (missing csrf decorator)
         kobo_available = False
-        kobo, kobo_auth,get_remote_address = None
+        kobo = kobo_auth = get_remote_address = None
 
     try:
         from .oauth_bb import oauth
