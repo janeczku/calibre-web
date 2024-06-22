@@ -44,9 +44,11 @@ log = logger.create()
 
 current_milli_time = lambda: int(round(time() * 1000))
 
+
 class TaskConvert(CalibreTask):
     def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
         super(TaskConvert, self).__init__(task_message)
+        self.worker_thread = None
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
@@ -67,12 +69,13 @@ class TaskConvert(CalibreTask):
                                                      data.name + "." + self.settings['old_book_format'].lower())
             df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
             if df:
+                datafile_cover = None
                 datafile = os.path.join(config.get_book_path(),
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
                 if df_cover:
                     datafile_cover = os.path.join(config.get_book_path(),
-                                            cur_book.path, "cover.jpg")
+                                                  cur_book.path, "cover.jpg")
                 if not os.path.exists(os.path.join(config.get_book_path(), cur_book.path)):
                     os.makedirs(os.path.join(config.get_book_path(), cur_book.path))
                 df.GetContentFile(datafile)
@@ -85,7 +88,7 @@ class TaskConvert(CalibreTask):
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
                 worker_db.session.close()
-                return self._handleError(self, error_message)
+                return self._handleError(error_message)
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
@@ -242,10 +245,11 @@ class TaskConvert(CalibreTask):
                 os.unlink(converted_file[0])
             else:
                 return 1, N_("Converted file not found or more than one file in folder %(folder)s",
-                            folder=os.path.dirname(file_path))
+                             folder=os.path.dirname(file_path))
         return check, None
 
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
+        path_tmp_opf = None
         try:
             # path_tmp_opf = self._embed_metadata()
             if config.config_embed_metadata:

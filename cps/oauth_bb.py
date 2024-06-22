@@ -135,7 +135,7 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
         if oauth_entry.user:
             login_user(oauth_entry.user)
             log.debug("You are now logged in as: '%s'", oauth_entry.user.name)
-            flash(_("Success! You are now logged in as: %(nickname)s", nickname= oauth_entry.user.name),
+            flash(_("Success! You are now logged in as: %(nickname)s", nickname=oauth_entry.user.name),
                   category="success")
             return redirect(url_for('web.index'))
         else:
@@ -204,6 +204,7 @@ def unlink_oauth(provider):
         log.warning("oauth %s for user %d not found", provider, current_user.id)
         flash(_("Not Linked to %(oauth)s", oauth=provider), category="error")
     return redirect(url_for('web.profile'))
+
 
 def generate_oauth_blueprints():
     if not ub.session.query(ub.OAuthProvider).count():
@@ -289,6 +290,7 @@ if ub.oauth_support:
         google_info = resp.json()
         google_user_id = str(google_info["id"])
         return oauth_update_token(str(oauthblueprints[1]['id']), token, google_user_id)
+
 
 
     # notify on OAuth provider error

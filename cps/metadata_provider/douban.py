@@ -217,7 +217,8 @@ class Douban(Metadata):
 
         return match
 
-    def _clean_date(self, date: str) -> str:
+    @staticmethod
+    def _clean_date(date: str) -> str:
         """
         Clean up the date string to be in the format YYYY-MM-DD
 
