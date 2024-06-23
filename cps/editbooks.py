@@ -616,8 +616,9 @@ def prepare_authors(authr):
         input_authors = [_('Unknown')]  # prevent empty Author
 
     renamed = list()
-    for in_aut in input_authors:
-        renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
+    for index,in_aut in enumerate(input_authors):
+        # renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
+        renamed_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(in_aut)).first()
         if renamed_author and in_aut != renamed_author.name:
             renamed.append(renamed_author.name)
             all_books = calibre_db.session.query(db.Books) \
@@ -626,6 +627,7 @@ def prepare_authors(authr):
             sorted_old_author = helper.get_sorted_author(in_aut)
             for one_book in all_books:
                 one_book.author_sort = one_book.author_sort.replace(sorted_renamed_author, sorted_old_author)
+            input_authors[index] = renamed_author.name
     return input_authors, renamed
 
 
@@ -642,7 +644,8 @@ def prepare_authors_on_upload(title, authr):
     sort_authors_list = list()
     db_author = None
     for inp in input_authors:
-        stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+        # stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+        stored_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(inp)).first()
         if not stored_author:
             if not db_author:
                 db_author = db.Authors(inp, helper.get_sorted_author(inp), "")
@@ -1389,8 +1392,8 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             if db_no_case:
                 # check for new case of element
                 db_element = create_objects_for_addition(db_element, add_element, db_type)
-            else:
-                db_element = create_objects_for_addition(db_element, add_element, db_type)
+            #else:
+            #    db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
             db_book_object.append(db_element)
 
