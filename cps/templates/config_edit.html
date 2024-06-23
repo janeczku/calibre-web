@@ -378,6 +378,10 @@
                </div>
             </div>
             <div class="form-group">
+                <input type="checkbox" id="config_check_extensions" name="config_check_extensions" {% if config.config_check_extensions %}checked{% endif %}>
+                <label for="config_check_extensions">{{_('Check if file extensions matches file content on upload')}}</label>
+            </div>
+            <div class="form-group">
               <label for="config_session">{{_('Session protection')}}</label>
                 <select name="config_session" id="config_session" class="form-control">
                   <option value="0" {% if config.config_session == 0 %}selected{% endif %}>{{_('Basic')}}</option>
