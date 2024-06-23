@@ -168,6 +168,24 @@ def set_bookmark(book_id, book_format):
     ub.session_commit("Bookmark for user {} in book {} created".format(current_user.id, book_id))
     return "", 201
 
+@web.route("/ajax/lastcfi/<int:book_id>/<book_format>", methods=['POST'])
+@login_required
+def set_lastcfi(book_id: int, book_format: str):
+    cfi = request.form["lastCFI"]
+    ub.session.query(ub.LastCFI).filter(and_(ub.LastCFI.user_id == int(current_user.id),
+                                              ub.LastCFI.book_id == book_id,
+                                              ub.LastCFI.format == book_format)).delete()
+    if not cfi:
+        ub.session_commit()
+        return "", 204
+
+    l_cfi = ub.LastCFI(user_id=current_user.id,
+                             book_id=book_id,
+                             format=book_format,
+                             cfi=cfi)
+    ub.session.merge(l_cfi)
+    ub.session_commit("LastCFI for user {} in book {} created".format(current_user.id, book_id))
+    return "", 201
 
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
@@ -1571,9 +1589,12 @@ def read_book(book_id, book_format):
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
+        lastcfi = ub.session.query(ub.LastCFI).filter(and_(ub.LastCFI.user_id == int(current_user.id),
+                                                             ub.LastCFI.book_id == book_id,
+                                                             ub.LastCFI.format == book_format.upper())).first()
     if book_format.lower() == "epub":
         log.debug("Start epub reader for %d", book_id)
-        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark)
+        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark, lastCFI=lastcfi)
     elif book_format.lower() == "pdf":
         log.debug("Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=book.title)

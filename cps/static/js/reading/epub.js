@@ -10,13 +10,15 @@ var reader;
 
     reader = ePubReader(calibre.bookUrl, {
         restore: true,
-        bookmarks: calibre.bookmark ? [calibre.bookmark] : []
+        bookmarks: calibre.bookmark ? [calibre.bookmark] : [],
+        previousLocationCfi: calibre.lastCFI || ""
     });
 
     reader.rendition.themes.register("lightTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("darkTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("sepiaTheme", "/static/css/epub_themes.css");
     reader.rendition.themes.register("blackTheme", "/static/css/epub_themes.css");
+
 
     if (calibre.useBookmarks) {
         reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
@@ -52,6 +54,8 @@ var reader;
             // Swiped Left
         }
     });
+    
+    reader.rendition.on("locationChanged", updateLastCFI);
 
     /**
      * @param {string} action - Add or remove bookmark
@@ -73,6 +77,20 @@ var reader;
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
             data: { bookmark: location || "" },
+            headers: { "X-CSRFToken": csrftoken }
+        }).fail(function (xhr, status, error) {
+            alert(error);
+        });
+    }
+
+    function updateLastCFI(location) {
+        var cfi = location.start;
+        var csrftoken = $("input[name='csrf_token']").val();
+
+        // Save to database
+        $.ajax(calibre.lastCFIUrl, {
+            method: "post",
+            data: { lastCFI: cfi || "" },
             headers: { "X-CSRFToken": csrftoken }
         }).fail(function (xhr, status, error) {
             alert(error);
