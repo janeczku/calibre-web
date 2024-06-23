@@ -169,6 +169,7 @@ class _Settings(_Base):
     config_ratelimiter = Column(Boolean, default=True)
     config_limiter_uri = Column(String, default="")
     config_limiter_options = Column(String, default="")
+    config_check_extensions = Column(Boolean, default=True)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -348,7 +349,7 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        # constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)

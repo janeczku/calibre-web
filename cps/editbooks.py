@@ -27,22 +27,7 @@ from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
-# from lxml.etree import ParserError
 
-#try:
-#    # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
-#    from bleach import clean_text as clean_html
-#    BLEACH = True
-#except ImportError:
-#    try:
-#        BLEACH = False
-#        from nh3 import clean as clean_html
-#    except ImportError:
-#        try:
-#            BLEACH = False
-#            from lxml.html.clean import clean_html
-#        except ImportError:
-#            clean_html = None
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Response
 from flask_babel import gettext as _
@@ -62,7 +47,7 @@ from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
-
+from .file_helper import validate_mime_type
 
 editbook = Blueprint('edit-book', __name__)
 log = logger.create()
@@ -738,9 +723,15 @@ def create_book_on_upload(modify_date, meta):
 
 def file_handling_on_upload(requested_file):
     # check if file extension is correct
+    allowed_extensions = config.config_upload_formats.split(',')
+    if requested_file:
+        if config.config_check_extensions:
+            if not validate_mime_type(requested_file, allowed_extensions):
+                flash(_("File type isn't allowed to be uploaded to this server"), category="error")
+                return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
     if '.' in requested_file.filename:
         file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-        if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+        if file_ext not in allowed_extensions and '' not in allowed_extensions:
             flash(
                 _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                   ext=file_ext), category="error")
@@ -1191,7 +1182,12 @@ def edit_cc_data(book_id, book, to_save, cc):
 def upload_single_file(file_request, book, book_id):
     # Check and handle Uploaded file
     requested_file = file_request.files.get('btn-upload-format', None)
+    allowed_extensions = config.config_upload_formats.split(',')
     if requested_file:
+        if config.config_check_extensions:
+            if not validate_mime_type(requested_file, allowed_extensions):
+                flash(_("File type isn't allowed to be uploaded to this server"), category="error")
+                return False
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
@@ -1199,7 +1195,7 @@ def upload_single_file(file_request, book, book_id):
                 return False
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+                if file_ext not in allowed_extensions and '' not in allowed_extensions:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return False
@@ -1216,7 +1212,8 @@ def upload_single_file(file_request, book, book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
+                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath),
+                          category="error")
                     return False
             try:
                 requested_file.save(saved_filename)
