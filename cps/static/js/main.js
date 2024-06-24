@@ -203,6 +203,8 @@ $(document).ready(function() {
                 $("#mediaDownloadForm .error-message").text("Media download request failed.");
             }
         });
+
+        $("#mediaURL").val("");
     }
 
     // Handle Enter key press event in the input field
@@ -256,11 +258,6 @@ $(document).ready(function() {
         } else {
             $("#maxVideos").prop("disabled", false);
         }
-    });
-
-    // Clear the input field when the modal is shown
-    $("#mediaDownloadModal").on('shown.bs.modal', function() {
-        $("#mediaURL").val("");
     });
 
     /*
