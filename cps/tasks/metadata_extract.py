@@ -139,8 +139,7 @@ class TaskMetadataExtract(CalibreTask):
                 shelf_url = re.sub(r"/meta(?=\?|$)", r"/shelf", self.original_url) + f"/{self.shelf_id}"
                 self.message += f"<br><br>Shelf Title: <a href='{shelf_url}' target='_blank'>{self.shelf_title}</a>"
             if self.unavailable:
-                self.message += f"<br><br>Unavailable Video(s):<br>{'<br>'.join(f'<a href=\"{url}\" target=\"_blank\">{url}</a>' for url in self.unavailable)}"
-
+                self.message += "<br><br>Unavailable Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
