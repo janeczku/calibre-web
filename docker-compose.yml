@@ -1,0 +1,16 @@
+services:
+  calibre-web:
+    image: minerva-calibre:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - CALIBRE_PORT=80
+      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
+      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
+    volumes:
+      - ./config:/config
+      - ./books:/books
+    ports:
+      - 80:80
+    restart: unless-stopped

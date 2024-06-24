@@ -37,3 +37,6 @@ gmail.json
 /.key
 
 .DS_Store
+
+config/
+books/

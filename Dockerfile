@@ -79,5 +79,5 @@ COPY root/ /
 COPY --from=unrar /usr/bin/unrar-ubuntu /usr/bin/unrar
 
 # ports and volumes
-EXPOSE 8083
+EXPOSE 80
 VOLUME /config

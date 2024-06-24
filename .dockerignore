@@ -6,3 +6,6 @@ READMETEMPLATE.md
 README.md
 !Dockerfile
 venv/
+
+config/
+books/
