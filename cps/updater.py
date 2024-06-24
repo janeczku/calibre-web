@@ -52,6 +52,8 @@ class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
+        self.web_server = None
+        self.config = None
         self.paused = False
         self.can_run = threading.Event()
         self.pause()

@@ -207,6 +207,7 @@ def getDrive(drive=None, gauth=None):
             log.error("Google Drive error: {}".format(e))
     return drive
 
+
 def listRootFolders():
     try:
         drive = getDrive(Gdrive.Instance().drive)
@@ -224,7 +225,7 @@ def getEbooksFolder(drive):
 
 def getFolderInFolder(parentId, folderName, drive):
     # drive = getDrive(drive)
-    query=""
+    query = ""
     if folderName:
         query = "title = '%s' and " % folderName.replace("'", r"\'")
     folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder'" \
@@ -234,6 +235,7 @@ def getFolderInFolder(parentId, folderName, drive):
         return None
     else:
         return fileList[0]
+
 
 # Search for id of root folder in gdrive database, if not found request from gdrive and store in internal database
 def getEbooksFolderId(drive=None):
@@ -369,20 +371,20 @@ def moveGdriveFolderRemote(origin_file, target_folder):
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-        ignoreFiles=None,
-        parent=None, prevDir=''):
+                ignoreFiles=None,
+                parent=None, prevDir=''):
     ignoreFiles = ignoreFiles or []
     drive = getDrive(drive)
     isInitial = not bool(parent)
     if not parent:
         parent = getEbooksFolder(drive)
-    if os.path.isdir(os.path.join(prevDir,uploadFile)):
+    if os.path.isdir(os.path.join(prevDir, uploadFile)):
         existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
                                               (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
             parent = drive.CreateFile({'title': os.path.basename(uploadFile),
                                        'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
-                "mimeType": "application/vnd.google-apps.folder"})
+                                       "mimeType": "application/vnd.google-apps.folder"})
             parent.Upload()
         else:
             if (not isInitial or createRoot) and len(existingFolder) > 0:
@@ -398,7 +400,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
                 driveFile = existingFiles[0]
             else:
                 driveFile = drive.CreateFile({'title': os.path.basename(uploadFile).replace("'", r"\'"),
-                                              'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
+                                              'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
 
@@ -410,7 +412,7 @@ def uploadFileToEbooksFolder(destFile, f, string=False):
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
             existing_Files = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                 (x.replace("'", r"\'"), parent['id'])}).GetList()
+                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existing_Files) > 0:
                 driveFile = existing_Files[0]
             else:
@@ -423,17 +425,17 @@ def uploadFileToEbooksFolder(destFile, f, string=False):
             driveFile.Upload()
         else:
             existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
+                                                   (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existing_Folder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
-                    "mimeType": "application/vnd.google-apps.folder"})
+                                           "mimeType": "application/vnd.google-apps.folder"})
                 parent.Upload()
             else:
                 parent = existing_Folder[0]
 
 
 def watchChange(drive, channel_id, channel_type, channel_address,
-              channel_token=None, expiration=None):
+                channel_token=None, expiration=None):
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -504,7 +506,7 @@ def stopChannel(drive, channel_id, resource_id):
     return drive.auth.service.channels().stop(body=body).execute()
 
 
-def getChangeById (drive, change_id):
+def getChangeById(drive, change_id):
     # Print a single Change resource information.
     #
     # Args:
@@ -538,8 +540,9 @@ def updateGdriveCalibreFromLocal():
         if os.path.isdir(os.path.join(config.config_calibre_dir, x)):
             shutil.rmtree(os.path.join(config.config_calibre_dir, x))
 
+
 # update gdrive.db on edit of books title
-def updateDatabaseOnEdit(ID,newPath):
+def updateDatabaseOnEdit(ID, newPath):
     sqlCheckPath = newPath if newPath[-1] == '/' else newPath + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
@@ -585,6 +588,7 @@ def get_cover_via_gdrive(cover_path):
     else:
         return None
 
+
 # Gets cover file from gdrive
 def get_metadata_backup_via_gdrive(metadata_path):
     df = getFileFromEbooksFolder(metadata_path, 'metadata.opf')
@@ -608,6 +612,7 @@ def get_metadata_backup_via_gdrive(metadata_path):
     else:
         return None
 
+
 # Creates chunks for downloading big files
 def partial(total_byte_len, part_size_limit):
     s = []
@@ -615,6 +620,7 @@ def partial(total_byte_len, part_size_limit):
         last = min(total_byte_len - 1, p + part_size_limit - 1)
         s.append([p, last])
     return s
+
 
 # downloads files in chunks from gdrive
 def do_gdrive_download(df, headers, convert_encoding=False):
@@ -654,6 +660,7 @@ get_refresh_token: True
 oauth_scope:
   - https://www.googleapis.com/auth/drive
 """
+
 
 def update_settings(client_id, client_secret, redirect_uri):
     if redirect_uri.endswith('/'):

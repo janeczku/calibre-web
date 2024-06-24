@@ -227,7 +227,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             email_text = N_("%(book)s send to eReader", book=link)
             WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                              config.get_mail_settings(), ereader_mail,
-                             email_text, _('This Email has been sent via Calibre-Web.'),book.id))
+                             email_text, _('This Email has been sent via Calibre-Web.'), book.id))
             return
     return _("The requested file could not be read. Maybe wrong permissions?")
 
@@ -441,9 +441,9 @@ def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=
                     gd.moveGdriveFolderRemote(g_file, new_author_rename_dir)
             else:
                 if os.path.isdir(os.path.join(calibre_path, old_author_dir)):
+                    old_author_path = os.path.join(calibre_path, old_author_dir)
+                    new_author_path = os.path.join(calibre_path, new_author_rename_dir)
                     try:
-                        old_author_path = os.path.join(calibre_path, old_author_dir)
-                        new_author_path = os.path.join(calibre_path, new_author_rename_dir)
                         shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
                     except OSError as ex:
                         log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
@@ -503,7 +503,6 @@ def upload_new_file_gdrive(book_id, first_author, renamed_author, title, title_d
     book.path = gdrive_path.replace("\\", "/")
     gd.uploadFileToEbooksFolder(os.path.join(gdrive_path, file_name).replace("\\", "/"), original_filepath)
     return rename_files_on_change(first_author, renamed_author, local_book=book, gdrive=True)
-
 
 
 def update_dir_structure_gdrive(book_id, first_author, renamed_author):
@@ -623,6 +622,7 @@ def reset_password(user_id):
         ub.session.rollback()
         return 0, None
 
+
 def generate_random_password(min_length):
     min_length = max(8, min_length) - 4
     random_source = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
@@ -690,6 +690,7 @@ def valid_email(email):
             raise Exception(_("Invalid Email address format"))
     return email
 
+
 def valid_password(check_password):
     if config.config_password_policy:
         verify = ""
@@ -731,7 +732,7 @@ def update_dir_structure(book_id,
 
 def delete_book(book, calibrepath, book_format):
     if not book_format:
-        clear_cover_thumbnail_cache(book.id) ## here it breaks
+        clear_cover_thumbnail_cache(book.id)  # here it breaks
         calibre_db.delete_dirty_metadata(book.id)
     if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
@@ -943,13 +944,14 @@ def save_cover(img, book_path):
 
 def do_download_file(book, book_format, client, data, headers):
     book_name = data.name
+    download_name = filename = None
     if config.config_use_google_drive:
         # startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, book_name + "." + book_format)
         # log.debug('%s', time.time() - startTime)
         if df:
             if config.config_embed_metadata and (
-                 (book_format == "kepub" and config.config_kepubifypath ) or
+                 (book_format == "kepub" and config.config_kepubifypath) or
                  (book_format != "kepub" and config.config_binariesdir)):
                 output_path = os.path.join(config.config_calibre_dir, book.path)
                 if not os.path.exists(output_path):
@@ -977,7 +979,7 @@ def do_download_file(book, book_format, client, data, headers):
             filename, download_name = do_kepubify_metadata_replace(book, os.path.join(filename,
                                                                                       book_name + "." + book_format))
         elif book_format != "kepub" and config.config_binariesdir and config.config_embed_metadata:
-                filename, download_name = do_calibre_export(book.id, book_format)
+            filename, download_name = do_calibre_export(book.id, book_format)
         else:
             download_name = book_name
 
@@ -1052,11 +1054,11 @@ def check_calibre(calibre_location):
                 return _('Calibre binaries not viable')
         else:
             ret_val = []
-            missing_binaries=[path for path, available in
-                              zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
+            missing_binaries = [path for path, available in
+                               zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_available) if not available]
 
-            missing_perms=[path for path, available in
-                           zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_executable) if not available]
+            missing_perms = [path for path, available in
+                            zip(SUPPORTED_CALIBRE_BINARIES.values(), binaries_executable) if not available]
             if missing_binaries:
                 ret_val.append(_('Missing calibre binaries: %(missing)s', missing=", ".join(missing_binaries)))
             if missing_perms:

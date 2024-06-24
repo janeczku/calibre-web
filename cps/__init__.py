@@ -110,6 +110,7 @@ if limiter_present:
 else:
     limiter = None
 
+
 def create_app():
     if csrf:
         csrf.init_app(app)

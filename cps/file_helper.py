@@ -32,6 +32,7 @@ from . import logger
 
 log = logger.create()
 
+
 def get_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
     if not os.path.isdir(tmp_dir):

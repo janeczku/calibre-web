@@ -110,7 +110,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self._handleSuccess()
         self.app_db_session.remove()
 
-    def get_books_with_covers(self, book_id=-1):
+    @staticmethod
+    def get_books_with_covers(book_id=-1):
         filter_exp = (db.Books.id == book_id) if book_id != -1 else True
         calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
         books_cover = calibre_db.session.query(db.Books).filter(db.Books.has_cover == 1).filter(filter_exp).all()
@@ -464,7 +465,7 @@ class TaskClearCoverThumbnailCache(CalibreTask):
                 calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
                 thumbnails = (calibre_db.session.query(ub.Thumbnail)
                               .join(db.Books, ub.Thumbnail.entity_id == db.Books.id, isouter=True)
-                              .filter(db.Books.id == None)
+                              .filter(db.Books.id==None)
                               .all())
                 calibre_db.session.close()
             elif self.book_id > 0:  # make sure single book is selected
