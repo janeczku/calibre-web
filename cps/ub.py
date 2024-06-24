@@ -268,6 +268,18 @@ class OAuthProvider(Base):
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
     def __init__(self):
+        self.kobo_only_shelves_sync = None
+        self.view_settings = None
+        self.allowed_column_value = None
+        self.allowed_tags = None
+        self.denied_tags = None
+        self.kindle_mail = None
+        self.locale = None
+        self.default_language = None
+        self.sidebar_view = None
+        self.id = None
+        self.role = None
+        self.name = None
         self.loadSettings()
 
     def loadSettings(self):
@@ -325,6 +337,7 @@ class User_Sessions(Base):
     session_key = Column(String, default="")
 
     def __init__(self, user_id, session_key):
+        super().__init__()
         self.user_id = user_id
         self.session_key = session_key
 
@@ -507,6 +520,7 @@ class RemoteAuthToken(Base):
     token_type = Column(Integer, default=0)
 
     def __init__(self):
+        super().__init__()
         self.auth_token = (hexlify(os.urandom(4))).decode('utf-8')
         self.expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 min from now
 

@@ -19,29 +19,24 @@
 from . import logger
 from lxml.etree import ParserError
 
+log = logger.create()
+
 try:
     # at least bleach 6.0 is needed -> incomplatible change from list arguments to set arguments
-    from bleach import clean_text as clean_html
-    BLEACH = True
+    from bleach import clean as clean_html
+    from bleach.sanitizer import ALLOWED_TAGS
+    bleach = True
 except ImportError:
-    try:
-        BLEACH = False
-        from nh3 import clean as clean_html
-    except ImportError:
-        try:
-            BLEACH = False
-            from lxml.html.clean import clean_html
-        except ImportError:
-            clean_html = None
-
-
-log = logger.create()
+    from nh3 import clean as clean_html
+    bleach = False
 
 
 def clean_string(unsafe_text, book_id=0):
     try:
-        if BLEACH:
-            safe_text = clean_html(unsafe_text, tags=set(), attributes=set())
+        if bleach:
+            allowed_tags = list(ALLOWED_TAGS)
+            allowed_tags.extend(['p', 'span', 'div', 'pre'])
+            safe_text = clean_html(unsafe_text, tags=set(allowed_tags))
         else:
             safe_text = clean_html(unsafe_text)
     except ParserError as e:
