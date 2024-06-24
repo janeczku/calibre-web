@@ -48,7 +48,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status, valid_password
+    edit_book_read_status, valid_password, edit_book_rating
 from .pagination import Pagination
 from .redirect import get_redirect_location
 from .babel import get_available_locale
@@ -168,7 +168,16 @@ def set_bookmark(book_id, book_format):
     ub.session_commit("Bookmark for user {} in book {} created".format(current_user.id, book_id))
     return "", 201
 
-
+@web.route("/ajax/togglerating/<int:book_id>", methods=['POST'])
+@login_required
+def toggle_rating(book_id):
+    rating = (request.form.get('rating'))
+    message = edit_book_rating(book_id,rating)
+    if message:
+        return message, 400
+    else:
+        return message
+    
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_read(book_id):

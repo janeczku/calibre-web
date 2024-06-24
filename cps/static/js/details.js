@@ -17,126 +17,218 @@
 
 /* global _ */
 
-function handleResponse (data) {
+function handleResponse(data) {
     $(".row-fluid.text-center").remove();
     $("#flash_danger").remove();
     $("#flash_success").remove();
     if (!jQuery.isEmptyObject(data)) {
-        if($("#bookDetailsModal").is(":visible")) {
+        if ($("#bookDetailsModal").is(":visible")) {
             data.forEach(function (item) {
-                $(".modal-header").after('<div id="flash_' + item.type +
-                    '" class="text-center alert alert-' + item.type + '">' + item.message + '</div>');
+                $(".modal-header").after(
+                    '<div id="flash_' +
+                        item.type +
+                        '" class="text-center alert alert-' +
+                        item.type +
+                        '">' +
+                        item.message +
+                        "</div>"
+                );
             });
         } else {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center">' +
-                    '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
-                    '</div>');
+                $(".navbar").after(
+                    '<div class="row-fluid text-center">' +
+                        '<div id="flash_' +
+                        item.type +
+                        '" class="alert alert-' +
+                        item.type +
+                        '">' +
+                        item.message +
+                        "</div>" +
+                        "</div>"
+                );
             });
         }
     }
 }
-$(".sendbtn-form").click(function() {
+$(".sendbtn-form").click(function () {
     $.ajax({
-        method: 'post',
-        url: $(this).data('href'),
-        data: {csrf_token: $("input[name='csrf_token']").val()},
+        method: "post",
+        url: $(this).data("href"),
+        data: { csrf_token: $("input[name='csrf_token']").val() },
         success: function (data) {
-            handleResponse(data)
-        }
-    })
+            handleResponse(data);
+        },
+    });
 });
 
-$(function() {
-    $("#have_read_form").ajaxForm();
+$(function () {
+    $("#rating_form").ajaxForm();
 });
 
-$("#have_read_cb").on("change", function() {
+$("#rating").on("change", function () {
+    //alert("Rating change !" + $(this).closest("form").serialize());
     $.ajax({
         url: this.closest("form").action,
-        method:"post",
+        method: "post",
         data: $(this).closest("form").serialize(),
-        error: function(response) {
-            var data = [{type:"danger", message:response.responseText}]
+        error: function (response) {
+            var data = [{ type: "danger", message: response.responseText }];
             // $("#flash_success").parent().remove();
             $("#flash_danger").remove();
             $(".row-fluid.text-center").remove();
             if (!jQuery.isEmptyObject(data)) {
-                $("#have_read_cb").prop("checked", !$("#have_read_cb").prop("checked"));
-                if($("#bookDetailsModal").is(":visible")) {
+                $("#have_read_cb").prop(
+                    "checked",
+                    !$("#have_read_cb").prop("checked")
+                );
+                if ($("#bookDetailsModal").is(":visible")) {
                     data.forEach(function (item) {
-                        $(".modal-header").after('<div id="flash_' + item.type +
-                            '" class="text-center alert alert-' + item.type + '">' + item.message + '</div>');
+                        $(".modal-header").after(
+                            '<div id="flash_' +
+                                item.type +
+                                '" class="text-center alert alert-' +
+                                item.type +
+                                '">' +
+                                item.message +
+                                "</div>"
+                        );
                     });
-                } else
-                {
+                } else {
                     data.forEach(function (item) {
-                        $(".navbar").after('<div class="row-fluid text-center" >' +
-                            '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
-                            '</div>');
+                        $(".navbar").after(
+                            '<div class="row-fluid text-center" >' +
+                                '<div id="flash_' +
+                                item.type +
+                                '" class="alert alert-' +
+                                item.type +
+                                '">' +
+                                item.message +
+                                "</div>" +
+                                "</div>"
+                        );
                     });
                 }
             }
-        }
+        },
     });
 });
 
-$(function() {
+$(function () {
+    $("#have_read_form").ajaxForm();
+});
+
+$("#have_read_cb").on("change", function () {
+    $.ajax({
+        url: this.closest("form").action,
+        method: "post",
+        data: $(this).closest("form").serialize(),
+        error: function (response) {
+            var data = [{ type: "danger", message: response.responseText }];
+            // $("#flash_success").parent().remove();
+            $("#flash_danger").remove();
+            $(".row-fluid.text-center").remove();
+            if (!jQuery.isEmptyObject(data)) {
+                $("#have_read_cb").prop(
+                    "checked",
+                    !$("#have_read_cb").prop("checked")
+                );
+                if ($("#bookDetailsModal").is(":visible")) {
+                    data.forEach(function (item) {
+                        $(".modal-header").after(
+                            '<div id="flash_' +
+                                item.type +
+                                '" class="text-center alert alert-' +
+                                item.type +
+                                '">' +
+                                item.message +
+                                "</div>"
+                        );
+                    });
+                } else {
+                    data.forEach(function (item) {
+                        $(".navbar").after(
+                            '<div class="row-fluid text-center" >' +
+                                '<div id="flash_' +
+                                item.type +
+                                '" class="alert alert-' +
+                                item.type +
+                                '">' +
+                                item.message +
+                                "</div>" +
+                                "</div>"
+                        );
+                    });
+                }
+            }
+        },
+    });
+});
+
+$(function () {
     $("#archived_form").ajaxForm();
 });
 
-$("#archived_cb").on("change", function() {
+$("#archived_cb").on("change", function () {
     $(this).closest("form").submit();
 });
 
-(function() {
+(function () {
     var templates = {
-        add: _.template(
-            $("#template-shelf-add").html()
-        ),
-        remove: _.template(
-            $("#template-shelf-remove").html()
-        )
+        add: _.template($("#template-shelf-add").html()),
+        remove: _.template($("#template-shelf-remove").html()),
     };
 
-    $("#add-to-shelves, #remove-from-shelves").on("click", "[data-shelf-action]", function (e) {
-        e.preventDefault();
-        $.ajax({
-                url: $(this).data('href'),
-                method:"post",
-                data: {csrf_token:$("input[name='csrf_token']").val()},
+    $("#add-to-shelves, #remove-from-shelves").on(
+        "click",
+        "[data-shelf-action]",
+        function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: $(this).data("href"),
+                method: "post",
+                data: { csrf_token: $("input[name='csrf_token']").val() },
             })
-            .done(function() {
-                var $this = $(this);
-                switch ($this.data("shelf-action")) {
-                    case "add":
-                        $("#remove-from-shelves").append(
-                            templates.remove({
-                                add: $this.data('href'),
-                                remove: $this.data("remove-href"),
-                                content: $("<div>").text(this.textContent).html()
-                            })
-                        );
-                        break;
-                    case "remove":
-                        $("#add-to-shelves").append(
-                            templates.add({
-                                add: $this.data("add-href"),
-                                remove: $this.data('href'),
-                                content: $("<div>").text(this.textContent).html(),
-                            })
-                        );
-                        break;
-                }
-                this.parentNode.removeChild(this);
-            }.bind(this))
-            .fail(function(xhr) {
-                var $msg = $("<span/>", { "class": "text-danger"}).text(xhr.responseText);
-                $("#shelf-action-status").html($msg);
+                .done(
+                    function () {
+                        var $this = $(this);
+                        switch ($this.data("shelf-action")) {
+                            case "add":
+                                $("#remove-from-shelves").append(
+                                    templates.remove({
+                                        add: $this.data("href"),
+                                        remove: $this.data("remove-href"),
+                                        content: $("<div>")
+                                            .text(this.textContent)
+                                            .html(),
+                                    })
+                                );
+                                break;
+                            case "remove":
+                                $("#add-to-shelves").append(
+                                    templates.add({
+                                        add: $this.data("add-href"),
+                                        remove: $this.data("href"),
+                                        content: $("<div>")
+                                            .text(this.textContent)
+                                            .html(),
+                                    })
+                                );
+                                break;
+                        }
+                        this.parentNode.removeChild(this);
+                    }.bind(this)
+                )
+                .fail(function (xhr) {
+                    var $msg = $("<span/>", { class: "text-danger" }).text(
+                        xhr.responseText
+                    );
+                    $("#shelf-action-status").html($msg);
 
-                setTimeout(function() {
-                    $msg.remove();
-                }, 10000);
-            });
-    });
+                    setTimeout(function () {
+                        $msg.remove();
+                    }, 10000);
+                });
+        }
+    );
 })();

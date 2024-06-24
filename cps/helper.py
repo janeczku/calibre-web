@@ -297,6 +297,27 @@ def get_sorted_author(value):
             value2 = value
     return value2
 
+def edit_book_rating(book_id, rating=0):
+
+    rating_x2 = int(float(rating) * 2)
+    book = calibre_db.get_filtered_book(book_id)
+    is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
+
+    old_rating = book.ratings[0].rating
+    if rating_x2 != old_rating:
+            is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
+            
+            if is_rating:
+                book.ratings.append(is_rating)
+            else:
+                new_rating = db.Ratings(rating=rating_x2)
+                book.ratings.append(new_rating)
+            if old_rating:
+                book.ratings.remove(book.ratings[0])
+
+            calibre_db.session.commit()
+
+    return ""
 
 def edit_book_read_status(book_id, read_status=None):
     if not config.config_read_column:
