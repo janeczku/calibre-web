@@ -944,9 +944,12 @@ def edit_book_ratings(to_save, book):
         if rating_x2 != old_rating:
             changed = True
             is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
+            
             if is_rating:
+                print("Is rating: " + str(is_rating))
                 book.ratings.append(is_rating)
             else:
+                print("New Rating")
                 new_rating = db.Ratings(rating=rating_x2)
                 book.ratings.append(new_rating)
             if old_rating:
