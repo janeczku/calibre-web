@@ -148,6 +148,7 @@ class _Settings(_Base):
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
     config_embed_metadata = Column(Boolean, default=True)
+    config_upload_with_calibredb = Column(Boolean, default=False)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
@@ -504,7 +505,7 @@ def autodetect_calibre_binaries():
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
     else:
-        calibre_path = ["/opt/calibre/"]
+        calibre_path = ["/opt/calibre/", "/app/calibre"]
     for element in calibre_path:
         supported_binary_paths = [os.path.join(element, binary)
                                   for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
