@@ -23,7 +23,9 @@
 import os
 from datetime import datetime, timezone
 import json
+import re
 from shutil import copyfile
+import subprocess
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
@@ -241,6 +243,11 @@ def upload():
     if not config.config_uploading:
         abort(404)
     if request.method == 'POST' and 'btn-upload' in request.files:
+        calibredb_binarypath = os.path.join(
+            config.config_binariesdir, constants.SUPPORTED_CALIBRE_BINARIES["calibredb"]
+        )
+        log.debug(f"Looking for calibredb binary at {calibredb_binarypath}")
+
         for requested_file in request.files.getlist("btn-upload"):
             try:
                 modify_date = False
@@ -256,41 +263,113 @@ def upload():
                 if error:
                     return error
 
-                db_book, input_authors, title_dir = create_book_on_upload(modify_date, meta)
+                if config.config_upload_with_calibredb and os.path.exists(
+                    calibredb_binarypath
+                ):
+                    if not os.path.exists(meta.file_path):
+                        flash(
+                            _("Uploaded book not found!"),
+                            category="error",
+                        )
+                        log.error(
+                            f"Expected to find temp file at {meta.file_path} but no file exists"
+                        )
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
 
-                # Comments need book id therefore only possible after flush
-                modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
+                    log.debug(f"Running calibredb to add {meta.file_path}")
+                    proc = subprocess.run(
+                        [
+                            calibredb_binarypath,
+                            "add",
+                            f"--library-path={config.config_calibre_dir}",
+                            meta.file_path,
+                        ],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        universal_newlines=True,
+                    )
+                    if proc.returncode != 0:
+                        flash(
+                            _("calibredb failed importing {requested_file}"),
+                            category="error",
+                        )
+                        log.error(
+                            f"calibredb failed to import {requested_file}: {proc.stderr}"
+                        )
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
 
-                book_id = db_book.id
-                title = db_book.title
-                if config.config_use_google_drive:
-                    helper.upload_new_file_gdrive(book_id,
-                                                  input_authors[0],
-                                                  title,
-                                                  title_dir,
-                                                  meta.file_path,
-                                                  meta.extension.lower())
-                    for file_format in db_book.data:
-                        file_format.name = (helper.get_valid_filename(title, chars=42) + ' - '
-                                            + helper.get_valid_filename(input_authors[0], chars=42))
+                    # The output contains a line with the new book's ID
+                    title = meta.title
+                    book_id = -1
+                    for line in proc.stdout.split("\n"):
+                        line = line.strip()
+                        matches = re.match(r"^Added book ids: (\d+)$", line)
+                        if matches is None:
+                            continue
+                        book_id = int(matches.group(1))
+                        break
+                    log.debug(f"New calibre book ID {book_id}")
+
+                    if book_id == -1:
+                        msg = "No ID found in calibredb output"
+                        flash(_(msg), category="error")
+                        log.error(f"{msg}: {proc.stdout}")
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
                 else:
-                    error = helper.update_dir_structure(book_id,
-                                                        config.get_book_path(),
-                                                        input_authors[0],
-                                                        meta.file_path,
-                                                        title_dir + meta.extension.lower())
+                    # create the function for sorting...
+                    calibre_db.update_title_sort(config)
+                    calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
-                move_coverfile(meta, db_book)
+                    db_book, input_authors, title_dir = create_book_on_upload(
+                        modify_date, meta
+                    )
 
-                if modify_date:
-                    calibre_db.set_metadata_dirty(book_id)
-                # save data to database, reread data
-                calibre_db.session.commit()
+                    # Comments need book id therefore only possible after flush
+                    modify_date |= edit_book_comments(
+                        Markup(meta.description).unescape(), db_book
+                    )
 
-                if config.config_use_google_drive:
-                    gdriveutils.updateGdriveCalibreFromLocal()
-                if error:
-                    flash(error, category="error")
+                    book_id = db_book.id
+                    title = db_book.title
+                    if config.config_use_google_drive:
+                        helper.upload_new_file_gdrive(
+                            book_id,
+                            input_authors[0],
+                            title,
+                            title_dir,
+                            meta.file_path,
+                            meta.extension.lower())
+                        for file_format in db_book.data:
+                            file_format.name = (helper.get_valid_filename(title, chars=42) + ' - '
+                                + helper.get_valid_filename(input_authors[0], chars=42))
+                    else:
+                        error = helper.update_dir_structure(
+                            book_id,
+                            config.get_book_path(),
+                            input_authors[0],
+                            meta.file_path,
+                            title_dir + meta.extension.lower())
+
+                    move_coverfile(meta, db_book)
+
+                    if modify_date:
+                        calibre_db.set_metadata_dirty(book_id)
+                    # save data to database, reread data
+                    calibre_db.session.commit()
+
+                    if config.config_use_google_drive:
+                        gdriveutils.updateGdriveCalibreFromLocal()
+                    if error:
+                        flash(error, category="error")
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
                 upload_text = N_("File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
@@ -1048,9 +1127,13 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
     input_languages = languages.split(',')
     unknown_languages = []
     if not upload_mode:
-        input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+        input_l = isoLanguages.get_language_codes(
+            get_locale(), input_languages, unknown_languages
+        )
     else:
-        input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
+        input_l = isoLanguages.get_valid_language_codes(
+            get_locale(), input_languages, unknown_languages
+        )
     for lang in unknown_languages:
         log.error("'%s' is not a valid language", lang)
         if isinstance(invalid, list):
@@ -1062,7 +1145,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
         # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
         # the book it's language is set to the filter language
         if input_l[0] != current_user.filter_language() and current_user.filter_language() != "all":
-            input_l[0] = calibre_db.session.query(db.Languages). \
+            input_l[0] = calibre_db.session.query(db.Languages).\
                 filter(db.Languages.lang_code == current_user.filter_language()).first().lang_code
     # Remove duplicates
     input_l = helper.uniq(input_l)
@@ -1074,8 +1157,12 @@ def edit_book_publisher(publishers, book):
     if publishers:
         publisher = strip_whitespaces(publishers)
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
-            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
-                                              'publisher')
+            changed |= modify_database_object(
+                [publisher],
+                book.publishers,
+                db.Publishers,
+                calibre_db.session,
+                'publisher')
     elif len(book.publishers):
         changed |= modify_database_object([], book.publishers, db.Publishers, calibre_db.session, 'publisher')
     return changed
@@ -1144,10 +1231,7 @@ def edit_cc_data_string(book, c, to_save, cc_db_value, cc_string):
 
 
 def edit_single_cc_data(book_id, book, column_id, to_save):
-    cc = (calibre_db.session.query(db.CustomColumns)
-          .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
-          .filter(db.CustomColumns.id == column_id)
-          .all())
+    cc = (calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.datatype.notin_(db.cc_exceptions)).filter(db.CustomColumns.id == column_id).all())
     return edit_cc_data(book_id, book, to_save, cc)
 
 
@@ -1167,9 +1251,13 @@ def edit_cc_data(book_id, book, to_save, cc):
                 cc_db_value = None
             if strip_whitespaces(to_save[cc_string]):
                 if c.datatype in ['int', 'bool', 'float', "datetime", "comments"]:
-                    change, to_save = edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string)
+                    change, to_save = edit_cc_data_value(
+                        book_id, book, c, to_save, cc_db_value, cc_string
+                    )
                 else:
-                    change, to_save = edit_cc_data_string(book, c, to_save, cc_db_value, cc_string)
+                    change, to_save = edit_cc_data_string(
+                        book, c, to_save, cc_db_value, cc_string
+                    )
                 changed |= change
             else:
                 if cc_db_value is not None:
@@ -1209,8 +1297,7 @@ def upload_single_file(file_request, book, book_id):
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in allowed_extensions and '' not in allowed_extensions:
-                    flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
-                          category="error")
+                    flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext), category="error")
                     return False
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
@@ -1225,13 +1312,14 @@ def upload_single_file(file_request, book, book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath),
-                          category="error")
+                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
                     return False
             try:
                 requested_file.save(saved_filename)
             except OSError:
-                flash(_("Failed to store file %(file)s.", file=saved_filename), category="error")
+                flash(
+                    _("Failed to store file %(file)s.", file=saved_filename),
+                    category="error")
                 return False
 
             file_size = os.path.getsize(saved_filename)
@@ -1256,7 +1344,9 @@ def upload_single_file(file_request, book, book_id):
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
             upload_text = N_("File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
-            WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(book.title)))
+            WorkerThread.add(
+                current_user.name, TaskUpload(upload_text, escape(book.title))
+            )
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
@@ -1296,7 +1386,9 @@ def handle_title_on_edit(book, book_title):
 def handle_author_on_edit(book, author_name, update_stored=True):
     change = False
     # handle author(s)
-    input_authors = prepare_authors(author_name, config.get_book_path(), config.config_use_google_drive)
+    input_authors = prepare_authors(
+        author_name, config.get_book_path(), config.config_use_google_drive
+    )
 
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
     # everything then is assembled for sorted author field in database
@@ -1394,7 +1486,9 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             db_book_object.append(new_element)
         else:
             if len(db_element) == 1:
-                db_element = create_objects_for_addition(db_element[0], add_element, db_type)
+                db_element = create_objects_for_addition(
+                    db_element[0], add_element, db_type
+                )
             else:
                 db_el = db_session.query(db_object).filter(db_filter == add_element).first()
                 db_element = db_element[0] if not db_el else db_el
@@ -1430,7 +1524,9 @@ def create_objects_for_addition(db_element, add_element, db_type):
 
 # Modifies different Database objects, first check if elements have to be deleted,
 # because they are no longer used, than check if elements have to be added to database
-def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
+def modify_database_object(
+    input_elements, db_book_object, db_object, db_session, db_type
+):
     # passing input_elements not as a list may lead to undesired results
     if not isinstance(input_elements, list):
         raise TypeError(str(input_elements) + " should be passed as a list")
@@ -1455,7 +1551,9 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     changed |= remove_objects(db_book_object, db_session, del_elements)
     # if there are elements to add, we add them now!
     if len(add_elements) > 0:
-        changed |= add_objects(db_book_object, db_object, db_session, db_type, add_elements)
+        changed |= add_objects(
+            db_book_object, db_object, db_session, db_type, add_elements
+        )
     return changed
 
 
@@ -1465,10 +1563,14 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
        db_identifiers is a list of already persisted list of Identifiers objects."""
     changed = False
     error = False
-    input_dict = dict([(identifier.type.lower(), identifier) for identifier in input_identifiers])
+    input_dict = dict(
+        [(identifier.type.lower(), identifier) for identifier in input_identifiers]
+    )
     if len(input_identifiers) != len(input_dict):
         error = True
-    db_dict = dict([(identifier.type.lower(), identifier) for identifier in db_identifiers])
+    db_dict = dict(
+        [(identifier.type.lower(), identifier) for identifier in db_identifiers]
+    )
     # delete db identifiers not present in input or modify them with input val
     for identifier_type, identifier in db_dict.items():
         if identifier_type not in input_dict.keys():

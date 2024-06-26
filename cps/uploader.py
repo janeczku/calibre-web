@@ -265,7 +265,7 @@ def upload(uploadfile, rar_excecutable):
     filename = uploadfile.filename
     filename_root, file_extension = os.path.splitext(filename)
     md5 = hashlib.md5(filename.encode('utf-8')).hexdigest()  # nosec
-    tmp_file_path = os.path.join(tmp_dir, md5)
+    tmp_file_path = os.path.join(tmp_dir, md5) + file_extension
     log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
     return process(tmp_file_path, filename_root, file_extension, rar_excecutable)
