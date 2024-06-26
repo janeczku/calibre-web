@@ -23,7 +23,9 @@
 import os
 from datetime import datetime
 import json
+import re
 from shutil import copyfile
+import subprocess
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
@@ -33,6 +35,8 @@ from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
 from flask_login import current_user, login_required
+from requests.sessions import Request
+from sqlalchemy import Column, Integer
 from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import func
@@ -240,51 +244,109 @@ def upload():
     if not config.config_uploading:
         abort(404)
     if request.method == 'POST' and 'btn-upload' in request.files:
+        calibredb_binarypath = os.path.join(config.config_binariesdir, constants.SUPPORTED_CALIBRE_BINARIES["calibredb"])
+        log.debug(f"Looking for calibredb binary at {calibredb_binarypath}")
+
         for requested_file in request.files.getlist("btn-upload"):
             try:
                 modify_date = False
-                # create the function for sorting...
-                calibre_db.update_title_sort(config)
-                calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
                 meta, error = file_handling_on_upload(requested_file)
                 if error:
                     return error
 
-                db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modify_date, meta)
+                if config.config_upload_with_calibredb and os.path.exists(calibredb_binarypath):
+                    if not os.path.exists(meta.file_path):
+                        flash(
+                            _("Uploaded book not found!"),
+                            category="error",
+                        )
+                        log.error(f"Expected to find temp file at {meta.file_path} but no file exists")
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
 
-                # Comments need book id therefore only possible after flush
-                modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
+                    log.debug(f"Running calibredb to add {meta.file_path}")
+                    proc = subprocess.run(
+                        [
+                            calibredb_binarypath,
+                            "add",
+                            f"--library-path={config.config_calibre_dir}",
+                            meta.file_path,
+                        ],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        universal_newlines=True,
+                    )
+                    if proc.returncode != 0:
+                        flash(_("calibredb failed importing {requested_file}"), category="error")
+                        log.error(f"calibredb failed to import {requested_file}: {proc.stderr}")
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
 
-                book_id = db_book.id
-                title = db_book.title
-                if config.config_use_google_drive:
-                    helper.upload_new_file_gdrive(book_id,
-                                                  input_authors[0],
-                                                  renamed_authors,
-                                                  title,
-                                                  title_dir,
-                                                  meta.file_path,
-                                                  meta.extension.lower())
+                    # The output contains a line with the new book's ID
+                    title = meta.title
+                    book_id = -1
+                    for line in proc.stdout.split("\n"):
+                        line = line.strip()
+                        matches = re.match(r"^Added book ids: (\d+)$", line)
+                        if matches is None:
+                            continue
+                        book_id = int(matches.group(1))
+                        break
+                    log.debug(f"New calibre book ID {book_id}")
+
+                    if book_id == -1:
+                        msg = "No ID found in calibredb output"
+                        flash(_(msg), category="error")
+                        log.error(f"{msg}: {proc.stdout}")
+                        return Response(
+                            json.dumps({"location": url_for("web.index")}),
+                            mimetype="application/json",
+                        )
                 else:
-                    error = helper.update_dir_structure(book_id,
-                                                        config.get_book_path(),
-                                                        input_authors[0],
-                                                        meta.file_path,
-                                                        title_dir + meta.extension.lower(),
-                                                        renamed_author=renamed_authors)
+                    # create the function for sorting...
+                    calibre_db.update_title_sort(config)
+                    calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
-                move_coverfile(meta, db_book)
+                    db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modify_date, meta)
 
-                if modify_date:
-                    calibre_db.set_metadata_dirty(book_id)
-                # save data to database, reread data
-                calibre_db.session.commit()
+                    # Comments need book id therefore only possible after flush
+                    modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
 
-                if config.config_use_google_drive:
-                    gdriveutils.updateGdriveCalibreFromLocal()
-                if error:
-                    flash(error, category="error")
+                    book_id = db_book.id
+                    title = db_book.title
+                    if config.config_use_google_drive:
+                        helper.upload_new_file_gdrive(book_id,
+                                                    input_authors[0],
+                                                    renamed_authors,
+                                                    title,
+                                                    title_dir,
+                                                    meta.file_path,
+                                                    meta.extension.lower())
+                    else:
+                        error = helper.update_dir_structure(book_id,
+                                                            config.get_book_path(),
+                                                            input_authors[0],
+                                                            meta.file_path,
+                                                            title_dir + meta.extension.lower(),
+                                                            renamed_author=renamed_authors)
+
+                    move_coverfile(meta, db_book)
+
+                    if modify_date:
+                        calibre_db.set_metadata_dirty(book_id)
+                    # save data to database, reread data
+                    calibre_db.session.commit()
+
+                    if config.config_use_google_drive:
+                        gdriveutils.updateGdriveCalibreFromLocal()
+                    if error:
+                        flash(error, category="error")
+
                 link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
                 upload_text = N_("File %(file)s uploaded", file=link)
                 WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
