@@ -581,7 +581,7 @@ def get_cover_via_gdrive(cover_path):
             session.add(permissionAdded)
             try:
                 session.commit()
-            except OperationalError as ex:
+            except (OperationalError, IntegrityError) as ex:
                 log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
         return df.metadata.get('webContentLink')
