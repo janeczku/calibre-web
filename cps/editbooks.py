@@ -264,6 +264,9 @@ def upload():
                                                   title_dir,
                                                   meta.file_path,
                                                   meta.extension.lower())
+                    for file_format in db_book.data:
+                        file_format.name = (helper.get_valid_filename(title, chars=42) + ' - '
+                                            + helper.get_valid_filename(input_authors[0], chars=42))
                 else:
                     error = helper.update_dir_structure(book_id,
                                                         config.get_book_path(),
