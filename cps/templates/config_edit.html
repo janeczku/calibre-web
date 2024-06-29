@@ -373,9 +373,13 @@
                   <input type="text" class="form-control" id="config_limiter_uri" name="config_limiter_uri" value="{% if config.config_limiter_uri != None %}{{ config.config_limiter_uri }}{% endif %}" autocomplete="off">
                </div>
                <div class="form-group" style="margin-left:10px;">
-                  <label for="config_calibre">{{_('Options for Limiter')}}</label>
+                  <label for="config_calibre">{{_('Options for Limiter Backend')}}</label>
                   <input type="text" class="form-control" id="config_limiter_options" name="config_limiter_options" value="{% if config.config_limiter_options != None %}{{ config.config_limiter_options }}{% endif %}" autocomplete="off">
                </div>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="config_check_extensions" name="config_check_extensions" {% if config.config_check_extensions %}checked{% endif %}>
+                <label for="config_check_extensions">{{_('Check if file extensions matches file content on upload')}}</label>
             </div>
             <div class="form-group">
               <label for="config_session">{{_('Session protection')}}</label>
