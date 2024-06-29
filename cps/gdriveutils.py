@@ -269,6 +269,7 @@ def getFile(pathId, fileName, drive):
 
 def getFolderId(path, drive):
     # drive = getDrive(drive)
+    log.info(f"GetFolder: {path}")
     currentFolderId = None
     try:
         currentFolderId = getEbooksFolderId(drive)
@@ -354,6 +355,7 @@ def moveGdriveFolderRemote(origin_file, target_folder):
                                           fields='id, parents').execute()
 
     elif gFileTargetDir['title'] != target_folder:
+        deleteDatabasePath(gFileTargetDir['title'])
         # Folder is not existing, create, and move folder
         drive.auth.service.files().patch(fileId=origin_file['id'],
                                          body={'title': target_folder},
@@ -557,6 +559,14 @@ def updateDatabaseOnEdit(ID, newPath):
 # Deletes the hashes in database of deleted book
 def deleteDatabaseEntry(ID):
     session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
+    try:
+        session.commit()
+    except OperationalError as ex:
+        log.error_or_exception('Database error: {}'.format(ex))
+        session.rollback()
+
+def deleteDatabasePath(Pathname):
+    session.query(GdriveId).filter(GdriveId.path.contains(Pathname)).delete()
     try:
         session.commit()
     except OperationalError as ex:
