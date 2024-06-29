@@ -1777,7 +1777,7 @@ def _configuration_update_helper():
             to_save["config_upload_formats"] = ','.join(
                 helper.uniq([x.lstrip().rstrip().lower() for x in to_save["config_upload_formats"].split(',')]))
             _config_string(to_save, "config_upload_formats")
-            constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
+            # constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")
@@ -1827,6 +1827,7 @@ def _configuration_update_helper():
         reboot_required |= reboot
 
         # security configuration
+        _config_checkbox(to_save, "config_check_extensions")
         _config_checkbox(to_save, "config_password_policy")
         _config_checkbox(to_save, "config_password_number")
         _config_checkbox(to_save, "config_password_lower")

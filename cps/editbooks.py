@@ -23,7 +23,7 @@
 import os
 from datetime import datetime
 import json
-from shutil import copyfile
+from shutil import copyfile, move
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
@@ -46,7 +46,7 @@ from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
-
+from .file_helper import validate_mime_type
 
 editbook = Blueprint('edit-book', __name__)
 log = logger.create()
@@ -118,14 +118,13 @@ def edit_book(book_id):
         # handle book title change
         title_change = handle_title_on_edit(book, to_save["book_title"])
         # handle book author change
-        input_authors, author_change, renamed = handle_author_on_edit(book, to_save["author_name"])
+        input_authors, author_change = handle_author_on_edit(book, to_save["author_name"])
         if author_change or title_change:
             edited_books_id = book.id
             modify_date = True
             title_author_error = helper.update_dir_structure(edited_books_id,
                                                              config.get_book_path(),
-                                                             input_authors[0],
-                                                             renamed_author=renamed)
+                                                             input_authors[0])
         if title_author_error:
             flash(title_author_error, category="error")
             calibre_db.session.rollback()
@@ -251,7 +250,7 @@ def upload():
                 if error:
                     return error
 
-                db_book, input_authors, title_dir, renamed_authors = create_book_on_upload(modify_date, meta)
+                db_book, input_authors, title_dir = create_book_on_upload(modify_date, meta)
 
                 # Comments need book id therefore only possible after flush
                 modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
@@ -261,7 +260,6 @@ def upload():
                 if config.config_use_google_drive:
                     helper.upload_new_file_gdrive(book_id,
                                                   input_authors[0],
-                                                  renamed_authors,
                                                   title,
                                                   title_dir,
                                                   meta.file_path,
@@ -271,8 +269,7 @@ def upload():
                                                         config.get_book_path(),
                                                         input_authors[0],
                                                         meta.file_path,
-                                                        title_dir + meta.extension.lower(),
-                                                        renamed_author=renamed_authors)
+                                                        title_dir + meta.extension.lower())
 
                 move_coverfile(meta, db_book)
 
@@ -405,9 +402,8 @@ def edit_list_book(param):
             ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
                            mimetype='application/json')
         elif param == 'authors':
-            input_authors, __, renamed = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
-            rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0],
-                                                       renamed_author=renamed)
+            input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
+            rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0])
             if not rename_error:
                 ret = Response(json.dumps({
                     'success': True,
@@ -543,7 +539,7 @@ def table_xchange_author_title():
                 author_names.append(authr.name.replace('|', ','))
 
             title_change = handle_title_on_edit(book, " ".join(author_names))
-            input_authors, author_change, renamed = handle_author_on_edit(book, authors)
+            input_authors, author_change = handle_author_on_edit(book, authors)
             if author_change or title_change:
                 edited_books_id = book.id
                 modify_date = True
@@ -553,8 +549,7 @@ def table_xchange_author_title():
 
             if edited_books_id:
                 # toDo: Handle error
-                edit_error = helper.update_dir_structure(edited_books_id, config.get_book_path(), input_authors[0],
-                                                         renamed_author=renamed)
+                edit_error = helper.update_dir_structure(edited_books_id, config.get_book_path(), input_authors[0])
             if modify_date:
                 book.last_modified = datetime.utcnow()
                 calibre_db.set_metadata_dirty(book.id)
@@ -602,7 +597,9 @@ def identifier_list(to_save, book):
     return result
 
 
-def prepare_authors(authr):
+def prepare_authors(authr, calibre_path, gdrive=False):
+    if gdrive:
+        calibre_path = ""
     # handle authors
     input_authors = authr.split('&')
     # handle_authors(input_authors)
@@ -614,18 +611,44 @@ def prepare_authors(authr):
     if input_authors == ['']:
         input_authors = [_('Unknown')]  # prevent empty Author
 
-    renamed = list()
     for in_aut in input_authors:
-        renamed_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == in_aut).first()
+        renamed_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(in_aut)).first()
         if renamed_author and in_aut != renamed_author.name:
-            renamed.append(renamed_author.name)
+            old_author_name = renamed_author.name
+            # rename author in Database
+            create_objects_for_addition(renamed_author, in_aut,"author")
+            # rename all Books with this author as first author:
+            # rename all book author_sort strings with the new author name
             all_books = calibre_db.session.query(db.Books) \
                 .filter(db.Books.authors.any(db.Authors.name == renamed_author.name)).all()
-            sorted_renamed_author = helper.get_sorted_author(renamed_author.name)
-            sorted_old_author = helper.get_sorted_author(in_aut)
             for one_book in all_books:
-                one_book.author_sort = one_book.author_sort.replace(sorted_renamed_author, sorted_old_author)
-    return input_authors, renamed
+                # ToDo: check
+                sorted_old_author = helper.get_sorted_author(old_author_name)
+                sorted_renamed_author = helper.get_sorted_author(in_aut)
+                # change author sort path
+                try:
+                    author_index = one_book.author_sort.index(sorted_old_author)
+                    one_book.author_sort = one_book.author_sort.replace(sorted_old_author, sorted_renamed_author)
+                except ValueError:
+                    log.error("Sorted author {} not found in database".format(sorted_old_author))
+                    author_index = -1
+                # change book path if changed author is first author -> match on first position
+                if author_index == 0:
+                    one_titledir = one_book.path.split('/')[1]
+                    one_old_authordir = one_book.path.split('/')[0]
+                    # rename author path only once per renamed author -> search all books with author name in book.path
+                    # das muss einmal geschehen aber pro Buch geprüft werden ansonsten habe ich das Problem das vlt. 2 gleiche Ordner bis auf Groß/Kleinschreibung vorhanden sind im Umzug
+                    new_author_dir = helper.rename_author_path(in_aut, one_old_authordir, renamed_author.name, calibre_path, gdrive)
+                    one_book.path = os.path.join(new_author_dir, one_titledir).replace('\\', '/')
+                    # rename all books in book data with the new author name and move corresponding files to new locations
+                    # old_path = os.path.join(calibre_path, new_author_dir, one_titledir)
+                    new_path = os.path.join(calibre_path, new_author_dir, one_titledir)
+                    all_new_name = helper.get_valid_filename(one_book.title, chars=42) + ' - ' \
+                                   + helper.get_valid_filename(renamed_author.name, chars=42)
+                    # change location in database to new author/title path
+                    helper.rename_all_files_on_change(one_book, new_path, new_path, all_new_name, gdrive)
+
+    return input_authors
 
 
 def prepare_authors_on_upload(title, authr):
@@ -636,12 +659,13 @@ def prepare_authors_on_upload(title, authr):
             flash(_("Uploaded book probably exists in the library, consider to change before upload new: ")
                   + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
-    input_authors, renamed = prepare_authors(authr)
+    input_authors = prepare_authors(authr, config.get_book_path(), config.config_use_google_drive)
 
     sort_authors_list = list()
     db_author = None
     for inp in input_authors:
-        stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+        # stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+        stored_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(inp)).first()
         if not stored_author:
             if not db_author:
                 db_author = db.Authors(inp, helper.get_sorted_author(inp), "")
@@ -654,13 +678,13 @@ def prepare_authors_on_upload(title, authr):
             sort_author = stored_author.sort
         sort_authors_list.append(sort_author)
     sort_authors = ' & '.join(sort_authors_list)
-    return sort_authors, input_authors, db_author, renamed
+    return sort_authors, input_authors, db_author
 
 
 def create_book_on_upload(modify_date, meta):
     title = meta.title
     authr = meta.author
-    sort_authors, input_authors, db_author, renamed_authors = prepare_authors_on_upload(title, authr)
+    sort_authors, input_authors, db_author = prepare_authors_on_upload(title, authr)
 
     title_dir = helper.get_valid_filename(title, chars=96)
     author_dir = helper.get_valid_filename(db_author.name, chars=96)
@@ -717,14 +741,20 @@ def create_book_on_upload(modify_date, meta):
         flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
     modify_date |= modification
 
-    return db_book, input_authors, title_dir, renamed_authors
+    return db_book, input_authors, title_dir
 
 
 def file_handling_on_upload(requested_file):
     # check if file extension is correct
+    allowed_extensions = config.config_upload_formats.split(',')
+    if requested_file:
+        if config.config_check_extensions and allowed_extensions != ['']:
+            if not validate_mime_type(requested_file, allowed_extensions):
+                flash(_("File type isn't allowed to be uploaded to this server"), category="error")
+                return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
     if '.' in requested_file.filename:
         file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-        if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+        if file_ext not in allowed_extensions and '' not in allowed_extensions:
             flash(
                 _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                   ext=file_ext), category="error")
@@ -1152,7 +1182,12 @@ def edit_cc_data(book_id, book, to_save, cc):
 def upload_single_file(file_request, book, book_id):
     # Check and handle Uploaded file
     requested_file = file_request.files.get('btn-upload-format', None)
+    allowed_extensions = config.config_upload_formats.split(',')
     if requested_file:
+        if config.config_check_extensions and allowed_extensions != ['']:
+            if not validate_mime_type(requested_file, allowed_extensions):
+                flash(_("File type isn't allowed to be uploaded to this server"), category="error")
+                return False
         # check for empty request
         if requested_file.filename != '':
             if not current_user.role_upload():
@@ -1160,7 +1195,7 @@ def upload_single_file(file_request, book, book_id):
                 return False
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+                if file_ext not in allowed_extensions and '' not in allowed_extensions:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return False
@@ -1177,7 +1212,8 @@ def upload_single_file(file_request, book, book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
+                    flash(_("Failed to create path %(path)s (Permission denied).", path=filepath),
+                          category="error")
                     return False
             try:
                 requested_file.save(saved_filename)
@@ -1247,7 +1283,7 @@ def handle_title_on_edit(book, book_title):
 def handle_author_on_edit(book, author_name, update_stored=True):
     change = False
     # handle author(s)
-    input_authors, renamed = prepare_authors(author_name)
+    input_authors = prepare_authors(author_name, config.get_book_path(), config.config_use_google_drive)
 
     # change |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
@@ -1267,7 +1303,7 @@ def handle_author_on_edit(book, author_name, update_stored=True):
 
     change |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
-    return input_authors, change, renamed
+    return input_authors, change
 
 
 def search_objects_remove(db_book_object, db_type, input_elements):
@@ -1351,8 +1387,8 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             if db_no_case:
                 # check for new case of element
                 db_element = create_objects_for_addition(db_element, add_element, db_type)
-            else:
-                db_element = create_objects_for_addition(db_element, add_element, db_type)
+            #else:
+            #    db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
             db_book_object.append(db_element)
 
