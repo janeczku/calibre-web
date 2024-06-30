@@ -393,10 +393,8 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
         if not gdrive:
             if not os.path.exists(new_path):
                 os.makedirs(new_path)
-            shutil.move(os.path.normcase(
-                os.path.join(old_path, file_format.name + '.' + file_format.format.lower())),
-                os.path.normcase(
-                    os.path.join(new_path, all_new_name + '.' + file_format.format.lower())))
+            shutil.move(os.path.join(old_path, file_format.name + '.' + file_format.format.lower()),
+                    os.path.join(new_path, all_new_name + '.' + file_format.format.lower()))
         else:
             g_file = gd.getFileFromEbooksFolder(old_path,
                                                 file_format.name + '.' + file_format.format.lower())
@@ -457,7 +455,7 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
             old_author_path = os.path.join(calibre_path, old_author_dir)
             new_author_path = os.path.join(calibre_path, new_author_rename_dir)
             try:
-                shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
+                shutil.move(old_author_path, new_author_path)
             except OSError as ex:
                 log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
                 log.debug(ex, exc_info=True)
@@ -559,21 +557,20 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
         if original_filepath:
             if not os.path.isdir(new_path):
                 os.makedirs(new_path)
-            shutil.move(os.path.normcase(original_filepath), os.path.normcase(os.path.join(new_path, db_filename)))
+            shutil.move(original_filepath, os.path.join(new_path, db_filename))
             log.debug("Moving title: %s to %s/%s", original_filepath, new_path)
         else:
             # Check new path is not valid path
             if not os.path.exists(new_path):
                 # move original path to new path
                 log.debug("Moving title: %s to %s", path, new_path)
-                shutil.move(os.path.normcase(path), os.path.normcase(new_path))
+                shutil.move(path, new_path)
             else:  # path is valid copy only files to new location (merge)
                 log.info("Moving title: %s into existing: %s", path, new_path)
                 # Take all files and subfolder from old path (strange command)
                 for dir_name, __, file_list in os.walk(path):
                     for file in file_list:
-                        shutil.move(os.path.normcase(os.path.join(dir_name, file)),
-                                    os.path.normcase(os.path.join(new_path + dir_name[len(path):], file)))
+                        shutil.move(os.path.join(dir_name, file), os.path.join(new_path + dir_name[len(path):], file))
             if not os.listdir(os.path.split(path)[0]):
                 try:
                     shutil.rmtree(os.path.split(path)[0])
