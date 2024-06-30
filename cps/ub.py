@@ -350,6 +350,8 @@ class Shelf(Base):
     uuid = Column(String, default=lambda: str(uuid.uuid4()))
     name = Column(String)
     is_public = Column(Integer, default=0)
+    type = Column(Integer, default=0)
+    category = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
     kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
@@ -644,7 +646,20 @@ def migrate_shelfs(engine, _session):
             trans = conn.begin()
             conn.execute(text("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1"))
             trans.commit()
-
+    try:
+        _session.query(exists().where(Shelf.type)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        with engine.connect() as conn:
+            trans = conn.begin()
+            conn.execute(text("ALTER TABLE shelf ADD column 'type' INTEGER DEFAULT 0"))
+            trans.commit()
+    try:
+        _session.query(exists().where(Shelf.category)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        with engine.connect() as conn:
+            trans = conn.begin()
+            conn.execute(text("ALTER TABLE shelf ADD column 'category' INTEGER DEFAULT 0"))
+            trans.commit()
 
 def migrate_readBook(engine, _session):
     try:
