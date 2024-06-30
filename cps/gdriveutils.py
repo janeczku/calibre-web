@@ -21,6 +21,7 @@ import json
 import shutil
 import chardet
 import ssl
+import sqlite3
 
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
@@ -258,13 +259,17 @@ def getEbooksFolderId(drive=None):
         return gDriveId.gdrive_id
 
 
-def getFile(pathId, fileName, drive):
-    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", r"\'"))
+def getFile(pathId, fileName, drive, nocase):
+    metaDataFile = "'%s' in parents and trashed = false and title contains '%s'" % (pathId, fileName.replace("'", r"\'"))
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
-    else:
+    if nocase:
         return fileList[0]
+    for f in fileList:
+        if f['title'] == fileName:
+            return f
+    return None
 
 
 def getFolderId(path, drive):
@@ -303,7 +308,7 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except (OperationalError, IntegrityError, StaleDataError) as ex:
+    except (OperationalError, IntegrityError, StaleDataError, sqlite3.IntegrityError) as ex:
         log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
@@ -314,7 +319,7 @@ def getFolderId(path, drive):
     return currentFolderId
 
 
-def getFileFromEbooksFolder(path, fileName):
+def getFileFromEbooksFolder(path, fileName, nocase=False):
     drive = getDrive(Gdrive.Instance().drive)
     if path:
         # sqlCheckPath=path if path[-1] =='/' else path + '/'
@@ -322,7 +327,7 @@ def getFileFromEbooksFolder(path, fileName):
     else:
         folderId = getEbooksFolderId(drive)
     if folderId:
-        return getFile(folderId, fileName, drive)
+        return getFile(folderId, fileName, drive, nocase)
     else:
         return None
 
@@ -338,12 +343,12 @@ def downloadFile(path, filename, output):
     f.GetContentFile(output)
 
 
-def moveGdriveFolderRemote(origin_file, target_folder):
+def moveGdriveFolderRemote(origin_file, target_folder, single_book=False):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
     children = drive.auth.service.children().list(folderId=previous_parents).execute()
-    gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
-    if not gFileTargetDir:
+    if single_book:
+        # gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
         gFileTargetDir = drive.CreateFile(
             {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
              "mimeType": "application/vnd.google-apps.folder"})
@@ -353,19 +358,20 @@ def moveGdriveFolderRemote(origin_file, target_folder):
                                           addParents=gFileTargetDir['id'],
                                           removeParents=previous_parents,
                                           fields='id, parents').execute()
-
-    elif gFileTargetDir['title'] != target_folder:
-        deleteDatabasePath(gFileTargetDir['title'])
+    elif origin_file['title'] != target_folder:
+        #gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
+        #if gFileTargetDir:
+        deleteDatabasePath(origin_file['title'])
         # Folder is not existing, create, and move folder
         drive.auth.service.files().patch(fileId=origin_file['id'],
                                          body={'title': target_folder},
                                          fields='title').execute()
-    else:
+    '''else:
         # Move the file to the new folder
         drive.auth.service.files().update(fileId=origin_file['id'],
                                           addParents=gFileTargetDir['id'],
                                           removeParents=previous_parents,
-                                          fields='id, parents').execute()
+                                          fields='id, parents').execute()'''
     # if previous_parents has no children anymore, delete original fileparent
     if len(children['items']) == 1:
         deleteDatabaseEntry(previous_parents)

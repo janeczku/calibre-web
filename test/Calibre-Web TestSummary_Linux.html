@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-06-28 20:08:21</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-06-29 20:48:57</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-06-29 02:31:07</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-06-30 03:48:15</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 10 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 44 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">19</td>
-        <td class="text-center">2</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -257,38 +257,11 @@
     
     
     
-        <tr id="ft2.2" class="none bg-danger">
+        <tr id='pt2.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 202, in test_backup_change_book_author
-    self.assertEqual([&#34;Hector Gonçalves&#34;], metadata[&#39;author&#39;])
-AssertionError: Lists differ: [&#39;Hector Gonçalves&#39;] != []
-
-First list contains 1 additional elements.
-First extra element 0:
-&#39;Hector Gonçalves&#39;
-
-- [&#39;Hector Gonçalves&#39;]
-+ []</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -365,32 +338,11 @@ First extra element 0:
     
     
     
-        <tr id="ft2.11" class="none bg-danger">
+        <tr id='pt2.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_book_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.11')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 177, in test_backup_change_book_title
-    self.assertEqual(metadata[&#39;title&#39;], &#39;The bok Lo,执|1u&#39;)
-AssertionError: &#39;&#39; != &#39;The bok Lo,执|1u&#39;
-+ The bok Lo,执|1u</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -510,57 +462,143 @@ AssertionError: &#39;&#39; != &#39;The bok Lo,执|1u&#39;
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestCli</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c4', 1)">Detail</a>
+            <a onclick="showClassDetail('c4', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et4.1" class="none bg-info">
+        <tr id='pt4.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_cli)</div>
+                <div class='testcase'>TestCli - test_already_started</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et4.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et4.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et4.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 35, in setUpClass
-    shutil.copytree(&#39;./Calibre_db&#39;, TEST_DB)
-  File &#34;/usr/lib/python3.10/shutil.py&#34;, line 557, in copytree
-    with os.scandir(src) as itr:
-FileNotFoundError: [Errno 2] No such file or directory: &#39;./Calibre_db&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_bind_to_single_interface</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_SSL_files</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_different_folder</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_cli_different_settings_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_dryrun_update</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_enable_reconnect</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_environ_port_setting</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_logfile</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_no_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt4.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCli - test_writeonly_static_files</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCliGdrivedb</td>
         <td class="text-center">4</td>
-        <td class="text-center">0</td>
         <td class="text-center">4</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -570,131 +608,38 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;./Calibre_db&#39;</
 
     
     
-        <tr id="ft5.1" class="none bg-danger">
+        <tr id='pt5.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_cli_gdrive_folder</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft5.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft5.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 201, in test_cli_gdrive_folder
-    self.start_cw(os.path.join(CALIBRE_WEB_PATH + INDEX, u&#39;cps.py&#39;), gdrive_dir)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 146, in start_cw
-    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft5.2" class="none bg-danger">
+        <tr id='pt5.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_cli_gdrive_location</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft5.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft5.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 182, in test_cli_gdrive_location
-    self.start_cw(os.path.join(CALIBRE_WEB_PATH + INDEX, u&#39;cps.py&#39;), os.path.join(gdrive_dir, u&#39;gü dr.app&#39;))
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 146, in start_cw
-    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft5.3" class="none bg-danger">
+        <tr id='pt5.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_gdrive_db_nonwrite</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft5.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft5.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 150, in test_gdrive_db_nonwrite
-    self.start_cw(os.path.join(CALIBRE_WEB_PATH + INDEX, u&#39;cps.py&#39;))
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 146, in start_cw
-    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft5.4" class="none bg-danger">
+        <tr id='pt5.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCliGdrivedb - test_no_database</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft5.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft5.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 230, in test_no_database
-    self.assertTrue(self.check_element_on_page((By.ID, &#39;flash_success&#39;)))
-AssertionError: False is not true
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli_gdrive.py&#34;, line 237, in test_no_database
-    self.assertFalse(True, &#34;Inital config failed with normal database&#34;)
-AssertionError: True is not false : Inital config failed with normal database</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1060,11 +1005,11 @@ AssertionError: True is not false : Inital config failed with normal database</p
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">20</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -1235,31 +1180,11 @@ AssertionError: True is not false : Inital config failed with normal database</p
     
     
     
-        <tr id="ft12.17" class="none bg-danger">
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.17')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft12.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 451, in test_writeonly_path
-    self.assertTrue(os.path.isdir(book_path))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1292,11 +1217,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
         <td class="text-center">38</td>
-        <td class="text-center">35</td>
-        <td class="text-center">1</td>
+        <td class="text-center">36</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -1315,31 +1240,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft13.2" class="none bg-danger">
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft13.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft13.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 193, in test_edit_author
-    self.assertTrue(os.path.isdir(os.path.join(TEST_DB, &#39;O0u Zhi&#39;, &#39;book8 (8)&#39;)))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1705,13 +1610,13 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="passClass">
         <td>TestEditAuthors</td>
-        <td class="text-center">7</td>
-        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 7)">Detail</a>
+            <a onclick="showClassDetail('c14', 8)">Detail</a>
         </td>
     </tr>
 
@@ -1746,7 +1651,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_change_capital_rename_co_author</div>
+                <div class='testcase'>TestEditAuthors - test_change_capital_one_author_two_books_coauthor</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1755,7 +1660,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_change_capital_rename_two_co_authors</div>
+                <div class='testcase'>TestEditAuthors - test_change_capital_rename_co_author</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1764,7 +1669,7 @@ AssertionError: False is not true</pre>
     
         <tr id='pt14.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_rename_author_accent_onupload</div>
+                <div class='testcase'>TestEditAuthors - test_change_capital_rename_two_co_authors</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1772,6 +1677,15 @@ AssertionError: False is not true</pre>
     
     
         <tr id='pt14.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAuthors - test_rename_author_accent_onupload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_rename_capital_on_upload</div>
             </td>
@@ -1783,72 +1697,32 @@ AssertionError: False is not true</pre>
 
     <tr id="su" class="failClass">
         <td>TestEditAuthorsGdrive</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">5</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 6)">Detail</a>
+            <a onclick="showClassDetail('c15', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="ft15.1" class="none bg-danger">
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_co_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft15.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft15.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 319, in test_change_capital_co_author
-    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;2035360a-7d0e-4230-ba6e-0809c52d1958&#34;, element=&#34;cb5889ec-bf0f-4bc5-b6ce-787090088d52&#34;)&gt; is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft15.2" class="none bg-danger">
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_one_author_one_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft15.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft15.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 131, in test_change_capital_one_author_one_book
-    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;2035360a-7d0e-4230-ba6e-0809c52d1958&#34;, element=&#34;2c5e0549-fad4-4467-b5fd-80b5cabd1669&#34;)&gt; is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1870,11 +1744,9 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 253, in test_change_capital_one_author_two_books
-    self.assertCountEqual([&#39;Frodo Beutlin&#39;, &#39;Norbert halagal&#39;, &#39;Liu Yang&#39;, &#39;Hector Gonçalves&#39;], details[&#39;author&#39;])
-AssertionError: Element counts were not equal:
-First has 1, Second has 0:  &#39;Liu Yang&#39;
-First has 0, Second has 1:  &#39;Liu yang&#39;</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 174, in test_change_capital_one_author_two_books
+    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
+AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;75cab94e-bc8d-4b29-b4fa-bcb013c9fe05&#34;, element=&#34;4bd75a44-1bfc-4cf4-a39d-36e9675ec783&#34;)&gt; is not false</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1884,38 +1756,18 @@ First has 0, Second has 1:  &#39;Liu yang&#39;</pre>
     
     
     
-        <tr id="ft15.4" class="none bg-danger">
+        <tr id='pt15.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_co_author</div>
+                <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_one_author_two_books_coauthor</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft15.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft15.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 365, in test_change_capital_rename_co_author
-    self.assertTrue(fs.isfile(os.path.join(&#39;test&#39;, &#39;Hector Goncalves/book9 (11)&#39;,
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
         <tr id="ft15.5" class="none bg-danger">
             <td>
-                <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_two_co_authors</div>
+                <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_co_author</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
@@ -1930,9 +1782,9 @@ AssertionError: False is not true</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 463, in test_change_capital_rename_two_co_authors
-    self.assertFalse(self.check_element_on_page((By.ID, &#34;flash_danger&#34;)))
-AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#34;2035360a-7d0e-4230-ba6e-0809c52d1958&#34;, element=&#34;a04a321a-7396-4621-84a6-a40ec9d11340&#34;)&gt; is not false</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 370, in test_change_capital_rename_co_author
+    self.assertTrue(fs.isfile(os.path.join(&#39;test&#39;, &#39;hector Gonçalves/book9 (11)&#39;,
+AssertionError: False is not true</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1942,26 +1794,411 @@ AssertionError: &lt;selenium.webdriver.remote.webelement.WebElement (session=&#3
     
     
     
-        <tr id="ft15.6" class="none bg-danger">
+        <tr id='pt15.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAuthorsGdrive - test_change_capital_rename_two_co_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>TestEditBooksList</td>
+        <td class="text-center">19</td>
+        <td class="text-center">15</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c16', 19)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt16.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_booklist_xss: r = requests.session()</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="et16.16" class="none bg-info">
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.6')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.16')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft15.6" class="popup_window test_output" style="display:block;">
+                <div id="div_et16.16" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft15.6').style.display='none'"><span
+                                onclick="document.getElementById('div_et16.16').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 562, in test_rename_capital_on_upload
-    self.assertEqual(200, ret_code)
-AssertionError: 200 != 404</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 81, in test_bookslist_edit_title
+    bl = self.get_books_list(-1)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1898, in get_books_list
+    element_text = &#34;+&#34; if &#34;glyphicon-plus&#34; in click_element.find_elements(By.XPATH, &#34;./span&#34;)[0].get_attribute(&#39;class&#39;) else &#34;&#34;
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft16.17" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditBooksList - test_list_visibility</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.17')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.17" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.17').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 331, in test_list_visibility
+    self.assertEqual(22, len(bl[&#39;table&#39;][0]))
+AssertionError: 22 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft16.18" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 335, in test_restricted_rights
+    self.assertTrue(&#39;Delete&#39; in bl[&#39;table&#39;][0])
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft16.19" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditBooksList - test_search_books_list</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.19')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.19" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.19').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 57, in test_search_books_list
+    self.assertEqual(10, len(bl[&#39;table&#39;]))
+AssertionError: 10 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c17', 2)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et17.1" class="none bg-info">
+            <td>
+                <div class='testcase'>tearDownClass (test_edit_books_list)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 38, in tearDownClass
+    cls.driver.get(&#34;http://127.0.0.1:&#34; + PORTS[0])
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 449, in get
+    self.execute(Command.GET, {&#34;url&#34;: url})
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: Navigation timed out after 300000 ms
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+TimeoutError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:740:5
+bail@chrome://remote/content/marionette/sync.sys.mjs:211:19</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et17.2" class="none bg-info">
+            <td>
+                <div class='testcase'>setUpClass (test_pip_install)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et17.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et17.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 36, in setUpClass
+    args = make_release.parse_arguments([&#39;-p&#39;])
+NameError: name &#39;make_release&#39; is not defined</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="errorClass">
+        <td>TestLoadMetadata</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c18', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et18.1" class="none bg-info">
+            <td>
+                <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
+    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1973,241 +2210,20 @@ AssertionError: 200 != 404</pre>
 
 
     <tr id="su" class="passClass">
-        <td>TestEditBooksList</td>
-        <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c16', 18)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt16.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.11' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.12' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.13' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.14' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.16' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_list_visibility</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.17' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.18' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditBooksList - test_search_books_list</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="failClass">
-        <td>TestLoadMetadata</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c17', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="ft17.1" class="none bg-danger">
-            <td>
-                <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 173, in test_load_metadata
-    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
-AssertionError: 0.0 not greater than or equal to 0.05</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">16</td>
-        <td class="text-center">2</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 18)">Detail</a>
+            <a onclick="showClassDetail('c19', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
             </td>
@@ -2216,38 +2232,16 @@ AssertionError: 0.0 not greater than or equal to 0.05</pre>
     
     
     
-        <tr id="ft18.2" class="none bg-danger">
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 310, in test_edit_author
-    self.assertEqual(u&#39;O0ü 执&#39;, values[&#39;author&#39;][0])
-AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
-- O0ü 执
-+ Leo Baskerville</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
             </td>
@@ -2256,7 +2250,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.4' class='hiddenRow bg-success'>
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
             </td>
@@ -2265,7 +2259,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
             </td>
@@ -2274,7 +2268,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
             </td>
@@ -2283,7 +2277,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.7' class='hiddenRow bg-success'>
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
@@ -2292,7 +2286,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.8' class='hiddenRow bg-success'>
+        <tr id='pt19.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
@@ -2301,7 +2295,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.9' class='hiddenRow bg-success'>
+        <tr id='pt19.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
@@ -2310,7 +2304,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.10' class='hiddenRow bg-success'>
+        <tr id='pt19.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
@@ -2319,7 +2313,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.11' class='hiddenRow bg-success'>
+        <tr id='pt19.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
@@ -2328,7 +2322,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.12' class='hiddenRow bg-success'>
+        <tr id='pt19.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
@@ -2337,7 +2331,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.13' class='hiddenRow bg-success'>
+        <tr id='pt19.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
             </td>
@@ -2346,7 +2340,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.14' class='hiddenRow bg-success'>
+        <tr id='pt19.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
@@ -2355,7 +2349,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id='pt18.15' class='hiddenRow bg-success'>
+        <tr id='pt19.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
@@ -2364,38 +2358,16 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Leo Baskerville&#39;
     
     
     
-        <tr id="ft18.16" class="none bg-danger">
+        <tr id='pt19.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.16')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 136, in test_edit_title
-    self.assertEqual(u&#39;O0ü 执&#39;, values[&#39;title&#39;])
-AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool title wi[54 chars]ters&#39;
-- O0ü 执
-+ Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt18.17' class='hiddenRow bg-success'>
+        <tr id='pt19.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
@@ -2404,7 +2376,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt18.18' class='hiddenRow bg-success'>
+        <tr id='pt19.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
@@ -2422,13 +2394,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 1)">Detail</a>
+            <a onclick="showClassDetail('c20', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
@@ -2446,13 +2418,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 3)">Detail</a>
+            <a onclick="showClassDetail('c21', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
@@ -2461,7 +2433,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
             </td>
@@ -2470,7 +2442,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
@@ -2488,13 +2460,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 7)">Detail</a>
+            <a onclick="showClassDetail('c22', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -2503,7 +2475,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -2512,7 +2484,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
@@ -2521,7 +2493,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
@@ -2530,7 +2502,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
@@ -2539,7 +2511,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.6' class='hiddenRow bg-success'>
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
@@ -2548,7 +2520,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt21.7' class='hiddenRow bg-success'>
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
@@ -2566,13 +2538,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 6)">Detail</a>
+            <a onclick="showClassDetail('c23', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_file_embed_metadata</div>
             </td>
@@ -2581,7 +2553,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2590,7 +2562,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_check_metadata</div>
             </td>
@@ -2599,7 +2571,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_kepub_embed_metadata</div>
             </td>
@@ -2608,7 +2580,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_permissions_missing_file</div>
             </td>
@@ -2617,7 +2589,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_email_epub_embed_metadata</div>
             </td>
@@ -2635,13 +2607,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 4)">Detail</a>
+            <a onclick="showClassDetail('c24', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_file_embed_metadata</div>
             </td>
@@ -2650,7 +2622,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2659,7 +2631,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_check_metadata</div>
             </td>
@@ -2668,7 +2640,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_kepub_embed_metadata</div>
             </td>
@@ -2686,13 +2658,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 1)">Detail</a>
+            <a onclick="showClassDetail('c25', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBookDatabase - test_invalid_book_path</div>
             </td>
@@ -2710,13 +2682,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 2)">Detail</a>
+            <a onclick="showClassDetail('c26', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
             </td>
@@ -2725,7 +2697,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_read_column</div>
             </td>
@@ -2743,13 +2715,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 3)">Detail</a>
+            <a onclick="showClassDetail('c27', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
@@ -2758,19 +2730,19 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id="st26.2" class="none bg-warning">
+        <tr id="st27.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st26.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st27.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st26.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st27.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2784,7 +2756,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt26.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
@@ -2802,13 +2774,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 1)">Detail</a>
+            <a onclick="showClassDetail('c28', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -2826,13 +2798,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 3)">Detail</a>
+            <a onclick="showClassDetail('c29', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -2841,7 +2813,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -2850,7 +2822,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -2868,13 +2840,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 12)">Detail</a>
+            <a onclick="showClassDetail('c30', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -2883,7 +2855,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -2892,7 +2864,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_limit</div>
             </td>
@@ -2901,7 +2873,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_no_download</div>
             </td>
@@ -2910,7 +2882,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
@@ -2919,7 +2891,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -2928,7 +2900,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -2937,7 +2909,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -2946,7 +2918,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -2955,7 +2927,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -2964,7 +2936,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -2973,7 +2945,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt29.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -2991,13 +2963,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 6)">Detail</a>
+            <a onclick="showClassDetail('c31', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
@@ -3006,7 +2978,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
@@ -3015,7 +2987,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
@@ -3024,7 +2996,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
@@ -3033,7 +3005,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
@@ -3042,7 +3014,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -3060,13 +3032,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 13)">Detail</a>
+            <a onclick="showClassDetail('c32', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -3075,7 +3047,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -3084,7 +3056,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt32.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -3093,7 +3065,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt32.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -3102,7 +3074,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt32.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -3111,7 +3083,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt32.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -3120,7 +3092,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.7' class='hiddenRow bg-success'>
+        <tr id='pt32.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -3129,7 +3101,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.8' class='hiddenRow bg-success'>
+        <tr id='pt32.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -3138,7 +3110,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.9' class='hiddenRow bg-success'>
+        <tr id='pt32.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -3147,7 +3119,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.10' class='hiddenRow bg-success'>
+        <tr id='pt32.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -3156,7 +3128,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.11' class='hiddenRow bg-success'>
+        <tr id='pt32.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -3165,7 +3137,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.12' class='hiddenRow bg-success'>
+        <tr id='pt32.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -3174,7 +3146,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt31.13' class='hiddenRow bg-success'>
+        <tr id='pt32.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -3192,13 +3164,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 5)">Detail</a>
+            <a onclick="showClassDetail('c33', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt33.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_login_limit</div>
             </td>
@@ -3207,7 +3179,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt32.2' class='hiddenRow bg-success'>
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_opds_limit</div>
             </td>
@@ -3216,7 +3188,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt32.3' class='hiddenRow bg-success'>
+        <tr id='pt33.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_password_strength</div>
             </td>
@@ -3225,7 +3197,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt32.4' class='hiddenRow bg-success'>
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_redis_backend</div>
             </td>
@@ -3234,7 +3206,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt32.5' class='hiddenRow bg-success'>
+        <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_register_limit</div>
             </td>
@@ -3252,13 +3224,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 16)">Detail</a>
+            <a onclick="showClassDetail('c34', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt34.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_author_sort</div>
             </td>
@@ -3267,7 +3239,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt34.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_download_sort</div>
             </td>
@@ -3276,7 +3248,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.3' class='hiddenRow bg-success'>
+        <tr id='pt34.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_format_sort</div>
             </td>
@@ -3285,7 +3257,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id='pt34.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_formats_click_none</div>
             </td>
@@ -3294,7 +3266,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.5' class='hiddenRow bg-success'>
+        <tr id='pt34.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_lang_sort</div>
             </td>
@@ -3303,7 +3275,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.6' class='hiddenRow bg-success'>
+        <tr id='pt34.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_language_click_none</div>
             </td>
@@ -3312,7 +3284,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.7' class='hiddenRow bg-success'>
+        <tr id='pt34.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
@@ -3321,7 +3293,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.8' class='hiddenRow bg-success'>
+        <tr id='pt34.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
@@ -3330,7 +3302,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.9' class='hiddenRow bg-success'>
+        <tr id='pt34.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_click_none</div>
             </td>
@@ -3339,7 +3311,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.10' class='hiddenRow bg-success'>
+        <tr id='pt34.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_sort</div>
             </td>
@@ -3348,7 +3320,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.11' class='hiddenRow bg-success'>
+        <tr id='pt34.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_click_none</div>
             </td>
@@ -3357,7 +3329,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.12' class='hiddenRow bg-success'>
+        <tr id='pt34.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_sort</div>
             </td>
@@ -3366,7 +3338,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.13' class='hiddenRow bg-success'>
+        <tr id='pt34.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_click_none</div>
             </td>
@@ -3375,7 +3347,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.14' class='hiddenRow bg-success'>
+        <tr id='pt34.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_sort</div>
             </td>
@@ -3384,7 +3356,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.15' class='hiddenRow bg-success'>
+        <tr id='pt34.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_click_none</div>
             </td>
@@ -3393,7 +3365,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt33.16' class='hiddenRow bg-success'>
+        <tr id='pt34.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_sort</div>
             </td>
@@ -3411,13 +3383,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 9)">Detail</a>
+            <a onclick="showClassDetail('c35', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -3426,7 +3398,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -3435,7 +3407,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
@@ -3444,7 +3416,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt35.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -3453,19 +3425,19 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id="st34.5" class="none bg-warning">
+        <tr id="st35.5" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st34.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st35.5')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st34.5" class="popup_window test_output" style="display:none;">
+                <div id="div_st35.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st34.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st35.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3479,7 +3451,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.6' class='hiddenRow bg-success'>
+        <tr id='pt35.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logbook_download</div>
             </td>
@@ -3488,7 +3460,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id='pt35.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -3497,7 +3469,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id='pt35.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -3506,7 +3478,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -3524,13 +3496,13 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 19)">Detail</a>
+            <a onclick="showClassDetail('c36', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -3539,7 +3511,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -3548,7 +3520,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id='pt36.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
@@ -3557,7 +3529,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.4' class='hiddenRow bg-success'>
+        <tr id='pt36.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -3566,7 +3538,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.5' class='hiddenRow bg-success'>
+        <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -3575,7 +3547,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.6' class='hiddenRow bg-success'>
+        <tr id='pt36.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -3584,7 +3556,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.7' class='hiddenRow bg-success'>
+        <tr id='pt36.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_log_hack</div>
             </td>
@@ -3593,7 +3565,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.8' class='hiddenRow bg-success'>
+        <tr id='pt36.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -3602,7 +3574,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.9' class='hiddenRow bg-success'>
+        <tr id='pt36.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -3611,7 +3583,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.10' class='hiddenRow bg-success'>
+        <tr id='pt36.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -3620,7 +3592,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.11' class='hiddenRow bg-success'>
+        <tr id='pt36.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -3629,7 +3601,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.12' class='hiddenRow bg-success'>
+        <tr id='pt36.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -3638,7 +3610,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.13' class='hiddenRow bg-success'>
+        <tr id='pt36.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -3647,7 +3619,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.14' class='hiddenRow bg-success'>
+        <tr id='pt36.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -3656,7 +3628,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.15' class='hiddenRow bg-success'>
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_password_policy</div>
             </td>
@@ -3665,7 +3637,7 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id='pt35.16' class='hiddenRow bg-success'>
+        <tr id='pt36.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
@@ -3674,19 +3646,19 @@ AssertionError: &#39;O0ü 执&#39; != &#39;Very long extra super turbo cool titl
     
     
     
-        <tr id="ft35.17" class="none bg-danger">
+        <tr id="ft36.17" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.17')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft36.17')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft35.17" class="popup_window test_output" style="display:block;">
+                <div id="div_ft36.17" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.17').style.display='none'"><span
+                                onclick="document.getElementById('div_ft36.17').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3703,7 +3675,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt35.18' class='hiddenRow bg-success'>
+        <tr id='pt36.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_opds</div>
             </td>
@@ -3712,7 +3684,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt35.19' class='hiddenRow bg-success'>
+        <tr id='pt36.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -3730,13 +3702,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 2)">Detail</a>
+            <a onclick="showClassDetail('c37', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt36.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
@@ -3745,7 +3717,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt36.2' class='hiddenRow bg-success'>
+        <tr id='pt37.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -3763,13 +3735,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 2)">Detail</a>
+            <a onclick="showClassDetail('c38', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -3778,7 +3750,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -3796,13 +3768,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 26)">Detail</a>
+            <a onclick="showClassDetail('c39', 26)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_guest</div>
             </td>
@@ -3811,7 +3783,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_user</div>
             </td>
@@ -3820,7 +3792,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.3' class='hiddenRow bg-success'>
+        <tr id='pt39.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -3829,7 +3801,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.4' class='hiddenRow bg-success'>
+        <tr id='pt39.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -3838,7 +3810,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.5' class='hiddenRow bg-success'>
+        <tr id='pt39.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -3847,7 +3819,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.6' class='hiddenRow bg-success'>
+        <tr id='pt39.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -3856,7 +3828,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.7' class='hiddenRow bg-success'>
+        <tr id='pt39.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -3865,7 +3837,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.8' class='hiddenRow bg-success'>
+        <tr id='pt39.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -3874,7 +3846,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.9' class='hiddenRow bg-success'>
+        <tr id='pt39.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -3883,7 +3855,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.10' class='hiddenRow bg-success'>
+        <tr id='pt39.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -3892,7 +3864,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.11' class='hiddenRow bg-success'>
+        <tr id='pt39.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -3901,7 +3873,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.12' class='hiddenRow bg-success'>
+        <tr id='pt39.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -3910,7 +3882,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.13' class='hiddenRow bg-success'>
+        <tr id='pt39.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -3919,7 +3891,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.14' class='hiddenRow bg-success'>
+        <tr id='pt39.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -3928,7 +3900,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.15' class='hiddenRow bg-success'>
+        <tr id='pt39.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -3937,7 +3909,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.16' class='hiddenRow bg-success'>
+        <tr id='pt39.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -3946,7 +3918,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.17' class='hiddenRow bg-success'>
+        <tr id='pt39.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -3955,7 +3927,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.18' class='hiddenRow bg-success'>
+        <tr id='pt39.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -3964,7 +3936,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.19' class='hiddenRow bg-success'>
+        <tr id='pt39.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -3973,7 +3945,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.20' class='hiddenRow bg-success'>
+        <tr id='pt39.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -3982,7 +3954,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.21' class='hiddenRow bg-success'>
+        <tr id='pt39.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -3991,7 +3963,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.22' class='hiddenRow bg-success'>
+        <tr id='pt39.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
@@ -4000,7 +3972,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.23' class='hiddenRow bg-success'>
+        <tr id='pt39.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -4009,7 +3981,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.24' class='hiddenRow bg-success'>
+        <tr id='pt39.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -4018,7 +3990,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.25' class='hiddenRow bg-success'>
+        <tr id='pt39.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -4027,7 +3999,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.26' class='hiddenRow bg-success'>
+        <tr id='pt39.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4045,66 +4017,17 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt39.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
             <a onclick="showClassDetail('c40', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et40.1" class="none bg-info">
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
+                <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et40.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et40.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
-    from build_release import make_release
-ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4197,11 +4120,11 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestReadOnlyDatabase</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4211,31 +4134,11 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     
     
-        <tr id="ft42.1" class="none bg-danger">
+        <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft42.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft42.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft42.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_readonly_db.py&#34;, line 111, in test_readonly_path
-    self.assertTrue(os.path.isdir(book_path))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5869,10 +5772,10 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>482</td>
-        <td>451</td>
-        <td>19</td>
-        <td>2</td>
+        <td>498</td>
+        <td>478</td>
+        <td>6</td>
+        <td>4</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -6405,7 +6308,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(451, 19, 2, 10);
+    drawCircle(478, 6, 4, 10);
     showCase(5);
 </script>
 
