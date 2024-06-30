@@ -479,7 +479,10 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
     title_dir = local_book.path.split('/')[1]
 
     new_title_dir = get_valid_filename(local_book.title, chars=96) + " (" + str(book_id) + ")"
-    new_author_dir = get_valid_filename(new_author, chars=96)
+    if new_author:
+        new_author_dir = get_valid_filename(new_author, chars=96)
+    else:
+        new_author = new_author_dir = author_dir
 
     if title_dir != new_title_dir or author_dir != new_author_dir or original_filepath:
         error = move_files_on_change(calibre_path,
@@ -533,9 +536,9 @@ def update_dir_structure_gdrive(book_id, first_author):
             return _('File %(file)s not found on Google Drive', file=book.path)  # file not found
 
     if authordir != new_authordir:
-        g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), new_titledir)
+        g_file = gd.getFileFromEbooksFolder(authordir, new_titledir)
         if g_file:
-            gd.moveGdriveFolderRemote(g_file, new_authordir)
+            gd.moveGdriveFolderRemote(g_file, new_authordir, single_book=True)
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
