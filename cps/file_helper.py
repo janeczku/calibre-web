@@ -19,6 +19,18 @@
 from tempfile import gettempdir
 import os
 import shutil
+import zipfile
+import mimetypes
+import copy
+from io import BytesIO
+try:
+    import magic
+except ImportError:
+    pass
+
+from . import logger
+
+log = logger.create()
 
 
 def get_temp_dir():
@@ -31,3 +43,29 @@ def get_temp_dir():
 def del_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
     shutil.rmtree(tmp_dir)
+
+
+def validate_mime_type(file_buffer, allowed_extensions):
+    mime = magic.Magic(mime=True)
+    allowed_mimetypes =list()
+    for x in allowed_extensions:
+        try:
+            allowed_mimetypes.append(mimetypes.types_map["." + x])
+        except KeyError as e:
+            log.error("Unkown mimetype for Extension: {}".format(x))
+    tmp_mime_type = mime.from_buffer(file_buffer.read())
+    file_buffer.seek(0)
+    if any(mime_type in tmp_mime_type for mime_type in allowed_mimetypes):
+        return True
+    # Some epubs show up as zip mimetypes
+    elif "zip" in tmp_mime_type:
+        try:
+            with zipfile.ZipFile(BytesIO(file_buffer.read()), 'r') as epub:
+                file_buffer.seek(0)
+                if "mimetype" in epub.namelist():
+                    return True
+        except:
+            file_buffer.seek(0)
+            pass
+    
+    return False

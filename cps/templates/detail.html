@@ -251,7 +251,7 @@
                             <input id="have_read_cb" data-checked="{{ _('Mark As Unread') }}"
                                    data-unchecked="{{ _('Mark As Read') }}" type="checkbox"
                                    {% if entry.read_status %}checked{% endif %}>
-                            <span>{{ _('Read') }}</span>
+                            <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
                         </label>
                     </form>
                     </p>
@@ -264,7 +264,7 @@
                                 <input id="archived_cb" data-checked="{{ _('Restore from archive') }}"
                                        data-unchecked="{{ _('Add to archive') }}" type="checkbox"
                                        {% if entry.is_archived %}checked{% endif %}>
-                                <span>{{ _('Archived') }}</span>
+                                <span data-toggle="tooltip" title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{ _('Archive') }}</span>
                             </label>
                         </form>
                         </p>
