@@ -307,21 +307,7 @@ def video_metadata(tmp_file_path, original_file_name, original_file_extension):
             log.warning('Cannot find the xklb database, using default metadata')
     else:
         generate_video_cover(tmp_file_path)
-        meta = BookMeta(
-            file_path=tmp_file_path,
-            extension=original_file_extension,
-            title=original_file_name,
-            author='Unknown',
-            cover=os.path.splitext(tmp_file_path)[0] + '.cover.jpg',
-            description='',
-            tags='',
-            series="",
-            series_id="",
-            languages="",
-            publisher="",
-            pubdate="",
-            identifiers=[])
-        return meta
+        return image_metadata(tmp_file_path, original_file_name, original_file_extension)
 
 # Yes shlex.quote() can help! But flags/options/switchs can still be dangerous:
 # https://stackoverflow.com/questions/49573852/is-python3-shlex-quote-safe
