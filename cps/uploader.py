@@ -252,57 +252,59 @@ def pdf_preview(tmp_file_path, tmp_dir):
 
 
 def video_metadata(tmp_file_path, original_file_name, original_file_extension):
-    if ']' in original_file_name:
+    if '[' in original_file_name and ']' in original_file_name:
         video_id = original_file_name.split('[')[1].split(']')[0]
         video_url = None
         if os.path.isfile(XKLB_DB_FILE):
-            conn = sqlite3.connect(XKLB_DB_FILE)
-            conn.row_factory = sqlite3.Row
-            c = conn.cursor()
-            # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
-            c.execute("SELECT * FROM media WHERE extractor_id=? AND path LIKE ?", (video_id, f'%{original_file_name}%'))
-            row = c.fetchone()
-            if row is not None:
-                video_url = row['webpath']
-                title = row['title']
-                author = row['path'].split('/calibre-web/')[1].split('/')[1].replace('_', ' ')
-                publisher = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
-                # example of time_uploaded: 1696464000
-                pubdate = row['time_uploaded']
-                pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
-                # find cover file
-                if os.path.isdir(os.path.dirname(row['path'])):
-                    for file in os.listdir(os.path.dirname(row['path'])):
-                        # 2024-05-30: YouTube (via yt_dlp and xklb) delivers WebP thumbnails by default, and occasionally also JPG thumbnails.
-                        # Vimeo seems to deliver JPG thumbnails every time.
-                        # FYI yt_dlp uses YouTube and Vimeo "extractors" -- among ~1810 websites it can scrape:
-                        # https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md
-                        # https://github.com/yt-dlp/yt-dlp/tree/master/yt_dlp/extractor
-                        if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == os.path.splitext(os.path.basename(row['path']))[0]:
-                            cover_file_path = os.path.join(os.path.dirname(row['path']), file)
-                            break
-                else:
-                    log.warning('Cannot find thumbnail file, using default cover')
-                    cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
-                c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
+            with sqlite3.connect(XKLB_DB_FILE) as conn:
+                conn.row_factory = sqlite3.Row
+                c = conn.cursor()
+                # 2024-02-17: Dedup Design Evolving... https://github.com/iiab/calibre-web/pull/125
+                c.execute("SELECT * FROM media WHERE extractor_id=? AND path LIKE ?", (video_id, f'%{original_file_name}%'))
                 row = c.fetchone()
-                description = f"{row['text']}<br><br>Original Internet URL: <a href='{video_url}' target='_blank'>{video_url}</a>" if row is not None else ''
-                meta = BookMeta(
-                    file_path=tmp_file_path,
-                    extension=original_file_extension,
-                    title=title,
-                    author=author,
-                    cover=cover_file_path,
-                    description=description,
-                    tags='',
-                    series="",
-                    series_id="",
-                    languages="",
-                    publisher=publisher,
-                    pubdate=pubdate,
-                    identifiers=[])
-                return meta
-            conn.close()
+                if row is not None:
+                    video_url = row['webpath']
+                    title = row['title']
+                    author = row['path'].split('/calibre-web/')[1].split('/')[1].replace('_', ' ')
+                    publisher = row['path'].split('/calibre-web/')[1].split('/')[0].replace('_', ' ')
+                    # example of time_uploaded: 1696464000
+                    pubdate = row['time_uploaded']
+                    pubdate = datetime.datetime.fromtimestamp(pubdate).strftime('%Y-%m-%d %H:%M:%S')
+                    # find cover file
+                    if os.path.isdir(os.path.dirname(row['path'])):
+                        for file in os.listdir(os.path.dirname(row['path'])):
+                            # 2024-05-30: YouTube (via yt_dlp and xklb) delivers WebP thumbnails by default, and occasionally also JPG thumbnails.
+                            # Vimeo seems to deliver JPG thumbnails every time.
+                            # FYI yt_dlp uses YouTube and Vimeo "extractors" -- among ~1810 websites it can scrape:
+                            # https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md
+                            # https://github.com/yt-dlp/yt-dlp/tree/master/yt_dlp/extractor
+                            if file.lower().endswith(('.webp', '.jpg', '.png', '.gif')) and os.path.splitext(file)[0] == os.path.splitext(os.path.basename(row['path']))[0]:
+                                cover_file_path = os.path.join(os.path.dirname(row['path']), file)
+                                break
+                    else:
+                        log.warning('Cannot find thumbnail file, using default cover')
+                        cover_file_path = os.path.splitext(tmp_file_path)[0] + '.cover.jpg'
+                    c.execute("SELECT * FROM captions WHERE media_id=?", (row['id'],))
+                    row = c.fetchone()
+                    description = f"{row['text']}<br><br>Original Internet URL: <a href='{video_url}' target='_blank'>{video_url}</a>" if row is not None else ''
+                    meta = BookMeta(
+                        file_path=tmp_file_path,
+                        extension=original_file_extension,
+                        title=title,
+                        author=author,
+                        cover=cover_file_path,
+                        description=description,
+                        tags='',
+                        series="",
+                        series_id="",
+                        languages="",
+                        publisher=publisher,
+                        pubdate=pubdate,
+                        identifiers=[])
+                    return meta
+                else:
+                    generate_video_cover(tmp_file_path)
+                    return image_metadata(tmp_file_path, original_file_name, original_file_extension)
         else:
             log.warning('Cannot find the xklb database, using default metadata')
     else:
