@@ -93,6 +93,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
         elif extension_upper in ['.MP4', '.WEBM', '.MKV']:
             meta = video_metadata(tmp_file_path, original_file_name, original_file_extension)
         elif extension_upper in ['.JPG', '.JPEG', '.PNG', '.GIF', '.SVG', '.WEBP']:
+            shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
             meta = image_metadata(tmp_file_path, original_file_name, original_file_extension)
 
     except Exception as ex:
@@ -351,7 +352,6 @@ def generate_video_cover(tmp_file_path):
         return None
 
 def image_metadata(tmp_file_path, original_file_name, original_file_extension):
-    shutil.copyfile(tmp_file_path, os.path.splitext(tmp_file_path)[0] + '.cover.jpg')
     meta = BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
