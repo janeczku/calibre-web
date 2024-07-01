@@ -525,7 +525,7 @@ def update_dir_structure_gdrive(book_id, first_author):
     new_titledir = get_valid_filename(book.title, chars=96) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
-        g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
+        g_file = gd.getFileFromEbooksFolder(authordir, titledir)
         if g_file:
             gd.moveGdriveFileRemote(g_file, new_titledir)
             book.path = book.path.split('/')[0] + '/' + new_titledir
@@ -612,7 +612,7 @@ def delete_book_gdrive(book, book_format):
         for entry in book.data:
             if entry.format.upper() == book_format:
                 name = entry.name + '.' + book_format
-        g_file = gd.getFileFromEbooksFolder(book.path, name)
+        g_file = gd.getFileFromEbooksFolder(book.path, name, nocase=True)
     else:
         g_file = gd.getFileFromEbooksFolder(os.path.dirname(book.path), book.path.split('/')[1])
     if g_file:
