@@ -30,7 +30,7 @@ import requests
 import unidecode
 from uuid import uuid4
 
-from flask import send_from_directory, make_response, redirect, abort, url_for
+from flask import send_from_directory, make_response, abort, url_for, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
@@ -787,9 +787,9 @@ def get_book_cover_internal(book, resolution=None):
             try:
                 if not gd.is_gdrive_ready():
                     return get_cover_on_failure()
-                path = gd.get_cover_via_gdrive(book.path)
-                if path:
-                    return redirect(path)
+                cover_file = gd.get_cover_via_gdrive(book.path)
+                if cover_file:
+                    return Response(cover_file, mimetype='image/jpeg')
                 else:
                     log.error('{}/cover.jpg not found on Google Drive'.format(book.path))
                     return get_cover_on_failure()

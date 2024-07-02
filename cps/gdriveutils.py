@@ -22,7 +22,9 @@ import shutil
 import chardet
 import ssl
 import sqlite3
+import mimetypes
 
+from werkzeug.datastructures import Headers
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
 from sqlalchemy import Column, UniqueConstraint
@@ -600,7 +602,10 @@ def get_cover_via_gdrive(cover_path):
             except (OperationalError, IntegrityError) as ex:
                 log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
-        return df.metadata.get('webContentLink')
+        headers = Headers()
+        headers["Content-Type"] = 'image/jpeg'
+        resp, content = df.auth.Get_Http_Object().request(df.metadata.get('downloadUrl'), headers=headers)
+        return content
     else:
         return None
 
