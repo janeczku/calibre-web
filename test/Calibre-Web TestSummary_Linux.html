@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-01 20:28:34</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-02 20:54:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-02 03:50:44</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-03 04:18:18</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 9 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 10 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">21</td>
-        <td class="text-center">0</td>
+        <td class="text-center">20</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -248,11 +248,31 @@
 
     
     
-        <tr id='pt2.1' class='hiddenRow bg-success'>
+        <tr id="ft2.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_all</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft2.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft2.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 54, in test_backup_all
+    self.assertEqual(1, len(res))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -854,23 +874,43 @@
 
     <tr id="su" class="errorClass">
         <td>TestEbookConvertCalibreGDrive</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
         <td class="text-center">5</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c9', 6)">Detail</a>
+            <a onclick="showClassDetail('c9', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt9.1' class='hiddenRow bg-success'>
+        <tr id="ft9.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft9.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft9.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 206, in test_convert_email
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -936,6 +976,15 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
         <tr id='pt9.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1981,12 +2030,12 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c17', 1)">Detail</a>
@@ -1995,26 +2044,26 @@ selenium.common.exceptions.NoSuchElementException: Message: Could not locate ele
 
     
     
-        <tr id="et17.1" class="none bg-info">
+        <tr id="ft17.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 173, in test_load_metadata
+    self.assertGreaterEqual(diff(BytesIO(cover), BytesIO(original_cover), delete_diff_file=True), 0.05)
+AssertionError: 0.0 not greater than or equal to 0.05</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3849,45 +3898,43 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 1)">Detail</a>
+            <a onclick="showClassDetail('c40', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et40.1" class="none bg-info">
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_pip_install)</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et40.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et40.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 36, in setUpClass
-    args = make_release.parse_arguments([&#39;-p&#39;])
-NameError: name &#39;make_release&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt40.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4468,11 +4515,11 @@ NameError: name &#39;make_release&#39; is not defined</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4545,11 +4592,31 @@ NameError: name &#39;make_release&#39; is not defined</pre>
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id="ft50.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 316, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.008301587301587301 != 0.0 within 0.0001 delta (0.008301587301587301 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5632,10 +5699,10 @@ NameError: name &#39;make_release&#39; is not defined</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>497</td>
-        <td>483</td>
+        <td>500</td>
+        <td>484</td>
+        <td>5</td>
         <td>1</td>
-        <td>3</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -5892,7 +5959,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5922,7 +5989,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5970,7 +6037,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6006,7 +6073,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6048,7 +6115,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6078,7 +6145,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.135.0</td>
+              <td>2.136.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6168,7 +6235,7 @@ NameError: name &#39;make_release&#39; is not defined</pre>
 </div>
 
 <script>
-    drawCircle(483, 1, 3, 10);
+    drawCircle(484, 5, 1, 10);
     showCase(5);
 </script>
 
