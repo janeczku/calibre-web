@@ -22,7 +22,9 @@ import shutil
 import chardet
 import ssl
 import sqlite3
+import mimetypes
 
+from werkzeug.datastructures import Headers
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
 from sqlalchemy import Column, UniqueConstraint
@@ -64,7 +66,7 @@ except ImportError as err:
         importError = err
         gdrive_support = False
 
-from . import logger, cli_param, config
+from . import logger, cli_param, config, db
 from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
@@ -265,7 +267,7 @@ def getFile(pathId, fileName, drive, nocase):
     if fileList.__len__() == 0:
         return None
     if nocase:
-        return fileList[0]
+        return fileList[0] if db.lcase(fileList[0]['title']) == db.lcase(fileName) else None
     for f in fileList:
         if f['title'] == fileName:
             return f
@@ -273,8 +275,6 @@ def getFile(pathId, fileName, drive, nocase):
 
 
 def getFolderId(path, drive):
-    # drive = getDrive(drive)
-    log.info(f"GetFolder: {path}")
     currentFolderId = None
     try:
         currentFolderId = getEbooksFolderId(drive)
@@ -348,16 +348,23 @@ def moveGdriveFolderRemote(origin_file, target_folder, single_book=False):
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
     children = drive.auth.service.children().list(folderId=previous_parents).execute()
     if single_book:
-        # gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
-        gFileTargetDir = drive.CreateFile(
-            {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
-             "mimeType": "application/vnd.google-apps.folder"})
-        gFileTargetDir.Upload()
-        # Move the file to the new folder
-        drive.auth.service.files().update(fileId=origin_file['id'],
-                                          addParents=gFileTargetDir['id'],
-                                          removeParents=previous_parents,
-                                          fields='id, parents').execute()
+        gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
+        if gFileTargetDir:
+            # Move the file to the new folder
+            drive.auth.service.files().update(fileId=origin_file['id'],
+                                              addParents=gFileTargetDir['id'],
+                                              removeParents=previous_parents,
+                                              fields='id, parents').execute()
+        else:
+            gFileTargetDir = drive.CreateFile(
+                {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+                 "mimeType": "application/vnd.google-apps.folder"})
+            gFileTargetDir.Upload()
+            # Move the file to the new folder
+            drive.auth.service.files().update(fileId=origin_file['id'],
+                                              addParents=gFileTargetDir['id'],
+                                              removeParents=previous_parents,
+                                              fields='id, parents').execute()
     elif origin_file['title'] != target_folder:
         #gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
         #if gFileTargetDir:
@@ -366,12 +373,7 @@ def moveGdriveFolderRemote(origin_file, target_folder, single_book=False):
         drive.auth.service.files().patch(fileId=origin_file['id'],
                                          body={'title': target_folder},
                                          fields='title').execute()
-    '''else:
-        # Move the file to the new folder
-        drive.auth.service.files().update(fileId=origin_file['id'],
-                                          addParents=gFileTargetDir['id'],
-                                          removeParents=previous_parents,
-                                          fields='id, parents').execute()'''
+
     # if previous_parents has no children anymore, delete original fileparent
     if len(children['items']) == 1:
         deleteDatabaseEntry(previous_parents)
@@ -600,7 +602,10 @@ def get_cover_via_gdrive(cover_path):
             except (OperationalError, IntegrityError) as ex:
                 log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
-        return df.metadata.get('webContentLink')
+        headers = Headers()
+        headers["Content-Type"] = 'image/jpeg'
+        resp, content = df.auth.Get_Http_Object().request(df.metadata.get('downloadUrl'), headers=headers)
+        return content
     else:
         return None
 
