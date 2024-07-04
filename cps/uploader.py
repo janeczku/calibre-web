@@ -29,7 +29,7 @@ from flask_babel import gettext as _
 from . import logger, comic, isoLanguages
 from .constants import BookMeta, XKLB_DB_FILE
 from .helper import split_authors
-from .file_helper import get_temp_dir
+from .file_helper import get_temp_dir, validate_mime_type
 
 log = logger.create()
 
