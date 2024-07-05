@@ -15,7 +15,7 @@ from time import sleep
 log = logger.create()
 
 class TaskDownload(CalibreTask):
-    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_id):
+    def __init__(self, task_message, media_url, original_url, current_user_name, shelf_id, duration, live_status):
         super(TaskDownload, self).__init__(task_message)
         self.message = task_message
         self.media_url = media_url
@@ -23,6 +23,8 @@ class TaskDownload(CalibreTask):
         self.original_url = original_url
         self.current_user_name = current_user_name
         self.shelf_id = shelf_id
+        self.duration = datetime.utcfromtimestamp(int(duration)).strftime("%H:%M:%S") if duration else "unknown"
+        self.live_status = live_status
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_WAITING
         self.progress = 0
@@ -54,6 +56,9 @@ class TaskDownload(CalibreTask):
                 last_progress_time = datetime.now()
                 fragment_stuck_timeout = 30  # seconds
 
+                self.message = f"Downloading {self.media_url_link}..."
+                if self.live_status == "was_live":
+                    self.message += f" (This may take longer than expected due to the video was live for {self.duration})"
                 while p.poll() is None:
                     self.end_time = datetime.now()
                     # Check if there's data available to read
@@ -69,7 +74,6 @@ class TaskDownload(CalibreTask):
                             elif re.search(pattern_progress, line):
                                 percentage = int(re.search(r'\d+', line).group())
                                 if percentage < 100:
-                                    self.message = f"Downloading {self.media_url_link}..."
                                     self.progress = min(0.99, (complete_progress_cycle + (percentage / 100)) / 4)
                                 if percentage == 100:
                                     complete_progress_cycle += 1
@@ -77,7 +81,7 @@ class TaskDownload(CalibreTask):
                     else:
                         elapsed_time = (datetime.now() - last_progress_time).total_seconds()
                         if elapsed_time >= fragment_stuck_timeout:
-                            self.message = f"Downloading {self.media_url_link}... (This is taking longer than expected)"
+                            self.message += f"<br>Some fragments are taking longer than expected to download. Please wait..."
 
                     sleep(0.1)
 
