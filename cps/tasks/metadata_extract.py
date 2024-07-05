@@ -196,6 +196,7 @@ class TaskMetadataExtract(CalibreTask):
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
 
+        self.progress = 1.0
         self.stat = STAT_FINISH_SUCCESS
 
     @property
