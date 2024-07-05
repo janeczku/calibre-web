@@ -125,10 +125,10 @@ class TaskMetadataExtract(CalibreTask):
         return dict(sorted(requested_urls.items(), key=lambda item: item[1]["views_per_day"], reverse=True)[:min(MAX_VIDEOS_PER_DOWNLOAD, len(requested_urls))])
 
     def _add_download_tasks_to_worker(self, requested_urls):
-        for index, requested_url in enumerate(requested_urls.keys()):
+        for index, (requested_url, url_data) in enumerate(requested_urls.items()):
             task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
                                          requested_url, self.original_url,
-                                         self.current_user_name, self.shelf_id)
+                                         self.current_user_name, self.shelf_id, duration=str(url_data["duration"]), live_status=url_data["live_status"])
             WorkerThread.add(self.current_user_name, task_download)
             num_requested_urls = len(requested_urls)
             total_duration = sum(url_data["duration"] for url_data in requested_urls.values())
