@@ -125,6 +125,7 @@ if ($("body.book").length > 0) {
     $("#sendbtn").parent().addClass("sendBtn");
     $("[id*=btnGroupDrop]").parent().addClass("downloadBtn");
     $("read-in-browser").parent().addClass("readBtn");
+    $("listen-in-browser").parent().addClass("listenBtn");
     $(".downloadBtn button:first").addClass("download-text");
 
     // Move all options in book details page to the same group
@@ -138,21 +139,33 @@ if ($("body.book").length > 0) {
         .prependTo('[aria-label^="Download, send"]');
     $("#have_read_cb")
         .after('<label class="block-label readLbl" for="#have_read_cb"></label>');
+    $("#have_read_form").next("p").remove();
+    $("#have_read_form").next("p").remove();
     $("#archived_cb")
         .after('<label class="block-label readLbl" for="#archived_cb"></label>');
     $("#shelf-actions").prependTo('[aria-label^="Download, send"]');
 
+    $(".more-stuff .col-sm-12 #back").hide()
+/*        .html("&laquo; Previous")
+        .addClass("page-link")
+        .removeClass("btn btn-default")
+        .prependTo('[aria-label^="Download, send"]');*/
 
     // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
     $('ul[aria-labelledby="read-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
+    $('ul[aria-labelledby="listen-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
     $('ul[aria-labelledby="send-to-kereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
     $(".leramslist").insertBefore(".blur-wrapper");
     $('ul[aria-labelledby="btnGroupDrop1"]').insertBefore(".blur-wrapper").addClass("leramslist");
     $("#add-to-shelves").insertBefore(".blur-wrapper");
-
+    $("#back")
     $("#read-in-browser").click(function () {
         $(".readinbrowser-drop").toggle();
     });
+    $("#listen-in-browser").click(function () {
+        $(".readinbrowser-drop").toggle();
+    });
+
 
     $(".downloadBtn").click(function () {
         $(".leramslist").toggle();
@@ -626,6 +639,7 @@ if ($("body.epub").length === 0) {
 }
 
 $("#read-in-browser a").attr("target", "");
+$("#listen-in-browser a").attr("target", "");
 
 if ($(".edit-shelf-btn").length > 1) {
     $(".edit-shelf-btn:first").remove();
