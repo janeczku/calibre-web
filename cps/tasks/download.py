@@ -58,7 +58,7 @@ class TaskDownload(CalibreTask):
 
                 self.message = f"Downloading {self.media_url_link}..."
                 if self.live_status == "was_live":
-                    self.message += f" (This may take longer than expected due to the video was live for {self.duration})"
+                    self.message += f" (formerly live video, length/duration is {self.duration} seconds)"
                 while p.poll() is None:
                     self.end_time = datetime.now()
                     # Check if there's data available to read
