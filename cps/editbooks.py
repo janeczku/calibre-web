@@ -389,7 +389,6 @@ def meta():
                 db_book,
                 input_authors,
                 title_dir,
-                renamed_authors,
             ) = create_book_on_upload(modify_date, meta)
 
             # Comments need book id therefore only possible after flush
@@ -406,7 +405,6 @@ def meta():
                 input_authors[0],
                 meta.file_path,
                 title_dir + meta.extension.lower(),
-                renamed_author=renamed_authors,
             )
 
             move_coverfile(meta, db_book)
