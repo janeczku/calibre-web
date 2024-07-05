@@ -63,14 +63,14 @@ class TaskMetadataExtract(CalibreTask):
         try:
             cursor = conn.execute("PRAGMA table_info(media)")
             self.columns = [column[1] for column in cursor.fetchall()]
-            query = ("SELECT path, duration FROM media WHERE error IS NULL AND path LIKE 'http%'"
+            query = ("SELECT path, duration, live_status FROM media WHERE error IS NULL AND path LIKE 'http%'"
                      if "error" in self.columns
-                     else "SELECT path, duration FROM media WHERE path LIKE 'http%'")
+                     else "SELECT path, duration, live_status FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
             requested_urls = {}
-            for path, duration in rows:
+            for path, duration, live_status in rows:
                 if duration is not None and duration > 0:
-                    requested_urls[path] = {"duration": duration}
+                    requested_urls[path] = {"duration": duration, "live_status": live_status}
                 else:
                     self.unavailable.append(path)
             return requested_urls
@@ -140,6 +140,13 @@ class TaskMetadataExtract(CalibreTask):
                 self.message += f"<br><br>Shelf Title: <a href='{shelf_url}' target='_blank'>{self.shelf_title}</a>"
             if self.unavailable:
                 self.message += "<br><br>Unavailable Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)
+                upcoming_live_urls = [url for url, url_data in requested_urls.items() if url_data["live_status"] == "is_upcoming"]
+                live_urls = [url for url, url_data in requested_urls.items() if url_data["live_status"] == "is_live"]
+                if upcoming_live_urls:
+                    self.message += "<br><br>Upcoming Live Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in upcoming_live_urls)
+                if live_urls:
+                    self.message += "<br><br>Live Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in live_urls)
+
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
