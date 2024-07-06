@@ -285,11 +285,13 @@ class LubimyCzytacParser:
 
     def _parse_tags(self) -> List[str]:
         tags = self._parse_xpath_node(xpath=LubimyCzytac.TAGS, take_first=False)
-        return [
-            strip_accents(w.replace(", itd.", " itd."))
-            for w in tags
-            if isinstance(w, str)
-        ]
+        if tags:
+            return [
+                strip_accents(w.replace(", itd.", " itd."))
+                for w in tags
+                if isinstance(w, str)
+            ]
+        return None
 
     def _parse_from_summary(self, attribute_name: str) -> Optional[str]:
         value = None
