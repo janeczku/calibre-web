@@ -82,5 +82,3 @@ var reader;
     const theme = localStorage.getItem("calibre.reader.theme") ?? Object.keys(themes)[0];
     selectTheme(theme);
 })();
-
-
