@@ -551,7 +551,7 @@ input:-moz-placeholder { color: #454545; }
   position: relative;
   border-radius: 3px;
   margin: 0 auto;
-  height: 320px;
+  /* height: 320px; */
 }
 
 .md-content > div {
