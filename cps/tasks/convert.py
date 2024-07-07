@@ -105,17 +105,19 @@ class TaskConvert(CalibreTask):
                 # if we're sending to E-Reader after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = N_("%(book)s send to E-Reader", book=escape(self.title))
-                    worker_thread.add(self.user, TaskEmail(self.settings['subject'],
-                                                           self.results["path"],
-                                                           filename,
-                                                           self.settings,
-                                                           self.ereader_mail,
-                                                           EmailText,
-                                                           self.settings['body'],
-                                                           id=self.book_id,
-                                                           internal=True)
-                                      )
+                    EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))                    
+                    for email in self.ereader_mail.split(','):
+                        email = email.strip()
+                        worker_thread.add(self.user, TaskEmail(self.settings['subject'],
+                                                               self.results["path"],
+                                                               filename,
+                                                               self.settings,
+                                                               email,
+                                                               EmailText,
+                                                               self.settings['body'],
+                                                               id=self.book_id,
+                                                               internal=True)
+                                          )
                 except Exception as ex:
                     return self._handleError(str(ex))
 
