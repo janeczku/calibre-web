@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-30 12:19+0200\n"
+"POT-Creation-Date: 2024-07-07 10:17+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -734,122 +734,122 @@ msgstr "本 %(id)s の削除に失敗しました: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "本 %(id)s はDBのみから削除されます。DB内の本のパスが有効ではありません: %(path)s"
 
-#: cps/helper.py:465
+#: cps/helper.py:463
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "エラー: %(error)s により、著者名を %(src)s から %(dest)s に変更できませんでした"
 
-#: cps/helper.py:536 cps/helper.py:545
+#: cps/helper.py:534 cps/helper.py:543
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "ファイル %(file)s はGoogleドライブ上にありません"
 
-#: cps/helper.py:587
+#: cps/helper.py:584
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "エラー: %(error)s により、タイトルを %(src)s から %(dest)s に変更できませんでした"
 
-#: cps/helper.py:625
+#: cps/helper.py:622
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "本のパス %(path)s はGoogleドライブ上にありません"
 
-#: cps/helper.py:685
+#: cps/helper.py:682
 msgid "Found an existing account for this Email address"
 msgstr ""
 
-#: cps/helper.py:693
+#: cps/helper.py:690
 msgid "This username is already taken"
 msgstr "このユーザー名はすでに使われています"
 
-#: cps/helper.py:705
+#: cps/helper.py:702
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "メールアドレスの形式が無効"
 
-#: cps/helper.py:726
+#: cps/helper.py:723
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:873
+#: cps/helper.py:870
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "表紙のアップロードに必要なPythonモジュール 'advocate' がインストールされていません"
 
-#: cps/helper.py:883
+#: cps/helper.py:880
 msgid "Error Downloading Cover"
 msgstr "表紙のダウンロードに失敗しました"
 
-#: cps/helper.py:886
+#: cps/helper.py:883
 msgid "Cover Format Error"
 msgstr "表紙形式エラー"
 
-#: cps/helper.py:889
+#: cps/helper.py:886
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "表紙アップロードのためにlocalhostやローカルネットワークにアクセスすることは許可されていません"
 
-#: cps/helper.py:899
+#: cps/helper.py:896
 msgid "Failed to create path for cover"
 msgstr "表紙ファイルの作成に失敗しました"
 
-#: cps/helper.py:915
+#: cps/helper.py:912
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "表紙ファイルが有効な画像ファイルでないか、または保存できませんでした"
 
-#: cps/helper.py:926
+#: cps/helper.py:923
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "表紙ファイルは jpg/jpeg/png/webp/bmp のみ対応しています"
 
-#: cps/helper.py:938
+#: cps/helper.py:935
 msgid "Invalid cover file content"
 msgstr "表紙ファイルの内容が無効です"
 
-#: cps/helper.py:942
+#: cps/helper.py:939
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "表紙ファイルは jpg/jpeg のみ対応しています"
 
-#: cps/helper.py:1014 cps/helper.py:1171
+#: cps/helper.py:1011 cps/helper.py:1168
 #, fuzzy
 msgid "Cover"
 msgstr "見つける"
 
-#: cps/helper.py:1031
+#: cps/helper.py:1028
 msgid "UnRar binary file not found"
 msgstr "UnRarのバイナリファイルが見つかりません"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1039
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "UnRarの実行中にエラーが発生しました"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1047
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1050
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1067
+#: cps/helper.py:1064
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "DBへの書き込みができません"
 
-#: cps/helper.py:1076
+#: cps/helper.py:1073
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1078
+#: cps/helper.py:1075
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "実行権限がありません"
 
-#: cps/helper.py:1083
+#: cps/helper.py:1080
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "UnRarの実行中にエラーが発生しました"
 
-#: cps/helper.py:1173 cps/templates/admin.html:216
+#: cps/helper.py:1170 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -1549,21 +1549,21 @@ msgstr "メタデータを編集"
 msgid "Delete temp folder contents"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:97
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "表紙サムネイルを%(count)s個生成しました"
 
-#: cps/tasks/thumbnail.py:231 cps/tasks/thumbnail.py:444
-#: cps/tasks/thumbnail.py:512
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "表紙サムネイル"
 
-#: cps/tasks/thumbnail.py:290
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "シリーズのサムネイルを{0}個生成しました"
 
-#: cps/tasks/thumbnail.py:455
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "表紙サムネイルのキャッシュを消去中"
 

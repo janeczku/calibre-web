@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-30 12:19+0200\n"
-"PO-Revision-Date: 2024-06-01 05:51+0200\n"
+"POT-Creation-Date: 2024-07-07 10:17+0200\n"
+"PO-Revision-Date: 2024-07-05 04:34+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -578,9 +578,8 @@ msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s non è una lingua valida"
 
 #: cps/editbooks.py:756 cps/editbooks.py:1192
-#, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
-msgstr "Non è consentito caricare l'estensione del file '%(ext)s' su questo server"
+msgstr "Non è consentito caricare questo tipo di file su questo server"
 
 #: cps/editbooks.py:762 cps/editbooks.py:1202
 #, python-format
@@ -727,118 +726,117 @@ msgstr "Eliminazione del libro %(id)s non riuscita: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Eliminazione del libro %(id)s solo dal database, percorso del libro nel database non valido: %(path)s"
 
-#: cps/helper.py:465
+#: cps/helper.py:463
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:536 cps/helper.py:545
+#: cps/helper.py:534 cps/helper.py:543
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Il file %(file) non è stato trovato su Google Drive"
 
-#: cps/helper.py:587
+#: cps/helper.py:584
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:625
+#: cps/helper.py:622
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Il percorso del libro %(path)s non è stato trovato su Google Drive"
 
-#: cps/helper.py:685
+#: cps/helper.py:682
 msgid "Found an existing account for this Email address"
 msgstr "Trovato un account esistente per questo indirizzo e-mail"
 
-#: cps/helper.py:693
+#: cps/helper.py:690
 msgid "This username is already taken"
 msgstr "Questo nome utente è già utilizzato"
 
-#: cps/helper.py:705
+#: cps/helper.py:702
 msgid "Invalid Email address format"
 msgstr "Formato dell'indirizzo e-mail non valido"
 
-#: cps/helper.py:726
+#: cps/helper.py:723
 msgid "Password doesn't comply with password validation rules"
 msgstr "La password non è conforme alle regole di convalida della password"
 
-#: cps/helper.py:873
+#: cps/helper.py:870
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Il modulo Python \"advocate\" non è installato ma è necessario per il caricamento delle copertine"
 
-#: cps/helper.py:883
+#: cps/helper.py:880
 msgid "Error Downloading Cover"
 msgstr "Errore nello scaricare la copertina"
 
-#: cps/helper.py:886
+#: cps/helper.py:883
 msgid "Cover Format Error"
 msgstr "Errore nel formato della copertina"
 
-#: cps/helper.py:889
+#: cps/helper.py:886
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Non ti è consentito accedere all'host locale o alla rete locale per caricare le copertine"
 
-#: cps/helper.py:899
+#: cps/helper.py:896
 msgid "Failed to create path for cover"
 msgstr "Impossibile creare il percorso per la copertina"
 
-#: cps/helper.py:915
+#: cps/helper.py:912
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Il file della copertina non è in un formato di immagine valido o non può essere salvato"
 
-#: cps/helper.py:926
+#: cps/helper.py:923
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Solo i file jpg/jpeg/png/webp/bmp sono supportati come file di copertina"
 
-#: cps/helper.py:938
+#: cps/helper.py:935
 msgid "Invalid cover file content"
 msgstr "Contenuto del file di copertina non valido"
 
-#: cps/helper.py:942
+#: cps/helper.py:939
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solo i file jpg/jpeg sono supportati come file di copertina"
 
-#: cps/helper.py:1014 cps/helper.py:1171
+#: cps/helper.py:1011 cps/helper.py:1168
 msgid "Cover"
 msgstr "Copertina"
 
-#: cps/helper.py:1031
+#: cps/helper.py:1028
 msgid "UnRar binary file not found"
 msgstr "File binario UnRar non trovato"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1039
 msgid "Error executing UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1047
 msgid "Could not find the specified directory"
 msgstr "Impossibile trovare la cartella specificata"
 
-#: cps/helper.py:1053
+#: cps/helper.py:1050
 msgid "Please specify a directory, not a file"
 msgstr "Specifica una cartella, non un file"
 
-#: cps/helper.py:1067
+#: cps/helper.py:1064
 msgid "Calibre binaries not viable"
 msgstr "Eseguibili di Calibre non validi"
 
-#: cps/helper.py:1076
+#: cps/helper.py:1073
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "File eseguibili di Calibre mancanti: %(missing)s"
 
-#: cps/helper.py:1078
+#: cps/helper.py:1075
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Permessi di esecuzione mancanti: %(missing)s"
 
-#: cps/helper.py:1083
-#, fuzzy
+#: cps/helper.py:1080
 msgid "Error executing Calibre"
-msgstr "Errore nell'esecuzione di Calibre"
+msgstr "Errore durante l'esecuzione di Calibre"
 
-#: cps/helper.py:1173 cps/templates/admin.html:216
+#: cps/helper.py:1170 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Metti in coda tutti i libri per il backup dei metadati"
 
@@ -1519,21 +1517,21 @@ msgstr "Backup dei metadati"
 msgid "Delete temp folder contents"
 msgstr "Elimina contenuto della cartella temporanea"
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:97
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Sono state generate %(count)s miniature delle copertine"
 
-#: cps/tasks/thumbnail.py:231 cps/tasks/thumbnail.py:444
-#: cps/tasks/thumbnail.py:512
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Miniature delle copertine"
 
-#: cps/tasks/thumbnail.py:290
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "Sono state generate {0} miniature delle serie"
 
-#: cps/tasks/thumbnail.py:455
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Cancellazione della cache delle miniature delle copertine"
 
@@ -2421,7 +2419,6 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr "Percorso del convertitore di libri Kepubify"
 
 #: cps/templates/config_edit.html:344
-#, fuzzy
 msgid "Location of Unrar binary"
 msgstr "Posizione del file binario di UnRar"
 
@@ -2438,13 +2435,12 @@ msgid "Configure Backend for Limiter"
 msgstr "Configura il backend per il limitatore"
 
 #: cps/templates/config_edit.html:376
-#, fuzzy
 msgid "Options for Limiter Backend"
-msgstr "Opzioni per il limitatore"
+msgstr "Opzioni per il limitatore del Backend"
 
 #: cps/templates/config_edit.html:382
 msgid "Check if file extensions matches file content on upload"
-msgstr ""
+msgstr "Controlla se le estensioni dei file corrispondono al contenuto del file al momento del caricamento"
 
 #: cps/templates/config_edit.html:385
 msgid "Session protection"
@@ -2613,9 +2609,8 @@ msgid "Mark As Read"
 msgstr "Contrassegna come letto"
 
 #: cps/templates/detail.html:254
-#, fuzzy
 msgid "Mark Book as Read or Unread"
-msgstr "Contrassegna come da leggere"
+msgstr "Contrassegna il libro come letto o da leggere"
 
 #: cps/templates/detail.html:254 cps/templates/listenmp3.html:159
 msgid "Read"
@@ -2631,12 +2626,11 @@ msgstr "Aggiungi all'archivio"
 
 #: cps/templates/detail.html:267
 msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr ""
+msgstr "Contrassegna il libro come archiviato o no per nasconderlo in Calibre-Web ed eliminarlo da Kobo Reader"
 
 #: cps/templates/detail.html:267
-#, fuzzy
 msgid "Archive"
-msgstr "Archiviato"
+msgstr "Archivio"
 
 #: cps/templates/detail.html:278 cps/templates/listenmp3.html:177
 msgid "Description:"
