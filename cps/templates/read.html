@@ -55,24 +55,24 @@
                 <a id="slider" class="icon-menu">Menu</a>
             </div>
             <div id="metainfo">
-                <span id="book-title"></span>
-                <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
-                <span id="chapter-title"></span>
-            </div>
-            <div id="title-controls">
-                <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
-                <a id="setting" class="icon-cog">Settings</a>
-                <a id="fullscreen" class="icon-resize-full">Fullscreen</a>
-            </div>
-        </div>
+	            <span id="book-title"></span>
+	            <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
+	            <span id="chapter-title"></span>
+	        </div>
+	        <div id="title-controls">
+	            <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
+	            <a id="setting" class="icon-cog">Settings</a>
+	            <a id="fullscreen" class="icon-resize-full">Fullscreen</a>            
+	        </div>
+	    </div>
 
-        <div id="divider"></div>
-        <div id="prev" class="arrow">‹</div>
-        <div id="viewer"></div>
-        <div id="next" class="arrow">›</div>
-
-        <div id="loader"><img src="{{ url_for('static', filename='img/loader.gif') }}"></div>
-    </div>
+	    <div id="divider"></div>
+	    <div id="prev" class="arrow">‹</div>
+	    <div id="viewer"></div>
+	    <div id="next" class="arrow">›</div>
+	    <div id="progress">0%</div>
+	    <div id="loader"><img src="{{ url_for('static', filename='img/loader.gif') }}"></div>
+	</div>
     <div class="modal md-effect-1" id="settings-modal">
         <div class="md-content">
             <h3>{{_('Settings')}}</h3>
@@ -210,5 +210,6 @@
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/reading/epub-progress.js') }}"></script>      
     </body>
 </html>
