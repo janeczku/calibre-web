@@ -117,9 +117,11 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
-    WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
-                     config.get_mail_settings(), ereader_mail, N_("Test Email"),
-                                          _('This Email has been sent via Calibre-Web.')))
+    for email in ereader_mail.split(','):
+        email = email.strip()
+        WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email', None, None,
+                         config.get_mail_settings(), email, N_("Test Email"),
+                                              _('This Email has been sent via Calibre-Web.'))))
     return
 
 
@@ -225,9 +227,11 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             converted_file_name = entry.name + '.' + book_format.lower()
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
-            WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
-                             config.get_mail_settings(), ereader_mail,
-                             email_text, _('This Email has been sent via Calibre-Web.'), book.id))
+            for email in ereader_mail.split(','):
+                email = email.strip()
+                WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
+                                 config.get_mail_settings(), email,
+                                 email_text, _('This Email has been sent via Calibre-Web.'), book.id))
             return
     return _("The requested file could not be read. Maybe wrong permissions?")
 
@@ -691,15 +695,16 @@ def check_username(username):
     return username
 
 
-def valid_email(email):
-    email = email.strip()
-    # if email is not deleted
-    if email:
-        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-                         email):
-            log.error("Invalid Email address format")
-            raise Exception(_("Invalid Email address format"))
+def valid_email(emails):
+    for email in emails.split(','):
+	    email = email.strip()
+	    # if email is not deleted
+	    if email:
+	        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+	        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+	                         email):
+	            log.error("Invalid Email address format")
+	            raise Exception(_("Invalid Email address format"))
     return email
 
 
