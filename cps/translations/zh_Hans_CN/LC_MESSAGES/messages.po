@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-06-30 12:19+0200\n"
+"POT-Creation-Date: 2024-07-07 10:17+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -727,119 +727,119 @@ msgstr "删除书籍 %(id)s 失败：%(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无效： %(path)s"
 
-#: cps/helper.py:465
+#: cps/helper.py:463
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将作者从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:536 cps/helper.py:545
+#: cps/helper.py:534 cps/helper.py:543
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive 上找不到文件 %(file)s"
 
-#: cps/helper.py:587
+#: cps/helper.py:584
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将标题从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:625
+#: cps/helper.py:622
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:685
+#: cps/helper.py:682
 msgid "Found an existing account for this Email address"
 msgstr "已存在使用此邮箱的账户"
 
-#: cps/helper.py:693
+#: cps/helper.py:690
 msgid "This username is already taken"
 msgstr "此用户名已被使用"
 
-#: cps/helper.py:705
+#: cps/helper.py:702
 msgid "Invalid Email address format"
 msgstr "无效的邮箱格式"
 
-#: cps/helper.py:726
+#: cps/helper.py:723
 msgid "Password doesn't comply with password validation rules"
 msgstr "密码不符合密码验证规则"
 
-#: cps/helper.py:873
+#: cps/helper.py:870
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "上传封面所需的 Python 模块 'advocate' 未安装"
 
-#: cps/helper.py:883
+#: cps/helper.py:880
 msgid "Error Downloading Cover"
 msgstr "下载封面时出错"
 
-#: cps/helper.py:886
+#: cps/helper.py:883
 msgid "Cover Format Error"
 msgstr "封面格式出错"
 
-#: cps/helper.py:889
+#: cps/helper.py:886
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "您没有访问本地主机或本地网络进行封面上传"
 
-#: cps/helper.py:899
+#: cps/helper.py:896
 msgid "Failed to create path for cover"
 msgstr "创建封面路径失败"
 
-#: cps/helper.py:915
+#: cps/helper.py:912
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的图片文件，或者无法存储它"
 
-#: cps/helper.py:926
+#: cps/helper.py:923
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "封面文件只支持 jpg、jpeg、png、webp、bmp 文件"
 
-#: cps/helper.py:938
+#: cps/helper.py:935
 msgid "Invalid cover file content"
 msgstr "封面文件内容无效"
 
-#: cps/helper.py:942
+#: cps/helper.py:939
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:1014 cps/helper.py:1171
+#: cps/helper.py:1011 cps/helper.py:1168
 msgid "Cover"
 msgstr "封面"
 
-#: cps/helper.py:1031
+#: cps/helper.py:1028
 msgid "UnRar binary file not found"
 msgstr "找不到 UnRar 执行文件"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1039
 msgid "Error executing UnRar"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1047
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1050
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1067
+#: cps/helper.py:1064
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "数据库不可写入"
 
-#: cps/helper.py:1076
+#: cps/helper.py:1073
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1078
+#: cps/helper.py:1075
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "缺少执行权限"
 
-#: cps/helper.py:1083
+#: cps/helper.py:1080
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1173 cps/templates/admin.html:216
+#: cps/helper.py:1170 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "将所有书籍加入元数据备份队列"
 
@@ -1521,21 +1521,21 @@ msgstr "正在备份元数据"
 msgid "Delete temp folder contents"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:97
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "生成了 %(count)s 个封面缩略图"
 
-#: cps/tasks/thumbnail.py:231 cps/tasks/thumbnail.py:444
-#: cps/tasks/thumbnail.py:512
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "封面缩略图"
 
-#: cps/tasks/thumbnail.py:290
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "生成了 %(count)s 个丛书缩略图"
 
-#: cps/tasks/thumbnail.py:455
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "正在清理封面缩略图缓存"
 
