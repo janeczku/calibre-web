@@ -23,7 +23,7 @@
 import os
 from datetime import datetime
 import json
-from shutil import copyfile, move
+from shutil import copyfile
 from uuid import uuid4
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
