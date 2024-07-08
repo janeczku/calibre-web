@@ -35,7 +35,7 @@ def clean_string(unsafe_text, book_id=0):
     try:
         if bleach:
             allowed_tags = list(ALLOWED_TAGS)
-            allowed_tags.extend(['p', 'span', 'div', 'pre'])
+            allowed_tags.extend(["p", "span", "div", "pre", "h1", "h2", "h3", "h4", "h5", "h6"])
             safe_text = clean_html(unsafe_text, tags=set(allowed_tags))
         else:
             safe_text = clean_html(unsafe_text)
