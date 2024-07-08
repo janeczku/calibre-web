@@ -137,7 +137,7 @@ class LubimyCzytac(Metadata):
 
     def _prepare_query(self, title: str) -> str:
         query = ""
-        characters_to_remove = "\?()\/"
+        characters_to_remove = r"\?()\/"
         pattern = "[" + characters_to_remove + "]"
         title = re.sub(pattern, "", title)
         title = title.replace("_", " ")
