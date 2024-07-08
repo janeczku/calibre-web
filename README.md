@@ -107,8 +107,8 @@ Pre-built Docker images are available in the following Docker Hub repositories (
 
   Both the Calibre-Web and Calibre-Mod images are automatically rebuilt on new releases and updates.
 
-  - Set "path to convertertool" to `/usr/bin/ebook-convert`
-  - Set "path to unrar" to `/usr/bin/unrar`
+  - Set "Path to Calibre Binaries" to `/usr/bin`
+  - Set "Path to Unrar" to `/usr/bin/unrar`
 
 ## Contributor Recognition
 
