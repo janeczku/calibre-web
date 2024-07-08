@@ -21,7 +21,6 @@ import os
 import shutil
 import zipfile
 import mimetypes
-import copy
 from io import BytesIO
 try:
     import magic
