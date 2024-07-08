@@ -22,14 +22,15 @@ import shutil
 import zipfile
 import mimetypes
 from io import BytesIO
-try:
-    import magic
-except ImportError:
-    pass
 
 from . import logger
 
 log = logger.create()
+
+try:
+    import magic
+except ImportError as e:
+    log.error("Cannot import python-magic, checking uploaded file metadata will not work: %s", e)
 
 
 def get_temp_dir():
