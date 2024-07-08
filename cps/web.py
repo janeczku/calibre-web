@@ -1451,7 +1451,14 @@ def logout():
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
     log.debug("User logged out")
-    return redirect(url_for('web.login'))
+    if config.config_anonbrowse:
+        location = get_redirect_location(request.args.get('next', None), "web.login")
+    else:
+        location = None
+    if location:
+        return redirect(location)
+    else:
+        return redirect(url_for('web.login'))
 
 
 # ################################### Users own configuration #########################################################
