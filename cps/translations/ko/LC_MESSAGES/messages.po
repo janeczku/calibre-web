@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2024-06-30 12:19+0200\n"
+"POT-Creation-Date: 2024-07-07 10:17+0200\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -734,122 +734,122 @@ msgstr "%(id)s 도서 삭제 실패: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "데이터베이스에서만 책 %(id)s 을(를) 삭제 중, 데이터베이스의 책 경로가 유효하지 않음: %(path)s"
 
-#: cps/helper.py:465
+#: cps/helper.py:463
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "제목 이름을 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니다. 오류: %(error)s"
 
-#: cps/helper.py:536 cps/helper.py:545
+#: cps/helper.py:534 cps/helper.py:543
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google 드라이브에서 %(file)s 파일을 찾을 수 없습니다"
 
-#: cps/helper.py:587
+#: cps/helper.py:584
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "제목 이름을 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니다. 오류: %(error)s"
 
-#: cps/helper.py:625
+#: cps/helper.py:622
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google 드라이브에서 책 경로 %(path)s을(를) 찾을 수 없습니다"
 
-#: cps/helper.py:685
+#: cps/helper.py:682
 msgid "Found an existing account for this Email address"
 msgstr "다른 계정에서 사용하고 있는 이메일 주소입니다."
 
-#: cps/helper.py:693
+#: cps/helper.py:690
 msgid "This username is already taken"
 msgstr "등록되어 있는 username입니다"
 
-#: cps/helper.py:705
+#: cps/helper.py:702
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "이메일 주소 형식이 잘못되었습니다"
 
-#: cps/helper.py:726
+#: cps/helper.py:723
 msgid "Password doesn't comply with password validation rules"
 msgstr "규칙에 어긋나는 비밀번호입니다."
 
-#: cps/helper.py:873
+#: cps/helper.py:870
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "표지 업로드에 필요한 Python 모듈 'advocate'이 설치되지 않았습니다."
 
-#: cps/helper.py:883
+#: cps/helper.py:880
 msgid "Error Downloading Cover"
 msgstr "표지 다운로드 중 오류 발생"
 
-#: cps/helper.py:886
+#: cps/helper.py:883
 msgid "Cover Format Error"
 msgstr "표지 형식 오류"
 
-#: cps/helper.py:889
+#: cps/helper.py:886
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "표지 업로드를 위해 localhost 또는 로컬 네트워크에 액세스할 수 없습니다."
 
-#: cps/helper.py:899
+#: cps/helper.py:896
 msgid "Failed to create path for cover"
 msgstr "표지 경로 생성 실패"
 
-#: cps/helper.py:915
+#: cps/helper.py:912
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "표지 파일이 유효한 이미지 파일이 아니거나 저장할 수 없습니다"
 
-#: cps/helper.py:926
+#: cps/helper.py:923
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "표지는 jpg/jpeg/png/webp/bmp 파일만 지원됩니다"
 
-#: cps/helper.py:938
+#: cps/helper.py:935
 msgid "Invalid cover file content"
 msgstr "잘못된 표지 파일 콘텐츠"
 
-#: cps/helper.py:942
+#: cps/helper.py:939
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "표지 파일로 jpg/jpeg 파일만 지원됩니다"
 
-#: cps/helper.py:1014 cps/helper.py:1171
+#: cps/helper.py:1011 cps/helper.py:1168
 #, fuzzy
 msgid "Cover"
 msgstr "발견"
 
-#: cps/helper.py:1031
+#: cps/helper.py:1028
 msgid "UnRar binary file not found"
 msgstr "UnRar 바이너리 파일을 찾을 수 없습니다"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1039
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "UnRar 실행 오류"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1047
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1050
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1067
+#: cps/helper.py:1064
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "쓰기 권한이 없는 DB"
 
-#: cps/helper.py:1076
+#: cps/helper.py:1073
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1078
+#: cps/helper.py:1075
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "실행 권한 누락"
 
-#: cps/helper.py:1083
+#: cps/helper.py:1080
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "UnRar 실행 오류"
 
-#: cps/helper.py:1173 cps/templates/admin.html:216
+#: cps/helper.py:1170 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "메타데이터 백업을 위해 모든 도서를 대기열에 추가"
 
@@ -1551,21 +1551,21 @@ msgstr "메타데이터 편집"
 msgid "Delete temp folder contents"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:97
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "%(count)개의 표지 섬네일을 생성하였습니다."
 
-#: cps/tasks/thumbnail.py:231 cps/tasks/thumbnail.py:444
-#: cps/tasks/thumbnail.py:512
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "표지 섬네일"
 
-#: cps/tasks/thumbnail.py:290
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "{0} 시리즈 섬네일을 생성하였습니다."
 
-#: cps/tasks/thumbnail.py:455
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "표지 섬네일 캐시를 삭제합니다."
 

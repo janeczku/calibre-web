@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-06-30 12:19+0200\n"
+"POT-Creation-Date: 2024-07-07 10:17+0200\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -742,121 +742,121 @@ msgstr "Sletting av bok %(id)s mislyktes: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Sletter bok %(id)s kun fra databasen, bokbanen i databasen er ikke gyldig: %(path)s"
 
-#: cps/helper.py:465
+#: cps/helper.py:463
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på forfatter fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
 
-#: cps/helper.py:536 cps/helper.py:545
+#: cps/helper.py:534 cps/helper.py:543
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Fil %(file)s ikke funnet på Google Disk"
 
-#: cps/helper.py:587
+#: cps/helper.py:584
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på tittel fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
 
-#: cps/helper.py:625
+#: cps/helper.py:622
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Finner ikke bokbane %(path)s på Google Disk"
 
-#: cps/helper.py:685
+#: cps/helper.py:682
 #, fuzzy
 msgid "Found an existing account for this Email address"
 msgstr "Fant en eksisterende konto for denne e-postadressen"
 
-#: cps/helper.py:693
+#: cps/helper.py:690
 msgid "This username is already taken"
 msgstr "Dette brukernavnet er allerede tatt"
 
-#: cps/helper.py:705
+#: cps/helper.py:702
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "Ugyldig format for e-postadresse"
 
-#: cps/helper.py:726
+#: cps/helper.py:723
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:873
+#: cps/helper.py:870
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Python-modulen 'advocate' er ikke installert, men er nødvendig for omslagsopplastinger"
 
-#: cps/helper.py:883
+#: cps/helper.py:880
 msgid "Error Downloading Cover"
 msgstr "Feil ved nedlasting av cover"
 
-#: cps/helper.py:886
+#: cps/helper.py:883
 msgid "Cover Format Error"
 msgstr "Omslagsformatfeil"
 
-#: cps/helper.py:889
+#: cps/helper.py:886
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Du har ikke tilgang til localhost eller det lokale nettverket for coveropplastinger"
 
-#: cps/helper.py:899
+#: cps/helper.py:896
 msgid "Failed to create path for cover"
 msgstr "Kunne ikke opprette bane for dekning"
 
-#: cps/helper.py:915
+#: cps/helper.py:912
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Cover-filen er ikke en gyldig bildefil, eller kunne ikke lagres"
 
-#: cps/helper.py:926
+#: cps/helper.py:923
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Bare jpg/jpeg/png/webp/bmp-filer støttes som coverfile"
 
-#: cps/helper.py:938
+#: cps/helper.py:935
 msgid "Invalid cover file content"
 msgstr "Ugyldig omslagsfilinnhold"
 
-#: cps/helper.py:942
+#: cps/helper.py:939
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Bare jpg/jpeg-filer støttes som coverfile"
 
-#: cps/helper.py:1014 cps/helper.py:1171
+#: cps/helper.py:1011 cps/helper.py:1168
 msgid "Cover"
 msgstr "Dekke"
 
-#: cps/helper.py:1031
+#: cps/helper.py:1028
 msgid "UnRar binary file not found"
 msgstr "UnRar binær fil ikke funnet"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1039
 msgid "Error executing UnRar"
 msgstr "Feil ved kjøring av UnRar"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1047
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1050
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1067
+#: cps/helper.py:1064
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "DB er ikke skrivbar"
 
-#: cps/helper.py:1076
+#: cps/helper.py:1073
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1078
+#: cps/helper.py:1075
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Utførelsestillatelser mangler"
 
-#: cps/helper.py:1083
+#: cps/helper.py:1080
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "Feil ved kjøring av UnRar"
 
-#: cps/helper.py:1173 cps/templates/admin.html:216
+#: cps/helper.py:1170 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Sett alle bøker i kø for sikkerhetskopiering av metadata"
 
@@ -1557,21 +1557,21 @@ msgstr "Sikkerhetskopierer metadata"
 msgid "Delete temp folder contents"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:97
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Genererte %(count)s forsideminiatyrbilder"
 
-#: cps/tasks/thumbnail.py:231 cps/tasks/thumbnail.py:444
-#: cps/tasks/thumbnail.py:512
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Forsideminiatyrbilder"
 
-#: cps/tasks/thumbnail.py:290
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "Genererte {0} serieminiatyrbilder"
 
-#: cps/tasks/thumbnail.py:455
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Tømmer cache for miniatyrbilde for omslag"
 
