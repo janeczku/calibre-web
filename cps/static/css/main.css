@@ -551,7 +551,7 @@ input:-moz-placeholder { color: #454545; }
   position: relative;
   border-radius: 3px;
   margin: 0 auto;
-  height: 320px;
+  /* height: 320px; */
 }
 
 .md-content > div {
@@ -826,3 +826,10 @@ input:-moz-placeholder { color: #454545; }
 .icon-columns::before { content: '\e810'; } /* '' */
 .icon-list::before { content: '\e800'; } /* '' */
 .icon-resize-small::before { content: '\e808'; } /* '' */
+
+#progress{
+    right: 4rem;
+    bottom: 4rem;
+    width: fit-content;
+    position: absolute;
+}
