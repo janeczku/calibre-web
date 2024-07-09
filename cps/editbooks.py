@@ -1369,10 +1369,10 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
         # check if an element with that name exists
         changed = True
         # db_session.query(db.Tags).filter((func.lower(db.Tags.name).ilike("GênOt"))).all()
-        db_element = db_session.query(db_object).filter((func.lower(db_filter).ilike(add_element))).first()
+        db_element = db_session.query(db_object).filter((func.lower(db_filter).ilike(add_element))).all()
         # db_element = db_session.query(db_object).filter(func.lower(db_filter) == add_element.lower()).first()
         # if no element is found add it
-        if db_element is None:
+        if not db_element:
             if db_type == 'author':
                 new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')))
             elif db_type == 'series':
@@ -1386,10 +1386,14 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             db_session.add(new_element)
             db_book_object.append(new_element)
         else:
-            db_no_case = db_session.query(db_object).filter(db_filter == add_element).first()
-            if db_no_case:
+            if len(db_element) == 1:
+            #db_no_case = db_session.query(db_object).filter(db_filter == add_element).first()
+            #if db_no_case:
                 # check for new case of element
-                db_element = create_objects_for_addition(db_element, add_element, db_type)
+                db_element = create_objects_for_addition(db_element[0], add_element, db_type)
+            else:
+                db_el = db_session.query(db_object).filter(db_filter == add_element).first()
+                db_element = db_element[0] if not db_el else db_el
             #else:
             #    db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
