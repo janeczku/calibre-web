@@ -119,9 +119,9 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 def send_test_mail(ereader_mail, user_name):
     for email in ereader_mail.split(','):
         email = email.strip()
-        WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email', None, None,
+        WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
                          config.get_mail_settings(), email, N_("Test Email"),
-                                              _('This Email has been sent via Calibre-Web.'))))
+                                              _('This Email has been sent via Calibre-Web.')))
     return
 
 
