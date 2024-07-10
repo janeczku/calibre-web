@@ -21,7 +21,6 @@ import os
 import errno
 import signal
 import socket
-import asyncio
 
 try:
     from gevent.pywsgi import WSGIServer
