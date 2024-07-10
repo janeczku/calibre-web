@@ -1288,7 +1288,6 @@ def handle_author_on_edit(book, author_name, update_stored=True):
     # handle author(s)
     input_authors = prepare_authors(author_name, config.get_book_path(), config.config_use_google_drive)
 
-    # change |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
     # everything then is assembled for sorted author field in database
     sort_authors_list = list()
@@ -1368,9 +1367,7 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
     for add_element in add_elements:
         # check if an element with that name exists
         changed = True
-        # db_session.query(db.Tags).filter((func.lower(db.Tags.name).ilike("GênOt"))).all()
         db_element = db_session.query(db_object).filter((func.lower(db_filter).ilike(add_element))).all()
-        # db_element = db_session.query(db_object).filter(func.lower(db_filter) == add_element.lower()).first()
         # if no element is found add it
         if not db_element:
             if db_type == 'author':
@@ -1387,15 +1384,10 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             db_book_object.append(new_element)
         else:
             if len(db_element) == 1:
-            #db_no_case = db_session.query(db_object).filter(db_filter == add_element).first()
-            #if db_no_case:
-                # check for new case of element
                 db_element = create_objects_for_addition(db_element[0], add_element, db_type)
             else:
                 db_el = db_session.query(db_object).filter(db_filter == add_element).first()
                 db_element = db_element[0] if not db_el else db_el
-            #else:
-            #    db_element = create_objects_for_addition(db_element, add_element, db_type)
             # add element to book
             db_book_object.append(db_element)
 
