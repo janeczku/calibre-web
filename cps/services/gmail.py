@@ -36,6 +36,7 @@ SCOPES = ['openid', 'https://www.googleapis.com/auth/gmail.send', 'https://www.g
 def setup_gmail(token):
     # If there are no (valid) credentials available, let the user log in.
     creds = None
+    user_info = None
     if "token" in token:
         creds = Credentials(
             token=token['token'],

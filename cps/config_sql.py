@@ -48,6 +48,7 @@ class _Flask_Settings(_Base):
     flask_session_key = Column(BLOB, default=b"")
 
     def __init__(self, key):
+        super().__init__()
         self.flask_session_key = key
 
 
@@ -82,7 +83,9 @@ class _Settings(_Base):
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
-    config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines|Le|La|Les|L\'|Un|Une)\s+')    
+    config_title_regex = Column(String,
+                                default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine'
+                                        r'|Einen|Dem|Des|Einem|Eines|Le|La|Les|L\'|Un|Une)\s+')
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -114,8 +117,6 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
-    config_goodreads_api_secret_e = Column(String)
-    config_goodreads_api_secret = Column(String)
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
 
@@ -171,6 +172,7 @@ class _Settings(_Base):
     config_ratelimiter = Column(Boolean, default=True)
     config_limiter_uri = Column(String, default="")
     config_limiter_options = Column(String, default="")
+    config_check_extensions = Column(Boolean, default=True)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -180,6 +182,26 @@ class _Settings(_Base):
 class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
+        '''self.config_calibre_uuid = None
+        self.config_calibre_split_dir = None
+        self.dirty = None
+        self.config_logfile = None
+        self.config_upload_formats = None
+        self.mail_gmail_token = None
+        self.mail_server_type = None
+        self.mail_server = None
+        self.config_log_level = None
+        self.config_allowed_column_value = None
+        self.config_denied_column_value = None
+        self.config_allowed_tags = None
+        self.config_denied_tags = None
+        self.config_default_show = None
+        self.config_default_role = None
+        self.config_keyfile = None
+        self.config_certfile = None
+        self.config_rarfile_location = None
+        self.config_kepubifypath = None
+        self.config_binariesdir = None'''
         self.__dict__["dirty"] = list()
 
     def init_config(self, session, secret_key, cli):
@@ -193,16 +215,16 @@ class ConfigSQL(object):
 
         change = False
 
-        if self.config_binariesdir == None: # pylint: disable=access-member-before-definition
+        if self.config_binariesdir is None:
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
             self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
 
-        if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
+        if self.config_kepubifypath is None:
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
-        if self.config_rarfile_location == None:  # pylint: disable=access-member-before-definition
+        if self.config_rarfile_location is None:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
@@ -350,7 +372,7 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        # constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
@@ -422,23 +444,16 @@ def _encrypt_fields(session, secret_key):
     except OperationalError:
         with session.bind.connect() as conn:
             conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
-            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
             conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
         session.commit()
         crypter = Fernet(secret_key)
-        settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
-                                 _Settings.config_ldap_serv_password).first()
+        settings = session.query(_Settings.mail_password, _Settings.config_ldap_serv_password).first()
         if settings.mail_password:
             session.query(_Settings).update(
                 {_Settings.mail_password_e: crypter.encrypt(settings.mail_password.encode())})
-        if settings.config_goodreads_api_secret:
-            session.query(_Settings).update(
-                {_Settings.config_goodreads_api_secret_e:
-                     crypter.encrypt(settings.config_goodreads_api_secret.encode())})
         if settings.config_ldap_serv_password:
             session.query(_Settings).update(
-                {_Settings.config_ldap_serv_password_e:
-                     crypter.encrypt(settings.config_ldap_serv_password.encode())})
+                {_Settings.config_ldap_serv_password_e: crypter.encrypt(settings.config_ldap_serv_password.encode())})
         session.commit()
 
 
@@ -491,9 +506,12 @@ def autodetect_calibre_binaries():
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
-        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+        supported_binary_paths = [os.path.join(element, binary)
+                                  for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK)
+               for binary_path in supported_binary_paths):
+            values = [process_wait([binary_path, "--version"],
+                                   pattern=r'\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
                 log.debug("calibre version %s", version)
@@ -551,7 +569,7 @@ def load_configuration(session, secret_key):
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()
-    if flask_settings == None:
+    if flask_settings is None:
         flask_settings = _Flask_Settings(os.urandom(32))
         _session.add(flask_settings)
         _session.commit()
@@ -562,6 +580,7 @@ def get_encryption_key(key_path):
     key_file = os.path.join(key_path, ".key")
     generate = True
     error = ""
+    key = None
     if os.path.exists(key_file) and os.path.getsize(key_file) > 32:
         with open(key_file, "rb") as f:
             key = f.read()

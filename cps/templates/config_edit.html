@@ -9,7 +9,7 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="panel-group col-md-10 col-lg-8">
+<div class="panel-group col-md-11 col-lg-8">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -155,16 +155,11 @@
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
       <label for="config_use_goodreads">{{_('Use Goodreads')}}</label>
-      <a href="https://www.goodreads.com/api/keys" target="_blank" style="margin-left: 5px">{{_('Create an API Key')}}</a>
     </div>
     <div data-related="goodreads-settings">
       <div class="form-group">
         <label for="config_goodreads_api_key">{{_('Goodreads API Key')}}</label>
         <input type="text" class="form-control" id="config_goodreads_api_key" name="config_goodreads_api_key" value="{% if config.config_goodreads_api_key != None %}{{ config.config_goodreads_api_key }}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label for="config_goodreads_api_secret_e">{{_('Goodreads API Secret')}}</label>
-        <input type="password" class="form-control" id="config_goodreads_api_secret_e" name="config_goodreads_api_secret_e" value="" autocomplete="off">
       </div>
     </div>
     {% endif %}
@@ -378,9 +373,13 @@
                   <input type="text" class="form-control" id="config_limiter_uri" name="config_limiter_uri" value="{% if config.config_limiter_uri != None %}{{ config.config_limiter_uri }}{% endif %}" autocomplete="off">
                </div>
                <div class="form-group" style="margin-left:10px;">
-                  <label for="config_calibre">{{_('Options for Limiter')}}</label>
+                  <label for="config_calibre">{{_('Options for Limiter Backend')}}</label>
                   <input type="text" class="form-control" id="config_limiter_options" name="config_limiter_options" value="{% if config.config_limiter_options != None %}{{ config.config_limiter_options }}{% endif %}" autocomplete="off">
                </div>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="config_check_extensions" name="config_check_extensions" {% if config.config_check_extensions %}checked{% endif %}>
+                <label for="config_check_extensions">{{_('Check if file extensions matches file content on upload')}}</label>
             </div>
             <div class="form-group">
               <label for="config_session">{{_('Session protection')}}</label>

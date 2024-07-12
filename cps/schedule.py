@@ -69,9 +69,12 @@ def register_scheduled_tasks(reconnect=True):
         duration = config.schedule_duration
 
         # Register scheduled tasks
-        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger=CronTrigger(hour=start))
+        timezone_info = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+        scheduler.schedule_tasks(tasks=get_scheduled_tasks(reconnect), trigger=CronTrigger(hour=start,
+                                                                                           timezone=timezone_info))
         end_time = calclulate_end_time(start, duration)
-        scheduler.schedule(func=end_scheduled_tasks, trigger=CronTrigger(hour=end_time.hour, minute=end_time.minute),
+        scheduler.schedule(func=end_scheduled_tasks, trigger=CronTrigger(hour=end_time.hour, minute=end_time.minute,
+                                                                         timezone=timezone_info),
                            name="end scheduled task")
 
         # Kick-off tasks, if they should currently be running

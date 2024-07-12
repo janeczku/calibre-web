@@ -479,7 +479,7 @@ def edit_list_user(param):
                 elif param.endswith('role'):
                     value = int(vals['field_index'])
                     if user.name == "Guest" and value in \
-                        [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
+                      [constants.ROLE_ADMIN, constants.ROLE_PASSWD, constants.ROLE_EDIT_SHELFS]:
                         raise Exception(_("Guest can't have this role"))
                     # check for valid value, last on checks for power of 2 value
                     if value > 0 and value <= constants.ROLE_VIEWER and (value & value - 1 == 0 or value == 1):
@@ -945,7 +945,7 @@ def do_full_kobo_sync(userid):
 def check_valid_read_column(column):
     if column != "0":
         if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
-            .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
+          .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 
@@ -953,7 +953,7 @@ def check_valid_read_column(column):
 def check_valid_restricted_column(column):
     if column != "0":
         if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
-            .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all():
+          .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 
@@ -999,10 +999,7 @@ def get_drives(current):
     for d in string.ascii_uppercase:
         if os.path.exists('{}:'.format(d)) and current[0].lower() != d.lower():
             drive = "{}:\\".format(d)
-            data = {"name": drive, "fullpath": drive}
-            data["sort"] = "_" + data["fullpath"].lower()
-            data["type"] = "dir"
-            data["size"] = ""
+            data = {"name": drive, "fullpath": drive, "type": "dir", "size": "", "sort": "_" + drive.lower()}
             drive_letters.append(data)
     return drive_letters
 
@@ -1142,12 +1139,12 @@ def _configuration_oauth_helper(to_save):
     reboot_required = False
     for element in oauthblueprints:
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
-            or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+          or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
             reboot_required = True
             element['oauth_client_id'] = to_save["config_" + str(element['id']) + "_oauth_client_id"]
             element['oauth_client_secret'] = to_save["config_" + str(element['id']) + "_oauth_client_secret"]
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] \
-            and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
+          and to_save["config_" + str(element['id']) + "_oauth_client_secret"]:
             active_oauths += 1
             element["active"] = 1
         else:
@@ -1202,9 +1199,9 @@ def _configuration_ldap_helper(to_save):
     config.save()
 
     if not config.config_ldap_provider_url \
-        or not config.config_ldap_port \
-        or not config.config_ldap_dn \
-        or not config.config_ldap_user_object:
+      or not config.config_ldap_port \
+      or not config.config_ldap_dn \
+      or not config.config_ldap_user_object:
         return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
                                                         'Port, DN and User Object Identifier'))
 
@@ -1372,7 +1369,7 @@ def update_scheduledtasks():
     error = False
     to_save = request.form.to_dict()
     if 0 <= int(to_save.get("schedule_start_time")) <= 23:
-        _config_int( to_save, "schedule_start_time")
+        _config_int(to_save, "schedule_start_time")
     else:
         flash(_("Invalid start time for task specified"), category="error")
         error = True
@@ -1631,7 +1628,10 @@ def import_ldap_users():
 
     imported = 0
     for username in new_users:
-        user = username.decode('utf-8')
+        if isinstance(username, bytes):
+            user = username.decode('utf-8')
+        else:
+            user = username
         if '=' in user:
             # if member object field is empty take user object as filter
             if config.config_ldap_member_user_object:
@@ -1717,7 +1717,7 @@ def _db_configuration_update_helper():
         return _db_configuration_result('{}'.format(ex), gdrive_error)
 
     if db_change or not db_valid or not config.db_configured \
-        or config.config_calibre_dir != to_save["config_calibre_dir"]:
+      or config.config_calibre_dir != to_save["config_calibre_dir"]:
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
@@ -1777,7 +1777,7 @@ def _configuration_update_helper():
             to_save["config_upload_formats"] = ','.join(
                 helper.uniq([x.lstrip().rstrip().lower() for x in to_save["config_upload_formats"].split(',')]))
             _config_string(to_save, "config_upload_formats")
-            constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
+            # constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")
@@ -1806,11 +1806,8 @@ def _configuration_update_helper():
         # Goodreads configuration
         _config_checkbox(to_save, "config_use_goodreads")
         _config_string(to_save, "config_goodreads_api_key")
-        if to_save.get("config_goodreads_api_secret_e", ""):
-            _config_string(to_save, "config_goodreads_api_secret_e")
         if services.goodreads_support:
             services.goodreads_support.connect(config.config_goodreads_api_key,
-                                               config.config_goodreads_api_secret_e,
                                                config.config_use_goodreads)
 
         _config_int(to_save, "config_updatechannel")
@@ -1830,6 +1827,7 @@ def _configuration_update_helper():
         reboot_required |= reboot
 
         # security configuration
+        _config_checkbox(to_save, "config_check_extensions")
         _config_checkbox(to_save, "config_password_policy")
         _config_checkbox(to_save, "config_password_number")
         _config_checkbox(to_save, "config_password_lower")

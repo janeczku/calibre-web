@@ -97,12 +97,14 @@ class LubimyCzytac(Metadata):
     LANGUAGES = f"{CONTAINER}//dt[contains(text(),'Język:')]{SIBLINGS}/text()"
     DESCRIPTION = f"{CONTAINER}//div[@class='collapse-content']"
     SERIES = f"{CONTAINER}//span/a[contains(@href,'/cykl/')]/text()"
+    TRANSLATOR = f"{CONTAINER}//dt[contains(text(),'Tłumacz:')]{SIBLINGS}/a/text()"
 
     DETAILS = "//div[@id='book-details']"
     PUBLISH_DATE = "//dt[contains(@title,'Data pierwszego wydania"
     FIRST_PUBLISH_DATE = f"{DETAILS}{PUBLISH_DATE} oryginalnego')]{SIBLINGS}[1]/text()"
     FIRST_PUBLISH_DATE_PL = f"{DETAILS}{PUBLISH_DATE} polskiego')]{SIBLINGS}[1]/text()"
-    TAGS = "//nav[@aria-label='breadcrumbs']//a[contains(@href,'/ksiazki/k/')]/span/text()"
+    TAGS = "//a[contains(@href,'/ksiazki/t/')]/text()"  # "//nav[@aria-label='breadcrumbs']//a[contains(@href,'/ksiazki/k/')]/span/text()"
+
 
     RATING = "//meta[@property='books:rating:value']/@content"
     COVER = "//meta[@property='og:image']/@content"
@@ -135,7 +137,7 @@ class LubimyCzytac(Metadata):
 
     def _prepare_query(self, title: str) -> str:
         query = ""
-        characters_to_remove = "\?()\/"
+        characters_to_remove = r"\?()\/"
         pattern = "[" + characters_to_remove + "]"
         title = re.sub(pattern, "", title)
         title = title.replace("_", " ")
@@ -158,6 +160,7 @@ class LubimyCzytac(Metadata):
 
 class LubimyCzytacParser:
     PAGES_TEMPLATE = "<p id='strony'>Książka ma {0} stron(y).</p>"
+    TRANSLATOR_TEMPLATE = "<p id='translator'>Tłumacz: {0}</p>"
     PUBLISH_DATE_TEMPLATE = "<p id='pierwsze_wydanie'>Data pierwszego wydania: {0}</p>"
     PUBLISH_DATE_PL_TEMPLATE = (
         "<p id='pierwsze_wydanie'>Data pierwszego wydania w Polsce: {0}</p>"
@@ -282,11 +285,13 @@ class LubimyCzytacParser:
 
     def _parse_tags(self) -> List[str]:
         tags = self._parse_xpath_node(xpath=LubimyCzytac.TAGS, take_first=False)
-        return [
-            strip_accents(w.replace(", itd.", " itd."))
-            for w in tags
-            if isinstance(w, str)
-        ]
+        if tags:
+            return [
+                strip_accents(w.replace(", itd.", " itd."))
+                for w in tags
+                if isinstance(w, str)
+            ]
+        return None
 
     def _parse_from_summary(self, attribute_name: str) -> Optional[str]:
         value = None
@@ -346,5 +351,9 @@ class LubimyCzytacParser:
             description += LubimyCzytacParser.PUBLISH_DATE_PL_TEMPLATE.format(
                 first_publish_date_pl.strftime("%d.%m.%Y")
             )
+        translator = self._parse_xpath_node(xpath=LubimyCzytac.TRANSLATOR)
+        if translator:
+            description += LubimyCzytacParser.TRANSLATOR_TEMPLATE.format(translator)
+
 
         return description

@@ -45,7 +45,7 @@ except ImportError as err:
 
 current_milli_time = lambda: int(round(time() * 1000))
 
-gdrive_watch_callback_token = 'target=calibreweb-watch_files'  #nosec
+gdrive_watch_callback_token = 'target=calibreweb-watch_files'  # nosec
 
 
 @gdrive.route("/authenticate")
@@ -86,11 +86,12 @@ def watch_gdrive():
         notification_id = str(uuid4())
         try:
             result = gdriveutils.watchChange(gdriveutils.Gdrive.Instance().drive, notification_id,
-                               'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+                                 'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+
             config.config_google_drive_watch_changes_response = result
             config.save()
         except HttpError as e:
-            reason=json.loads(e.content)['error']['errors'][0]
+            reason = json.loads(e.content)['error']['errors'][0]
             if reason['reason'] == 'push.webhookUrlUnauthorized':
                 flash(_('Callback domain is not verified, '
                         'please follow steps to verify domain in google developer console'), category="error")
@@ -115,6 +116,7 @@ def revoke_watch_gdrive():
         config.save()
     return redirect(url_for('admin.db_configuration'))
 
+
 try:
     @csrf.exempt
     @gdrive.route("/watch/callback", methods=['GET', 'POST'])
@@ -138,7 +140,7 @@ try:
             if response:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                 if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                    and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
+                  and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
                     tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')

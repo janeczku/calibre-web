@@ -49,15 +49,24 @@ except ImportError:
 
 
 def get_language_names(locale):
-    return _LANGUAGE_NAMES.get(str(locale))
+    names = _LANGUAGE_NAMES.get(str(locale))
+    if names is None:
+        names = _LANGUAGE_NAMES.get(locale.language)
+    return names
 
 
 def get_language_name(locale, lang_code):
-    try:
-        return get_language_names(locale)[lang_code]
-    except KeyError:
-        log.error('Missing translation for language name: {}'.format(lang_code))
-        return "Unknown"
+    UNKNOWN_TRANSLATION = "Unknown"
+    names = get_language_names(locale)
+    if names is None:
+        log.error(f"Missing language names for locale: {str(locale)}/{locale.language}")
+        return UNKNOWN_TRANSLATION
+
+    name = names.get(lang_code, UNKNOWN_TRANSLATION)
+    if name == UNKNOWN_TRANSLATION:
+        log.error("Missing translation for language name: {}".format(lang_code))
+
+    return name
 
 
 def get_language_codes(locale, language_names, remainder=None):
@@ -71,7 +80,6 @@ def get_language_codes(locale, language_names, remainder=None):
     if remainder is not None and language_names:
         remainder.extend(language_names)
     return lang
-
 
 
 def get_valid_language_codes(locale, language_names, remainder=None):

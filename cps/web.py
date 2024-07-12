@@ -107,7 +107,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000';
     return resp
 
 
@@ -1451,7 +1451,14 @@ def logout():
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
     log.debug("User logged out")
-    return redirect(url_for('web.login'))
+    if config.config_anonbrowse:
+        location = get_redirect_location(request.args.get('next', None), "web.login")
+    else:
+        location = None
+    if location:
+        return redirect(location)
+    else:
+        return redirect(url_for('web.login'))
 
 
 # ################################### Users own configuration #########################################################
@@ -1582,7 +1589,8 @@ def read_book(book_id, book_format):
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
     elif book_format.lower() in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
-        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title, extension=book_format.lower())
+        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title,
+                                     extension=book_format.lower())
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:

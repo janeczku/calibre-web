@@ -45,6 +45,7 @@ def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
         cf = zip_file.read(zip_cover_path)
     return cover.cover_processing(tmp_file_name, cf, extension)
 
+
 def get_epub_layout(book, book_data):
     file_path = os.path.normpath(os.path.join(config.get_book_path(),
                                               book.path, book_data.name + "." + book_data.format.lower()))
@@ -54,7 +55,7 @@ def get_epub_layout(book, book_data):
         p = tree.xpath('/pkg:package/pkg:metadata', namespaces=default_ns)[0]
 
         layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=default_ns)
-    except (etree.XMLSyntaxError, KeyError, IndexError) as e:
+    except (etree.XMLSyntaxError, KeyError, IndexError, OSError) as e:
         log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
         layout = []
 
