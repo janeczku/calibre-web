@@ -19,11 +19,10 @@
 from functools import wraps
 
 from sqlalchemy.sql.expression import func
-from werkzeug.security import check_password_hash
 from flask_login import login_required, login_user
-from flask import request, Response
 
-from . import lm, ub, config, constants, services, logger, limiter
+
+from . import lm, ub, config, logger, limiter
 
 log = logger.create()
 
@@ -36,36 +35,8 @@ def login_required_if_no_ano(func):
 
     return decorated_view
 
-def requires_basic_auth_if_no_ano(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or auth.type != 'basic':
-            if config.config_anonbrowse != 1:
-                user = load_user_from_reverse_proxy_header(request)
-                if user:
-                    return f(*args, **kwargs)
-                return _authenticate()
-            else:
-                return f(*args, **kwargs)
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
-            login_result, error = services.ldap.bind_user(auth.username, auth.password)
-            if login_result:
-                user = _fetch_user_by_name(auth.username)
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-                login_user(user)
-                return f(*args, **kwargs)
-            elif login_result is not None:
-                log.error(error)
-                return _authenticate()
-        user = _load_user_from_auth_header(auth.username, auth.password)
-        if not user:
-            return _authenticate()
-        return f(*args, **kwargs)
-    return decorated
 
-
-def _load_user_from_auth_header(username, password):
+'''def _load_user_from_auth_header(username, password):
     limiter.check()
     user = _fetch_user_by_name(username)
     if bool(user and check_password_hash(str(user.password), password)) and user.name != "Guest":
@@ -82,7 +53,7 @@ def _authenticate():
     return Response(
         'Could not verify your access level for that URL.\n'
         'You have to login with proper credentials', 401,
-        {'WWW-Authenticate': 'Basic realm="Login Required"'})
+        {'WWW-Authenticate': 'Basic realm="Login Required"'})'''
 
 
 def _fetch_user_by_name(username):
