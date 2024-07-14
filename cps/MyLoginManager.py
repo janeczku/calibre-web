@@ -21,10 +21,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from flask_login import LoginManager, confirm_login
+from .cw_login import LoginManager, confirm_login
 from flask import session, current_app
-from flask_login.utils import decode_cookie
-from flask_login.signals import user_loaded_from_cookie
+from .cw_login.utils import decode_cookie
+from .cw_login.signals import user_loaded_from_cookie
 
 
 class MyLoginManager(LoginManager):
@@ -43,7 +43,7 @@ class MyLoginManager(LoginManager):
             session["_fresh"] = False
             user = None
             if self._user_callback:
-                user = self._user_callback(user_id)
+                user = self._user_callback(user_id, None, None)
             if user is not None:
                 app = current_app._get_current_object()
                 user_loaded_from_cookie.send(app, user=user)
@@ -51,3 +51,4 @@ class MyLoginManager(LoginManager):
                 confirm_login()
                 return user
         return None
+

@@ -83,8 +83,8 @@ log = logger.create()
 app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
-    REMEMBER_COOKIE_SAMESITE='Lax',  # will be available in flask-login 0.5.1 earliest
+    SESSION_COOKIE_SAMESITE='Strict',
+    REMEMBER_COOKIE_SAMESITE='Strict',  # will be available in flask-login 0.5.1 earliest
     WTF_CSRF_SSL_STRICT=False
 )
 

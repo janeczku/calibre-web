@@ -25,71 +25,23 @@ import json
 from urllib.parse import unquote_plus
 
 from flask import Blueprint, request, render_template, make_response, abort, Response, g
-from functools import wraps
-# from flask_login import current_user
 from flask_babel import get_locale
 from flask_babel import gettext as _
-from flask_httpauth import HTTPBasicAuth
-from werkzeug.datastructures import Authorization
-from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 
 from . import logger, config, db, calibre_db, ub, isoLanguages, constants
-# from .usermanagement import requires_basic_auth_if_no_ano
+from .usermanagement import requires_basic_auth_if_no_ano, auth
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import render_read_books
-from . import limiter, services
+
 
 opds = Blueprint('opds', __name__)
-auth = HTTPBasicAuth()
 
 log = logger.create()
-
-
-@auth.verify_password
-def verify_password(username, password):
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).first()
-    if config.config_anonbrowse == 1 and user.name.lower() == "guest":
-        return user
-    if bool(user and check_password_hash(str(user.password), password)) and user.name != "Guest":
-        [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-        return user
-    else:
-        ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
-        log.warning('OPDS Login failed for user "%s" IP-address: %s', username, ip_address)
-        return None
-
-
-def requires_basic_auth_if_no_ano(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        authorisation = auth.get_auth()
-        if config.config_anonbrowse == 1 and not authorisation:
-            authorisation = Authorization(
-                b"Basic", {'username': "Guest", 'password': ""})
-        status = None
-        user = auth.authenticate(authorisation, "")
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
-            login_result, error = services.ldap.bind_user(authorisation.username, authorisation.password)
-            if login_result:
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-            elif login_result is not None:
-                log.error(error)
-                user = None
-        if user in (False, None):
-            status = 401
-        if status:
-            try:
-                return auth.auth_error_callback(status)
-            except TypeError:
-                return auth.auth_error_callback()
-        g.flask_httpauth_user = user if user is not True \
-            else auth.username if auth else None
-        return f(*args, **kwargs)
-    return decorated
 
 
 @opds.route("/opds/")

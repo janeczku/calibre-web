@@ -25,13 +25,13 @@ from datetime import datetime
 
 from flask import Blueprint, flash, redirect, request, url_for, abort
 from flask_babel import gettext as _
-from flask_login import current_user, login_required
+from .cw_login import current_user
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
 
 from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
-from .usermanagement import login_required_if_no_ano
+from .usermanagement import login_required_if_no_ano, user_login_required
 
 log = logger.create()
 
@@ -39,7 +39,7 @@ shelf = Blueprint('shelf', __name__)
 
 
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def add_to_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -103,7 +103,7 @@ def add_to_shelf(shelf_id, book_id):
 
 
 @shelf.route("/shelf/massadd/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
@@ -155,7 +155,7 @@ def search_to_shelf(shelf_id):
 
 
 @shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -212,14 +212,14 @@ def remove_from_shelf(shelf_id, book_id):
 
 
 @shelf.route("/shelf/create", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def create_shelf():
     shelf = ub.Shelf()
     return create_edit_shelf(shelf, page_title=_("Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not check_shelf_edit_permissions(shelf):
@@ -229,7 +229,7 @@ def edit_shelf(shelf_id):
 
 
 @shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     try:
@@ -259,7 +259,7 @@ def show_shelf(shelf_id, sort_param, page):
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf and check_shelf_view_permissions(shelf):

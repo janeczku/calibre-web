@@ -36,14 +36,13 @@ from flask import (
     redirect,
     abort
 )
-from flask_login import current_user
+from .cw_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
 from sqlalchemy.exc import StatementError
 from sqlalchemy.sql import select
 import requests
-
 
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
 from . import isoLanguages
