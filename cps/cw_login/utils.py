@@ -185,7 +185,7 @@ def login_user(user, remember=False, duration=None, force=False, fresh=True):
     session["_user_id"] = user_id
     session["_fresh"] = fresh
     session["_id"] = current_app.login_manager._session_identifier_generator()
-    session["_random"] = os.urandom(10).decode('utf-8')
+    session["_random"] = os.urandom(10).hex()
 
     if remember:
         session["_remember"] = "set"
