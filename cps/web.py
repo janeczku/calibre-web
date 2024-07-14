@@ -1340,7 +1340,6 @@ def register():
 
 def handle_login_user(user, remember, message, category):
     login_user(user, remember=remember)
-    ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
     return redirect(get_redirect_location(request.form.get('next', None), "web.index"))

@@ -30,49 +30,7 @@ from . import lm, ub, config, logger, limiter, constants, services
 
 
 log = logger.create()
-
-
-'''class HTTPProxyAuth(HTTPAuth):
-    def __init__(self, scheme='Proxy', realm=None, header=None):
-        super(HTTPProxyAuth, self).__init__(scheme, realm, header)
-        self.user = None
-        self.verify_user_callback = None
-
-    def set_user(self, username):
-        self.user = username if username else None
-
-    def verify_login(self, f):
-        self.verify_user_callback = f
-        return f
-
-    def login_required(self, f=None, role=None, optional=None):
-        if f is not None and \
-                (role is not None or optional is not None):  # pragma: no cover
-            raise ValueError(
-                'role and optional are the only supported arguments')
-
-        def login_required_internal(f):
-            @wraps(f)
-            def decorated(*args, **kwargs):
-                if self.user:
-                    g.flask_httpauth_user = self.user
-                    return self.ensure_sync(f)(*args, **kwargs)
-            return decorated
-
-        if f:
-            return login_required_internal(f)
-        return login_required_internal
-
-
-
-    def authenticate(self, _auth, stored_password=None):
-        req = getattr(_auth, 'req', '')
-        if self.verify_user_callback:
-            return self.ensure_sync(self.verify_user_callback)(req)'''
-
-
 auth = HTTPBasicAuth()
-# proxy_auth = HTTPProxyAuth()
 
 
 @auth.verify_password
@@ -169,11 +127,13 @@ def load_user_from_reverse_proxy_header(req):
 
 @lm.user_loader
 def load_user(user_id, random, session_key):
+    # log.info(f"user {user_id}, random {random}")
+    # log.info(request)
     user = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
-    entry = ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.random == random,
-                                                       ub.User_Sessions.session_key == session_key).first()
-    if entry and entry.id == user.id:
-        return user
-    else:
-        return None
+    if random and session_key:
+        entry = ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.random == random,
+                                                           ub.User_Sessions.session_key == session_key).first()
+        if not entry or entry.user_id != user.id:
+            return None
+    return user
 

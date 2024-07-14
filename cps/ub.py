@@ -71,8 +71,6 @@ def signal_store_user_session(object, user):
 
 
 def store_user_session():
-    #if flask_session.get('user_id', ""):
-    #    flask_session['_user_id'] = flask_session.get('user_id', "")
     _user = flask_session.get('_user_id', "")
     _id = flask_session.get('_id', "")
     _random = flask_session.get('_random', "")
@@ -107,11 +105,19 @@ def delete_user_session(user_id, session_key):
 
 def check_user_session(user_id, session_key):
     try:
-        return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                                       User_Sessions.session_key==session_key).one_or_none())
+        found = session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                                    User_Sessions.session_key==session_key).one_or_none()
+        if found is not None:
+            new_expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
+            if new_expiry - found.expiry > 86400:
+                found.expiry = new_expiry
+                session.merge(found)
+                session.commit()
+        return bool(found)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
         session.rollback()
         log.exception(e)
+        return False
 
 
 user_logged_in.connect(signal_store_user_session)
@@ -341,7 +347,7 @@ class User_Sessions(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     session_key = Column(String, default="")
     random = Column(String, default="")
-    expiry = Column(String, default="")
+    expiry = Column(Integer)
 
 
     def __init__(self, user_id, session_key, random, expiry):
@@ -576,7 +582,7 @@ def migrate_user_session_table(engine, _session):
         with engine.connect() as conn:
             trans = conn.begin()
             conn.execute(text("ALTER TABLE user_session ADD column 'random' String"))
-            conn.execute(text("ALTER TABLE user_session ADD column 'expiry' String"))
+            conn.execute(text("ALTER TABLE user_session ADD column 'expiry' Integer"))
             trans.commit()
 
 
