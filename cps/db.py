@@ -23,6 +23,7 @@ import json
 from datetime import datetime
 from urllib.parse import quote
 import unidecode
+from weakref import WeakSet
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
@@ -40,15 +41,13 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from flask_login import current_user
+from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
-
-from weakref import WeakSet
 
 
 log = logger.create()

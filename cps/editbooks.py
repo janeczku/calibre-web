@@ -32,7 +32,7 @@ from flask import Blueprint, request, flash, redirect, url_for, abort, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
-from flask_login import current_user, login_required
+from .cw_login import current_user, login_required
 from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import func
@@ -43,10 +43,11 @@ from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
 from .render_template import render_title_template
-from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
 from .file_helper import validate_mime_type
+from .usermanagement import user_login_required, login_required_if_no_ano
+
 
 editbook = Blueprint('edit-book', __name__)
 log = logger.create()
@@ -73,14 +74,14 @@ def edit_required(f):
 
 
 @editbook.route("/ajax/delete/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_book_from_details(book_id):
     return Response(delete_book_from_table(book_id, "", True), mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])
 @editbook.route("/delete/<int:book_id>/<string:book_format>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_book_ajax(book_id, book_format):
     return delete_book_from_table(book_id, book_format, False, request.form.to_dict().get('location', ""))
 
@@ -331,7 +332,7 @@ def convert_bookformat(book_id):
 
 
 @editbook.route("/ajax/getcustomenum/<int:c_id>")
-@login_required
+@user_login_required
 def table_get_custom_enum(c_id):
     ret = list()
     cc = (calibre_db.session.query(db.CustomColumns)
@@ -455,7 +456,7 @@ def edit_list_book(param):
 
 
 @editbook.route("/ajax/sort_value/<field>/<int:bookid>")
-@login_required
+@user_login_required
 def get_sorted_entry(field, bookid):
     if field in ['title', 'authors', 'sort', 'author_sort']:
         book = calibre_db.get_filtered_book(bookid)
@@ -472,7 +473,7 @@ def get_sorted_entry(field, bookid):
 
 
 @editbook.route("/ajax/simulatemerge", methods=['POST'])
-@login_required
+@user_login_required
 @edit_required
 def simulate_merge_list_book():
     vals = request.get_json().get('Merge_books')
@@ -488,7 +489,7 @@ def simulate_merge_list_book():
 
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
-@login_required
+@user_login_required
 @edit_required
 def merge_list_book():
     vals = request.get_json().get('Merge_books')
@@ -526,7 +527,7 @@ def merge_list_book():
 
 
 @editbook.route("/ajax/xchange", methods=['POST'])
-@login_required
+@user_login_required
 @edit_required
 def table_xchange_author_title():
     vals = request.get_json().get('xchange')

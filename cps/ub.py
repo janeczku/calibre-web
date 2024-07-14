@@ -26,8 +26,8 @@ import uuid
 from flask import session as flask_session
 from binascii import hexlify
 
-from flask_login import AnonymousUserMixin, current_user
-from flask_login import user_logged_in
+from .cw_login import AnonymousUserMixin, current_user
+from .cw_login import user_logged_in
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -71,17 +71,22 @@ def signal_store_user_session(object, user):
 
 
 def store_user_session():
-    if flask_session.get('user_id', ""):
-        flask_session['_user_id'] = flask_session.get('user_id', "")
+    #if flask_session.get('user_id', ""):
+    #    flask_session['_user_id'] = flask_session.get('user_id', "")
+    _user = flask_session.get('_user_id', "")
+    _id = flask_session.get('_id', "")
+    _random = flask_session.get('_random', "")
+
     if flask_session.get('_user_id', ""):
         try:
-            if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):
-                user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
+            if not check_user_session(_user, _id):
+                expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
+                user_session = User_Sessions(_user, _id, _random, expiry)
                 session.add(user_session)
                 session.commit()
-                log.debug("Login and store session : " + flask_session.get('_id', ""))
+                log.debug("Login and store session : " + _id)
             else:
-                log.debug("Found stored session: " + flask_session.get('_id', ""))
+                log.debug("Found stored session: " + _id)
         except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
             log.exception(e)
@@ -335,11 +340,16 @@ class User_Sessions(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     session_key = Column(String, default="")
+    random = Column(String, default="")
+    expiry = Column(String, default="")
 
-    def __init__(self, user_id, session_key):
+
+    def __init__(self, user_id, session_key, random, expiry):
         super().__init__()
         self.user_id = user_id
         self.session_key = session_key
+        self.random = random
+        self.expiry = expiry
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
