@@ -254,34 +254,35 @@
             {% endif %}
             {% if not current_user.is_anonymous %}
 
-            <div class="custom_columns">
-                <p>
-                <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}" method="POST">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <label class="block-label">
-                        <input id="have_read_cb" data-checked="{{ _('Mark As Unread') }}"
-                            data-unchecked="{{ _('Mark As Read') }}" type="checkbox" {% if entry.read_status %}checked{%
-                            endif %}>
-                        <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
-                    </label>
-                </form>
-                </p>
-                {% if current_user.check_visibility(32768) %}
-                <p>
-                <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id) }}" method="POST">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <label class="block-label">
-                        <input id="archived_cb" data-checked="{{ _('Restore from archive') }}"
-                            data-unchecked="{{ _('Add to archive') }}" type="checkbox" {% if entry.is_archived
-                            %}checked{% endif %}>
-                        <span data-toggle="tooltip"
-                            title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{
-                            _('Archive') }}</span>
-                    </label>
-                </form>
-                </p>
-                {% endif %}
-            </div>
+                <div class="custom_columns">
+                    <p>
+                    <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
+                          method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <label class="block-label">
+                            <input id="have_read_cb" data-checked="{{ _('Mark As Unread') }}"
+                                   data-unchecked="{{ _('Mark As Read') }}" type="checkbox"
+                                   {% if entry.read_status %}checked{% endif %}>
+                            <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
+                        </label>
+                    </form>
+                    </p>
+                    {% if current_user.check_visibility(32768) %}
+                        <p>
+                        <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id) }}"
+                              method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <label class="block-label">
+                                <input id="archived_cb" data-checked="{{ _('Restore from archive') }}"
+                                       data-unchecked="{{ _('Add to archive') }}" type="checkbox"
+                                       {% if entry.is_archived %}checked{% endif %}>
+                                <span data-toggle="tooltip" title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{ _('Archive') }}</span>
+                            </label>
+                        </form>
+                        </p>
+                    {% endif %}
+                </div>
+            {% endif %}
 
 
             {% if entry.comments|length > 0 and entry.comments[0].text|length > 0 %}

@@ -115,7 +115,7 @@ def generate_auth_token(user_id):
         "generate_kobo_auth_url.html",
         title=_("Kobo Setup"),
         auth_token=auth_token.auth_token,
-        warning = warning
+        warning=warning
     )
 
 

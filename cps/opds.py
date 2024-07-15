@@ -394,6 +394,7 @@ def feed_shelf(book_id):
                                                       and_(ub.Shelf.is_public == 1,
                                                            ub.Shelf.id == book_id))).first()
     result = list()
+    pagination = list()
     # user is allowed to access shelf
     if shelf:
         result, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
