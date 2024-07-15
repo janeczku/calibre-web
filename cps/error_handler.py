@@ -31,6 +31,7 @@ from . import config, app, logger, services
 log = logger.create()
 
 # custom error page
+
 def error_http(error):
     return render_template('http_error.html',
                            error_code="Error {0}".format(error.code),
@@ -52,6 +53,7 @@ def internal_error(error):
                            instance=config.config_calibre_web_title
                            ), 500
 
+
 def init_errorhandler():
     # http error handling
     for ex in default_exceptions:
@@ -59,7 +61,6 @@ def init_errorhandler():
             app.register_error_handler(ex, error_http)
         elif ex == 500:
             app.register_error_handler(ex, internal_error)
-
 
     if services.ldap:
         # Only way of catching the LDAPException upon logging in with LDAP server down

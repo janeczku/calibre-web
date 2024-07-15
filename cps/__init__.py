@@ -56,23 +56,26 @@ except ImportError:
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
-mimetypes.add_type('application/fb2+zip', '.fb2')
-mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
-mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
+mimetypes.add_type('application/epub+zip', '.kepub')
+mimetypes.add_type('text/xml', '.fb2')
+mimetypes.add_type('application/octet-stream', '.mobi')
+mimetypes.add_type('application/octet-stream', '.prc')
 mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
 mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
-mimetypes.add_type('application/x-cbr', '.cbr')
-mimetypes.add_type('application/x-cbz', '.cbz')
-mimetypes.add_type('application/x-cbt', '.cbt')
-mimetypes.add_type('application/x-cb7', '.cb7')
+mimetypes.add_type('application/x-rar', '.cbr')
+mimetypes.add_type('application/zip', '.cbz')
+mimetypes.add_type('application/x-tar', '.cbt')
+mimetypes.add_type('application/x-7z-compressed', '.cb7')
 mimetypes.add_type('image/vnd.djv', '.djv')
+mimetypes.add_type('image/vnd.djv', '.djvu')
 mimetypes.add_type('application/mpeg', '.mpeg')
-mimetypes.add_type('application/mpeg', '.mp3')
-mimetypes.add_type('application/mp4', '.m4a')
-mimetypes.add_type('application/mp4', '.m4b')
-mimetypes.add_type('application/ogg', '.ogg')
+mimetypes.add_type('audio/mpeg', '.mp3')
+mimetypes.add_type('audio/x-m4a', '.m4a')
+mimetypes.add_type('audio/x-m4a', '.m4b')
+mimetypes.add_type('audio/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('application/x-ms-reader', '.lit')
 mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
 log = logger.create()
@@ -106,6 +109,7 @@ if limiter_present:
     limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=False)
 else:
     limiter = None
+
 
 def create_app():
     if csrf:

@@ -22,6 +22,7 @@ from flask_babel import lazy_gettext as N_
 
 from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
 
+
 class TaskUpload(CalibreTask):
     def __init__(self, task_message, book_title):
         super(TaskUpload, self).__init__(task_message)

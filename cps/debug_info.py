@@ -33,12 +33,14 @@ from .about import collect_stats
 
 log = logger.create()
 
+
 class lazyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, LazyString):
             return str(obj)
         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
+
 
 def assemble_logfiles(file_name):
     log_list = sorted(glob.glob(file_name + '*'), reverse=True)
