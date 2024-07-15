@@ -129,8 +129,7 @@ def feed_best_rated():
 
 
 @opds.route("/opds/hot")
-#@requires_basic_auth_if_no_ano
-@auth.login_required
+@requires_basic_auth_if_no_ano
 def feed_hot():
     if not auth.current_user().check_visibility(constants.SIDEBAR_HOT):
         abort(404)
@@ -154,8 +153,7 @@ def feed_hot():
 
 
 @opds.route("/opds/author")
-#@requires_basic_auth_if_no_ano
-@auth.login_required
+@requires_basic_auth_if_no_ano
 def feed_authorindex():
     if not auth.current_user().check_visibility(constants.SIDEBAR_AUTHOR):
         abort(404)
@@ -163,8 +161,7 @@ def feed_authorindex():
 
 
 @opds.route("/opds/author/letter/<book_id>")
-#@requires_basic_auth_if_no_ano
-@auth.login_required
+@requires_basic_auth_if_no_ano
 def feed_letter_author(book_id):
     if not auth.current_user().check_visibility(constants.SIDEBAR_AUTHOR):
         abort(404)

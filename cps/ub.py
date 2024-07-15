@@ -574,6 +574,21 @@ def add_missing_tables(engine, _session):
         Thumbnail.__table__.create(bind=engine)
 
 
+# migrate all settings missing in registration table
+def migrate_registration_table(engine, _session):
+    try:
+        # Handle table exists, but no content
+        cnt = _session.query(Registration).count()
+        if not cnt:
+            with engine.connect() as conn:
+                trans = conn.begin()
+                conn.execute(text("insert into registration (domain, allow) values('%.%',1)"))
+                trans.commit()
+    except exc.OperationalError:  # Database is not writeable
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
+
+
 def migrate_user_session_table(engine, _session):
     try:
         _session.query(exists().where(User_Sessions.random)).scalar()
@@ -592,6 +607,7 @@ def migrate_user_session_table(engine, _session):
 def migrate_Database(_session):
     engine = _session.bind
     add_missing_tables(engine, _session)
+    migrate_registration_table(engine, _session)
     migrate_user_session_table(engine, _session)
 
 
@@ -601,6 +617,7 @@ def clean_database(_session):
     _session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
         filter(RemoteAuthToken.token_type != 1).delete()
     _session.commit()
+
 
 
 # Save downloaded books per user in calibre-web's own database
