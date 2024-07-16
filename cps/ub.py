@@ -74,10 +74,9 @@ def store_user_session():
     _user = flask_session.get('_user_id', "")
     _id = flask_session.get('_id', "")
     _random = flask_session.get('_random', "")
-
     if flask_session.get('_user_id', ""):
         try:
-            if not check_user_session(_user, _id):
+            if not check_user_session(_user, _id, _random):
                 expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
                 user_session = User_Sessions(_user, _id, _random, expiry)
                 session.add(user_session)
@@ -103,10 +102,12 @@ def delete_user_session(user_id, session_key):
         log.exception(ex)
 
 
-def check_user_session(user_id, session_key):
+def check_user_session(user_id, session_key, random):
     try:
         found = session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                                    User_Sessions.session_key==session_key).one_or_none()
+                                                    User_Sessions.session_key==session_key,
+                                                    User_Sessions.random == random,
+                                                    ).one_or_none()
         if found is not None:
             new_expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
             if new_expiry - found.expiry > 86400:
@@ -614,10 +615,13 @@ def migrate_Database(_session):
 def clean_database(_session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
-    _session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
-        filter(RemoteAuthToken.token_type != 1).delete()
-    _session.commit()
-
+    try:
+        _session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
+            filter(RemoteAuthToken.token_type != 1).delete()
+        _session.commit()
+    except exc.OperationalError:  # Database is not writeable
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
 
 
 # Save downloaded books per user in calibre-web's own database
