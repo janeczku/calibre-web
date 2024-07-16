@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+import hashlib
 
 from flask import abort
 from flask import current_app
@@ -9,6 +10,8 @@ from flask import has_app_context
 from flask import redirect
 from flask import request
 from flask import session
+from itsdangerous import URLSafeSerializer
+from flask.json.tag import TaggedJSONSerializer
 
 from .config import AUTH_HEADER_NAME
 from .config import COOKIE_DURATION
@@ -32,8 +35,7 @@ from .signals import user_needs_refresh
 from .signals import user_unauthorized
 from .utils import _create_identifier
 from .utils import _user_context_processor
-from .utils import decode_cookie
-from .utils import encode_cookie
+from .utils import confirm_login
 from .utils import expand_login_view
 from .utils import login_url as make_login_url
 from .utils import make_next_param
@@ -323,7 +325,7 @@ class LoginManager:
         if self._user_callback is None and self._request_callback is None:
             raise Exception(
                 "Missing user_loader or request_loader. Refer to "
-                "http://flask-login.readthedocs.io/#how-it-works "
+                "https://flask-login.readthedocs.io/#how-it-works "
                 "for more info."
             )
 
@@ -361,7 +363,8 @@ class LoginManager:
             elif header_name in request.headers:
                 header = request.headers[header_name]
                 user = self._load_user_from_header(header)
-
+        if not user:
+            self._update_request_context_with_user()
         return self._update_request_context_with_user(user)
 
     def _session_protection_failed(self):
@@ -393,16 +396,32 @@ class LoginManager:
         return False
 
     def _load_user_from_remember_cookie(self, cookie):
-        user_id = decode_cookie(cookie)
-        if user_id is not None:
-            session["_user_id"] = user_id
+        signer_kwargs = dict(
+            key_derivation="hmac", digest_method=staticmethod(hashlib.sha1)
+        )
+        try:
+            remember_dict = URLSafeSerializer(
+                current_app.secret_key,
+                salt="remember",
+                serializer=TaggedJSONSerializer(),
+                signer_kwargs=signer_kwargs,
+            ).loads(cookie)
+        except Exception:
+            return None
+
+        if remember_dict['user'] is not None:
+            session["_user_id"] = remember_dict['user']
+            if "_random" not in session:
+                session["_random"] = remember_dict['random']
             session["_fresh"] = False
             user = None
             if self._user_callback:
-                user = self._user_callback(user_id)
+                user = self._user_callback(remember_dict['user'], session["_random"], None)
             if user is not None:
                 app = current_app._get_current_object()
                 user_loaded_from_cookie.send(app, user=user)
+                # if session was restored from remember me cookie make login valid
+                confirm_login()
                 return user
         return None
 
@@ -461,7 +480,17 @@ class LoginManager:
             duration = config.get("REMEMBER_COOKIE_DURATION", COOKIE_DURATION)
 
         # prepare data
-        data = encode_cookie(str(session["_user_id"]))
+        max_age = int(current_app.permanent_session_lifetime.total_seconds())
+        signer_kwargs = dict(
+            key_derivation="hmac", digest_method=staticmethod(hashlib.sha1)
+        )
+        # save
+        data = URLSafeSerializer(
+            current_app.secret_key,
+            salt="remember",
+            serializer=TaggedJSONSerializer(),
+            signer_kwargs=signer_kwargs,
+        ).dumps({"user":session["_user_id"], "random":session["_random"]})
 
         if isinstance(duration, int):
             duration = timedelta(seconds=duration)

@@ -40,7 +40,6 @@ def verify_password(username, password):
         if user.name.lower() == "guest":
             if config.config_anonbrowse == 1:
                 return user
-        limiter.check()
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
             login_result, error = services.ldap.bind_user(user.name, password)
             if login_result:
@@ -48,9 +47,11 @@ def verify_password(username, password):
                 return user
             if error is not None:
                 log.error(error)
-        elif check_password_hash(str(user.password), password):
-            [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
-            return user
+        else:
+            limiter.check()
+            if check_password_hash(str(user.password), password):
+                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+                return user
     ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
     log.warning('OPDS Login failed for user "%s" IP-address: %s', username, ip_address)
     return None
@@ -127,9 +128,13 @@ def load_user_from_reverse_proxy_header(req):
 @lm.user_loader
 def load_user(user_id, random, session_key):
     user = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
-    if random and session_key:
+    if session_key:
         entry = ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.random == random,
-                                                           ub.User_Sessions.session_key == session_key).first()
+                                                          ub.User_Sessions.session_key == session_key).first()
+        if not entry or entry.user_id != user.id:
+            return None
+    elif random:
+        entry = ub.session.query(ub.User_Sessions).filter(ub.User_Sessions.random == random).first()
         if not entry or entry.user_id != user.id:
             return None
     return user
