@@ -307,7 +307,7 @@ def edit_book_rating(book_id, rating=0):
     book = calibre_db.get_filtered_book(book_id)
     is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == rating_x2).first()
 
-    if not book.rating[0]:
+    if len(book.ratings) == 0:
         old_rating = 0
     else:   
         old_rating = book.ratings[0].rating
