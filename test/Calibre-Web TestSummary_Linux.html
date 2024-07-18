@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-15 20:39:37</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-17 20:06:46</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-16 03:41:10</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-18 03:16:31</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 50 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 58 min</p>
         </div>
       </div>
       </div>
@@ -462,11 +462,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCli</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
-        <td class="text-center">1</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -575,31 +575,11 @@
     
     
     
-        <tr id="ft4.12" class="none bg-danger">
+        <tr id='pt4.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_settingsdb_not_writeable</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.12')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 431, in test_settingsdb_not_writeable
-    self.assertEqual(result, 2)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2020,7 +2000,7 @@ AssertionError: 1 != 2</pre>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
 IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -2032,11 +2012,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2199,31 +2179,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft18.18" class="none bg-danger">
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 963, in test_watch_metadata
-    self.assertNotIn(&#39;series&#39;, book)
-AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1721073398&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2675,11 +2635,11 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2770,11 +2730,31 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id="ft29.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft29.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft29.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft29.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 368, in test_sync_shelf
+    self.assertEqual(1, len(data), data)
+AssertionError: 1 != 0 : []</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2867,12 +2847,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
         <td class="text-center">13</td>
-        <td class="text-center">11</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c31', 13)">Detail</a>
@@ -2980,71 +2960,20 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id="ft31.12" class="none bg-danger">
+        <tr id='pt31.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.12')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft31.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft31.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ldap.py&#34;, line 1018, in test_ldap_opds_anonymous
-    self.assertEqual(200, r.status_code)
-AssertionError: 200 != 500</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et31.13" class="none bg-info">
+        <tr id='pt31.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et31.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et31.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et31.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ldap.py&#34;, line 841, in test_ldap_opds_download_book
-    self.fill_basic_config({&#39;config_ldap_provider_url&#39;: &#39;127.0.0.1&#39;,
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3382,11 +3311,11 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLogin</td>
         <td class="text-center">19</td>
-        <td class="text-center">16</td>
-        <td class="text-center">3</td>
+        <td class="text-center">19</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3414,31 +3343,11 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id="ft35.3" class="none bg-danger">
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 784, in test_login_cookie_steal
-    self.assertNotIn(&#34;logout&#34;, resp.text)
-AssertionError: &#39;logout&#39; unexpectedly found in &#39;\n\n\n&lt;!DOCTYPE html&gt;\n&lt;html lang=&#34;en&#34;&gt;\n  &lt;head&gt;\n    &lt;title&gt;Calibre-Web | Books&lt;/title&gt;\n    &lt;meta charset=&#34;utf-8&#34;&gt;\n    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0&#34;&gt;\n    &lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge,chrome=1&#34;&gt;\n    &lt;meta name=&#34;apple-mobile-web-app-capable&#34; content=&#34;yes&#34;&gt;\n    \n    &lt;!-- Bootstrap --&gt;\n    &lt;link rel=&#34;apple-touch-icon&#34; sizes=&#34;140x140&#34; href=&#34;/static/favicon.ico&#34;&gt;\n    &lt;link rel=&#34;shortcut icon&#34; href=&#34;/static/favicon.ico&#34;&gt;\n    &lt;link href=&#34;/static/css/libs/bootstrap.min.css&#34; rel=&#34;stylesheet&#34; media=&#34;screen&#34;&gt;\n    \n    &lt;link href=&#34;/static/css/style.css&#34; rel=&#34;stylesheet&#34; media=&#34;screen&#34;&gt;\n    &lt;link href=&#34;/static/css/upload.css&#34; rel=&#34;stylesheet&#34; media=&#34;screen&#34;&gt;\n    \n  &lt;/head&gt;\n  &lt;body class=&#34;newest &#34; data-text=&#34;Home&#34; data-textback=&#34;Back&#34;&gt;\n    &lt;!-- Static navbar --&gt;\n    &lt;div class=&#34;navbar navbar-default navbar-static-top&#34; role=&#34;navigation&#34;&gt;\n      &lt;div class=&#34;container-fluid&#34;&gt;\n        &lt;div class=&#34;navbar-header&#34;&gt;\n          &lt;button type=&#34;button&#34; class=&#34;navbar-toggle&#34; data-toggle=&#34;collapse&#34; data-target=&#34;.navbar-collapse&#34;&gt;\n            &lt;span class=&#34;sr-only&#34;&gt;Toggle Navigation&lt;/span&gt;\n            &lt;span class=&#34;icon-bar&#34;&gt;&lt;/span&gt;\n            &lt;span class=&#34;icon-bar&#34;&gt;&lt;/span&gt;\n            &lt;span class=&#34;icon-bar&#34;&gt;&lt;/span&gt;\n          &lt;/button&gt;\n          &lt;a class=&#34;navbar-brand&#34; href=&#34;/&#34;&gt;Calibre-Web&lt;/a&gt;\n        &lt;/div&gt;\n        \n        \n          &lt;form class=&#34;navbar-form navbar-left&#34; role=&#34;search&#34; action=&#34;/search&#34; method=&#34;GET&#34;&gt;\n            &lt;div class=&#34;form-group input-group input-group-sm&#34;&gt;\n              &lt;label for=&#34;query&#34; class=&#34;sr-only&#34;&gt;Search&lt;/label&gt;\n              &lt;input type=&#34;text&#34; class=&#34;form-control&#34; id=&#34;query&#34; name=&#34;query&#34; placeholder=&#34;Search Library&#34; value=&#34;&#34;&gt;\n              &lt;span class=&#34;input-group-btn&#34;&gt;\n                &lt;button type=&#34;submit&#34; id=&#34;query_submit&#34; class=&#34;btn btn-default&#34;&gt;Search&lt;/button&gt;\n              &lt;/span&gt;\n            &lt;/div&gt;\n          &lt;/form&gt;\n        \n        &lt;div class=&#34;navbar-collapse collapse&#34;&gt;\n          \n          &lt;ul class=&#34;nav navbar-nav &#34;&gt;\n            &lt;li&gt;&lt;a href=&#34;/advsearch&#34; id=&#34;advanced_search&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-search&#34;&gt;&lt;/span&gt;&lt;span class=&#34;hidden-sm&#34;&gt; Advanced Search&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;\n          &lt;/ul&gt;\n          \n          &lt;ul class=&#34;nav navbar-nav navbar-right&#34; id=&#34;main-nav&#34;&gt;\n            \n              \n              \n              \n                &lt;li class=&#34;top_tasks&#34;&gt;&lt;a id=&#34;top_tasks&#34; href=&#34;/tasks&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-tasks&#34;&gt;&lt;/span&gt; &lt;span class=&#34;hidden-sm&#34;&gt;Tasks&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;\n              \n              \n                &lt;li&gt;&lt;a id=&#34;top_admin&#34; data-text=&#34;Settings&#34; href=&#34;/admin/view&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-dashboard&#34;&gt;&lt;/span&gt; &lt;span class=&#34;hidden-sm&#34;&gt;Admin&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;\n              \n              \n              &lt;li&gt;&lt;a id=&#34;top_user&#34; data-text=&#34;Account&#34; href=&#34;/me&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-user&#34;&gt;&lt;/span&gt; &lt;span class=&#34;hidden-sm&#34;&gt;admin&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;\n                \n                &lt;li&gt;&lt;a id=&#34;logout&#34; href=&#34;/logout?next=/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-log-out&#34;&gt;&lt;/span&gt; &lt;span class=&#34;hidden-sm&#34;&gt;Logout&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;\n                \n              \n            \n            \n          &lt;/ul&gt;\n        &lt;/div&gt;&lt;!--/.nav-collapse --&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    \n    \n    &lt;div class=&#34;container-fluid&#34;&gt;\n      &lt;div class=&#34;row-fluid&#34;&gt;\n        \n        &lt;div class=&#34;col-sm-2&#34;&gt;\n          &lt;nav class=&#34;navigation&#34;&gt;\n            &lt;ul class=&#34;list-unstyled&#34; id=&#34;scnd-nav&#34; intent in-standard-append=&#34;nav.navigation&#34; in-mobile-after=&#34;#main-nav&#34; in-mobile-class=&#34;nav navbar-nav&#34;&gt;\n              &lt;li class=&#34;nav-head hidden-xs&#34;&gt;Browse&lt;/li&gt;\n              \n                \n                    &lt;li id=&#34;nav_new&#34; &gt;&lt;a href=&#34;/?data=root&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-book&#34;&gt;&lt;/span&gt; Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_hot&#34; &gt;&lt;a href=&#34;/hot/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-fire&#34;&gt;&lt;/span&gt; Hot Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_download&#34; &gt;&lt;a href=&#34;/downloadlist?data=download&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-download&#34;&gt;&lt;/span&gt; Downloaded Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_rated&#34; &gt;&lt;a href=&#34;/rated/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-star&#34;&gt;&lt;/span&gt; Top Rated Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_read&#34; &gt;&lt;a href=&#34;/read/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-eye-open&#34;&gt;&lt;/span&gt; Read Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_unread&#34; &gt;&lt;a href=&#34;/unread/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-eye-close&#34;&gt;&lt;/span&gt; Unread Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_rand&#34; &gt;&lt;a href=&#34;/discover/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-random&#34;&gt;&lt;/span&gt; Discover&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_cat&#34; &gt;&lt;a href=&#34;/category?data=category&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-inbox&#34;&gt;&lt;/span&gt; Categories&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_serie&#34; &gt;&lt;a href=&#34;/series?data=series&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-bookmark&#34;&gt;&lt;/span&gt; Series&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_author&#34; &gt;&lt;a href=&#34;/author?data=author&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-user&#34;&gt;&lt;/span&gt; Authors&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_publisher&#34; &gt;&lt;a href=&#34;/publisher?data=publisher&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-text-size&#34;&gt;&lt;/span&gt; Publishers&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_lang&#34; &gt;&lt;a href=&#34;/language?data=language&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-flag&#34;&gt;&lt;/span&gt; Languages&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_rate&#34; &gt;&lt;a href=&#34;/ratings?data=rating&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt; Ratings&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_format&#34; &gt;&lt;a href=&#34;/formats?data=format&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-file&#34;&gt;&lt;/span&gt; File formats&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_archived&#34; &gt;&lt;a href=&#34;/archived/stored/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-trash&#34;&gt;&lt;/span&gt; Archived Books&lt;/a&gt;&lt;/li&gt;\n                \n              \n                \n                    &lt;li id=&#34;nav_list&#34; &gt;&lt;a href=&#34;/table?data=list&amp;amp;sort_param=stored&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-th-list&#34;&gt;&lt;/span&gt; Books List&lt;/a&gt;&lt;/li&gt;\n                \n              \n              \n                &lt;li class=&#34;nav-head hidden-xs public-shelves&#34;&gt;Shelves&lt;/li&gt;\n                \n              \n                &lt;li id=&#34;nav_createshelf&#34; class=&#34;create-shelf&#34;&gt;&lt;a href=&#34;/shelf/create&#34;&gt;Create a Shelf&lt;/a&gt;&lt;/li&gt;\n                &lt;li id=&#34;nav_about&#34; &gt;&lt;a href=&#34;/stats&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-info-sign&#34;&gt;&lt;/span&gt; About&lt;/a&gt;&lt;/li&gt;\n              \n              \n\n            &lt;/ul&gt;\n          &lt;/nav&gt;\n        &lt;/div&gt;\n        \n        &lt;div class=&#34;col-sm-10&#34;&gt;\n          \n\n&lt;div class=&#34;discover random-books&#34;&gt;\n  &lt;h2 class=&#34;random-books&#34;&gt;Discover (Random Books)&lt;/h2&gt;\n  &lt;div class=&#34;row display-flex&#34;&gt;\n   \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books_rand&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/5&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n              &lt;span class=&#34;img&#34; title=&#34;testbook&#34;&gt;\n                \n    &lt;img\n        srcset=&#34;/cover/5/sm?c=1547291931 1x, /cover/5/md?c=1547291931 2x, /cover/5/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/5/og?c=1547291931&#34;\n        alt=&#34;testbook&#34;\n    /&gt;\n                \n              &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/5&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;testbook&#34; class=&#34;title&#34;&gt;testbook&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/2&#34;&gt;John Döe&lt;/a&gt;\n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books_rand&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/12&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n              &lt;span class=&#34;img&#34; title=&#34;book10&#34;&gt;\n                \n    &lt;img\n        srcset=&#34;/cover/12/sm?c=1547291931 1x, /cover/12/md?c=1547291931 2x, /cover/12/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/12/og?c=1547291931&#34;\n        alt=&#34;book10&#34;\n    /&gt;\n                \n              &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/12&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book10&#34; class=&#34;title&#34;&gt;book10&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/13&#34;&gt;Lulu de Marco&lt;/a&gt;\n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books_rand&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/7&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n              &lt;span class=&#34;img&#34; title=&#34;Buuko&#34;&gt;\n                \n    &lt;img\n        srcset=&#34;/cover/7/sm?c=1549819180 1x, /cover/7/md?c=1549819180 2x, /cover/7/lg?c=1549819180 3x&#34;\n        src=&#34;/cover/7/og?c=1549819180&#34;\n        alt=&#34;Buuko&#34;\n    /&gt;\n                \n              &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/7&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;Buuko&#34; class=&#34;title&#34;&gt;Buuko&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/2&#34;&gt;John Döe&lt;/a&gt;\n            \n          \n        &lt;/p&gt;\n        \n        &lt;p class=&#34;series&#34;&gt;\n          &lt;a href=&#34;/series/stored/&#34;&gt;\n            Djüngel\n          &lt;/a&gt;\n          (3)\n        &lt;/p&gt;\n        \n        \n        &lt;div class=&#34;rating&#34;&gt;\n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n            \n          \n        &lt;/div&gt;\n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books_rand&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/8&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n              &lt;span class=&#34;img&#34; title=&#34;book8&#34;&gt;\n                \n    &lt;img\n        srcset=&#34;/cover/8/sm?c=1547291931 1x, /cover/8/md?c=1547291931 2x, /cover/8/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/8/og?c=1547291931&#34;\n        alt=&#34;book8&#34;\n    /&gt;\n                \n              &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/8&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book8&#34; class=&#34;title&#34;&gt;book8&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/11&#34;&gt;Leo Baskerville&lt;/a&gt;\n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n  &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;div class=&#34;discover load-more&#34;&gt;\n  &lt;h2 class=&#34;Books&#34;&gt;Books&lt;/h2&gt;\n   \n    &lt;div class=&#34;filterheader hidden-xs&#34;&gt;\n    \n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort according to book date, newest first&#34; id=&#34;new&#34; class=&#34;btn btn-primary active&#34; href=&#34;/newest/new/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-book&#34;&gt;&lt;/span&gt; &lt;span class=&#34;glyphicon glyphicon-calendar&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-order&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort according to book date, oldest first&#34; id=&#34;old&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/old/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-book&#34;&gt;&lt;/span&gt; &lt;span class=&#34;glyphicon glyphicon-calendar&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-order-alt&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort title in alphabetical order&#34; id=&#34;asc&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/abc/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-font&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-alphabet&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort title in reverse alphabetical order&#34; id=&#34;desc&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/zyx/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-font&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-alphabet-alt&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort authors in alphabetical order&#34; id=&#34;auth_az&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/authaz/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-user&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-alphabet&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort authors in reverse alphabetical order&#34; id=&#34;auth_za&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/authza/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-user&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-alphabet-alt&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort according to publishing date, newest first&#34; id=&#34;pub_new&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/pubnew/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-calendar&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-order&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      &lt;a data-toggle=&#34;tooltip&#34; title=&#34;Sort according to publishing date, oldest first&#34; id=&#34;pub_old&#34; class=&#34;btn btn-primary&#34; href=&#34;/newest/pubold/&#34;&gt;&lt;span class=&#34;glyphicon glyphicon-calendar&#34;&gt;&lt;/span&gt;&lt;span class=&#34;glyphicon glyphicon-sort-by-order-alt&#34;&gt;&lt;/span&gt;&lt;/a&gt;\n      \n    \n    &lt;/div&gt;\n   \n  &lt;div class=&#34;row display-flex&#34;&gt;\n    \n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/13&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book11&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/13/sm?c=1547291931 1x, /cover/13/md?c=1547291931 2x, /cover/13/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/13/og?c=1547291931&#34;\n        alt=&#34;book11&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/13&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book11&#34; class=&#34;title&#34;&gt;book11&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/6&#34;&gt;Norbert Halagal&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/12&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book10&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/12/sm?c=1547291931 1x, /cover/12/md?c=1547291931 2x, /cover/12/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/12/og?c=1547291931&#34;\n        alt=&#34;book10&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/12&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book10&#34; class=&#34;title&#34;&gt;book10&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/13&#34;&gt;Lulu de Marco&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/11&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book9&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/11/sm?c=1547291931 1x, /cover/11/md?c=1547291931 2x, /cover/11/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/11/og?c=1547291931&#34;\n        alt=&#34;book9&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/11&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book9&#34; class=&#34;title&#34;&gt;book9&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/8&#34;&gt;Hector Gonçalves&lt;/a&gt;\n            \n          \n            \n              \n                &lt;span&gt;&amp;amp;&lt;/span&gt;\n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/12&#34;&gt;Unbekannt&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/10&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book7&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/10/sm?c=1547291931 1x, /cover/10/md?c=1547291931 2x, /cover/10/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/10/og?c=1547291931&#34;\n        alt=&#34;book7&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/10&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book7&#34; class=&#34;title&#34;&gt;book7&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/3&#34;&gt;Peter Parker&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n        &lt;div class=&#34;rating&#34;&gt;\n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n        &lt;/div&gt;\n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/9&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book6&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/9/sm?c=1589697654 1x, /cover/9/md?c=1589697654 2x, /cover/9/lg?c=1589697654 3x&#34;\n        src=&#34;/cover/9/og?c=1589697654&#34;\n        alt=&#34;book6&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/9&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book6&#34; class=&#34;title&#34;&gt;book6&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/10&#34;&gt;Sigurd Lindgren&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        &lt;p class=&#34;series&#34;&gt;\n        \n          &lt;a href=&#34;/series/stored/2&#34;&gt;\n            Loko\n          &lt;/a&gt;\n        \n          (0)\n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/8&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;book8&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/8/sm?c=1547291931 1x, /cover/8/md?c=1547291931 2x, /cover/8/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/8/og?c=1547291931&#34;\n        alt=&#34;book8&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/8&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;book8&#34; class=&#34;title&#34;&gt;book8&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/11&#34;&gt;Leo Baskerville&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/7&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;Buuko&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/7/sm?c=1549819180 1x, /cover/7/md?c=1549819180 2x, /cover/7/lg?c=1549819180 3x&#34;\n        src=&#34;/cover/7/og?c=1549819180&#34;\n        alt=&#34;Buuko&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/7&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;Buuko&#34; class=&#34;title&#34;&gt;Buuko&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/2&#34;&gt;John Döe&lt;/a&gt;\n            \n          \n          \n            \n          \n            \n          \n        &lt;/p&gt;\n        \n        &lt;p class=&#34;series&#34;&gt;\n        \n          &lt;a href=&#34;/series/stored/&#34;&gt;\n            Djüngel\n          &lt;/a&gt;\n        \n          (3)\n        &lt;/p&gt;\n        \n        \n        &lt;div class=&#34;rating&#34;&gt;\n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n          \n            &lt;span class=&#34;glyphicon glyphicon-star good&#34;&gt;&lt;/span&gt;\n            \n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n                &lt;span class=&#34;glyphicon glyphicon-star-empty&#34;&gt;&lt;/span&gt;\n              \n            \n          \n        &lt;/div&gt;\n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/5&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;testbook&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/5/sm?c=1547291931 1x, /cover/5/md?c=1547291931 2x, /cover/5/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/5/og?c=1547291931&#34;\n        alt=&#34;testbook&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/5&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;testbook&#34; class=&#34;title&#34;&gt;testbook&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/2&#34;&gt;John Döe&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/4&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/4/sm?c=1547291931 1x, /cover/4/md?c=1547291931 2x, /cover/4/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/4/og?c=1547291931&#34;\n        alt=&#34;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/4&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;Very long extra super turbo cool title without any issue of displaying including ö utf-8 characters&#34; class=&#34;title&#34;&gt;Very long extra super turbo cool title without any issue of ...&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/3&#34;&gt;Peter Parker&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/3&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;comicdemo&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/3/sm?c=1547291931 1x, /cover/3/md?c=1547291931 2x, /cover/3/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/3/og?c=1547291931&#34;\n        alt=&#34;comicdemo&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/3&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;comicdemo&#34; class=&#34;title&#34;&gt;comicdemo&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/4&#34;&gt;Asterix Lionherd&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        &lt;p class=&#34;series&#34;&gt;\n        \n          &lt;a href=&#34;/series/stored/&#34;&gt;\n            Djüngel\n          &lt;/a&gt;\n        \n          (1)\n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;div class=&#34;col-sm-3 col-lg-2 col-xs-6 book session&#34; id=&#34;books&#34;&gt;\n      &lt;div class=&#34;cover&#34;&gt;\n          &lt;a href=&#34;/book/1&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n            &lt;span class=&#34;img&#34; title=&#34;Der Buchtitel&#34;&gt;\n              \n    &lt;img\n        srcset=&#34;/cover/1/sm?c=1547291931 1x, /cover/1/md?c=1547291931 2x, /cover/1/lg?c=1547291931 3x&#34;\n        src=&#34;/cover/1/og?c=1547291931&#34;\n        alt=&#34;Der Buchtitel&#34;\n    /&gt;\n              \n            &lt;/span&gt;\n          &lt;/a&gt;\n      &lt;/div&gt;\n      &lt;div class=&#34;meta&#34;&gt;\n        &lt;a href=&#34;/book/1&#34; data-toggle=&#34;modal&#34; data-target=&#34;#bookDetailsModal&#34; data-remote=&#34;false&#34;&gt;\n          &lt;p title=&#34;Der Buchtitel&#34; class=&#34;title&#34;&gt;Der Buchtitel&lt;/p&gt;\n        &lt;/a&gt;\n        &lt;p class=&#34;author&#34;&gt;\n          \n            \n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/5&#34;&gt;Frodo Beutlin&lt;/a&gt;\n            \n          \n            \n              \n                &lt;span&gt;&amp;amp;&lt;/span&gt;\n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/6&#34;&gt;Norbert Halagal&lt;/a&gt;\n            \n          \n            \n              \n                &lt;span&gt;&amp;amp;&lt;/span&gt;\n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/7&#34;&gt;Liu Yang&lt;/a&gt;\n            \n          \n            \n              \n                &lt;span&gt;&amp;amp;&lt;/span&gt;\n              \n              &lt;a class=&#34;author-name&#34; href=&#34;/author/stored/8&#34;&gt;Hector Gonçalves&lt;/a&gt;\n            \n          \n          \n            \n          \n        &lt;/p&gt;\n        \n        \n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n  \n  &lt;/div&gt;\n&lt;/div&gt;\n\n          \n      &lt;/div&gt;\n    &lt;/div&gt;\n  &lt;/div&gt;\n    &lt;div class=&#34;modal fade&#34; id=&#34;bookDetailsModal&#34; tabindex=&#34;-1&#34; role=&#34;dialog&#34; aria-labelledby=&#34;bookDetailsModalLabel&#34;&gt;\n      &lt;div class=&#34;modal-dialog modal-lg&#34; role=&#34;document&#34;&gt;\n        &lt;div class=&#34;modal-content&#34;&gt;\n          &lt;div class=&#34;modal-header&#34;&gt;\n            &lt;button type=&#34;button&#34; class=&#34;close&#34; data-dismiss=&#34;modal&#34; aria-label=&#34;Close&#34;&gt;&lt;span aria-hidden=&#34;true&#34;&gt;&amp;times;&lt;/span&gt;&lt;/button&gt;\n            &lt;h4 class=&#34;modal-title&#34; id=&#34;bookDetailsModalLabel&#34;&gt;Book Details&lt;/h4&gt;\n          &lt;/div&gt;\n          &lt;div class=&#34;modal-body&#34;&gt;...&lt;/div&gt;\n          &lt;div class=&#34;modal-footer&#34;&gt;\n            &lt;button type=&#34;button&#34; id=&#34;details_close&#34; class=&#34;btn btn-default&#34; data-dismiss=&#34;modal&#34;&gt;Close&lt;/button&gt;\n          &lt;/div&gt;\n        &lt;/div&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n    \n    &lt;!-- jQuery (necessary for Bootstrap\&#39;s JavaScript plugins) --&gt;\n    &lt;script src=&#34;/static/js/libs/jquery.min.js&#34;&gt;&lt;/script&gt;\n    &lt;!-- Include all compiled plugins (below), or include individual files as needed --&gt;\n    &lt;script src=&#34;/static/js/libs/bootstrap.min.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/libs/underscore-umd-min.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/libs/intention.min.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/libs/context.min.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/libs/plugins.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/libs/jquery.form.min.js&#34;&gt;&lt;/script&gt;\n    &lt;script src=&#34;/static/js/uploadprogress.js&#34;&gt; &lt;/script&gt;\n    &lt;script src=&#34;/static/js/main.js&#34;&gt;&lt;/script&gt;\n    \n    \n  &lt;/body&gt;\n&lt;/html&gt;&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3488,33 +3397,11 @@ AssertionError: &#39;logout&#39; unexpectedly found in &#39;\n\n\n&lt;!DOCTYPE h
     
     
     
-        <tr id="ft35.9" class="none bg-danger">
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.9')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 619, in test_login_remember_me
-    self.assertEqual(&#39;21896&#39;, cover.headers[&#39;Content-Length&#39;])
-AssertionError: &#39;21896&#39; != &#39;4245&#39;
-- 21896
-+ 4245</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3555,31 +3442,11 @@ AssertionError: &#39;21896&#39; != &#39;4245&#39;
     
     
     
-        <tr id="ft35.14" class="none bg-danger">
+        <tr id='pt35.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.14')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 661, in test_next
-    self.assertTrue(&#34;&lt;title&gt;Calibre-Web | Books&lt;/title&gt;&#34; in page.text)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5758,9 +5625,9 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>498</td>
-        <td>479</td>
-        <td>6</td>
-        <td>3</td>
+        <td>485</td>
+        <td>1</td>
+        <td>2</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -6293,7 +6160,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 </div>
 
 <script>
-    drawCircle(479, 6, 3, 10);
+    drawCircle(485, 1, 2, 10);
     showCase(5);
 </script>
 
