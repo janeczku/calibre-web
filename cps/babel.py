@@ -2,7 +2,7 @@ from babel import negotiate_locale
 from flask_babel import Babel, Locale
 from babel.core import UnknownLocaleError
 from flask import request
-from flask_login import current_user
+from .cw_login import current_user
 
 from . import logger
 
